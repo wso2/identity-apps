@@ -91,7 +91,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Id of the application.
      */
@@ -166,8 +166,8 @@ function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimI
 /**
  * Attribute settings component.
  */
-export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props: AttributeSelectionPropsInterface
+export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterface> = (
+    props: AttributeSettingsPropsInterface
 ): ReactElement => {
 
     const {
@@ -226,7 +226,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(undefined);
-
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -235,6 +234,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         data: OIDCScopeList,
         isLoading: isOIDCScopeListLoading
     } = useOIDCScopesList();
+
+    const [ duplicatedMappingValues,setDuplicatedMappingValues ] = useState<Array<string>>([]);
 
     /**
      * Get local mapped claim display name for external claims
@@ -358,7 +359,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 .find((requestClaims: RequestedClaimConfigurationInterface) =>
                     requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI);
 
-            return requestURI !== undefined ? true : false;
+            return requestURI !== undefined;
         }
 
         return false;
@@ -538,8 +539,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     }
                 };
 
-                if (!(claimMappingList
-                    .some((claimMap: ExtendedClaimMappingInterface) => claimMap.localClaim.uri === claim.claimURI))) {
+                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) => 
+                    claimMapping.localClaim.uri === claim.claimURI))) {
                     claimMappingList.push(newClaimMapping);
                 }
                 setClaimMapping(claimMappingList);
@@ -636,15 +637,33 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      *
      * @param claimURI - URI of the mapping updated
      * @param mappedValue - mapped claims value
+     * @param isUpdatingOnInputChange - whether the updating happens on mapping attribute input change
+     * 
      */
-    const updateClaimMapping = (claimURI: string, mappedValue: string) => {
+    const updateClaimMapping = (claimURI: string, mappedValue: string, isUpdatingOnInputChange?: boolean) => {
         const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
+
+        const alreadySeen: Record<string,boolean> = {};
+        const duplicatedMappings: Array<string> = [];
 
         claimMappingList.forEach((mapping: ExtendedClaimMappingInterface) => {
             if (mapping.localClaim.uri === claimURI) {
                 mapping.applicationClaim = mappedValue;
             }
+
+            if (isUpdatingOnInputChange) {
+                if (alreadySeen[mapping.applicationClaim]) {
+                    duplicatedMappings.push(mapping.applicationClaim);
+                } else {
+                    alreadySeen[mapping.applicationClaim] = true;
+                }
+            }
         });
+
+        if (isUpdatingOnInputChange) {
+            setDuplicatedMappingValues(duplicatedMappings);
+        }
+
         setClaimMapping(claimMappingList);
     };
 
@@ -891,7 +910,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      *  Generate final claim mapping list.
      */
     const getFinalMappingList = ((): ExtendedClaimMappingInterface[] => {
-        const claimMappingFinal: any[] = [];
+        const claimMappingFinal: ExtendedClaimMappingInterface[] = [];
         let returnList: boolean = true;
 
         setClaimMappingError(false);
@@ -1181,6 +1200,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                                 setUserAttributesLoading={ setUserAttributesLoading }
                                                 onlyOIDCConfigured={ onlyOIDCConfigured }
                                                 data-testid={ `${ testId }-attribute-selection` }
+                                                duplicatedMappingValues={ duplicatedMappingValues }
                                             />
                                         )
                                 }

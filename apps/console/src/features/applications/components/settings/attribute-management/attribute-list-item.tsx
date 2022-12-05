@@ -57,6 +57,10 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
      * Specify whether there is an OIDC mapping.
      */
      isOIDCMapping?: boolean;
+     /**
+     * List of duplicated mapping values.
+     */
+     duplicatedMappingValues?: Array<string>;
 }
 
 /**
@@ -90,6 +94,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         subject,
         label,
         isOIDCMapping,
+        duplicatedMappingValues,
         [ "data-testid" ]: testId
     } = props;
 
@@ -101,7 +106,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [ requested, setRequested ] = useState(true);
     const [ mappedAttribute, setMappedAttribute ] = useState(claimURI);
     const [ defaultMappedAttribute ] = useState(mappedAttribute);
-    const localDialectURI = "http://wso2.org/claims";
+    const localDialectURI: string = "http://wso2.org/claims";
 
     /**
      * Mandatory state of an attribute will be handled here
@@ -146,11 +151,11 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         }
     };
 
-    const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value.replace(/[^\w+$:/.]/g, "");
+    const handleClaimMapping = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const mappingValue: string = e.target?.value.replace(/[^\w+$:/.]/g, "");
 
         setMappedAttribute(mappingValue);
-        updateMapping(claimURI, mappingValue);
+        updateMapping(claimURI, mappingValue,true);
         setErrorInClaimMapping(isEmpty(mappingValue));
         if (claimMappingError && !isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
@@ -252,7 +257,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 disabled={ !mappingOn }
                                 readOnly={ readOnly }
                                 required
-                                error={ errorInClaimMapping }
+                                error={ errorInClaimMapping || duplicatedMappingValues.includes(mappedAttribute)
+                                         || duplicatedMappingValues.includes(defaultMappedAttribute) }
                             />
                         </Table.Cell>
                     </>

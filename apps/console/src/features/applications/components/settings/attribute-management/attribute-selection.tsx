@@ -24,12 +24,13 @@ import {
     Heading,
     Hint,
     Link,
+    Message,
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import union from "lodash-es/union";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Checkbox, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -93,6 +94,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     isUserAttributesLoading?: boolean;
     setUserAttributesLoading?: any;
     onlyOIDCConfigured?: boolean;
+    duplicatedMappingValues: Array<string>;
 }
 
 /**
@@ -133,6 +135,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         isUserAttributesLoading,
         setUserAttributesLoading,
         onlyOIDCConfigured,
+        duplicatedMappingValues,
         [ "data-testid" ]: testId
     } = props;
 
@@ -155,7 +158,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ localClaimURIToBeDeleted, setLocalClaimURIToBeDeleted ] = useState<string>();
 
-    const initValue = useRef(false);
+    const initValue: MutableRefObject<boolean> = useRef(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -164,16 +167,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
 
     useEffect(() => {
-        const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+        const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
 
-        claimConfigurations?.claimMappings?.map((claim) => {
+        claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
                 !filterSelectedExternalClaims.find(
-                    (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
+                    (selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                        selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 )
             ) {
-                const availableExternalClaim = availableExternalClaims.find(
-                    (availableClaim) => availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
+                const availableExternalClaim: ExtendedExternalClaimInterface = availableExternalClaims.find(
+                    (availableClaim: ExtendedExternalClaimInterface) => 
+                        availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
 
                 if (availableExternalClaim) {
@@ -202,18 +207,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
-            const localClaims = [ ...selectedClaims ];
+            const localClaims: ExtendedClaimInterface[] = [ ...selectedClaims ];
 
-            localClaims.forEach((mapping) => {
+            localClaims.forEach((mapping: ExtendedClaimInterface) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.mandatory = mandatory;
                 }
             });
             setSelectedClaims(localClaims);
         } else {
-            const externalClaims = [ ...selectedExternalClaims ];
+            const externalClaims: ExtendedExternalClaimInterface[] = [ ...selectedExternalClaims ];
 
-            externalClaims.forEach((mapping) => {
+            externalClaims.forEach((mapping: ExtendedExternalClaimInterface) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.mandatory = mandatory;
                 }
@@ -224,9 +229,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const updateRequested = (claimURI: string, requested: boolean) => {
         if (selectedDialect.localDialect) {
-            const localClaims = [ ...selectedClaims ];
+            const localClaims: ExtendedClaimInterface[] = [ ...selectedClaims ];
 
-            localClaims.forEach((mapping) => {
+            localClaims.forEach((mapping: ExtendedClaimInterface) => {
                 if (mapping.claimURI === claimURI) {
                     mapping.requested = requested;
                 }
@@ -258,16 +263,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
-        let requestURI = false;
+        let requestURI: boolean = false;
 
         // If custom mapping there then retrieve the relevant uri and check for requested section.
         if (claimConfigurations.dialect === "CUSTOM") {
-            const requestURI = claimConfigurations.claimMappings.find(
-                (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+            const requestURI: string = claimConfigurations.claimMappings.find(
+                (mapping: ClaimMappingInterface) => mapping?.localClaim?.uri === uri)?.applicationClaim;
 
             if (requestURI) {
-                const checkInRequested = claimConfigurations.requestedClaims.find(
-                    (requestClaims) => requestClaims?.claim?.uri === requestURI);
+                const checkInRequested: RequestedClaimConfigurationInterface = claimConfigurations.requestedClaims.find(
+                    (requestClaim: RequestedClaimConfigurationInterface) => requestClaim?.claim?.uri === requestURI);
 
                 if (checkInRequested) {
                     return checkInRequested.mandatory;
@@ -276,7 +281,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
         // If it is mapped directly check the requested section
         requestURI = claimConfigurations.requestedClaims.find(
-            (requestClaims) => requestClaims?.claim?.uri === uri)?.mandatory;
+            (requestClaim: RequestedClaimConfigurationInterface) => requestClaim?.claim?.uri === uri)?.mandatory;
 
         return requestURI;
     };
@@ -289,16 +294,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      */
     const checkInitialRequested = (uri: string): boolean => {
         if (claimConfigurations.dialect === "CUSTOM") {
-            const requestURI = claimConfigurations.claimMappings.find(
-                (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
-            let checkInRequested;
+            const requestURI: string = claimConfigurations.claimMappings.find(
+                (mapping: ClaimMappingInterface) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+            let checkInRequested: RequestedClaimConfigurationInterface;
 
             if (requestURI) {
                 checkInRequested = claimConfigurations.requestedClaims.find(
-                    (requestClaims) => requestClaims?.claim?.uri === requestURI);
+                    (requestClaim: RequestedClaimConfigurationInterface) => requestClaim?.claim?.uri === requestURI);
             } else {
                 checkInRequested = claimConfigurations.requestedClaims.find(
-                    (requestClaims) => requestClaims?.claim?.uri === uri);
+                    (requestClaim: RequestedClaimConfigurationInterface) => requestClaim?.claim?.uri === uri);
             }
 
             return !!checkInRequested;
@@ -310,20 +315,24 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     // search operation for claims
-    const searchFilter = (changeValue) => {
+    const searchFilter = (changeValue: string) => {
 
         if (selectedDialect.localDialect) {
-            const displayNameFilterClaims = selectedClaims.filter((item) =>
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = selectedClaims.filter((item) =>
+            const displayNameFilterClaims: ExtendedClaimInterface[] = selectedClaims.filter(
+                (item: ExtendedClaimInterface) =>
+                    item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+            );
+            const uriFilterClaims: ExtendedClaimInterface[] = selectedClaims.filter((item: ExtendedClaimInterface) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             setFilterSelectedClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
         } else {
-            const displayNameFilterClaims = selectedExternalClaims.filter((item) =>
-                item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = selectedExternalClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const displayNameFilterClaims: ExtendedExternalClaimInterface[] = selectedExternalClaims.filter(
+                (item: ExtendedExternalClaimInterface) =>
+                    item.localClaimDisplayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims: ExtendedExternalClaimInterface[] = selectedExternalClaims.filter(
+                (item: ExtendedExternalClaimInterface) =>
+                    item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             setFilterSelectedExternalClaims(sortBy(
                 union(displayNameFilterClaims, uriFilterClaims),
@@ -337,8 +346,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      *
      * @param event - Change event.
      */
-    const handleChange = (event) => {
-        const changeValue = event.target.value;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const changeValue: string = event.target.value;
 
         if (changeValue.length > 0) {
             // setSearchOn(true);
@@ -357,12 +366,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         // set local dialect values.
         setUserAttributesLoading(true);
         if (selectedDialect.localDialect) {
-            const initialRequest = getInitiallySelectedClaimsURI();
+            const initialRequest: string[] = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
 
             applicationConfig.attributeSettings.attributeSelection.getClaims(claims)
-                .map((claim) => {
+                .map((claim: ExtendedClaimInterface) => {
                     if (initialRequest.includes(claim.claimURI) &&
                         !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
                         const newClaim: ExtendedClaimInterface = {
@@ -384,7 +393,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             if (claimConfigurations?.dialect === "CUSTOM") {
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
 
-                claimConfigurations.claimMappings.map((claim) => {
+                claimConfigurations.claimMappings.map((claim: ClaimMappingInterface) => {
                     if (!claim || !claim.localClaim) {
                         return;
                     }
@@ -426,12 +435,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             }
             setInitializationFinished(true);
         } else {
-            const initialRequest = getInitiallySelectedClaimsURI();
+            const initialRequest: string[] = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
             applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-                .map((claim) => {
+                .map((claim: ExtendedExternalClaimInterface) => {
                     if (initialRequest.includes(claim.mappedLocalClaimURI)) {
                         const newClaim: ExtendedExternalClaimInterface = {
                             ...claim,
@@ -445,10 +454,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         initialAvailableClaims.push(claim);
                     }
                 });
-            const tempFilterSelectedExternalClaims = [ ...filterSelectedExternalClaims ];
+            const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = 
+            [ ...filterSelectedExternalClaims ];
 
-            claimConfigurations?.claimMappings?.map((claimMapping) => {
-                claims?.map((claim) => {
+            claimConfigurations?.claimMappings?.map((claimMapping: ClaimMappingInterface) => {
+                claims?.map((claim: ExtendedClaimInterface) => {
                     if (claimMapping.localClaim.uri === claim.claimURI){
                         const option: ExtendedExternalClaimInterface = {
                             claimDialectURI: claim.dialectURI,
@@ -460,9 +470,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             requested: claim.requested
                         };
 
-                        if (!initialSelectedClaims.find(
-                            (selectedExternalClaim) => selectedExternalClaim?.mappedLocalClaimURI
-                            === claimMapping.localClaim.uri)){
+                        if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                            selectedExternalClaim?.mappedLocalClaimURI === claimMapping.localClaim.uri)){
                             initialSelectedClaims.push(option);
                         }
                     }
@@ -487,7 +496,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const isSubjectClaimSetToDefaultWithoutMapping = (): boolean => {
 
         return claimConfigurations?.subject?.claim?.uri === defaultSubjectAttribute &&
-            claimConfigurations.requestedClaims?.findIndex(requestedClaim =>
+            claimConfigurations.requestedClaims?.findIndex((requestedClaim: RequestedClaimConfigurationInterface) =>
                 requestedClaim?.claim?.uri === defaultSubjectAttribute) < 0;
 
     };
@@ -563,7 +572,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const deleteAttribute = (claimURI: string): void => {
         if (selectedDialect.localDialect) {
-            const removing = selectedClaims.find(claim => claim.claimURI === claimURI);
+            const removing: ExtendedClaimInterface = selectedClaims.find(
+                (claim: ExtendedClaimInterface) => claim.claimURI === claimURI
+            );
 
             setSelectedClaims(selectedClaims.filter(claim => claim.claimURI !== claimURI));
             const claim = claims.find(claim => claim.claimURI === claimURI);
@@ -600,7 +611,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const resolveClaimValue = (localClaimURI: string): string => {
         if (claimMappingOn) {
-            const claimMappingValue = getCurrentMapping(localClaimURI);
+            const claimMappingValue: ExtendedClaimMappingInterface = getCurrentMapping(localClaimURI);
 
             // The mapping might not exist if it is deleted from the list.
             return claimMappingValue !== undefined ? claimMappingValue.applicationClaim : localClaimURI;
@@ -610,7 +621,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const removeAttributeModal = () => {
-        const defaultSubjectClaim = claims.find(claim => claim.claimURI === defaultSubjectAttribute);
+        const defaultSubjectClaim: ExtendedClaimInterface = 
+        claims.find((claim: ExtendedClaimInterface) => claim.claimURI === defaultSubjectAttribute);
 
         return (
             <ConfirmationModal
@@ -666,9 +678,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
      * @returns Is a mapping or not.
      */
     const checkMapping = (claiminput: ExtendedExternalClaimInterface): boolean => {
-        let isMapping = false;
+        let isMapping: boolean = false;
 
-        openIDConnectClaims?.map((claim) => {
+        openIDConnectClaims?.map((claim: ExtendedExternalClaimInterface) => {
             if (claim.mappedLocalClaimURI === claiminput.mappedLocalClaimURI ||
                 claiminput.mappedLocalClaimURI  === defaultSubjectAttribute){
                 isMapping = true;
@@ -788,6 +800,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 </Table.Body>
                                             </Table>
                                         </Grid.Row>
+                                        { duplicatedMappingValues.length > 0 && (<Message 
+                                            type="error"
+                                            content={ 
+                                                t("console:develop.features.applications.notifications."
+                                                +"updateClaimConfig" + ".error.description", 
+                                                { description: "Mapped user attributes cannot be duplicated." }) }
+                                        />) }
                                         <Segment className="user-role-edit-header-segment attributes">
                                             <Grid.Row>
                                                 { selectedDialect.localDialect
@@ -907,48 +926,58 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             </Table.Header>
                                                             <Table.Body>
                                                                 {
-                                                                    filterSelectedClaims?.map((claim) => {
-                                                                        return (
-                                                                            <AttributeListItem
-                                                                                key={ claim.id }
-                                                                                claimURI={ claim.claimURI }
-                                                                                displayName={ claim.displayName }
-                                                                                mappedURI={ claim.claimURI }
-                                                                                localDialect={
-                                                                                    selectedDialect.localDialect
-                                                                                }
-                                                                                updateMapping={ updateClaimMapping }
-                                                                                addToMapping={ addToClaimMapping }
-                                                                                mapping={
-                                                                                    getCurrentMapping(claim.claimURI)
-                                                                                }
-                                                                                isDefaultMappingChanged={
-                                                                                    setIsDefaultMappingChanged
-                                                                                }
-                                                                                initialMandatory={
-                                                                                    selectedSubjectValue ===
+                                                                    filterSelectedClaims?.map(
+                                                                        (claim: ExtendedClaimInterface) => {
+                                                                            return (
+                                                                                <AttributeListItem
+                                                                                    key={ claim.id }
+                                                                                    claimURI={ claim.claimURI }
+                                                                                    displayName={ claim.displayName }
+                                                                                    mappedURI={ claim.claimURI }
+                                                                                    localDialect={
+                                                                                        selectedDialect.localDialect
+                                                                                    }
+                                                                                    updateMapping={ updateClaimMapping }
+                                                                                    addToMapping={ addToClaimMapping }
+                                                                                    mapping={ 
+                                                                                        getCurrentMapping(
+                                                                                            claim.claimURI
+                                                                                        )
+                                                                                    }
+                                                                                    isDefaultMappingChanged={
+                                                                                        setIsDefaultMappingChanged
+                                                                                    }
+                                                                                    initialMandatory={
+                                                                                        selectedSubjectValue ===
                                                                                 resolveClaimValue(claim.claimURI)
-                                                                                        ? true
-                                                                                        : claim.mandatory
-                                                                                }
-                                                                                initialRequested={ claim.requested }
-                                                                                selectMandatory={ updateMandatory }
-                                                                                selectRequested={ updateRequested }
-                                                                                claimMappingOn={ claimMappingOn }
-                                                                                claimMappingError={ claimMappingError }
-                                                                                readOnly={ readOnly }
-                                                                                subject={
-                                                                                    selectedSubjectValue ===
+                                                                                            ? true
+                                                                                            : claim.mandatory
+                                                                                    }
+                                                                                    initialRequested={ claim.requested }
+                                                                                    selectMandatory={ updateMandatory }
+                                                                                    selectRequested={ updateRequested }
+                                                                                    claimMappingOn={ claimMappingOn }
+                                                                                    claimMappingError={ 
+                                                                                        claimMappingError 
+                                                                                    }
+                                                                                    readOnly={ readOnly }
+                                                                                    subject={
+                                                                                        selectedSubjectValue ===
                                                                                     resolveClaimValue(claim.claimURI)
-                                                                                }
-                                                                                deleteAttribute={ () => {
-                                                                                    onDeleteAttribute(claim.claimURI);
-                                                                                } }
-                                                                                data-testid={ claim.claimURI }
-                                                                            />
-                                                                        );
+                                                                                    }
+                                                                                    deleteAttribute={ () => {
+                                                                                        onDeleteAttribute(
+                                                                                            claim.claimURI
+                                                                                        );
+                                                                                    } }
+                                                                                    duplicatedMappingValues={
+                                                                                        duplicatedMappingValues 
+                                                                                    }
+                                                                                    data-testid={ claim.claimURI }
+                                                                                />
+                                                                            );
 
-                                                                    })
+                                                                        })
                                                                 }
                                                             </Table.Body>
                                                         </Table>
@@ -1001,52 +1030,55 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             </Table.Header>
                                                             <Table.Body>
                                                                 {
-                                                                    filterSelectedExternalClaims?.map((claim) => {
-                                                                        return (
-                                                                            <AttributeListItem
-                                                                                key={ claim.id }
-                                                                                claimURI={ claim.claimURI }
-                                                                                displayName={ claim.claimURI }
-                                                                                mappedURI={ claim.mappedLocalClaimURI }
-                                                                                localDialect={
-                                                                                    selectedDialect.localDialect
-                                                                                }
-                                                                                initialMandatory={
-                                                                                    (selectedSubjectValue
+                                                                    filterSelectedExternalClaims?.map(
+                                                                        (claim: ExtendedExternalClaimInterface) => {
+                                                                            return (
+                                                                                <AttributeListItem
+                                                                                    key={ claim.id }
+                                                                                    claimURI={ claim.claimURI }
+                                                                                    displayName={ claim.claimURI }
+                                                                                    mappedURI={ 
+                                                                                        claim.mappedLocalClaimURI 
+                                                                                    }
+                                                                                    localDialect={
+                                                                                        selectedDialect.localDialect
+                                                                                    }
+                                                                                    initialMandatory={
+                                                                                        (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
                                                                                     !onlyOIDCConfigured)
-                                                                                        ? true
-                                                                                        : claim.mandatory
-                                                                                }
-                                                                                selectMandatory={ updateMandatory }
-                                                                                initialRequested={ claim.requested }
-                                                                                data-testid={ claim.claimURI }
-                                                                                readOnly={
-                                                                                    (selectedSubjectValue
+                                                                                            ? true
+                                                                                            : claim.mandatory
+                                                                                    }
+                                                                                    selectMandatory={ updateMandatory }
+                                                                                    initialRequested={ claim.requested }
+                                                                                    data-testid={ claim.claimURI }
+                                                                                    readOnly={
+                                                                                        (selectedSubjectValue
                                                                                     === claim.mappedLocalClaimURI &&
                                                                                     !onlyOIDCConfigured
                                                                                     || !checkMapping(claim))
-                                                                                        ? true
-                                                                                        : readOnly
-                                                                                }
-                                                                                localClaimDisplayName={
-                                                                                    claim.localClaimDisplayName
-                                                                                }
-                                                                                deleteAttribute={
-                                                                                    () => onDeleteAttribute(
-                                                                                        claim.mappedLocalClaimURI)
-                                                                                }
-                                                                                subject={ selectedSubjectValue
+                                                                                            ? true
+                                                                                            : readOnly
+                                                                                    }
+                                                                                    localClaimDisplayName={
+                                                                                        claim.localClaimDisplayName
+                                                                                    }
+                                                                                    deleteAttribute={
+                                                                                        () => onDeleteAttribute(
+                                                                                            claim.mappedLocalClaimURI)
+                                                                                    }
+                                                                                    subject={ selectedSubjectValue
                                                                                 === claim.mappedLocalClaimURI &&
                                                                                 !onlyOIDCConfigured }
-                                                                                isOIDCMapping={
-                                                                                    checkMapping(claim)
-                                                                                        ? false
-                                                                                        : true
-                                                                                }
-                                                                            />
-                                                                        );
-                                                                    })
+                                                                                    isOIDCMapping={
+                                                                                        checkMapping(claim)
+                                                                                            ? false
+                                                                                            : true
+                                                                                    }
+                                                                                />
+                                                                            );
+                                                                        })
                                                                 }
                                                             </Table.Body>
                                                         </Table>
