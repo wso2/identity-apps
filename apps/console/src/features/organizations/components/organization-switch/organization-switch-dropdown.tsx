@@ -308,6 +308,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 </div>
                 <div className="item breadcrumb">
                     <span
+                        className="organization-name"
                         data-componentid={ `${ componentId }-breadcrumb-trigger-name` }
                     >
                         { name }

@@ -91,7 +91,7 @@ const OrganizationListItem = (
                 className="ellipsis"
             >
                 { organization?.name ?? (
-                    <Placeholder>
+                    <Placeholder className="organization-name">
                         <Placeholder.Line />
                     </Placeholder>
                 ) }
