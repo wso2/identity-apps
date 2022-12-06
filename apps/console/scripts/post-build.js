@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,17 @@
  */
 
 const path = require("path");
+const dotenv = require("dotenv");
 const fs = require("fs-extra");
+const DeploymentConfig = require("../src/public/deployment.config.json");
+
+dotenv.config();
+
+let appFolder = "";
+
+if (process.env.PRE_AUTH_CHECK === "true") {
+    appFolder = DeploymentConfig.appBaseName;
+}
 
 // eslint-disable-next-line no-console
 const log = console.log;
@@ -25,7 +35,7 @@ const log = console.log;
 const tmpDir = path.join(__dirname, "..", "src", "extensions", "i18n", "tmp");
 const metaFiles = fs.readdirSync(tmpDir);
 const metaFileName = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
-const i18nDir = path.join(__dirname, "..", "build", "console", "resources", "i18n");
+const i18nDir = path.join(__dirname, "..", "build", "console", appFolder, "resources", "i18n");
 const i18nFiles = fs.readdirSync(i18nDir);
 
 // Remove tmp directory in the extensions directory
