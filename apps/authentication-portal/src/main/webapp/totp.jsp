@@ -16,6 +16,7 @@
   ~ under the License.
   --%>
 
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
@@ -29,6 +30,9 @@
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="extensions/branding-preferences.jsp" />
 
 <%
     request.getSession().invalidate();
@@ -207,7 +211,11 @@
                             }
                         %>
                     </div>
-                    <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message" )%></div>
+                    <% if(supportEmail.equals("")) { %>
+                        <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></div>
+                    <% } else { %>
+                        <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>
+                    <% } %>
             </layout:component>
             <layout:component componentName="ProductFooter" >
                 <%-- product-footer --%>
