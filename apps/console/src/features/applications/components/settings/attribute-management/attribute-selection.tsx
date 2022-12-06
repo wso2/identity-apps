@@ -576,8 +576,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 (claim: ExtendedClaimInterface) => claim.claimURI === claimURI
             );
 
-            setSelectedClaims(selectedClaims.filter(claim => claim.claimURI !== claimURI));
-            const claim = claims.find(claim => claim.claimURI === claimURI);
+            setSelectedClaims(selectedClaims.filter((claim: ExtendedClaimInterface) => claim.claimURI !== claimURI));
+            const claim: ExtendedClaimInterface = claims.find(
+                (claim: ExtendedClaimInterface) => claim.claimURI === claimURI
+            );
 
             if (!claim) {
                 setClaims([ removing, ...claims ]);
@@ -586,12 +588,21 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 removeMapping(claimURI);
             }
         } else {
-            const removing = selectedExternalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+            const removing: ExtendedExternalClaimInterface = 
+            selectedExternalClaims.find(
+                (claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI === claimURI
+            );
 
-            setSelectedExternalClaims(selectedExternalClaims.filter(claim => claim.mappedLocalClaimURI !== claimURI));
+            setSelectedExternalClaims(selectedExternalClaims.filter(
+                (claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI !== claimURI)
+            );
             setFilterSelectedExternalClaims(filterSelectedExternalClaims
-                .filter(claim => claim.mappedLocalClaimURI !== claimURI));
-            const externalClaim = externalClaims.find(claim => claim.mappedLocalClaimURI === claimURI);
+                .filter((claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI !== claimURI)
+            );
+            const externalClaim: ExtendedExternalClaimInterface = 
+            externalClaims.find(
+                (claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI === claimURI
+            );
 
             if (!externalClaim) {
                 setExternalClaims([ removing, ...externalClaims ]);

@@ -57,7 +57,8 @@ import {
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface
+    SubjectConfigInterface,
+    UpdateClaimConfiguration
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -948,7 +949,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      */
     const submitUpdateRequest = (claimMappingFinal: ExtendedClaimMappingInterface[]) => {
         let isSubjectSelectedWithoutMapping: boolean = false;
-        const RequestedClaims: any[] = [];
+        const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
 
         if (selectedDialect.localDialect) {
@@ -1022,42 +1023,21 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         // Generate Final Submit value
-        const submitValue: {
-            claimConfiguration: {
-                claimMappings: ExtendedClaimMappingInterface[];
-                dialect: string;
-                requestedClaims: any[];
-                role: {
-                    claim: {
-                        uri: AppClaimInterface;
-                    };
-                    includeUserDomain: boolean;
-                    mappings: RoleMappingInterface[];
-                }; 
-                subject: {
-                    claim: {
-                        uri: AppClaimInterface
-                    },
-                    includeTenantDomain: boolean,
-                    includeUserDomain: boolean,
-                    useMappedLocalSubject: boolean
-                }
-            };
-        } = {
+        const submitValue: UpdateClaimConfiguration = {
             claimConfiguration: {
                 claimMappings: claimMappingFinal.length > 0 ? claimMappingFinal : [],
                 dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
                 requestedClaims: RequestedClaims,
                 role: {
                     claim: {
-                        uri: advanceSettingValues?.role.claim
+                        uri: advanceSettingValues?.role.claim.uri
                     },
                     includeUserDomain: advanceSettingValues?.role.includeUserDomain,
                     mappings: roleMapping.length > 0 ? roleMapping : []
                 },
                 subject: {
                     claim: {
-                        uri: advanceSettingValues?.subject.claim
+                        uri: advanceSettingValues?.subject.claim.uri
                     },
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
                     includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
