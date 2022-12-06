@@ -17,13 +17,16 @@
  */
 
 const path = require("path");
+const dotenv = require("dotenv");
 const fs = require("fs-extra");
 const DeploymentConfig = require("../src/public/deployment.config.json");
 
-let appFolder = DeploymentConfig.appBaseName;
+dotenv.config();
 
-if (appFolder === "console") {
-    appFolder = "";
+let appFolder = "";
+
+if (process.env.PRE_AUTH_CHECK === "true") {
+    appFolder = DeploymentConfig.appBaseName;
 }
 
 // eslint-disable-next-line no-console

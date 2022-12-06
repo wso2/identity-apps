@@ -117,6 +117,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // Flag to determine if the app is deployed on an external static server.
     // With this option, all the `jsp` files and java specific folders will be dropped.
     const isDeployedOnExternalStaticServer: boolean = process.env.SERVER_TYPE === ServerTypes.STATIC;
+    // Flag to determine if the PRE_AUTH_CHECK option is enabled from the .env.local file.
+    const isPreAuthCheckEnabled: boolean = process.env.PRE_AUTH_CHECK === "true";
 
     // Build Modes.
     const isProfilingMode: boolean = process.env.ENABLE_BUILD_PROFILER === "true";
@@ -148,7 +150,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     } as WebpackOptionsNormalized["infrastructureLogging"];
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
-    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: webpack.WebpackPluginInstance) => {
+    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
         return plugin.constructor.name === "IndexHtmlWebpackPlugin";
     });
 
@@ -277,7 +279,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
-    } else if (process.env.PRE_AUTH_CHECK === "true") {
+    } else if (isPreAuthCheckEnabled) {
         config.plugins.push(
             new HtmlWebpackPlugin({
                 basename: DeploymentConfig.appBaseName,
@@ -382,8 +384,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     );
 
     // Update the existing `DefinePlugin` plugin added by NX.
-    const existingDefinePlugin: webpack.WebpackPluginInstance = 
-        config.plugins.find((plugin: webpack.WebpackPluginInstance) => {
+    const existingDefinePlugin: WebpackPluginInstance = 
+        config.plugins.find((plugin: WebpackPluginInstance) => {
             return plugin.constructor.name === "DefinePlugin";
         });
 
@@ -403,8 +405,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     }
 
     // Update the existing `CopyPlugin` plugin added by NX.
-    const existingCopyPlugin: webpack.WebpackPluginInstance = 
-        config.plugins.find((plugin: webpack.WebpackPluginInstance) => {
+    const existingCopyPlugin: WebpackPluginInstance = 
+        config.plugins.find((plugin: WebpackPluginInstance) => {
             return plugin.constructor.name === "CopyPlugin";
         });
 
@@ -554,7 +556,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
-        path: ((process.env.PRE_AUTH_CHECK === "true") && process.env.APP_BASE_PATH) ? 
+        path: (isPreAuthCheckEnabled && process.env.APP_BASE_PATH) ? 
             `${config.output.path}/${process.env.APP_BASE_PATH}` 
             : config.output.path,
         publicPath: baseHref
