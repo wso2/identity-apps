@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
@@ -23,7 +24,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 // eslint-disable-next-line no-restricted-imports
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
 
- interface ScopesPropsInterface {
+interface ScopesPropsInterface extends IdentifiableComponentInterface {
     /**
       * Initial value of the scopes field.
       * @example `openid profile`
@@ -67,6 +68,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
     const {
         value,
         defaultValue,
+        [ "data-componentid" ]: componentId,
         error,
         onBlur,
         onChange
@@ -209,6 +211,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                         setScopeValue(data.value.trim());
                     } }
                     onKeyDown={ keyPressed }
+                    data-componentid={ componentId }
                 />
 
                 <Popup
@@ -219,6 +222,7 @@ export const Scopes: FunctionComponent<ScopesPropsInterface> = (
                                 icon="add"
                                 type="button"
                                 disabled={ false }
+                                data-componentid={ componentId + "-add-button" }
                             />
                         )
                     }
