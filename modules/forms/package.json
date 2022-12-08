@@ -32,6 +32,7 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
+        "@wso2is/core": "^1.6.138",
         "classnames": "^2.2.6",
         "lodash-es": "^4.17.21",
         "semantic-ui-react": "^2.1.3"
