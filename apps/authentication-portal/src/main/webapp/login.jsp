@@ -416,9 +416,9 @@
 
                                             <script>
                                                 if (navigator) {
-                                                    let userAgent = navigator.userAgent;
-                                                    let browserName;
-                                                    let restrictedBrowsersForGOT = "<%=restrictedBrowsersForGOT%>";
+                                                    var userAgent = navigator.userAgent;
+                                                    var browserName = void 0;
+                                                    var restrictedBrowsersForGOT = "<%=restrictedBrowsersForGOT%>";
 
                                                     if (userAgent.match(/chrome|chromium|crios/i)) {
                                                         browserName = "chrome";
@@ -433,6 +433,7 @@
                                                     } else {
                                                         browserName = "No browser detection";
                                                     }
+
                                                     if (restrictedBrowsersForGOT !== null
                                                         && restrictedBrowsersForGOT !== ''
                                                         && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
