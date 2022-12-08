@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -30,15 +31,26 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    ReactNode,
+    Suspense,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Card, Dimmer, Divider, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
@@ -125,15 +137,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const tenantName = store.getState().config.deployment.tenant;
+    const tenantName: string = store.getState().config.deployment.tenant;
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
+    const reservedAppPattern: string = useSelector((state: AppState) => {
+        return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
+    });
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -149,9 +164,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
-    const nameRef = useRef<HTMLDivElement>();
-    const issuerRef = useRef<HTMLDivElement>();
-    const metaUrlRef = useRef<HTMLDivElement>();
+    const nameRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const issuerRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const metaUrlRef: MutableRefObject<HTMLDivElement>  = useRef<HTMLDivElement>();
 
     // Maintain SAML configuration mode
     const [ samlConfigureMode, setSAMLConfigureMode ] = useState<string>(undefined);
@@ -168,11 +183,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return;
         }
 
-        const allowedCORSOrigins = [];
+        const allowedCORSOrigins: string[] = [];
 
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
-                response.map((origin) => {
+                response.map((origin: CORSOriginsListInterface) => {
                     allowedCORSOrigins.push(origin.url);
                 });
             });
@@ -239,7 +254,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         // Get a clone to avoid mutation.
-        const templateSettingsClone = cloneDeep(templateSettings);
+        const templateSettingsClone: ApplicationTemplateInterface = cloneDeep(templateSettings);
 
         /**
          * Remove the default(provided by the template) callbackURLs & allowed origins from the
@@ -250,9 +265,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
          * If you check the file [single-page-application.json] you can see that there's default
          * value is already populated.
          */
-        const callbackURLsPathKey = "inboundProtocolConfiguration.oidc.callbackURLs";
-        const allowedOriginsPathKey = "inboundProtocolConfiguration.oidc.allowedOrigins";
-        const callbackURLs = get(protocolFormValues, callbackURLsPathKey, []);
+        const callbackURLsPathKey: string = "inboundProtocolConfiguration.oidc.callbackURLs";
+        const allowedOriginsPathKey: string = "inboundProtocolConfiguration.oidc.allowedOrigins";
+        const callbackURLs: [] = get(protocolFormValues, callbackURLsPathKey, []);
 
         if (!isEmpty(callbackURLs?.filter(Boolean))) {
             set(templateSettingsClone, `application.${ callbackURLsPathKey }`, []);
@@ -312,7 +327,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         setIsSubmitting(true);
 
         createApplication(application)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
                     if (selectedTemplate.id === CustomApplicationTemplate.id) {
                         eventPublisher.publish("application-register-new-application", {
@@ -342,8 +357,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     let searchParams: string = "?";
                     let defaultTabIndex: number = 0;
@@ -369,7 +384,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 // Fallback to applications page, if the location header is not present.
                 history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
@@ -476,7 +491,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             .then((response: ApplicationTemplateInterface) => {
                 setTemplateSettings(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -524,7 +539,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             case "issuer":
             {
                 issuerRef.current.scrollIntoView(options);
-                const issuerElement = issuerRef.current.children[0].children[1].children[0] as HTMLInputElement;
+                const issuerElement: HTMLInputElement = issuerRef.current.children[0].children[1].children[0] as
+                    HTMLInputElement;
 
                 issuerElement.focus();
                 issuerElement.blur();
@@ -534,7 +550,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             case "metaUrl":
             {
                 metaUrlRef.current.scrollIntoView(options);
-                const metaUrlElement = metaUrlRef.current.children[0].children[1].children[0] as HTMLInputElement;
+                const metaUrlElement: HTMLInputElement = metaUrlRef.current.children[0].children[1].children[0] as
+                    HTMLInputElement;
 
                 metaUrlElement.focus();
                 metaUrlElement.blur();
@@ -600,7 +617,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
                     templateValues={ templateSettings?.application }
-                    onSubmit={ (values): void => setProtocolFormValues(values) }
+                    onSubmit={ (values: Record<string, any>): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
                     addOriginByDefault={ selectedTemplate.id === SinglePageApplicationTemplate.id }
                     isAllowEnabled={ !(selectedTemplate.id === SinglePageApplicationTemplate.id) }
@@ -634,7 +651,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
                     templateValues={ templateSettings?.application }
-                    onSubmit={ (values): void => setProtocolFormValues(values) }
+                    onSubmit={ (values: Record<string, any>): void => setProtocolFormValues(values) }
                     setSAMLConfigureMode={ setSAMLConfigureMode }
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
@@ -653,6 +670,82 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const scrollToNotification = () => {
         document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
+    };
+
+    /**
+     * Checks whether the application name is valid.
+     * @param value - Application name as a form value.
+     * @param validation - The validation object.
+     */
+    const validateApplicationName = async (value: FormValue, validation: Validation) => {
+        const appName: string = value.toString().trim();
+
+        if (!isNameValid(appName)) {
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms." +
+                    "spaProtocolSettingsWizard.fields.name.validations.invalid", {
+                    appName: value.toString(),
+                    characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
+                })
+            );
+
+            return;
+        }
+        if (isAppNameReserved(appName)){
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.reserved", {
+                    appName: appName,
+                    characterLimit: ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH
+                })
+            );
+
+            return;
+        }
+        let response: ApplicationListInterface = null;
+
+        try {
+            response = await getApplicationList(null, null, "name eq " + value.toString());
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.fetchApplications.error.message")
+                }));
+
+                return;
+            }
+
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications." +
+                    "fetchApplications.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications." +
+                    "fetchApplications.genericError.message")
+            }));
+        }
+
+        if (response?.applications?.length > 0) {
+            validation.isValid = false;
+            validation.errorMessages.push(
+                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.duplicate")
+            );
+        }
+    };
+
+    /**
+     * Checks whether the application name is reserved.
+     * @param name - Name of the application
+     */
+    const isAppNameReserved = (name: string) => {
+        if(!reservedAppPattern){
+            return false;
+        }
+        const reservedAppRegex: RegExp = new RegExp(reservedAppPattern);
+
+        return name && reservedAppRegex.test(name);
     };
 
     const isNameValid = (name: string) => {
@@ -830,8 +923,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     setSubmitProtocolForm();
                 } }
                 onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
-                    const iterator = requiredFields.entries();
-                    let result = iterator.next();
+                    const iterator: IterableIterator<[string, boolean]> = requiredFields.entries();
+                    let result: IteratorResult<[string, boolean]> = iterator.next();
 
                     while (!result.done) {
                         if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
@@ -872,53 +965,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
-                                validation={ async (value: FormValue, validation: Validation) => {
-                                    if(!isNameValid(value.toString().trim())) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms." +
-                                                "spaProtocolSettingsWizard.fields.name.validations.invalid",
-                                            { appName: value.toString(),
-                                                characterLimit: ApplicationManagementConstants
-                                                    .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                                            )
-                                        );
-
-                                        return;
-                                    }
-                                    let response: ApplicationListInterface = null;
-
-                                    try {
-                                        response = await getApplicationList(null, null, "name eq " + value.toString());
-                                    } catch (error) {
-                                        if (error.response && error.response.data && error.response.data.description) {
-                                            dispatch(addAlert({
-                                                description: error.response.data.description,
-                                                level: AlertLevels.ERROR,
-                                                message: t("console:develop.features.applications." +
-                                                    "notifications.fetchApplications.error.message")
-                                            }));
-
-                                            return;
-                                        }
-
-                                        dispatch(addAlert({
-                                            description: t("console:develop.features.applications.notifications." +
-                                                "fetchApplications.genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: t("console:develop.features.applications.notifications." +
-                                                "fetchApplications.genericError.message")
-                                        }));
-                                    }
-
-                                    if (response?.applications?.length > 0) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms.generalDetails.fields.name" +
-                                                ".validations.duplicate" )
-                                        );
-                                    }
-                                } }
+                                validation={ validateApplicationName }
                                 displayErrorOn="blur"
                                 maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                             />

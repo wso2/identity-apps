@@ -1461,7 +1461,9 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
-                                    empty: "Application name is required."
+                                    empty: "Application name is required.",
+                                    reserved: "{{appName}} is a reserved application name. Please enter a different " +
+                                        "name."
                                 }
                             }
                         },
