@@ -426,8 +426,10 @@
                                                     } else {
                                                         browserName = "No browser detection";
                                                     }
-                                                    if (restrictedBrowsersForGOT !== null && restrictedBrowsersForGOT !== '' 
-                                                    && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
+                                                    if (restrictedBrowsersForGOT !== null
+                                                        && restrictedBrowsersForGOT !== ''
+                                                        &&
+                                                        restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
                                                         document.getElementById("googleSignIn").style.display = "block";
                                                     } else {
                                                         window.onload = function callGoogleOneTap() {
