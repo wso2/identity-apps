@@ -23,7 +23,6 @@ import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 // eslint-disable-next-line no-restricted-imports
 import { Button, Form, Icon, Label, Message, Popup } from "semantic-ui-react";
- 
  interface ScopesPropsInterface extends IdentifiableComponentInterface {
     /**
       * Initial value of the scopes field.
