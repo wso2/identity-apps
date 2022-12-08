@@ -408,17 +408,41 @@
                                             </form>
 
                                             <script>
-                                                window.onload = function callGoogleOneTap() {
-                                                    google.accounts.id.initialize({
-                                                        client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
-                                                        prompt_parent_id: "google_parent",
-                                                        cancel_on_tap_outside: false,
-                                                        nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
-                                                        callback: handleCredentialResponse
-                                                    });
-                                                    google.accounts.id.prompt((notification) => {
-                                                        onMoment(notification);
-                                                    });
+                                                if (navigator) {
+                                                    let userAgent = navigator.userAgent;
+                                                    let browserName;
+                                                    let restrictedBrowsersForGOT = "<%=restrictedBrowsersForGOT%>";
+
+                                                    if (userAgent.match(/chrome|chromium|crios/i)) {
+                                                        browserName = "chrome";
+                                                    } else if (userAgent.match(/firefox|fxios/i)) {
+                                                        browserName = "firefox";
+                                                    } else if (userAgent.match(/safari/i)) {
+                                                        browserName = "safari";
+                                                    } else if (userAgent.match(/opr\//i)) {
+                                                        browserName = "opera";
+                                                    } else if (userAgent.match(/edg/i)) {
+                                                        browserName = "edge";
+                                                    } else {
+                                                        browserName = "No browser detection";
+                                                    }
+                                                    if (restrictedBrowsersForGOT !== null && restrictedBrowsersForGOT !== '' 
+                                                    && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
+                                                        document.getElementById("googleSignIn").style.display = "block";
+                                                    } else {
+                                                        window.onload = function callGoogleOneTap() {
+                                                            google.accounts.id.initialize({
+                                                                client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
+                                                                prompt_parent_id: "google_parent",
+                                                                cancel_on_tap_outside: false,
+                                                                nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
+                                                                callback: handleCredentialResponse
+                                                            });
+                                                            google.accounts.id.prompt((notification) => {
+                                                                onMoment(notification);
+                                                            });
+                                                        }
+                                                    }
                                                 }
                                             </script>
                                         <% } else { %>
