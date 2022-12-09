@@ -28,7 +28,7 @@ import React, {
     ReactElement,
     ReactNode
 } from "react";
-import { Card, CardGroupProps, Loader } from "semantic-ui-react";
+import { Card, CardGroupProps, Loader, Placeholder } from "semantic-ui-react";
 import { ResourceGridCard } from "./resource-grid-card";
 
 /**
@@ -96,6 +96,40 @@ export const ResourceGrid: FunctionComponent<
             "resource-grid-wrapper",
             wrapperClassName
         );
+
+        const numberOfPlaceholderCards: number = 4;
+
+        /**
+         * Renders the loading state placeholder cards.
+         *
+         * @returns Loading Placeholder cards.
+         */
+        const getPlaceholderCards = (): ReactElement[] => {
+            const placeholders: ReactElement[] = [];
+
+            for (let i = 0; i < numberOfPlaceholderCards; i++) {
+                placeholders.push(
+                    //TODO: Add placeholder style classes.
+                    <Card style={ { boxShadow: "none", width: "220px" } }>
+                        <Placeholder>
+                            <Placeholder.Image style={ { height: "230px" } } />
+                        </Placeholder>
+                    </Card>
+                );
+            }
+
+            return placeholders;
+        };
+
+        if (isLoading) {
+            return (
+                <Card.Group style={ { marginBottom: "3rem" } }>
+                    {
+                        getPlaceholderCards()
+                    }
+                </Card.Group>
+            );
+        }
 
         return (
             <div

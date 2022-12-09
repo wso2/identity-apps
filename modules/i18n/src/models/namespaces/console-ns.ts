@@ -652,7 +652,6 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
-                                            magicLinkDisabled: string;
                                             firstFactorDisabled: string;
                                         };
                                     };
@@ -710,8 +709,7 @@ export interface ConsoleNS {
                                             },
                                             magicLink: {
                                                 description: string;
-                                                heading: string;
-                                                warning: string;
+                                                heading: string;                                           
                                             },
                                             microsoft: {
                                                 description: string;

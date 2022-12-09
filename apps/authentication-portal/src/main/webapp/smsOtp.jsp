@@ -60,7 +60,7 @@
     layoutData.put("containerSize", "medium");
 %>
 
-<html>
+<html lang="en-US">
     <head>
         <%-- header --%>
         <%
@@ -140,7 +140,12 @@
                                         String reSendCode = request.getParameter("resendCode");
                                         if ("true".equals(reSendCode)) {
                                 %>
-                                    <div id="resendCodeLinkDiv" class="ui button secondary">
+                                    <div 
+                                        id="resendCodeLinkDiv" 
+                                        class="ui button secondary"
+                                        tabindex="0" 
+                                        onclick="resendOtp()"
+                                        onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()">
                                         <a id="resend"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "resend.code")%></a>
                                     </div>
                                 <% } } %>
@@ -193,12 +198,11 @@
                 }
             });
         });
-        $(document).ready(function() {
-            $('#resendCodeLinkDiv').click(function() {
-                document.getElementById("resendCode").value = "true";
-                $('#pin_form').submit();
-            });
-        });
+
+        function resendOtp() {
+            document.getElementById("resendCode").value = "true";
+            $("#pin_form").submit();
+        }
         </script>
     </body>
 </html>

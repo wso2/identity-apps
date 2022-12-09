@@ -238,7 +238,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             return;
         }
 
-        const urlValid = skipValidation
+        const urlValid: boolean = skipValidation
             ? true
             : validation(url);
 
@@ -255,7 +255,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             if (addOriginByDefault) {
-                const originOfURL = URLUtils.urlComponents(url).origin;
+                const originOfURL: string = URLUtils.urlComponents(url).origin;
 
                 handleAddAllowedOrigin(originOfURL);
                 allowedOrigins.push(originOfURL);
@@ -264,19 +264,6 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             return url;
         } else {
-            const availableURls: string[] = !urlState ? [] : urlState?.split(",");
-            const urls = new Set([
-                ...(onlyOrigin ? (allowedOrigins ?? []) : []),
-                ...(availableURls ?? [])
-            ]);
-            const checkDuplicateUrl = (url: string): boolean => {
-                if (url.charAt(url.length-1) === "/") {
-                    return urls.has(url) || urls.has(url.slice(0, -1));
-                }
-                else {
-                    return urls.has(url) || urls.has(url + "/");
-                }
-            };
             const duplicate: boolean = checkDuplicateUrl(url);
 
             urlValid && setDuplicateURL(duplicate);
@@ -303,7 +290,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const externalSubmit = (callback: (url?: string) => void): void => {
         if (getChangeUrl()) {
-            const url = addUrl();
+            const url: string = addUrl();
 
             if (url) {
                 callback(url);
@@ -317,7 +304,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * Initial prediction for the URL.
      * @param changeValue - input by the user.
      */
-    const getPredictions = (changeValue) => {
+    const getPredictions = (changeValue: string): string[] => {
 
         return [
             "https://",
@@ -339,20 +326,46 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     };
 
     /**
+     * Checks whether the given URL is duplicated with the current values
+     * @param url - URL to be checked
+     *
+     * @returns A boolean value denoting whether the URL is duplicated or not
+     */
+    const checkDuplicateUrl = useCallback((url: string): boolean => {
+        const availableURls: string[] = !urlState ? [] : urlState?.split(",");
+        const urls: Set<string> = new Set([
+            ...(onlyOrigin ? (allowedOrigins ?? []) : []),
+            ...(availableURls ?? [])
+        ]);
+
+        if (url.charAt(url.length-1) === "/") {
+            return urls.has(url) || urls.has(url.slice(0, -1));
+        }
+        else {
+            return urls.has(url) || urls.has(url + "/");
+        }
+    }, [ urlState, onlyOrigin, allowedOrigins ]);
+
+    /**
      * Handle change event of the input.
      *
      * @param event - change event.
      */
-    const handleChange = (event) => {
-        const changeValue = event.target.value;
-        let predictions = [];
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const changeValue: string = event.target.value;
+        let predictions: string[] = [];
 
         if (changeValue.length > 0) {
             predictions = getPredictions(changeValue);
         }
+
         if (!validURL) {
             setValidURL(true);
         }
+
+        const isDuplicate: boolean = checkDuplicateUrl(changeValue);
+
+        setDuplicateURL(isDuplicate);
         setKeepFocus(true);
         setPredictValue(predictions);
         setChangeUrl(changeValue.toString().trim());
@@ -388,11 +401,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      * @param removeURL - URL to be removed.
      */
     const removeValue = (removeURL) => {
-        let urlsAfterRemoved = urlState;
+        let urlsAfterRemoved: string = urlState;
 
         if (urlState.split(",").length > 1) {
             const urls: string[] = urlsAfterRemoved.split(",");
-            const removeIndex = urls.findIndex((url) => url === removeURL);
+            const removeIndex: number = urls.findIndex((url) => url === removeURL);
 
             urls.splice(removeIndex, 1);
             urlsAfterRemoved = urls.join(",");
@@ -474,8 +487,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const resolveCORSStatusLabel = (url: string) => {
         const { origin, href } = URLUtils.urlComponents(url);
-        const positive = isOriginIsKnownAndAllowed(url);
-        const isValid = (URLUtils.isURLValid(url, true) && (URLUtils.isHttpUrl(url) ||
+        const positive: boolean = isOriginIsKnownAndAllowed(url);
+        const isValid: boolean = (URLUtils.isURLValid(url, true) && (URLUtils.isHttpUrl(url) ||
             URLUtils.isHttpsUrl(url)));
 
         /**

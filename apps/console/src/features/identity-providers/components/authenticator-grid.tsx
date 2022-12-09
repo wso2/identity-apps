@@ -29,6 +29,7 @@ import {
     PrimaryButton,
     ResourceGrid
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -185,8 +186,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         getIDPConnectedApps(idpId)
             .then(async (response: ConnectedAppsInterface) => {
                 if (response.count === 0) {
-                    setDeletingIDP(authenticators.find((idp: IdentityProviderInterface | AuthenticatorInterface) => 
-                        idp.id === idpId));
+                    setDeletingIDP(authenticators.find(
+                        (idp: IdentityProviderInterface | AuthenticatorInterface) => idp.id === idpId)
+                    );
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
@@ -196,15 +198,16 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     });
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || t("console:develop.features.idp.connectedApps.genericError.description"),
-                                level: AlertLevels.ERROR,
-                                message: error?.message 
-                                    || t("console:develop.features.idp.connectedApps.genericError.message")
-                            }));
-                        }))
+                        appRequests.map((response: Promise<any>) => response
+                        //TODO: Refactor to access description & message from error?.response?.data.
+                            .catch((error: AxiosError & { description: string; message: string }) => {
+                                dispatch(addAlert({
+                                    description: error?.description
+                                        || "Error occurred while trying to retrieve connected applications.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Error Occurred."
+                                }));
+                            }))
                     );
 
                     const appNames: string[] = [];
@@ -216,7 +219,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error: IdentityAppsError) => {
+            .catch((error: AxiosError & { description: string; message: string }) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("console:develop.features.idp.connectedApps.genericError.description"),
@@ -250,7 +253,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         "deleteConnection.success.message")
                 }));
             })
-            .catch((error: IdentityAppsApiException) => {
+            .catch((error: AxiosError) => {
                 handleIDPDeleteError(error);
             })
             .finally(() => {
