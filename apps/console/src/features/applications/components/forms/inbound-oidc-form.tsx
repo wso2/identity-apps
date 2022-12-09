@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { CheckboxChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -28,6 +28,7 @@ import {
     Heading,
     Hint,
     Message,
+    StickyBar,
     Text,
     URLInput
 } from "@wso2is/react-components";
@@ -36,15 +37,15 @@ import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { 
-    Fragment, 
-    FunctionComponent, 
-    MouseEvent, 
-    MutableRefObject, 
-    ReactElement, 
-    useEffect, 
-    useRef, 
-    useState 
+import React, {
+    Fragment,
+    FunctionComponent,
+    MouseEvent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -249,9 +250,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * We use this hook to maintain the toggle state of the PKCE checkbox in the
      * OIDC form.
      *
-     * @remarks 
+     * @remarks
      * Purpose is to enable "Support 'Plain' PKCE Algorithm" checkbox
-     * field if and only if "Enabled" is checked. Otherwise the 'Plain' 
+     * field if and only if "Enabled" is checked. Otherwise the 'Plain'
      * will be disabled and stay in the unchecked state.
      */
     const [ enablePKCE, setEnablePKCE ] = useState<boolean>(false);
@@ -535,15 +536,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param isLabel - Flag to determine if label.
      * @returns the list of options for radio & dropdown.
      */
-    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): DropdownProps[] | number => {
-        const allowedList: DropdownProps[] = [];
+    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): CheckboxChild[] => {
+        const allowedList: CheckboxChild[] = [];
 
         if (metadataProp) {
             if (isLabel) {
                 metadataProp.options.map((ele: string) => {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele)
+                            content: getMetadataHints(ele),
+                            header: ""
                         },
                         label: moderateMetadataLabels(ele),
                         value: ele
@@ -558,7 +560,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (isLabel) {
             // if the list related to a label then sort the values in
             // alphabetical order using a ascending comparator.
-            return allowedList.sort((a: any, b: any) => {
+            return allowedList.sort((a: CheckboxChild, b: CheckboxChild) => {
                 if (a.label < b.label) return -1;
                 if (a.label > b.label) return 1;
 
@@ -576,15 +578,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param isBinding - Indicate whether binding is true or false.
      * @returns a list of options for radio.
      */
-    const getAllowedListForAccessToken = (metadataProp: MetadataPropertyInterface, isBinding?: boolean): any[] => {
-        const allowedList: any[] = [];
+    const getAllowedListForAccessToken = (
+        metadataProp: MetadataPropertyInterface, isBinding?: boolean): CheckboxChild[] => {
+        const allowedList: CheckboxChild[] = [];
 
         if (metadataProp) {
             metadataProp.options.map((ele: string) => {
                 if ((ele === "Default") && !isBinding) {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele)
+                            content: getMetadataHints(ele),
+                            header: ""
                         },
                         label: "Opaque",
                         value: ele
@@ -596,7 +600,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 } else {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele)
+                            content: getMetadataHints(ele),
+                            header: ""
                         },
                         label: moderateMetadataLabels(ele),
                         value: ele
@@ -605,7 +610,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             });
         }
 
-        return allowedList.sort((a: any, b: any) => {
+        return allowedList.sort((a: CheckboxChild, b: CheckboxChild) => {
             if (a.label < b.label) return -1;
             if (a.label > b.label) return 1;
 
@@ -663,7 +668,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.children." +
                         "client_credential.hint");
             case ApplicationManagementConstants.REFRESH_TOKEN_GRANT:
-                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.validation." + 
+                return t("console:develop.features.applications.forms.inboundOIDC.fields.grant.validation." +
                     "refreshToken");
             default:
                 return null;
@@ -677,9 +682,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @returns a list of options for radio.
      */
-    const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
-
-        const allowedList: any[] = [];
+    const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): CheckboxChild[] => {
+        type CheckboxChildWithIndex = CheckboxChild & { index?: number; };
+        const allowedList: CheckboxChildWithIndex[] = [];
 
         if (metadataProp) {
             metadataProp.options.map(({ name, displayName }: GrantTypeInterface) => {
@@ -709,10 +714,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 /**
                  * Create the checkbox children object. hint is marked
                  * as optional because not all children have hint/description
-                 * popups. 
+                 * popups.
                  * @see modules \> forms \> CheckboxChild
                  */
-                const grant: GrantIconInterface = {
+                const grant: CheckboxChildWithIndex = {
                     label: modifyGrantTypeLabels(name, displayName),
                     value: name
                 };
@@ -726,7 +731,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                 if (description) {
                     grant.hint = {
-                        content: description
+                        content: description,
+                        header: ""
                     };
                 }
                 if (hideRefreshTokenGrantType && grant.value === "refresh_token") {
@@ -763,7 +769,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                     grant[ "index" ] = index ?? Infinity;
                 }
-                allowedList.sort(({ index: a }: any, { index: b }: any) => a - b);
+                allowedList.sort(({ index: a }: CheckboxChildWithIndex, { index: b }: CheckboxChildWithIndex) => a - b);
             }
         }
 
@@ -772,7 +778,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             && applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id]) {
             const disabledGrantTypes: string[] = applicationConfig.inboundOIDCForm.disabledGrantTypes[template.id];
 
-            return allowedList.filter((grant: any) => !disabledGrantTypes.includes(grant.value));
+            return allowedList.filter((grant: GrantIconInterface) => !disabledGrantTypes.includes(grant.value));
         }
 
         return allowedList;
@@ -1183,7 +1189,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Check if a given expiry time is valid.
-     * 
+     *
      * @param value - expiry time as a string.
      */
     const isValidExpiryTime = (value: string) => {
@@ -1194,11 +1200,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the list of main OIDC config fields.
-     * 
+     *
      * @returns OIDC config fields.
      */
     const renderOIDCConfigFields = (): ReactElement => (
         <>
+
+            {
+                !readOnly && (
+                    <Grid.Row columns={ 1 } className="sticky-bar">
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <StickyBar top={ 124 }>
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    loading={ isLoading }
+                                    disabled={ isLoading }
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
+                                    { t("common:update") }
+                                </Button>
+                            </StickyBar>
+
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
@@ -1331,7 +1360,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     validation={ (value: string) => {
                                         if (
-                                            !(isMobileApplication) 
+                                            !(isMobileApplication)
                                             && CustomApplicationTemplate?.id !== template?.id
                                             && !(URLUtils.isURLValid(value, true) &&
                                                 (URLUtils.isHttpUrl(value)
@@ -2374,31 +2403,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
-            {
-                !readOnly && (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Button
-                                primary
-                                type="submit"
-                                size="small"
-                                className="form-button"
-                                loading={ isLoading }
-                                disabled={ isLoading }
-                                data-testid={ `${ testId }-submit-button` }
-                            >
-                                { t("common:update") }
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                )
-            }
         </>
     );
 
     /**
      * Renders the application secret regenerate confirmation modal.
-     * 
+     *
      * @returns the modal for confirming regenerating app secret.
      */
     const renderRegenerateConfirmationModal = (): ReactElement => (
@@ -2458,7 +2468,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the application revoke confirmation modal.
-     * 
+     *
      * @returns Revoke confirmation modal.
      */
     const renderRevokeConfirmationModal = (): ReactElement => (
@@ -2521,7 +2531,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Renders the application reactivate confirmation modal.
-     * 
+     *
      * @returns Reactivate confirmation modal.
      */
     const renderReactivateConfirmationModal = (): ReactElement => {
@@ -2717,7 +2727,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     /**
      * Handle form submit.
-     * 
+     *
      * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
@@ -2773,7 +2783,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     onSubmit={ handleFormSubmit }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
                         const iterator: IterableIterator<[string, boolean]> = requiredFields.entries();
-                        let result: any = iterator.next();
+                        let result: IteratorResult<[string, boolean], any> = iterator.next();
 
                         while (!result.done) {
                             if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
