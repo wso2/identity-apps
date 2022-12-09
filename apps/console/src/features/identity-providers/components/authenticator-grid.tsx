@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

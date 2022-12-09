@@ -115,18 +115,19 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         , className
     );
 
-    const [ activeIndex, setActiveIndex ] = useState(defaultActiveIndex);
-
-    useEffect(() => {
-        setActiveIndex(defaultActiveIndex);
-    }, [ defaultActiveIndex ]);
+    const [ activeIndex, setActiveIndex ] = useState<number | string>(defaultActiveIndex);
+    const [ isTabChanged, setIsTabChanged ] = useState<boolean>(false);
 
     /**
      * Called to set the pane index as the active tab index if it is needed to redirect to a specific tab
      */
     useEffect(() => {
-
+        if (isTabChanged) {
+            return;
+        }
         if (!isAutomaticTabRedirectionEnabled) {
+            setActiveIndex(defaultActiveIndex);
+
             return;
         }
 
@@ -140,7 +141,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         } else {
             setActiveIndex(defaultActiveIndex);
         }       
-    });
+    }, [ defaultActiveIndex ]);
 
     /**
      * Called to set the panes list length initially.
@@ -156,6 +157,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
      * Handles the tab change.
      */
     const handleTabChange = (e: SyntheticEvent, activeIndex: string | number) => {
+        setIsTabChanged(true);
         setActiveIndex(activeIndex);
     };
 

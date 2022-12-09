@@ -522,7 +522,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
-                data-componentid={ testId }
+                data-componentid={ `${ testId }-data-table` }
             />
         </EmphasizedSegment>
     );
