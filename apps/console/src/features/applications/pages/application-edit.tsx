@@ -86,7 +86,7 @@ interface ApplicationEditPageInterface extends TestableComponentInterface, Route
  *
  * @param props - Props injected to the component.
  *
- * @returns
+ * @returns Application edit page.
  */
 const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
@@ -529,7 +529,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Resolves the application status label.
-     * @returns
+     *
+     * @returns Application status label.
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
