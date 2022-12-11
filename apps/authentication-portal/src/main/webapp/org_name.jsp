@@ -95,7 +95,7 @@
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2>Sign In with <%= StringUtils.isNotBlank(idp) ? idp : "Organization Login" %></h2>
+                    <h2><% AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with"); %> <%= StringUtils.isNotBlank(idp) ? idp : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
@@ -111,7 +111,7 @@
 
 
                     <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
-                        <p>Name of the Organization:</p>
+                        <p><% AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name"); %>:</p>
                         <input type="text" id='ORG_NAME' name="org" size='30'/>
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                         <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>

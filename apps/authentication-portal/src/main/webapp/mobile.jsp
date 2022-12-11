@@ -27,10 +27,10 @@
 <%@ page import="static java.util.Base64.getDecoder" %>
 <%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
-
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -59,7 +59,7 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = "Authentication Failed! Please Retry";
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
                 }
 
                 if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
@@ -167,13 +167,15 @@
         <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
+        <% String enterMobileNumberMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "enter.mobile.number"); %>
+
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#update').click(function() {
                     var mobileNumber = document.getElementById("MOBILE_NUMBER").value;
                     if (mobileNumber == "") {
                         document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div>'
+                            = '<div id="error-msg" class="ui negative message"><%=enterMobileNumberMessage%></div>'
                               +'<div class="ui divider hidden"></div>';
                     } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=mobileRegex%>"))) {
                        document.getElementById('alertDiv').innerHTML
