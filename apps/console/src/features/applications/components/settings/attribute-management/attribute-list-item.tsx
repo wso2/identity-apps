@@ -155,7 +155,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         const mappingValue: string = e.target?.value.replace(/[^\w+$:/.]/g, "");
 
         setMappedAttribute(mappingValue);
-        updateMapping(claimURI, mappingValue,true);
+        updateMapping(claimURI, mappingValue, true);
         setErrorInClaimMapping(isEmpty(mappingValue));
         if (claimMappingError && !isEmpty(mappingValue)) {
             setErrorInClaimMapping(false);
