@@ -215,7 +215,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      */
     useEffect(() => {
         const path: string[] = history.location.pathname?.split("/");
-        const id: string = path[ path.length - 1 ];
+        const id: string = path[ path?.length - 1 ];
 
         if (showHelpPanel()) {
             dispatch(toggleHelpPanelVisibility(true));
