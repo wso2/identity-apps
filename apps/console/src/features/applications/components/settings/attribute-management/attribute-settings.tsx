@@ -652,6 +652,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 mapping.applicationClaim = mappedValue;
             }
 
+            /**
+             * Detect duplicate values only when updating the mapping attributes. 
+             * This check will not be executed on initial loading of mapping attributes.
+             */
             if (isUpdatingOnInputChange) {
                 if (alreadySeen[mapping.applicationClaim]) {
                     duplicatedMappings.push(mapping.applicationClaim);
@@ -661,6 +665,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
         });
 
+        /** 
+         * Update state with duplicate values for mapping attributes.
+         * This state is passed to children components for identifying duplicate values.
+         */
         if (isUpdatingOnInputChange) {
             setDuplicatedMappingValues(duplicatedMappings);
         }
