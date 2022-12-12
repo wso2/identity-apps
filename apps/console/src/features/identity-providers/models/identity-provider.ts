@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ApplicationBasicInterface } from "../../applications/models";
 import { GovernanceConnectorInterface } from "../../server-configurations/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
 
@@ -329,7 +330,7 @@ export enum SupportedQuickStartTemplateTypes {
  * Enum for the supported authenticator types.
  *
  * @readonly
-**/
+ */
 export enum SupportedAuthenticators {
     NONE = "none",
     FACEBOOK = "FacebookAuthenticator",
@@ -712,7 +713,7 @@ export interface ConnectedAppsInterface {
 /**
  * Connected app details of IDP
  */
-export interface ConnectedAppInterface {
+export interface ConnectedAppInterface extends ApplicationBasicInterface{
     appId?: string;
     self?: string;
 }

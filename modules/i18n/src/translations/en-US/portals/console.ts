@@ -4639,6 +4639,22 @@ export const console: ConsoleNS = {
                         message: "There are applications using this identity provider. "
                     }
                 },
+                connectedApps: {
+                    action: "Go to Sign-in Method",
+                    header: "Connected Application(s) of {{idpName}}.",
+                    subHeader: "Applications connected to {{idpName}} are listed here.",
+                    placeholders: {
+                        search: "Search by application name",
+                        emptyList: "There are no applications connected to {{idpName}} at the moment."
+                    },
+                    applicationEdit: {
+                        back: "Go back to {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Error occurred while trying to retrieve connected applications.",
+                        message: "Error Occurred."
+                    }
+                },
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Delete Identity Provider",

@@ -3251,6 +3251,22 @@ export const console: ConsoleNS = {
                         message: "Il existe des applications utilisant ce fournisseur d'identité."
                     }
                 },
+                connectedApps: {
+                    action: "Aller à la méthode de connexion",
+                    header: "Applications connectées de {{idpName}}",
+                    subHeader: "Les applications connectées à {{idpName}} sont listées ici.",
+                    placeholders: {
+                        search: "Rechercher par nom d'application",
+                        emptyList: "Il n'y a pas d'applications connectées à {{idpName}} pour le moment."
+                    },
+                    applicationEdit: {
+                        back: "Revenir à {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la tentative de récupération des applications connectées.",
+                        message: "Erreur est survenue."
+                    }
+                },
                 dangerZoneGroup: {
                     deleteIDP: {
                         actionTitle: "Effacer",

@@ -19,7 +19,11 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../../server-configurations";
+import { 
+    GovernanceCategoryForOrgsInterface, 
+    GovernanceConnectorCategoryInterface, 
+    GovernanceConnectorUtils 
+} from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -247,6 +251,8 @@ export class AppConstants {
             .set("APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications`)
             .set("APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates`)
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
+            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath() 
+            }/applications/:id:tabName`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
             .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
@@ -329,16 +335,16 @@ export class AppConstants {
     public static filterGoverananceConnectors(
         governanceConnectorCategories: GovernanceConnectorCategoryInterface[]
     ) : GovernanceConnectorCategoryInterface[] {
-        const showGovernanceConnectorsIdOfSuborgs = [];
+        const showGovernanceConnectorsIdOfSuborgs: string[] = [];
 
         GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
-            .forEach(connector => {
+            .forEach((connector: GovernanceCategoryForOrgsInterface) => {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
-        for (let i = governanceConnectorCategories.length-1; i >=0 ; i--) {
+        for (let i: number = governanceConnectorCategories.length-1; i >=0 ; i--) {
 
-            const connector = governanceConnectorCategories[i];
+            const connector: GovernanceConnectorCategoryInterface = governanceConnectorCategories[i];
 
             if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
                 governanceConnectorCategories.splice(i,1);
@@ -356,7 +362,7 @@ export class AppConstants {
     /**
      * Error given by server when the user has denied consent.
      */
-    public static readonly USER_DENIED_CONSENT_SERVER_ERROR = "User denied the consent";
+    public static readonly USER_DENIED_CONSENT_SERVER_ERROR: string = "User denied the consent";
 
     /**
      * Set of login errors to be used as search params to toggle unauthorized page appearance.

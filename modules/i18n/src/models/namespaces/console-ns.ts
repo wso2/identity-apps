@@ -1966,6 +1966,22 @@ export interface ConsoleNS {
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
                 };
+                connectedApps: {
+                    action: string;
+                    header: string;
+                    subHeader: string;
+                    placeholders: {
+                        search: string;
+                        emptyList: string;
+                    };
+                    applicationEdit: {
+                        back: string;
+                    };
+                    genericError: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 dangerZoneGroup: {
                     header: string;
                     disableIDP: DangerZone;

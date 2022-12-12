@@ -22,8 +22,9 @@ import {
     TestableComponentInterface 
 } from "@wso2is/core/models";
 import classNames from "classnames";
+import inRange from "lodash-es/inRange";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { Card, MenuProps, Placeholder, Tab, TabProps } from "semantic-ui-react";
+import { Card, MenuProps, Placeholder, SemanticShorthandItem, Tab, TabPaneProps, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
 /**
@@ -31,6 +32,17 @@ import { ResourceTabPane } from "./resource-tab-pane";
  */
 export interface ResourceTabSubComponentsInterface {
     Pane: typeof ResourceTabPane;
+}
+
+/**
+ * Interface for the resource tab pane components.
+ */
+export interface ResourceTabPaneInterface {
+    pane?: SemanticShorthandItem<TabPaneProps>
+    menuItem?: any
+    render?: () => React.ReactNode
+    "data-tabid"?: string
+    componentId?: string
 }
 
 /**
@@ -67,6 +79,14 @@ export interface ResourceTabPropsInterface extends TabProps, IdentifiableCompone
      * Is the data still loading.
      */
     isLoading?: boolean;
+    /**
+     * Specifies if it is needed to redirect to a specific tabindex
+     */
+    isAutomaticTabRedirectionEnabled?: boolean;
+    /**
+     * Specifies, to which tab(tabid) it need to redirect.
+     */
+    tabIdentifier?: string;
 }
 
 /**
@@ -91,6 +111,8 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         pointing,
         secondary,
         onTabChange,
+        isAutomaticTabRedirectionEnabled,
+        tabIdentifier,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -104,10 +126,32 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         , className
     );
 
-    const [ activeIndex, setActiveIndex ] = useState(defaultActiveIndex);
+    const [ activeIndex, setActiveIndex ] = useState<number | string>(defaultActiveIndex);
+    const [ isTabChanged, setIsTabChanged ] = useState<boolean>(false);
 
+    /**
+     * Called to set the pane index as the active tab index if it is needed to redirect to a specific tab
+     */
     useEffect(() => {
-        setActiveIndex(defaultActiveIndex);
+        if (isTabChanged) {
+            return;
+        }
+        if (!isAutomaticTabRedirectionEnabled) {
+            setActiveIndex(defaultActiveIndex);
+
+            return;
+        }
+
+        const tabIndex: number | string = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
+        
+        if (inRange(tabIndex,  0, panes.length)) {
+            if (tabIndex === activeIndex) {
+                return;
+            }
+            setActiveIndex(tabIndex);
+        } else {
+            setActiveIndex(defaultActiveIndex);
+        }       
     }, [ defaultActiveIndex ]);
 
     /**
@@ -124,6 +168,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
      * Handles the tab change.
      */
     const handleTabChange = (e: SyntheticEvent, activeIndex: string | number) => {
+        setIsTabChanged(true);
         setActiveIndex(activeIndex);
     };
 
@@ -192,9 +237,11 @@ ResourceTab.defaultProps = {
     attached: false,
     "data-componentid": "resource-tabs",
     "data-testid": "resource-tabs",
+    isAutomaticTabRedirectionEnabled: false,
     isLoading: false,
     pointing: true,
-    secondary: true
+    secondary: true,
+    tabIdentifierURLFrag: ""
 };
 
 ResourceTab.Pane = ResourceTabPane;
