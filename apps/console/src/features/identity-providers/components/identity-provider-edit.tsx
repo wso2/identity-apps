@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -127,8 +127,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
@@ -283,7 +283,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
+        const extensions: ResourceTabPaneInterface[] = ComponentExtensionPlaceholder({
             component: "identityProvider",
             props: {
                 content: template.content.quickStart,
@@ -309,7 +309,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     ]);
 
     const getPanes = () => {
-        const panes: any[] = [];
+        const panes: ResourceTabPaneInterface[] = [];
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);

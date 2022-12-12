@@ -19,7 +19,13 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import { 
+    ConfirmationModal, 
+    ContentLoader, 
+    CopyInputField, 
+    ResourceTab, 
+    ResourceTabPaneInterface 
+} from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
@@ -89,7 +95,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Set is loading.
      */
-    setIsLoading?: any;
+    setIsLoading?: boolean;
     /**
      * Callback to be triggered after deleting the application.
      */
@@ -156,7 +162,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
     const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
@@ -251,7 +257,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
         } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
             // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
-            const renderedTabPanes: any[] = resolveTabPanes();
+            const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();
             const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.
                 find((element: {"componentId": string}) => 
                     element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
@@ -366,7 +372,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
+        const extensions: ResourceTabPaneInterface[] = ComponentExtensionPlaceholder({
             component: "application",
             props: {
                 application: application,
@@ -736,8 +742,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      *
      * @returns Resolved tab panes.
      */
-    const resolveTabPanes = (): any[] => {
-        const panes: any[] = [];
+    const resolveTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
