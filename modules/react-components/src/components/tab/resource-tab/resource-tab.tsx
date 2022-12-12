@@ -24,7 +24,7 @@ import {
 import classNames from "classnames";
 import inRange from "lodash-es/inRange";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { Card, MenuProps, Placeholder, Tab, TabProps } from "semantic-ui-react";
+import { Card, MenuProps, Placeholder, SemanticShorthandItem, Tab, TabPaneProps, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
 /**
@@ -32,6 +32,16 @@ import { ResourceTabPane } from "./resource-tab-pane";
  */
 export interface ResourceTabSubComponentsInterface {
     Pane: typeof ResourceTabPane;
+}
+
+/**
+ * Interface for the resource tab pane components.
+ */
+export interface ResourceTabPaneInterface {
+    pane?: SemanticShorthandItem<TabPaneProps>
+    menuItem?: any
+    render?: () => React.ReactNode
+    "data-tabid"?: string
 }
 
 /**
