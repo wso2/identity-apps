@@ -127,7 +127,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators

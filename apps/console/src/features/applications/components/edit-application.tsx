@@ -95,7 +95,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * Set is loading.
      */
-    setIsLoading?: boolean;
+    setIsLoading?: any;
     /**
      * Callback to be triggered after deleting the application.
      */
