@@ -104,7 +104,7 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
                 header
                     ? (
                         <Header as="h5" className={ !props?.icon ? "mb-3" : null }>
-                            <Header.Content>
+                            <Header.Content className="message-content-flex">
                                 <>
                                     {
                                         !props?.icon
@@ -120,12 +120,12 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
             content={
                 header
                     ? (
-                        <div>
+                        <div className="message-content-flex">
                             { content }
                         </div>
                     )
                     : (
-                        <div>
+                        <div className="message-content-flex">
                             { resolveMessageIcon() }
                             { content }
                         </div>
