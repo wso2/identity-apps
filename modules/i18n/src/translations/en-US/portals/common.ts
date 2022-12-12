@@ -34,7 +34,6 @@ export const common: CommonNS = {
     all: "All",
     applicationName: "Application name",
     applications: "Applications",
-    approvalStatus: "Approval Status",
     approve: "Approve",
     apps: "Apps",
     assignee: "Assignee",

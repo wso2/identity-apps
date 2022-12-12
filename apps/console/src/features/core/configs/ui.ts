@@ -69,9 +69,6 @@ import {
 import {
     ReactComponent as OtherSettingsOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/other-settings-outline.svg";
-import {
-    ReactComponent as ApprovalsIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
 import { ReactComponent as PaperRocketIcon } from "../../../themes/default/assets/images/icons/paper-rocket-icon.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
@@ -200,7 +197,6 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
 export type GetSidePanelIconsInterface = {
     appLogs: FunctionComponent | ReactNode,
     applications: FunctionComponent | ReactNode,
-    approvals: FunctionComponent | ReactNode,
     certificate: FunctionComponent | ReactNode,
     childIcon: FunctionComponent | ReactNode,
     claims: FunctionComponent | ReactNode,
@@ -230,7 +226,6 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
     return {
         appLogs: IDPMetadataIcon,
         applications: ApplicationsOutlineIcon,
-        approvals: ApprovalsIcon,
         certificate: CertificateIcon,
         childIcon: ArrowRight,
         claims: ClaimsIcon,

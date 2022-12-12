@@ -56,10 +56,6 @@ export interface FeatureConfigInterface {
      */
     applications?: FeatureAccessConfigInterface;
     /**
-     * Workflow approvals feature.
-     */
-    approvals?: FeatureAccessConfigInterface;
-    /**
      * Attribute dialects(Claim dialects) feature.
      */
     attributeDialects?: FeatureAccessConfigInterface;

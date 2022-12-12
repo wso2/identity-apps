@@ -244,32 +244,6 @@
                     {% endif %}
                 }
             },
-            "approvals": {
-                "disabledFeatures": [
-                    {% if console.approvals.disabled_features is defined %}
-                    {% for feature in console.approvals.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {{ console.approvals.enabled }},
-                "scopes": {
-                    {% if console.approvals.scopes is defined %}
-                    {% for operation, scopes in console.approvals.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
             "attributeDialects": {
                 "disabledFeatures": [
                     {% if console.attribute_dialects.disabled_features is defined %}

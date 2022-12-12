@@ -187,24 +187,6 @@ const ReduxStoreStateMock = {
                         ]
                     }
                 },
-                approvals: {
-                    disabledFeatures: [],
-                    enabled: true,
-                    scopes: {
-                        create: [
-                            "internal_humantask_view"
-                        ],
-                        read: [
-                            "internal_humantask_view"
-                        ],
-                        update: [
-                            "internal_humantask_view"
-                        ],
-                        delete: [
-                            "internal_humantask_view"
-                        ]
-                    }
-                },
                 attributeDialects: {
                     enabled: true,
                     disabledFeatures: [],

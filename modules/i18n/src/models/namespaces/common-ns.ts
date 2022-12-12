@@ -30,7 +30,6 @@ export interface CommonNS {
     all: string;
     applicationName: string;
     applications: string;
-    approvalStatus: string;
     approve: string;
     apps: string;
     assignee: string;
