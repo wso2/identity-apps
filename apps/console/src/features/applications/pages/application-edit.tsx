@@ -29,6 +29,7 @@ import {
     PrimaryButton,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -334,7 +335,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        const editApplicationDocs: any = get(helpPanelDocStructure,
+        const editApplicationDocs: PortalDocumentationStructureInterface[] = get(helpPanelDocStructure,
             ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
         if (!editApplicationDocs) {
@@ -400,7 +401,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getSharedOrganizations(
             currentOrganization.id,
             application.id
-        ).then((response: any) => {
+        ).then((response: AxiosResponse) => {
             setSharedOrganizationList(response.data.organizations);
         }).catch((error: IdentityAppsApiException) => {
             if (error.response.data.description) {
