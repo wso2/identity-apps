@@ -142,7 +142,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         isRenderedOnPortal,
         isLoading,
         loader: Loader,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
     
     const dispatch: Dispatch = useDispatch();
@@ -293,7 +293,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-componentid={ `${ testId }-item-heading` }
+                            data-componentid={ `${ componentId }-item-heading` }
                         >
                             {
                                 app.image
@@ -303,7 +303,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                             name={ app.name }
                                             image={ app.image }
                                             spaced="right"
-                                            data-componentid={ `${ testId }-item-image` }
+                                            data-componentid={ `${ componentId }-item-image` }
                                         />
                                     )
                                     : (
@@ -312,12 +312,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                                 <AnimatedAvatar
                                                     name={ app.name }
                                                     size="mini"
-                                                    data-componentid={ `${ testId }-item-image-inner` }
+                                                    data-componentid={ `${ componentId }-item-image-inner` }
                                                 />
                                             ) }
                                             size="mini"
                                             spaced="right"
-                                            data-componentid={ `${ testId }-item-image` }
+                                            data-componentid={ `${ componentId }-item-image` }
                                         />
                                     )
                             }
@@ -401,7 +401,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:develop.placeholders.emptySearchResult.subtitles.1")
                     ] }
-                    data-componentid={ `${ testId }-empty-search-placeholder` }
+                    data-componentid={ `${ componentId }-empty-search-placeholder` }
                 />
             );
         }
@@ -416,7 +416,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
                             { idpName: editingIDP.name })
                     ] }
-                    data-componentid={ `${ testId }-empty-placeholder` }
+                    data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
         }
@@ -436,7 +436,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
         return [
             {
-                "data-componentid": `${ testId }-item-edit-button`,
+                "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => { 
@@ -500,9 +500,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     floated="left"
                     size="small"
                     style={ { width: "250px" } }
-                    data-componentid={ `${ testId }-searched` }
-                />)
-            }
+                    data-componentid={ `${ componentId }-searched` }
+                />
+            ) }
             <DataTable<ConnectedAppInterface>
                 className="connected-applications-table"
                 isLoading={ isLoading || isApplicationTemplateRequestLoading }
@@ -522,7 +522,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
                 transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
-                data-componentid={ `${ testId }-data-table` }
+                data-componentid={ `${ componentId }-data-table` }
             />
         </EmphasizedSegment>
     );
