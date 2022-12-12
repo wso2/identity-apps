@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useState } from "react";
-import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
+import { Form, Icon, SemanticWIDTHS } from "semantic-ui-react";
+import { Popup } from "../popup";
 
 /**
  * Password prop types

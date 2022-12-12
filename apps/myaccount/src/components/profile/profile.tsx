@@ -27,13 +27,20 @@ import {
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar, useMediaContext } from "@wso2is/react-components";
+import {
+    EditAvatarModal,
+    LinkButton,
+    Popup,
+    PrimaryButton,
+    UserAvatar,
+    useMediaContext
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, Form, Grid, Icon, List, Placeholder, Popup } from "semantic-ui-react";
+import { DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import { updateProfileImageURL, updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants, UIConstants } from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";

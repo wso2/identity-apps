@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,25 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { ReactElement } from "react";
+// eslint-disable-next-line no-restricted-imports
+import { PopupProps, Popup as SemanticPopup } from "semantic-ui-react";
 
 /**
- * Implementation of the WizardPage component.
- * @param props - Props injected to the component.
+ * A wrapper for the semantic Popup component.
+ *
+ * @param props - Popup Props
+ *
+ * @returns
  */
-export const WizardPage = (props: PropsWithChildren<Record<string, any>>): ReactElement => {
-
-    const { children } = props;
-
+export const Popup = (props: PopupProps): ReactElement => {
     return (
-        <>{ children }</>
+        <SemanticPopup
+            popper={ <div style={ { filter: "none" } }></div> }
+            { ...props }
+        />
     );
-
 };
+
+Popup.Content = SemanticPopup.Content;
+Popup.Header = SemanticPopup.Header;

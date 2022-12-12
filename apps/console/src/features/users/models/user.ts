@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { UserRoleInterface } from "../../core";
 
 /**
  * Captures meta details of the user.
@@ -84,6 +85,32 @@ export interface UserListInterface {
      * Set of applications.
      */
     Resources?: UserBasicInterface[];
+    /**
+     * Useful links for pagination.
+     */
+    links?: LinkInterface[];
+}
+
+/**
+ *  Captures Internal user list properties.
+ */
+export interface InternalAdminUserListInterface {
+    /**
+     * Number of results that match the listing operation.
+     */
+    totalResults?: number;
+    /**
+     * Index of the first element of the page, which will be equal to offset + 1.
+     */
+    startIndex?: number;
+    /**
+     * Number of elements in the returned page.
+     */
+    itemsPerPage?: number;
+    /**
+     * Set of applications.
+     */
+    Resources?: UserRoleInterface[];
     /**
      * Useful links for pagination.
      */
@@ -254,4 +281,29 @@ export interface ApplicationSessionInterface {
      * @example 012
      */
     appId: string;
+}
+
+/**
+ * Interface for the Account Configurations.
+ */
+export interface AccountConfigSettingsInterface {
+    accountDisable: string;
+    accountLock: string;
+    forcePasswordReset: string;
+}
+
+/**
+ * Interface for the User Schema Sub Value.
+ */
+export interface SubValueInterface {
+    formatted?: string;
+    value?: string;
+}
+
+/**
+ * Interface for the Schema Attribute Value.
+ */
+export interface SchemaAttributeValueInterface {
+    type?: string;
+    value?: string | string[];
 }

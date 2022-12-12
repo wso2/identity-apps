@@ -85,6 +85,7 @@
 @aliceBlue        : #f7fcff;
 @alabaster        : #f7f7f7;
 @pureBlack        : #000000;
+@focusBorderBlue  : #0000ff;
 
 /*-------------------
         Page
@@ -176,10 +177,10 @@
 --------------------*/
 
 /* Used on inputs, textarea etc */
-@focusedFormBorderColor: lighten(@primaryColor, 30);
+@focusedFormBorderColor: @primaryColor;
 
 /* Used on dropdowns, other larger blocks */
-@focusedFormMutedBorderColor: lighten(@primaryColor, 30);
+@focusedFormMutedBorderColor: @primaryColor;
 
 /*-------------------
    Advanced search

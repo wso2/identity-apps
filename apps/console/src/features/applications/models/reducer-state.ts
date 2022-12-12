@@ -48,6 +48,6 @@ interface ApplicationMetaInterface {
  * Interface for the auth protocol metadata.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-interface AuthProtocolMetaInterface {
+export interface AuthProtocolMetaInterface {
     [ key: string ]: OIDCMetadataInterface | any;
 }

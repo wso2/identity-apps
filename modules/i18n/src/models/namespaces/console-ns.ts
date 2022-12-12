@@ -475,6 +475,8 @@ export interface ConsoleNS {
                                     name: string;
                                     hint: string;
                                 },
+                                selectedScopesComponentHint: string;
+                                howToUseScopesHint: string;
                                 attributeComponentHint: string;
                                 attributeComponentHintAlt: string;
                                 description: string;
@@ -650,7 +652,6 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
-                                            magicLinkDisabled: string;
                                             firstFactorDisabled: string;
                                         };
                                     };
@@ -708,8 +709,7 @@ export interface ConsoleNS {
                                             },
                                             magicLink: {
                                                 description: string;
-                                                heading: string;
-                                                warning: string;
+                                                heading: string;                                           
                                             },
                                             microsoft: {
                                                 description: string;
@@ -1469,10 +1469,12 @@ export interface ConsoleNS {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
                             clientSecret: FormAttributes;
-                            AdditionalQueryParameters: FormAttributes;
+                            commonAuthQueryParams: FormAttributes;
                             scopes: {
+                                ariaLabel: string,
                                 heading: string;
                                 hint: string;
+                                label: string;
                                 list: {
                                     email: {
                                         description: string;
@@ -1484,6 +1486,7 @@ export interface ConsoleNS {
                                         description: string;
                                     }
                                 }
+                                placeholder: string;
                             };
                         };
                         saml: {

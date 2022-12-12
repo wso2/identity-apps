@@ -18,6 +18,7 @@
 
 import classNames from "classnames";
 import React, { ReactElement } from "react";
+// eslint-disable-next-line no-restricted-imports
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
@@ -63,7 +64,7 @@ interface InnerFieldPropsInterface {
 
 /**
  * This produces a InnerField component.
- * 
+ *
  * @param props - The props for the InnerField component.
  */
 export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref: React.Ref<any>): JSX.Element => {
@@ -86,7 +87,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
 
     /**
      * Generates a semantic Form element.
-     * 
+     *
      * @param inputField - The input field to be generated to a semantic Form element.
      */
     const formFieldGenerator = (inputField: FormField): JSX.Element => {
@@ -272,6 +273,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     header={ hint.header }
                                     content={ hint.content }
                                     trigger={ field }
+                                    popper={ <div style={ { filter: "none" } }></div> }
                                 />
                             );
                         } else {
@@ -377,6 +379,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     header={ checkbox.hint.header }
                                     content={ checkbox.hint.content }
                                     trigger={ field }
+                                    popper={ <div style={ { filter: "none" } }></div> }
                                 />
                             );
                         } else {
@@ -399,6 +402,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     <Scopes
                         value={ inputField.value }
                         defaultValue={ inputField.defaultValue }
+                        data-componentid={ inputField["data-testid"] }
                         error={
                             isError
                                 ? errorMessages[0] : ""

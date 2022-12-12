@@ -4,21 +4,10 @@
             "id": 1,
             "options": [
                 {
-                    "authenticator": "IdentifierExecutor",
-                    "idp": "LOCAL"
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "options": [
-                {
                     "authenticator": "MagicLinkAuthenticator",
                     "idp": "LOCAL"
                 }
             ]
         }
-    ],
-    "attributeStepId": 2,
-    "subjectStepId": 2
+    ]
 }

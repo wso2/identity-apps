@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, Tooltip } from "@wso2is/react-components";
+import { Heading, Popup, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
     FunctionComponent,
@@ -30,14 +30,16 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 import { TemplateDescription } from "./template-description";
-import { AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**
- * Component ref type.
+ * Component ref interface.
  */
-export type ScriptTemplatesSidePanelRefType = HTMLDivElement;
+export interface ScriptTemplatesSidePanelRefInterface {
+    ref: MutableRefObject<HTMLElement>;
+}
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -45,13 +47,14 @@ export type ScriptTemplatesSidePanelRefType = HTMLDivElement;
 interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
     /**
      * Fired on template selection.
-     * @param {AdaptiveAuthTemplateInterface} template -Auth template.
+     *
+     * @param template - Auth template.
      */
     onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
      * Adaptive script templates.
      */
-    templates: any;
+    templates: AdaptiveAuthTemplateCategoryInterface[];
     /**
      * Side panel title.
      */
@@ -67,7 +70,7 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
     /**
      * Ref for the component.
      */
-    ref?: React.Ref<ScriptTemplatesSidePanelRefType>;
+    ref?: React.Ref<ScriptTemplatesSidePanelRefInterface>;
     /**
      * Make the form read only.
      */
@@ -77,13 +80,14 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
 /**
  * Adaptive script templates side panel.
  *
- * @param {ScriptTemplatesSidePanelInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ *
+ * @returns
  */
 export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePanelInterface> =
-    forwardRef<ScriptTemplatesSidePanelRefType, ScriptTemplatesSidePanelInterface>((
+    forwardRef<ScriptTemplatesSidePanelRefInterface, ScriptTemplatesSidePanelInterface>((
         props: PropsWithChildren<ScriptTemplatesSidePanelInterface>,
-        ref: MutableRefObject<ScriptTemplatesSidePanelRefType>
+        ref: MutableRefObject<ScriptTemplatesSidePanelRefInterface>
     ): ReactElement => {
 
         const {
@@ -107,14 +111,14 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
         /**
          * Handles accordion title click.
          *
-         * @param {React.SyntheticEvent} e - Click event.
-         * @param {number} index - Clicked on index.
+         * @param e - Click event.
+         * @param index - Clicked on index.
          */
         const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
-            const newIndexes = [ ...accordionActiveIndexes ];
+            const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
             if (newIndexes.includes(index)) {
-                const removingIndex = newIndexes.indexOf(index);
+                const removingIndex: number = newIndexes.indexOf(index);
 
                 newIndexes.splice(removingIndex, 1);
             } else {
@@ -129,6 +133,86 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
          */
         const closeTemplateDescriptionModal = (): void => {
             setSelectedTemplate(null);
+        };
+
+        /**
+         * Renders adaptive authentication template category onto the accordion.
+         * @param category - Adaptive authentication template category
+         * @param index - Index of the category
+         */
+        const renderAdaptiveAuthTemplateCategory = (category: AdaptiveAuthTemplateCategoryInterface, index: number) => {
+            return category?.templates && category.templates instanceof Array && (
+                <Menu.Item key={ index }>
+                    <Accordion.Title
+                        active={ accordionActiveIndexes.includes(index) }
+                        className="category-name"
+                        content={ category.displayName }
+                        index={ index }
+                        icon={ <Icon className="angle right caret-icon"/> }
+                        onClick={ handleAccordionOnClick }
+                        data-testid={ `${testId}-accordion-title-${index}` }
+                    />
+                    <Accordion.Content
+                        className="template-list"
+                        active={ accordionActiveIndexes.includes(index) }
+                        data-testid={ `${testId}-accordion-content-${index}` }
+                    >
+                        {
+                            category.templates.map((template: AdaptiveAuthTemplateInterface , index: number) => (
+                                <Menu.Item
+                                    key={ index }
+                                    className="template-list-item"
+                                    data-componentid={ template.name }
+                                >
+                                    <Popup
+                                        trigger={ (
+                                            <div className="template-name">
+                                                { template.name }
+                                            </div>
+                                        ) }
+                                        content={ template.title || template.name }
+                                    />
+                                    <div className="actions">
+                                        <Tooltip
+                                            compact
+                                            trigger={ (
+                                                <Icon
+                                                    className="add-button"
+                                                    name="info circle"
+                                                    onClick={ () => {
+                                                        setSelectedTemplate(template);
+                                                    } }
+                                                    data-componentid={ `${template.name}-info` }
+                                                />
+                                            ) }
+                                            content={
+                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                    "sections.templateDescription.popupContent")
+                                            }
+                                        />
+                                        {
+                                            !readOnly && (
+                                                <Tooltip
+                                                    compact
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="add-button"
+                                                            name="add"
+                                                            onClick={ () => onTemplateSelect(template) }
+                                                            data-componentid={ `${template.name}-add` }
+                                                        />
+                                                    ) }
+                                                    content={ t("common:add") }
+                                                />
+                                            )
+                                        }
+                                    </div>
+                                </Menu.Item>
+                            ))
+                        }
+                    </Accordion.Content>
+                </Menu.Item>
+            );
         };
 
         return (
@@ -167,93 +251,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                     secondary
                                     vertical
                                 >
-                                    {
-                                        sortBy(templates, "order").map((category, index) => (
-                                            category?.templates && category.templates instanceof Array && (
-                                                <Menu.Item key={ index }>
-                                                    <Accordion.Title
-                                                        active={ accordionActiveIndexes.includes(index) }
-                                                        className="category-name"
-                                                        content={ category.displayName }
-                                                        index={ index }
-                                                        icon={ <Icon className="angle right caret-icon" /> }
-                                                        onClick={ handleAccordionOnClick }
-                                                        data-testid={ `${testId}-accordion-title-${index}` }
-                                                    />
-                                                    <Accordion.Content
-                                                        className="template-list"
-                                                        active={ accordionActiveIndexes.includes(index) }
-                                                        data-testid={ `${testId}-accordion-content-${index}` }
-                                                    >
-                                                        {
-                                                            category.templates.map((template, index) => (
-                                                                <Menu.Item
-                                                                    key={ index }
-                                                                    className="template-list-item"
-                                                                    data-componentid={ template.name }
-                                                                >
-                                                                    <Popup
-                                                                        trigger={ (
-                                                                            <div className="template-name">
-                                                                                { template.name }
-                                                                            </div>
-                                                                        ) }
-                                                                        content={ template.title || template.name }
-                                                                    />
-                                                                    <div className="actions">
-                                                                        <Tooltip
-                                                                            compact
-                                                                            trigger={ (
-                                                                                <Icon
-                                                                                    className="add-button"
-                                                                                    name="info circle"
-                                                                                    onClick={ () => {
-                                                                                        setSelectedTemplate(template);
-                                                                                    } }
-                                                                                    data-componentid={
-                                                                                        `${ template.name }-info`
-                                                                                    }
-                                                                                />
-                                                                            ) }
-                                                                            content={
-                                                                                t("console:develop.features" +
-                                                                                    ".applications" +
-                                                                                    ".edit.sections.signOnMethod." +
-                                                                                    "sections.templateDescription" +
-                                                                                    ".popupContent")
-                                                                            }
-                                                                        />
-                                                                        {
-                                                                            !readOnly && (
-                                                                                <Tooltip
-                                                                                    compact
-                                                                                    trigger={ (
-                                                                                        <Icon
-                                                                                            className="add-button"
-                                                                                            name="add"
-                                                                                            onClick={
-                                                                                                () => onTemplateSelect(
-                                                                                                    template
-                                                                                                )
-                                                                                            }
-                                                                                            data-componentid={
-                                                                                                `${ template.name }-add`
-                                                                                            }
-                                                                                        />
-                                                                                    ) }
-                                                                                    content={ t("common:add") }
-                                                                                />
-                                                                            )
-                                                                        }
-                                                                    </div>
-                                                                </Menu.Item>
-                                                            ))
-                                                        }
-                                                    </Accordion.Content>
-                                                </Menu.Item>
-                                            ))
-                                        )
-                                    }
+                                    { sortBy(templates, "order").map(renderAdaptiveAuthTemplateCategory) }
                                 </Accordion>
                             )
                             : null

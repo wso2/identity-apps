@@ -17,11 +17,11 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, InfoCard, Text } from "@wso2is/react-components";
+import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Label, Popup } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
 import {
     AuthenticatorCategories,
@@ -108,7 +108,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
-    const authenticatorCardClasses = classNames("authenticator", {
+    const authenticatorCardClasses: string = classNames("authenticator", {
         "with-labels": showLabels
     });
 
@@ -137,11 +137,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
-        // Check if the authenticator is a magic link authenticator
-        if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-            return SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps);
-        }
-
         if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
@@ -159,7 +154,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @returns React element.
      */
     const resolvePopupContent = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-        const InfoLabel = (
+        const InfoLabel: JSX.Element = (
             <Label attached="top">
                 <Icon name="info circle" /> Info
             </Label>
@@ -219,22 +214,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Text>
                 </Fragment>
             );
-        } else if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
-            && !SignInMethodUtils.isMagicLinkAuthenticatorValid(currentStep, authenticationSteps)) {
-            return (
-                <Fragment>
-                    { InfoLabel }
-                    <Text>
-                        {
-                            t(
-                                "console:develop.features.applications.edit.sections" +
-                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
-                                ".magicLinkDisabled"
-                            )
-                        }
-                    </Text>
-                </Fragment>
-            );
         } else if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
@@ -265,10 +244,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return;
         }
 
-        if (selectedAuthenticators.some((authenticator) => authenticator.id === selectedAuthenticator.id)) {
-            const filtered = selectedAuthenticators.filter((authenticator) => {
-                return authenticator.id !== selectedAuthenticator.id;
-            });
+        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) => 
+            authenticator.id === selectedAuthenticator.id)) {
+            const filtered: GenericAuthenticatorInterface[] = selectedAuthenticators
+                .filter((authenticator: GenericAuthenticatorInterface) => {
+                    return authenticator.id !== selectedAuthenticator.id;
+                });
 
             onAuthenticatorSelect(filtered);
             setSelectedAuthenticators(filtered);
@@ -298,9 +279,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
-            { authenticators.filter(authenticator => {
+            { authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return !authenticator?.name.includes(IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR);
-            }).map((authenticator: GenericAuthenticatorInterface, index) => (
+            }).map((authenticator: GenericAuthenticatorInterface, index: number) => (
                 <Popup
                     hoverable
                     hideOnScroll
@@ -322,7 +303,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             selected={
                                 isFactorEnabled(authenticator) &&
                                 Array.isArray(selectedAuthenticators) &&
-                                selectedAuthenticators.some((evalAuthenticator) => {
+                                selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
                                     return evalAuthenticator.id === authenticator.id;
                                 })
                             }

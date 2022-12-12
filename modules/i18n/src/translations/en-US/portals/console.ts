@@ -815,7 +815,7 @@ export const console: ConsoleNS = {
                                     },
                                     subHeading: "Select which user attributes you want to share with the application."
                                 },
-                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to add/remove user attribute to a scope. " +
+                                attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                                     "You can add new attributes by navigating to <3>Attributes.</3>",
                                 attributeComponentHintAlt: "Manage the user attributes you want to share with this" +
                                     " application. You can add new attributes and mappings by navigating to " +
@@ -830,12 +830,15 @@ export const console: ConsoleNS = {
                                     hint: "Cannot retrieve these user attributes by requesting " +
                                             "OIDC scopes. To retrieve, add the required attributes to a relevant scope."
                                 },
+                                selectedScopesComponentHint: "Request these scopes from your application to retrieve " +
+                                    "the selected user attributes.",
+                                howToUseScopesHint: "How to use Scopes",
                                 mandatoryAttributeHint: "Mark which user attributes are mandatory to be shared " +
                                     "with the application. At login, {{productName}} prompts the user to enter these " +
                                     "attribute values, if not already provided in the user's profile.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Enable mapping"
+                                        enable: "Enable attribute name mapping"
                                     },
                                     columns: {
                                         appAttribute: "Mapped user attribute",
@@ -864,8 +867,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Enter the custom attribute that should be requested " +
-                                        "instead of the default attribute.",
+                                    mappedAtributeHint: "Enter the custom attribute name to be used in " +
+                                        "the assertion sent to the application.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirm",
                                         confirmSecondaryAction: "Cancel",
@@ -1096,9 +1099,6 @@ export const console: ConsoleNS = {
                                             heading: "Step-based configuration",
                                             hint: "Create a user login flow by dragging authenticators on to the " +
                                                 "relevant steps.",
-                                            magicLinkDisabled: "You can only add the Magic Link authenticator " +
-                                                "as a second step and only when Identifier First authenticator " +
-                                                "is present in the first step.",
                                             secondFactorDisabled: "Second factor authenticators " +
                                                 "can be used only if <1>User name and password " +
                                                 "password</1>, <3>Social Login</3> or any other handler" +
@@ -1187,10 +1187,7 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Enable users to log in using a magic "
                                                     + "link sent to their email.",
-                                                heading: "Add Magic Link login",
-                                                warning: "You can only use Identifier First authenticator with the " +
-                                                    "Magic Link authenticator. Using it with any other authenticator " +
-                                                    "can lead to unexpected behavior."
+                                                heading: "Add Magic Link login"
                                             },
                                             microsoft: {
                                                 description: "Enable users to login with Microsoft.",
@@ -1464,7 +1461,9 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "There is already an application with this name. " +
                                         "Please enter a different name.",
-                                    empty: "Application name is required."
+                                    empty: "Application name is required.",
+                                    reserved: "{{appName}} is a reserved application name. Please enter a different " +
+                                        "name."
                                 }
                             }
                         },
@@ -3423,7 +3422,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         microsoft: {
-                            AdditionalQueryParameters: {
+                            commonAuthQueryParams: {
                                 ariaLabel: "Microsoft authenticator additional query parameters",
                                 hint: "Additional query parameters to be sent to Microsoft.",
                                 label: "Additional Query Parameters",
@@ -3457,9 +3456,11 @@ export const console: ConsoleNS = {
                                 }
                             },
                             scopes: {
+                                ariaLabel: "Scopes provided by Microsoft Authenticator",
                                 heading: "Scopes",
                                 hint: "The type of access provided for the connected apps to access data " +
                                     "from Microsoft. Click <1>here</1> to learn more.",
+                                label: "Scopes",
                                 list: {
                                     email: {
                                         description: "Allows to view user's email address."
@@ -3470,7 +3471,8 @@ export const console: ConsoleNS = {
                                     profile: {
                                         description: "Allows to view user's basic profile data."
                                     }
-                                }
+                                },
+                                placeholder: "e.g: openid"
                             }
                         },
                         saml: {

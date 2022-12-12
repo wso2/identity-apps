@@ -223,6 +223,9 @@
             }
         }
     }
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
 }
 
 .ui.labeled.icon.button {
@@ -338,5 +341,39 @@
                 float: left;
                 fontSize: medium;
           }
+    }
+}
+
+
+
+.align-right.buttons{
+    text-align: right;
+}
+
+/*******************************
+     Keyboard Focus Styling
+*******************************/
+
+.ui.primary.button{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
+}
+
+.ui.button.secondary{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
+}
+
+.ui.grey.button{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
+    }
+}
+
+.ui.brown.button{
+    &:focus-visible{
+        outline: @focusVisibleOutline;
     }
 }

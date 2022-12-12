@@ -19,8 +19,9 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Card, CardProps, Label, LabelProps, Popup, SemanticSIZES } from "semantic-ui-react";
+import { Card, CardProps, Label, LabelProps, SemanticSIZES } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
+import { Popup } from "../popup";
 
 /**
  * Proptypes for the labeled card component.

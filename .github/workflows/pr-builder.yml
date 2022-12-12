@@ -196,7 +196,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        maven-version: [ 3.6.3 ]
+        maven-version: [ 3.8.6 ]
         java-version: [ 1.8 ]
     steps:
       - name: ⬇️ Checkout

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,9 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Text } from "@wso2is/react-components";
+import { Popup, Text } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
-import { Grid, Popup } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { RecentApplicationCard } from "./recent-application-card";
 import { Application } from "../../models";
 
@@ -36,7 +36,7 @@ interface RecentApplicationsProps extends TestableComponentInterface {
 /**
  * Recent applications component.
  *
- * @return {JSX.Element}
+ * @returns
  */
 export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
     props: RecentApplicationsProps
@@ -74,23 +74,23 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
                                         <Grid.Row>
                                             <Grid.Column>
                                                 <Text>
-                                                    { 
-                                                        app.name?.length > 55 
-                                                        ? app.name?.substring(0, 56) + " ..." 
-                                                        : app.name 
+                                                    {
+                                                        app.name?.length > 55
+                                                            ? app.name?.substring(0, 56) + " ..."
+                                                            : app.name
                                                     }
                                                 </Text>
                                             </Grid.Column>
                                             <Grid.Column>
                                                 <Text className="hint-description">
-                                                    { 
+                                                    {
                                                         app.description
                                                     }
                                                 </Text>
                                             </Grid.Column>
                                         </Grid.Row>
                                     ) }
-                                /> 
+                                />
                             </Grid.Column>
                         ))
                         : null

@@ -18,14 +18,14 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, GenericIcon } from "@wso2is/react-components";
+import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import union from "lodash-es/union";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Popup } from "semantic-ui-react";
+import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig } from "../../../../../../extensions";
@@ -124,7 +124,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -145,7 +145,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
     const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
 
-    const authenticationStepsDivRef = useRef<HTMLDivElement>(null);
+    const authenticationStepsDivRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -337,7 +337,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             ...secondFactorAuthenticators
         ];
 
-        const authenticator: GenericAuthenticatorInterface = authenticators.find((item) => item.id === authenticatorId);
+        const authenticator: GenericAuthenticatorInterface = authenticators
+            .find((item: GenericAuthenticatorInterface) => item.id === authenticatorId);
 
         if (!authenticator) {
             return;
@@ -393,8 +394,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
-        const defaultAuthenticator = authenticator.authenticators.find(
-            (item) => item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
+        const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator.authenticators.find(
+            (item: FederatedAuthenticatorInterface) => 
+                item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
         steps[ stepIndex ].options.push({
@@ -418,20 +420,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             leftSideSteps,
             rightSideSteps
         ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(stepIndex, steps);
-
-        // Checks if identifier first can be deleted.
-        if (
-            stepIndex === 0 &&
-            steps[0].options[optionIndex].authenticator ===
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR &&
-            steps[1]?.options?.find(
-                (option) => option.authenticator === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
-            )
-        ) {
-            dispatchDeleteErrorNotification();
-
-            return;
-        }
 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
@@ -637,7 +625,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         steps.splice(stepIndex, 1);
 
         // Rebuild the step ids.
-        steps.forEach((step, index) => (step.id = index + 1));
+        steps.forEach((step: AuthenticationStepInterface, index: number) => (step.id = index + 1));
 
         setAuthenticationSteps(steps);
         updateSteps(false);
@@ -647,7 +635,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * Handles the addition of new authentication step.
      */
     const handleAuthenticationStepAdd = (): void => {
-        const steps = [ ...authenticationSteps ];
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
         steps.push({
             id: steps.length + 1,
@@ -687,7 +675,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const validateSteps = (): boolean => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
-        const found = steps.find((step) => isEmpty(step.options));
+        const found: AuthenticationStepInterface = steps.find((step: AuthenticationStepInterface) =>
+            isEmpty(step.options));
 
         if (found) {
             dispatch(
@@ -872,8 +861,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 allowSocialLoginAddition={ true }
                 currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
-                onModalSubmit={ (authenticators) => {
-                    authenticators.map((authenticator) => {
+                onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {
+                    authenticators.map((authenticator: GenericAuthenticatorInterface) => {
                         updateAuthenticationStep(authenticatorAddStep, authenticator.id);
                     });
 
@@ -924,7 +913,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         authenticationSteps &&
                         authenticationSteps instanceof Array &&
                         authenticationSteps.length > 0
-                            ? authenticationSteps.map((step, stepIndex) => (
+                            ? authenticationSteps.map((step: AuthenticationStepInterface, stepIndex: number) => (
                                 <Fragment key={ stepIndex }>
                                     <AuthenticationStep
                                         authenticators={ [

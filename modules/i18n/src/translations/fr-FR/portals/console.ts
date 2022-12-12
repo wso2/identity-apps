@@ -834,13 +834,16 @@ export const console: ConsoleNS = {
                                     hint: "Impossible de récupérer ces attributs utilisateur en demandant " +
                                         "des étendues OIDC. Pour récupérer, ajoutez les attributs requis à une étendue pertinente."
                                 },
+                                selectedScopesComponentHint: "Demandez ces étendues à partir de votre application pour récupérer " +
+                                    "les attributs utilisateur sélectionnés.",
+                                howToUseScopesHint: "Comment utiliser les portées",
                                 mandatoryAttributeHint: "Marquez les attributs utilisateur qui doivent " +
                                     "obligatoirement être partagés avec l'application. Lors de la connexion, " +
                                     "{{productName}} invite l'utilisateur à saisir ces valeurs d'attribut, si elles " +
                                     "ne sont pas déjà fournies dans le profil de l'utilisateur.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "Activer l'association"
+                                        enable: "Activer le mappage des noms d'attributs"
                                     },
                                     columns: {
                                         appAttribute: "Attribut utilisateur de l'application mappée",
@@ -869,8 +872,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "Au lieu d'envoyer l'attribut par défaut, l'attribut mappé "  +
-                                        "personnalisé sera envoyé",
+                                    mappedAtributeHint: "Entrez le nom de l'attribut personnalisé à utiliser dans "  +
+                                        "l'assertion envoyée à l'application.",
                                     mappingRevert: {
                                         confirmPrimaryAction: "Confirmer",
                                         confirmSecondaryAction: "Annuler",
@@ -1114,10 +1117,6 @@ export const console: ConsoleNS = {
                                             heading: "Configuration par étapes",
                                             hint: "Créez des étapes d'authentification en faisant glisser les " +
                                                 "authentificateurs locaux/fédérés vers les étapes correspondantes.",
-                                            magicLinkDisabled: "Vous pouvez ajouter l'authentificateur Magic Link " +
-                                                "uniquement à la deuxième étape, et uniquement " +
-                                                "lorsque l'authentificateur Identifier First est présent " +
-                                                "à la première étape.",
                                             secondFactorDisabled: "Les authentificateurs de second facteur ne " +
                                                 "peuvent être utilisés que si <1>Nom d’utilisateur et mot de passe" +
                                                 "</1> ou tout autre gestionnaire tel que <3>Identifiant d’abord " +
@@ -1218,12 +1217,7 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "Permettre aux utilisateurs de se connecter " +
                                                     "en utilisant un lien magique envoyé à leur adresse e-mail.",
-                                                heading: "Ajouter une connexion Magic Link",
-                                                warning: "Vous ne pouvez utiliser l'authentificateur Identifier " +
-                                                    "First qu'avec l'authentificateur Magic Link. L'utiliser avec " +
-                                                    "n'importe quel autre authentificateur peut entraîner un " +
-                                                    "comportement inattendu."
-
+                                                heading: "Ajouter une connexion Magic Link"
                                             },
                                             microsoft: {
                                                 description: "Autoriser les utilisateurs à se connecter avec Microsoft.",
@@ -1502,7 +1496,9 @@ export const console: ConsoleNS = {
                                 label: "Nom",
                                 placeholder: "Mon appli",
                                 validations: {
-                                    empty: "Ceci est un champ obligatoire."
+                                    empty: "Ceci est un champ obligatoire.",
+                                    reserved: "{{appName}} est un nom d'application réservé. Veuillez entrer un nom " +
+                                        "différent"
                                 }
                             }
                         },
