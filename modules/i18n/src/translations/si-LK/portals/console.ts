@@ -8584,6 +8584,42 @@ export const console: ConsoleNS = {
                         user: "පරිශීලක"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "වලංගුකරණ වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "අවම දිග උපරිම දිගට වඩා අඩු විය යුතුය.",
+                    uniqueChrMismatch: "අද්විතීය අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    consecutiveChrMismatch: "අඛණ්ඩ අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    invalidConfig: "ඉහත වින්‍යාසයන් සමඟ මුරපදයක් සෑදිය නොහැක."
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "මුරපද වලංගුකරණ වින්‍යාසය යාවත්කාලීන කිරීමට අසමත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "මුරපද වලංගු කිරීමේ වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "මුරපද වලංගු වින්‍යාසය",
+                description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToValidationConfig: "මුරපද වලංගුකරණය වෙත ආපසු යන්න"
             }
         },
         notifications: {

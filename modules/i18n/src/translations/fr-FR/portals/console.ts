@@ -8768,6 +8768,44 @@ export const console: ConsoleNS = {
                         user: "Utilisateurs"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de récupération"
+                    },
+                    genericError: {
+                        description: "Impossible de récupérer les données de configuration de validation.",
+                        message: "Quelque chose s'est mal passé"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "La longueur minimale doit être inférieure à la longueur maximale.",
+                    uniqueChrMismatch: "Le nombre de caractères uniques doit être inférieur à la longueur " +
+                        "minimale du mot de passe.",
+                    consecutiveChrMismatch: "Le nombre de caractères consécutifs doit être inférieur à la " +
+                        "longueur minimale du mot de passe.",
+                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus."
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de mise à jour"
+                    },
+                    genericError: {
+                        description: "Échec de la mise à jour de la configuration de validation du mot de passe.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Configuration de la validation du mot de passe mise à jour avec succès.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                pageTitle: "Configuration de la validation du mot de passe",
+                description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
+                goBackToApplication: "Revenir à l'application",
+                goBackToValidationConfig: "Revenir à la validation du mot de passe"
             }
         },
         notifications: {
