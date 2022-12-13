@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  WSO2 LLC. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
   ~  in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -153,15 +153,19 @@
         } else {
             String errorCode = String.valueOf(userNameValidityStatusCode);
             if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
-                errorMsg = "Invalid tenant domain - " + user.getTenantDomain() + ".";
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
+                    + " - " + user.getTenantDomain() + ".";
             } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
-                errorMsg = "Username '" + username + "' is already taken.";
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
+                    + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "already.taken.username");
             } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
-                errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+                errorMsg = user.getUsername() + " "
+                    + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.user.name.pick.valid.username");
             } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
-                errorMsg = "Invalid user store domain - " + user.getRealm() + ".";
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
             }
-            request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
+            request.setAttribute("errorMsg", errorMsg + " "
+                + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.contact.administrator.to.fix.issue"));
             request.setAttribute("errorCode", errorCode);
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
@@ -514,7 +518,8 @@
                             <% } else { %>
                             <div>
                                 <div class="field">
-                                    <label class="control-label">User Name
+                                    <label class="control-label">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                     </label>
                                     <input type="text" class="form-control"
                                            value="<%=Encode.forHtmlAttribute(username)%>" disabled>
