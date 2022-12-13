@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 503 - Service Unavailable
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.503"); %>
                 </div>
             </div>
         </layout:component>

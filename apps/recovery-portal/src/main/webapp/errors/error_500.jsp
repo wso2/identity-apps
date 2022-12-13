@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 500 - Internal Server Error
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.500"); %>
                 </div>
             </div>
         </layout:component>

@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error Occurred
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.occurred"); %>
                 </div>
             </div>
         </layout:component>

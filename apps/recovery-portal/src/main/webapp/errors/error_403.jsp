@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 403 - Forbidden
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.403"); %>
                 </div>
             </div>
         </layout:component>

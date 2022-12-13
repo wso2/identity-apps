@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 405 - Method Not Allowed
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.405"); %>
                 </div>
             </div>
         </layout:component>

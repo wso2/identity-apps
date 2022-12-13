@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 408 - Request Time Out
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.408"); %>
                 </div>
             </div>
         </layout:component>

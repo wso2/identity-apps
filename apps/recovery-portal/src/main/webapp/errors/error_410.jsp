@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 410 - Gone
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.410"); %>
                 </div>
             </div>
         </layout:component>

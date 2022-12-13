@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 504 - Gateway Timeout
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.504"); %>
                 </div>
             </div>
         </layout:component>

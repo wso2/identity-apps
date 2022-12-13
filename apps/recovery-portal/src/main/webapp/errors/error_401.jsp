@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 401 - Unauthorized
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.401"); %>
                 </div>
             </div>
         </layout:component>

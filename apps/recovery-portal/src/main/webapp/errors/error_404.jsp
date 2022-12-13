@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 404 - Page Not Found
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.404"); %>
                 </div>
             </div>
         </layout:component>

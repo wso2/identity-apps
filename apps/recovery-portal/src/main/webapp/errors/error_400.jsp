@@ -57,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   Error 400 - Bad Request
+                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.400"); %>
                 </div>
             </div>
         </layout:component>
