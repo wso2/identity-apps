@@ -14,5 +14,11 @@
 @loginPortalLoginCardBorderRadius: @defaultBorderRadius;
 @loginPortalProductTitleMargin: 2em 0 1em;
 @loginPortalProductTitleInHeaderMargin: 5px 0;
-@loginPortalExternalConnectionButtonBackgroundColor: #0000000a;
+@loginPortalExternalConnectionButtonBackgroundColor: @white;
 @loginPortalExternalConnectionButtonHoverBackgroundColor: @white;
+
+/*----------------------------
+      Keyboard Focus Outline
+------------------------------*/
+
+@focusVisibleOutline: 2px solid @focusBorderBlue;
