@@ -37,6 +37,13 @@ const httpClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
+/**
+ * Function to update the validation configurations.
+ *
+ * @param data - password validation configuration.
+ *
+ * @returns response - updated validation configurations.
+ */
 export const updateValidationConfigData = (data: ValidationFormInterface): Promise<ValidationDataInterface[]> => {
 
     const config: ValidationDataInterface[] = [
@@ -78,6 +85,11 @@ export const updateValidationConfigData = (data: ValidationFormInterface): Promi
         });
 };
 
+/**
+ * Hook to get the validation configurations.
+ *
+ * @returns The response of the validation configurations.
+ */
 export const useValidationConfigData = <Data = ValidationDataInterface[], Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
 

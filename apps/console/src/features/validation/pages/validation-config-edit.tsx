@@ -116,6 +116,44 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         setIsLoading(false);
     }, [ initialFormValues ]);
 
+    /**
+     * Handles the validation configurations fetch error.
+     */
+    useEffect(() => {
+
+        if (!ValidationConfigStatusFetchRequestError) {
+            return;
+        }
+
+        if (ValidationConfigStatusFetchRequestError.response
+            && ValidationConfigStatusFetchRequestError.response.data
+            && ValidationConfigStatusFetchRequestError.response.data.description) {
+            if (ValidationConfigStatusFetchRequestError.response.status === 404) {
+                return;
+            }
+            dispatch(addAlert({
+                description: ValidationConfigStatusFetchRequestError.response.data.description ??
+                    t("console:manage.features.validation.fetchValidationConfigData.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.validation.fetchValidationConfigData.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:manage.features.validation.fetchValidationConfigData" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:manage.features.validation.fetchValidationConfigData" +
+                ".genericError.message")
+        }));
+    }, [ ValidationConfigStatusFetchRequestError ]);
+
+
+    /**
+     * Initialize the initial form values.
+     */
     const initializeForm = (): void => {
 
         const passwordConf: ValidationDataInterface[] =
@@ -155,6 +193,15 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         });
     };
 
+    /**
+     * Return values of each validator.
+     *
+     * @param rules - set of configured rules.
+     * @param validatorName - name of the validator.
+     * @param attributeName - name of the attribute.
+     *
+     * @return the value of the configuration.
+     */
     const getValidationConfig = (rules: ValidationConfInterface[], validatorName: string,
         attributeName: string): string => {
 
@@ -173,41 +220,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         return null;
     };
-
-    /**
-     * Handles the validation configurations fetch error.
-     */
-    useEffect(() => {
-
-        if (!ValidationConfigStatusFetchRequestError) {
-            return;
-        }
-
-        if (ValidationConfigStatusFetchRequestError.response
-            && ValidationConfigStatusFetchRequestError.response.data
-            && ValidationConfigStatusFetchRequestError.response.data.description) {
-            if (ValidationConfigStatusFetchRequestError.response.status === 404) {
-                return;
-            }
-            dispatch(addAlert({
-                description: ValidationConfigStatusFetchRequestError.response.data.description ??
-                    t("console:manage.features.validation.fetchValidationConfigData.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.validation.fetchValidationConfigData.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("console:manage.features.validation.fetchValidationConfigData" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.validation.fetchValidationConfigData" +
-                ".genericError.message")
-        }));
-    }, [ ValidationConfigStatusFetchRequestError ]);
-
 
     /**
      * Handle back button click.
@@ -354,23 +366,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                             }
                                             enableReInitialize={ true }
                                         >
-                                            { /*<Field.Radio*/ }
-                                            { /*    key={ "validationType" }*/ }
-                                            { /*    ariaLabel={ "rulesEnabled" }*/ }
-                                            { /*    name={ "validationType" }*/ }
-                                            { /*    label={ "Rules" }*/ }
-                                            { /*    required={ false }*/ }
-                                            { /*    checked={ isRuleType }*/ }
-                                            { /*    listen={ (value: string) => {*/ }
-                                            { /*        setRuleType(true);*/ }
-                                            { /*    } }*/ }
-                                            { /*    width={ 16 }*/ }
-                                            { /*    data-testid={ `${ componentId }-rules-toggle` }*/ }
-                                            { /*/>*/ }
                                             { isRuleType &&
                                                 (<div className="validation-configurations-form">
                                                     <div className="criteria" >
-                                                        <label>Must be between</label>
+                                                        <Label for="minLength">Must be between</Label>
                                                         <Field.Input
                                                             ariaLabel="minLength"
                                                             inputType="number"
@@ -415,7 +414,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-length` }
                                                         />
-                                                        <label>and</label>
+                                                        <Label for="maxLength">and</Label>
                                                         <Field.Input
                                                             ariaLabel="maxLength"
                                                             inputType="number"
@@ -449,9 +448,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-max-length` }
                                                         />
-                                                        <label>characters</label>
+                                                        <Label for="length">characters</Label>
                                                     </div>
-                                                    <label className={ "labelName" }>Must contain at least</label>
+                                                    <Label for="characterSet" className={ "labelName" }>
+                                                        Must contain at least
+                                                    </Label>
                                                     <div className={ "criteria rule mt-3" }>
                                                         <Field.Input
                                                             ariaLabel="minNumbers"
@@ -486,7 +487,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             data-testid={ `${componentId}-min-numbers` }
                                                         >
                                                         </Field.Input>
-                                                        <label>numbers.</label>
+                                                        <Label for="numbers">numbers.</Label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -521,7 +522,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-upper-case-characters` }
                                                         />
-                                                        <label>upper-case characters.</label>
+                                                        <Label for="upperCaseCharacter">upper-case characters.</Label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -556,7 +557,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-lower-case-characters` }
                                                         />
-                                                        <label>lower-case characters.</label>
+                                                        <Label for="lowerCaseCharacter">lower-case characters.</Label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -591,7 +592,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-special-characters` }
                                                         />
-                                                        <label>special characters.</label>
+                                                        <Label for="specialCharacter">special characters.</Label>
                                                     </div>
                                                     <div className="criteria">
                                                         <Field.Checkbox
@@ -637,7 +638,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ !isUniqueChrValidatorEnabled }
                                                             data-testid={ `${componentId}-min-unique-chr` }
                                                         />
-                                                        <label>unique characters.</label>
+                                                        <Label for="uniqueCharacters">unique characters.</Label>
                                                     </div>
                                                     <div className="criteria">
                                                         <Field.Checkbox
@@ -684,49 +685,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ !isConsecutiveChrValidatorEnabled }
                                                             data-testid={ `${componentId}-max-consecutive-chr` }
                                                         />
-                                                        <label>consecutive characters.</label>
+                                                        <Label for="consecutiveCharacters">
+                                                            consecutive characters.
+                                                        </Label>
                                                     </div>
                                                 </div>)
                                             }
-
-                                            { /*<Field.Radio*/ }
-                                            { /*    key={ "validationType" }*/ }
-                                            { /*    ariaLabel={ "regexEnabled" }*/ }
-                                            { /*    name={ "validationType" }*/ }
-                                            { /*    label={ "Regex" }*/ }
-                                            { /*    required={ false }*/ }
-                                            { /*    checked={ !isRuleType }*/ }
-                                            { /*    listen={ () => {*/ }
-                                            { /*        setRuleType(false);*/ }
-                                            { /*    } }*/ }
-                                            { /*    width={ 16 }*/ }
-                                            { /*    data-testid={ `${ componentId }-regex-toggle` }*/ }
-                                            { /*/>*/ }
-
-                                            { /*{ !isRuleType &&*/ }
-                                            { /*    (<Field.Input*/ }
-                                            { /*        ariaLabel="JavaScript regex pattern"*/ }
-                                            { /*        inputType="name"*/ }
-                                            { /*        name="jsRegex"*/ }
-                                            { /*        label={*/ }
-                                            { /*            "JavaScript regex pattern"*/ }
-                                            { /*        }*/ }
-                                            { /*        required={ true }*/ }
-                                            { /*        placeholder={*/ }
-                                            { /*            "JavaScript regex pattern"*/ }
-                                            { /*        }*/ }
-                                            { /*        readOnly={ false }*/ }
-                                            { /*        validation={ (value) => validateRegex(value.toString().trim()) }*/ }
-                                            { /*        maxLength={*/ }
-                                            { /*            ApplicationManagementConstants*/ }
-                                            { /*                .FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH*/ }
-                                            { /*        }*/ }
-                                            { /*        minLength={ 1 }*/ }
-                                            { /*        data-testid={ `${ componentId }-js-regex-input` }*/ }
-                                            { /*        width={ 16 }*/ }
-                                            { /*    />)*/ }
-                                            { /*}*/ }
-
                                             <Field.Button
                                                 form={ FORM_ID }
                                                 size="small"
