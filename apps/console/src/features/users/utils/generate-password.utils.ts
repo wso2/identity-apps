@@ -139,12 +139,14 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
     const passwordConf: ValidationDataInterface[] =
         configs?.filter((data: ValidationDataInterface) => data.field === "password");
     if (passwordConf === undefined || passwordConf.length < 1) {
+
         return;
     }
     const config: ValidationDataInterface = passwordConf[0];
 
     const rules: ValidationConfInterface[] = config.rules;
     if (rules.length < 1) {
+
         return;
     }
 
@@ -177,11 +179,12 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
 /**
  * The following function is to get the value of a specific validator configuration..
  *
- * @param ruleSet - List of rules configured.
+ * @param ruleSet - list of rules configured.
+ * @param validator - validator name.
+ * @param attribute - attribute name.
  * @returns the value of the validator configuration.
  */
-export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
-                          attribute: string): string => {
+export const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
 
     const config: ValidationConfInterface[] = ruleSet?.filter((data: ValidationConfInterface) => {
         return data.validator === validator;
