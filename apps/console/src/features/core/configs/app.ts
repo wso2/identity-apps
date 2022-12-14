@@ -136,7 +136,7 @@ export class Config {
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
             backend: {
-                loadPath: (language, namespace) => generateBackendPaths(
+                loadPath: (language: string, namespace: string) => generateBackendPaths(
                     language,
                     namespace,
                     window[ "AppUtils" ]?.getConfig()?.appBase,

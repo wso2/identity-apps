@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -33,7 +33,7 @@ import { ValidationConfInterface, ValidationDataInterface, ValidationFormInterfa
  * Get an axios instance.
  *
  */
-const httpClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
