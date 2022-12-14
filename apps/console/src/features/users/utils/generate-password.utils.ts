@@ -16,9 +16,16 @@
  * under the License.
  */
 
+import {
+    ValidationConfInterface,
+    ValidationDataInterface,
+    ValidationFormInterface,
+    ValidationPropertyInterface
+} from "../../validation/models";
+
 /**
  * The following function is for generating random numbers in range of [0 - upperlimit).
- * 
+ *
  * @param upperLimit - upperlimit (exclusive) for random numbers range.
  * @returns the generated random number.
  */
@@ -28,7 +35,7 @@ const generateRandomNumbers = (upperLimit: number): number => {
 
 /**
  * The following function is to remove an array of strings from a string.
- * 
+ *
  * @param str - original string.
  * @param ignoredChars - array of strings to be removed.
  * @returns the modified original string by removing ignoredChars.
@@ -43,7 +50,7 @@ const removeIgnoredCharacters = (str: string, ignoredChars: string[]): string =>
 
 /**
  * The following function is to generate a random password according to the provided options.
- * 
+ *
  * @param length - length of password.
  * @param isAlphabetsLowercaseAllowed - whether to include lowercase alphabets.
  * @param isAlphabetsUppercaseAllowed - whether to include uppercase alphabets.
@@ -119,4 +126,75 @@ export const generatePassword = (
     }
 
     return generatedPassword;
+};
+
+/**
+ * The following function is to get the password validation configurations in the required format.
+ *
+ * @param configs - validation configurations for an organization.
+ * @returns the password validation configuration.
+ */
+export const getConfiguration = (configs: ValidationDataInterface[]): ValidationFormInterface => {
+
+    const passwordConf: ValidationDataInterface[] =
+        configs?.filter((data: ValidationDataInterface) => data.field === "password");
+    if (passwordConf === undefined || passwordConf.length < 1) {
+        return;
+    }
+    const config: ValidationDataInterface = passwordConf[0];
+
+    const rules: ValidationConfInterface[] = config.rules;
+    if (rules.length < 1) {
+        return;
+    }
+
+    return {
+        consecutiveCharacterValidatorEnabled:
+            getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") !== null,
+        field: "password",
+        maxConsecutiveCharacters: getConfig(rules, "RepeatedValidator", "consecutiveLength") ?
+            getConfig(rules, "RepeatedValidator", "consecutiveLength") : "1",
+        maxLength: getConfig(rules, "LengthValidator", "max.length") ?
+            getConfig(rules, "LengthValidator", "max.length") : "30",
+        minLength: getConfig(rules, "LengthValidator", "min.length") ?
+            getConfig(rules, "LengthValidator", "min.length") : "8",
+        minLowerCaseCharacters: getConfig(rules, "LowerCaseValidator", "min.length") ?
+            getConfig(rules, "LowerCaseValidator", "min.length") : "1",
+        minNumbers: getConfig(rules, "NumeralValidator", "min.length") ?
+            getConfig(rules, "NumeralValidator", "min.length") : "1",
+        minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
+            getConfig(rules, "SpecialCharacterValidator", "min.length") : "1",
+        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.length") ?
+            getConfig(rules, "UniqueCharacterValidator", "min.length") : "1",
+        minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
+            getConfig(rules, "UpperCaseValidator", "min.length") : "1",
+        type: "rules",
+        uniqueCharacterValidatorEnabled:
+            getConfig(rules, "UniqueCharacterValidator", "min.unique.character") !== null
+    };
+};
+
+/**
+ * The following function is to get the value of a specific validator configuration..
+ *
+ * @param ruleSet - List of rules configured.
+ * @returns the value of the validator configuration.
+ */
+export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
+                          attribute: string): string => {
+
+    const config: ValidationConfInterface[] = ruleSet?.filter((data: ValidationConfInterface) => {
+        return data.validator === validator;
+    });
+
+    if (config.length > 0) {
+        let properties: ValidationPropertyInterface[] = config[0].properties;
+
+        properties = properties.filter((data: ValidationPropertyInterface) => data.key === attribute);
+        if (properties.length > 0) {
+            return properties[0].value;
+        }
+    }
+
+    return null;
 };
