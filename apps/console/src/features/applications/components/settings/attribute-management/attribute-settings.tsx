@@ -128,7 +128,6 @@ export const getLocalDialectURI = (): string => {
 
     getAllLocalClaims(null)
         .then((response: Claim[]) => {
-            // setClaims(response.slice(0, 10));
             const retrieved: string = response.slice(0, 1)[0].dialectURI;
 
             if (!isEmpty(retrieved)) {
@@ -327,7 +326,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      * @returns If initially requested as mandatory.
      */
     const checkInitialRequestMandatory = (uri: string): boolean => {
-        const externalClaim: ExtendedExternalClaimInterface = externalClaims.find((claim) => claim.claimURI === uri);
+        const externalClaim: ExtendedExternalClaimInterface = externalClaims
+            .find((claim: ExtendedExternalClaimInterface) => claim.claimURI === uri);
 
         if (externalClaim){
             const requestURI: boolean = claimConfigurations.requestedClaims.find(
@@ -696,7 +696,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (isEmpty(localDialectURI)) {
             setLocalDialectURI(getLocalDialectURI());
         }
-        setLocalDialectURI(localDialectURI);
     };
 
     /**
@@ -966,7 +965,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }
             });
         } else {
-            unfilteredExternalClaimsGroupedByScopes.map((scope) => {
+            unfilteredExternalClaimsGroupedByScopes.map((scope: OIDCScopesClaimsListInterface) => {
                 scope?.claims.map((claim: ExtendedExternalClaimInterface) => {
                     if (claim.requested) {
                         const requestedClaim: RequestedClaimConfigurationInterface = {
