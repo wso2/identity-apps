@@ -29,6 +29,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
@@ -66,12 +67,12 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const orgType: OrganizationType = useGetOrganizationType();
 
-    const shouldSendRequest = useMemo(() => {
+    const shouldSendRequest: boolean = useMemo(() => {
         return (
             isFirstLevelOrg ||
             window[ "AppUtils" ].getConfig().organizationName ||
@@ -392,7 +393,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                         />
                                     </div>
                                     <div className="item">
-                                        <span className="ellipsis">{ resolveTriggerName() }</span>
+                                        <span className="ellipsis organization-name">{ resolveTriggerName() }</span>
                                         <Icon
                                             name="caret right"
                                             className="separator-icon"
