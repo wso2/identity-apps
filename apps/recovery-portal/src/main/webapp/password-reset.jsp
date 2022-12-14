@@ -221,7 +221,7 @@
 
                     $("#server-error-msg").remove();
                     var password = $("#reset-password").val();
-                    var password2 = $("#reset-password2").val();
+                    var password2 = $("#confirm-password").val();
                     var error_msg = $("#error-msg");
 
                     if (!password || 0 === password.length) {
@@ -263,11 +263,11 @@
                 if(password2) {
                     password2 = false;
                     document.getElementById("confirmPasswordShowHide").classList.remove("slash");
-                    document.getElementById("reset-password2").setAttribute("type","text");
+                    document.getElementById("confirm-password").setAttribute("type","text");
                 } else{
                     password2 = true;
                     document.getElementById("confirmPasswordShowHide").classList.add("slash");
-                    document.getElementById("reset-password2").setAttribute("type","password");
+                    document.getElementById("confirm-password").setAttribute("type","password");
                 }
             }
         </script>
