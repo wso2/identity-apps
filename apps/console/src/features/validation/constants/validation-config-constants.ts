@@ -22,8 +22,7 @@
 export class ValidationConfigConstants {
 
     /**
-     * Self Registration Form element constraints.
-     * @type {Record<string, string | number>}
+     * Constants for validation configurations.
      */
     public static readonly VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS: {
         MIN_LENGTH: number,
@@ -44,6 +43,9 @@ export class ValidationConfigConstants {
 
 }
 
+/**
+ * Error constants for validation configuration.
+ */
 export class ValidationManagementConstants {
     public static readonly CONFIGURATION_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "validation configurations.";
