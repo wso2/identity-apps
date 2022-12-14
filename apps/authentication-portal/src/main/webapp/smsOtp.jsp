@@ -120,14 +120,14 @@
                             <%-- Token Pin --%>
                             <% if (request.getParameter("screenvalue") != null) { %>
                             <div class="field">
-                                <label for="password">
+                                <label for="OTPcode">
                                     <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%><%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
                                 </label>
                                 <input type="password" id='OTPcode' name="OTPcode"
                                         size='30'/>
                             <% } else { %>
                             <div class="field">
-                                <label for="password"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%></label>
+                                <label for="OTPcode"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%></label>
                                 <input type="password" id='OTPcode' name="OTPcode"
                                 size='30'/>
                             <% } %>
