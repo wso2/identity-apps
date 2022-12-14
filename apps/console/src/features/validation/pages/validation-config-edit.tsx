@@ -75,7 +75,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
-    const [ isRuleType, setRuleType ] = useState<boolean>(true);
+    const [ isRuleType ] = useState<boolean>(true);
     const [ isUniqueChrValidatorEnabled, setUniqueChrValidatorEnabled ] = useState<boolean>(false);
     const [ isConsecutiveChrValidatorEnabled, setConsecutiveChrValidatorEnabled ] = useState<boolean>(false);
     const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(undefined);
@@ -200,7 +200,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * @param validatorName - name of the validator.
      * @param attributeName - name of the attribute.
      *
-     * @return the value of the configuration.
+     * @returns the value of the configuration.
      */
     const getValidationConfig = (rules: ValidationConfInterface[], validatorName: string,
         attributeName: string): string => {

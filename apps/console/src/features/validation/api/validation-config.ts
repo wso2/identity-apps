@@ -33,7 +33,7 @@ import { ValidationConfInterface, ValidationDataInterface, ValidationFormInterfa
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 

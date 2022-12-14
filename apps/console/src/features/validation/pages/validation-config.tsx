@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useRef } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Label, Ref } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
@@ -39,7 +39,7 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
 
-    const pageContextRef = useRef(null);
+    const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
 
     const { t } = useTranslation();
 
