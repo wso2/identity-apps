@@ -163,13 +163,13 @@
                             %>
 
                            <div class="field">
-                                <label for="reset-password2">
+                                <label for="confirm-password">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
                                 </label>
                                 <div class="ui right icon input">
                                     <input
-                                        id="reset-password2"
-                                        name="reset-password2"
+                                        id="confirm-password"
+                                        name="confirm-password"
                                         type="password"
                                         data-match="reset-password"
                                         required=""
