@@ -709,7 +709,7 @@ export interface ConsoleNS {
                                             },
                                             magicLink: {
                                                 description: string;
-                                                heading: string;                                           
+                                                heading: string;
                                             },
                                             microsoft: {
                                                 description: string;
@@ -5032,6 +5032,42 @@ export interface ConsoleNS {
                 confirmationModal?: {
                     removeUser?: Confirmation;
                 };
+            };
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                },
+                validationError: {
+                    minMaxMismatch: string;
+                    uniqueChrMismatch: string;
+                    consecutiveChrMismatch: string;
+                    invalidConfig: string;
+                }
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                pageTitle: string;
+                description: string;
+                goBackToApplication: string;
+                goBackToValidationConfig: string;
             };
         };
         notifications: {

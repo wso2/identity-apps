@@ -39,6 +39,7 @@ import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
 import { UsersResourceEndpointsInterface } from "../../users";
 import { UserstoreResourceEndpointsInterface } from "../../userstores";
+import { ValidationServiceEndpointsInterface } from "../../validation/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -313,7 +314,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     IDPResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
-    OrganizationResourceEndpointsInterface {
+    OrganizationResourceEndpointsInterface,
+    ValidationServiceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

@@ -19,10 +19,10 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { 
-    GovernanceCategoryForOrgsInterface, 
-    GovernanceConnectorCategoryInterface, 
-    GovernanceConnectorUtils 
+import {
+    GovernanceCategoryForOrgsInterface,
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils
 } from "../../server-configurations";
 
 /**
@@ -251,7 +251,7 @@ export class AppConstants {
             .set("APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications`)
             .set("APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates`)
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
-            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath() 
+            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath()
             }/applications/:id:tabName`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
@@ -322,14 +322,16 @@ export class AppConstants {
             .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
             .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`)
             .set("MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account`)
-            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`);
+            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`)
+            .set("VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration`)
+            .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`);
     }
 
     /**
      * Filter governance connectors for the side panel for a sub organization.
 
      * @param governanceConnectorCategories - List of governance connector categories to evaluate.
-     * 
+     *
      * @returns Filtered governance connector categories.
      */
     public static filterGoverananceConnectors(

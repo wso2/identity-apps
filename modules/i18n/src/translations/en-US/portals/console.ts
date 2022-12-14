@@ -10235,6 +10235,44 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve validation configuration data.",
+                        message: "Something went wrong"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "Minimum length should be less than maximum length.",
+                    uniqueChrMismatch: "Number of unique characters should be less than tha minimum length of " +
+                        "the password.",
+                    consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
+                        "length of the password.",
+                    invalidConfig: "Unable to create password with the above configurations."
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update password validation configuration.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated password validation configuration.",
+                        message: "Update successful"
+                    }
+                },
+                pageTitle: "Password validation configuration",
+                description: "Customize password validation rules for your users.",
+                goBackToApplication: "Go back to application",
+                goBackToValidationConfig: "Go back to password validation"
             }
         },
         notifications: {
