@@ -21,6 +21,6 @@
 
 <div class="product-title" data-testid="product-title">
     <div class="theme-icon inline auto transparent product-logo portal-logo">
-        <img src="libs/themes/default/assets/images/branding/logo.svg" alt="WSO2 Identity Server" />
+        <img src="libs/themes/default/assets/images/branding/logo.svg" alt="WSO2 Identity Server Logo" />
     </div>
 </div>

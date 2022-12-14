@@ -95,7 +95,7 @@
                         <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
                             <div class="ui negative message" hidden="hidden" id="error-msg"></div>
                             <div class="field">
-                                <label>
+                                <label for="reset-password">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Enter.new.password")%>
                                 </label>
@@ -163,7 +163,7 @@
                             %>
 
                            <div class="field">
-                                <label>
+                                <label for="reset-password2">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
                                 </label>
                                 <div class="ui right icon input">
