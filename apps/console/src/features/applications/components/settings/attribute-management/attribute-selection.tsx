@@ -816,7 +816,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 type="error"
                                                 content={
                                                     t("console:develop.features.applications.notifications." + 
-                                                    "updateClaimConfig" + ".error.description") 
+                                                    "updateClaimConfig.error.description") 
                                                 }
                                             />) 
                                         }
