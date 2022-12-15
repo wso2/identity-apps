@@ -220,9 +220,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const frontChannelLogoutUrl: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const enableRequestObjectSignatureValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const scopeValidator: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
+    const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
     const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
+    const [ isFormPristine, setIsFormPristine ] = useState<boolean>(true);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -1205,27 +1209,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const renderOIDCConfigFields = (): ReactElement => (
         <>
-
             {
-                !readOnly && (
-                    <Grid.Row columns={ 1 } className="sticky-bar">
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <StickyBar top={ 124 }>
-                                <Button
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    loading={ isLoading }
-                                    disabled={ isLoading }
-                                    data-testid={ `${ testId }-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
-                            </StickyBar>
-
-                        </Grid.Column>
-                    </Grid.Row>
+                !readOnly &&  (
+                    <StickyBar updateButtonRef={ updateRef } formRef={ formRef } isFormPristine={ isFormPristine }>
+                        <Button
+                            primary
+                            type="submit"
+                            size="small"
+                            className="form-button"
+                            loading={ isLoading }
+                            disabled={ isLoading }
+                            data-testid={ `${ testId }-submit-button` }
+                        >
+                            { t("common:update") }
+                        </Button>
+                    </StickyBar>
                 )
             }
             <Grid.Row columns={ 2 }>
@@ -2403,6 +2401,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
+            {
+                !readOnly && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <span ref={ updateRef }></span>
+                            <Button
+                                primary
+                                type="submit"
+                                size="small"
+                                className="form-button"
+                                loading={ isLoading }
+                                disabled={ isLoading }
+                                data-testid={ `${ testId }-submit-button` }
+                            >
+                                { t("common:update") }
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
         </>
     );
 
@@ -2778,7 +2796,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     return (
         !isLoading && metadata ?
-            (
+            (<>
                 <Forms
                     onSubmit={ handleFormSubmit }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
@@ -2795,6 +2813,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                         }
                     } }
+                    onPristineChange={ (isPristine: boolean) => {
+                        setIsFormPristine(isPristine);
+                    } }
+                    ref={ formRef }
                 >
                     <Grid>
                         {
@@ -2969,12 +2991,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     { showReactiveConfirmationModal && renderReactivateConfirmationModal() }
                     { showLowExpiryTimesConfirmationModal && lowExpiryTimesConfirmationModal }
                 </Forms>
+            </>
             ) :
             (
                 <Container>
                     <ContentLoader inline="centered" active/>
                 </Container>
             )
+
     );
 };
 
