@@ -33,13 +33,11 @@ import {
 } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
-    AlertLevels,
     IdentifiableComponentInterface,
     RouteInterface,
     TenantListInterface
 } from "@wso2is/core/models";
 import {
-    addAlert,
     setDeploymentConfigs,
     setServiceResourceEndpoints,
     setSignIn,
@@ -108,9 +106,7 @@ import {
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { getOrganization } from "./features/organizations/api";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
-import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
     GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
