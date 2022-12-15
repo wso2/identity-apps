@@ -196,6 +196,7 @@ export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
         let properties: ValidationPropertyInterface[] = config[0].properties;
 
         properties = properties.filter((data: ValidationPropertyInterface) => data.key === attribute);
+
         if (properties.length > 0) {
             return properties[0].value;
         }
