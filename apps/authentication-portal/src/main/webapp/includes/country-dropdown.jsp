@@ -22,8 +22,6 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ include file="../includes/localize.jsp" %>
-
 <%!
     /**
      * Retrieve all county codes and country display names and

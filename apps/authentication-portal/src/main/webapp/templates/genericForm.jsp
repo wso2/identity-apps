@@ -21,7 +21,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <jsp:directive.include file="../includes/init-url.jsp"/>
-<%@include file="../localize.jsp" %>
 
 <div class="text-left">
     <div>

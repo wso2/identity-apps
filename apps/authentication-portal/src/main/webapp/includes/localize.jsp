@@ -17,6 +17,7 @@
 --%>
 
 <%@ page import="java.util.ResourceBundle" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
