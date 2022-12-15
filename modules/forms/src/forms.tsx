@@ -17,7 +17,7 @@
  */
 
 import React, { useEffect, useRef, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Ref } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField,
     isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
@@ -35,6 +35,7 @@ interface FormPropsInterface {
     ref?: React.Ref<any>;
     onSubmitError?: (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => void;
     [ key: string ]: any;
+    onPristineChange?: (isPristine: boolean) => void;
 }
 
 /**
@@ -43,7 +44,16 @@ interface FormPropsInterface {
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
     React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
 
-        const { onSubmit, resetState, submitState, onChange, onSubmitError, children, ...rest } = props;
+        const {
+            onSubmit,
+            resetState,
+            submitState,
+            onChange,
+            onSubmitError,
+            onPristineChange,
+            children,
+            ...rest
+        } = props;
 
         // This holds the values of the form fields
         const [ form, setForm ] = useState(new Map<string, FormValue>());
@@ -82,6 +92,24 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         // The lock to be used by `initMutex`
         let locked = false;
 
+        useEffect(() => {
+            if (!onPristineChange) {
+                return;
+            }
+
+            let isPristine: boolean = true;
+
+            for (const [ , value ] of touchedFields) {
+                if (value) {
+                    isPristine = false;
+
+                    break;
+                }
+            }
+
+            onPristineChange(isPristine);
+        }, [ touchedFields ]);
+
         /**
          * Calls the onChange prop
          */
@@ -93,7 +121,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * This function calls the listener prop of the field that is calling the `handleChange` function.
-         * 
+         *
          * @param name - The name of the field.
          * @param newForm - Form values.
          */
@@ -112,7 +140,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Handler for the onChange event.
-         * 
+         *
          * @param value - New value.
          * @param name - The name of the field.
          */
@@ -134,7 +162,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * This toggles the boolean value.
-         * 
+         *
          * @param name - Field name.
          */
         const handleToggle = (name: string) => {
@@ -152,7 +180,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Handler for the onChange event of checkboxes.
-         * 
+         *
          * @param value - New value.
          * @param name - The name of the field.
          */
@@ -181,7 +209,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * This function checks if a form field is valid.
-         * 
+         *
          * @param name - The name of the field.
          * @param requiredFieldsParam - A map of required fields.
          * @param validFieldsParam - A map of valid fields.
@@ -226,7 +254,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField))
                 && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
-            ) {              
+            ) {
                 await inputField.validation(form.get(name) as string, validation, new Map(form));
             }
             validFieldsParam.set(name, {
@@ -266,7 +294,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Initialize form.
-         * 
+         *
          * @param isReset - Whether reset or not.
          */
         const init = (isReset: boolean) => {
@@ -360,7 +388,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
             /**
              * This removes all the redundant elements from the passed Map object and returns the stripped Map object.
-             * 
+             *
              * @param iterable - A Map object which should have redundant elements removed
              * @param neededFields - A Set object containing the names of the needed fields
              *
@@ -403,7 +431,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         /**
          * This is a mutex that wraps the `init` function.
          * This prevents `init` from being called twice when reset is triggered.
-         * 
+         *
          * @param lock - A boolean value that specifies if the mutex should be locked or not.
          */
         const initMutex = (lock: boolean) => {
@@ -429,7 +457,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Handles reset button click.
-         * 
+         *
          * @param event - The button click event.
          */
         const handleReset = (event: React.MouseEvent) => {
@@ -495,7 +523,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Handler for onSubmit event.
-         * 
+         *
          * @param event - The form submit event.
          */
         const handleSubmit = (event: React.FormEvent) => {
@@ -505,7 +533,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         /**
          * Checks if the field has any errors (required but not filled | not validated).
-         * 
+         *
          * @param inputField - The form field to be checked.
          */
         const checkError = (inputField: FormField): Error => {
@@ -516,8 +544,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 && !modifyingFields.get(inputField.name)
                 && (isSubmitting
                     || (touchedFields.get(inputField.name)
-                        && inputField.displayErrorOn === "blur"))) {                          
-                return {                  
+                        && inputField.displayErrorOn === "blur"))) {
+                return {
                     errorMessages: [ inputField.requiredErrorMessage ],
                     isError: true
                 };
@@ -567,7 +595,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * Parses the children and
          * 1.passes form event handler functions as props to all the Field components.
          * 2.extracts the props of the Field components.
-         * 
+         *
          * @param elements - Children to be passed.
          * @param fields - The list of fields to be passed.
          */
@@ -612,7 +640,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         const mutatedChildren: React.ReactElement[] = children ? [ ...parseChildren(children, formFields) ] : null;
 
-        return <Form { ...rest } noValidate ref={ ref } onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
+        return (
+            <Ref innerRef={ ref }>
+                <Form { ...rest } noValidate onSubmit={ handleSubmit }>{ mutatedChildren }</Form>
+            </Ref>
+        );
     });
 
 Forms.defaultProps = {
