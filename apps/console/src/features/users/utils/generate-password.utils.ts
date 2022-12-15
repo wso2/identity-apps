@@ -138,6 +138,7 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
 
     const passwordConf: ValidationDataInterface[] =
         configs?.filter((data: ValidationDataInterface) => data.field === "password");
+
     if (passwordConf === undefined || passwordConf.length < 1) {
 
         return;
@@ -145,6 +146,7 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
     const config: ValidationDataInterface = passwordConf[0];
 
     const rules: ValidationConfInterface[] = config.rules;
+
     if (rules.length < 1) {
 
         return;
@@ -155,21 +157,21 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
             getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") !== null,
         field: "password",
         maxConsecutiveCharacters: getConfig(rules, "RepeatedValidator", "consecutiveLength") ?
-            getConfig(rules, "RepeatedValidator", "consecutiveLength") : "1",
+            getConfig(rules, "RepeatedValidator", "consecutiveLength") : "0",
         maxLength: getConfig(rules, "LengthValidator", "max.length") ?
             getConfig(rules, "LengthValidator", "max.length") : "30",
         minLength: getConfig(rules, "LengthValidator", "min.length") ?
             getConfig(rules, "LengthValidator", "min.length") : "8",
         minLowerCaseCharacters: getConfig(rules, "LowerCaseValidator", "min.length") ?
-            getConfig(rules, "LowerCaseValidator", "min.length") : "1",
+            getConfig(rules, "LowerCaseValidator", "min.length") : "0",
         minNumbers: getConfig(rules, "NumeralValidator", "min.length") ?
-            getConfig(rules, "NumeralValidator", "min.length") : "1",
+            getConfig(rules, "NumeralValidator", "min.length") : "0",
         minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
-            getConfig(rules, "SpecialCharacterValidator", "min.length") : "1",
+            getConfig(rules, "SpecialCharacterValidator", "min.length") : "0",
         minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.length") ?
             getConfig(rules, "UniqueCharacterValidator", "min.length") : "1",
         minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
-            getConfig(rules, "UpperCaseValidator", "min.length") : "1",
+            getConfig(rules, "UpperCaseValidator", "min.length") : "0",
         type: "rules",
         uniqueCharacterValidatorEnabled:
             getConfig(rules, "UniqueCharacterValidator", "min.unique.character") !== null
