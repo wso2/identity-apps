@@ -811,13 +811,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 </Table.Body>
                                             </Table>
                                         </Grid.Row>
-                                        { duplicatedMappingValues.length > 0 && (<Message 
-                                            type="error"
-                                            content={ 
-                                                t("console:develop.features.applications.notifications."
-                                                +"updateClaimConfig" + ".error.description", 
-                                                { description: "Mapped user attributes cannot be duplicated." }) }
-                                        />) }
+                                        { duplicatedMappingValues.length > 0 && (
+                                            <Message 
+                                                type="error"
+                                                content={
+                                                    t("console:develop.features.applications.notifications." + 
+                                                    "updateClaimConfig" + ".error.description") 
+                                                }
+                                            />) 
+                                        }
                                         <Segment className="user-role-edit-header-segment attributes">
                                             <Grid.Row>
                                                 { selectedDialect.localDialect

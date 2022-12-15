@@ -2770,7 +2770,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "අනුරූප පරිශීලක ගුණාංග අනුපිටපත් විය නොහැක",
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
