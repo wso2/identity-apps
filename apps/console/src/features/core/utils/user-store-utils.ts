@@ -72,7 +72,7 @@ export class SharedUserStoreUtils {
      * @param regExValue - regEx value.
      */
     public static validateInputAgainstRegEx(inputValue: string, regExValue: string): boolean {
-        const regEx = new RegExp(regExValue);
+        const regEx: RegExp = new RegExp(regExValue);
 
         return regEx.test(inputValue);
     }
@@ -148,22 +148,24 @@ export class SharedUserStoreUtils {
         if(passwordConfig.consecutiveCharacterValidatorEnabled &&
             inputValue.match(consecutiveChrPattern)) {
             const long: string = inputValue.match(consecutiveChrPattern).sort(
-                function(a, b) {
+                function(a: string, b: string) {
                     return b.length - a.length;
                 }
             ) [0];
+
             if (long.length > Number(passwordConfig.maxConsecutiveCharacters)) {
                 return false;
             }
         }
+
         return true;
     }
 
     /**
      * The following method fetch the user store ids list.
      *
-     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
-     * @returns {Promise<string[] | void>}
+     * @param userstores - Externally provided usertores list.
+     * @returns userstores list
      */
     public static async getUserStoreIds(userstores?: UserStoreListItem[]): Promise<string[] | void> {
 

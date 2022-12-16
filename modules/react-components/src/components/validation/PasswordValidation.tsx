@@ -82,7 +82,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
     const lowerCaseLetters = /[a-z]/g;
     const upperCaseLetters = /[A-Z]/g;
     const numbers = /[0-9]/g;
-    const chars = /[!@#$%^&*~]/g;
+    const chars = /[!@#$%^&*)(+=._-]/g;
     const consecutive = /([^])\1+/g;
     const EMPTY_STRING = "";
 
