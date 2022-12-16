@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ClaimConfigurationInterface } from "./application";
+
 /**
  * Interface for the Application Management feature resource endpoints.
  */
@@ -23,4 +25,8 @@ export interface ApplicationsResourceEndpointsInterface {
     applications: string;
     myAccountConfigMgt: string;
     requestPathAuthenticators: string;
+}
+
+export interface UpdateClaimConfiguration {
+    claimConfiguration: ClaimConfigurationInterface;
 }
