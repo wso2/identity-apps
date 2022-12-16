@@ -2842,7 +2842,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "Les attributs utilisateur mappés ne peuvent pas être dupliqués.",
                             message: "Erreur de mise à jour"
                         },
                         genericError: {

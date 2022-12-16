@@ -2792,7 +2792,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "Mapped user attributes cannot be duplicated.",
                             message: "Update error"
                         },
                         genericError: {

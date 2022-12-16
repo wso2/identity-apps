@@ -57,7 +57,8 @@ import {
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface
+    SubjectConfigInterface,
+    UpdateClaimConfiguration
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -91,7 +92,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Id of the application.
      */
@@ -166,8 +167,8 @@ function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimI
 /**
  * Attribute settings component.
  */
-export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props: AttributeSelectionPropsInterface
+export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterface> = (
+    props: AttributeSettingsPropsInterface
 ): ReactElement => {
 
     const {
@@ -226,7 +227,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
     const [ isUserAttributesLoading, setUserAttributesLoading ] = useState<boolean>(undefined);
-
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -235,6 +235,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         data: OIDCScopeList,
         isLoading: isOIDCScopeListLoading
     } = useOIDCScopesList();
+
+    const [ duplicatedMappingValues,setDuplicatedMappingValues ] = useState<Array<string>>([]);
 
     /**
      * Get local mapped claim display name for external claims
@@ -358,7 +360,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 .find((requestClaims: RequestedClaimConfigurationInterface) =>
                     requestClaims?.claim?.uri === externalClaim.mappedLocalClaimURI);
 
-            return requestURI !== undefined ? true : false;
+            return requestURI !== undefined;
         }
 
         return false;
@@ -538,8 +540,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     }
                 };
 
-                if (!(claimMappingList
-                    .some((claimMap: ExtendedClaimMappingInterface) => claimMap.localClaim.uri === claim.claimURI))) {
+                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) => 
+                    claimMapping.localClaim.uri === claim.claimURI))) {
                     claimMappingList.push(newClaimMapping);
                 }
                 setClaimMapping(claimMappingList);
@@ -636,15 +638,41 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      *
      * @param claimURI - URI of the mapping updated
      * @param mappedValue - mapped claims value
+     * @param isUpdatingOnInputChange - whether the updating happens on mapping attribute input change
+     * 
      */
-    const updateClaimMapping = (claimURI: string, mappedValue: string) => {
+    const updateClaimMapping = (claimURI: string, mappedValue: string, isUpdatingOnInputChange?: boolean) => {
         const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
+
+        const alreadySeen: Record<string,boolean> = {};
+        const duplicatedMappings: Array<string> = [];
 
         claimMappingList.forEach((mapping: ExtendedClaimMappingInterface) => {
             if (mapping.localClaim.uri === claimURI) {
                 mapping.applicationClaim = mappedValue;
             }
+
+            /**
+             * Detect duplicate values only when updating the mapping attributes. 
+             * This check will not be executed on initial loading of mapping attributes.
+             */
+            if (isUpdatingOnInputChange) {
+                if (alreadySeen[mapping.applicationClaim]) {
+                    duplicatedMappings.push(mapping.applicationClaim);
+                } else {
+                    alreadySeen[mapping.applicationClaim] = true;
+                }
+            }
         });
+
+        /** 
+         * Update state with duplicate values for mapping attributes.
+         * This state is passed to children components for identifying duplicate values.
+         */
+        if (isUpdatingOnInputChange) {
+            setDuplicatedMappingValues(duplicatedMappings);
+        }
+
         setClaimMapping(claimMappingList);
     };
 
@@ -891,7 +919,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      *  Generate final claim mapping list.
      */
     const getFinalMappingList = ((): ExtendedClaimMappingInterface[] => {
-        const claimMappingFinal: any[] = [];
+        const claimMappingFinal: ExtendedClaimMappingInterface[] = [];
         let returnList: boolean = true;
 
         setClaimMappingError(false);
@@ -929,7 +957,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      */
     const submitUpdateRequest = (claimMappingFinal: ExtendedClaimMappingInterface[]) => {
         let isSubjectSelectedWithoutMapping: boolean = false;
-        const RequestedClaims: any[] = [];
+        const RequestedClaims: RequestedClaimConfigurationInterface[] = [];
         const subjectClaim: AppClaimInterface = advanceSettingValues?.subject?.claim;
 
         if (selectedDialect.localDialect) {
@@ -1003,42 +1031,21 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         // Generate Final Submit value
-        const submitValue: {
-            claimConfiguration: {
-                claimMappings: ExtendedClaimMappingInterface[];
-                dialect: string;
-                requestedClaims: any[];
-                role: {
-                    claim: {
-                        uri: AppClaimInterface;
-                    };
-                    includeUserDomain: boolean;
-                    mappings: RoleMappingInterface[];
-                }; 
-                subject: {
-                    claim: {
-                        uri: AppClaimInterface
-                    },
-                    includeTenantDomain: boolean,
-                    includeUserDomain: boolean,
-                    useMappedLocalSubject: boolean
-                }
-            };
-        } = {
+        const submitValue: UpdateClaimConfiguration = {
             claimConfiguration: {
                 claimMappings: claimMappingFinal.length > 0 ? claimMappingFinal : [],
                 dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
                 requestedClaims: RequestedClaims,
                 role: {
                     claim: {
-                        uri: advanceSettingValues?.role.claim
+                        uri: advanceSettingValues?.role.claim.uri
                     },
                     includeUserDomain: advanceSettingValues?.role.includeUserDomain,
                     mappings: roleMapping.length > 0 ? roleMapping : []
                 },
                 subject: {
                     claim: {
-                        uri: advanceSettingValues?.subject.claim
+                        uri: advanceSettingValues?.subject.claim.uri
                     },
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
                     includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
@@ -1181,6 +1188,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                                 setUserAttributesLoading={ setUserAttributesLoading }
                                                 onlyOIDCConfigured={ onlyOIDCConfigured }
                                                 data-testid={ `${ testId }-attribute-selection` }
+                                                duplicatedMappingValues={ duplicatedMappingValues }
                                             />
                                         )
                                 }
