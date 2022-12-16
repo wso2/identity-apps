@@ -101,7 +101,9 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     useEffect(() => {
 
-        getConfigurations();
+        if (passwordValidationConfig.showPasswordValidation) {
+            getConfigurations();
+        }
     }, [])
 
     /**
@@ -123,20 +125,24 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const handleSubmit = (): void => {
 
-        if (isValidPassword) {
+        if (!passwordValidationConfig.showPasswordValidation) {
             setShowConfirmationModal(true);
         } else {
-            onAlertFired({
-                description: t(
-                    "myAccount:components.changePassword.forms.passwordResetForm.validations.invalidNewPassword." +
-                    "description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "myAccount:components.changePassword.forms.passwordResetForm.validations." +
-                    "invalidNewPassword.message"
-                )
-            });
+            if (isValidPassword) {
+                setShowConfirmationModal(true);
+            } else {
+                onAlertFired({
+                    description: t(
+                        "myAccount:components.changePassword.forms.passwordResetForm.validations.invalidNewPassword." +
+                        "description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "invalidNewPassword.message"
+                    )
+                });
+            }
         }
     };
 
