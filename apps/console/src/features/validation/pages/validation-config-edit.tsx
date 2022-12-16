@@ -369,7 +369,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                             { isRuleType &&
                                                 (<div className="validation-configurations-form">
                                                     <div className="criteria" >
-                                                        <Label for="minLength">Must be between</Label>
+                                                        <label>Must be between</label>
                                                         <Field.Input
                                                             ariaLabel="minLength"
                                                             inputType="number"
@@ -414,7 +414,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-length` }
                                                         />
-                                                        <Label for="maxLength">and</Label>
+                                                        <label>and</label>
                                                         <Field.Input
                                                             ariaLabel="maxLength"
                                                             inputType="number"
@@ -448,11 +448,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-max-length` }
                                                         />
-                                                        <Label for="length">characters</Label>
+                                                        <label>characters</label>
                                                     </div>
-                                                    <Label for="characterSet" className={ "labelName" }>
+                                                    <label className={ "labelName" }>
                                                         Must contain at least
-                                                    </Label>
+                                                    </label>
                                                     <div className={ "criteria rule mt-3" }>
                                                         <Field.Input
                                                             ariaLabel="minNumbers"
@@ -487,7 +487,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             data-testid={ `${componentId}-min-numbers` }
                                                         >
                                                         </Field.Input>
-                                                        <Label for="numbers">numbers.</Label>
+                                                        <label>numbers.</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -522,7 +522,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-upper-case-characters` }
                                                         />
-                                                        <Label for="upperCaseCharacter">upper-case characters.</Label>
+                                                        <label>upper-case characters.</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -557,7 +557,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-lower-case-characters` }
                                                         />
-                                                        <Label for="lowerCaseCharacter">lower-case characters.</Label>
+                                                        <label>lower-case characters.</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -592,7 +592,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-special-characters` }
                                                         />
-                                                        <Label for="specialCharacter">special characters.</Label>
+                                                        <label>special characters.</label>
                                                     </div>
                                                     <div className="criteria">
                                                         <Field.Checkbox
@@ -638,7 +638,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ !isUniqueChrValidatorEnabled }
                                                             data-testid={ `${componentId}-min-unique-chr` }
                                                         />
-                                                        <Label for="uniqueCharacters">unique characters.</Label>
+                                                        <label>unique characters.</label>
                                                     </div>
                                                     <div className="criteria">
                                                         <Field.Checkbox
@@ -685,9 +685,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ !isConsecutiveChrValidatorEnabled }
                                                             data-testid={ `${componentId}-max-consecutive-chr` }
                                                         />
-                                                        <Label for="consecutiveCharacters">
-                                                            consecutive characters.
-                                                        </Label>
+                                                        <label>consecutive characters.</label>
                                                     </div>
                                                 </div>)
                                             }

@@ -18,7 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
-import React, { FunctionComponent, Suspense, useState } from "react";
+import { PasswordValidation } from "@wso2is/react-components";
+import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
@@ -31,6 +32,8 @@ import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { useEndUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+import { fetchPasswordValidationConfig } from "../../api";
+import { ValidationFormInterface } from "../../models";
 
 /**
  * Import password strength meter dynamically.
@@ -80,6 +83,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const [ password, setPassword ] = useState<string>("");
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
+    const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -89,67 +93,14 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const dispatch = useDispatch();
 
     const endUserSession = useEndUserSession();
-    const EMPTY_STRING = "";
-    
+
     /**
-     * Returns Icon Props which are needed to set state of Password Validation Icons.
+     * Get the configurations.
      */
-    const getIconProps = (id : string) : IconProps =>{
-                
-        const DEFAULT: IconProps = {
-            color : "grey" as SemanticCOLORS,
-            cssClassName : "circle thin"
-        };
+    useEffect(() => {
 
-        const POSITIVE: IconProps = {
-            color : "green" as SemanticCOLORS,
-            cssClassName : "check circle"
-        };
-
-        const NEGATIVE: IconProps = {
-            color : "red" as SemanticCOLORS,
-            cssClassName : "remove circle"
-        };
-
-        const lowerCaseLetters = /[a-z]/g;
-        const upperCaseLetters = /[A-Z]/g;
-        const numbers = /[0-9]/g;
-        const chars = /[!@#$%^&*~]/g;
-
-        if (id === "password-validation-length"){
-            if (password === EMPTY_STRING) {
-                return DEFAULT;
-            } else if (password.length > 8) {
-                return POSITIVE;
-            } else {
-                return NEGATIVE;
-            }
-        } else if (id === "password-validation-case") {
-            if (password === EMPTY_STRING) {
-                return DEFAULT;
-            } else if (password.match(lowerCaseLetters) && password.match(upperCaseLetters)) {
-                return POSITIVE;
-            } else {
-                return NEGATIVE;
-            }
-        } else if (id === "password-validation-number") {
-            if (password === EMPTY_STRING) {
-                return DEFAULT;
-            } else if (password.match(numbers)) {
-                return POSITIVE;
-            } else {
-                return NEGATIVE;
-            }
-        } else if (id === "password-validation-chars") {
-            if (password === EMPTY_STRING) {
-                return DEFAULT;
-            } else if (password.match(chars)) {
-                return POSITIVE;
-            } else {
-                return NEGATIVE;
-            }
-        }
-    };
+        getConfigurations();
+    }, [])
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -158,6 +109,47 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const handleSubmit = (): void => {
         setShowConfirmationModal(true);
+    };
+
+    /**
+     * Calls API to get validation configuration.
+     */
+    const getConfigurations = (): void => {
+
+        fetchPasswordValidationConfig()
+            .then((response) => {
+                setPasswordConfig(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.detail) {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "validationConfig.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "validationConfig.error.message"
+                        )
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.message"
+                    )
+                });
+            });
     };
 
     /**
@@ -294,14 +286,14 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-confirmation-modal-actions` }>
                 <Button
-                    className="link-button" 
+                    className="link-button"
                     onClick={ handleConfirmationModalClose }
                     data-testid={ `${testId}-confirmation-modal-actions-cancel-button` }
                 >
                     { t("common:cancel") }
                 </Button>
                 <Button
-                    primary={ true } 
+                    primary={ true }
                     onClick={ changePassword }
                     data-testid={ `${testId}-confirmation-modal-actions-continue-button` }
                 >
@@ -310,7 +302,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             </Modal.Actions>
         </Modal>
     );
-    
+
     const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection data-testid={ `${testId}-edit-section` } >
@@ -388,44 +380,58 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             />
                         </Suspense>
                     </Form.Field>
-                    
-                    { passwordValidationConfig.showPasswordValidation  &&
+
+                    { (passwordValidationConfig.showPasswordValidation  && passwordConfig) &&
                         (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
-                            <div className="password-policy-description">                                
-                                <Icon 
-                                    id="password-validation-length" 
-                                    className={ getIconProps("password-validation-length").cssClassName } 
-                                    color={ getIconProps("password-validation-length").color }/>
-                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                    + "passwordLengthRequirement") }</p>
-                            </div>
-                            
-                            <div className="password-policy-description">                                
-                                <Icon 
-                                    id="password-validation-case" 
-                                    className={ getIconProps("password-validation-case").cssClassName } 
-                                    color={ getIconProps("password-validation-case").color } />
-                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                    + "passwordCaseRequirement") }</p>
-                            </div>
-                            
-                            <div className="password-policy-description">                                
-                                <Icon 
-                                    id="password-validation-number" 
-                                    className={ getIconProps("password-validation-number").cssClassName } 
-                                    color={ getIconProps("password-validation-number").color }/>
-                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                    + "passwordNumRequirement") }</p>
-                            </div>
-                            
-                            <div className="password-policy-description">                                
-                                <Icon 
-                                    id="password-validation-chars" 
-                                    className={ getIconProps("password-validation-chars").cssClassName } 
-                                    color={ getIconProps("password-validation-chars").color }/>
-                                <p>{ t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                    + "passwordCharRequirement") }</p>
-                            </div>
+                            <PasswordValidation
+                                password={ password}
+                                minLength={ passwordConfig.minLength }
+                                maxLength={ passwordConfig.maxLength }
+                                minNumbers={ passwordConfig.minNumbers }
+                                minUpperCase={ passwordConfig.minUpperCaseCharacters }
+                                minLowerCase={ passwordConfig.minLowerCaseCharacters }
+                                minSpecialChr={ passwordConfig.minSpecialCharacters }
+                                minUniqueChr={ passwordConfig.minUniqueCharacters }
+                                maxConsecutiveChr={ passwordConfig.maxConsecutiveCharacters }
+                                translations={{
+                                    length: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                        + "passwordLengthRequirement", {
+                                        min: passwordConfig.minLength, max: passwordConfig.maxLength
+                                    }),
+                                    numbers: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                        + "passwordNumRequirement", {
+                                        min: passwordConfig.minNumbers
+                                    }),
+                                    case:  (passwordConfig?.minUpperCaseCharacters > 0 &&
+                                        passwordConfig?.minLowerCaseCharacters > 0) ?
+                                        t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                            "validations.passwordCaseRequirement", {
+                                            minLowerCase: passwordConfig.minLowerCaseCharacters,
+                                            minUpperCase: passwordConfig.minUpperCaseCharacters
+                                        }) : (
+                                            passwordConfig?.minUpperCaseCharacters > 0 ?
+                                                t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                                    "validations.passwordUpperCaseRequirement", {
+                                                    minUpperCase: passwordConfig.minUpperCaseCharacters
+                                                }) : t("myAccount:components.changePassword.forms." +
+                                                    "passwordResetForm.validations.passwordLowerCaseRequirement", {
+                                                    minLowerCase: passwordConfig.minLowerCaseCharacters,
+                                                })
+                                        ),
+                                    specialChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                        "validations.passwordCharRequirement", {
+                                        minSpecialChr: passwordConfig.minSpecialCharacters
+                                    }),
+                                    consecutiveChr: t("myAccount:components.changePassword.forms." +
+                                        "passwordResetForm.validations.passwordRepeatedChrRequirement", {
+                                        repeatedChr: passwordConfig.maxConsecutiveCharacters
+                                    }),
+                                    uniqueChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                        "validations.passwordUniqueChrRequirement", {
+                                        uniqueChr: passwordConfig.minUniqueCharacters
+                                    })
+                                } }
+                            />
 
                         </Form.Field>)
                     }

@@ -22,6 +22,7 @@ import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStoreListItem, UserStoreProperty } from "../../userstores/models";
+import { ValidationFormInterface } from "../../validation/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 import { UserStoreDetails } from "../models";
@@ -75,6 +76,88 @@ export class SharedUserStoreUtils {
         const regEx = new RegExp(regExValue);
 
         return regEx.test(inputValue);
+    }
+
+    /**
+     * Validate against password.
+     *
+     * @param inputValue - input value to be validated.
+     * @param passwordConfig - password configuration.
+     * @param upperCasePattern - regex for upper case.
+     * @param lowerCasePattern - regex for lower case.
+     * @param numberPattern - regex for numbers.
+     * @param specialChrPattern - regex for special characters.
+     * @param consecutiveChrPattern - regex for consecutive characters.
+     */
+    public static validatePasswordAgainstRules(inputValue: string, passwordConfig: ValidationFormInterface,
+        upperCasePattern: string, lowerCasePattern: string, numberPattern: string, specialChrPattern: string,
+        consecutiveChrPattern: string
+    ): boolean {
+
+        if (passwordConfig === undefined || passwordConfig === null) {
+            return true;
+        }
+        // Length check.
+        if (inputValue.length < Number(passwordConfig.minLength) ||
+            inputValue.length > Number(passwordConfig.maxLength)) {
+            return false;
+        }
+
+        // Upper case check.
+        if (Number(passwordConfig.minUpperCaseCharacters) > 0) {
+            if (!inputValue.match(upperCasePattern) ||
+                inputValue.match(upperCasePattern).length < Number(passwordConfig.minUpperCaseCharacters)) {
+                return false;
+            }
+        }
+
+        // Lower case check.
+        if (Number(passwordConfig.minLowerCaseCharacters) > 0) {
+            if (!inputValue.match(lowerCasePattern) ||
+                inputValue.match(lowerCasePattern).length < Number(passwordConfig.minLowerCaseCharacters)) {
+                return false;
+            }
+        }
+
+        // Numeric check.
+        if (Number(passwordConfig.minNumbers) > 0) {
+            if (!inputValue.match(numberPattern) ||
+                inputValue.match(numberPattern).length < Number(passwordConfig.minNumbers)) {
+                return false;
+            }
+        }
+
+        // Special character check.
+        if (Number(passwordConfig.minSpecialCharacters) > 0) {
+            if (!inputValue.match(specialChrPattern) ||
+                inputValue.match(specialChrPattern).length < Number(passwordConfig.minSpecialCharacters)) {
+                return false;
+            }
+        }
+
+        // Unique character check.
+        if (passwordConfig.uniqueCharacterValidatorEnabled) {
+            const unique : string[] = inputValue.split("");
+            const set : Set<string> = new Set(unique);
+
+            if (!(Number(passwordConfig.minUniqueCharacters) > 0 &&
+                set.size > Number(passwordConfig.minUniqueCharacters))) {
+                return false;
+            }
+        }
+        // Repetitive character check.
+        if(passwordConfig.consecutiveCharacterValidatorEnabled &&
+            inputValue.match(consecutiveChrPattern)) {
+            const long: string = inputValue.match(consecutiveChrPattern).sort(
+                function(a, b) {
+                    return b.length - a.length;
+                }
+            ) [0];
+            if (long.length > Number(passwordConfig.maxConsecutiveCharacters)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
