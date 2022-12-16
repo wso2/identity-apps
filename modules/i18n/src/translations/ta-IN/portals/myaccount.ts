@@ -277,10 +277,25 @@ export const myAccount: MyAccountNS = {
                             description: "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க.",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
-                        passwordCaseRequirement: "குறைந்தபட்சம் ஒரு பெரிய எழுத்து மற்றும் சிறிய எழுத்து",
-                        passwordCharRequirement: "சின்னங்களில் ஒன்று !@#$%^&*",
-                        passwordLengthRequirement: "8 க்கும் மேற்பட்ட எழுத்துக்கள்",
-                        passwordNumRequirement: "குறைந்தது ஒரு எண்",
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "மீட்டெடுப்பதில் பிழை"
+                            },
+                            genericError: {
+                                description: "சரிபார்ப்பு உள்ளமைவு தரவை மீட்டெடுக்க முடியவில்லை.",
+                                message: "ஏதோ தவறு நடைபெற்றிருக்கிறது"
+                            }
+                        },
+                        passwordCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து மற்றும் {{minLowerCase}} " +
+                            "சிறிய ஆங்கில எழுத்துக்கள்",
+                        passwordUpperCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து(கள்)",
+                        passwordLowerCaseRequirement: "குறைந்தபட்சம் {{minLowerCase}} சிறிய எழுத்து(கள்)",
+                        passwordCharRequirement: "குறைந்தபட்சம் {{minSpecialChr}} சிறப்பு எழுத்து(கள்)",
+                        passwordLengthRequirement: "{{min}} மற்றும் {{max}} எழுத்துகளுக்கு இடையில் இருக்க வேண்டும்",
+                        passwordNumRequirement: "குறைந்தது {{min}} எண்(கள்)",
+                        passwordUniqueChrRequirement: "குறைந்தபட்சம் {{uniqueChr}} தனிப்பட்ட எழுத்து(கள்)",
+                        passwordRepeatedChrRequirement: "க{{repeatedChr}}க்கு மேல் திரும்பத் திரும்ப வரும் எழுத்து(கள்)",
                         submitError: {
                             description: "{{description}}",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"
@@ -1442,7 +1457,7 @@ export const myAccount: MyAccountNS = {
                         "இரண்டாவது காரணி அங்கீகாரம் (2FA) விருப்ப மாற்றங்கள் உங்கள் செயலில் உள்ள அமர்வுகளுக்குப் பயன்படுத்தப்படாது. " +
                         "அவற்றை நிறுத்துமாறு பரிந்துரைக்கிறோம்.",
                     primaryAction: "அனைத்தையும் நிறுத்து",
-                    secondaryAction: "மதிப்பாய்வு செய்து முடிக்கவும்"    
+                    secondaryAction: "மதிப்பாய்வு செய்து முடிக்கவும்"
 
                 },
                 terminateAllUserSessionsModal: {

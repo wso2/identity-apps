@@ -277,10 +277,25 @@ export const myAccount: MyAccountNS = {
                                 "novamente",
                             message: "Alterar erro de senha"
                         },
-                        passwordCaseRequirement: "Pelo menos uma letra maiúscula e minúscula",
-                        passwordCharRequirement: "Pelo menos um dos símbolos !@#$%^&*",
-                        passwordLengthRequirement: "Mais de 8 caracteres",
-                        passwordNumRequirement: "Pelo menos um numero",
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Erro de recuperação"
+                            },
+                            genericError: {
+                                description: "Não foi possível recuperar os dados de configuração de validação.",
+                                message: "algo deu errado"
+                            }
+                        },
+                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} " +
+                            "letras minúsculas",
+                        passwordUpperCaseRequirement: "Pelo menos {{minUpperCase}} letra(s) maiúscula(s)",
+                        passwordLowerCaseRequirement: "Pelo menos {{minLowerCase}} letra(s) minúscula(s)",
+                        passwordCharRequirement: "Pelo menos {{minSpecialChr}} de caracteres especiais",
+                        passwordLengthRequirement: "Deve ter entre {{min}} e {{max}} caracteres",
+                        passwordNumRequirement: "Pelo menos {{min}} número(s)",
+                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) exclusivo(s)",
+                        passwordRepeatedChrRequirement: "Não mais que {{repeatedChr}} caracter(es) repetido(s)",
                         submitError: {
                             description: "{{description}}",
                             message: "Alterar erro de senha"
@@ -1389,7 +1404,7 @@ export const myAccount: MyAccountNS = {
                         "As alterações da opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. " +
                         "Recomendamos que você os encerre.",
                     primaryAction: "Terminar tudo",
-                    secondaryAction: "Revisar e encerrar"    
+                    secondaryAction: "Revisar e encerrar"
 
                 },
                 terminateAllUserSessionsModal: {

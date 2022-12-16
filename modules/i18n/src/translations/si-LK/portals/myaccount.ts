@@ -276,10 +276,25 @@ export const myAccount: MyAccountNS = {
                             description: "ඔබ ඇතුලත් කළ මුරපදය අවලංගු බව පෙනේ. කරුණාකර නැවත උත්සාහ කරන්න",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකිි"
                         },
-                        passwordCaseRequirement: "අවම වශයෙන් එක් ලොකු අකුරක් සහ කුඩා අකුරක්",
-                        passwordCharRequirement: "අවම වශයෙන් එක් සංකේතයක් වත් !@#$%^&*",
-                        passwordLengthRequirement: "අක්ෂර 8 කට වඩා",
-                        passwordNumRequirement: "අවම වශයෙන් එක් අංකයක්",
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "නැවත ලබා ගැනීමේ දෝෂය"
+                            },
+                            genericError: {
+                                description: "වලංගුකරණ වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                                message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            }
+                        },
+                        passwordCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු සහ {{minLowerCase}} " +
+                            "සිම්පල් අකුරු",
+                        passwordUpperCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු(ය)",
+                        passwordLowerCaseRequirement: "අවම වශයෙන් {{minLowerCase}} කුඩා අකුරු(ය)",
+                        passwordCharRequirement: "විශේෂ අක්ෂරවලින් අවම වශයෙන් {{minSpecialChr}}",
+                        passwordLengthRequirement: "අක්ෂර {{min}} සහ {{max}} අතර විය යුතුය",
+                        passwordNumRequirement: "අවම වශයෙන් {{min}} අංකය(ය)",
+                        passwordUniqueChrRequirement: "අවම වශයෙන් {{uniqueChr}} අනන්‍ය අක්ෂර(ය)",
+                        passwordRepeatedChrRequirement: "පුනරාවර්තන අක්ෂර(ය) {{repeatedChr}} ට වඩා වැඩි නොවේ",
                         submitError: {
                             description: "{{description}}",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
@@ -1395,7 +1410,7 @@ export const myAccount: MyAccountNS = {
                         "දෙවන-සාධක සත්‍යාපනය (2FA) විකල්ප වෙනස් කිරීම් ඔබගේ සක්‍රිය සැසි සඳහා යොදනු නොලැබේ. ඔබ ඒවා " +
                         "අවසන් කරන ලෙස අපි නිර්දේශ කරමු.",
                     primaryAction: "සියල්ල අවසන් කරන්න",
-                    secondaryAction: "සමාලෝචනය කර අවසන් කරන්න"    
+                    secondaryAction: "සමාලෝචනය කර අවසන් කරන්න"
 
                 },
                 terminateAllUserSessionsModal: {

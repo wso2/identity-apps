@@ -278,10 +278,25 @@ export const myAccount: MyAccountNS = {
                                 "Veuillez réessayer",
                             message: "Erreur lors de la modification du mot de passe"
                         },
-                        passwordCaseRequirement: "Au moins une lettre majuscule et minuscule",
-                        passwordCharRequirement: "Au moins un des symboles !@#$%^&*",
-                        passwordLengthRequirement: "Plus de 8 caractères",
-                        passwordNumRequirement: "Au moins un numéro",
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Erreur de récupération"
+                            },
+                            genericError: {
+                                description: "Impossible de récupérer les données de configuration de validation.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        passwordCaseRequirement: "Au moins {{minUpperCase}} majuscule et {{minLowerCase}} " +
+                            "minuscules",
+                        passwordUpperCaseRequirement: "Au moins {{minUpperCase}} lettre(s) majuscule(s)",
+                        passwordLowerCaseRequirement: "Au moins {{minLowerCase}} lettre(s) minuscule(s)",
+                        passwordCharRequirement: "Au moins {{minSpecialChr}} de caractère(s) spécial(s)",
+                        passwordLengthRequirement: "Doit contenir entre {{min}} et {{max}} caractères",
+                        passwordNumRequirement: "Au moins {{min}} numéro(s)",
+                        passwordUniqueChrRequirement: "Au moins {{uniqueChr}} caractère(s) unique(s)",
+                        passwordRepeatedChrRequirement: "Pas plus de {{repeatedChr}} caractère(s) répété(s)",
                         submitError: {
                             description: "{{description}}",
                             message: "Erreur lors de la modification du mot de passe"
@@ -1445,7 +1460,7 @@ export const myAccount: MyAccountNS = {
                         "Les modifications de l'option d'authentification à deux facteurs (2FA) ne seront pas appliquées à vos sessions actives. Nous vous " +
                         "recommandons de les résilier.",
                     primaryAction: "Terminer tout",
-                    secondaryAction: "Réviser et résilier"    
+                    secondaryAction: "Réviser et résilier"
 
                 },
                 terminateAllUserSessionsModal: {
