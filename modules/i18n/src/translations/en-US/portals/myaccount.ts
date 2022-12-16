@@ -277,6 +277,10 @@ export const myAccount: MyAccountNS = {
                             description: "The current password you entered appears to be invalid. Please try again",
                             message: "Change password error"
                         },
+                        invalidNewPassword: {
+                            description: "Password does not satisfy the required constraints.",
+                            message: "Invalid password"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",

@@ -278,6 +278,10 @@ export const myAccount: MyAccountNS = {
                                 "Veuillez réessayer",
                             message: "Erreur lors de la modification du mot de passe"
                         },
+                        invalidNewPassword: {
+                            description: "Le mot de passe ne satisfait pas les contraintes requises.",
+                            message: "Mot de passe incorrect"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",

@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { ReactElement } from "react";
-import { Icon, SemanticCOLORS } from "semantic-ui-react";
+import React, {ReactElement, useEffect, useState} from "react";
+import {Icon, SemanticCOLORS} from "semantic-ui-react";
 
 export interface IconProps {
 
@@ -33,6 +33,17 @@ export interface ValidationContentI18nInterface {
     consecutiveChr?: string;
 }
 
+export interface ValidationStatusInterface {
+
+    length?: boolean;
+    numbers?: boolean;
+    case?: boolean;
+    specialChr?: boolean;
+    uniqueChr?: boolean;
+    consecutiveChr?: boolean;
+    empty?: boolean;
+}
+
 export interface ValidationProps {
 
     minLength?: number;
@@ -46,6 +57,7 @@ export interface ValidationProps {
     className?: string;
     password: string;
     translations?: ValidationContentI18nInterface;
+    onPasswordValidate?: (isValid: boolean, validationStatus: ValidationStatusInterface) => void;
 }
 
 export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
@@ -62,10 +74,104 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
         maxConsecutiveChr,
         className,
         password,
-        translations
+        translations,
+        onPasswordValidate
     } = props;
 
+    const [ validationStatus ] = useState<ValidationStatusInterface>(undefined);
+    const lowerCaseLetters = /[a-z]/g;
+    const upperCaseLetters = /[A-Z]/g;
+    const numbers = /[0-9]/g;
+    const chars = /[!@#$%^&*~]/g;
+    const consecutive = /([^])\1+/g;
     const EMPTY_STRING = "";
+
+    useEffect(() => {
+
+        validate(password);
+    }, [password]);
+
+    /**
+     * Validate the password.
+     *
+     * @param password - password.
+     */
+    const validate = (password) => {
+        let _validationStatus = {...validationStatus};
+
+        if (password === EMPTY_STRING) {
+            _validationStatus = {
+                ..._validationStatus,
+                empty: true
+            }
+            onPasswordValidate(false, _validationStatus);
+            return;
+        }
+
+        if (password.length >= minLength && password.length <= maxLength) {
+            _validationStatus = {
+                ..._validationStatus,
+                length: true
+            }
+        }
+        if ((minUpperCase <= 0 || (password.match(upperCaseLetters)
+                && password.match(upperCaseLetters).length >= minUpperCase))
+            && (minLowerCase <= 0 || (password.match(lowerCaseLetters)
+                && password.match(lowerCaseLetters).length >= minLowerCase))) {
+            _validationStatus = {
+                ..._validationStatus,
+                case: true
+            }
+        }
+        if (minNumbers <= 0 ||(password.match(numbers) && password.match(numbers).length >= minNumbers)) {
+            _validationStatus = {
+                ..._validationStatus,
+                numbers: true
+            }
+        }
+        if (minSpecialChr <= 0 || (password.match(chars) && password.match(chars).length >= minSpecialChr)) {
+            _validationStatus = {
+                ..._validationStatus,
+                specialChr: true
+            }
+        }
+
+        const unique : string[] = password.split("");
+        const set : Set<string> = new Set(unique);
+        if (minUniqueChr <=0 || set.size >= minUniqueChr) {
+            _validationStatus = {
+                ..._validationStatus,
+                uniqueChr: true
+            }
+        }
+        let _consValid: boolean = true;
+        if (password.match(consecutive) && password.match(consecutive).length > 0) {
+            const largest: string = password.match(consecutive).sort(
+                function (a, b) {
+                    return b.length - a.length;
+                }
+            ) [0];
+            if (maxConsecutiveChr >= 1 &&
+                largest.length > maxConsecutiveChr) {
+                _consValid = false;
+            }
+        }
+        if (_consValid) {
+            _validationStatus = {
+                ..._validationStatus,
+                consecutiveChr: true
+            }
+        }
+
+        // isValid if all the attr in the object are true and not empty.
+        const isValid: boolean = !_validationStatus.empty && _validationStatus.length && _validationStatus.numbers &&
+            _validationStatus.case && _validationStatus.specialChr && _validationStatus.uniqueChr &&
+            _validationStatus.consecutiveChr;
+
+        // _validationStatus pass the original for more finegrained control from outside
+        onPasswordValidate(isValid, _validationStatus);
+        return;
+    }
 
     /**
      * Returns Icon Props which are needed to set state of Password Validation Icons.
@@ -86,12 +192,6 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
             color : "red" as SemanticCOLORS,
             cssClassName : "remove circle"
         };
-
-        const lowerCaseLetters = /[a-z]/g;
-        const upperCaseLetters = /[A-Z]/g;
-        const numbers = /[0-9]/g;
-        const chars = /[!@#$%^&*~]/g;
-        const consecutive = /([^])\1+/g;
 
         if (id === "password-validation-length") {
             if (password === EMPTY_STRING) {

@@ -209,6 +209,10 @@ export interface MyAccountNS {
                             description: string;
                             message: string;
                         };
+                        invalidNewPassword: {
+                            description: string;
+                            message: string;
+                        };
                         validationConfig: {
                             error: {
                                 description: string;

@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
-import { PasswordValidation } from "@wso2is/react-components";
+import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,6 +84,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
+    const [ passwordValidationStatus, setPasswordValidationStatus ] = useState<ValidationStatusInterface>(undefined);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -103,12 +105,39 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     }, [])
 
     /**
+     * Callback function to validate password.
+     *
+     * @param valid - validation status.
+     * @param validationStatus - detailed validation status.
+     */
+    const onPasswordValidate = (valid: boolean, validationStatus: ValidationStatusInterface): void => {
+
+        setPasswordValidationStatus(validationStatus);
+        setIsValidPassword(valid);
+    }
+
+    /**
      * Handles the `onSubmit` event of forms.
      *
      * @param {string} formName - Name of the form
      */
     const handleSubmit = (): void => {
-        setShowConfirmationModal(true);
+
+        if (isValidPassword) {
+            setShowConfirmationModal(true);
+        } else {
+            onAlertFired({
+                description: t(
+                    "myAccount:components.changePassword.forms.passwordResetForm.validations.invalidNewPassword." +
+                    "description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                    "invalidNewPassword.message"
+                )
+            });
+        }
     };
 
     /**
@@ -393,6 +422,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                 minSpecialChr={ passwordConfig.minSpecialCharacters }
                                 minUniqueChr={ passwordConfig.minUniqueCharacters }
                                 maxConsecutiveChr={ passwordConfig.maxConsecutiveCharacters }
+                                onPasswordValidate={ onPasswordValidate }
                                 translations={{
                                     length: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
                                         + "passwordLengthRequirement", {

@@ -276,6 +276,10 @@ export const myAccount: MyAccountNS = {
                             description: "ඔබ ඇතුලත් කළ මුරපදය අවලංගු බව පෙනේ. කරුණාකර නැවත උත්සාහ කරන්න",
                             message: "මුරපද වෙනස් කිරීමේ දෝෂයකිි"
                         },
+                        invalidNewPassword: {
+                            description: "මුරපදය අවශ්‍ය සීමාවන් සපුරාලන්නේ නැත.",
+                            message: "වලංගු නොවන මුරපදයක්"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",

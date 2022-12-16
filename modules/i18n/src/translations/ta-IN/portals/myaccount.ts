@@ -277,6 +277,10 @@ export const myAccount: MyAccountNS = {
                             description: "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க.",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
+                        invalidNewPassword: {
+                            description: "கடவுச்சொல் தேவையான கட்டுப்பாடுகளை பூர்த்தி செய்யவில்லை.",
+                            message: "தவறான கடவுச்சொல்"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",

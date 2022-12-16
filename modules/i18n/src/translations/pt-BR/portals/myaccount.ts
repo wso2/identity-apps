@@ -277,6 +277,10 @@ export const myAccount: MyAccountNS = {
                                 "novamente",
                             message: "Alterar erro de senha"
                         },
+                        invalidNewPassword: {
+                            description: "A senha não atende às restrições exigidas.",
+                            message: "Senha inválida"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",
