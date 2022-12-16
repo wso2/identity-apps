@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,7 +37,6 @@ export class SharedUserStoreUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -45,20 +44,20 @@ export class SharedUserStoreUtils {
     /**
      * The following method get the username regEx for the selected user store.
      *
-     * @param userstore
-     * @param regExName
+     * @param userstore - userstore name.
+     * @param regExName - regEx pattern.
      */
     public static async getUserStoreRegEx(userstore: string, regExName: string): Promise<string> {
         let usernameRegEx: UserStoreProperty = null;
 
         return getUserStoreList()
-            .then((response) => {
-                const store = response?.data?.find(item => item.name === userstore);
+            .then((response: any) => {
+                const store: any = response?.data?.find((item: any) => item.name === userstore);
 
                 if (!isEmpty(store)) {
                     return getAUserStore(store.id)
-                        .then((resp) => {
-                            usernameRegEx = resp.properties.find(property => property.name === regExName);
+                        .then((resp: any) => {
+                            usernameRegEx = resp.properties.find((property: any) => property.name === regExName);
 
                             return usernameRegEx?.value;
                         });
@@ -69,8 +68,8 @@ export class SharedUserStoreUtils {
     /**
      * The following method validate user input against the user store regEx.
      *
-     * @param inputValue
-     * @param regExValue
+     * @param inputValue - input value.
+     * @param regExValue - regEx value.
      */
     public static validateInputAgainstRegEx(inputValue: string, regExValue: string): boolean {
         const regEx = new RegExp(regExValue);

@@ -67,7 +67,16 @@ export const getPasswordConfig = (validationConfig: ValidationDataInterface[]): 
         validationConfig?.filter((data: ValidationDataInterface) => data.field === "password");
 
     if (passwordConf === undefined || passwordConf.length < 1) {
-        return;
+        return {
+            field: "password",
+            maxLength: 30,
+            minLength: 8,
+            minLowerCaseCharacters: 1,
+            minNumbers: 1,
+            minSpecialCharacters: 1,
+            minUpperCaseCharacters: 1,
+            type: "rules"
+        };
     }
 
     const config: ValidationDataInterface = passwordConf[0];

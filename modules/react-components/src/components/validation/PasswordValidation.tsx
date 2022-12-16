@@ -276,7 +276,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     <p>{ translations.length }</p>
                 </div>
             }
-            { (minUpperCase > 0 || minLowerCase > 0) &&
+            { (minUpperCase > 0 || minLowerCase > 0) && (
                 <div className="password-policy-description">
                     <Icon
                         id="password-validation-case"
@@ -286,8 +286,8 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.case }</p>
                 </div>
-            }
-            { minNumbers > 0 &&
+            ) }
+            { minNumbers > 0 && (
                 <div className="password-policy-description">
                     <Icon
                         id="password-validation-number"
@@ -297,8 +297,8 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.numbers }</p>
                 </div>
-            }
-            { minSpecialChr > 0 &&
+            ) }
+            { minSpecialChr > 0 && (
                 <div className="password-policy-description">
                     <Icon
                         id="password-validation-chars"
@@ -308,8 +308,8 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.specialChr }</p>
                 </div>
-            }
-            { minUniqueChr > 0 &&
+            ) }
+            { minUniqueChr > 0 && (
                 <div className="password-policy-description">
                     <Icon
                         id="password-validation-chars"
@@ -319,8 +319,8 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.uniqueChr }</p>
                 </div>
-            }
-            { maxConsecutiveChr > 0 &&
+            ) }
+            { maxConsecutiveChr > 0 && (
                 <div className="password-policy-description">
                     <Icon
                         id="password-validation-chars"
@@ -330,7 +330,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.consecutiveChr }</p>
                 </div>
-            }
+            ) }
         </div>
     );
 };

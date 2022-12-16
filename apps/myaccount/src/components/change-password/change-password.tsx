@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,16 +24,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updatePassword } from "../../api";
+import { fetchPasswordValidationConfig } from "../../api/validation";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
 import { passwordValidationConfig } from "../../extensions/configs/password-validation";
 import { AlertInterface, AlertLevels } from "../../models";
+import { ValidationFormInterface } from "../../models/validation";
 import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { useEndUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
-import { fetchPasswordValidationConfig } from "../../api";
-import { ValidationFormInterface } from "../../models";
 
 /**
  * Import password strength meter dynamically.
@@ -104,7 +104,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         if (passwordValidationConfig.showPasswordValidation) {
             getConfigurations();
         }
-    }, [])
+    }, []);
 
     /**
      * Callback function to validate password.
@@ -116,7 +116,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
         setPasswordValidationStatus(validationStatus);
         setIsValidPassword(valid);
-    }
+    };
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -248,8 +248,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                      * SUS-605000 , 60501 - , 60502 |
                      */
                     let message = error.response?.data?.detail ?? "";
+
                     if (message.match(/^\w+?\d{1,5}/g)) {
                         const fragments = message.split(",");
+
                         if (fragments?.length > 1) {
                             /**
                              * If message spilt fragments have more than one elemnets,
@@ -419,7 +421,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     { (passwordValidationConfig.showPasswordValidation  && passwordConfig) &&
                         (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
                             <PasswordValidation
-                                password={ password}
+                                password={ password }
                                 minLength={ passwordConfig.minLength }
                                 maxLength={ passwordConfig.maxLength }
                                 minNumbers={ passwordConfig.minNumbers }
@@ -429,13 +431,13 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                 minUniqueChr={ passwordConfig.minUniqueCharacters }
                                 maxConsecutiveChr={ passwordConfig.maxConsecutiveCharacters }
                                 onPasswordValidate={ onPasswordValidate }
-                                translations={{
+                                translations={ {
                                     length: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
                                         + "passwordLengthRequirement", {
                                         min: passwordConfig.minLength, max: passwordConfig.maxLength
                                     }),
-                                    numbers: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                        + "passwordNumRequirement", {
+                                    numbers: t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                        "validations.passwordNumRequirement", {
                                         min: passwordConfig.minNumbers
                                     }),
                                     case:  (passwordConfig?.minUpperCaseCharacters > 0 &&
@@ -451,7 +453,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                                     minUpperCase: passwordConfig.minUpperCaseCharacters
                                                 }) : t("myAccount:components.changePassword.forms." +
                                                     "passwordResetForm.validations.passwordLowerCaseRequirement", {
-                                                    minLowerCase: passwordConfig.minLowerCaseCharacters,
+                                                    minLowerCase: passwordConfig.minLowerCaseCharacters
                                                 })
                                         ),
                                     specialChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
