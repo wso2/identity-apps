@@ -200,7 +200,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const loadSecretListForSecretType = (): void => {
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
+            OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) {
             setIsSecretListLoading(true);
 
             getSecretList({
@@ -892,7 +894,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-                    { (OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                    { (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
+                        OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
                         <Dropdown.Menu
                             className={ "create-button-item" }
