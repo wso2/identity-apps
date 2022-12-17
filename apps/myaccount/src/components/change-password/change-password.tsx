@@ -22,7 +22,7 @@ import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-com
 import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Modal, SemanticCOLORS } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { fetchPasswordValidationConfig } from "../../api/validation";
 import { getSettingsSectionIcons } from "../../configs";
@@ -422,14 +422,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                 maxConsecutiveChr={ passwordConfig.maxConsecutiveCharacters }
                                 onPasswordValidate={ onPasswordValidate }
                                 translations={ {
-                                    length: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
-                                        + "passwordLengthRequirement", {
-                                        min: passwordConfig.minLength, max: passwordConfig.maxLength
-                                    }),
-                                    numbers: t("myAccount:components.changePassword.forms.passwordResetForm." +
-                                        "validations.passwordNumRequirement", {
-                                        min: passwordConfig.minNumbers
-                                    }),
                                     case:  (passwordConfig?.minUpperCaseCharacters > 0 &&
                                         passwordConfig?.minLowerCaseCharacters > 0) ?
                                         t("myAccount:components.changePassword.forms.passwordResetForm." +
@@ -446,13 +438,21 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                                     minLowerCase: passwordConfig.minLowerCaseCharacters
                                                 })
                                         ),
-                                    specialChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
-                                        "validations.passwordCharRequirement", {
-                                        minSpecialChr: passwordConfig.minSpecialCharacters
-                                    }),
                                     consecutiveChr: t("myAccount:components.changePassword.forms." +
                                         "passwordResetForm.validations.passwordRepeatedChrRequirement", {
                                         repeatedChr: passwordConfig.maxConsecutiveCharacters
+                                    }),
+                                    length: t("myAccount:components.changePassword.forms.passwordResetForm.validations."
+                                        + "passwordLengthRequirement", {
+                                        max: passwordConfig.maxLength, min: passwordConfig.minLength
+                                    }),
+                                    numbers: t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                        "validations.passwordNumRequirement", {
+                                        min: passwordConfig.minNumbers
+                                    }),
+                                    specialChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
+                                        "validations.passwordCharRequirement", {
+                                        minSpecialChr: passwordConfig.minSpecialCharacters
                                     }),
                                     uniqueChr: t("myAccount:components.changePassword.forms.passwordResetForm." +
                                         "validations.passwordUniqueChrRequirement", {
