@@ -26,14 +26,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, Icon, Label } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
+import { Checkbox } from "semantic-ui-react";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
-    CommonPluggableComponentPropertyInterface
+    CommonPluggableComponentPropertyInterface,
+    NotificationSenderSMSInterface
 } from "../../../models";
+import { getSMSPublisher, addSMSPublisher, deleteSMSPublisher } from "../../../api/identity-provider"
 
 /**
  * Interface for SMS OTP Authenticator Form props.
@@ -171,6 +174,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
+    const [isEnableSMSOTP, setEnableSMSOTP] = useState<boolean>(false);
+    const [isReadOnly, setIsReadOnly] = useState<boolean>(true)
+
     /**
      * Flattens and resolved form initial values and field metadata.
      */
@@ -227,6 +233,18 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         setIsOTPNumeric(resolvedInitialValues.SmsOTP_OtpRegex_UseNumericChars);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
+
+        getSMSPublisher().then((response: NotificationSenderSMSInterface) => {
+            const channelValues = response.properties ? response.properties : [];
+            const enableSMSOTP = channelValues.filter(prop => prop.key === 'channel.type'
+                && prop.value === 'choreo').length > 0
+            setEnableSMSOTP(enableSMSOTP);
+            setIsReadOnly(!enableSMSOTP);
+        }).catch(error => {
+            //TODO: How to handle errors
+            console.log(error);
+        });
+
     }, [ originalInitialValues ]);
 
     /**
@@ -338,6 +356,35 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         return errors;
     };
 
+    /**
+     * Handle enable/disable SMS OTP.
+     *
+     * @param event - Event.
+     * @param data - Data.
+     */
+    const handleUpdateSMSPublisher = (event, data) => {
+
+        if (data.checked) {
+            // Add SMS Publisher when enabling the feature.
+            addSMSPublisher().then((response: NotificationSenderSMSInterface) => {
+                setEnableSMSOTP(true);
+                setIsReadOnly(false);
+            }).catch(error => {
+                //TODO: How to handle errors
+                console.log(error);
+            })
+        } else {
+            // Delete SMS Publisher when enabling the feature.
+            deleteSMSPublisher().then(() => {
+                setEnableSMSOTP(false);
+                setIsReadOnly(true);
+            }).catch(error => {
+                //TODO: How to handle errors
+                console.log(error);
+            })
+        }
+    }
+
     return (
         <Form
             id={ FORM_ID }
@@ -349,22 +396,33 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             validate={ validateForm }
         >
 
-            <Message
-                type={ "info" }
-                content={
-                    ( <Trans>
-                        <span>
-                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                                ".smsOTP.forTestingOnlyNotice.firstLine") }
-                        </span>
-                        <Divider hidden fitted/>
-                        <span>
-                            <Icon name="info circle" style={ { visibility: "hidden" } }/>
-                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                                ".smsOTP.forTestingOnlyNotice.secondLine") }
-                        </span>
-                    </Trans> ) }
-                width={ 13 }
+            {/*<Message*/}
+            {/*    type={ "info" }*/}
+            {/*    content={*/}
+            {/*        ( <Trans>*/}
+            {/*            <span>*/}
+            {/*                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +*/}
+            {/*                    ".smsOTP.forTestingOnlyNotice.firstLine") }*/}
+            {/*            </span>*/}
+            {/*            <Divider hidden fitted/>*/}
+            {/*            <span>*/}
+            {/*                <Icon name="info circle" style={ { visibility: "hidden" } }/>*/}
+            {/*                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +*/}
+            {/*                    ".smsOTP.forTestingOnlyNotice.secondLine") }*/}
+            {/*            </span>*/}
+            {/*        </Trans> ) }*/}
+            {/*    width={ 13 }*/}
+            {/*/>*/}
+            <Checkbox
+                toggle
+                label={
+                    //TODO: label name refactoring
+                    "Enable SMS OTP"
+                }
+                data-componentid="branding-preference-publish-toggle"
+                checked={ isEnableSMSOTP }
+                onChange={ (event, data): void => handleUpdateSMSPublisher(event, data) }
+                className="feature-toggle"
             />
             <Field.Input
                 ariaLabel="SMS OTP expiry time"

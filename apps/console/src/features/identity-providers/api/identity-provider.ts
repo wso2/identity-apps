@@ -47,7 +47,8 @@ import {
     MultiFactorAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface
+    OutboundProvisioningConnectorMetaInterface,
+    NotificationSenderSMSInterface
 } from "../models";
 
 /**
@@ -73,7 +74,7 @@ export const createIdentityProvider = <T = Record<string, unknown>> (identityPro
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    
+
     return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 201)) {
@@ -1222,7 +1223,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList - 
+ * @param authenticatorList -
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
@@ -1281,6 +1282,115 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
             }
 
             return Promise.resolve(response.data as ConnectedAppsInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get all sms notification senders with name SMSPublisher.
+ *
+ * @returns  A promise containing the response.
+ */
+export const getSMSPublisher = (): Promise<any> => {
+
+    console.log(store.getState())
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        //TODO - get URL from configs
+        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms/SMSPublisher"
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to get SMS Notification Sender : SMSPublisher")
+                );
+            }
+            return Promise.resolve(response.data as NotificationSenderSMSInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Add sms notification senders with name SMSPublisher.
+ *
+ * @returns  A promise containing the response.
+ */
+export const addSMSPublisher = (): Promise<any> => {
+
+    //SMS Notification sender with name SMSPublisher.
+    const smsProvider: NotificationSenderSMSInterface = {
+        name: "SMSPublisher",
+        provider: "Dummy_provider",
+        providerURL: "https://api.dummy.com",
+        contentType: "FORM",
+        properties: [
+            {
+                key: "channel.type",
+                value: "choreo"
+            }
+        ]
+    };
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        data: smsProvider,
+        method: HttpMethods.POST,
+        //TODO - get URL from configs
+        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms"
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 201) {
+                return Promise.reject(
+                    new Error("Failed to add SMS Notification Sender : SMSPublisher")
+                );
+            }
+            return Promise.resolve(response.data as NotificationSenderSMSInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Delete sms notification senders with name SMSPublisher.
+ *
+ * @returns  A promise containing the response.
+ */
+export const deleteSMSPublisher = (): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        //TODO - get URL from configs
+        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms/SMSPublisher"
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 204) {
+                return Promise.reject(
+                    new Error("Failed to delete SMS Notification Sender : SMSPublisher")
+                );
+            }
+            return Promise.resolve(response.data);
         }).catch((error) => {
             return Promise.reject(error);
         });

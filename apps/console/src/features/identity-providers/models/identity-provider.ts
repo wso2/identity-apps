@@ -302,6 +302,20 @@ export interface IdentityProviderTemplateCategoryViewConfigInterface {
 }
 
 /**
+ * Interface for SMS Notification Sender Details.
+ * **/
+export interface NotificationSenderSMSInterface {
+    name: string;
+    provider: string;
+    providerURL: string;
+    contentType: string;
+    properties?: {
+        key:string;
+        value:string;
+    }[];
+}
+
+/**
  * Enum for IDP template loading strategies.
  *
  * @readonly

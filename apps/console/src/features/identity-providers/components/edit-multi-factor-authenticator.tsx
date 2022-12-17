@@ -265,6 +265,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             });
         }
 
+        /**
         // If the MFA is SMS OTP, add the SMS Provider tab.
         if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
             panes.push({
@@ -282,6 +283,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                 render: null
             });
         }
+         **/
 
         return panes;
     };
