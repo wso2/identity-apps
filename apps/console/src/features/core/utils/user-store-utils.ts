@@ -172,7 +172,7 @@ export class SharedUserStoreUtils {
         const getIds = (_userstores: UserStoreListItem[]): string[] => {
             const userStoreIds: string[] = [];
 
-            _userstores.map((userStore) => {
+            _userstores.map((userStore: UserStoreListItem) => {
                 userStoreIds.push(userStore.id);
             });
 
@@ -184,7 +184,7 @@ export class SharedUserStoreUtils {
         }
 
         return getUserStoreList()
-            .then((response) => {
+            .then((response: any) => {
                 return getIds(response.data);
             })
             .catch(() => {
@@ -197,7 +197,7 @@ export class SharedUserStoreUtils {
      * The following method will fetch the primary user store details.
      */
     public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
-        return getPrimaryUserStore().then((response) => {
+        return getPrimaryUserStore().then((response: any) => {
             return response;
         }).catch(() => {
             store.dispatch(addAlert({
@@ -213,16 +213,16 @@ export class SharedUserStoreUtils {
     /**
      * The following method fetch the readonly user stores list.
      *
-     * @param {UserStoreListItem[]} userstores - Externally provided usertores list.
+     * @param userstores - Externally provided usertores list.
      * @deprecated Write these functionalities seperately get the caching support from SWR.
      */
     public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
         const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
-        const primaryUserStore = await SharedUserStoreUtils.getPrimaryUserStore();
+        const primaryUserStore: void | UserStoreDetails = await SharedUserStoreUtils.getPrimaryUserStore();
         const readOnlyUserStores: string[] = [];
 
         // Checks if the primary user store is readonly as well.
-        if ( primaryUserStore && primaryUserStore.properties.find(property => {
+        if ( primaryUserStore && primaryUserStore.properties.find((property: UserStoreProperty) => {
             return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
         ) {
             readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
@@ -230,7 +230,7 @@ export class SharedUserStoreUtils {
 
         for (const id of ids) {
             await getAUserStore(id)
-                .then((res) => {
+                .then((res: any) => {
                     res.properties.map((property: UserStoreProperty) => {
                         if (property.name === SharedUserStoreConstants.READONLY_USER_STORE
                             && property.value === "true") {
