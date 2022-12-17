@@ -22,7 +22,7 @@ import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-com
 import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { fetchPasswordValidationConfig } from "../../api/validation";
 import { getSettingsSectionIcons } from "../../configs";
@@ -42,9 +42,8 @@ const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
 
 /**
  * Constant to store the change password from identifier.
- * @type {string}
  */
-const CHANGE_PASSWORD_FORM_IDENTIFIER = "changePasswordForm";
+const CHANGE_PASSWORD_FORM_IDENTIFIER: string = "changePasswordForm";
 
 /**
  * Prop types for the change password component.
@@ -55,19 +54,10 @@ interface ChangePasswordProps extends TestableComponentInterface {
 }
 
 /**
- * Prop types for the password validation icons.
- */
-
-interface IconProps {
-    cssClassName : string;
-    color : SemanticCOLORS;
-}
-
-/**
  * Change password component.
  *
- * @param {ChangePasswordProps} props - Props injected to the change password component.
- * @return {JSX.Element}
+ * @param props - Props injected to the change password component.
+ * @returns JSX.Element - component
  */
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: ChangePasswordProps): JSX.Element => {
 
@@ -94,7 +84,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const endUserSession = useEndUserSession();
+    const endUserSession: () => Promise<boolean> = useEndUserSession();
 
     /**
      * Get the configurations.

@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { AxiosRequestConfig } from "axios";
 import { HttpMethods } from "../models";
 import {
     ValidationConfInterface,
@@ -25,7 +26,6 @@ import {
     ValidationPropertyInterface
 } from "../models/validation";
 import { store } from "../store";
-import { AxiosRequestConfig } from "axios";
 
 /**
  * Get an axios instance.
@@ -105,7 +105,7 @@ export const getPasswordConfig = (validationConfig: ValidationDataInterface[]): 
         uniqueCharacterValidatorEnabled:
             getConfig(rules, "UniqueCharacterValidator", "min.unique.character") !== null
     };
-}
+};
 
 /**
  * The following function is to get the value of a specific validator configuration.
@@ -128,7 +128,7 @@ export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
 
         if (properties.length > 0) {
 
-                return properties[0].value;
+            return properties[0].value;
         }
     }
 

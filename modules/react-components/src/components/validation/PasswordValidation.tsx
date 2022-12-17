@@ -18,6 +18,9 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {Icon, SemanticCOLORS} from "semantic-ui-react";
 
+/**
+ * Prop types for the password validation icons.
+ */
 export interface IconProps {
 
     cssClassName : string;
