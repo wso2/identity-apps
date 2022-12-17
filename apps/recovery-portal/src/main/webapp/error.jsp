@@ -153,7 +153,7 @@
             }
             if ("<%=isValidCallback%>" === "false") {
                 $("#go-back-button").addClass("disabled");
-                $("#action-buttons").attr("title", "<% IdentityManagementEndpointUtil.i18n(resourceBundle, "request.has.an.invalid.callback.URL"); %>.");
+                $("#action-buttons").attr("title", "<% IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "request.has.an.invalid.callback.URL"); %>.");
             }
         });
 

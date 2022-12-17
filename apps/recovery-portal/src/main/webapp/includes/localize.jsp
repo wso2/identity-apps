@@ -66,6 +66,6 @@
 
     String BUNDLE = "org.wso2.carbon.identity.mgt.recovery.endpoint.i18n.Resources";
 
-    ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
+    ResourceBundle recoveryResourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
         EncodedControl(StandardCharsets.UTF_8.toString()));
 %>

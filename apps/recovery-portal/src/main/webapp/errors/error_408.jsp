@@ -58,7 +58,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   <% IdentityManagementEndpointUtil.i18n(resourceBundle, "error.408"); %>
+                   <% IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.408"); %>
                 </div>
             </div>
         </layout:component>
