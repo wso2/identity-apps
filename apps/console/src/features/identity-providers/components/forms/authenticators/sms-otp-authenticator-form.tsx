@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -27,6 +27,10 @@ import { Trans, useTranslation } from "react-i18next";
 import { Divider, Icon, Label } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { Checkbox } from "semantic-ui-react";
+import { addAlert } from "@wso2is/core/store";
+import { AxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -160,7 +164,6 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         metadata,
         initialValues: originalInitialValues,
         onSubmit,
-        readOnly,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -176,6 +179,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
     const [isEnableSMSOTP, setEnableSMSOTP] = useState<boolean>(false);
     const [isReadOnly, setIsReadOnly] = useState<boolean>(true)
+
+    const dispatch: Dispatch = useDispatch();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -240,9 +245,15 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 && prop.value === 'choreo').length > 0
             setEnableSMSOTP(enableSMSOTP);
             setIsReadOnly(!enableSMSOTP);
-        }).catch(error => {
-            //TODO: How to handle errors
-            console.log(error);
+        }).catch((error: AxiosError) => {
+            if (error?.response.data.code !== 'NSM-60006') {
+                dispatch(addAlert({
+                    description: error?.response.data.description ||
+                        "Error occurred while trying to get SMS OTP configuration.",
+                    level: AlertLevels.ERROR,
+                    message: error?.response.data.message || "Error Occurred."
+                }));
+            }
         });
 
     }, [ originalInitialValues ]);
@@ -369,18 +380,26 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             addSMSPublisher().then((response: NotificationSenderSMSInterface) => {
                 setEnableSMSOTP(true);
                 setIsReadOnly(false);
-            }).catch(error => {
-                //TODO: How to handle errors
-                console.log(error);
+            }).catch((error: AxiosError) => {
+                dispatch(addAlert({
+                    description: error?.response.data.description ||
+                        "Error occurred while trying to enable SMS OTP.",
+                    level: AlertLevels.ERROR,
+                    message: error?.response.data.message || "Error Occurred."
+                }));
             })
         } else {
             // Delete SMS Publisher when enabling the feature.
             deleteSMSPublisher().then(() => {
                 setEnableSMSOTP(false);
                 setIsReadOnly(true);
-            }).catch(error => {
-                //TODO: How to handle errors
-                console.log(error);
+            }).catch((error: AxiosError) => {
+                dispatch(addAlert({
+                    description: error?.response.data.description ||
+                        "Error occurred while trying to disable SMS OTP.",
+                    level: AlertLevels.ERROR,
+                    message: error?.response.data.message || "Error Occurred."
+                }));
             })
         }
     }
@@ -448,7 +467,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 min={
                     IdentityProviderManagementConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
@@ -489,7 +508,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                         Please clear this checkbox to enable alphanumeric characters.
                     </Trans>)
                 }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-sms-otp-regex-use-numeric` }
                 listen={ (e:boolean) => {setIsOTPNumeric(e);} }
@@ -519,7 +538,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 maxLength={
                     IdentityProviderManagementConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_LENGTH
@@ -591,7 +610,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly }
+                hidden={ isReadOnly }
             />
         </Form>
     );
