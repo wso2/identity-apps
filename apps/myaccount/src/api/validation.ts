@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "../models";
 import {
     ValidationConfInterface,
@@ -25,21 +25,21 @@ import {
     ValidationPropertyInterface
 } from "../models/validation";
 import { store } from "../store";
+import { AxiosRequestConfig } from "axios";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches the list of applications.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns A promise containing the response.
  */
 export const fetchPasswordValidationConfig = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
@@ -51,12 +51,10 @@ export const fetchPasswordValidationConfig = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            console.log(response.data);
-            console.log(getPasswordConfig(response.data));
+        .then((response: any) => {
             return getPasswordConfig(response.data) as ValidationFormInterface;
         })
-        .catch((error) => {
+        .catch((error: any) => {
             return Promise.reject(error);
         });
 };
