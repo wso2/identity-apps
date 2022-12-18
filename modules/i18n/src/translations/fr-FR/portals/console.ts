@@ -8786,7 +8786,9 @@ export const console: ConsoleNS = {
                         "minimale du mot de passe.",
                     consecutiveChrMismatch: "Le nombre de caractères consécutifs doit être inférieur à la " +
                         "longueur minimale du mot de passe.",
-                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus."
+                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus.",
+                    minLimitError: "La longueur minimale ne peut pas être inférieure à 8.",
+                    maxLimitError: "La longueur maximale ne peut pas être supérieure à 30."
                 },
                 notifications: {
                     error: {

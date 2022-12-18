@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -203,7 +194,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * @returns the value of the configuration.
      */
     const getValidationConfig = (rules: ValidationConfInterface[], validatorName: string,
-        attributeName: string): string => {
+                                 attributeName: string): string => {
 
         const config: ValidationConfInterface[] = rules?.filter((data: ValidationConfInterface) => {
             return data.validator === validatorName;
@@ -240,6 +231,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         let description: string = "";
 
         if (isRuleType) {
+            if (Number(values.minLength) < 8) {
+                error = true;
+                description = t("console:manage.features.validation.validationError.minMaxMismatch");
+            }
+            if (Number(values.maxLength) > 30) {
+                error = true;
+                description = t("console:manage.features.validation.validationError.minMaxMismatch");
+            }
             if (Number(values.minLength) > Number(values.maxLength)) {
                 error = true;
                 description = t("console:manage.features.validation.validationError.minMaxMismatch");
@@ -464,9 +463,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .MIN_VALUE
                                                             }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -500,9 +500,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .MIN_VALUE
                                                             }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -532,12 +533,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             min={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
+                                                                    .MIN_VALUE
                                                             }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -570,9 +572,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .MIN_VALUE
                                                             }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -610,15 +613,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minUniqueCharacters"
                                                             inputType="number"
                                                             name="minUniqueCharacters"
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
+                                                            min={ 1 }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -657,15 +657,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="maxConsecutiveCharacters"
                                                             inputType="number"
                                                             name="maxConsecutiveCharacters"
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
+                                                            min={ 1 }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
