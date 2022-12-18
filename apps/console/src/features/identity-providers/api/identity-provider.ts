@@ -1292,7 +1292,7 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
  *
  * @returns  A promise containing the response.
  */
-export const getSMSPublisher = (): Promise<any> => {
+export const getSMSNotificationSenders = (): Promise<any> => {
 
     console.log(store.getState())
     const requestConfig = {
@@ -1303,17 +1303,17 @@ export const getSMSPublisher = (): Promise<any> => {
         },
         method: HttpMethods.GET,
         //TODO - get URL from configs
-        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms/SMSPublisher"
+        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms"
     };
 
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error("Failed to get SMS Notification Sender : SMSPublisher")
+                    new Error("Failed to get SMS Notification Senders")
                 );
             }
-            return Promise.resolve(response.data as NotificationSenderSMSInterface);
+            return Promise.resolve(response.data as NotificationSenderSMSInterface[]);
         }).catch((error) => {
             return Promise.reject(error);
         });

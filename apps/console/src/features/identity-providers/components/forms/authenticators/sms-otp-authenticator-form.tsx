@@ -40,7 +40,7 @@ import {
     CommonPluggableComponentPropertyInterface,
     NotificationSenderSMSInterface
 } from "../../../models";
-import { getSMSPublisher, addSMSPublisher, deleteSMSPublisher } from "../../../api/identity-provider"
+import { getSMSNotificationSenders, addSMSPublisher, deleteSMSPublisher } from "../../../api/identity-provider"
 
 /**
  * Interface for SMS OTP Authenticator Form props.
@@ -239,10 +239,17 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
 
-        getSMSPublisher().then((response: NotificationSenderSMSInterface) => {
-            const channelValues = response.properties ? response.properties : [];
-            const enableSMSOTP = channelValues.filter(prop => prop.key === 'channel.type'
-                && prop.value === 'choreo').length > 0
+        getSMSNotificationSenders().then((response: NotificationSenderSMSInterface[]) => {
+            let enableSMSOTP = false;
+            for (const notificationSender of response) {
+                const channelValues = notificationSender.properties ? notificationSender.properties : [];
+                if (notificationSender.name === 'SMSPublisher' &&
+                    (channelValues.filter(prop => prop.key === 'channel.type' && prop.value === 'choreo').length > 0)
+                ) {
+                    enableSMSOTP = true;
+                    break;
+                }
+            }
             setEnableSMSOTP(enableSMSOTP);
             setIsReadOnly(!enableSMSOTP);
         }).catch((error: AxiosError) => {
