@@ -57,8 +57,7 @@ import {
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface,
-    UpdateClaimConfiguration
+    SubjectConfigInterface
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -1031,21 +1030,21 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         // Generate Final Submit value
-        const submitValue: UpdateClaimConfiguration = {
+        const submitValue: any = {
             claimConfiguration: {
                 claimMappings: claimMappingFinal.length > 0 ? claimMappingFinal : [],
                 dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
                 requestedClaims: RequestedClaims,
                 role: {
                     claim: {
-                        uri: advanceSettingValues?.role.claim.uri
+                        uri: advanceSettingValues?.role.claim
                     },
                     includeUserDomain: advanceSettingValues?.role.includeUserDomain,
                     mappings: roleMapping.length > 0 ? roleMapping : []
                 },
                 subject: {
                     claim: {
-                        uri: advanceSettingValues?.subject.claim.uri
+                        uri: advanceSettingValues?.subject.claim
                     },
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
                     includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
