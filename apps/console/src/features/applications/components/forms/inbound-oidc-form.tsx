@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { CheckboxChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -540,16 +540,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param isLabel - Flag to determine if label.
      * @returns the list of options for radio & dropdown.
      */
-    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): CheckboxChild[] => {
-        const allowedList: CheckboxChild[] = [];
+    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): RadioChild[] => {
+        const allowedList: RadioChild[] = [];
 
         if (metadataProp) {
             if (isLabel) {
                 metadataProp.options.map((ele: string) => {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele),
-                            header: ""
+                            content: getMetadataHints(ele)
                         },
                         label: moderateMetadataLabels(ele),
                         value: ele
@@ -564,7 +563,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (isLabel) {
             // if the list related to a label then sort the values in
             // alphabetical order using a ascending comparator.
-            return allowedList.sort((a: CheckboxChild, b: CheckboxChild) => {
+            return allowedList.sort((a: RadioChild, b: RadioChild) => {
                 if (a.label < b.label) return -1;
                 if (a.label > b.label) return 1;
 
@@ -583,16 +582,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @returns a list of options for radio.
      */
     const getAllowedListForAccessToken = (
-        metadataProp: MetadataPropertyInterface, isBinding?: boolean): CheckboxChild[] => {
-        const allowedList: CheckboxChild[] = [];
+        metadataProp: MetadataPropertyInterface, isBinding?: boolean): RadioChild[] => {
+        const allowedList: RadioChild[] = [];
 
         if (metadataProp) {
             metadataProp.options.map((ele: string) => {
                 if ((ele === "Default") && !isBinding) {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele),
-                            header: ""
+                            content: getMetadataHints(ele)
                         },
                         label: "Opaque",
                         value: ele
@@ -604,8 +602,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 } else {
                     allowedList.push({
                         hint: {
-                            content: getMetadataHints(ele),
-                            header: ""
+                            content: getMetadataHints(ele)
                         },
                         label: moderateMetadataLabels(ele),
                         value: ele
@@ -614,7 +611,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             });
         }
 
-        return allowedList.sort((a: CheckboxChild, b: CheckboxChild) => {
+        return allowedList.sort((a: RadioChild, b: RadioChild) => {
             if (a.label < b.label) return -1;
             if (a.label > b.label) return 1;
 
