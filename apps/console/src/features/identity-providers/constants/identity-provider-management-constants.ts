@@ -464,4 +464,9 @@ export class IdentityProviderManagementConstants {
      )
 
      public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+     public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "Failed to add SMS " +
+            "Notification Senders";
+     public static readonly ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER: string = "Failed to delete SMS " +
+            "Notification Senders";
 }

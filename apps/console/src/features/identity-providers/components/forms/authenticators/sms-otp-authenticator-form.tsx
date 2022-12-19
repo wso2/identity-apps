@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Field, Form } from "@wso2is/form";
 import { Code, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -40,7 +41,7 @@ import {
     CommonPluggableComponentPropertyInterface,
     NotificationSenderSMSInterface
 } from "../../../models";
-import { getSMSNotificationSenders, addSMSPublisher, deleteSMSPublisher } from "../../../api/identity-provider"
+import { useSMSNotificationSenders, addSMSPublisher, deleteSMSPublisher } from "../../../api";
 
 /**
  * Interface for SMS OTP Authenticator Form props.
@@ -177,10 +178,15 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
-    const [isEnableSMSOTP, setEnableSMSOTP] = useState<boolean>(false);
-    const [isReadOnly, setIsReadOnly] = useState<boolean>(true)
+    const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<boolean>(false);
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true)
 
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        data: notificationSendersList,
+        error: notificationSendersListFetchRequestError
+    } = useSMSNotificationSenders();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -239,31 +245,30 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
 
-        getSMSNotificationSenders().then((response: NotificationSenderSMSInterface[]) => {
-            let enableSMSOTP = false;
-            for (const notificationSender of response) {
-                const channelValues = notificationSender.properties ? notificationSender.properties : [];
-                if (notificationSender.name === 'SMSPublisher' &&
-                    (channelValues.filter(prop => prop.key === 'channel.type' && prop.value === 'choreo').length > 0)
-                ) {
-                    enableSMSOTP = true;
-                    break;
+        if (!notificationSendersListFetchRequestError) {
+            if (notificationSendersList) {
+                let enableSMSOTP = false;
+                for (const notificationSender of notificationSendersList) {
+                    const channelValues = notificationSender.properties ? notificationSender.properties : [];
+                    if (notificationSender.name === 'SMSPublisher' &&
+                        (channelValues.filter(prop => prop.key === 'channel.type' && prop.value === 'choreo').length > 0)
+                    ) {
+                        enableSMSOTP = true;
+                        break;
+                    }
                 }
+                setEnableSMSOTP(enableSMSOTP);
+                setIsReadOnly(!enableSMSOTP);
             }
-            setEnableSMSOTP(enableSMSOTP);
-            setIsReadOnly(!enableSMSOTP);
-        }).catch((error: AxiosError) => {
-            if (error?.response.data.code !== 'NSM-60006') {
-                dispatch(addAlert({
-                    description: error?.response.data.description ||
-                        "Error occurred while trying to get SMS OTP configuration.",
-                    level: AlertLevels.ERROR,
-                    message: error?.response.data.message || "Error Occurred."
-                }));
-            }
-        });
-
-    }, [ originalInitialValues ]);
+        } else {
+            dispatch(addAlert({
+                description: notificationSendersListFetchRequestError?.response.data.description ||
+                    "Error occurred while trying to get SMS OTP configuration.",
+                level: AlertLevels.ERROR,
+                message: notificationSendersListFetchRequestError?.response.data.message || "Error Occurred."
+            }));
+        }
+    }, [ originalInitialValues, notificationSendersList, notificationSendersListFetchRequestError]);
 
     /**
      * Prepare form values for submitting.
@@ -387,9 +392,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             addSMSPublisher().then((response: NotificationSenderSMSInterface) => {
                 setEnableSMSOTP(true);
                 setIsReadOnly(false);
-            }).catch((error: AxiosError) => {
+            }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
-                    description: error?.response.data.description ||
+                    description: error.response.data.description ||
                         "Error occurred while trying to enable SMS OTP.",
                     level: AlertLevels.ERROR,
                     message: error?.response.data.message || "Error Occurred."
@@ -400,7 +405,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             deleteSMSPublisher().then(() => {
                 setEnableSMSOTP(false);
                 setIsReadOnly(true);
-            }).catch((error: AxiosError) => {
+            }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
                     description: error?.response.data.description ||
                         "Error occurred while trying to disable SMS OTP.",
@@ -421,29 +426,10 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
-
-            {/*<Message*/}
-            {/*    type={ "info" }*/}
-            {/*    content={*/}
-            {/*        ( <Trans>*/}
-            {/*            <span>*/}
-            {/*                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +*/}
-            {/*                    ".smsOTP.forTestingOnlyNotice.firstLine") }*/}
-            {/*            </span>*/}
-            {/*            <Divider hidden fitted/>*/}
-            {/*            <span>*/}
-            {/*                <Icon name="info circle" style={ { visibility: "hidden" } }/>*/}
-            {/*                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +*/}
-            {/*                    ".smsOTP.forTestingOnlyNotice.secondLine") }*/}
-            {/*            </span>*/}
-            {/*        </Trans> ) }*/}
-            {/*    width={ 13 }*/}
-            {/*/>*/}
             <Checkbox
                 toggle
                 label={
-                    //TODO: label name refactoring
-                    "Enable SMS OTP"
+                   "Enable SMS OTP"
                 }
                 data-componentid="branding-preference-publish-toggle"
                 checked={ isEnableSMSOTP }

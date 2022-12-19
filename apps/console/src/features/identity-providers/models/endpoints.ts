@@ -26,5 +26,4 @@ export interface IDPResourceEndpointsInterface {
     localAuthenticators: string;
     multiFactorAuthenticators: string;
     notificationSenders: string;
-
 }

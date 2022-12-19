@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -45,17 +45,18 @@ import {
     JITProvisioningResponseInterface,
     LocalAuthenticatorInterface,
     MultiFactorAuthenticatorInterface,
+    NotificationSenderSMSInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface,
-    NotificationSenderSMSInterface
+    OutboundProvisioningConnectorMetaInterface
 } from "../models";
 
 /**
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest
+    .bind(AsgardeoSPAClient.getInstance());
 const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
@@ -64,7 +65,7 @@ const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgard
  * @param identityProvider - Identity provider settings data.
  */
 export const createIdentityProvider = <T = Record<string, unknown>> (identityProvider: T): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: identityProvider,
         headers: {
             "Accept": "application/json",
@@ -76,13 +77,13 @@ export const createIdentityProvider = <T = Record<string, unknown>> (identityPro
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -105,7 +106,7 @@ export const getIdentityProviderList = (
     requiredAttributes?: string
 ): Promise<IdentityProviderListResponseInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface  = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -122,13 +123,13 @@ export const getIdentityProviderList = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get IdP list from: "));
             }
 
             return Promise.resolve(response.data as IdentityProviderListResponseInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -183,7 +184,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const getIdentityProviderDetail = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1288,13 +1289,14 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
 };
 
 /**
- * Get all sms notification senders with name SMSPublisher.
+ * Hook to get all sms notification senders with name SMSPublisher.
  *
  * @returns  A promise containing the response.
  */
-export const getSMSNotificationSenders = (): Promise<any> => {
+export const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[], Error = RequestErrorInterface>():
+    RequestResultInterface<Data, Error> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1304,17 +1306,15 @@ export const getSMSNotificationSenders = (): Promise<any> => {
         url: store.getState().config.endpoints.notificationSenders + "/sms"
     };
 
-    return httpClient(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error("Failed to get SMS Notification Senders")
-                );
-            }
-            return Promise.resolve(response.data as NotificationSenderSMSInterface[]);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
+    const {data, error, isValidating, mutate} = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
 };
 
 /**
@@ -1322,7 +1322,7 @@ export const getSMSNotificationSenders = (): Promise<any> => {
  *
  * @returns  A promise containing the response.
  */
-export const addSMSPublisher = (): Promise<any> => {
+export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
 
     //SMS Notification sender with name SMSPublisher.
     const smsProvider: NotificationSenderSMSInterface = {
@@ -1338,7 +1338,7 @@ export const addSMSPublisher = (): Promise<any> => {
         ]
     };
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1350,15 +1350,25 @@ export const addSMSPublisher = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse<NotificationSenderSMSInterface>) => {
             if (response.status !== 201) {
-                return Promise.reject(
-                    new Error("Failed to add SMS Notification Sender : SMSPublisher")
-                );
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
             return Promise.resolve(response.data as NotificationSenderSMSInterface);
-        }).catch((error) => {
-            return Promise.reject(error);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -1367,9 +1377,9 @@ export const addSMSPublisher = (): Promise<any> => {
  *
  * @returns  A promise containing the response.
  */
-export const deleteSMSPublisher = (): Promise<any> => {
+export const deleteSMSPublisher = (): Promise<void> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1380,14 +1390,24 @@ export const deleteSMSPublisher = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
-                return Promise.reject(
-                    new Error("Failed to delete SMS Notification Sender : SMSPublisher")
-                );
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
             return Promise.resolve(response.data);
-        }).catch((error) => {
-            return Promise.reject(error);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
