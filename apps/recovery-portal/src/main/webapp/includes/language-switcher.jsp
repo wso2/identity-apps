@@ -9,7 +9,8 @@
  ~
 --%>
 
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
 
@@ -113,7 +114,7 @@
     />
     <i class="dropdown icon"></i>
     <div id="language-selector-selected-text" class="default text">
-        <% AuthenticationEndpointUtil.i18n(resourceBundle, "select.language"); %>
+        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "select.language")%>
     </div>
     <div class="menu">
         <div class="item" data-value="en_US">

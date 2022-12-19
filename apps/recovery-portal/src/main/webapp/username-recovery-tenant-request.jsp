@@ -153,7 +153,7 @@
                 var isTenantQualifiedUrlsEnabled = '<%= IdentityTenantUtil.isTenantQualifiedUrlsEnabled() %>';
 
                 if (isTenantQualifiedUrlsEnabled == 'false' && tenantDomain == '') {
-                    errorMessage.text(<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.domain")%>);
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.domain")%>");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
                     return false;

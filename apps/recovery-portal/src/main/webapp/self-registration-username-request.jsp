@@ -235,7 +235,7 @@
 
                         if (normalizedUsername) {
                             if (!/^[^/].*[^@]$/g.test(normalizedUsername)) {
-                                $("#error-msg").text(<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.pattern.violated")%>);
+                                $("#error-msg").text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.pattern.violated")%>");
                                 $("#error-msg").show();
                                 $("#username").val("");
                                 return;
