@@ -31,6 +31,7 @@ export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpoint
         authenticators: `${ serverHost }/api/server/v1/authenticators`,
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
-        multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators
+        multiFactorAuthenticators: getServerConfigurationsResourceEndpoints(serverHost).multiFactorAuthenticators,
+        notificationSenders: `${ serverHost }/api/server/v1/notification-senders`
     };
 };

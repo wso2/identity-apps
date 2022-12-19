@@ -108,6 +108,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             me: "",
             multiFactorAuthenticators: "",
             myAccountConfigMgt: "",
+            notificationSenders:"",
             oidcScopes: "",
             organizations: "",
             passwordHistory: "",

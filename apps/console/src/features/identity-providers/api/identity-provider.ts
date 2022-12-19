@@ -1301,8 +1301,7 @@ export const getSMSNotificationSenders = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        //TODO - get URL from configs
-        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms"
+        url: store.getState().config.endpoints.notificationSenders + "/sms"
     };
 
     return httpClient(requestConfig)
@@ -1347,8 +1346,7 @@ export const addSMSPublisher = (): Promise<any> => {
         },
         data: smsProvider,
         method: HttpMethods.POST,
-        //TODO - get URL from configs
-        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms"
+        url: store.getState().config.endpoints.notificationSenders + "/sms"
     };
 
     return httpClient(requestConfig)
@@ -1378,8 +1376,7 @@ export const deleteSMSPublisher = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        //TODO - get URL from configs
-        url: "https://api.asg.io/t/laki/api/server/v1/notification-senders/sms/SMSPublisher"
+        url: store.getState().config.endpoints.notificationSenders + "/sms/SMSPublisher"
     };
 
     return httpClient(requestConfig)
