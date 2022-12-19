@@ -1294,7 +1294,6 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
  */
 export const getSMSNotificationSenders = (): Promise<any> => {
 
-    console.log(store.getState())
     const requestConfig = {
         headers: {
             "Accept": "application/json",
