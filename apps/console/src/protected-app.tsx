@@ -33,13 +33,11 @@ import {
 } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
-    AlertLevels,
     IdentifiableComponentInterface,
     RouteInterface,
     TenantListInterface
 } from "@wso2is/core/models";
 import {
-    addAlert,
     setDeploymentConfigs,
     setServiceResourceEndpoints,
     setSignIn,
@@ -108,9 +106,7 @@ import {
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { getOrganization } from "./features/organizations/api";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
-import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
     GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
@@ -215,6 +211,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             dispatchEvent(event);
 
             const orgIdIdToken: string = idToken.org_id;
+            const orgName: string = idToken.org_name;
 
             const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
                 response.sub
@@ -260,7 +257,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         domain: "",
                         id: orgId,
                         lastModified: new Date().toString(),
-                        name: orgId,
+                        name: orgName,
                         parent: {
                             id: "",
                             ref: ""
@@ -299,50 +296,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         response = { ...grantResponse };
                     }
                 );
-
-                dispatch(setGetOrganizationLoading(true));
-                await getOrganization(orgId)
-                    .then(
-                        async (orgResponse: OrganizationResponseInterface) => {
-                            dispatch(setOrganization(orgResponse));
-                        }
-                    )
-                    .catch((error: any) => {
-                        if (error?.description) {
-                            dispatch(
-                                addAlert({
-                                    description: error.description,
-                                    level: AlertLevels.ERROR,
-                                    message: t(
-                                        "console:manage.features.organizations.notifications." +
-                                        "fetchOrganization.error.message"
-                                    )
-                                })
-                            );
-
-                            return;
-                        }
-
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "console:manage.features.organizations.notifications.fetchOrganization" +
-                                    ".genericError.description"
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "console:manage.features.organizations.notifications." +
-                                    "fetchOrganization.genericError.message"
-                                )
-                            })
-                        );
-                    })
-                    .finally(() => {
-                        dispatch(setGetOrganizationLoading(false));
-                    });
-            } else {
-                dispatch(setGetOrganizationLoading(false));
             }
+
+            dispatch(setGetOrganizationLoading(false));
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
