@@ -49,6 +49,7 @@ import {
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "../models";
+import { ServerConfigurationsConstants } from "../../server-configurations";
 
 /**
  * Props for validation configuration page.
@@ -74,7 +75,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
-    const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
     const [ isRuleType ] = useState<boolean>(true);
     const [ isUniqueChrValidatorEnabled, setUniqueChrValidatorEnabled ] = useState<boolean>(false);
     const [ isConsecutiveChrValidatorEnabled, setConsecutiveChrValidatorEnabled ] = useState<boolean>(false);
@@ -87,14 +87,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         error: ValidationConfigStatusFetchRequestError,
         mutate: mutateValidationConfigFetchRequest
     } = useValidationConfigData();
-
-    useEffect(() => {
-        const locationState: unknown = history.location.state;
-
-        if (locationState === ApplicationManagementConstants.APPLICATION_STATE) {
-            setApplicationRedirect(true);
-        }
-    }, []);
 
     useEffect(() => {
 
@@ -225,13 +217,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Handle back button click.
      */
     const handleBackButtonClick = () => {
-        if (isApplicationRedirect) {
-            history.push(AppConstants.getPaths().get("APPLICATIONS"));
 
-            return;
-        }
-
-        history.push(AppConstants.getPaths().get("VALIDATION_CONFIG"));
+        history.push(AppConstants.getPaths()
+            .get("GOVERNANCE_CONNECTOR")
+            .replace(":id", ServerConfigurationsConstants.
+                LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID));
     };
 
     const validateForm = (values: ValidationFormInterface): boolean => {
@@ -347,9 +337,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: isApplicationRedirect ?
-                    t("console:manage.features.validation.goBackToApplication")
-                    : t("console:manage.features.validation.goBackToValidationConfig")
+                text: t("console:manage.features.validation.goBackToValidationConfig")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

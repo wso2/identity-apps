@@ -8621,7 +8621,7 @@ export const console: ConsoleNS = {
                 pageTitle: "මුරපද වලංගු වින්‍යාසය",
                 description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
-                goBackToValidationConfig: "මුරපද වලංගුකරණය වෙත ආපසු යන්න"
+                goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
             }
         },
         notifications: {

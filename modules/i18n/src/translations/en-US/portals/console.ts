@@ -10274,7 +10274,7 @@ export const console: ConsoleNS = {
                 pageTitle: "Password validation configuration",
                 description: "Customize password validation rules for your users.",
                 goBackToApplication: "Go back to application",
-                goBackToValidationConfig: "Go back to password validation"
+                goBackToValidationConfig: "Go back to Account Security"
             }
         },
         notifications: {
