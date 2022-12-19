@@ -29,7 +29,7 @@ import { Segment } from "semantic-ui-react";
 interface StickyBarPropsInterface {
     updateButtonRef: MutableRefObject<HTMLElement>;
     formRef: MutableRefObject<HTMLElement>;
-    isFormPristine: boolean;
+    isFormStale: boolean;
 }
 
 /**
@@ -40,7 +40,7 @@ interface StickyBarPropsInterface {
 export const StickyBar: FunctionComponent<PropsWithChildren<
     StickyBarPropsInterface
 >> = (props: PropsWithChildren<StickyBarPropsInterface>): ReactElement => {
-    const { updateButtonRef, formRef, isFormPristine } = props;
+    const { updateButtonRef, formRef, isFormStale } = props;
 
     const [ stickyBarWidth, setStickyBarWidth ] = useState<number>(0);
     const [ showStickyBar, setShowStickyBar ] = useState<boolean>(false);
@@ -79,7 +79,7 @@ export const StickyBar: FunctionComponent<PropsWithChildren<
 
     return (
         showStickyBar &&
-        !isFormPristine && (
+        isFormStale && (
             <Segment
                 className="sticky-bar"
                 style={ { width: `calc(${ stickyBarWidth ?? 0 }px + 2em` } }
