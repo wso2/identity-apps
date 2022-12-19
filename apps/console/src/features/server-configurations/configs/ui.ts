@@ -73,6 +73,9 @@ import {
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+import {
+    default as PasswordValidationIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/password-validation.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
@@ -112,6 +115,7 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
         botDetection: RobotIcon,
-        selfRegistration: UserAddIcon
+        selfRegistration: UserAddIcon,
+        passwordValidation: PasswordValidationIcon
     };
 };

@@ -17,11 +17,12 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
+import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Label, Ref } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
+import { getSettingsSectionIcons } from "../../server-configurations";
 
 /**
  * Props for my account settings page.
@@ -51,41 +52,16 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
     };
 
     return (
-        <PageLayout
-            pageTitle={ "Validation configuration" }
-            title={ (
-                <>
-                    { "Validation Configuration" }
-                    <Label size="medium" className="preview-label ml-2">
-                        { t("common:preview") }
-                    </Label>
-                </>
-            ) }
-            description={ "Validation configuration related settings." }
-            data-componentid={ `${ componentId }-page-layout` }
+        <Section
+            data-componentid={ `${componentId}-settings-section` }
+            description={ "Customize password validation rules for your users." }
+            icon={ getSettingsSectionIcons().passwordValidation }
+            header={ "Password" }
+            onPrimaryActionClick={ handleSelection }
+            primaryAction={ "Configure" }
         >
-            <Ref innerRef={ pageContextRef }>
-                <GridLayout
-                    isLoading={ false }
-                    showTopActionPanel={ false }
-                >
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 12 }>
-                            <Section
-                                data-componentid={ `${componentId}-settings-section` }
-                                description={ "Customize password validation rules for your users." }
-                                icon={ null }
-                                header={ "Password" }
-                                onPrimaryActionClick={ handleSelection }
-                                primaryAction={ "Configure" }
-                            >
-                                <Divider hidden/>
-                            </Section>
-                        </Grid.Column>
-                    </Grid.Row>
-                </GridLayout>
-            </Ref>
-        </PageLayout>
+            <Divider hidden/>
+        </Section>
     );
 };
 
