@@ -56,7 +56,7 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
             data-componentid={ `${componentId}-settings-section` }
             description={ "Customize password validation rules for your users." }
             icon={ getSettingsSectionIcons().passwordValidation }
-            header={ "Password" }
+            header={ "Password Validation" }
             onPrimaryActionClick={ handleSelection }
             primaryAction={ "Configure" }
         >
