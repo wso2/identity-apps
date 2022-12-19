@@ -37,8 +37,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Label, Ref } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../applications/constants";
 import { AppConstants, history } from "../../core";
+import { ServerConfigurationsConstants } from "../../server-configurations";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import {
     ValidationConfigConstants
@@ -49,7 +49,6 @@ import {
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "../models";
-import { ServerConfigurationsConstants } from "../../server-configurations";
 
 /**
  * Props for validation configuration page.
@@ -376,9 +375,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .PASSWORD_MIN_VALUE
                                                             }
                                                             max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
+                                                                currentValues.maxLength ? currentValues.maxLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MAX_VALUE
                                                             }
                                                             width={ 2 }
                                                             required={ true }
@@ -394,11 +394,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .PASSWORD_MIN_LENGTH
                                                             }
-                                                            validation={ (value: number) => {
-                                                                if (value > Number(currentValues.maxLength)) {
-                                                                    return "Mismatch";
-                                                                }
-                                                            } }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
@@ -416,9 +411,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             inputType="number"
                                                             name="maxLength"
                                                             min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_VALUE
+                                                                currentValues.minLength ? currentValues.minLength :
+                                                                    ValidationConfigConstants
+                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                        .PASSWORD_MIN_VALUE
                                                             }
                                                             max={
                                                                 ValidationConfigConstants
@@ -429,6 +425,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    maxLength: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -469,6 +471,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minNumbers: value
+                                                                });
+                                                            } }
+
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -506,6 +515,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minUpperCaseCharacters: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -552,6 +567,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_LENGTH
                                                             }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minLowerCaseCharacters: value
+                                                                });
+                                                            } }
                                                             readOnly={ false }
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-lower-case-characters` }
@@ -578,6 +599,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minSpecialCharacters: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -621,6 +648,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minUniqueCharacters: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -665,6 +698,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    maxConsecutiveCharacters: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -690,10 +729,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 ariaLabel="Validation configuration update button"
                                                 name="update-button"
                                                 data-testid={ `${ componentId }-submit-button` }
-                                                // disabled={ !isMyAccountEnabled }
                                                 loading={ isSubmitting }
                                                 label={ t("common:update") }
-                                                // hidden={ !isMyAccountEnabled }
                                             >
 
                                             </Field.Button>
