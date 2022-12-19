@@ -35,6 +35,8 @@ interface StickyBarPropsInterface {
 /**
  * Sticks the children to the specified position.
  *
+ * @param props - Props injected to the component.
+ *
  * @returns StickyBar
  */
 export const StickyBar: FunctionComponent<PropsWithChildren<
