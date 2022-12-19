@@ -195,13 +195,13 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
             }
 
             return Promise.resolve(response.data as IdentityProviderResponseInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -256,7 +256,7 @@ export const getAllIdentityProvidersDetail = (
  * @returns A promise containing the response.
  */
 export const deleteIdentityProvider = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -267,13 +267,13 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the identity provider."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -300,7 +300,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
     }
 
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: replaceOps,
         headers: {
             "Accept": "application/json",
@@ -312,13 +312,13 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + id));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };

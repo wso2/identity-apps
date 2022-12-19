@@ -178,8 +178,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
-    const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<boolean>(false);
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true)
+    const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<Boolean>(false);
+    const [ isReadOnly, setIsReadOnly ] = useState<Boolean>(true)
 
     const dispatch: Dispatch = useDispatch();
 
@@ -432,7 +432,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                    "Enable SMS OTP"
                 }
                 data-componentid="branding-preference-publish-toggle"
-                checked={ isEnableSMSOTP }
+                checked={ isEnableSMSOTP.valueOf() }
                 onChange={ (event, data): void => handleUpdateSMSPublisher(event, data) }
                 className="feature-toggle"
             />
