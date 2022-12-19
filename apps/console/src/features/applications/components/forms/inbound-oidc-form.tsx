@@ -226,7 +226,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
     const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
-    const [ isFormPristine, setIsFormPristine ] = useState<boolean>(true);
+    const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -1211,7 +1211,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         <>
             {
                 !readOnly &&  (
-                    <StickyBar updateButtonRef={ updateRef } formRef={ formRef } isFormPristine={ isFormPristine }>
+                    <StickyBar updateButtonRef={ updateRef } formRef={ formRef } isFormStale={ isFormStale }>
                         <Button
                             primary
                             type="submit"
@@ -2813,8 +2813,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             }
                         }
                     } }
-                    onPristineChange={ (isPristine: boolean) => {
-                        setIsFormPristine(isPristine);
+                    onStaleChange={ (isStale: boolean) => {
+                        setIsFormStale(isStale);
                     } }
                     ref={ formRef }
                 >
