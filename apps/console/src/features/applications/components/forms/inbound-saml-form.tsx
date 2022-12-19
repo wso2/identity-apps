@@ -18,12 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
+import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Code, CopyInputField, Heading, Hint, StickyBar, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
@@ -101,15 +101,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
     // creates dropdown options
     const getAllowedOptions = (metadataProp: MetadataPropertyInterface, isLabel?: boolean) => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownChild[] = [];
 
         if (metadata) {
             if (isLabel) {
-                metadataProp.options.map((ele) => {
-                    allowedOptions.push({ label: ele, value: ele });
+                metadataProp.options.map((ele: string) => {
+                    allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
                 });
             } else {
-                metadataProp.options.map((ele) => {
+                metadataProp.options.map((ele: string) => {
                     allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
                 });
             }
@@ -146,46 +146,50 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         initialValues?.singleLogoutProfile.logoutMethod?
             initialValues?.singleLogoutProfile.logoutMethod
             : LogoutMethods.BACK_CHANNEL);
+    const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
-    const issuer = useRef<HTMLElement>();
-    const applicationQualifier = useRef<HTMLElement>();
-    const consumerURL = useRef<HTMLDivElement>();
-    const defaultAssertionConsumerUrl = useRef<HTMLElement>();
-    const idpEntityIdAlias = useRef<HTMLElement>();
-    const requestSignatureValidation = useRef<HTMLElement>();
-    const signatureValidationCertAlias = useRef<HTMLElement>();
-    const digestAlgorithm = useRef<HTMLElement>();
-    const signingAlgorithm = useRef<HTMLElement>();
-    const responseSigning = useRef<HTMLElement>();
-    const bindings = useRef<HTMLElement>();
-    const signatureValidationForArtifactBinding = useRef<HTMLElement>();
-    const idPInitiatedSSO = useRef<HTMLElement>();
-    const nameIdFormat = useRef<HTMLElement>();
-    const audience = useRef<HTMLDivElement>();
-    const recipient = useRef<HTMLDivElement>();
-    const assertionEncryption = useRef<HTMLElement>();
-    const assertionEncryptionAlgorithm = useRef<HTMLElement>();
-    const keyEncryptionAlgorithm = useRef<HTMLElement>();
-    const attributeProfile = useRef<HTMLElement>();
-    const includeAttributesInResponse = useRef<HTMLElement>();
-    const attributeConsumingServiceIndex = useRef<HTMLElement>();
-    const singleLogoutProfile = useRef<HTMLElement>();
-    const logoutMethod = useRef<HTMLElement>();
-    const singleLogoutResponseUrl = useRef<HTMLElement>();
-    const singleLogoutRequestUrl = useRef<HTMLElement>();
-    const idpInitiatedSingleLogout = useRef<HTMLElement>();
-    const returnToURL = useRef<HTMLDivElement>();
-    const assertionQueryProfile = useRef<HTMLElement>();
+    const issuer: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const applicationQualifier:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const consumerURL:MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const defaultAssertionConsumerUrl:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const idpEntityIdAlias:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requestSignatureValidation:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const signatureValidationCertAlias:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const digestAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const signingAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const responseSigning:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const bindings:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const signatureValidationForArtifactBinding:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const idPInitiatedSSO:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const nameIdFormat:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const audience:MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const recipient:MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const assertionEncryption:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const assertionEncryptionAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const keyEncryptionAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const attributeProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const includeAttributesInResponse:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const attributeConsumingServiceIndex:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const singleLogoutProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const logoutMethod:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const singleLogoutResponseUrl:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const singleLogoutRequestUrl:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const idpInitiatedSingleLogout:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const returnToURL:MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const assertionQueryProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+
+    const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
+    const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const createDefaultAssertionConsumerUrl = () => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownChild[] = [];
 
         if (!isEmpty(assertionConsumerUrls)) {
-            const assertionUrlArray = assertionConsumerUrls.split(",");
+            const assertionUrlArray: string[] = assertionConsumerUrls.split(",");
 
-            assertionUrlArray.map((url) => {
+            assertionUrlArray.map((url: string) => {
                 allowedOptions.push({ key: assertionUrlArray.indexOf(url), text: url, value: url });
             });
         }
@@ -202,7 +206,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         }
     },[ certificate ]);
 
-    const updateConfiguration = (values) => {
+    const updateConfiguration = (values: Map<string, FormValue>) => {
 
         return {
             general: {
@@ -299,7 +303,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
      *
      */
     const renderSSOProfileCheckBox = () => {
-        const ssoCheckBox = [
+        const ssoCheckBox: CheckboxChild[] = [
             {
                 label: "HTTP Post",
                 readOnly: true,
@@ -311,7 +315,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 value: "HTTP_REDIRECT"
             }
         ];
-        const artBindingCheckbox = { label: "Artifact", readOnly: false, value: "ARTIFACT" };
+
+        const artBindingCheckbox: CheckboxChild = { label: "Artifact", readOnly: false, value: "ARTIFACT" };
 
         if (isArtifactBindingAllowed) {
             ssoCheckBox.push(artBindingCheckbox);
@@ -466,7 +471,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         metadata ?
             (
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         setTriggerCertSubmit();
                         if (selectedCertType !== CertificateTypeInterface.NONE && isEmpty(finalCertValue)) {
                             return;
@@ -482,8 +487,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                     } }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
-                        const iterator = requiredFields.entries();
-                        let result = iterator.next();
+                        const iterator: IterableIterator<[string, boolean]> = requiredFields.entries();
+                        let result: IteratorResult<[string, boolean], any> = iterator.next();
 
                         while (!result.done) {
                             if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
@@ -495,8 +500,34 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             }
                         }
                     } }
+                    onStaleChange={ (isPristine: boolean) => {
+                        setIsFormStale(isPristine);
+                    } }
+                    ref={ formRef }
                 >
+                    {
+                        !readOnly &&  (
+                            <StickyBar
+                                updateButtonRef={ updateRef }
+                                formRef={ formRef }
+                                isFormStale={ isFormStale }
+                            >
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    loading={ isLoading }
+                                    disabled={ isLoading }
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
+                                    { t("common:update") }
+                                </Button>
+                            </StickyBar>
+                        )
+                    }
                     <Grid>
+
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 {
@@ -764,7 +795,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     disabled={ !isCertAvailableForEncrypt }
                                     type="checkbox"
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setIsRequestSignatureValidationEnabled(
                                                 values.get("requestSignatureValidation")
                                                     .includes("enableSignatureValidation")
@@ -850,7 +881,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         type="checkbox"
                                         value={ initialValues?.responseSigning.enabled ? [ "enabled" ] : [] }
                                         listen={
-                                            (values) => {
+                                            (values: Map<string, FormValue>) => {
                                                 setSignSAMLResponsesEnabled(
                                                     values.get("responseSigning").includes("enabled")
                                                 );
@@ -956,7 +987,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     readOnly={ readOnly }
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setIsArtifactBindingEnabled(
                                                 values.get("bindings").includes("ARTIFACT")
                                             );
@@ -1243,7 +1274,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     type="checkbox"
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setAssertionEncryptionEnabled(
                                                 values.get("assertionEncryption").includes("enableAssertionEncryption")
                                             );
@@ -1342,7 +1373,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             [ "enabled" ] : []
                                     }
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setIsAttributeProfileEnabled(
                                                 values.get("attributeProfile").includes("enabled")
                                             );
@@ -1433,7 +1464,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             [ "enabled" ] : []
                                     }
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setIsSingleLogoutProfileEnabled(
                                                 values.get("singleLogoutProfile").includes("enabled")
                                             );
@@ -1493,7 +1524,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ]
                                     }
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setSelectedSingleLogoutMethod(values.get("logoutMethod") as LogoutMethods);
                                         }
                                     }
@@ -1623,7 +1654,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             [ "enabled" ] : []
                                     }
                                     listen={
-                                        (values) => {
+                                        (values: Map<string, FormValue>) => {
                                             setIsIdpInitiatedSingleLogoutEnabled(
                                                 values.get("idpInitiatedSingleLogout").includes("enabled")
                                             );
@@ -1791,6 +1822,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <span ref={ updateRef }></span>
                                         <Button
                                             primary
                                             type="submit"
