@@ -337,7 +337,7 @@ export const updateFederatedAuthenticator = (
 
     const { authenticatorId, ...rest } = authenticator;
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: rest,
         headers: {
             "Accept": "application/json",
@@ -350,13 +350,13 @@ export const updateFederatedAuthenticator = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -370,7 +370,7 @@ export const updateFederatedAuthenticator = (
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -382,7 +382,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get federated authenticator details for: " + authenticatorId)
@@ -390,7 +390,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorListItemInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -403,7 +403,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
  */
 export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -414,13 +414,13 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -432,7 +432,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
  */
 export const getFederatedAuthenticatorsList = (): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -443,13 +443,13 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -463,7 +463,7 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
  */
 export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -475,14 +475,14 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
                     + authenticatorId));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -495,7 +495,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
  */
 export const getOutboundProvisioningConnectorMetadata = (connectorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -507,14 +507,14 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector metadata for: "
                     + connectorId));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -528,7 +528,7 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
  */
 export const getOutboundProvisioningConnector = (idpId: string, connectorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -540,14 +540,14 @@ export const getOutboundProvisioningConnector = (idpId: string, connectorId: str
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector for: "
                     + connectorId));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -566,7 +566,7 @@ export const updateOutboundProvisioningConnector = (
 
     const { connectorId, ...rest } = connector;
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: rest,
         headers: {
             "Accept": "application/json",
@@ -579,13 +579,13 @@ export const updateOutboundProvisioningConnector = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -602,7 +602,7 @@ export const updateJITProvisioningConfigs = (
     configs: JITProvisioningResponseInterface
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: configs,
         headers: {
             "Accept": "application/json",
@@ -615,7 +615,7 @@ export const updateJITProvisioningConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update jit configuration: " + idpId));
             }
@@ -637,7 +637,7 @@ export const getJITProvisioningConfigs = (
     idpId: string
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -648,7 +648,7 @@ export const getJITProvisioningConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get jit configuration: " + idpId));
             }
@@ -679,7 +679,7 @@ export const updateClaimsConfigs = (
     configs: IdentityProviderClaimsInterface
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: configs,
         headers: {
             "Accept": "application/json",
@@ -691,7 +691,7 @@ export const updateClaimsConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
@@ -719,7 +719,7 @@ export const updateClaimsConfigs = (
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -766,7 +766,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
  * @returns A promise containing the response.
  */
 export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -813,7 +813,7 @@ export const updateIDPRoleMappings = (
     mappings: IdentityProviderRolesInterface
 ): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: mappings,
         headers: {
             "Accept": "application/json",
@@ -825,13 +825,13 @@ export const updateIDPRoleMappings = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -844,7 +844,7 @@ export const updateIDPRoleMappings = (
  */
 export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -887,7 +887,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
  */
 export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -931,7 +931,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
  */
 export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): Promise<AuthenticatorInterface[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -989,7 +989,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
  */
 export const getAuthenticatorTags = (): Promise<string[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1032,7 +1032,7 @@ export const getAuthenticatorTags = (): Promise<string[]> => {
  */
 export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1079,7 +1079,7 @@ export const updateMultiFactorAuthenticatorDetails = (
     payload: MultiFactorAuthenticatorInterface
 ): Promise<MultiFactorAuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: {
             operation: "UPDATE",
             properties: payload.properties
@@ -1123,7 +1123,7 @@ export const updateMultiFactorAuthenticatorDetails = (
  * @returns A promise containing the response.
  */
 export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1134,13 +1134,13 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1157,7 +1157,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
     data: T
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Accept": "application/json",
@@ -1169,7 +1169,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
@@ -1198,7 +1198,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
     idpId: string
 ): Promise<OutboundProvisioningConnectorListItemInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: connectorList,
         headers: {
             "Accept": "application/json",
@@ -1210,13 +1210,13 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1233,7 +1233,7 @@ export const updateFederatedAuthenticators = (
     idpId: string
 ): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: authenticatorList,
         headers: {
             "Accept": "application/json",
@@ -1245,13 +1245,13 @@ export const updateFederatedAuthenticators = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1264,7 +1264,7 @@ export const updateFederatedAuthenticators = (
  */
 export const getIDPConnectedApps = (idpId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1275,7 +1275,7 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get connected apps for the IDP: " + idpId)
@@ -1283,7 +1283,7 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
             }
 
             return Promise.resolve(response.data as ConnectedAppsInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
