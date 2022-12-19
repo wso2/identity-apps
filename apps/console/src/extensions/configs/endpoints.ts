@@ -17,6 +17,7 @@
  */
 
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
+import { DeploymentConfigInterface } from "../../features/core";
 
 /**
  * Get the resource endpoints for the extended features.
@@ -24,7 +25,8 @@ import { ExtendedFeatureResourceEndpointsInterface } from "./models";
  * @param {string} serverHost - Server Host.
  * @return {ExtendedFeatureResourceEndpointsInterface}
  */
-export const getExtendedFeatureResourceEndpoints = (serverHost: string): ExtendedFeatureResourceEndpointsInterface => {
+export const getExtendedFeatureResourceEndpoints = (serverHost: string, 
+    deploymentConfig: DeploymentConfigInterface): ExtendedFeatureResourceEndpointsInterface => {
     
     return {};
 };
