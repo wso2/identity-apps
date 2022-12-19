@@ -35,7 +35,7 @@ interface FormPropsInterface {
     ref?: React.Ref<any>;
     onSubmitError?: (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => void;
     [ key: string ]: any;
-    onPristineChange?: (isPristine: boolean) => void;
+    onStaleChange?: (isStale: boolean) => void;
 }
 
 /**
@@ -50,7 +50,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             submitState,
             onChange,
             onSubmitError,
-            onPristineChange,
+            onStaleChange,
             children,
             ...rest
         } = props;
@@ -60,6 +60,9 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         // This specifies if any of the fields in the form has been touched or not
         const [ isPure, setIsPure ] = useState(true);
+
+        // Specifies if there is stale data.
+        const [ isStale, setIsStale ] = useState(false);
 
         // This specifies if a field's value is valid or not
         const [ validFields, setValidFields ] = useState(new Map<string, Validation>());
@@ -93,22 +96,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         let locked = false;
 
         useEffect(() => {
-            if (!onPristineChange) {
+            if (!onStaleChange) {
                 return;
             }
 
-            let isPristine: boolean = true;
-
-            for (const [ , value ] of touchedFields) {
-                if (value) {
-                    isPristine = false;
-
-                    break;
-                }
-            }
-
-            onPristineChange(isPristine);
-        }, [ touchedFields ]);
+            onStaleChange(isStale);
+        }, [ isStale ]);
 
         /**
          * Calls the onChange prop
@@ -158,6 +151,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             setIsPure(false);
             setTouchedFields(tempTouchedFields);
             setModifyingFields(tempModifyingFields);
+            setIsStale(true);
         };
 
         /**
@@ -176,6 +170,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             setForm(tempForm);
             setIsPure(false);
             setTouchedFields(tempTouchedFields);
+            setIsStale(true);
         };
 
         /**
@@ -205,6 +200,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             setForm(tempForm);
             setIsPure(false);
             setTouchedFields(tempTouchedFields);
+            setIsStale(true);
         };
 
         /**
@@ -528,6 +524,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const handleSubmit = (event: React.FormEvent) => {
             event.preventDefault();
+            setIsStale(false);
             submit();
         };
 
