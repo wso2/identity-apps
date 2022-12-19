@@ -1219,7 +1219,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             className="form-button"
                             loading={ isLoading }
                             disabled={ isLoading }
-                            data-testid={ `${ testId }-submit-button` }
+                            data-testid={ `${ testId }-submit-button-sticky` }
                         >
                             { t("common:update") }
                         </Button>
