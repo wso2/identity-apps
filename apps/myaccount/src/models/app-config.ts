@@ -92,6 +92,7 @@ export interface ServiceResourceEndpointsInterface {
     user: string;
     revoke: string;
     wellKnown: string;
+    validationMgt: string;
 
     /**
      * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}
