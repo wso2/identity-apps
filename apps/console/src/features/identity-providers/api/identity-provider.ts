@@ -210,7 +210,7 @@ export const getAllIdentityProvidersDetail = (
     ids: Set<string>
 ): Promise<IdentityProviderResponseInterface[]> => {
 
-    const requests = [];
+    const requests: RequestConfigInterface[] = [];
 
     for (const id of ids) {
         requests.push({
@@ -287,7 +287,11 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
 export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): Promise<any> => {
 
     const { id, ...rest } = idp;
-    const replaceOps = [];
+    const replaceOps: {
+        operation: string;
+        path: string;
+        value: string
+    }[] = [];
 
     for (const key in rest) {
         if(rest[key] !== undefined) {
