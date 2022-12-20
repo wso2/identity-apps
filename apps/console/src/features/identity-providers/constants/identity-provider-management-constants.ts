@@ -39,7 +39,7 @@ import { IdentityProviderTemplateLoadingStrategies } from "../models";
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS = 3;
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS: number = 3;
 
     /**
      * Identifier for the local IDP.
@@ -49,13 +49,13 @@ export class IdentityProviderManagementConstants {
     /**
      * Doc key for the IDP overview page.
      */
-    public static readonly IDP_OVERVIEW_DOCS_KEY = `${
+    public static readonly IDP_OVERVIEW_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
 
     /**
      * Doc key for the IDP edit page.
      */
-    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY = `${
+    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
 
     /**
@@ -67,18 +67,18 @@ export class IdentityProviderManagementConstants {
     /**
      * Key for the URL search param for IDP state.
      */
-    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY = "state";
+    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY: string = "state";
 
     /**
      * URL Search param for newly created IDPs.
      */
-    public static readonly NEW_IDP_URL_SEARCH_PARAM = `?${
+    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
      * Key for the URL search param for IDP create wizard trigger.
      */
-    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
+    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY: string = "open";
 
     /**
      * Set of IDP template Ids.
@@ -290,7 +290,7 @@ export class IdentityProviderManagementConstants {
     /**
      * Doc key for the IDP create page.
     **/
-    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY = `${
+    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
@@ -430,7 +430,7 @@ export class IdentityProviderManagementConstants {
     public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
 
     // Keys for the initial values of Email OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";
+    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
     // Authenticator Endpoints
     public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
@@ -441,12 +441,12 @@ export class IdentityProviderManagementConstants {
     "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     // Keys for the initial values of SMS OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY = "SmsOTP_ExpiryTime";
+    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 
     /**
      * Identity provider create limit reached error.
     **/
-    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "IDP-60035",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
@@ -456,7 +456,7 @@ export class IdentityProviderManagementConstants {
     /**
      * AuthenticationProvider Connections create limit reached error.
     **/
-     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
+     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
          "IDP-60035",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",
@@ -467,6 +467,7 @@ export class IdentityProviderManagementConstants {
 
      public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "An error occurred while adding SMS " +
             "Notification Sender";
+
      public static readonly ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER: string = "An error occurred while deleting " +
             "SMS Notification Sender";
 }
