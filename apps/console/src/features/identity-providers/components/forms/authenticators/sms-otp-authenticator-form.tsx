@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -254,7 +253,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }[] = notificationSender.properties ? notificationSender.properties : [];
 
                     if (notificationSender.name === "SMSPublisher" &&
-                        (channelValues.filter((prop : { key:string, value:string }) => 
+                        (channelValues.filter((prop : { key:string, value:string }) =>
                             prop.key === "channel.type" && prop.value === "choreo")
                             .length > 0)
                     ) {
@@ -268,10 +267,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             }
         } else {
             dispatch(addAlert({
-                description: notificationSendersListFetchRequestError?.response.data.description ||
-                    "Error occurred while trying to get SMS OTP configuration.",
+                description: t("console:develop.features.authenticationProvider" +
+                    ".forms.authenticatorSettings.smsOTP.errorNotifications" +
+                    ".notificationSendersRetrievalError.description"),
                 level: AlertLevels.ERROR,
-                message: notificationSendersListFetchRequestError?.response.data.message || "Error Occurred."
+                message:t("console:develop.features.authenticationProvider" +
+                    ".forms.authenticatorSettings.smsOTP.errorNotifications" +
+                    ".notificationSendersRetrievalError.message")
             }));
         }
     }, [ originalInitialValues, notificationSendersList, notificationSendersListFetchRequestError ]);
@@ -398,12 +400,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             addSMSPublisher().then(() => {
                 setEnableSMSOTP(true);
                 setIsReadOnly(false);
-            }).catch((error: IdentityAppsApiException) => {
+            }).catch(() => {
                 dispatch(addAlert({
-                    description: error.response.data.description ||
-                        "Error occurred while trying to enable SMS OTP.",
+                    description: t("console:develop.features.authenticationProvider" +
+                        ".forms.authenticatorSettings.smsOTP.errorNotifications.smsPublisherCreationError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.response.data.message || "Error Occurred."
+                    message: t("console:develop.features.authenticationProvider" +
+                        ".forms.authenticatorSettings.smsOTP.errorNotifications.smsPublisherCreationError.message")
                 }));
             });
         } else {
@@ -411,12 +414,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             deleteSMSPublisher().then(() => {
                 setEnableSMSOTP(false);
                 setIsReadOnly(true);
-            }).catch((error: IdentityAppsApiException) => {
+            }).catch(() => {
                 dispatch(addAlert({
-                    description: error?.response.data.description ||
-                        "Error occurred while trying to disable SMS OTP.",
+                    description: t("console:develop.features.authenticationProvider" +
+                        ".forms.authenticatorSettings.smsOTP.errorNotifications.smsPublisherDeletionError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.response.data.message || "Error Occurred."
+                    message: t("console:develop.features.authenticationProvider" +
+                        ".forms.authenticatorSettings.smsOTP.errorNotifications.smsPublisherDeletionError.message")
                 }));
             });
         }
@@ -434,13 +438,26 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         >
             <Message
                 type={ "info" }
-                content={ "Enable from here to use SMS OTP" }
-                width={ 13 }
-            />
+            >
+                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                ".smsOTP.enableRequiredNote.messagePart1") }
+                <a href="https://console.choreo.dev/">
+                    { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    ".smsOTP.enableRequiredNote.linkToChoreoText") }</a>
+                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    ".smsOTP.enableRequiredNote.messagePart2") }
+                <a href="https://wso2.com/asgardeo/docs/guides/authentication/mfa/add-smsotp-login/">
+                    { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    ".smsOTP.enableRequiredNote.linkToGuideText") }</a>
+                { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    ".smsOTP.enableRequiredNote.messagePart3") }
+            </Message>
             <Checkbox
                 toggle
-                label={
-                    "Enable SMS OTP"
+                label={ (!isEnableSMSOTP ? t("console:develop.features.authenticationProvider" +
+                        ".forms.authenticatorSettings.smsOTP.smsOtpEnableDisableToggle.labelEnable") :
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    ".smsOTP.smsOtpEnableDisableToggle.labelDisable"))
                 }
                 data-componentid="sms-otp-enable-toggle"
                 checked={ isEnableSMSOTP }

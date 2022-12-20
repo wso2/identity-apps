@@ -3250,6 +3250,32 @@ export const console: ConsoleNS = {
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
+                            },
+                            smsOtpEnableDisableToggle: {
+                                labelEnable: "Enable SMS OTP",
+                                labelDisable: "Disable SMS OTP "
+                            },
+                            enableRequiredNote: {
+                                messagePart1: "Asgardeo publishes events to ",
+                                messagePart2: " to enable SMS OTP, where Choreo webhooks will be used to " +
+                                    "integrate with multiple services to publish OTP Notifications. Follow the ",
+                                messagePart3: " to configure Choreo webhooks for Asgardeo publish events.",
+                                linkToChoreoText: "Choreo",
+                                linkToGuideText: "Add SMS OTP Guide"
+                            },
+                            errorNotifications: {
+                                notificationSendersRetrievalError: {
+                                    message: "Error Occurred",
+                                    description: "Error occurred while trying to get SMS OTP configuration."
+                                },
+                                smsPublisherCreationError: {
+                                    message: "Error Occurred",
+                                    description: "Error occurred while trying to enable SMS OTP."
+                                },
+                                smsPublisherDeletionError: {
+                                    message: "Error Occurred",
+                                    description: "Error occurred while trying to disable SMS OTP."
+                                }
                             }
                         },
                         facebook: {

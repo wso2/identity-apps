@@ -1377,6 +1377,31 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
+                            smsOtpEnableDisableToggle: {
+                                labelEnable: string;
+                                labelDisable: string;
+                            };
+                            enableRequiredNote: {
+                                messagePart1: string;
+                                messagePart2: string;
+                                messagePart3: string;
+                                linkToChoreoText: string;
+                                linkToGuideText: string;
+                            };
+                            errorNotifications: {
+                                notificationSendersRetrievalError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                smsPublisherCreationError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                smsPublisherDeletionError: {
+                                    message: string;
+                                    description: string;
+                                };
+                            }
                         }
                         facebook: {
                             callbackUrl: FormAttributes;
