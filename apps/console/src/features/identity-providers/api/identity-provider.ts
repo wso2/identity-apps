@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { identityProviderConfig } from "../../../extensions/configs";
 import { store } from "../../core";
 import useRequest, {
@@ -57,7 +57,8 @@ import {
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest
     .bind(AsgardeoSPAClient.getInstance());
-const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
+const httpClientAll: (config: HttpRequestConfig[]) => Promise<AxiosResponse> =
+    AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Creates Identity Provider.
@@ -210,7 +211,7 @@ export const getAllIdentityProvidersDetail = (
     ids: Set<string>
 ): Promise<IdentityProviderResponseInterface[]> => {
 
-    const requests: RequestConfigInterface[] = [];
+    const requests: AxiosRequestConfig[] = [];
 
     for (const id of ids) {
         requests.push({
