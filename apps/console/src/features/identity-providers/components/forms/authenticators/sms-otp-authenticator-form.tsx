@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Code, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -25,13 +26,11 @@ import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Divider, Icon, Label } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
-import { Checkbox } from "semantic-ui-react";
-import { addAlert } from "@wso2is/core/store";
-import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { Checkbox, Label } from "semantic-ui-react";
+import { addSMSPublisher, deleteSMSPublisher, useSMSNotificationSenders } from "../../../api";
+import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -41,7 +40,6 @@ import {
     CommonPluggableComponentPropertyInterface,
     NotificationSenderSMSInterface
 } from "../../../models";
-import { useSMSNotificationSenders, addSMSPublisher, deleteSMSPublisher } from "../../../api";
 
 /**
  * Interface for SMS OTP Authenticator Form props.
@@ -178,8 +176,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
 
-    const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<Boolean>(false);
-    const [ isReadOnly, setIsReadOnly ] = useState<Boolean>(true)
+    const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<boolean>(false);
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -208,7 +206,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
             // Converting expiry time from seconds to minutes
             if(moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
-                const expiryTimeInMinutes = Math.round(parseInt(value.value,10) / 60);
+                const expiryTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
@@ -247,9 +245,12 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         if (!notificationSendersListFetchRequestError) {
             if (notificationSendersList) {
-                let enableSMSOTP = false;
+                let enableSMSOTP: boolean = false;
                 for (const notificationSender of notificationSendersList) {
-                    const channelValues = notificationSender.properties ? notificationSender.properties : [];
+                    const channelValues: {
+                        key:string;
+                        value:string;
+                    }[] = notificationSender.properties ? notificationSender.properties : [];
                     if (notificationSender.name === 'SMSPublisher' &&
                         (channelValues.filter(prop => prop.key === 'channel.type' && prop.value === 'choreo').length > 0)
                     ) {
@@ -426,13 +427,18 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
+            <Message
+                type={ "info" }
+                content={"Enable from here to use SMS OTP"}
+                width={ 13 }
+                />
             <Checkbox
                 toggle
                 label={
                    "Enable SMS OTP"
                 }
                 data-componentid="branding-preference-publish-toggle"
-                checked={ isEnableSMSOTP.valueOf() }
+                checked={ isEnableSMSOTP }
                 onChange={ (event, data): void => handleUpdateSMSPublisher(event, data) }
                 className="feature-toggle"
             />
