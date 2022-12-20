@@ -37,8 +37,8 @@ import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
-    CommonPluggableComponentPropertyInterface,
-    NotificationSenderSMSInterface
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
 } from "../../../models";
 
 /**
@@ -200,7 +200,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
@@ -254,10 +254,12 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }[] = notificationSender.properties ? notificationSender.properties : [];
 
                     if (notificationSender.name === "SMSPublisher" &&
-                        (channelValues.filter(prop => prop.key === "channel.type" && prop.value === "choreo")
+                        (channelValues.filter((prop : { key:string, value:string }) => 
+                            prop.key === "channel.type" && prop.value === "choreo")
                             .length > 0)
                     ) {
                         enableSMSOTP = true;
+
                         break;
                     }
                 }
@@ -389,7 +391,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
      * @param event - Event.
      * @param data - Data.
      */
-    const handleUpdateSMSPublisher = (data: CheckboxProps) => {
+    const handleUpdateSMSPublisher = ( event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
 
         if (data.checked) {
             // Add SMS Publisher when enabling the feature.
@@ -418,13 +420,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 }));
             });
         }
-    }
+    };
 
     return (
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Record<string, any>) => {
                 onSubmit(getUpdatedConfigurations(values as SMSOTPAuthenticatorFormInitialValuesInterface));
             } }
             initialValues={ initialValues }
@@ -434,16 +436,16 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 type={ "info" }
                 content={ "Enable from here to use SMS OTP" }
                 width={ 13 }
-                />
+            />
             <Checkbox
                 toggle
                 label={
-                   "Enable SMS OTP"
+                    "Enable SMS OTP"
                 }
                 data-componentid="sms-otp-enable-toggle"
                 checked={ isEnableSMSOTP }
-                onChange={ (event, data):
-                    void => handleUpdateSMSPublisher(data) }
+                onChange={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps):
+                    void => handleUpdateSMSPublisher(event, data) }
                 className="feature-toggle"
             />
             <Field.Input
