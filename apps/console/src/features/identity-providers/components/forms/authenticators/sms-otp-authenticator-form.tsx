@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, Label } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Label } from "semantic-ui-react";
 import { addSMSPublisher, deleteSMSPublisher, useSMSNotificationSenders } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
@@ -246,13 +246,16 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         if (!notificationSendersListFetchRequestError) {
             if (notificationSendersList) {
                 let enableSMSOTP: boolean = false;
+
                 for (const notificationSender of notificationSendersList) {
                     const channelValues: {
                         key:string;
                         value:string;
                     }[] = notificationSender.properties ? notificationSender.properties : [];
-                    if (notificationSender.name === 'SMSPublisher' &&
-                        (channelValues.filter(prop => prop.key === 'channel.type' && prop.value === 'choreo').length > 0)
+
+                    if (notificationSender.name === "SMSPublisher" &&
+                        (channelValues.filter(prop => prop.key === "channel.type" && prop.value === "choreo")
+                            .length > 0)
                     ) {
                         enableSMSOTP = true;
                         break;
@@ -269,7 +272,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 message: notificationSendersListFetchRequestError?.response.data.message || "Error Occurred."
             }));
         }
-    }, [ originalInitialValues, notificationSendersList, notificationSendersListFetchRequestError]);
+    }, [ originalInitialValues, notificationSendersList, notificationSendersListFetchRequestError ]);
 
     /**
      * Prepare form values for submitting.
@@ -287,7 +290,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 const moderatedName: string = name.replace(/_/g, ".");
 
                 if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
-                    const timeInSeconds = value * 60;
+                    const timeInSeconds: number = value * 60;
 
                     properties.push({
                         name: moderatedName,
@@ -386,11 +389,11 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
      * @param event - Event.
      * @param data - Data.
      */
-    const handleUpdateSMSPublisher = (event, data) => {
+    const handleUpdateSMSPublisher = (data: CheckboxProps) => {
 
         if (data.checked) {
             // Add SMS Publisher when enabling the feature.
-            addSMSPublisher().then((response: NotificationSenderSMSInterface) => {
+            addSMSPublisher().then(() => {
                 setEnableSMSOTP(true);
                 setIsReadOnly(false);
             }).catch((error: IdentityAppsApiException) => {
@@ -400,7 +403,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     level: AlertLevels.ERROR,
                     message: error?.response.data.message || "Error Occurred."
                 }));
-            })
+            });
         } else {
             // Delete SMS Publisher when enabling the feature.
             deleteSMSPublisher().then(() => {
@@ -413,7 +416,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     level: AlertLevels.ERROR,
                     message: error?.response.data.message || "Error Occurred."
                 }));
-            })
+            });
         }
     }
 
@@ -429,7 +432,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         >
             <Message
                 type={ "info" }
-                content={"Enable from here to use SMS OTP"}
+                content={ "Enable from here to use SMS OTP" }
                 width={ 13 }
                 />
             <Checkbox
@@ -437,9 +440,10 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 label={
                    "Enable SMS OTP"
                 }
-                data-componentid="branding-preference-publish-toggle"
+                data-componentid="sms-otp-enable-toggle"
                 checked={ isEnableSMSOTP }
-                onChange={ (event, data): void => handleUpdateSMSPublisher(event, data) }
+                onChange={ (event, data):
+                    void => handleUpdateSMSPublisher(data) }
                 className="feature-toggle"
             />
             <Field.Input
