@@ -775,7 +775,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 }
                             >
                                 Securely store access keys as secrets. A secret can
-                                replace the API key in <Code>callChoreo()</Code> function
+                                replace the consumer secret in <Code>callChoreo()</Code> function
                                 in the conditional authentication scripts.
                             </Trans>
                         ) }

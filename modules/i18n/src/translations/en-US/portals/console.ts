@@ -1027,8 +1027,8 @@ export const console: ConsoleNS = {
                                                 search: "Search by secret name",
                                                 tooltips: {
                                                     keyIcon: "Securely store access keys as secrets. A secret can " +
-                                                        "replace the API key in <1>callChoreo()</1> function in the " +
-                                                        "conditional authentication scripts.",
+                                                        "replace the consumer secret in <1>callChoreo()</1> function " +
+                                                        "in the conditional authentication scripts.",
                                                     plusIcon: "Add to the script"
                                                 }
                                             }
