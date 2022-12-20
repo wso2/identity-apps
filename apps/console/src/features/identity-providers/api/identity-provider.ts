@@ -1306,7 +1306,7 @@ export const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[
         url: store.getState().config.endpoints.notificationSenders + "/sms"
     };
 
-    const {data, error, isValidating, mutate} = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
         data,
@@ -1326,25 +1326,25 @@ export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
 
     //SMS Notification sender with name SMSPublisher.
     const smsProvider: NotificationSenderSMSInterface = {
-        name: "SMSPublisher",
-        provider: "Dummy_provider",
-        providerURL: "https://api.dummy.com",
         contentType: "FORM",
+        name: "SMSPublisher",
         properties: [
             {
                 key: "channel.type",
                 value: "choreo"
             }
-        ]
+        ],
+        provider: "Dummy_provider",
+        providerURL: "https://api.dummy.com"
     };
 
     const requestConfig: RequestConfigInterface = {
+        data: smsProvider,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        data: smsProvider,
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.notificationSenders + "/sms"
     };
@@ -1360,6 +1360,7 @@ export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data as NotificationSenderSMSInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -1400,6 +1401,7 @@ export const deleteSMSPublisher = (): Promise<void> => {
                     response,
                     response.config);
             }
+
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
