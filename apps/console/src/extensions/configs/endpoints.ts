@@ -16,7 +16,6 @@
  * under the License.
  */
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
 import { DeploymentConfigInterface } from "../../features/core";
 
@@ -25,8 +24,8 @@ import { DeploymentConfigInterface } from "../../features/core";
  *
  * serverHost - Server Host.
  */
-export const getExtendedFeatureResourceEndpoints = (serverHost: string, 
-    deploymentConfig: DeploymentConfigInterface): ExtendedFeatureResourceEndpointsInterface => {
+export const getExtendedFeatureResourceEndpoints = (_serverHost: string, 
+    _deploymentConfig: DeploymentConfigInterface): ExtendedFeatureResourceEndpointsInterface => {
     
     return {};
 };
