@@ -1194,7 +1194,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
 /**
  * Update the outbound provisioning connectors list of a specified IDP.
  *
- * @param connectorList -
+ * @param connectorList - Outbound provisioning connectors list of the IDP.
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
