@@ -1339,8 +1339,8 @@ export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
                 value: "choreo"
             }
         ],
-        provider: "Dummy_provider",
-        providerURL: "https://api.dummy.com"
+        provider: "choreo",
+        providerURL: "https://console.choreo.dev/"
     };
 
     const requestConfig: RequestConfigInterface = {
