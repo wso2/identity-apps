@@ -47,8 +47,7 @@
             String langStr = lang.split("_")[0];
             String langLocale = lang.split("_")[1];
 
-            Locale cookieLocale = new Locale(langStr, langLocale);
-            userLocale = cookieLocale;
+            userLocale = new Locale(langStr, langLocale);
         } catch (Exception e) {
             // In case the language is defined but not in the correct format
             userLocale = browserLocale;

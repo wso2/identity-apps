@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.*" %>
@@ -47,8 +48,7 @@
             String langStr = lang.split("_")[0];
             String langLocale = lang.split("_")[1];
 
-            Locale cookieLocale = new Locale(langStr, langLocale);
-            userLocale = cookieLocale;
+            userLocale = new Locale(langStr, langLocale);
         } catch (Exception e) {
             // In case the language is defined but not in the correct format
             userLocale = browserLocale;
@@ -71,7 +71,8 @@
                     userLocale = tempLocale;
                     break;
                 } else if (tempLocale.getLanguage().equals("en") && foundBundle.getLocale().getLanguage().equals("")) {
-                    // When the given locale is en - which is our fallback one
+                    // When the given locale is en - which is our fallback one, we have to handle it separately because
+                    // returns and empty string as locale language
                     userLocale = tempLocale;
                     break;
                 } else {
