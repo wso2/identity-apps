@@ -58,7 +58,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   <% IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.500"); %>
+                   <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.500")%>
                 </div>
             </div>
         </layout:component>

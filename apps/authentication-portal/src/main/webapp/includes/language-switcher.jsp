@@ -113,7 +113,7 @@
     />
     <i class="dropdown icon"></i>
     <div id="language-selector-selected-text" class="default text">
-        <% AuthenticationEndpointUtil.i18n(resourceBundle, "select.language"); %>
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.language")%>
     </div>
     <div class="menu">
         <div class="item" data-value="en_US">

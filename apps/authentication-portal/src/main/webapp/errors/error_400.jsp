@@ -59,7 +59,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.400"); %>
+                   <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.400")%>
                 </div>
             </div>
         </layout:component>

@@ -59,7 +59,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   <% AuthenticationEndpointUtil.i18n(resourceBundle, "error.504"); %>
+                   <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.504")%>
                 </div>
             </div>
         </layout:component>
