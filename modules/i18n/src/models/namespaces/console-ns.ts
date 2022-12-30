@@ -1328,10 +1328,6 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine :string,
-                                secondLine: string
-                            },
                             expiryTime: {
                                 hint: string;
                                 label: string;

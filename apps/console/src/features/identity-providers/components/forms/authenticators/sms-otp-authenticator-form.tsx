@@ -348,24 +348,6 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
-
-            <Message
-                type={ "info" }
-                content={
-                    ( <Trans>
-                        <span>
-                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                                ".smsOTP.forTestingOnlyNotice.firstLine") }
-                        </span>
-                        <Divider hidden fitted/>
-                        <span>
-                            <Icon name="info circle" style={ { visibility: "hidden" } }/>
-                            { t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                                ".smsOTP.forTestingOnlyNotice.secondLine") }
-                        </span>
-                    </Trans> ) }
-                width={ 13 }
-            />
             <Field.Input
                 ariaLabel="SMS OTP expiry time"
                 inputType="number"
