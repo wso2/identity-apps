@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,9 @@
 import {
     default as LockRecoverIcon
 } from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
+import {
+    default as PasswordValidationIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/password-validation.svg";
 import {
     default as RobotIcon
 } from "../../../themes/default/assets/images/icons/robot-icon.svg";
@@ -73,9 +76,6 @@ import {
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
-import {
-    default as PasswordValidationIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/password-validation.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
@@ -115,7 +115,7 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
         botDetection: RobotIcon,
-        selfRegistration: UserAddIcon,
-        passwordValidation: PasswordValidationIcon
+        passwordValidation: PasswordValidationIcon,
+        selfRegistration: UserAddIcon
     };
 };

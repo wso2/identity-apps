@@ -18,8 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
@@ -39,10 +38,6 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
     props: MyAccountSettingsPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
-
-    const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
-
-    const { t } = useTranslation();
 
     /**
      * Handle connector advance setting selection.

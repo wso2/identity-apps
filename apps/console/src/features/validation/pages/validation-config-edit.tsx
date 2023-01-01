@@ -194,7 +194,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * @returns the value of the configuration.
      */
     const getValidationConfig = (rules: ValidationConfInterface[], validatorName: string,
-                                 attributeName: string): string => {
+        attributeName: string): string => {
 
         const config: ValidationConfInterface[] = rules?.filter((data: ValidationConfInterface) => {
             return data.validator === validatorName;
