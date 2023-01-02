@@ -424,7 +424,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             width={ 2 }
                                                             required={ true }
                                                             hidden={ false }
-                                                            placeholder={ "min" }
+                                                            placeholder={ "max" }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
@@ -470,7 +470,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             width={ 2 }
                                                             required={ true }
                                                             hidden={ false }
-                                                            placeholder={ "max" }
+                                                            placeholder={ "min" }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
