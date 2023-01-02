@@ -281,16 +281,6 @@ export const myAccount: MyAccountNS = {
                             description: "கடவுச்சொல் தேவையான கட்டுப்பாடுகளை பூர்த்தி செய்யவில்லை.",
                             message: "தவறான கடவுச்சொல்"
                         },
-                        validationConfig: {
-                            error: {
-                                description: "{{description}}",
-                                message: "மீட்டெடுப்பதில் பிழை"
-                            },
-                            genericError: {
-                                description: "சரிபார்ப்பு உள்ளமைவு தரவை மீட்டெடுக்க முடியவில்லை.",
-                                message: "ஏதோ தவறு நடைபெற்றிருக்கிறது"
-                            }
-                        },
                         passwordCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து மற்றும் {{minLowerCase}} " +
                             "சிறிய ஆங்கில எழுத்துக்கள்",
                         passwordCharRequirement: "குறைந்தபட்சம் {{minSpecialChr}} சிறப்பு எழுத்து(கள்)",
@@ -307,6 +297,16 @@ export const myAccount: MyAccountNS = {
                         submitSuccess: {
                             description: "உங்கள் கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது விட்டது",
                             message: "கடவுச்சொல்லை மீட்டலில் வெற்றி"
+                        },
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "மீட்டெடுப்பதில் பிழை"
+                            },
+                            genericError: {
+                                description: "சரிபார்ப்பு உள்ளமைவு தரவை மீட்டெடுக்க முடியவில்லை.",
+                                message: "ஏதோ தவறு நடைபெற்றிருக்கிறது"
+                            }
                         }
                     }
                 }
