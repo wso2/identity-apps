@@ -84,7 +84,7 @@ export const generatePassword = (
 
     const NUMBERS: string = removeIgnoredCharacters("0123456789", ignoredCharactors);
 
-    const SPECIAL_CHAR: string = removeIgnoredCharacters("!#$%&'()*+,-./:;<=>?@[]^_{|}~", ignoredCharactors);
+    const SPECIAL_CHAR: string = removeIgnoredCharacters("!#$%&'()*+,-./:;<=>?@^_{|}~", ignoredCharactors);
 
     for (let i: number = 0; i < minAlphabetsLowercase; i++) {
         minChar = minChar + LOWERCASE_CHAR.charAt(generateRandomNumbers(LOWERCASE_CHAR.length));
