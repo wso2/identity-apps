@@ -21,7 +21,7 @@ import {
 } from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
 import {
     default as PasswordValidationIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/password-validation.svg";
+} from "../../../themes/default/assets/images/icons/password-validation.svg";
 import {
     default as RobotIcon
 } from "../../../themes/default/assets/images/icons/robot-icon.svg";
