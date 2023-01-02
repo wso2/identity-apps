@@ -142,7 +142,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Implies whether the profile username attribute
      * dialect is readonly or not. By default the value
-     * is {@code false}.
+     * of code false.
      */
     isProfileUsernameReadonly: boolean;
     /**

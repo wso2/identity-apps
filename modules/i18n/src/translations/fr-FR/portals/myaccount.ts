@@ -282,6 +282,23 @@ export const myAccount: MyAccountNS = {
                             description: "Le mot de passe ne satisfait pas les contraintes requises.",
                             message: "Mot de passe incorrect"
                         },
+                        passwordCaseRequirement: "Au moins {{minUpperCase}} majuscule et {{minLowerCase}} " +
+                            "minuscules",
+                        passwordCharRequirement: "Au moins {{minSpecialChr}} de caractère(s) spécial(s)",
+                        passwordLengthRequirement: "Doit contenir entre {{min}} et {{max}} caractères",
+                        passwordLowerCaseRequirement: "Au moins {{minLowerCase}} lettre(s) minuscule(s)",
+                        passwordNumRequirement: "Au moins {{min}} numéro(s)",
+                        passwordRepeatedChrRequirement: "Pas plus de {{repeatedChr}} caractère(s) répété(s)",
+                        passwordUniqueChrRequirement: "Au moins {{uniqueChr}} caractère(s) unique(s)",
+                        passwordUpperCaseRequirement: "Au moins {{minUpperCase}} lettre(s) majuscule(s)",
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Erreur lors de la modification du mot de passe"
+                        },
+                        submitSuccess: {
+                            description: "Le mot de passe a été modifié avec succès",
+                            message: "Réinitialisation du mot de passe réussie"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",
@@ -291,23 +308,6 @@ export const myAccount: MyAccountNS = {
                                 description: "Impossible de récupérer les données de configuration de validation.",
                                 message: "Quelque chose s'est mal passé"
                             }
-                        },
-                        passwordCaseRequirement: "Au moins {{minUpperCase}} majuscule et {{minLowerCase}} " +
-                            "minuscules",
-                        passwordUpperCaseRequirement: "Au moins {{minUpperCase}} lettre(s) majuscule(s)",
-                        passwordLowerCaseRequirement: "Au moins {{minLowerCase}} lettre(s) minuscule(s)",
-                        passwordCharRequirement: "Au moins {{minSpecialChr}} de caractère(s) spécial(s)",
-                        passwordLengthRequirement: "Doit contenir entre {{min}} et {{max}} caractères",
-                        passwordNumRequirement: "Au moins {{min}} numéro(s)",
-                        passwordUniqueChrRequirement: "Au moins {{uniqueChr}} caractère(s) unique(s)",
-                        passwordRepeatedChrRequirement: "Pas plus de {{repeatedChr}} caractère(s) répété(s)",
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Erreur lors de la modification du mot de passe"
-                        },
-                        submitSuccess: {
-                            description: "Le mot de passe a été modifié avec succès",
-                            message: "Réinitialisation du mot de passe réussie"
                         }
                     }
                 }

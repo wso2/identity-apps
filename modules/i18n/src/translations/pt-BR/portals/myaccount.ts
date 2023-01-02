@@ -281,6 +281,23 @@ export const myAccount: MyAccountNS = {
                             description: "A senha não atende às restrições exigidas.",
                             message: "Senha inválida"
                         },
+                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} " +
+                            "letras minúsculas",
+                        passwordCharRequirement: "Pelo menos {{minSpecialChr}} de caracteres especiais",
+                        passwordLengthRequirement: "Deve ter entre {{min}} e {{max}} caracteres",
+                        passwordLowerCaseRequirement: "Pelo menos {{minLowerCase}} letra(s) minúscula(s)",
+                        passwordNumRequirement: "Pelo menos {{min}} número(s)",
+                        passwordRepeatedChrRequirement: "Não mais que {{repeatedChr}} caracter(es) repetido(s)",
+                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) exclusivo(s)",
+                        passwordUpperCaseRequirement: "Pelo menos {{minUpperCase}} letra(s) maiúscula(s)",
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Alterar erro de senha"
+                        },
+                        submitSuccess: {
+                            description: "A senha foi alterada com sucesso",
+                            message: "Redefinição de senha bem-sucedida"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",
@@ -290,23 +307,6 @@ export const myAccount: MyAccountNS = {
                                 description: "Não foi possível recuperar os dados de configuração de validação.",
                                 message: "algo deu errado"
                             }
-                        },
-                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} " +
-                            "letras minúsculas",
-                        passwordUpperCaseRequirement: "Pelo menos {{minUpperCase}} letra(s) maiúscula(s)",
-                        passwordLowerCaseRequirement: "Pelo menos {{minLowerCase}} letra(s) minúscula(s)",
-                        passwordCharRequirement: "Pelo menos {{minSpecialChr}} de caracteres especiais",
-                        passwordLengthRequirement: "Deve ter entre {{min}} e {{max}} caracteres",
-                        passwordNumRequirement: "Pelo menos {{min}} número(s)",
-                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) exclusivo(s)",
-                        passwordRepeatedChrRequirement: "Não mais que {{repeatedChr}} caracter(es) repetido(s)",
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Alterar erro de senha"
-                        },
-                        submitSuccess: {
-                            description: "A senha foi alterada com sucesso",
-                            message: "Redefinição de senha bem-sucedida"
                         }
                     }
                 }

@@ -52,7 +52,7 @@ interface ChangePasswordProps extends TestableComponentInterface {
  * Change password component.
  *
  * @param props - Props injected to the change password component.
- * @return JSX.Element
+ * @returns JSX.Element
  */
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: ChangePasswordProps): JSX.Element => {
 
@@ -105,7 +105,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     /**
      * Handles the `onSubmit` event of forms.
      *
-     * @param {string} formName - Name of the form
+     * @param formName - Name of the form.
      */
     const handleSubmit = (): void => {
 
@@ -384,25 +384,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             setPassword(values.get("newPassword").toString());
                         } }
                     />
-                    {/*TODO: Enable the password meter after modifying it to support current validation criteria.*/}
-                    {/*<Form.Field width={ 9 } data-testid={ `${testId}-new-password-strength-meter-field` }>*/}
-                    {/*    <Suspense fallback={ null }>*/}
-                    {/*        <PasswordMeter*/}
-                    {/*            password={ password }*/}
-                    {/*            onChangeScore={ (score: number) => {*/}
-                    {/*                setPasswordScore(score);*/}
-                    {/*            } }*/}
-                    {/*            scoreWords={ [*/}
-                    {/*                t("common:tooShort"),*/}
-                    {/*                t("common:weak"),*/}
-                    {/*                t("common:okay"),*/}
-                    {/*                t("common:good"),*/}
-                    {/*                t("common:strong")*/}
-                    {/*            ] }*/}
-                    {/*            shortScoreWord={ t("common:tooShort") }*/}
-                    {/*        />*/}
-                    {/*    </Suspense>*/}
-                    {/*</Form.Field>*/}
 
                     { (passwordValidationConfig.showPasswordValidation  && passwordConfig) &&
                         (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>

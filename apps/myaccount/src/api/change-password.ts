@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,9 +32,9 @@ import { store } from "../store";
  * TODO: Remove this once the API supports current password validation.
  * See https://github.com/wso2/product-is/issues/10014 for progress.
  *
- * @param {string} currentPassword currently registered password.
- * @param {string} newPassword newly assigned password.
- * @return {Promise<AxiosResponse>} a promise containing the response.
+ * @param currentPassword - currently registered password.
+ * @param newPassword - newly assigned password.
+ * @returns axiosResponse - a promise containing the response.
  */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<AxiosResponse> => {
 
@@ -48,8 +48,8 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     const requestConfig: AxiosRequestConfig = {
         auth: {
             password: currentPassword,
-            username: [store.getState().authenticationInformation?.profileInfo.userName, '@',
-                store.getState().authenticationInformation.tenantDomain].join('')
+            username: [ store.getState().authenticationInformation?.profileInfo.userName, "@",
+                store.getState().authenticationInformation.tenantDomain ].join("")
         },
         data: {
             Operations: [

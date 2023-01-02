@@ -280,6 +280,23 @@ export const myAccount: MyAccountNS = {
                             description: "මුරපදය අවශ්‍ය සීමාවන් සපුරාලන්නේ නැත.",
                             message: "වලංගු නොවන මුරපදයක්"
                         },
+                        passwordCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු සහ {{minLowerCase}} " +
+                            "සිම්පල් අකුරු",
+                        passwordCharRequirement: "විශේෂ අක්ෂරවලින් අවම වශයෙන් {{minSpecialChr}}",
+                        passwordLengthRequirement: "අක්ෂර {{min}} සහ {{max}} අතර විය යුතුය",
+                        passwordLowerCaseRequirement: "අවම වශයෙන් {{minLowerCase}} කුඩා අකුරු(ය)",
+                        passwordNumRequirement: "අවම වශයෙන් {{min}} අංකය(ය)",
+                        passwordRepeatedChrRequirement: "පුනරාවර්තන අක්ෂර(ය) {{repeatedChr}} ට වඩා වැඩි නොවේ",
+                        passwordUniqueChrRequirement: "අවම වශයෙන් {{uniqueChr}} අනන්‍ය අක්ෂර(ය)",
+                        passwordUpperCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු(ය)",
+                        submitError: {
+                            description: "{{description}}",
+                            message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
+                        },
+                        submitSuccess: {
+                            description: "මුරපදය සාර්ථකව වෙනස් කර ඇත",
+                            message: "මුරපද යළි පිහිටුවීම සාර්ථකයි"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",
@@ -289,23 +306,6 @@ export const myAccount: MyAccountNS = {
                                 description: "වලංගුකරණ වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
                                 message: "මොකක්හරි වැරැද්දක් වෙලා"
                             }
-                        },
-                        passwordCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු සහ {{minLowerCase}} " +
-                            "සිම්පල් අකුරු",
-                        passwordUpperCaseRequirement: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු(ය)",
-                        passwordLowerCaseRequirement: "අවම වශයෙන් {{minLowerCase}} කුඩා අකුරු(ය)",
-                        passwordCharRequirement: "විශේෂ අක්ෂරවලින් අවම වශයෙන් {{minSpecialChr}}",
-                        passwordLengthRequirement: "අක්ෂර {{min}} සහ {{max}} අතර විය යුතුය",
-                        passwordNumRequirement: "අවම වශයෙන් {{min}} අංකය(ය)",
-                        passwordUniqueChrRequirement: "අවම වශයෙන් {{uniqueChr}} අනන්‍ය අක්ෂර(ය)",
-                        passwordRepeatedChrRequirement: "පුනරාවර්තන අක්ෂර(ය) {{repeatedChr}} ට වඩා වැඩි නොවේ",
-                        submitError: {
-                            description: "{{description}}",
-                            message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
-                        },
-                        submitSuccess: {
-                            description: "මුරපදය සාර්ථකව වෙනස් කර ඇත",
-                            message: "මුරපද යළි පිහිටුවීම සාර්ථකයි"
                         }
                     }
                 }

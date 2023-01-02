@@ -293,13 +293,13 @@ export const myAccount: MyAccountNS = {
                         },
                         passwordCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து மற்றும் {{minLowerCase}} " +
                             "சிறிய ஆங்கில எழுத்துக்கள்",
-                        passwordUpperCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து(கள்)",
-                        passwordLowerCaseRequirement: "குறைந்தபட்சம் {{minLowerCase}} சிறிய எழுத்து(கள்)",
                         passwordCharRequirement: "குறைந்தபட்சம் {{minSpecialChr}} சிறப்பு எழுத்து(கள்)",
                         passwordLengthRequirement: "{{min}} மற்றும் {{max}} எழுத்துகளுக்கு இடையில் இருக்க வேண்டும்",
+                        passwordLowerCaseRequirement: "குறைந்தபட்சம் {{minLowerCase}} சிறிய எழுத்து(கள்)",
                         passwordNumRequirement: "குறைந்தது {{min}} எண்(கள்)",
-                        passwordUniqueChrRequirement: "குறைந்தபட்சம் {{uniqueChr}} தனிப்பட்ட எழுத்து(கள்)",
                         passwordRepeatedChrRequirement: "க{{repeatedChr}}க்கு மேல் திரும்பத் திரும்ப வரும் எழுத்து(கள்)",
+                        passwordUniqueChrRequirement: "குறைந்தபட்சம் {{uniqueChr}} தனிப்பட்ட எழுத்து(கள்)",
+                        passwordUpperCaseRequirement: "குறைந்தபட்சம் {{minUpperCase}} பெரிய எழுத்து(கள்)",
                         submitError: {
                             description: "{{description}}",
                             message: "கடவுச்சொல் பிழையை மாற்றவும்"

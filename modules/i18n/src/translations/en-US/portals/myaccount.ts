@@ -281,6 +281,23 @@ export const myAccount: MyAccountNS = {
                             description: "Password does not satisfy the required constraints.",
                             message: "Invalid password"
                         },
+                        passwordCaseRequirement: "At least {{minUpperCase}} uppercase and {{minLowerCase}} " +
+                            "lowercase letters",
+                        passwordCharRequirement: "At least {{minSpecialChr}} of special character(s)",
+                        passwordLengthRequirement: "Must be between {{min}} and {{max}} characters",
+                        passwordLowerCaseRequirement: "At least {{minLowerCase}} lowercase letter(s)",
+                        passwordNumRequirement: "At least {{min}} number(s)",
+                        passwordRepeatedChrRequirement: "No more than {{repeatedChr}} repeated character(s)",
+                        passwordUniqueChrRequirement: "At least {{uniqueChr}} unique character(s)",
+                        passwordUpperCaseRequirement: "At least {{minUpperCase}} uppercase letter(s)",
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Change password error"
+                        },
+                        submitSuccess: {
+                            description: "The password has been changed successfully",
+                            message: "Password reset successful"
+                        },
                         validationConfig: {
                             error: {
                                 description: "{{description}}",
@@ -290,23 +307,6 @@ export const myAccount: MyAccountNS = {
                                 description: "Couldn't retrieve validation configuration data.",
                                 message: "Something went wrong"
                             }
-                        },
-                        passwordCaseRequirement: "At least {{minUpperCase}} uppercase and {{minLowerCase}} " +
-                            "lowercase letters",
-                        passwordUpperCaseRequirement: "At least {{minUpperCase}} uppercase letter(s)",
-                        passwordLowerCaseRequirement: "At least {{minLowerCase}} lowercase letter(s)",
-                        passwordCharRequirement: "At least {{minSpecialChr}} of special character(s)",
-                        passwordLengthRequirement: "Must be between {{min}} and {{max}} character",
-                        passwordNumRequirement: "At least {{min}} number(s)",
-                        passwordUniqueChrRequirement: "At least {{uniqueChr}} unique character(s)",
-                        passwordRepeatedChrRequirement: "No more than {{repeatedChr}} repeated character(s)",
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Change password error"
-                        },
-                        submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
                         }
                     }
                 }
