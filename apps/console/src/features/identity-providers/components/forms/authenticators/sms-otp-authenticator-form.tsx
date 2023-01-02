@@ -18,13 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, Message } from "@wso2is/react-components";
+import { Code } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Divider, Icon, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -32,6 +32,7 @@ import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
+    CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../models";
 
@@ -185,13 +186,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
             if(moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
-                const expiryTimeInMinutes = Math.round(parseInt(value.value,10) / 60);
+                const expiryTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
@@ -245,7 +246,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 const moderatedName: string = name.replace(/_/g, ".");
 
                 if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
-                    const timeInSeconds = value * 60;
+                    const timeInSeconds: number = value * 60;
 
                     properties.push({
                         name: moderatedName,
@@ -342,7 +343,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Record<string, any>) => {
                 onSubmit(getUpdatedConfigurations(values as SMSOTPAuthenticatorFormInitialValuesInterface));
             } }
             initialValues={ initialValues }
