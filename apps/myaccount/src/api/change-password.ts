@@ -48,7 +48,8 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     const requestConfig: AxiosRequestConfig = {
         auth: {
             password: currentPassword,
-            username: [store.getState().authenticationInformation?.profileInfo.userName, '@', store.getState().authenticationInformation.tenantDomain].join('')
+            username: [store.getState().authenticationInformation?.profileInfo.userName, '@',
+                store.getState().authenticationInformation.tenantDomain].join('')
         },
         data: {
             Operations: [
@@ -83,7 +84,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: any) => {
             throw new IdentityAppsApiException(
                 ProfileConstants.CHANGE_PASSWORD_ERROR,
                 error.stack,

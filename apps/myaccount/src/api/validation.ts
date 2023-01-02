@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,7 +64,8 @@ export const getPasswordConfig = (validationConfig: ValidationDataInterface[]): 
     const passwordConf: ValidationDataInterface[] =
         validationConfig?.filter((data: ValidationDataInterface) => data.field === "password");
 
-    if (passwordConf === undefined || passwordConf.length < 1) {
+    if (passwordConf === undefined || passwordConf.length < 1 ||
+        passwordConf[0].rules === undefined || passwordConf[0].rules.length < 1) {
         return {
             field: "password",
             maxLength: 30,

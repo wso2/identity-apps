@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -470,14 +470,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             width={ 2 }
                                                             required={ true }
                                                             hidden={ false }
-                                                            placeholder={ "min" }
+                                                            placeholder={ "max" }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
                                                                     minNumbers: value
                                                                 });
                                                             } }
-
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -493,7 +492,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             data-testid={ `${componentId}-min-numbers` }
                                                         >
                                                         </Field.Input>
-                                                        <label>numbers.</label>
+                                                        <label>numbers (0-9).</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -535,7 +534,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-upper-case-characters` }
                                                         />
-                                                        <label>upper-case characters.</label>
+                                                        <label>upper-case characters (A-Z).</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -557,6 +556,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            listen={ (value: string) => {
+                                                                setCurrentValues({
+                                                                    ...currentValues,
+                                                                    minLowerCaseCharacters: value
+                                                                });
+                                                            } }
                                                             maxLength={
                                                                 ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -567,17 +572,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_LENGTH
                                                             }
-                                                            listen={ (value: string) => {
-                                                                setCurrentValues({
-                                                                    ...currentValues,
-                                                                    minLowerCaseCharacters: value
-                                                                });
-                                                            } }
                                                             readOnly={ false }
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-lower-case-characters` }
                                                         />
-                                                        <label>lower-case characters.</label>
+                                                        <label>lower-case characters (a-z).</label>
                                                     </div>
                                                     <div className="criteria rule">
                                                         <Field.Input
@@ -619,7 +618,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-special-characters` }
                                                         />
-                                                        <label>special characters.</label>
+                                                        <label>special characters (!@#$%^&*).</label>
                                                     </div>
                                                     <div className="criteria">
                                                         <Field.Checkbox
@@ -697,7 +696,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             width={ 2 }
                                                             required={ true }
                                                             hidden={ false }
-                                                            placeholder={ "min" }
+                                                            placeholder={ "max" }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,

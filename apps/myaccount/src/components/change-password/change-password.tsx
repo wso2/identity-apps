@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
-import React, { FunctionComponent, Suspense, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
@@ -34,11 +34,6 @@ import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { useEndUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
-
-/**
- * Import password strength meter dynamically.
- */
-const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
 
 /**
  * Constant to store the change password from identifier.
@@ -57,7 +52,7 @@ interface ChangePasswordProps extends TestableComponentInterface {
  * Change password component.
  *
  * @param props - Props injected to the change password component.
- * @returns JSX.Element - component
+ * @return JSX.Element
  */
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: ChangePasswordProps): JSX.Element => {
 
@@ -72,17 +67,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     });
     const [ password, setPassword ] = useState<string>("");
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
-    const [ passwordScore, setPasswordScore ] = useState<number>(-1);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
-    const [ passwordValidationStatus, setPasswordValidationStatus ] = useState<ValidationStatusInterface>(undefined);
+    const [ , setPasswordValidationStatus ] = useState<ValidationStatusInterface>(undefined);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const [ reset, resetForm ] = useTrigger();
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const endUserSession: () => Promise<boolean> = useEndUserSession();
 
@@ -142,10 +136,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const getConfigurations = (): void => {
 
         fetchPasswordValidationConfig()
-            .then((response) => {
+            .then((response: ValidationFormInterface) => {
                 setPasswordConfig(response);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -183,7 +177,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const changePassword = () => {
 
         updatePassword(currentPassword, newPassword)
-            .then((response) => {
+            .then((response: any) => {
                 if (response.status && response.status === 200) {
                     // reset the form.
                     resetForm();
@@ -205,7 +199,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     endUserSession();
                 }
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
@@ -237,10 +231,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                      * error message. i.e., removes strings like
                      * SUS-605000 , 60501 - , 60502 |
                      */
-                    let message = error.response?.data?.detail ?? "";
+                    let message: string = error.response?.data?.detail ?? "";
 
                     if (message.match(/^\w+?\d{1,5}/g)) {
-                        const fragments = message.split(",");
+                        const fragments: string[] = message.split(",");
 
                         if (fragments?.length > 1) {
                             /**
@@ -296,7 +290,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         setShowConfirmationModal(false);
     };
 
-    const confirmationModal = (
+    const confirmationModal: JSX.Element = (
         <Modal
             size="mini"
             open={ showConfirmationModal }
@@ -330,11 +324,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         </Modal>
     );
 
-    const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
+    const showChangePasswordView: JSX.Element = activeForm === CommonConstants.SECURITY
+    + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection data-testid={ `${testId}-edit-section` } >
                 <Forms
-                    onSubmit={ (value) => {
+                    onSubmit={ (value: Map<string, FormValue>) => {
                         setCurrentPassword(value.get("currentPassword").toString());
                         setNewPassword(value.get("newPassword").toString());
                         handleSubmit();
@@ -389,24 +384,25 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             setPassword(values.get("newPassword").toString());
                         } }
                     />
-                    <Form.Field width={ 9 } data-testid={ `${testId}-new-password-strength-meter-field` }>
-                        <Suspense fallback={ null }>
-                            <PasswordMeter
-                                password={ password }
-                                onChangeScore={ (score: number) => {
-                                    setPasswordScore(score);
-                                } }
-                                scoreWords={ [
-                                    t("common:tooShort"),
-                                    t("common:weak"),
-                                    t("common:okay"),
-                                    t("common:good"),
-                                    t("common:strong")
-                                ] }
-                                shortScoreWord={ t("common:tooShort") }
-                            />
-                        </Suspense>
-                    </Form.Field>
+                    {/*TODO: Enable the password meter after modifying it to support current validation criteria.*/}
+                    {/*<Form.Field width={ 9 } data-testid={ `${testId}-new-password-strength-meter-field` }>*/}
+                    {/*    <Suspense fallback={ null }>*/}
+                    {/*        <PasswordMeter*/}
+                    {/*            password={ password }*/}
+                    {/*            onChangeScore={ (score: number) => {*/}
+                    {/*                setPasswordScore(score);*/}
+                    {/*            } }*/}
+                    {/*            scoreWords={ [*/}
+                    {/*                t("common:tooShort"),*/}
+                    {/*                t("common:weak"),*/}
+                    {/*                t("common:okay"),*/}
+                    {/*                t("common:good"),*/}
+                    {/*                t("common:strong")*/}
+                    {/*            ] }*/}
+                    {/*            shortScoreWord={ t("common:tooShort") }*/}
+                    {/*        />*/}
+                    {/*    </Suspense>*/}
+                    {/*</Form.Field>*/}
 
                     { (passwordValidationConfig.showPasswordValidation  && passwordConfig) &&
                         (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
@@ -460,9 +456,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                     })
                                 } }
                             />
-
-                        </Form.Field>)
-                    }
+                        </Form.Field>
+                        ) }
                     <Field
                         hidden={ true }
                         type="divider"

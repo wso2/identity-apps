@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, {ReactElement, useEffect, useState} from "react";
-import {Icon, SemanticCOLORS} from "semantic-ui-react";
+
+import React, { ReactElement, useEffect, useState } from "react";
+import { Icon, SemanticCOLORS } from "semantic-ui-react";
 
 /**
  * Prop types for the password validation icons.
@@ -75,7 +76,6 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
         minSpecialChr,
         minUniqueChr,
         maxConsecutiveChr,
-        className,
         password,
         translations,
         onPasswordValidate
@@ -92,7 +92,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
     useEffect(() => {
 
         validate(password);
-    }, [password]);
+    }, [ password ]);
 
     /**
      * Validate the password.
@@ -100,14 +100,15 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
      * @param password - password.
      */
     const validate = (password) => {
-        let _validationStatus = {...validationStatus};
+        let _validationStatus = { ...validationStatus };
 
         if (password === EMPTY_STRING) {
             _validationStatus = {
                 ..._validationStatus,
                 empty: true
-            }
+            };
             onPasswordValidate(false, _validationStatus);
+
             return;
         }
 
@@ -115,7 +116,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
             _validationStatus = {
                 ..._validationStatus,
                 length: true
-            }
+            };
         }
         if ((minUpperCase <= 0 || (password.match(upperCaseLetters)
                 && password.match(upperCaseLetters).length >= minUpperCase))
@@ -124,36 +125,39 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
             _validationStatus = {
                 ..._validationStatus,
                 case: true
-            }
+            };
         }
         if (minNumbers <= 0 ||(password.match(numbers) && password.match(numbers).length >= minNumbers)) {
             _validationStatus = {
                 ..._validationStatus,
                 numbers: true
-            }
+            };
         }
         if (minSpecialChr <= 0 || (password.match(chars) && password.match(chars).length >= minSpecialChr)) {
             _validationStatus = {
                 ..._validationStatus,
                 specialChr: true
-            }
+            };
         }
 
         const unique : string[] = password.split("");
         const set : Set<string> = new Set(unique);
+
         if (minUniqueChr <=0 || set.size >= minUniqueChr) {
             _validationStatus = {
                 ..._validationStatus,
                 uniqueChr: true
-            }
+            };
         }
         let _consValid: boolean = true;
+
         if (password.match(consecutive) && password.match(consecutive).length > 0) {
             const largest: string = password.match(consecutive).sort(
                 function (a, b) {
                     return b.length - a.length;
                 }
             ) [0];
+
             if (maxConsecutiveChr >= 1 &&
                 largest.length > maxConsecutiveChr) {
                 _consValid = false;
@@ -163,7 +167,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
             _validationStatus = {
                 ..._validationStatus,
                 consecutiveChr: true
-            }
+            };
         }
 
         // isValid if all the attr in the object are true and not empty.
@@ -173,8 +177,9 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
 
         // _validationStatus pass the original for more finegrained control from outside
         onPasswordValidate(isValid, _validationStatus);
+
         return;
-    }
+    };
 
     /**
      * Returns Icon Props which are needed to set state of Password Validation Icons.
@@ -234,6 +239,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
         } else if (id === "password-validation-unique-chars") {
             const unique : string[] = password.split("");
             const set : Set<string> = new Set(unique);
+
             if (password === EMPTY_STRING) {
                 return DEFAULT;
             } else if (set.size >= minUniqueChr) {
@@ -243,12 +249,14 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
             }
         } else if (id === "password-validation-cons-chars") {
             let valid: boolean = true;
+
             if (password.match(consecutive) && password.match(consecutive).length > 0) {
                 const largest: string = password.match(consecutive).sort(
                     function (a, b) {
                         return b.length - a.length;
                     }
                 ) [0];
+
                 if (maxConsecutiveChr >= 1 &&
                     largest.length > maxConsecutiveChr) {
                     valid = false;
@@ -267,7 +275,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
 
     return(
         <div>
-            { (minLength > 0 || maxLength > 0) &&
+            { (minLength > 0 || maxLength > 0) && (
                 <div className="password-policy-description">
 
                     <Icon
@@ -278,7 +286,7 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
                     />
                     <p>{ translations.length }</p>
                 </div>
-            }
+            ) }
             { (minUpperCase > 0 || minLowerCase > 0) && (
                 <div className="password-policy-description">
                     <Icon
@@ -342,20 +350,20 @@ export const PasswordValidation: React.FunctionComponent<ValidationProps> = (
  * Default proptypes for the page header component.
  */
 PasswordValidation.defaultProps = {
-    minLength: 8,
+    maxConsecutiveChr: 0,
     maxLength: 30,
-    minNumbers: 0,
+    minLength: 8,
     minLowerCase: 0,
-    minUpperCase: 0,
+    minNumbers: 0,
     minSpecialChr: 0,
     minUniqueChr: 0,
-    maxConsecutiveChr: 0,
+    minUpperCase: 0,
     translations: {
+        case: "At least one uppercase and one lowercase letters",
+        consecutiveChr: "No more than one repeated character",
         length: "Must be between 8 and 30 characters",
         numbers: "At least one number",
-        case: "At least one uppercase and one lowercase letters",
         specialChr: "At least {minSpecialChr} of the symbols !@#$%^&*",
-        uniqueChr: "At least one unique character",
-        consecutiveChr: "No more than one repeated character"
+        uniqueChr: "At least one unique character"
     }
 };
