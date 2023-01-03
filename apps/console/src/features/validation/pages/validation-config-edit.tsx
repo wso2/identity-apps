@@ -40,15 +40,9 @@ import { Grid, Label, Ref } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
-import {
-    ValidationConfigConstants
-} from "../constants/validation-config-constants";
-import {
-    ValidationConfInterface,
-    ValidationDataInterface,
-    ValidationFormInterface,
-    ValidationPropertyInterface
-} from "../models";
+import { ValidationConfigConstants } from "../constants/validation-config-constants";
+import { ValidationFormInterface } from "../models";
+import { getConfiguration } from "../../users";
 
 /**
  * Props for validation configuration page.
@@ -147,69 +141,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      */
     const initializeForm = (): void => {
 
-        const passwordConf: ValidationDataInterface[] =
-            validationData?.filter((data: ValidationDataInterface) => data.field === "password");
-
-        if (passwordConf === undefined || passwordConf.length < 1) {
-            return;
-        }
-
-        const config: ValidationDataInterface = passwordConf[0];
-
-        const rules: ValidationConfInterface[] = config.rules;
-
-        setInitialFormValues({
-            consecutiveCharacterValidatorEnabled:
-                getValidationConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") !== null,
-            field: "password",
-            maxConsecutiveCharacters: getValidationConfig(rules, "RepeatedValidator", "consecutiveLength") ?
-                getValidationConfig(rules, "RepeatedValidator", "consecutiveLength"): "1",
-            maxLength: getValidationConfig(rules, "LengthValidator", "max.length") ?
-                getValidationConfig(rules, "LengthValidator", "max.length"): "30",
-            minLength: getValidationConfig(rules, "LengthValidator", "min.length") ?
-                getValidationConfig(rules, "LengthValidator", "min.length"): "8",
-            minLowerCaseCharacters: getValidationConfig(rules, "LowerCaseValidator", "min.length") ?
-                getValidationConfig(rules, "LowerCaseValidator", "min.length"): "1",
-            minNumbers: getValidationConfig(rules, "NumeralValidator", "min.length") ?
-                getValidationConfig(rules, "NumeralValidator", "min.length"): "1",
-            minSpecialCharacters: getValidationConfig(rules, "SpecialCharacterValidator", "min.length") ?
-                getValidationConfig(rules, "SpecialCharacterValidator", "min.length"): "1",
-            minUniqueCharacters: getValidationConfig(rules, "UniqueCharacterValidator", "min.length") ?
-                getValidationConfig(rules, "UniqueCharacterValidator", "min.length"): "1",
-            minUpperCaseCharacters: getValidationConfig(rules, "UpperCaseValidator", "min.length") ?
-                getValidationConfig(rules, "UpperCaseValidator", "min.length"): "1",
-            type: "rules",
-            uniqueCharacterValidatorEnabled:
-                getValidationConfig(rules, "UniqueCharacterValidator", "min.unique.character") !== null
-        });
-    };
-
-    /**
-     * Return values of each validator.
-     *
-     * @param rules - set of configured rules.
-     * @param validatorName - name of the validator.
-     * @param attributeName - name of the attribute.
-     *
-     * @returns the value of the configuration.
-     */
-    const getValidationConfig = (rules: ValidationConfInterface[], validatorName: string,
-        attributeName: string): string => {
-
-        const config: ValidationConfInterface[] = rules?.filter((data: ValidationConfInterface) => {
-            return data.validator === validatorName;
-        });
-
-        if (config.length > 0) {
-            let properties: ValidationPropertyInterface[] = config[0].properties;
-
-            properties = properties.filter((data: ValidationPropertyInterface) => data.key === attributeName);
-            if (properties.length > 0) {
-                return properties[0].value;
-            }
-        }
-
-        return null;
+        setInitialFormValues(getConfiguration(validationData));
     };
 
     /**
@@ -262,7 +194,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             dispatch(addAlert({
                 description: description,
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.validation.validationError.invalidConfig.wrongCombination")
+                message: t("console:manage.features.validation.validationError.wrongCombination")
             }));
 
             return false;

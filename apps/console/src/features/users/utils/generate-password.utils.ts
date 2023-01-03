@@ -59,8 +59,9 @@ const removeIgnoredCharacters = (str: string, ignoredChars: string[]): string =>
  * @param minAlphabetsLowercase - required minimum number of lowercase alphabets.
  * @param minAlphabetsUppercase - required minimum number of uppercase alphabets.
  * @param minNumbers - required minimum number of numbers.
- * @param minSpecialCharacters - required minimum number of special charaters.
- * @param ignoredCharactors - array of charaters to be excluded.
+ * @param minSpecialCharacters - required minimum number of special characters.
+ * @param uniqueCharacter - required unique characters.
+ * @param ignoredCharactors - array of characters to be excluded.
  * @returns the generated password.
  */
 export const generatePassword = (
@@ -73,6 +74,7 @@ export const generatePassword = (
     minAlphabetsUppercase: number = 1,
     minNumbers: number = 1,
     minSpecialCharacters: number = 1,
+    uniqueCharacter: number = 0,
     ignoredCharactors: string[] = []
 ): string => {
     let generatedPassword: string = "";
@@ -119,10 +121,19 @@ export const generatePassword = (
         ? characterString + SPECIAL_CHAR
         : characterString;
 
+    const set : Set<string> = new Set(generatedPassword.split(""));
+    let isUnique: boolean = false;
+
+    if (uniqueCharacter > 0 && set.size < uniqueCharacter) {
+        generatedPassword = Array.from(set).join("");
+        isUnique = true;
+    }
+
     const remainingChar: number = length - generatedPassword.length;
 
     for (let i: number = 0; i < remainingChar; i++) {
-        generatedPassword = generatedPassword + getCharacter(generatedPassword, characterString);
+        generatedPassword = generatedPassword + (isUnique ?
+            getUniqueCharacter(generatedPassword, characterString) : getCharacter(generatedPassword, characterString));
     }
 
     return generatedPassword;
@@ -136,6 +147,24 @@ export const generatePassword = (
  * @returns char - Random string.
  */
 export const getCharacter = (generatedPassword: string, characterSet: string): string => {
+
+    let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
+
+    while (char === generatedPassword.charAt(generatedPassword.length - 1)) {
+        char = characterSet.charAt(generateRandomNumbers(characterSet.length));
+    }
+
+    return char;
+};
+
+/**
+ * Generate unique string.
+ *
+ * @param generatedPassword - Generated password.
+ * @param characterSet - Character set.
+ * @returns char - Random string.
+ */
+export const getUniqueCharacter = (generatedPassword: string, characterSet: string): string => {
 
     let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
 
