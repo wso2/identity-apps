@@ -98,8 +98,8 @@ export const getPasswordConfig = (validationConfig: ValidationDataInterface[]): 
             Number(getConfig(rules, "NumeralValidator", "min.length")) : 0,
         minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
             Number(getConfig(rules, "SpecialCharacterValidator", "min.length")) : 0,
-        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.length") ?
-            Number(getConfig(rules, "UniqueCharacterValidator", "min.length")) : 1,
+        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.unique.character") ?
+            Number(getConfig(rules, "UniqueCharacterValidator", "min.unique.character")) : 0,
         minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
             Number(getConfig(rules, "UpperCaseValidator", "min.length")) : 0,
         type: "rules",

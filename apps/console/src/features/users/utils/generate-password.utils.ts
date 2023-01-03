@@ -168,8 +168,8 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
             getConfig(rules, "NumeralValidator", "min.length") : "0",
         minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
             getConfig(rules, "SpecialCharacterValidator", "min.length") : "0",
-        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.length") ?
-            getConfig(rules, "UniqueCharacterValidator", "min.length") : "0",
+        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.unique.character") ?
+            getConfig(rules, "UniqueCharacterValidator", "min.unique.character") : "0",
         minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
             getConfig(rules, "UpperCaseValidator", "min.length") : "0",
         type: "rules",
