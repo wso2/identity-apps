@@ -8602,7 +8602,8 @@ export const console: ConsoleNS = {
                     consecutiveChrMismatch: "අඛණ්ඩ අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
                     invalidConfig: "ඉහත වින්‍යාසයන් සමඟ මුරපදයක් සෑදිය නොහැක.",
                     minLimitError: "අවම දිග 8 ට වඩා අඩු විය නොහැක.",
-                    maxLimitError: "උපරිම දිග 30 ට වඩා වැඩි විය නොහැක."
+                    maxLimitError: "උපරිම දිග 30 ට වඩා වැඩි විය නොහැක.",
+                    wrongCombination: "සංයෝජනයට අවසර නැත"
                 },
                 notifications: {
                     error: {

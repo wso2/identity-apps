@@ -8788,7 +8788,8 @@ export const console: ConsoleNS = {
                         "longueur minimale du mot de passe.",
                     invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus.",
                     minLimitError: "La longueur minimale ne peut pas être inférieure à 8.",
-                    maxLimitError: "La longueur maximale ne peut pas être supérieure à 30."
+                    maxLimitError: "La longueur maximale ne peut pas être supérieure à 30.",
+                    wrongCombination: "La combinaison n'est pas autorisée"
                 },
                 notifications: {
                     error: {

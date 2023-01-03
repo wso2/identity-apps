@@ -262,7 +262,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             dispatch(addAlert({
                 description: description,
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.validation.notifications.genericError.message")
+                message: t("console:manage.features.validation.validationError.invalidConfig.wrongCombination")
             }));
 
             return false;

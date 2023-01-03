@@ -10255,7 +10255,8 @@ export const console: ConsoleNS = {
                         "length of the password.",
                     invalidConfig: "Unable to create password with the above configurations.",
                     minLimitError: "The minimum length cannot be less than 8.",
-                    maxLimitError: "The maximum length cannot be more than 30."
+                    maxLimitError: "The maximum length cannot be more than 30.",
+                    wrongCombination: "The combination is not allowed"
                 },
                 notifications: {
                     error: {

@@ -5051,6 +5051,7 @@ export interface ConsoleNS {
                     invalidConfig: string;
                     minLimitError: string;
                     maxLimitError: string;
+                    wrongCombination: string;
                 }
                 notifications: {
                     error: {
