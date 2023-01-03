@@ -129,11 +129,11 @@ export class AppUtils {
     }
 
     /**
-     * Check if the auth callback URL belongs to another tenant or organization.
+     * Check if the auth callback URL belongs to another tenant.
      *
      * @param authCallbackURL - The auth callback URL.
      *
-     * @returns If the auth callback URL belongs to another tenant or organization.
+     * @returns If the auth callback URL belongs to another tenant.
      */
     public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string): boolean {
         const tenantDomain: string = store.getState().config.deployment.tenant;
