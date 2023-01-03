@@ -84,22 +84,22 @@ export const generatePassword = (
 
     const NUMBERS: string = removeIgnoredCharacters("0123456789", ignoredCharactors);
 
-    const SPECIAL_CHAR: string = removeIgnoredCharacters("!#$%&'()*+,-./:;<=>?@^_{|}~", ignoredCharactors);
+    const SPECIAL_CHAR: string = removeIgnoredCharacters("!#$%&'()*+,-./:;<=>?@[]^_{|}~", ignoredCharactors);
 
     for (let i: number = 0; i < minAlphabetsLowercase; i++) {
-        minChar = minChar + LOWERCASE_CHAR.charAt(generateRandomNumbers(LOWERCASE_CHAR.length));
+        minChar = minChar + getCharacter(minChar, LOWERCASE_CHAR);
     }
 
     for (let i: number = 0; i < minAlphabetsUppercase; i++) {
-        minChar = minChar + UPPERCASE_CHAR.charAt(generateRandomNumbers(UPPERCASE_CHAR.length));
+        minChar = minChar + getCharacter(minChar, UPPERCASE_CHAR);
     }
 
     for (let i: number = 0; i < minNumbers; i++) {
-        minChar = minChar + NUMBERS.charAt(generateRandomNumbers(NUMBERS.length));
+        minChar = minChar + getCharacter(minChar, NUMBERS);
     }
 
     for (let i: number = 0; i < minSpecialCharacters; i++) {
-        minChar = minChar + SPECIAL_CHAR.charAt(generateRandomNumbers(SPECIAL_CHAR.length));
+        minChar = minChar + getCharacter(minChar, SPECIAL_CHAR);
     }
 
     generatedPassword = minChar;
@@ -122,10 +122,28 @@ export const generatePassword = (
     const remainingChar: number = length - generatedPassword.length;
 
     for (let i: number = 0; i < remainingChar; i++) {
-        generatedPassword = generatedPassword + characterString.charAt(generateRandomNumbers(characterString.length));
+        generatedPassword = generatedPassword + getCharacter(generatedPassword, characterString);
     }
 
     return generatedPassword;
+};
+
+/**
+ * Generate random string.
+ *
+ * @param generatedPassword - Generated password.
+ * @param characterSet - Character set.
+ * @returns char - Random string.
+ */
+export const getCharacter = (generatedPassword: string, characterSet: string): string => {
+
+    let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
+
+    while (generatedPassword.includes(char)) {
+        char = characterSet.charAt(generateRandomNumbers(characterSet.length));
+    }
+
+    return char;
 };
 
 /**
