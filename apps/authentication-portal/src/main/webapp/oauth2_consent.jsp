@@ -29,6 +29,7 @@
 <%@ page import="org.wso2.carbon.identity.oauth.IdentityOAuthAdminException" %>
 <%@ page import="org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.net.URLDecoder" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -76,11 +77,12 @@
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
 
     List<String> openIdScopes = null;
+    String[] requestedOIDCScopes = URLDecoder.decode(queryParamMap.get("requested_oidc_scope"), "UTF-8").split("\\+");
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
-            // Remove "openid" from the scope list to display.
-           openIdScopes = Stream.of(scopeString.split(" "))
-                    .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
-                    .collect(Collectors.toList());
+        // Remove oidc scopes from the scope list to display.
+        openIdScopes = Stream.of(scopeString.split(" "))
+            .filter(x -> !Set.of(requestedOIDCScopes).contains(x.toLowerCase()))
+            .collect(Collectors.toList());
     }
 %>
 
