@@ -39,10 +39,10 @@ import { Dispatch } from "redux";
 import { Grid, Label, Ref } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
+import { getConfiguration } from "../../users";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import { ValidationFormInterface } from "../models";
-import { getConfiguration } from "../../users";
 
 /**
  * Props for validation configuration page.
