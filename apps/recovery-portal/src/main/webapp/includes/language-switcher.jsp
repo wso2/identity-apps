@@ -119,12 +119,13 @@
     <div class="menu">
         <div class="item" data-value="en_US">
             <i class="us flag"></i>
-            English - United States
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.english")%>
         </div>
 
         <div class="item" data-value="fr_FR">
             <i class="fr flag"></i>
-            French - France
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.french")%>
+
         </div>
     </div>
 </div>

@@ -118,12 +118,12 @@
     <div class="menu">
         <div class="item" data-value="en_US">
             <i class="us flag"></i>
-            English - United States
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.english")%>
         </div>
 
         <div class="item" data-value="fr_FR">
             <i class="fr flag"></i>
-            French - France
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.french")%>
         </div>
     </div>
 </div>
