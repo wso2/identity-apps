@@ -137,12 +137,13 @@ export class AppUtils {
      */
     public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string): boolean {
         const tenantDomain: string = store.getState().config.deployment.tenant;
-        const tenantRegex: RegExp = new RegExp("/t/(.+)/");
+        const tenantName: string = window["AppUtils"].getConfig().superTenant === tenantDomain ? "" : tenantDomain;
+        const tenantRegex: RegExp = new RegExp("t/([^/]+)/");
         const matches: RegExpExecArray = tenantRegex.exec(authCallbackURL);
 
-        const tenantFromURL: string = matches?.[ 1 ];
+        const tenantFromURL: string = matches?.[ 1 ] ?? "";
 
-        if (tenantFromURL === tenantDomain || !tenantFromURL) {
+        if (tenantFromURL === tenantName) {
             return false;
         }
 
