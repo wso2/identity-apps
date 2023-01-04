@@ -165,8 +165,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
-    const orgType: OrganizationType = useSelector((state: AppState) => 
-        state?.organization?.organizationType);    
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
@@ -542,8 +542,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param isLabel - Flag to determine if label.
      * @returns the list of options for radio & dropdown.
      */
-    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): RadioChild[] => {
-        const allowedList: RadioChild[] = [];
+    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): DropdownProps[] => {
+        const allowedList: DropdownProps[] = [];
 
         if (metadataProp) {
             if (isLabel) {
