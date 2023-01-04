@@ -557,7 +557,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                     AuthenticationCallbackUrl ===
                                     `${ window[ "AppUtils" ].getConfig()
                                         .appBaseWithTenant
-                                    }/`)
+                                    }/`) ||
+                                AppUtils.isAuthCallbackURLFromAnotherTenant(AuthenticationCallbackUrl)
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -582,7 +583,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
                     (window[ "AppUtils" ].getConfig().organizationName &&
                         AuthenticationCallbackUrl ===
-                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`)
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
+                    AppUtils.isAuthCallbackURLFromAnotherTenant(AuthenticationCallbackUrl)
                     ? AppConstants.getAppHomePath()
                     : AuthenticationCallbackUrl;
 
