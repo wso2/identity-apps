@@ -28,8 +28,8 @@ import { Segment } from "semantic-ui-react";
 
 interface StickyBarPropsInterface {
     updateButtonRef: MutableRefObject<HTMLElement>;
-    formRef: MutableRefObject<HTMLElement>;
     isFormStale: boolean;
+    containerRef: MutableRefObject<HTMLElement>;
 }
 
 /**
@@ -42,9 +42,10 @@ interface StickyBarPropsInterface {
 export const StickyBar: FunctionComponent<PropsWithChildren<
     StickyBarPropsInterface
 >> = (props: PropsWithChildren<StickyBarPropsInterface>): ReactElement => {
-    const { updateButtonRef, formRef, isFormStale } = props;
+    const { updateButtonRef, isFormStale, containerRef } = props;
 
     const [ stickyBarWidth, setStickyBarWidth ] = useState<number>(0);
+    const [ padding, setPadding ] = useState<number>(0);
     const [ showStickyBar, setShowStickyBar ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -76,15 +77,22 @@ export const StickyBar: FunctionComponent<PropsWithChildren<
     }, [ updateButtonRef.current ]);
 
     useEffect(() => {
-        setStickyBarWidth(formRef?.current?.offsetWidth);
-    }, [ formRef.current ]);
+        setStickyBarWidth(containerRef?.current?.offsetWidth);
+
+        const containerPadding: string = window.getComputedStyle(containerRef?.current, null)
+            .getPropertyValue("padding-left");
+
+        const containerPaddingValue: number = parseInt(containerPadding?.replace("px", ""), 10);
+
+        setPadding(containerPaddingValue - 14);
+    }, [ containerRef.current ]);
 
     return (
         showStickyBar &&
         isFormStale && (
             <Segment
                 className="sticky-bar"
-                style={ { width: `calc(${ stickyBarWidth ?? 0 }px + 2em` } }
+                style={ { marginLeft: `-${ padding }px`, width: `calc(${ stickyBarWidth - 2 ?? 0 }px` } }
             >
                 { props.children }
             </Segment>
