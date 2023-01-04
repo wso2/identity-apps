@@ -36,7 +36,16 @@ import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
-import React, { Fragment, FunctionComponent, MouseEvent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { 
+    Fragment, 
+    FunctionComponent, 
+    MouseEvent, 
+    MutableRefObject, 
+    ReactElement, 
+    useEffect, 
+    useRef, 
+    useState 
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Grid, Label, List } from "semantic-ui-react";
@@ -568,10 +577,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @returns a list of options for radio.
      */
     const getAllowedListForAccessToken = (metadataProp: MetadataPropertyInterface, isBinding?: boolean): any[] => {
-        const allowedList = [];
+        const allowedList: any[] = [];
 
         if (metadataProp) {
-            metadataProp.options.map((ele) => {
+            metadataProp.options.map((ele: string) => {
                 if ((ele === "Default") && !isBinding) {
                     allowedList.push({
                         hint: {
@@ -596,7 +605,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             });
         }
 
-        return allowedList.sort((a, b) => {
+        return allowedList.sort((a: any, b: any) => {
             if (a.label < b.label) return -1;
             if (a.label > b.label) return 1;
 
@@ -754,7 +763,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                     grant[ "index" ] = index ?? Infinity;
                 }
-                allowedList.sort(({ index: a }, { index: b }) => a - b);
+                allowedList.sort(({ index: a }: any, { index: b }: any) => a - b);
             }
         }
 
@@ -1983,7 +1992,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     type="checkbox"
                                     listen={ (values: Map<string, FormValue>): void => {
-                                        const encryptionEnabled: boolean = values.get("encryption").includes("enableEncryption");
+                                        const encryptionEnabled: boolean = values.get("encryption")
+                                            .includes("enableEncryption");
 
                                         if (!encryptionEnabled) {
                                             resolveInitialIDTokenEncryptionValues();
