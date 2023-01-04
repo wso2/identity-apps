@@ -742,7 +742,9 @@
         z-index: 1000;
         bottom: 36px;
         border-top: 1px solid @borderColor;
-        background-color: fade(@white, 20%);
-        backdrop-filter: blur(2px);
+        background-color: @white;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        border-radius: 0;
     }
 }
