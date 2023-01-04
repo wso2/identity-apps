@@ -62,6 +62,7 @@ interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
      * Specifies if API calls are pending.
      */
     isLoading?: boolean;
+    containerRef?: MutableRefObject<HTMLElement>;
 }
 
 /**
@@ -84,6 +85,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         onSubmit,
         readOnly,
         isLoading,
+        containerRef,
         [ "data-testid" ]: testId
     } = props;
 
@@ -509,8 +511,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         !readOnly &&  (
                             <StickyBar
                                 updateButtonRef={ updateRef }
-                                formRef={ formRef }
                                 isFormStale={ isFormStale }
+                                containerRef={ containerRef }
                             >
                                 <Button
                                     primary

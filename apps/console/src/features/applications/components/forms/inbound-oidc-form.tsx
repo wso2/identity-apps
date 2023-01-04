@@ -118,6 +118,7 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      */
     isLoading?: boolean;
     setIsLoading?: (isLoading: boolean) => void;
+    containerRef?: MutableRefObject<HTMLElement>;
 }
 
 /**
@@ -156,6 +157,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         template,
         isLoading,
         setIsLoading,
+        containerRef,
         [ "data-testid" ]: testId
     } = props;
 
@@ -1208,7 +1210,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         <>
             {
                 !readOnly &&  (
-                    <StickyBar updateButtonRef={ updateRef } formRef={ formRef } isFormStale={ isFormStale }>
+                    <StickyBar
+                        updateButtonRef={ updateRef }
+                        isFormStale={ isFormStale }
+                        containerRef={ containerRef }
+                    >
                         <Button
                             primary
                             type="submit"
