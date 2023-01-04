@@ -3201,10 +3201,6 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
-                                secondLine: "(Limited to 15 messages per month)"
-                            },
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
