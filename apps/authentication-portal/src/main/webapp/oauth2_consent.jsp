@@ -77,12 +77,18 @@
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
 
     List<String> openIdScopes = null;
-    String[] requestedOIDCScopes = URLDecoder.decode(queryParamMap.get("requested_oidc_scope"), "UTF-8").split("\\+");
+    String requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scope"), "UTF-8");
+    
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
-        // Remove oidc scopes from the scope list to display.
-        openIdScopes = Stream.of(scopeString.split(" "))
-            .filter(x -> !Set.of(requestedOIDCScopes).contains(x.toLowerCase()))
-            .collect(Collectors.toList());
+        if (StringUtils.isNotBlank(requestedOIDCScopeString)) {
+            // Remove oidc scopes from the scope list to display.
+            Set<String> requestedOIDCScopes = Set.of(requestedOIDCScopeString.split(" "));
+            openIdScopes = Stream.of(scopeString.split(" "))
+                .filter(x -> !requestedOIDCScopes.contains(x.toLowerCase()))
+                .collect(Collectors.toList());
+        } else {
+            openIdScopes = Stream.of(scopeString.split(" ")).collect(Collectors.toList());
+        }
     }
 %>
 
