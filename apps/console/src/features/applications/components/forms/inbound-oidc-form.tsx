@@ -48,7 +48,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Container, Divider, Form, Grid, Label, List } from "semantic-ui-react";
+import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { OrganizationType } from "../../../organizations/constants";
@@ -535,8 +535,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param isLabel - Flag to determine if label.
      * @returns the list of options for radio & dropdown.
      */
-    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): any[] => {
-        const allowedList: any[] = [];
+    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): DropdownProps[] | number => {
+        const allowedList: DropdownProps[] = [];
 
         if (metadataProp) {
             if (isLabel) {
