@@ -77,7 +77,7 @@
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
 
     List<String> openIdScopes = null;
-    String requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scope"), "UTF-8");
+    String requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scopes"), "UTF-8");
     
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
         if (StringUtils.isNotBlank(requestedOIDCScopeString)) {
