@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -557,7 +557,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="uniqueCharacterValidatorEnabled"
                                                             name="uniqueCharacterValidatorEnabled"
                                                             required={ false }
-                                                            label={ "Must contain" }
+                                                            label={ "Must contain at least" }
                                                             listen={ (value: boolean) => {
                                                                 setUniqueChrValidatorEnabled(value);
                                                             } }
@@ -579,6 +579,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "min" }
+                                                            value={ Number(initialFormValues.minUniqueCharacters) > 0
+                                                                ? initialFormValues.minUniqueCharacters: 1 }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
@@ -629,6 +631,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             required={ true }
                                                             hidden={ false }
                                                             placeholder={ "max" }
+                                                            value={
+                                                                Number(initialFormValues.maxConsecutiveCharacters) > 0
+                                                                    ? initialFormValues.maxConsecutiveCharacters: 1
+                                                            }
                                                             listen={ (value: string) => {
                                                                 setCurrentValues({
                                                                     ...currentValues,
