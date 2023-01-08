@@ -103,7 +103,6 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
         url: store.getState().config.endpoints.validationServiceMgt
     };
 
-
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
         shouldRetryOnError: false
     });
@@ -171,7 +170,7 @@ const prepareValidationConfigData = (values: ValidationFormInterface): Validatio
         }
     ];
 
-    if (values.uniqueCharacterValidatorEnabled) {
+    if (values.uniqueCharacterValidatorEnabled && Number(values.minUniqueCharacters) > 0) {
         rules = [
             ...rules,
             {
@@ -186,14 +185,14 @@ const prepareValidationConfigData = (values: ValidationFormInterface): Validatio
         ];
     }
 
-    if (values.consecutiveCharacterValidatorEnabled) {
+    if (values.consecutiveCharacterValidatorEnabled && Number(values.maxConsecutiveCharacters) > 0) {
         rules = [
             ...rules,
             {
                 properties: [
                     {
                         key: "max.consecutive.character",
-                        value: values.minUniqueCharacters ? values.minUniqueCharacters : "1"
+                        value: values.maxConsecutiveCharacters ? values.maxConsecutiveCharacters : "1"
                     }
                 ],
                 validator: "RepeatedCharacterValidator"
