@@ -127,7 +127,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPanePropsInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
@@ -305,7 +305,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     ]);
 
     const getPanes = () => {
-        const panes: ResourceTabPaneInterface[] = [];
+        const panes: ResourceTabPanePropsInterface[] = [];
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
