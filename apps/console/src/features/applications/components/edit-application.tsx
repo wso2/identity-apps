@@ -24,6 +24,7 @@ import {
     ContentLoader,
     CopyInputField,
     ResourceTab,
+    ResourceTabPaneInterface,
     ResourceTabPanePropsInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
@@ -162,7 +163,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPanePropsInterface[]>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
     const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
