@@ -63,3 +63,4 @@ export * from "./table";
 export * from "./typography";
 export * from "./transfer";
 export * from "./redux-forms";
+export * from "./validation";

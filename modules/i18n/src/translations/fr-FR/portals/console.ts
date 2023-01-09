@@ -8786,7 +8786,10 @@ export const console: ConsoleNS = {
                         "minimale du mot de passe.",
                     consecutiveChrMismatch: "Le nombre de caractères consécutifs doit être inférieur à la " +
                         "longueur minimale du mot de passe.",
-                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus."
+                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus.",
+                    minLimitError: "La longueur minimale ne peut pas être inférieure à 8.",
+                    maxLimitError: "La longueur maximale ne peut pas être supérieure à 30.",
+                    wrongCombination: "La combinaison n'est pas autorisée"
                 },
                 notifications: {
                     error: {
@@ -8805,7 +8808,7 @@ export const console: ConsoleNS = {
                 pageTitle: "Configuration de la validation du mot de passe",
                 description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
                 goBackToApplication: "Revenir à l'application",
-                goBackToValidationConfig: "Revenir à la validation du mot de passe"
+                goBackToValidationConfig: "Revenir à la sécurité du compte"
             }
         },
         notifications: {

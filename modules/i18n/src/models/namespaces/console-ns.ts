@@ -5045,6 +5045,9 @@ export interface ConsoleNS {
                     uniqueChrMismatch: string;
                     consecutiveChrMismatch: string;
                     invalidConfig: string;
+                    minLimitError: string;
+                    maxLimitError: string;
+                    wrongCombination: string;
                 }
                 notifications: {
                     error: {
