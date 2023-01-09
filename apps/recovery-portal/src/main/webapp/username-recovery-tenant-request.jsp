@@ -37,7 +37,7 @@
     layoutData.put("containerSize", "large");
 %>
 
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%

@@ -41,6 +41,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions/configs";
 import {
@@ -85,7 +86,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -93,7 +94,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider.templates);
 
-    const idpDescElement = useRef<HTMLDivElement>(null);
+    const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [
         identityProviderTemplate,
@@ -113,8 +114,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
+    const [ tabIdentifier, setTabIdentifier ] = useState<string>();
+    const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
 
-    const isReadOnly = useMemo(() => (
+
+    const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
@@ -128,7 +132,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
          * in a similar {@link useEffect}.
          */
         if (idpDescElement || isConnectorDetailsFetchRequestLoading) {
-            const nativeElement = idpDescElement.current;
+            const nativeElement: HTMLDivElement = idpDescElement.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
@@ -171,6 +175,20 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
         setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
     }, [ identityProviderConfig ]);
+
+    /**
+     * Checks if the user needs to go to a specific tab index.
+     */    
+    useEffect(() => {
+        const tabName: string =  location.state as string;
+
+        if (tabName === undefined) {
+            return;
+        } else {
+            setIsAutomaticTabRedirectionEnabled(true);
+            setTabIdentifier(tabName);
+        }
+    }, []);
 
     /**
      *  Get IDP templates.
@@ -256,10 +274,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
-            .then((response) => {
+            .then((response: any) => {
                 setConnector(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider." +
@@ -614,9 +632,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
+                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                            tabIdentifier={ tabIdentifier }
                         />
                     )
                     : (
@@ -625,7 +645,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

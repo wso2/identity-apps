@@ -220,9 +220,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             .catch((error: AxiosError & { description: string; message: string }) => {
                 dispatch(addAlert({
                     description: error?.description
-                        || "Error occurred while trying to retrieve connected applications.",
+                        || t("console:develop.features.idp.connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Error Occurred."
+                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
                 }));
             })
             .finally(() => {

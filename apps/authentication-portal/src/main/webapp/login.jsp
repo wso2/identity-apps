@@ -18,6 +18,8 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.apache.commons.collections.CollectionUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.model.ExternalIdPConfig" %>
@@ -177,6 +179,11 @@
 
             usernameIdentifier = usernameIdentifier.split("@")[0] + "@" + usernameIdentifier.split("@")[1];
         }
+    }
+
+    String restrictedBrowsersForGOT = "";
+    if (StringUtils.isNotEmpty(EndpointConfigManager.getGoogleOneTapRestrictedBrowsers())) {
+        restrictedBrowsersForGOT = EndpointConfigManager.getGoogleOneTapRestrictedBrowsers();
     }
 %>
 
@@ -379,14 +386,14 @@
                                         <div class="external-login blurring external-login-dimmer">
                                             <div class="field" id="googleSignIn" style="display: none;">
                                                 <button
-                                                    class="ui button fluid"
+                                                    class="ui button secondary fluid"
                                                     onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                     id="icon-<%=iconId%>"
                                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
                                                 >
-                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <img role="presentation" class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
                                                 </button>
                                             </div>
@@ -408,17 +415,43 @@
                                             </form>
 
                                             <script>
-                                                window.onload = function callGoogleOneTap() {
-                                                    google.accounts.id.initialize({
-                                                        client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
-                                                        prompt_parent_id: "google_parent",
-                                                        cancel_on_tap_outside: false,
-                                                        nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
-                                                        callback: handleCredentialResponse
-                                                    });
-                                                    google.accounts.id.prompt((notification) => {
-                                                        onMoment(notification);
-                                                    });
+                                                if (navigator) {
+                                                    var userAgent = navigator.userAgent;
+                                                    var browserName = void 0;
+                                                    var restrictedBrowsersForGOT = "<%=restrictedBrowsersForGOT%>";
+
+                                                    if (userAgent.match(/chrome|chromium|crios/i)) {
+                                                        browserName = "chrome";
+                                                    } else if (userAgent.match(/firefox|fxios/i)) {
+                                                        browserName = "firefox";
+                                                    } else if (userAgent.match(/safari/i)) {
+                                                        browserName = "safari";
+                                                    } else if (userAgent.match(/opr\//i)) {
+                                                        browserName = "opera";
+                                                    } else if (userAgent.match(/edg/i)) {
+                                                        browserName = "edge";
+                                                    } else {
+                                                        browserName = "No browser detection";
+                                                    }
+
+                                                    if (restrictedBrowsersForGOT !== null
+                                                        && restrictedBrowsersForGOT !== ''
+                                                        && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
+                                                        document.getElementById("googleSignIn").style.display = "block";
+                                                    } else {
+                                                        window.onload = function callGoogleOneTap() {
+                                                            google.accounts.id.initialize({
+                                                                client_id: "<%=Encode.forJavaScriptAttribute(GOOGLE_CLIENT_ID)%>",
+                                                                prompt_parent_id: "google_parent",
+                                                                cancel_on_tap_outside: false,
+                                                                nonce: "<%=Encode.forJavaScriptAttribute(request.getParameter("sessionDataKey"))%>",
+                                                                callback: handleCredentialResponse
+                                                            });
+                                                            google.accounts.id.prompt((notification) => {
+                                                                onMoment(notification);
+                                                            });
+                                                        }
+                                                    }
                                                 }
                                             </script>
                                         <% } else { %>
@@ -438,7 +471,7 @@
                                                     id="icon-<%=iconId%>"
                                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
                                                 >
-                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <img role="presentation" class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
                                                 </button>
                                             </div>
@@ -487,7 +520,7 @@
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
                                     <i class="usb icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
+                                    <img role="presentation" src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
@@ -506,7 +539,7 @@
                                         title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
-                                        <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                        <img role="presentation" class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>

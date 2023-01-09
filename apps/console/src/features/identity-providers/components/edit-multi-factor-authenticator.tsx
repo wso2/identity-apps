@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPanePropsInterface } from "@wso2is/react-components";
@@ -23,6 +24,7 @@ import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions";
@@ -87,7 +89,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -141,7 +143,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
                 onUpdate(authenticator.id);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider" +
@@ -249,24 +251,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                             }
                         >
                             Email Template <span className="coming-soon-label">(Coming Soon)</span>
-                        </Trans>
-                    </Menu.Item>
-                ),
-                render: null
-            });
-        }
-
-        // If the MFA is SMS OTP, add the SMS Provider tab.
-        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
-            panes.push({
-                menuItem: (
-                    <Menu.Item disabled key="messages" className="upcoming-item">
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.edit.smsOTP.smsProvider.tabName"
-                            }
-                        >
-                            SMS Provider <span className="coming-soon-label">(Coming Soon)</span>
                         </Trans>
                     </Menu.Item>
                 ),

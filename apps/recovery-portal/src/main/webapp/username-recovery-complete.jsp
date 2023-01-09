@@ -60,7 +60,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));

@@ -124,7 +124,7 @@
                         } %>
                         <% if (request.getParameter("screenValue") != null) { %>
                         <div class="field">
-                            <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
+                            <label for="OTPCode"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                 (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
                             </label>
                             <div class="ui fluid icon input addon-wrapper">
@@ -133,7 +133,7 @@
                             </div>
                                 <% } else { %>
                             <div class="field">
-                                <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
+                                <label for="OTPCode"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
                                     <input type="password" id='OTPCode' name="OTPCode" size='30'/>

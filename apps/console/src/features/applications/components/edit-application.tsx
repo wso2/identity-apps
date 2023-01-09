@@ -162,7 +162,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
     const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
@@ -255,6 +255,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 // Change the tab index to defaultActiveIndex for invalid URL fragments.
                 handleDefaultTabIndexChange(defaultActiveIndex);
             }
+        } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
+            // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
+            const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();
+            const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.
+                find((element: {"componentId": string}) =>
+                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
+
+            handleActiveTabIndexChange(SignInMethodtabIndex);
         } else {
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
             handleDefaultTabIndexChange(defaultActiveIndex);
@@ -595,7 +603,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
-                hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 application = { application }
@@ -729,8 +736,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      *
      * @returns Resolved tab panes.
      */
-    const resolveTabPanes = (): any[] => {
-        const panes: any[] = [];
+    const resolveTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
