@@ -53,7 +53,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         getTabExtensions: (_props: Record<string, unknown>): ResourceTabPanePropsInterface[] => [],
         isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
 
-            const templateMapping = new Map<string, Set<string>>([
+            const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
                 [
                     IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
