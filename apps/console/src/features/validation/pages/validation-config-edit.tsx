@@ -655,7 +655,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ !isConsecutiveChrValidatorEnabled }
                                                             data-testid={ `${componentId}-max-consecutive-chr` }
                                                         />
-                                                        <label>consecutive characters.</label>
+                                                        <label>repeated characters.</label>
                                                     </div>
                                                 </div>)
                                             }
