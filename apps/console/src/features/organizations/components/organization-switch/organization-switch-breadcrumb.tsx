@@ -55,8 +55,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 ): ReactElement => {
     const { "data-componentid": componentId } = props;
 
-    const currentOrganization: OrganizationResponseInterface = useSelector(
-        (state: AppState) => state.organization.organization
+    const currentOrganization: string = useSelector(
+        (state: AppState) => state.organization.currentOrganization
     );
 
     const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
@@ -337,7 +337,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             AppConstants.getSuperTenant() === tenantDomain ||
             window[ "AppUtils" ].getConfig().organizationName
         ) {
-            return currentOrganization.name;
+            return currentOrganization;
         }
 
         return tenantDomain;
@@ -348,7 +348,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             return (
                 <div className="organization-breadcrumb-wrapper">
                     <OrganizationSwitchDropdown
-                        triggerName={ currentOrganization.name }
+                        triggerName={ currentOrganization }
                         handleOrganizationSwitch={ handleOrganizationSwitch }
                     />
                 </div>
@@ -360,7 +360,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         return (
             <div className="organization-breadcrumb-wrapper">
                 <OrganizationSwitchDropdown
-                    triggerName={ currentOrganization.name }
+                    triggerName={ currentOrganization }
                     handleOrganizationSwitch={ handleOrganizationSwitch }
                 />
             </div>

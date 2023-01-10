@@ -95,6 +95,7 @@ import {
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
     setFilteredManageRoutes,
+    setCurrentOrganization,
     setGetOrganizationLoading,
     setIsFirstLevelOrganization,
     setManageVisibility,
@@ -267,6 +268,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     })
                 );
 
+                dispatch(setCurrentOrganization(orgName));
+
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(
                     setServiceResourceEndpoints(
@@ -296,6 +299,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         response = { ...grantResponse };
                     }
                 );
+
+                dispatch(setCurrentOrganization(response.orgName));
             }
 
             dispatch(setGetOrganizationLoading(false));
