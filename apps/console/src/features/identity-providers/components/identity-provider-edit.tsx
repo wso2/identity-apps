@@ -17,7 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    EmphasizedSegment,
+    ResourceTab,
+    ResourceTabPaneInterface
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -34,7 +39,7 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
+import { identityProviderConfig } from "../../../extensions";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
@@ -283,16 +288,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return;
         }
 
-        const extensions: ResourceTabPaneInterface[] = ComponentExtensionPlaceholder({
-            component: "identityProvider",
-            props: {
+        const extensions: ResourceTabPaneInterface[] = identityProviderConfig
+            .editIdentityProvider.getTabExtensions({
                 content: template.content.quickStart,
                 identityProvider: identityProvider,
                 template: template
-            },
-            subComponent: "edit",
-            type: "tab"
-        });
+            });
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
@@ -335,7 +336,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * {@link apps/console/src/extensions#} configs folder and
          * models folder for types. identity-provider.ts
          */
-        const attributesForSamlEnabled: boolean = isSaml && 
+        const attributesForSamlEnabled: boolean = isSaml &&
             identityProviderConfig.editIdentityProvider.attributesSettings;
 
         // Evaluate whether to Show/Hide `Attributes`.
@@ -389,7 +390,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      *
      * @param type - IDP Type.
      *
-     * @returns Boolean value 
+     * @returns Should show attribute settings or not.
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 

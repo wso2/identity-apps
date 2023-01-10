@@ -19,7 +19,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -27,11 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
-import {
-    AuthenticatorExtensionsConfigInterface,
-    ComponentExtensionPlaceholder,
-    identityProviderConfig
-} from "../../../extensions";
+import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";
@@ -97,7 +93,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     const { t } = useTranslation();
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
@@ -116,15 +112,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             return;
         }
 
-        // Resolve the quick-start tab.
-        const extensions: any[] = ComponentExtensionPlaceholder({
-            component: "identityProvider",
-            props: {
+        const extensions: ResourceTabPaneInterface[] = identityProviderConfig
+            .editIdentityProvider.getTabExtensions({
                 content: authenticatorConfig.content.quickStart
-            },
-            subComponent: "edit",
-            type: "tab"
-        });
+            });
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
