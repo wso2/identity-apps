@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ResourceTabPanePropsInterface } from "@wso2is/react-components";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, SVGProps } from "react";
 import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers/constants";
@@ -50,7 +50,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         ): ReactElement | null => {
             return null;
         },
-        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPanePropsInterface[] => [],
+        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
         isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
 
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
