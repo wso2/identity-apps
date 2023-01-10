@@ -342,7 +342,9 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
