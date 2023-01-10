@@ -159,6 +159,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                         return;
                     }
 
+                    // TODO: Remove this filter to display SMS OTP once the backend changes are complete.
+                    if(authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID){
+                        return;
+                    }
+
                     if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                         authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
                     }
@@ -242,6 +247,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                     response.filter((authenticator: AuthenticatorInterface) => {
                         // Removes hidden authenticators.
                         if (config?.ui?.hiddenAuthenticators?.includes(authenticator.name)) {
+                            return;
+                        }
+
+                        // TODO: Remove this filter to display SMS OTP once the backend changes are complete.
+                        if(authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID){
                             return;
                         }
 
