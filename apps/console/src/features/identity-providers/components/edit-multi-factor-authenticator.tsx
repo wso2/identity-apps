@@ -19,7 +19,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPanePropsInterface } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -93,7 +93,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     const { t } = useTranslation();
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
@@ -112,7 +112,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             return;
         }
 
-        const extensions: ResourceTabPanePropsInterface[] = identityProviderConfig
+        const extensions: ResourceTabPaneInterface[] = identityProviderConfig
             .editIdentityProvider.getTabExtensions({
                 content: authenticatorConfig.content.quickStart
             });
