@@ -163,27 +163,22 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         if (isRuleType) {
             if (Number(values.minLength) < 8) {
                 error = true;
-                description = t("console:manage.features.validation.validationError.minMaxMismatch");
-            }
-            if (Number(values.maxLength) > 30) {
+                description = t("console:manage.features.validation.validationError.minLimitError");
+            } else if (Number(values.maxLength) > 30) {
+                error = true;
+                description = t("console:manage.features.validation.validationError.maxLimitError");
+            } else if (Number(values.minLength) > Number(values.maxLength)) {
                 error = true;
                 description = t("console:manage.features.validation.validationError.minMaxMismatch");
-            }
-            if (Number(values.minLength) > Number(values.maxLength)) {
-                error = true;
-                description = t("console:manage.features.validation.validationError.minMaxMismatch");
-            }
-            if (values.uniqueCharacterValidatorEnabled &&
+            } else if (values.uniqueCharacterValidatorEnabled &&
                 Number(values.minUniqueCharacters) > Number(values.minLength)) {
                 error = true;
                 description = t("console:manage.features.validation.validationError.uniqueChrMismatch");
-            }
-            if (values.consecutiveCharacterValidatorEnabled &&
+            } else if (values.consecutiveCharacterValidatorEnabled &&
                 Number(values.maxConsecutiveCharacters) > Number(values.minLength)) {
                 error = true;
                 description = t("console:manage.features.validation.validationError.consecutiveChrMismatch");
-            }
-            if ((Number(values.minLowerCaseCharacters) + Number(values.minUpperCaseCharacters) +
+            } else if ((Number(values.minLowerCaseCharacters) + Number(values.minUpperCaseCharacters) +
                 Number(values.minSpecialCharacters) + Number(values.minNumbers)) > Number(values.minLength)) {
                 error = true;
                 description = t("console:manage.features.validation.validationError.invalidConfig");
