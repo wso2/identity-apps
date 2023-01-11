@@ -541,10 +541,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                  */
                 if (commonConfig?.enableOrganizationAssociations) {
 
-                     const isPrivilegedUser: boolean =
-                     idToken?.amr?.length > 0
-                         ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
-                         : false;
+                    const isPrivilegedUser: boolean =
+                        idToken?.amr?.length > 0
+                            ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                            : false;
  
                     if (has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an association, the user should be redirected to console landing page.
@@ -559,8 +559,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                     }/`) ||
                                 AppUtils.isAuthCallbackURLFromAnotherTenant(
                                     AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-                                    idToken.sub
-                                ))
+                                        idToken.sub))
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -581,7 +580,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 AuthenticationCallbackUrl ===
                                 `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
                             AppUtils.isAuthCallbackURLFromAnotherTenant(
-                                AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
+                                AuthenticationCallbackUrl, 
+                                CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
                             )
                             ? AppConstants.getAppHomePath()
                             : AuthenticationCallbackUrl;
