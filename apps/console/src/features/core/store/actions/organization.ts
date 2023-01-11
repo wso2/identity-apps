@@ -48,7 +48,7 @@ export const setOrganization = (organization: OrganizationResponseInterface): Se
  *
  * @returns - A set current organization action
  */
- export const setCurrentOrganization = (orgName: string): SetCurrentOrganizationActionInterface => {
+export const setCurrentOrganization = (orgName: string): SetCurrentOrganizationActionInterface => {
     return {
         payload: orgName,
         type: OrganizationActionTypes.SET_CURRENT_ORGANIZATION

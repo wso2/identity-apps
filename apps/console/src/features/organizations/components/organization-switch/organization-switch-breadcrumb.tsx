@@ -40,8 +40,7 @@ import { OrganizationType } from "../../constants";
 import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
 import {
     BreadcrumbItem,
-    GenericOrganization,
-    OrganizationResponseInterface
+    GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
 
