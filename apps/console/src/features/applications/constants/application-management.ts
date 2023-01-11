@@ -221,7 +221,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ]
     };
 

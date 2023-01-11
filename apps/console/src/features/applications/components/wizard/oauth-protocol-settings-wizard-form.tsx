@@ -218,7 +218,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
 
         if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0
-            && selectedTemplate.id !== SinglePageApplicationTemplate.id) {
+            && selectedTemplate.id !== SinglePageApplicationTemplate.id
+            && selectedTemplate.id !== ApplicationManagementConstants.MOBILE) {
 
             setShowRefreshToken(true);
         }
