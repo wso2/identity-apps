@@ -92,6 +92,7 @@ import {
     getAdminViewRoutes,
     getDeveloperViewRoutes,
     getSidePanelIcons,
+    setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
     setFilteredManageRoutes,
@@ -267,6 +268,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     })
                 );
 
+                dispatch(setCurrentOrganization(orgName));
+
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(
                     setServiceResourceEndpoints(
@@ -296,6 +299,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         response = { ...grantResponse };
                     }
                 );
+
+                dispatch(setCurrentOrganization(response.orgName));
             }
 
             dispatch(setGetOrganizationLoading(false));
