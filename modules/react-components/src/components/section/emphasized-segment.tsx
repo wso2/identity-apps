@@ -18,8 +18,8 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Segment, SegmentProps } from "semantic-ui-react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, forwardRef } from "react";
+import { Ref, Segment, SegmentProps } from "semantic-ui-react";
 
 /**
  * Prop types for the emphasized segment component.
@@ -44,8 +44,9 @@ export interface EmphasizedSegmentPropsInterface extends SegmentProps, Identifia
  *
  * @returns React Component
  */
-export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterface> = (
-    props: EmphasizedSegmentPropsInterface
+export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterface> = forwardRef((
+    props: EmphasizedSegmentPropsInterface,
+    ref: MutableRefObject<HTMLElement>
 ): ReactElement => {
 
     const {
@@ -67,16 +68,18 @@ export const EmphasizedSegment: FunctionComponent<EmphasizedSegmentPropsInterfac
     );
 
     return (
-        <Segment
-            className={ classes }
-            data-componentid={ componentId }
-            data-testid={ testId }
-            { ...rest }
-        >
-            { children }
-        </Segment>
+        <Ref innerRef={ ref }>
+            <Segment
+                className={ classes }
+                data-componentid={ componentId }
+                data-testid={ testId }
+                { ...rest }
+            >
+                { children }
+            </Segment>
+        </Ref>
     );
-};
+});
 
 /**
  * Prop types for the component.

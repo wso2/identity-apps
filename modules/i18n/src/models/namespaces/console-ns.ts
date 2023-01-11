@@ -1328,10 +1328,6 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine :string,
-                                secondLine: string
-                            },
                             expiryTime: {
                                 hint: string;
                                 label: string;
@@ -5049,6 +5045,9 @@ export interface ConsoleNS {
                     uniqueChrMismatch: string;
                     consecutiveChrMismatch: string;
                     invalidConfig: string;
+                    minLimitError: string;
+                    maxLimitError: string;
+                    wrongCombination: string;
                 }
                 notifications: {
                     error: {

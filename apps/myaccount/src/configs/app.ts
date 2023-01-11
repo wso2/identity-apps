@@ -1,14 +1,14 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless requi?red by applicable law or agreed to in writing,
+ * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
@@ -30,8 +30,6 @@ export class Config {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
@@ -39,7 +37,7 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {DeploymentConfigInterface} Deployment config object.
+     * @returns DeploymentConfigInterface - Deployment config object.
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
@@ -65,9 +63,9 @@ export class Config {
     }
 
     /**
-     * Get the the list of service resource endpoints.
+     * Get the list of service resource endpoints.
      *
-     * @return {ServiceResourceEndpointsInterface} Service resource endpoints as an object.
+     * @returns ServiceResourceEndpointsInterface - Service resource endpoints as an object.
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
@@ -124,6 +122,7 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me`,
+            validationMgt: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
@@ -131,7 +130,7 @@ export class Config {
     /**
      * Get UI config.
      *
-     * @return {UIConfigInterface} UI config object.
+     * @returns UIConfigInterface - UI config object.
      */
     public static getUIConfig(): UIConfigInterface {
         return {
@@ -168,14 +167,13 @@ export class Config {
      * look for resource files in `https://localhost:9443/<PORTAL>/resources/i18n` rather than looking for the
      * files in `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n`.
      *
-     * @param {MetaI18N} metaI18N Meta i18n object.
-     *
-     * @return {I18nModuleInitOptions} I18n init options.
+     * @param metaFile - Meta file.
+     * @returns I18nModuleInitOptions - I18n init options.
      */
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
             backend: {
-                loadPath: (language, namespace) =>
+                loadPath: (language: any, namespace: any) =>
                     generateBackendPaths(
                         language,
                         namespace,
@@ -199,9 +197,9 @@ export class Config {
     /**
      * Get i18n module config.
      *
-     * @param {MetaI18N} metaFile Meta file.
+     * @param metaFile - Meta file.
      *
-     * @return {I18nModuleOptionsInterface} i18n config object.
+     * @returns I18nModuleOptionsInterface - i18n config object.
      */
     public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
         return {

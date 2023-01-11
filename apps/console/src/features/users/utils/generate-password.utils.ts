@@ -59,8 +59,9 @@ const removeIgnoredCharacters = (str: string, ignoredChars: string[]): string =>
  * @param minAlphabetsLowercase - required minimum number of lowercase alphabets.
  * @param minAlphabetsUppercase - required minimum number of uppercase alphabets.
  * @param minNumbers - required minimum number of numbers.
- * @param minSpecialCharacters - required minimum number of special charaters.
- * @param ignoredCharactors - array of charaters to be excluded.
+ * @param minSpecialCharacters - required minimum number of special characters.
+ * @param uniqueCharacter - required unique characters.
+ * @param ignoredCharactors - array of characters to be excluded.
  * @returns the generated password.
  */
 export const generatePassword = (
@@ -73,6 +74,7 @@ export const generatePassword = (
     minAlphabetsUppercase: number = 1,
     minNumbers: number = 1,
     minSpecialCharacters: number = 1,
+    uniqueCharacter: number = 0,
     ignoredCharactors: string[] = []
 ): string => {
     let generatedPassword: string = "";
@@ -87,19 +89,19 @@ export const generatePassword = (
     const SPECIAL_CHAR: string = removeIgnoredCharacters("!#$%&'()*+,-./:;<=>?@[]^_{|}~", ignoredCharactors);
 
     for (let i: number = 0; i < minAlphabetsLowercase; i++) {
-        minChar = minChar + LOWERCASE_CHAR.charAt(generateRandomNumbers(LOWERCASE_CHAR.length));
+        minChar = minChar + getCharacter(minChar, LOWERCASE_CHAR);
     }
 
     for (let i: number = 0; i < minAlphabetsUppercase; i++) {
-        minChar = minChar + UPPERCASE_CHAR.charAt(generateRandomNumbers(UPPERCASE_CHAR.length));
+        minChar = minChar + getCharacter(minChar, UPPERCASE_CHAR);
     }
 
     for (let i: number = 0; i < minNumbers; i++) {
-        minChar = minChar + NUMBERS.charAt(generateRandomNumbers(NUMBERS.length));
+        minChar = minChar + getCharacter(minChar, NUMBERS);
     }
 
     for (let i: number = 0; i < minSpecialCharacters; i++) {
-        minChar = minChar + SPECIAL_CHAR.charAt(generateRandomNumbers(SPECIAL_CHAR.length));
+        minChar = minChar + getCharacter(minChar, SPECIAL_CHAR);
     }
 
     generatedPassword = minChar;
@@ -119,13 +121,58 @@ export const generatePassword = (
         ? characterString + SPECIAL_CHAR
         : characterString;
 
+    const set : Set<string> = new Set(generatedPassword.split(""));
+    let isUnique: boolean = false;
+
+    if (uniqueCharacter > 0 && set.size < uniqueCharacter) {
+        generatedPassword = Array.from(set).join("");
+        isUnique = true;
+    }
+
     const remainingChar: number = length - generatedPassword.length;
 
     for (let i: number = 0; i < remainingChar; i++) {
-        generatedPassword = generatedPassword + characterString.charAt(generateRandomNumbers(characterString.length));
+        generatedPassword = generatedPassword + (isUnique ?
+            getUniqueCharacter(generatedPassword, characterString) : getCharacter(generatedPassword, characterString));
     }
 
     return generatedPassword;
+};
+
+/**
+ * Generate random string.
+ *
+ * @param generatedPassword - Generated password.
+ * @param characterSet - Character set.
+ * @returns char - Random string.
+ */
+export const getCharacter = (generatedPassword: string, characterSet: string): string => {
+
+    let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
+
+    while (char === generatedPassword.charAt(generatedPassword.length - 1)) {
+        char = characterSet.charAt(generateRandomNumbers(characterSet.length));
+    }
+
+    return char;
+};
+
+/**
+ * Generate unique string.
+ *
+ * @param generatedPassword - Generated password.
+ * @param characterSet - Character set.
+ * @returns char - Random string.
+ */
+export const getUniqueCharacter = (generatedPassword: string, characterSet: string): string => {
+
+    let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
+
+    while (generatedPassword.includes(char)) {
+        char = characterSet.charAt(generateRandomNumbers(characterSet.length));
+    }
+
+    return char;
 };
 
 /**
@@ -156,8 +203,8 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
         consecutiveCharacterValidatorEnabled:
             getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") !== null,
         field: "password",
-        maxConsecutiveCharacters: getConfig(rules, "RepeatedValidator", "consecutiveLength") ?
-            getConfig(rules, "RepeatedValidator", "consecutiveLength") : "0",
+        maxConsecutiveCharacters: getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") ?
+            getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") : "0",
         maxLength: getConfig(rules, "LengthValidator", "max.length") ?
             getConfig(rules, "LengthValidator", "max.length") : "30",
         minLength: getConfig(rules, "LengthValidator", "min.length") ?
@@ -168,8 +215,8 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
             getConfig(rules, "NumeralValidator", "min.length") : "0",
         minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
             getConfig(rules, "SpecialCharacterValidator", "min.length") : "0",
-        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.length") ?
-            getConfig(rules, "UniqueCharacterValidator", "min.length") : "1",
+        minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.unique.character") ?
+            getConfig(rules, "UniqueCharacterValidator", "min.unique.character") : "0",
         minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
             getConfig(rules, "UpperCaseValidator", "min.length") : "0",
         type: "rules",

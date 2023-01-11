@@ -642,7 +642,7 @@
         padding: @cookieConsentBannerPadding;
         border: @cookieConsentBannerBorder;
         z-index: @cookieConsentBannerZIndex;
-        
+
         &.aligned {
             &-left {
                 left: @cookieConsentBannerHorizontalSpacing;
@@ -657,7 +657,7 @@
         .banner-image {
             display: flex;
             margin: @cookieConsentBannerImageMargin;
-            
+
             .cookie-icon {
                 svg {
                     path {
@@ -707,7 +707,7 @@
     &.basic {
         border: none;
         box-shadow: none;
-        
+
         > .ui.segment {
             padding: 0;
             border: none;
@@ -727,5 +727,24 @@
         align-items: center;
         border-radius: @imagePreviewBorderRadius;
         justify-content: center;
+    }
+}
+
+/*-------------------------------
+        Sticky Bar
+--------------------------------*/
+
+.ui.segment {
+    &.sticky-bar {
+        border: none;
+        box-shadow: none;
+        position: fixed;
+        z-index: 1000;
+        bottom: 36px;
+        border-top: 1px solid @borderColor;
+        background-color: @white;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        border-radius: 0;
     }
 }

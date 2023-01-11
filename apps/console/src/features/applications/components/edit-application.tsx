@@ -19,12 +19,12 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    ConfirmationModal, 
-    ContentLoader, 
-    CopyInputField, 
-    ResourceTab, 
-    ResourceTabPaneInterface 
+import {
+    ConfirmationModal,
+    ContentLoader,
+    CopyInputField,
+    ResourceTab,
+    ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import inRange from "lodash-es/inRange";
@@ -44,7 +44,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
+import { applicationConfig } from "../../../extensions";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -259,9 +259,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
             const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();
             const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.
-                find((element: {"componentId": string}) => 
+                find((element: {"componentId": string}) =>
                     element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
-            
+
             handleActiveTabIndexChange(SignInMethodtabIndex);
         } else {
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
@@ -372,23 +372,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
-        const extensions: ResourceTabPaneInterface[] = ComponentExtensionPlaceholder({
-            component: "application",
-            props: {
-                application: application,
-                content: template.content.quickStart,
-                inboundProtocolConfig: inboundProtocolConfig,
-                inboundProtocols: inboundProtocolList,
-                onApplicationUpdate: () => {
-                    onUpdate(application?.id);
-                },
-                onTriggerTabUpdate: (tabIndex: number) => {
-                    setActiveTabIndex(tabIndex);
-                },
-                template: template
+        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions({
+            application: application,
+            content: template.content.quickStart,
+            inboundProtocolConfig: inboundProtocolConfig,
+            inboundProtocols: inboundProtocolList,
+            onApplicationUpdate: () => {
+                onUpdate(application?.id);
             },
-            subComponent: "edit",
-            type: "tab"
+            onTriggerTabUpdate: (tabIndex: number) => {
+                setActiveTabIndex(tabIndex);
+            },
+            template: template
         });
 
         setTabPaneExtensions(extensions);

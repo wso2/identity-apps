@@ -33,7 +33,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -200,6 +200,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
 
     const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
+
+    const emphasizedSegmentRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
 
     /**
      * Handles the inbound config delete action.
@@ -601,7 +603,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         };
 
         return (
-            <EmphasizedSegment className="protocol-settings-section form-wrapper" padded="very">
+            <EmphasizedSegment
+                className="protocol-settings-section form-wrapper"
+                padded="very"
+                ref={ emphasizedSegmentRef }
+            >
                 <div className="form-container with-max-width">
                     { !isLoading? resolveProtocolBanner() : null }
                     { renderProtocolIntegrationHelpMessage() }
@@ -658,6 +664,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
                                     template={ template }
                                     data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
+                                    containerRef={ emphasizedSegmentRef }
                                 />
                             )
                             : (
@@ -700,6 +707,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     }
                                     template={ template }
                                     data-testid={ `${ testId }-inbound-custom-form` }
+                                    containerRef={ emphasizedSegmentRef }
                                 />
                             )
                     }

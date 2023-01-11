@@ -3201,10 +3201,6 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
-                                secondLine: "(Limited to 15 messages per month)"
-                            },
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
@@ -10253,7 +10249,10 @@ export const console: ConsoleNS = {
                         "the password.",
                     consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
                         "length of the password.",
-                    invalidConfig: "Unable to create password with the above configurations."
+                    invalidConfig: "Unable to create password with the above configurations.",
+                    minLimitError: "The minimum length cannot be less than 8.",
+                    maxLimitError: "The maximum length cannot be more than 30.",
+                    wrongCombination: "The combination is not allowed"
                 },
                 notifications: {
                     error: {
@@ -10272,7 +10271,7 @@ export const console: ConsoleNS = {
                 pageTitle: "Password validation configuration",
                 description: "Customize password validation rules for your users.",
                 goBackToApplication: "Go back to application",
-                goBackToValidationConfig: "Go back to password validation"
+                goBackToValidationConfig: "Go back to Account Security"
             }
         },
         notifications: {
