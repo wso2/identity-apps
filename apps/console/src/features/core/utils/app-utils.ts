@@ -135,8 +135,7 @@ export class AppUtils {
      *
      * @returns If the auth callback URL belongs to another tenant.
      */
-    public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string): boolean {
-        const tenantDomain: string = store.getState().config.deployment.tenant;
+    public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string, tenantDomain: string): boolean {
         const tenantName: string = window["AppUtils"].getConfig().superTenant === tenantDomain ? "" : tenantDomain;
         const tenantRegex: RegExp = new RegExp("t/([^/]+)/");
         const matches: RegExpExecArray = tenantRegex.exec(authCallbackURL);

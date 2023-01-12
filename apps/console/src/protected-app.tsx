@@ -538,21 +538,20 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AuthenticationCallbackUrl = "/";
         }
 
-        if (commonConfig?.enableOrganizationAssociations) {
-            /**
-             * Prevent redirect to landing page when there is no association.
-             */
-            getDecodedIDToken()
-                .then((idToken: DecodedIDTokenPayload) => {
+        getDecodedIDToken()
+            .then((idToken: DecodedIDTokenPayload) => {
+
+                /**
+                 * Prevent redirect to landing page when there is no association.
+                 */
+                if (commonConfig?.enableOrganizationAssociations) {
+
                     const isPrivilegedUser: boolean =
                         idToken?.amr?.length > 0
                             ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                             : false;
-
-                    if (
-                        has(idToken, "associated_tenants") ||
-                        isPrivilegedUser
-                    ) {
+ 
+                    if (has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an association, the user should be redirected to console landing page.
                         const location: string =
                             !AuthenticationCallbackUrl ||
@@ -563,7 +562,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                     `${ window[ "AppUtils" ].getConfig()
                                         .appBaseWithTenant
                                     }/`) ||
-                                AppUtils.isAuthCallbackURLFromAnotherTenant(AuthenticationCallbackUrl)
+                                AppUtils.isAuthCallbackURLFromAnotherTenant(
+                                    AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+                                        idToken.sub))
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -576,25 +577,28 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             )
                         });
                     }
-                })
-                .catch(() => {
-                    // No need to show UI errors here.
-                    // Add debug logs here one a logger is added.
-                    // Tracked here https://github.com/wso2/product-is/issues/11650.
-                });
-        } else {
-            const location: string =
-                !AuthenticationCallbackUrl ||
-                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
-                    (window[ "AppUtils" ].getConfig().organizationName &&
-                        AuthenticationCallbackUrl ===
-                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
-                    AppUtils.isAuthCallbackURLFromAnotherTenant(AuthenticationCallbackUrl)
-                    ? AppConstants.getAppHomePath()
-                    : AuthenticationCallbackUrl;
-
-            history.push(location);
-        }
+                } else {
+                    const location: string =
+                        !AuthenticationCallbackUrl ||
+                            AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                            (window[ "AppUtils" ].getConfig().organizationName &&
+                                AuthenticationCallbackUrl ===
+                                `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
+                            AppUtils.isAuthCallbackURLFromAnotherTenant(
+                                AuthenticationCallbackUrl, 
+                                CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
+                            )
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+        
+                    history.push(location);
+                }
+            })
+            .catch(() => {
+                // No need to show UI errors here.
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
     };
 
     const filterRoutes: () => void = useCallback((): void => {
