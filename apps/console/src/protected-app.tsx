@@ -526,17 +526,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        let AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+        const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
-        const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-
-        // Setting fallback value for auth_callback if the value is not set in the session.
-        if (!isSubOrg && (!AuthenticationCallbackUrl ||  AuthenticationCallbackUrl === "")) {
-            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP, "/");
-
-            AuthenticationCallbackUrl = "/";
-        }
 
         getDecodedIDToken()
             .then((idToken: DecodedIDTokenPayload) => {
