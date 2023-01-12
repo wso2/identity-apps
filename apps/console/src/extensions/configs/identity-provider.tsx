@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, SVGProps } from "react";
 import { IdentityProviderConfig } from "./models";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers/constants";
@@ -49,9 +50,10 @@ export const identityProviderConfig: IdentityProviderConfig = {
         ): ReactElement | null => {
             return null;
         },
+        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
         isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
 
-            const templateMapping = new Map<string, Set<string>>([
+            const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
                 [
                     IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,

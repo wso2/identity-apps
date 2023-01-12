@@ -328,6 +328,7 @@
                     name="password"
                     value=""
                     autocomplete="off"
+                    required
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
                     data-testid="login-page-password-input"
                     style="padding-right: 2.3em !important;"
@@ -474,7 +475,7 @@
                 name="chkRemember"
                 data-testid="login-page-remember-me-checkbox"
             >
-            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
+            <label for="chkRemember"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
         </div>
     </div>
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute

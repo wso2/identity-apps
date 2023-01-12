@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 import { ApplicationConfig } from "./models";
 import {
@@ -89,6 +90,7 @@ export const applicationConfig: ApplicationConfig = {
                 return 4; // Anything else
             }
         },
+        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
         getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
             return false;
         },
@@ -147,8 +149,7 @@ export const applicationConfig: ApplicationConfig = {
                 secondFactorDisabled: null,
                 secondFactorDisabledInFirstStep: null
             }
-        },
-        identifierFirstWarning: false
+        }
     },
     templates: {
         custom: true,

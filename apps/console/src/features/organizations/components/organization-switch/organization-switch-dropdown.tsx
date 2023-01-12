@@ -23,14 +23,17 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, {
+    ChangeEvent,
     FunctionComponent,
     ReactElement,
+    SyntheticEvent,
     useCallback,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     Dropdown,
@@ -76,7 +79,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
@@ -100,25 +103,30 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
     const [ parents, setParents ] = useState<GenericOrganization[]>([]);
 
-    const noOfItems = 10;
+    const noOfItems: number = 10;
 
     /**
      * Handles the pagination change.
      *
      * @param data - Pagination component data.
      */
-    const handlePaginationChange = (): void => {
+    const handlePaginationChange: () => void = (): void => {
         getOrganizationList(listFilter, afterCursor, null);
     };
 
-    const getOrganizationList = useCallback(
+    const getOrganizationList: (
+        filter: string,
+        after: string,
+        before: string,
+        parentId?: GenericOrganization
+    ) => void = useCallback(
         async (
             filter: string,
             after: string,
             before: string,
             parentId?: GenericOrganization
         ) => {
-            const filterStrWithDisableFilter = `status eq ACTIVE ${ filter ? "and " + filter : ""
+            const filterStrWithDisableFilter: string = `status eq ACTIVE ${ filter ? "and " + filter : ""
             }`;
 
             !after && setIsOrganizationsLoading(true);
@@ -133,7 +141,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             )
                 .then((response: OrganizationListInterface) => {
                     if (!response || !response.organizations) {
-                        setAssociatedOrganizations(organizations =>
+                        setAssociatedOrganizations((organizations: OrganizationInterface[]) =>
                             after ? [ ...organizations ] : []
                         );
                         setPaginationData(response.links);
@@ -142,7 +150,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                             ...response?.organizations
                         ];
 
-                        setAssociatedOrganizations(associatedOrganizations =>
+                        setAssociatedOrganizations((associatedOrganizations: OrganizationInterface[]) =>
                             after
                                 ? [ ...associatedOrganizations, ...organizations ]
                                 : [ ...organizations ]
@@ -150,9 +158,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 
                         setPaginationData(response.links);
                     }
-                    parentId && setParents(parents => [ ...parents, parentId ]);
+                    parentId && setParents((parents: GenericOrganization[]) => [ ...parents, parentId ]);
                 })
-                .catch(error => {
+                .catch((error: any) => {
                     if (error?.description) {
                         dispatch(
                             addAlert({
@@ -185,7 +193,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 .finally(() => {
                     setIsOrganizationsLoading(false);
                 });
-        },
+        }, 
         []
     );
 
@@ -195,9 +203,9 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             return;
         }
 
-        links.forEach(link => {
+        links.forEach((link: OrganizationLinkInterface) => {
             if (link.rel === "next") {
-                const afterCursorLink = link.href.toString().split("after=")[ 1 ];
+                const afterCursorLink: string = link.href.toString().split("after=")[ 1 ];
 
                 setAfterCursor(afterCursorLink);
             }
@@ -222,7 +230,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
     };
 
     const handleBackButtonClick = (): void => {
-        const parentIdsCopy = [ ...parents ];
+        const parentIdsCopy: GenericOrganization[] = [ ...parents ];
 
         parentIdsCopy.pop();
         setParents(parentIdsCopy);
@@ -242,7 +250,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
      * @param search - Search query.
      */
     const searchOrganizationList = (search: string): void => {
-        const changeValue = search.trim();
+        const changeValue: string = search.trim();
 
         setListFilter(
             changeValue
@@ -283,7 +291,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         isBreadcrumbItem?: boolean
     ): ReactElement =>
         isBreadcrumbItem ? (
-            <div className="item breadcrumb" onClick={ e => e.stopPropagation() }>
+            <div className="item breadcrumb" onClick={ (e: SyntheticEvent) => e.stopPropagation() }>
                 <span
                     onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                     data-componentid={ `${ componentId }-breadcrumb-item` }
@@ -308,6 +316,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 </div>
                 <div className="item breadcrumb">
                     <span
+                        className="organization-name"
                         data-componentid={ `${ componentId }-breadcrumb-trigger-name` }
                     >
                         { name }
@@ -339,7 +348,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
             >
                 <Dropdown.Menu
                     className="organization-dropdown-menu"
-                    onClick={ e => e.stopPropagation() }
+                    onClick={ (e: SyntheticEvent) => e.stopPropagation() }
                     data-componentid={ `${ componentId }-dropdown-menu` }
                 >
                     { isDropDownOpen && (
@@ -397,7 +406,7 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                             icon="search"
                                             iconPosition="left"
                                             value={ search }
-                                            onChange={ event => {
+                                            onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                                 setSearch(event.target.value);
                                             } }
                                             onKeyDown={ (

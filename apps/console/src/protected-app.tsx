@@ -33,13 +33,11 @@ import {
 } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
-    AlertLevels,
     IdentifiableComponentInterface,
     RouteInterface,
     TenantListInterface
 } from "@wso2is/core/models";
 import {
-    addAlert,
     setDeploymentConfigs,
     setServiceResourceEndpoints,
     setSignIn,
@@ -94,6 +92,7 @@ import {
     getAdminViewRoutes,
     getDeveloperViewRoutes,
     getSidePanelIcons,
+    setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
     setFilteredManageRoutes,
@@ -108,9 +107,7 @@ import {
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { getOrganization } from "./features/organizations/api";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
-import { OrganizationResponseInterface } from "./features/organizations/models";
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
     GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
@@ -215,6 +212,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             dispatchEvent(event);
 
             const orgIdIdToken: string = idToken.org_id;
+            const orgName: string = idToken.org_name;
 
             const tenantDomain: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
                 response.sub
@@ -260,7 +258,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         domain: "",
                         id: orgId,
                         lastModified: new Date().toString(),
-                        name: orgId,
+                        name: orgName,
                         parent: {
                             id: "",
                             ref: ""
@@ -269,6 +267,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         type: ""
                     })
                 );
+
+                dispatch(setCurrentOrganization(orgName));
 
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(
@@ -300,49 +300,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     }
                 );
 
-                dispatch(setGetOrganizationLoading(true));
-                await getOrganization(orgId)
-                    .then(
-                        async (orgResponse: OrganizationResponseInterface) => {
-                            dispatch(setOrganization(orgResponse));
-                        }
-                    )
-                    .catch((error: any) => {
-                        if (error?.description) {
-                            dispatch(
-                                addAlert({
-                                    description: error.description,
-                                    level: AlertLevels.ERROR,
-                                    message: t(
-                                        "console:manage.features.organizations.notifications." +
-                                        "fetchOrganization.error.message"
-                                    )
-                                })
-                            );
-
-                            return;
-                        }
-
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "console:manage.features.organizations.notifications.fetchOrganization" +
-                                    ".genericError.description"
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "console:manage.features.organizations.notifications." +
-                                    "fetchOrganization.genericError.message"
-                                )
-                            })
-                        );
-                    })
-                    .finally(() => {
-                        dispatch(setGetOrganizationLoading(false));
-                    });
-            } else {
-                dispatch(setGetOrganizationLoading(false));
+                dispatch(setCurrentOrganization(response.orgName));
             }
+
+            dispatch(setGetOrganizationLoading(false));
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
@@ -565,33 +526,24 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        let AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
+        const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
-        const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-        // Setting fallback value for auth_callback if the value is not set in the session.
-        if (!isSubOrg && (!AuthenticationCallbackUrl ||  AuthenticationCallbackUrl === "")) {
-            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP, "/");
+        getDecodedIDToken()
+            .then((idToken: DecodedIDTokenPayload) => {
 
-            AuthenticationCallbackUrl = "/";
-        }
+                /**
+                 * Prevent redirect to landing page when there is no association.
+                 */
+                if (commonConfig?.enableOrganizationAssociations) {
 
-        if (commonConfig?.enableOrganizationAssociations) {
-            /**
-             * Prevent redirect to landing page when there is no association.
-             */
-            getDecodedIDToken()
-                .then((idToken: DecodedIDTokenPayload) => {
                     const isPrivilegedUser: boolean =
                         idToken?.amr?.length > 0
                             ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                             : false;
-
-                    if (
-                        has(idToken, "associated_tenants") ||
-                        isPrivilegedUser
-                    ) {
+ 
+                    if (has(idToken, "associated_tenants") || isPrivilegedUser) {
                         // If there is an association, the user should be redirected to console landing page.
                         const location: string =
                             !AuthenticationCallbackUrl ||
@@ -601,7 +553,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                     AuthenticationCallbackUrl ===
                                     `${ window[ "AppUtils" ].getConfig()
                                         .appBaseWithTenant
-                                    }/`)
+                                    }/`) ||
+                                AppUtils.isAuthCallbackURLFromAnotherTenant(
+                                    AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+                                        idToken.sub))
                                 ? AppConstants.getAppHomePath()
                                 : AuthenticationCallbackUrl;
 
@@ -614,24 +569,28 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             )
                         });
                     }
-                })
-                .catch(() => {
-                    // No need to show UI errors here.
-                    // Add debug logs here one a logger is added.
-                    // Tracked here https://github.com/wso2/product-is/issues/11650.
-                });
-        } else {
-            const location: string =
-                !AuthenticationCallbackUrl ||
-                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
-                    (window[ "AppUtils" ].getConfig().organizationName &&
-                        AuthenticationCallbackUrl ===
-                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`)
-                    ? AppConstants.getAppHomePath()
-                    : AuthenticationCallbackUrl;
-
-            history.push(location);
-        }
+                } else {
+                    const location: string =
+                        !AuthenticationCallbackUrl ||
+                            AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                            (window[ "AppUtils" ].getConfig().organizationName &&
+                                AuthenticationCallbackUrl ===
+                                `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
+                            AppUtils.isAuthCallbackURLFromAnotherTenant(
+                                AuthenticationCallbackUrl, 
+                                CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
+                            )
+                            ? AppConstants.getAppHomePath()
+                            : AuthenticationCallbackUrl;
+        
+                    history.push(location);
+                }
+            })
+            .catch(() => {
+                // No need to show UI errors here.
+                // Add debug logs here one a logger is added.
+                // Tracked here https://github.com/wso2/product-is/issues/11650.
+            });
     };
 
     const filterRoutes: () => void = useCallback((): void => {

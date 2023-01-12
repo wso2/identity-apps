@@ -72,7 +72,7 @@
     layoutData.put("containerSize", "medium");
 %>
 
-<html>
+<html lang="en-US">
     <head>
         <%-- header --%>
         <% File headerFile=new File(getServletContext().getRealPath("extensions/header.jsp"));

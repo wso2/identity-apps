@@ -69,7 +69,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     return (
         <Segment basic loading={ isLoading } data-testid={ testId } className="sign-in-method-landing">

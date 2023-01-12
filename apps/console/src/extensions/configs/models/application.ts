@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
 import {
@@ -60,6 +61,12 @@ export interface ApplicationConfig {
         renderHelpPanelItems: () => ReactNode;
         showDangerZone: (application: ApplicationInterface) => boolean;
         showDeleteButton: (application: ApplicationInterface) => boolean;
+        /**
+         * Get the list of passible tab extensions.
+         * @param props - Props for the component.
+         * @returns Array of tab extensions.
+         */
+        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
@@ -125,7 +132,6 @@ export interface ApplicationConfig {
                 dispatch: Dispatch
             ): boolean;
         };
-        identifierFirstWarning: boolean;
     };
     templates: {
         oidc: boolean;

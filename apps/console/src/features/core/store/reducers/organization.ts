@@ -21,6 +21,7 @@ import { OrganizationReducerStateInterface } from "../../models";
 import { OrganizationAction, OrganizationActionTypes } from "../actions/types";
 
 const initialState: OrganizationReducerStateInterface = {
+    currentOrganization: "",
     getOrganizationLoading: true,
     isFirstLevelOrganization: false,
     organization: {
@@ -46,6 +47,11 @@ export const organizationReducer = (
     action: OrganizationAction
 ): OrganizationReducerStateInterface => {
     switch (action.type) {
+        case OrganizationActionTypes.SET_CURRENT_ORGANIZATION:
+            return {
+                ...state,
+                currentOrganization: action.payload
+            };
         case OrganizationActionTypes.SET_ORGANIZATION:
             return {
                 ...state,

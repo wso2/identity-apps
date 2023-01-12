@@ -652,7 +652,6 @@ export interface ConsoleNS {
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
-                                            magicLinkDisabled: string;
                                             firstFactorDisabled: string;
                                         };
                                     };
@@ -711,7 +710,6 @@ export interface ConsoleNS {
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
-                                                warning: string;
                                             },
                                             microsoft: {
                                                 description: string;
@@ -1330,10 +1328,6 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine :string,
-                                secondLine: string
-                            },
                             expiryTime: {
                                 hint: string;
                                 label: string;
@@ -1967,6 +1961,22 @@ export interface ConsoleNS {
                     deleteIDPWithConnectedApps: Confirmation;
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
+                };
+                connectedApps: {
+                    action: string;
+                    header: string;
+                    subHeader: string;
+                    placeholders: {
+                        search: string;
+                        emptyList: string;
+                    };
+                    applicationEdit: {
+                        back: string;
+                    };
+                    genericError: {
+                        description: string;
+                        message: string;
+                    }
                 };
                 dangerZoneGroup: {
                     header: string;
@@ -5018,6 +5028,45 @@ export interface ConsoleNS {
                 confirmationModal?: {
                     removeUser?: Confirmation;
                 };
+            };
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                },
+                validationError: {
+                    minMaxMismatch: string;
+                    uniqueChrMismatch: string;
+                    consecutiveChrMismatch: string;
+                    invalidConfig: string;
+                    minLimitError: string;
+                    maxLimitError: string;
+                    wrongCombination: string;
+                }
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                pageTitle: string;
+                description: string;
+                goBackToApplication: string;
+                goBackToValidationConfig: string;
             };
         };
         notifications: {

@@ -21,6 +21,7 @@ import { OrganizationResponseInterface } from "../../../../organizations/models"
 
 export enum OrganizationActionTypes {
     SET_ORGANIZATION = "SET_ORGANIZATION",
+    SET_CURRENT_ORGANIZATION = "SET_CURRENT_ORGANIZATION",
     SET_GET_ORGANIZATION_LOADING = "SET_GET_ORGANIZATION_LOADING",
     SET_IS_FIRST_LEVEL_ORGANIZATION = "SET_IS_FIRST_LEVEL_ORGANIZATION",
     SET_ORGANIZATION_TYPE = "SET_ORGANIZATION_TYPE"
@@ -29,6 +30,11 @@ export enum OrganizationActionTypes {
 export interface SetOrganizationActionInterface {
     payload: OrganizationResponseInterface;
     type: OrganizationActionTypes.SET_ORGANIZATION;
+}
+
+export interface SetCurrentOrganizationActionInterface {
+    payload: string;
+    type: OrganizationActionTypes.SET_CURRENT_ORGANIZATION;
 }
 
 export interface SetGetOrganizationLoadingActionInterface {
@@ -47,6 +53,7 @@ export interface SetOrganizationTypeInterface {
 }
 
 export type OrganizationAction =
+    | SetCurrentOrganizationActionInterface
     | SetOrganizationActionInterface
     | SetGetOrganizationLoadingActionInterface
     | SetIsFirstLevelOrganizationInterface

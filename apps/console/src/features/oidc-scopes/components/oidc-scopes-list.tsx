@@ -121,7 +121,7 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
  *
  * @param props - Props injected to the component.
  *
- * @returns The OIDC Scope List.
+ * @returns The OIDC Scope List Component.
  */
 export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     props: OIDCScopesListPropsInterface

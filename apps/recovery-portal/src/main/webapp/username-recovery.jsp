@@ -130,7 +130,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%
@@ -220,7 +220,7 @@
 
                             if (isEmailInClaims) { %>
                         <div class="field">
-                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                            <label for="email" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Email")%></label>
                             <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
                                     class="form-control"
@@ -234,7 +234,7 @@
                         </div>
                         <% } else { %>
                         <div class="required field">
-                            <label class="control-label">
+                            <label for="tenant-domain" class="control-label">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>
                             <input id="tenant-domain" type="text" required name="tenantDomain" class="form-control">

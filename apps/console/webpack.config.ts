@@ -38,7 +38,7 @@ import DeploymentConfig from "./src/public/deployment.config.json";
 /**
  * Different Server Types.
  */
- enum ServerTypes {
+enum ServerTypes {
     TOMCAT = "tomcat",
     STATIC = "static"
 }
@@ -60,6 +60,39 @@ interface NxWebpackContextInterface {
     };
 }
 
+
+/**
+ * Interface for Absolute Paths.
+ */
+interface AbsolutePaths {
+    appNodeModules: string;
+    appSrc: string;
+    appTemplateInDistribution: string;
+    authTemplateInSource: string;
+    distribution: string;
+    entryPoints: string[],
+    eslintCache: string;
+    eslintrc: string;
+    homeTemplateInDistribution: string;
+    homeTemplateInSource: string;
+    indexTemplateInDistribution: string;
+    indexTemplateInSource: string;
+}
+
+/**
+ * Interface for Relative Paths.
+ */
+ interface RelativePaths {
+    distribution: string;
+    homeTemplate: string;
+    indexTemplate: string;
+    javaEEFolders: string[];
+    loginPortalLayoutsInDistribution: string;
+    source: string;
+    staticJs: string;
+    staticMedia: string;
+}
+
 module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -68,11 +101,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     context = rewriteContext(context);
 
-    const ABSOLUTE_PATHS = getAbsolutePaths(config.mode, context);
-    const RELATIVE_PATHS = getRelativePaths(config.mode, context);
+    const ABSOLUTE_PATHS: AbsolutePaths = getAbsolutePaths(config.mode, context);
+    const RELATIVE_PATHS: RelativePaths = getRelativePaths(config.mode, context);
 
-    const isProduction = config.mode === "production";
-    const baseHref = getBaseHref(
+    const isProduction: boolean = config.mode === "production";
+    const baseHref: string = getBaseHref(
         context.buildOptions?.baseHref ?? context.options.baseHref,
         DeploymentConfig.appBaseName
     );
@@ -80,23 +113,25 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // Flag to determine if the app is intended to be deployed on an external tomcat server
     // outside of the Identity Server runtime. If true, references & usage of internally provided
     // jars and libs inside the JSP's will be removed.
-    const isDeployedOnExternalTomcatServer = process.env.SERVER_TYPE === ServerTypes.TOMCAT;
+    const isDeployedOnExternalTomcatServer: boolean = process.env.SERVER_TYPE === ServerTypes.TOMCAT;
     // Flag to determine if the app is deployed on an external static server.
     // With this option, all the `jsp` files and java specific folders will be dropped.
-    const isDeployedOnExternalStaticServer = process.env.SERVER_TYPE === ServerTypes.STATIC;
+    const isDeployedOnExternalStaticServer: boolean = process.env.SERVER_TYPE === ServerTypes.STATIC;
+    // Flag to determine if the PRE_AUTH_CHECK option is enabled from the .env.local file.
+    const isPreAuthCheckEnabled: boolean = process.env.PRE_AUTH_CHECK === "true";
 
     // Build Modes.
-    const isProfilingMode = process.env.ENABLE_BUILD_PROFILER === "true";
-    const isAnalyzeMode = process.env.ENABLE_ANALYZER === "true";
-    const analyzerPort = parseInt(process.env.ANALYZER_PORT, 10) || 8889;
+    const isProfilingMode: boolean = process.env.ENABLE_BUILD_PROFILER === "true";
+    const isAnalyzeMode: boolean = process.env.ENABLE_ANALYZER === "true";
+    const analyzerPort: number = parseInt(process.env.ANALYZER_PORT, 10) || 8889;
 
     // Dev Server Options.
-    const devServerPort = process.env.DEV_SERVER_PORT || config.devServer?.port;
-    const isDevServerHostCheckDisabled = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
-    const isESLintPluginDisabled = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const devServerPort: number = process.env.DEV_SERVER_PORT || config.devServer?.port;
+    const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+    const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
     // Configurations resolved from deployment.config.json.
-    const theme = DeploymentConfig.ui.theme.name || "default";
+    const theme: string = DeploymentConfig.ui.theme.name || "default";
 
     config.entry = {
         ...config.entry,
@@ -115,7 +150,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     } as WebpackOptionsNormalized["infrastructureLogging"];
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
-    const indexHtmlWebpackPluginIndex = config.plugins.findIndex((plugin) => {
+    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
         return plugin.constructor.name === "IndexHtmlWebpackPlugin";
     });
 
@@ -244,6 +279,40 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
         );
+    } else if (isPreAuthCheckEnabled) {
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                basename: DeploymentConfig.appBaseName,
+                clientID: DeploymentConfig.clientID,
+                filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
+                hash: true,
+                inject: !isDeployedOnExternalStaticServer,
+                minify: false,
+                port: devServerPort,
+                publicPath: (isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH) 
+                    ? "/"+process.env.APP_BASE_PATH+"/" 
+                    : baseHref,
+                template:
+                    isDeployedOnExternalStaticServer
+                        ? ABSOLUTE_PATHS.authTemplateInSource
+                        : ABSOLUTE_PATHS.indexTemplateInSource,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
+
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
+                hash: true,
+                inject: isDeployedOnExternalStaticServer,
+                minify: false,
+                publicPath: baseHref,
+                template: ABSOLUTE_PATHS.indexTemplateInSource,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
     } else {
         config.plugins.push(
             new HtmlWebpackPlugin({
@@ -315,9 +384,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     );
 
     // Update the existing `DefinePlugin` plugin added by NX.
-    const existingDefinePlugin = config.plugins.find((plugin) => {
-        return plugin.constructor.name === "DefinePlugin";
-    });
+    const existingDefinePlugin: WebpackPluginInstance = 
+        config.plugins.find((plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "DefinePlugin";
+        });
 
     if (config.plugins.indexOf(existingDefinePlugin) !== -1) {
         config.plugins.splice(config.plugins.indexOf(existingDefinePlugin), 1);
@@ -335,9 +405,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     }
 
     // Update the existing `CopyPlugin` plugin added by NX.
-    const existingCopyPlugin = config.plugins.find((plugin) => {
-        return plugin.constructor.name === "CopyPlugin";
-    });
+    const existingCopyPlugin: WebpackPluginInstance = 
+        config.plugins.find((plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "CopyPlugin";
+        });
 
     if (config.plugins.indexOf(existingCopyPlugin) !== -1) {
         config.plugins.splice(config.plugins.indexOf(existingCopyPlugin), 1);
@@ -347,7 +418,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 ...existingCopyPlugin,
                 patterns: [
                     ...existingCopyPlugin[ "patterns" ]
-                        .map((pattern) => {
+                        .map((pattern: any) => {
                             if (isDeployedOnExternalStaticServer) {
                                 // For deployments on static servers, we don't require `auth.jsp`
                                 // since we can't use `form_post` response mode.
@@ -463,7 +534,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }
 
         if (rule.test.toString().includes("svg") && rule.test instanceof RegExp) {
-            rule.oneOf.forEach((loader) => {
+            rule.oneOf.forEach((loader: webpack.RuleSetRule) => {
                 loader.use instanceof Array && loader.use.forEach((item: RuleSetUseItem) => {
                     if (typeof item !== "string" && (item as any).loader.includes("url-loader")) {
                         (item as any).options.name = isProduction
@@ -485,6 +556,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
+        path: (isPreAuthCheckEnabled && process.env.APP_BASE_PATH) ? 
+            `${config.output.path}/${process.env.APP_BASE_PATH}` 
+            : config.output.path,
         publicPath: baseHref
     };
 
@@ -519,10 +593,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 };
 
 const getThemeConfigs = (theme: string) => {
-    const THEME_DIR = path.resolve(__dirname,
+    const THEME_DIR: string = path.resolve(__dirname,
         "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
-    const files = fs.readdirSync(THEME_DIR);
-    const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
+    const files: string[] = fs.readdirSync(THEME_DIR);
+    const file: string = files ? files.filter((file: string) => file.endsWith(".min.css"))[ 0 ] : null;
 
     return {
         styleSheetHash: file ? file.split(".")[ 1 ] : null
@@ -530,9 +604,9 @@ const getThemeConfigs = (theme: string) => {
 };
 
 const getI18nConfigs = () => {
-    const I18N_DIR = path.resolve(__dirname, "src", "extensions", "i18n", "tmp");
+    const I18N_DIR: string = path.resolve(__dirname, "src", "extensions", "i18n", "tmp");
 
-    let metaFiles = null;
+    let metaFiles: string[] = null;
 
     try {
         metaFiles = fs.readdirSync(I18N_DIR);
@@ -540,22 +614,28 @@ const getI18nConfigs = () => {
         // Log Infastructure Error.
     }
 
-    const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
+    const metaFile: string = metaFiles ? metaFiles.filter((file: string) => file.startsWith("meta"))[ 0 ] : null;
 
     return {
         metaFileHash: metaFile ? metaFile.split(".")[ 1 ] : null
     };
 };
 
-const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
+const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface): RelativePaths => {
 
     // TODO: Remove supression once `isProduction` is actively used.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isProduction: boolean = env === "production";
 
+    let homeTemplate: string = "home.jsp";
+
+    if (process.env.PRE_AUTH_CHECK === "true" && process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplate = "index.html";
+    }
+
     return {
         distribution: path.join("build", "console"),
-        homeTemplate: "home.jsp",
+        homeTemplate,
         indexTemplate: context.buildOptions?.index ?? context.options.index,
         javaEEFolders: [ "**/WEB-INF/**/*" ],
         loginPortalLayoutsInDistribution: path.join("libs", "login-portal-layouts"),
@@ -565,14 +645,39 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
     };
 };
 
-const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
+const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextInterface): AbsolutePaths => {
 
     const isProduction: boolean = env === "production";
-    const RELATIVE_PATHS = getRelativePaths(env, context);
+    const RELATIVE_PATHS: RelativePaths = getRelativePaths(env, context);
+
+    let homeTemplateInDistribution: string = path.resolve(
+        __dirname,
+        RELATIVE_PATHS.distribution,
+        RELATIVE_PATHS.homeTemplate
+    );
+
+    if (process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplateInDistribution = path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            DeploymentConfig.appBaseName,
+            RELATIVE_PATHS.indexTemplate
+        );
+    }
 
     return {
         appNodeModules: path.resolve(__dirname, "node_modules"),
         appSrc: path.resolve(__dirname, "src"),
+        appTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
+        authTemplateInSource: path.resolve(
+            __dirname, 
+            RELATIVE_PATHS.source, 
+            "auth.html"
+        ),
         distribution: path.resolve(__dirname, RELATIVE_PATHS.distribution),
         entryPoints: [
             "@babel/polyfill",
@@ -582,9 +687,13 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
         eslintrc: isProduction
             ? path.resolve(__dirname, ".prod.eslintrc.js")
             : path.resolve(__dirname, ".eslintrc.js"),
-        homeTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.homeTemplate),
+        homeTemplateInDistribution,
         homeTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.homeTemplate),
-        indexTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.indexTemplate),
+        indexTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
         indexTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.indexTemplate)
     };
 };

@@ -17,7 +17,7 @@
  */
 
 /**
- * @deprecated Use
+ * @deprecated Use StorybookCategories
  */
 export const StoryCategories = {
     COMPONENTS: "Components API/Components"
@@ -36,5 +36,6 @@ enum StorybookCategories {
 }
 
 export const STORYBOOK_HIERARCHY = {
-    ALERT: `${ StorybookCategories.Feedback }/Alert`
+    ALERT: `${ StorybookCategories.Feedback }/Alert`,
+    MESSAGE: `${ StorybookCategories.Feedback }/Message`
 };

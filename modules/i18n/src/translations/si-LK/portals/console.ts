@@ -842,7 +842,7 @@ export const console: ConsoleNS = {
                                     "ගුණාංග අගයන් ඇතුළත් කිරීමට {{productName}} පරිශීලකයාගෙන් ඉල්ලා සිටී.",
                                 mappingTable: {
                                     actions: {
-                                        enable: "සිතියම්කරණය සක්‍රීය කරන්න"
+                                        enable: "ගුණාංග නාම සිතියම්කරණය සක්‍රීය කරන්න"
                                     },
                                     columns: {
                                         appAttribute: "පරිශීලක යෙදුම් ගුණාංගය",
@@ -872,8 +872,8 @@ export const console: ConsoleNS = {
                                             }
                                         }
                                     },
-                                    mappedAtributeHint: "සුපුරුදු ගුණාංගය යැවීම වෙනුවට, අභිරුචි සිතියම්ගත කළ " +
-                                        "ගුණාංගය යවනු ලැබේ",
+                                    mappedAtributeHint: "යෙදුමට යවන ලද ප්‍රකාශයේ භාවිතා කිරීමට අභිරුචි ගුණාංග " +
+                                        "නාමය ඇතුළත් කරන්න",
                                     mappingRevert: {
                                         confirmPrimaryAction: "තහවුරු කරන්න",
                                         confirmSecondaryAction: "අවලංගු කරන්න",
@@ -1035,7 +1035,7 @@ export const console: ConsoleNS = {
                                                 tooltips: {
                                                     keyIcon: "රහස්‍ය ලෙස ප්‍රවේශ යතුරු ආරක්ෂිතව ගබඩා කරන්න. " +
                                                         "කොන්දේසි සහිත සත්‍යාපනය සඳහා <1>callChoreo</1> ශ්‍රිතයේ " +
-                                                        "API යතුර රහස් වලට ආදේශ කළ හැකිය.",
+                                                        "consumer key පරාමිතිය රහසකට ආදේශ කළ හැකිය.",
                                                     plusIcon: "ස්ක්‍රිප්ට් එකට එකතු කරන්න"
                                                 }
                                             }
@@ -1107,9 +1107,6 @@ export const console: ConsoleNS = {
                                             heading: "පියවර පදනම් කරගත් වින්‍යාසය",
                                             hint: "දේශීය / ෆෙඩරල් සත්‍යාපනය කරන්නන් අදාළ පියවර වෙත ඇදගෙන " +
                                                 "යාමෙන් සත්‍යාපන පියවර සාදන්න.",
-                                            magicLinkDisabled: "ඔබට මැජික් ලින්ක් සත්‍යාපකය එක් " +
-                                                "කළ හැක්කේ දෙවන පියවරට " +
-                                                "පමණක් වන අතර පළමු පියවරේදී හඳුනාගැනීමේ පළමු සත්‍යාපකය ඇති විට පමණි.",
                                             secondFactorDisabled: "දෙවන සාධක සත්‍යාපනය භාවිතා කළ හැක්කේ " +
                                                 "<1>පරිශීලක නාමය සහ මුරපදය</1>, <3>සමාජ පිවිසුම</3> හෝ මෙම " +
                                                 "සාධක හැසිරවිය හැකි <5>හැඳුනුම්පත පළමුව</5> වැනි වෙනත් ඕනෑම " +
@@ -1198,11 +1195,7 @@ export const console: ConsoleNS = {
                                             magicLink: {
                                                 description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද මැජික් " +
                                                     "සබැඳියක් භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
-                                                heading: "Magic Link පිවිසුම එක් කරන්න",
-                                                warning: "ඔබට භාවිතා කළ හැක්කේ මැජික් ලින්ක් සත්‍යාපනය සමඟ " +
-                                                    "පමණක් හඳුනාගැනීමේ පළමු සත්‍යාපනයයි. වෙනත් ඕනෑම " +
-                                                    "සත්‍යාපකයක් සමඟ එය භාවිතා කිරීම අනපේක්ෂිත හැසිරීමකට හේතු විය හැක."
-
+                                                heading: "Magic Link පිවිසුම එක් කරන්න"
                                             },
                                             microsoft: {
                                                 description: "Microsoft සමඟ පුරනය වීමට පරිශීලකයින්ට සක්‍රීය කරන්න.",
@@ -1475,7 +1468,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     duplicate: "මෙම නම සහිත යෙදුමක් දැනටමත් තිබේ." +
                                         " කරුණාකර වෙනත් නමක් ඇතුළත් කරන්න.",
-                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
+                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
+                                    reserved: "{{appName}} යනු වෙන් කළ යෙදුම් නාමයකි. කරුණාකර වෙනත් නමක් ඇතුළත් කරන්න."
                                 }
                             }
                         },
@@ -2776,7 +2770,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "අනුරූප පරිශීලක ගුණාංග අනුපිටපත් විය නොහැක",
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
@@ -3168,6 +3162,22 @@ export const console: ConsoleNS = {
                         content: "මකා දැමීමට පෙර මෙම යෙදුම් වලින් සංගම් ඉවත් කරන්න:",
                         header: "මකා දැමිය නොහැක",
                         message: "මෙම අනන්‍යතා සැපයුම්කරු භාවිතා කරන යෙදුම් තිබේ."
+                    }
+                },
+                connectedApps: {
+                    action: "පුරනය වීමේ ක්‍රමය වෙත යන්න",
+                    header: "{{idpName}} හා සබැඳුණු යෙදවුම්.",
+                    subHeader: "{{idpName}} හා සබැඳුණු යෙදවුම් මෙහි දක්වා ඇත.",
+                    placeholders: {
+                        search: "යෙදවුමේ නාමයෙන් සොයන්න",
+                        emptyList: "මේ අවස්ථාවේදී {{idpName}} සමඟ කිසිදු යෙදවුමක් සබැඳී නොමැත."
+                    },
+                    applicationEdit: {
+                        back: "නැවත {{idpName}} වෙත යන්න"
+                    },
+                    genericError: {
+                        description: "සබැඳුනු යෙදවුම් ලබා ගැනීමට යාමේදී දෝෂයක් ඇති වී ඇත.",
+                        message: "යම් දෝෂයක් ඇති වී ඇත"
                     }
                 },
                 dangerZoneGroup: {
@@ -8574,6 +8584,45 @@ export const console: ConsoleNS = {
                         user: "පරිශීලක"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "වලංගුකරණ වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "අවම දිග උපරිම දිගට වඩා අඩු විය යුතුය.",
+                    uniqueChrMismatch: "අද්විතීය අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    consecutiveChrMismatch: "අඛණ්ඩ අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    invalidConfig: "ඉහත වින්‍යාසයන් සමඟ මුරපදයක් සෑදිය නොහැක.",
+                    minLimitError: "අවම දිග 8 ට වඩා අඩු විය නොහැක.",
+                    maxLimitError: "උපරිම දිග 30 ට වඩා වැඩි විය නොහැක.",
+                    wrongCombination: "සංයෝජනයට අවසර නැත"
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "මුරපද වලංගුකරණ වින්‍යාසය යාවත්කාලීන කිරීමට අසමත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "මුරපද වලංගු කිරීමේ වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "මුරපද වලංගු වින්‍යාසය",
+                description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
             }
         },
         notifications: {
