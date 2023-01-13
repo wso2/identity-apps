@@ -118,11 +118,8 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
         botDetection: RobotIcon,
-<<<<<<< HEAD
         eventConfiguration: EventConfigurationIcon,
-=======
         passwordValidation: PasswordValidationIcon,
->>>>>>> 1fa9c0d2a551dc8e1e8d93d6f2da5de3e0b6ce2c
         selfRegistration: UserAddIcon
     };
 };
