@@ -74,6 +74,7 @@ import {
     AuthProtocolTypes,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTemplateInterface,
+    IdentityProviderTemplateItemInterface,
     StrictIdentityProviderInterface
 } from "../../models";
 import { handleGetIDPListCallError } from "../utils";
@@ -254,13 +255,18 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * clone that object to avoid mutation on file level configuration.
          */
         const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml" 
-                ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML 
+            return id === (selectedProtocol === "saml"
+                ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML
                 : IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
             );
         }));
 
         if (selectedProtocol === "oidc") {
+
+            identityProvider.templateId = template.subTemplates
+                .find((template: IdentityProviderTemplateItemInterface) => {
+                    return template.id === "enterprise-oidc-idp";
+                })?.templateId;
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
@@ -276,6 +282,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
 
         } else {
+
+            identityProvider.templateId = template.subTemplates
+                .find((template: IdentityProviderTemplateItemInterface) => {
+                    return template.id === "enterprise-saml-idp";
+                })?.templateId;
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
@@ -370,7 +381,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         traceId: identityAppsError.getErrorTraceId()
                     });
                     setTimeout(() => setAlert(undefined), 4000);
-                    
+
                     return;
                 }
 
@@ -385,7 +396,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         message: "There's a Conflicting Entity"
                     });
                     setTimeout(() => setAlert(undefined), 8000);
-                    
+
                     return;
                 }
 
@@ -399,7 +410,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             "addIDP.error.message")
                     });
                     setTimeout(() => setAlert(undefined), 4000);
-                    
+
                     return;
                 }
                 setAlert({
@@ -418,7 +429,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     };
 
     const wizardCommonFirstPage = () => (
-        <WizardPage 
+        <WizardPage
             validate={ (values: any) => {
                 const errors: FormErrors = {};
 
@@ -525,10 +536,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     );
 
     const samlConfigurationPage = () => (
-        <WizardPage 
+        <WizardPage
             validate={ (values) => {
                 const errors: FormErrors = {};
-                
+
                 errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
                 if (selectedSamlConfigMode === "file") {
                     setNextShouldBeDisabled(ifFieldsHave(errors) || !xmlBase64String);
@@ -629,7 +640,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const oidcConfigurationPage = () => {
         return (
-            <WizardPage 
+            <WizardPage
                 validate={ (values) => {
                     const errors: FormErrors = {};
 
@@ -654,7 +665,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         length(OIDC_URL_MAX_LENGTH)
                     )(values.tokenEndpointUrl);
                     setNextShouldBeDisabled(ifFieldsHave(errors));
-                    
+
                     return errors;
                 } }>
                 <Field.Input
@@ -714,10 +725,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     };
 
     const certificatesPage = () => (
-        <WizardPage 
+        <WizardPage
             validate={ (values) => {
                 const errors: FormErrors = {};
-                
+
                 if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
                     if (values.jwks_endpoint?.length > 0) {
                         errors.jwks_endpoint = composeValidators(
@@ -845,7 +856,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
         const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml" 
+            return id === (selectedProtocol === "saml"
                 ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML
                 : IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
             );
@@ -978,7 +989,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
-                                    floated="left" 
+                                    floated="left"
                                     onClick={ onWizardClose }
                                     data-testid={ `${ testId }-modal-cancel-button` }>
                                     { t("common:cancel") }
@@ -989,7 +1000,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled }
-                                        floated="right" 
+                                        floated="right"
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
                                         } }
@@ -1006,7 +1017,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                     <PrimaryButton
                                         disabled={ nextShouldBeDisabled || isSubmitting }
                                         type="submit"
-                                        floated="right" 
+                                        floated="right"
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
                                         } }
@@ -1019,7 +1030,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 { currentWizardStep > 0 && (
                                     <LinkButton
                                         type="submit"
-                                        floated="right" 
+                                        floated="right"
                                         onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
