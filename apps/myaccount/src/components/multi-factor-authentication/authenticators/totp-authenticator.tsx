@@ -42,7 +42,8 @@ import {
     initTOTPCode,
     refreshTOTPCode,
     updateEnabledAuthenticators,
-    validateTOTPCode
+    validateTOTPCode,
+    viewTOTPCode
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import { commonConfig } from "../../../extensions";
@@ -93,9 +94,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     const { t } = useTranslation();
 
-    const translateKey = "myAccount:components.mfa.authenticatorApp.";
-    const totpAuthenticatorName = "totp";
-    const backupCodeAuthenticatorName = "backup-code-authenticator";
+    const translateKey: string = "myAccount:components.mfa.authenticatorApp.";
+    const totpAuthenticatorName: string = "totp";
+    const backupCodeAuthenticatorName: string = "backup-code-authenticator";
 
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
     const shouldContinueToBackupCodes: boolean = isSuperTenantLogin && isBackupCodeForced;
@@ -112,18 +113,18 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
     const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
 
-    const pinCode1 = useRef<HTMLInputElement>();
-    const pinCode2 = useRef<HTMLInputElement>();
-    const pinCode3 = useRef<HTMLInputElement>();
-    const pinCode4 = useRef<HTMLInputElement>();
-    const pinCode5 = useRef<HTMLInputElement>();
-    const pinCode6 = useRef<HTMLInputElement>();
+    const pinCode1: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
+    const pinCode2: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
+    const pinCode3: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
+    const pinCode4: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
+    const pinCode5: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
+    const pinCode6: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
 
     /**
      * Check whether the TOTP is configured.
      */
     useEffect(() => {
-        checkIfTOTPEnabled().then((response) => {
+        checkIfTOTPEnabled().then((response: boolean) => {
             setIsTOTPConfigured(response);
         });
     }, []);
@@ -250,7 +251,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
             .then(() => {
                 onEnabledAuthenticatorsUpdated(authenticatorsList);
             })
-            .catch((errorMessage => {
+            .catch(((errorMessage: any) => {
                 onAlertFired({
                     description: t(translateKey +
                             "notifications.updateAuthenticatorError.error.description", {
@@ -269,7 +270,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         setIsLoading(true);
 
         initTOTPCode()
-            .then((response) => {
+            .then((response: any) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setIsConfigTOTPModalOpen(true);
@@ -277,7 +278,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setIsTOTPConfigured(true);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.ADD);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.initError.error.description", {
                         error
@@ -302,7 +303,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setIsTOTPConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.deleteError.error.description", {
                         error
@@ -327,7 +328,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         }
 
         validateTOTPCode(verificationCode)
-            .then((response) => {
+            .then((response: any) => {
                 if (response?.data?.isValid) {
                     if (isRegenerated) {
                         setViewTOTPModalCurrentStep(2);
@@ -398,7 +399,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className = "text-center totp-input"
                                                 type = "text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-1");
                                                     }
@@ -418,7 +419,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className = "text-center totp-input"
                                                 type = "text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-2");
                                                     }
@@ -437,7 +438,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className ="text-center totp-input"
                                                 type ="text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-3");
                                                     }
@@ -456,7 +457,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className = "text-center totp-input"
                                                 type = "text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-4");
                                                     }
@@ -475,7 +476,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className = "text-center totp-input"
                                                 type = "text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-5");
                                                     }
@@ -494,7 +495,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 className = "text-center totp-input"
                                                 type = "text"
                                                 maxLength = { 1 }
-                                                onKeyUp = { (event) => {
+                                                onKeyUp = { (event: React.KeyboardEvent<HTMLInputElement>) => {
                                                     if (event.currentTarget.value.length !== 0) {
                                                         focusInToNextPinCode("pincode-6");
                                                     }
@@ -680,14 +681,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      */
     const handleViewTOTP = (): void => {
         setIsLoading(true);
-        initTOTPCode()
-            .then((response) => {
+        viewTOTPCode()
+            .then((response: any) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setQrCode(qrCodeUrl);
                 setIsViewTOTPModalOpen(true);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.initError.error.description", {
                         error
@@ -714,13 +715,13 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const handleRegenerateQRCode = (): void => {
         setIsLoading(true);
         refreshTOTPCode()
-            .then((response) => {
+            .then((response: any) => {
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setQrCode(qrCodeUrl);
                 setViewTOTPModalCurrentStep(1);
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: any) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.refreshError.error.description", {
                         error: errorMessage
@@ -941,7 +942,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             });
                             handleSessionTerminationModalVisibility(true);
                         })
-                        .catch((errorMessage) => {
+                        .catch((errorMessage: any) => {
                             onAlertFired({
                                 description: t(translateKey + "notifications.deleteError.genericError.description", {
                                     error: errorMessage
@@ -959,7 +960,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     handleSessionTerminationModalVisibility(true);
                 }
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: any) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.deleteError.genericError.description", {
                         error: errorMessage
