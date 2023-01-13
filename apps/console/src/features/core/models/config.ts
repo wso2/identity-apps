@@ -124,6 +124,10 @@ export interface FeatureConfigInterface {
      * Try It feature
      */
     tryIt?: FeatureAccessConfigInterface;
+    /**
+     * Event Management feature
+     */
+    eventPublishing?: FeatureAccessConfigInterface;
 }
 
 /**

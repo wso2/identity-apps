@@ -200,7 +200,7 @@ export class Config {
             ...getValidationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
