@@ -24,7 +24,11 @@ export interface UserStoreProperty {
     value: string;
 }
 
+/**
+ * User store details object
+ */
 export interface UserStoreDetails {
+    id?: string,
     typeName: string;
     typeId: string;
     name: string;
