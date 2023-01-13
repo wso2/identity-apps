@@ -265,7 +265,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
             identityProvider.templateId = template.subTemplates
                 .find((template: IdentityProviderTemplateItemInterface) => {
-                    return template.id === "enterprise-oidc-idp";
+                    return template.templateId === "enterprise-oidc-idp";
                 })?.templateId;
 
             // Populate user entered values
@@ -285,7 +285,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
             identityProvider.templateId = template.subTemplates
                 .find((template: IdentityProviderTemplateItemInterface) => {
-                    return template.id === "enterprise-saml-idp";
+                    return template.templateId === "enterprise-saml-idp";
                 })?.templateId;
 
             // Populate user entered values
