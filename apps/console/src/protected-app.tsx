@@ -522,75 +522,68 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
                 )
             );
+            
+            loginSuccessRedirect(idToken);
         });
     }, []);
 
-    const loginSuccessRedirect = (): void => {
+    const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
 
-        getDecodedIDToken()
-            .then((idToken: DecodedIDTokenPayload) => {
+        /**
+         * Prevent redirect to landing page when there is no association.
+         */
+        if (commonConfig?.enableOrganizationAssociations) {
 
-                /**
-                 * Prevent redirect to landing page when there is no association.
-                 */
-                if (commonConfig?.enableOrganizationAssociations) {
+            const isPrivilegedUser: boolean =
+                idToken?.amr?.length > 0
+                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                    : false;
 
-                    const isPrivilegedUser: boolean =
-                        idToken?.amr?.length > 0
-                            ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
-                            : false;
- 
-                    if (has(idToken, "associated_tenants") || isPrivilegedUser) {
-                        // If there is an association, the user should be redirected to console landing page.
-                        const location: string =
-                            !AuthenticationCallbackUrl ||
+            if (has(idToken, "associated_tenants") || isPrivilegedUser) {
+                // If there is an association, the user should be redirected to console landing page.
+                const location: string =
+                    !AuthenticationCallbackUrl ||
+                    AuthenticationCallbackUrl ===
+                        AppConstants.getAppLoginPath() ||
+                        (window[ "AppUtils" ].getConfig().organizationName &&
                             AuthenticationCallbackUrl ===
-                                AppConstants.getAppLoginPath() ||
-                                (window[ "AppUtils" ].getConfig().organizationName &&
-                                    AuthenticationCallbackUrl ===
-                                    `${ window[ "AppUtils" ].getConfig()
-                                        .appBaseWithTenant
-                                    }/`) ||
-                                AppUtils.isAuthCallbackURLFromAnotherTenant(
-                                    AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-                                        idToken.sub))
-                                ? AppConstants.getAppHomePath()
-                                : AuthenticationCallbackUrl;
+                            `${ window[ "AppUtils" ].getConfig()
+                                .appBaseWithTenant
+                            }/`) ||
+                        AppUtils.isAuthCallbackURLFromAnotherTenant(
+                            AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+                                idToken.sub))
+                        ? AppConstants.getAppHomePath()
+                        : AuthenticationCallbackUrl;
 
-                        history.push(location);
-                    } else {
-                        // If there is no assocation, the user should be redirected to creation flow.
-                        history.push({
-                            pathname: AppConstants.getPaths().get(
-                                "CREATE_TENANT"
-                            )
-                        });
-                    }
-                } else {
-                    const location: string =
-                        !AuthenticationCallbackUrl ||
-                            AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
-                            (window[ "AppUtils" ].getConfig().organizationName &&
-                                AuthenticationCallbackUrl ===
-                                `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
-                            AppUtils.isAuthCallbackURLFromAnotherTenant(
-                                AuthenticationCallbackUrl, 
-                                CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
-                            )
-                            ? AppConstants.getAppHomePath()
-                            : AuthenticationCallbackUrl;
-        
-                    history.push(location);
-                }
-            })
-            .catch(() => {
-                // No need to show UI errors here.
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
+                history.push(location);
+            } else {
+                // If there is no assocation, the user should be redirected to creation flow.
+                history.push({
+                    pathname: AppConstants.getPaths().get(
+                        "CREATE_TENANT"
+                    )
+                });
+            }
+        } else {
+            const location: string =
+                !AuthenticationCallbackUrl ||
+                    AuthenticationCallbackUrl === AppConstants.getAppLoginPath() ||
+                    (window[ "AppUtils" ].getConfig().organizationName &&
+                        AuthenticationCallbackUrl ===
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
+                    AppUtils.isAuthCallbackURLFromAnotherTenant(
+                        AuthenticationCallbackUrl, 
+                        CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
+                    )
+                    ? AppConstants.getAppHomePath()
+                    : AuthenticationCallbackUrl;
+
+            history.push(location);
+        }
     };
 
     const filterRoutes: () => void = useCallback((): void => {
@@ -920,7 +913,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     return (
         <SecureApp
             fallback={ <PreLoader /> }
-            onSignIn={ loginSuccessRedirect }
             overrideSignIn={ async () => {
                 // This is to prompt the SSO page if a user tries to sign in
                 // through a federated IdP using an existing email address.
