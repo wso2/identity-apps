@@ -169,6 +169,28 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     } }
                                 />
                             ) }
+                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
+                                <InfoCard
+                                    fluid
+                                    data-testid="sms-otp-mfa-flow-card"
+                                    image={ getAuthenticatorIcons().smsOTP }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
+                                            "client-id": clientId
+                                        } );
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
+                                    } }
+                                />
+                            ) }
                         </div>
                     </Grid.Column>
                     <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
