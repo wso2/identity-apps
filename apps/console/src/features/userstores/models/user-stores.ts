@@ -60,7 +60,7 @@ export interface UserStorePostData {
  * Userstore object returned by retrieval
  */
 export interface UserStore {
-    id: string;
+    id?: string;
     typeName: string;
     typeId: string;
     name: string;
