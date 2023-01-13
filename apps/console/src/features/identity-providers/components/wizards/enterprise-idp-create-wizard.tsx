@@ -328,7 +328,6 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
             }
         }
 
-        identityProvider.templateId = template.templateId;
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
             identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].authenticatorId
