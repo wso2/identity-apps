@@ -152,7 +152,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
-        identityProvider.templateId = template.id
+        identityProvider.templateId = template.templateId;
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
