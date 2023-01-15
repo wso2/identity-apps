@@ -204,7 +204,7 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
             getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") !== null,
         field: "password",
         maxConsecutiveCharacters: getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") ?
-            getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") : "0",
+            getConfig(rules, "RepeatedCharacterValidator", "max.consecutive.character") : "1",
         maxLength: getConfig(rules, "LengthValidator", "max.length") ?
             getConfig(rules, "LengthValidator", "max.length") : "30",
         minLength: getConfig(rules, "LengthValidator", "min.length") ?
@@ -216,7 +216,7 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
         minSpecialCharacters: getConfig(rules, "SpecialCharacterValidator", "min.length") ?
             getConfig(rules, "SpecialCharacterValidator", "min.length") : "0",
         minUniqueCharacters: getConfig(rules, "UniqueCharacterValidator", "min.unique.character") ?
-            getConfig(rules, "UniqueCharacterValidator", "min.unique.character") : "0",
+            getConfig(rules, "UniqueCharacterValidator", "min.unique.character") : "1",
         minUpperCaseCharacters: getConfig(rules, "UpperCaseValidator", "min.length") ?
             getConfig(rules, "UpperCaseValidator", "min.length") : "0",
         type: "rules",
