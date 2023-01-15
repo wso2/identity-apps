@@ -615,13 +615,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             listen={ (value: boolean) => {
                                                                 setConsecutiveChrValidatorEnabled(value);
-
-                                                                if (value) {
-                                                                    setCurrentValues({
-                                                                        ...currentValues,
-                                                                        maxConsecutiveCharacters: "1"
-                                                                    });
-                                                                }
                                                             } }
                                                             width={ 16 }
                                                             data-testid={ `${ componentId }-consecutive-chr-enable` }
