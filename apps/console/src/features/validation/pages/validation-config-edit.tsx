@@ -204,13 +204,22 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * @param values - New data of the My Account portal.
      */
     const handleUpdateMyAccountData = (values: ValidationFormInterface): void => {
+        const processedFormValues: ValidationFormInterface = values;
 
-        if (!validateForm(values)) {
+        if (values.uniqueCharacterValidatorEnabled && values.minUniqueCharacters === "0") {
+            processedFormValues.minUniqueCharacters = "1";
+        }
+
+        if (values.consecutiveCharacterValidatorEnabled && values.maxConsecutiveCharacters === "0") {
+            processedFormValues.maxConsecutiveCharacters = "1";
+        }
+
+        if (!validateForm(processedFormValues)) {
             return;
         }
 
         setSubmitting(true);
-        updateValidationConfigData(values)
+        updateValidationConfigData(processedFormValues)
             .then(() => {
                 mutateValidationConfigFetchRequest();
                 dispatch(addAlert({
@@ -327,7 +336,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                     minLength: value
                                                                 });
                                                             } }
-
                                                             readOnly={ false }
                                                             disabled={ false }
                                                             data-testid={ `${componentId}-min-length` }
@@ -607,6 +615,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             disabled={ false }
                                                             listen={ (value: boolean) => {
                                                                 setConsecutiveChrValidatorEnabled(value);
+
+                                                                if (value) {
+                                                                    setCurrentValues({
+                                                                        ...currentValues,
+                                                                        maxConsecutiveCharacters: "1"
+                                                                    });
+                                                                }
                                                             } }
                                                             width={ 16 }
                                                             data-testid={ `${ componentId }-consecutive-chr-enable` }
