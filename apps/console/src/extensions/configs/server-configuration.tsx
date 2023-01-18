@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,8 +18,11 @@
 
 import React, { ReactElement, ReactNode } from "react";
 import { Divider, Grid, Header } from "semantic-ui-react";
-import { ServerConfigurationConfig } from "./models/server-configuration";
-import { GovernanceConnectorInterface } from "../../features/server-configurations";
+import { PasswordHistoryCountInterface, ServerConfigurationConfig } from "./models/server-configuration";
+import { useGetPasswordHistoryCount } from "../../features/password-history-count/api/password-history-count";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface, ServerConfigurationsConstants, updateGovernanceConnector, UpdateGovernanceConnectorConfigInterface } from "../../features/server-configurations";
+import { ValidationFormInterface } from "../../features/validation/models";
+import { PasswordHistoryCount } from "../../features/password-history-count/components/password-history-count";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
@@ -73,5 +76,46 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     renderConnectorWithinEmphasizedSegment: true,
     showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: true,
-    showPageHeading: true
+    showPageHeading: true,
+    usePasswordHistory: useGetPasswordHistoryCount,
+    processInitialValues: (
+        initialValues: ValidationFormInterface,
+        passwordHistoryCount: GovernanceConnectorInterface
+    ): PasswordHistoryCountInterface => {
+        return {
+            ...initialValues,
+            passwordHistoryCount: parseInt(passwordHistoryCount.properties.map((property: ConnectorPropertyInterface) => {
+                if(property.name === "passwordHistory.count") {
+                    return property.value;
+                }
+            })[0]),
+            passwordHistoryCountEnabled: passwordHistoryCount.properties.map((property: ConnectorPropertyInterface) => {
+                if(property.name === "passwordHistory.enable") {
+                    return property.value;
+                }
+            })[0] === "true"
+        }
+    },
+    processPasswordCountSubmitData: (data: PasswordHistoryCountInterface) => {
+        const passwordHistoryCount: number = data.passwordHistoryCount;
+        const passwordHistoryCountEnabled: boolean = data.passwordHistoryCountEnabled;
+
+        delete data.passwordHistoryCount;
+        delete data.passwordHistoryCountEnabled;
+
+        const passwordHistoryCountData: UpdateGovernanceConnectorConfigInterface = {
+            operation: "UPDATE",
+            properties: [ {
+                name: "passwordHistory.count",
+                value: passwordHistoryCount.toString()
+            },
+                {
+                    name: "passwordHistory.enable",
+                    value: passwordHistoryCountEnabled.toString()
+            }]
+        }
+
+        return updateGovernanceConnector(passwordHistoryCountData, ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID, ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID)
+    },
+    passwordHistoryCountComponent: <PasswordHistoryCount/>
 };
