@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { ReactElement, ReactNode } from "react";
+import React, { ReactElement, ReactNode, useState } from "react";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import { PasswordHistoryCountInterface, ServerConfigurationConfig } from "./models/server-configuration";
 import { updatePasswordHistoryCount, useGetPasswordHistoryCount } from "../../features/password-history-count/api/password-history-count";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface, ServerConfigurationsConstants, updateGovernanceConnector, UpdateGovernanceConnectorConfigInterface } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
-import { PasswordHistoryCount } from "../../features/password-history-count/components/password-history-count";
+import { generatePasswordHistoryCount } from "../../features/password-history-count/components/password-history-count";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
@@ -80,20 +80,15 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordHistory: useGetPasswordHistoryCount,
     processInitialValues: (
         initialValues: ValidationFormInterface,
-        passwordHistoryCount: GovernanceConnectorInterface
+        passwordHistoryCount: GovernanceConnectorInterface,
+        setPasswordHistoryEnabled: (state: boolean) => void
     ): PasswordHistoryCountInterface => {
+        const isEnabled: boolean = passwordHistoryCount.properties.filter((property: ConnectorPropertyInterface) => property.name === "passwordHistory.enable")[ 0 ].value === "true";
+        setPasswordHistoryEnabled(isEnabled);
         return {
             ...initialValues,
-            passwordHistoryCount: parseInt(passwordHistoryCount.properties.map((property: ConnectorPropertyInterface) => {
-                if(property.name === "passwordHistory.count") {
-                    return property.value;
-                }
-            })[0]),
-            passwordHistoryCountEnabled: passwordHistoryCount.properties.map((property: ConnectorPropertyInterface) => {
-                if(property.name === "passwordHistory.enable") {
-                    return property.value;
-                }
-            })[0] === "true"
+            passwordHistoryCount: parseInt(passwordHistoryCount.properties.filter((property: ConnectorPropertyInterface) => property.name === "passwordHistory.count")[0].value),
+            passwordHistoryCountEnabled: isEnabled
         }
     },
     processPasswordCountSubmitData: (data: PasswordHistoryCountInterface) => {
@@ -107,15 +102,17 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             operation: "UPDATE",
             properties: [ {
                 name: "passwordHistory.count",
-                value: passwordHistoryCount.toString()
+                value: passwordHistoryCount?.toString()
             },
                 {
                     name: "passwordHistory.enable",
-                    value: passwordHistoryCountEnabled.toString()
+                    value: passwordHistoryCountEnabled?.toString()
             }]
         }
 
         return updatePasswordHistoryCount(passwordHistoryCountData)
     },
-    passwordHistoryCountComponent: <PasswordHistoryCount/>
+    passwordHistoryCountComponent: (componentId: string, passwordHistoryEnabled: boolean, setPasswordHistoryEnabled:(state: boolean)=>void): ReactElement => {
+        return generatePasswordHistoryCount(componentId, passwordHistoryEnabled, setPasswordHistoryEnabled);
+    }
 };
