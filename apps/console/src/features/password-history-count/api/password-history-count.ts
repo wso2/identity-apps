@@ -16,41 +16,54 @@
  * under the License.
  */
 
-import { store } from "../../core";
+import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../../features/core/hooks/use-request";
-import { GovernanceConnectorInterface, ServerConfigurationsConstants, UpdateGovernanceConnectorConfigInterface } from "../../server-configurations";
-import { AxiosError, AxiosResponse } from "axios";
-import { HttpMethods } from "@wso2is/core/models";
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { store } from "../../core";
+import {
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    UpdateGovernanceConnectorConfigInterface
+} from "../../server-configurations";
 
 /**
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
-export const useGetPasswordHistoryCount = <Data = GovernanceConnectorInterface, RequestError = RequestErrorInterface>(
-): { data: Data, error: AxiosError<RequestError>, isLoading: boolean; } => {
+export const useGetPasswordHistoryCount = <
+    Data = GovernanceConnectorInterface,
+    Error = RequestErrorInterface
+    >(): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: store.getState()?.config?.endpoints?.passwordHistory
     };
 
-    const { data, error } = useRequest<Data, RequestError>(requestConfig);
+    const { data, error, isValidating,
+        mutate } = useRequest<Data, Error>(requestConfig);
 
-    return { data, error, isLoading: !data && !error };
+    return {
+        data, error, isLoading: !data && !error, isValidating,
+        mutate };
 };
 
-export const updatePasswordHistoryCount = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
+export const updatePasswordHistoryCount = (
+    data: UpdateGovernanceConnectorConfigInterface
+): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -69,18 +82,20 @@ export const updatePasswordHistoryCount = (data: UpdateGovernanceConnectorConfig
                     response.status,
                     response.request,
                     response,
-                    response.config);
+                    response.config
+                );
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch(error => {
             throw new IdentityAppsApiException(
                 "An error ocurred while updating the password validation.",
                 error.stack,
                 error.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };
