@@ -88,10 +88,15 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     );
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
+    const [ passwordHistoryEnabled, setPasswordHistoryEnabled ] = useState<
+        boolean
+    >(false);
+
     const {
         data: passwordHistoryCountData,
         error: passwordHistoryCountError,
-        isLoading: isPasswordCountLoading
+        isLoading: isPasswordCountLoading,
+        mutate: mutatePasswordHistoryCount
     } = serverConfigurationConfig.usePasswordHistory();
 
     const {
@@ -215,7 +220,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         setInitialFormValues(
             serverConfigurationConfig.processInitialValues(
                 getConfiguration(validationData),
-                passwordHistoryCountData
+                passwordHistoryCountData,
+                setPasswordHistoryEnabled
             )
         );
     };
@@ -310,10 +316,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const handleUpdateMyAccountData = (
         values: ValidationFormInterface
     ): void => {
-        const processedFormValues: ValidationFormInterface = values;
+        const processedFormValues: ValidationFormInterface = {...values};
 
         const updatePasswordHistory: Promise<any> = serverConfigurationConfig.processPasswordCountSubmitData(
-            values
+            processedFormValues
         );
 
         if (
@@ -341,6 +347,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         ])
             .then(() => {
                 mutateValidationConfigFetchRequest();
+                mutatePasswordHistoryCount();
                 dispatch(
                     addAlert({
                         description: t(
@@ -441,9 +448,9 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                             }
                                             enableReInitialize={ true }
                                         >
-                                            { serverConfigurationConfig.passwordHistoryCountComponent }
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
+                                                    { serverConfigurationConfig.passwordHistoryCountComponent(componentId, passwordHistoryEnabled, setPasswordHistoryEnabled) }
                                                     <div className="criteria">
                                                         <label>
                                                             Must be between
