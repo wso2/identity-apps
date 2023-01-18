@@ -18,7 +18,7 @@
 
 import { AxiosError } from "axios";
 import { ReactElement, ReactNode } from "react";
-import { RequestErrorInterface } from "../../../features/core/hooks/use-request";
+import { RequestErrorInterface, RequestResultInterface } from "../../../features/core/hooks/use-request";
 import { GovernanceConnectorInterface } from "../../../features/server-configurations";
 import { ValidationFormInterface } from "../../../features/validation/models";
 
@@ -40,13 +40,14 @@ export interface ServerConfigurationConfig {
     showConnectorsOnTheSidePanel: boolean;
     showGovernanceConnectorCategories: boolean;
     showPageHeading: boolean;
-    usePasswordHistory: () => { data: GovernanceConnectorInterface, error: AxiosError<RequestErrorInterface>, isLoading: boolean; };
+    usePasswordHistory: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
     processInitialValues: (
         initialValues: ValidationFormInterface,
-        passwordHistoryCount: GovernanceConnectorInterface
+        passwordHistoryCount: GovernanceConnectorInterface,
+        setPasswordHistoryEnabled: (state: boolean) => void
     ) => PasswordHistoryCountInterface;
     processPasswordCountSubmitData: (data: ValidationFormInterface) => Promise<any>;
-    passwordHistoryCountComponent: ReactElement;
+    passwordHistoryCountComponent: (componentId: string, passwordHistoryEnabled: boolean, setPasswordHistoryEnabled:(state: boolean)=>void)=>ReactElement;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {
