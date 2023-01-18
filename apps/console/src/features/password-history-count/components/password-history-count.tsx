@@ -16,58 +16,58 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import { Field } from "@wso2is/form/src";
 import { Message } from "@wso2is/react-components/src";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Divider, Icon } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { Icon } from "semantic-ui-react";
-import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 
-type PasswordHistoryCountProps = IdentifiableComponentInterface;
-
-export const PasswordHistoryCount: FunctionComponent = (props: PasswordHistoryCountProps): ReactElement => {
-    const { "data-componentid": componentId }=props;
-    const [ passwordHistoryEnabled, setPasswordHistoryEnabled ] = useState<boolean>(false);
-
+export const generatePasswordHistoryCount = (
+    componentId: string,
+    passwordHistoryEnabled: boolean,
+    setPasswordHistoryEnabled: (value: boolean) => void
+): ReactElement => {
     return (
         <>
             <h5>Password History Count</h5>
-                                            <div className="criteria">
-                                                        <Field.Checkbox
-                                                            ariaLabel="Enable/Disable Password History Count"
-                                                            name="passwordHistoryCountToggle"
-                                                            label="Must be different from the last"
-                                                            required={ false }
-                                                            disabled={ false }
-                                                            listen={ (value: boolean) => {
-                                                                setPasswordHistoryEnabled(value);
-                                                            } }
-                                                            width={ 16 }
-                                                            data-testid={ `${ componentId }-password-history-count-toggle` }
-                                                        />
-                                                        <Field.Input
-                                                            ariaLabel="Password History Count"
-                                                            inputType="number"
-                                                            name="passwordHistoryCount"
-                                                            min={ 1 }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "max" }
+            <div className="criteria">
+                <Field.Checkbox
+                    ariaLabel="Enable/Disable Password History Count"
+                    name="passwordHistoryCountEnabled"
+                    label="Must be different from the last"
+                    required={ false }
+                    disabled={ false }
+                    listen={ (value: boolean) => {
+                        setPasswordHistoryEnabled(value);
+                    } }
+                    width={ 16 }
+                    data-testid={ `${ componentId }-password-history-count-toggle` }
+                />
+                <Field.Input
+                    ariaLabel="Password History Count"
+                    inputType="number"
+                    name="passwordHistoryCount"
+                    min={ 1 }
+                    width={ 2 }
+                    required={ true }
+                    hidden={ false }
+                    placeholder="5"
                     maxLength={ 2 }
                     minLength={ 2 }
-
-                                                            readOnly={ false }
-                                                            disabled={ !passwordHistoryEnabled }
-                                                            data-testid={ `${componentId}-password-history-count` }
-                                                        />
-                                                        <label>passwords.</label>
-                                                </div>
-                                                <Message info>
-                                                    <Icon name="info circle" />
-                                                    Specify the number of unique passwords that a user should use before an old password can be reused.
-                                                </Message>
+                    readOnly={ false }
+                    disabled={ !passwordHistoryEnabled }
+                    data-testid={ `${ componentId }-password-history-count` }
+                />
+                <label>passwords.</label>
+            </div>
+            <Message info>
+                <Icon name="info circle" />
+                Specify the number of unique passwords that a user should use
+                before an old password can be reused.
+            </Message>
+            <Divider hidden />
             <h5>Password Input Validation</h5>
-            </>
-        )
+        </>
+    );
 };
