@@ -19,7 +19,7 @@
 import React, { ReactElement, ReactNode } from "react";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import { PasswordHistoryCountInterface, ServerConfigurationConfig } from "./models/server-configuration";
-import { useGetPasswordHistoryCount } from "../../features/password-history-count/api/password-history-count";
+import { updatePasswordHistoryCount, useGetPasswordHistoryCount } from "../../features/password-history-count/api/password-history-count";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface, ServerConfigurationsConstants, updateGovernanceConnector, UpdateGovernanceConnectorConfigInterface } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
 import { PasswordHistoryCount } from "../../features/password-history-count/components/password-history-count";
@@ -115,7 +115,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             }]
         }
 
-        return updateGovernanceConnector(passwordHistoryCountData, ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID, ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID)
+        return updatePasswordHistoryCount(passwordHistoryCountData)
     },
     passwordHistoryCountComponent: <PasswordHistoryCount/>
 };
