@@ -450,7 +450,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                         >
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
-                                                    { serverConfigurationConfig.passwordHistoryCountComponent(componentId, passwordHistoryEnabled, setPasswordHistoryEnabled) }
+                                                    { serverConfigurationConfig.passwordHistoryCountComponent(componentId, passwordHistoryEnabled, setPasswordHistoryEnabled, t) }
                                                     <div className="criteria">
                                                         <label>
                                                             Must be between
