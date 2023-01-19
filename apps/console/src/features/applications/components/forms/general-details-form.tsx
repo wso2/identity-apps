@@ -158,7 +158,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             description: values.description?.toString().trim(),
             id: appId,
             name: values.name?.toString(),
-            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl.toString() }
+            ...!hiddenFields?.includes("imageUrl") && { imageUrl: values.imageUrl?.toString() }
         });
     };
 
