@@ -316,7 +316,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const handleUpdateMyAccountData = (
         values: ValidationFormInterface
     ): void => {
-        const processedFormValues: ValidationFormInterface = {...values};
+        const processedFormValues: ValidationFormInterface = { ...values };
 
         const updatePasswordHistory: Promise<any> = serverConfigurationConfig.processPasswordCountSubmitData(
             processedFormValues
@@ -450,7 +450,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                         >
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
-                                                    { serverConfigurationConfig.passwordHistoryCountComponent(componentId, passwordHistoryEnabled, setPasswordHistoryEnabled, t) }
+                                                    { serverConfigurationConfig.passwordHistoryCountComponent(
+                                                        componentId,
+                                                        passwordHistoryEnabled,
+                                                        setPasswordHistoryEnabled,
+                                                        t
+                                                    ) }
                                                     <div className="criteria">
                                                         <label>
                                                             Must be between
