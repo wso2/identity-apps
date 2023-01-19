@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AxiosError } from "axios";
 import { ReactElement, ReactNode } from "react";
+import { TFunction } from "react-i18next";
 import { RequestErrorInterface, RequestResultInterface } from "../../../features/core/hooks/use-request";
 import { GovernanceConnectorInterface } from "../../../features/server-configurations";
 import { ValidationFormInterface } from "../../../features/validation/models";
@@ -47,7 +47,12 @@ export interface ServerConfigurationConfig {
         setPasswordHistoryEnabled: (state: boolean) => void
     ) => PasswordHistoryCountInterface;
     processPasswordCountSubmitData: (data: ValidationFormInterface) => Promise<any>;
-    passwordHistoryCountComponent: (componentId: string, passwordHistoryEnabled: boolean, setPasswordHistoryEnabled:(state: boolean)=>void)=>ReactElement;
+    passwordHistoryCountComponent: (
+        componentId: string,
+        passwordHistoryEnabled: boolean,
+        setPasswordHistoryEnabled: (state: boolean) => void,
+        t: TFunction<"translation", undefined>
+    ) => ReactElement;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {
