@@ -473,7 +473,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -483,7 +483,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -537,7 +537,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -547,7 +547,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -615,7 +615,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -625,7 +625,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -683,7 +683,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -693,7 +693,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -752,7 +752,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -762,7 +762,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -821,7 +821,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 if (numValue < ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                     .MIN_VALUE) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -831,7 +831,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={
@@ -905,7 +905,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 const numValue: number = parseInt(value);
 
                                                                 if (numValue < 1) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -915,7 +915,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={ 1 }
@@ -994,7 +994,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 const numValue: number = parseInt(value);
 
                                                                 if (numValue < 1) {
-                                                                    return t("common.minValidation", { min: 1 });
+                                                                    return t("common:minValidation", { min: 1 });
                                                                 }
 
                                                                 const max: number = currentValues.minLength
@@ -1004,7 +1004,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                         .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
-                                                                    return t("common.maxValidation", { max });
+                                                                    return t("common:maxValidation", { max });
                                                                 }
                                                             } }
                                                             min={ 1 }
