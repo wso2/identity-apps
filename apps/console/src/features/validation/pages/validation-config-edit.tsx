@@ -87,6 +87,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         undefined
     );
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ resetForm, setResetForm ] = useState<number>(0);
 
     const [ passwordHistoryEnabled, setPasswordHistoryEnabled ] = useState<
         boolean
@@ -348,6 +349,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             .then(() => {
                 mutateValidationConfigFetchRequest();
                 mutatePasswordHistoryCount();
+                setResetForm((state: number) => state + 1);
                 dispatch(
                     addAlert({
                         description: t(
@@ -447,6 +449,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 )
                                             }
                                             enableReInitialize={ true }
+                                            key={ resetForm }
                                         >
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
