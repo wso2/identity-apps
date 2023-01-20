@@ -101,7 +101,9 @@ export interface CommonNS {
     loginTime: string;
     logout: string;
     maximize: string;
+    maxValidation: string;
     minimize: string;
+    minValidation: string;
     more: string;
     myAccount: string;
     name: string;
