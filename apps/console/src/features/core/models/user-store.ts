@@ -29,6 +29,7 @@ export interface UserStoreProperty {
  */
 export interface UserStoreDetails {
     id?: string,
+    enabled?: boolean,
     typeName: string;
     typeId: string;
     name: string;
