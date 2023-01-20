@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { ContentLoader, Heading, LinkButton } from "@wso2is/react-components";
+import { ContentLoader, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -32,12 +32,13 @@ import {
     List,
     Message,
     Modal,
-    Segment    
+    Segment
 } from "semantic-ui-react";
 import {
     generateBackupCodes,
     getRemainingBackupCodesCount
 } from "../../../api";
+import { getMFAIcons } from "../../../configs";
 import {
     AlertInterface,
     AlertLevels,
@@ -65,12 +66,12 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     props: PropsWithChildren<BackupCodeProps>
 ): ReactElement => {
 
-    const { 
+    const {
         onAlertFired,
         initBackupCodeFlow,
         onBackupFlowCompleted,
         handleSessionTerminationModalVisibility,
-        ["data-componentid"]: componentid 
+        ["data-componentid"]: componentid
     } = props;
 
     const { t } = useTranslation();
@@ -88,7 +89,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     const [ isWarnRemaingBackupCodes, setIsWarnRemaingBackupCodes ] = useState<boolean>(false);
 
     const minBackupCodesLimit: number = 4;
-    
+
     /**
      * Fetch remaining backup codes count
      */
@@ -99,7 +100,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     /**
      * Starts backup code configuration flow
      */
-    useEffect(() => {         
+    useEffect(() => {
         if (initBackupCodeFlow) {
             setIsLoading(true);
             setIsModalOpen(true);
@@ -211,7 +212,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     backupCodeString += [ i + 1 ] + ". " + backupCodes[i] + "\n";
                 }
             }
-    
+
             const blob = new Blob(
                 [
                     t(translateKey + "download.heading", { productName }) + "\n\n",
@@ -220,10 +221,10 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     "* " + t(translateKey + "download.info1") + "\n",
                     "* " + t(translateKey + "download.info2") + new Date() + "."
                 ],
-    
+
                 { type: "application/json" }
             );
-    
+
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
 
@@ -246,7 +247,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 level: AlertLevels.ERROR,
                 message: t(translateKey + "notifications.downloadError.genericError.message")
             });
-        } 
+        }
     };
 
     /**
@@ -257,7 +258,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         const contentToBeCopied: string = backupCodes?.join("\n");
 
         CommonUtils.copyTextToClipboard(contentToBeCopied)
-            .then(()=> setIsCodesCopied(true)); 
+            .then(()=> setIsCodesCopied(true));
     };
 
     /**
@@ -273,15 +274,15 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 closeOnDimmerClick={ false }
                 dimmer="blurring"
                 className="wizard"
-            >   
+            >
                 <Modal.Header className="wizard-header bold">
                     { t(translateKey + "modals.heading") }
                     <Heading as="h6">
                         { t(translateKey + "modals.subHeading") }
                     </Heading>
                 </Modal.Header>
-                    
-                <Modal.Content 
+
+                <Modal.Content
                     data-componentid={ `${componentid}-modal-content` }
                     scrolling
                 >
@@ -300,8 +301,8 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                             { t(translateKey + "modals.info") }
                         </Message.Content>
                     </Message>
-                    { !isLoading 
-                        ? ( 
+                    { !isLoading
+                        ? (
                             <Segment>
                                 <Grid container columns={ 2 } textAlign="center">
                                     {
@@ -311,7 +312,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                                     key={ index }
                                                     className="backup-code-column"
                                                     data-componentid={ `${ componentid }-modal-backup-code-${ index }` }
-                                                > 
+                                                >
                                                     <div>
                                                         { code }
                                                     </div>
@@ -321,7 +322,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                     }
                                 </Grid>
                             </Segment>
-                        ) : ( 
+                        ) : (
                             <Segment padded="very">
                                 <ContentLoader inline="centered" active/>
                             </Segment>
@@ -348,10 +349,10 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         onClick={ handleCopyBackupCodes }
                         data-componentid={ `${componentid}-modal-copy-button` }
                     >
-                        { 
-                            isCodesCopied 
-                                ? t(translateKey + "modals.actions.copied") 
-                                : t(translateKey + "modals.actions.copy") 
+                        {
+                            isCodesCopied
+                                ? t(translateKey + "modals.actions.copied")
+                                : t(translateKey + "modals.actions.copy")
                         }
                     </Button>
                     <Button
@@ -414,25 +415,77 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             { renderBackupCodeWizard() }
             { renderConfirmRegenerateModal() }
             <Grid padded={ true } data-testid={ componentid }>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
+                        <List.Content floated="left">
+                            <GenericIcon
+                                icon={ getMFAIcons().backupCodes }
+                                size="mini"
+                                twoTone={ true }
+                                transparent={ true }
+                                square={ true }
+                                rounded={ true }
+                                relaxed={ true }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
+                        <List.Content>
+                            <List.Header>
+                                { /* TODO: Add i18n strings */ }
+                                { "Backup Codes" }
+                                <Label
+                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes
+                                        ? "warning" : "info" }` }
+                                    data-testid={ `${componentid}-remaining-count-label` }
+                                >
+                                    { `${remainingBackupCodes} Remaining` }
+                                </Label>
+                            </List.Header>
+                            <List.Description>
+                                { /* TODO: Revise description text */ }
+                                { t(translateKey + "description") }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column width={ 3 } className="last-column" verticalAlign="middle">
+                        <List.Content floated="right">
+                            <Icon
+                                link={ true }
+                                className="list-icon"
+                                size="small"
+                                color="grey"
+                                name="refresh"
+                                onClick={ () => {
+                                    setIsConfirmRegenerationModalOpen(true);
+                                } }
+                                data-testid={ `${componentid}-regenerate-button` }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            { /* TODO: Remove previous component */ }
+            <Grid padded={ true } data-testid={ componentid }>
                 <Grid.Column width={ 1 } className="first-column"/>
                 <Grid.Column width={ 13 } className="first-column">
-                    <Message 
-                        className="display-flex" 
-                        size="small" 
+                    <Message
+                        className="display-flex"
+                        size="small"
                         info={ !isWarnRemaingBackupCodes }
                         warning={ isWarnRemaingBackupCodes }
                         data-testid={ `${componentid}-message` }
                     >
-                        { 
-                            isWarnRemaingBackupCodes 
+                        {
+                            isWarnRemaingBackupCodes
                                 ? <Icon name="warning sign" color="orange" size="large"/>
-                                : <Icon className="mt-1" name="info circle" color="teal" size="large"/> 
+                                : <Icon className="mt-1" name="info circle" color="teal" size="large"/>
                         }
                         <List.Content>
                             <List.Header>
                                 { "Backup Codes" }
-                                <Label 
-                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes 
+                                <Label
+                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes
                                         ? "warning" : "info" }` }
                                     data-testid={ `${componentid}-remaining-count-label` }
                                 >
@@ -443,8 +496,8 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                 <div className="backup-code-description">
                                     { t(translateKey + "description") }
                                 </div>
-                                <LinkButton 
-                                    compact 
+                                <LinkButton
+                                    compact
                                     className="mt-2"
                                     floated="right"
                                     onClick={ () => {

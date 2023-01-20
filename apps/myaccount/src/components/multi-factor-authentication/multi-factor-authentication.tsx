@@ -21,7 +21,7 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { List } from "semantic-ui-react";
+import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
@@ -210,19 +210,41 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     setShowSessionTerminationModal(true);
                                 } }
                             />
-                            { isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
-                                ? (
-                                    <BackupCodeAuthenticator
-                                        onAlertFired={ onAlertFired }
-                                        initBackupCodeFlow={ initBackupCodeFlow }
-                                        onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
-                                        handleSessionTerminationModalVisibility={
-                                            () => setShowSessionTerminationModal(true)
-                                        }
-                                    />
-                                ) : null
-                            }
                         </List.Item>
+                    ) : null }
+                { /* TODO: Verify render conditions */ }
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
+                    ? (
+                        <>
+                            <List.Item
+                                className="inner-list-item"
+                                // TODO: Move inline styles to theme
+                                style={ { background: "rgba(0,0,0,.05)", color: "rgba(0,0,0,.95)" } }
+                            >
+                                <Grid padded={ true }>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column
+                                            width={ 16 }
+                                            className="first-column"
+                                        >
+                                            { /* TODO: Add i18n strings */ }
+                                            Recovery Options
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </List.Item>
+                            <List.Item className="inner-list-item">
+                                <BackupCodeAuthenticator
+                                    onAlertFired={ onAlertFired }
+                                    initBackupCodeFlow={ initBackupCodeFlow }
+                                    onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
+                                    handleSessionTerminationModalVisibility={
+                                        () => setShowSessionTerminationModal(true)
+                                    }
+                                />
+                            </List.Item>
+                        </>
                     ) : null }
             </List>
             <UserSessionTerminationModal

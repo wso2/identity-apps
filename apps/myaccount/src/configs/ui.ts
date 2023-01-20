@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,6 +27,7 @@ import { ReactComponent as AppIcon } from "../themes/default/assets/images/icons
 import {
     ReactComponent as AuthenticatorAppIcon
 } from "../themes/default/assets/images/icons/authenticator-app-icon.svg";
+import { ReactComponent as BackupCodesIcon } from "../themes/default/assets/images/icons/backup-code-icon.svg";
 import {
     ReactComponent as BlockedMagnifierIcon
 } from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
@@ -86,7 +87,7 @@ import {
     ReactComponent as EmptySearchResultsIllustration
 } from "../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
 import DummyUser from "../themes/default/assets/images/user.png";
- 
+
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;
 export const DefaultAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = CodeIcon;
@@ -100,7 +101,7 @@ export const getSidePanelIcons = (): {
     security: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     session: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         account: ControlsIcon,
         apps: AppIcon,
@@ -111,7 +112,7 @@ export const getSidePanelIcons = (): {
         session: MonitorIcon
     };
 };
- 
+
 export const getSettingsSectionIcons = (): {
     associatedAccounts: string;
     associatedAccountsMini: string;
@@ -124,7 +125,7 @@ export const getSettingsSectionIcons = (): {
     securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     securityQuestionsMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         associatedAccounts: AssociatedAccounts,
         associatedAccountsMini: AssociatedAccountsMini,
@@ -138,68 +139,70 @@ export const getSettingsSectionIcons = (): {
         securityQuestionsMini: SecurityQuestionsMini
     };
 };
- 
+
 export const getMFAIcons = (): {
     authenticatorApp: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    backupCodes: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     fingerprint: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     sms: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     keyboard: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         authenticatorApp: AuthenticatorAppIcon,
+        backupCodes: BackupCodesIcon,
         fingerprint: FingerprintIcon,
-        sms: SMSIcon,
-        keyboard: KeyboardIcon
+        keyboard: KeyboardIcon,
+        sms: SMSIcon
     };
 };
- 
+
 export const getAccountRecoveryIcons = (): {
     email: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         email: EmailIcon,
         securityQuestions: SecurityQuestionsIcon
     };
 };
- 
+
 export const getAccountStatusShields = (): {
     danger: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     good: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     warning: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         danger: StatusShieldDanger,
         good: StatusShieldGood,
         warning: StatusShieldWarning
     };
 };
- 
+
 export const getWidgetIcons = (): {
     accountSecurity: string;
     consents: string;
     profile: string;
  } => {
- 
+
     return {
         accountSecurity: PadlockIcon,
         consents: ConsentIcon,
         profile: MyAccountProfileIcon
     };
 };
- 
+
 export const getAdvancedSearchIcons = (): {
     clear: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         clear: CrossIcon
     };
 };
- 
+
 export const getEmptyPlaceholderIllustrations = (): {
     accessDeniedError: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     emptyList: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -209,7 +212,7 @@ export const getEmptyPlaceholderIllustrations = (): {
     search: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     newList: React.FunctionComponent<React.SVGProps<SVGElement>>;
  } => {
- 
+
     return {
         accessDeniedError: ForbiddenIcon,
         emptyList: BoxIcon,
@@ -220,32 +223,32 @@ export const getEmptyPlaceholderIllustrations = (): {
         search: EmptySearchResultsIllustration
     };
 };
- 
+
 export const getAppIconBackgrounds = (): {
     orange: string;
  } => {
- 
+
     return {
         orange: OrangeAppIconBackground
     };
 };
- 
+
 export const getThirdPartyLogos = (): {
     gravatar: string;
  } => {
- 
+
     return {
         gravatar: GravatarLogo
     };
 };
- 
+
 export const AlertIcons = (): {
     error: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     info: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     success: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     warning: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
- 
+
     return {
         error: ErrorIcon,
         info: InfoIcon,
@@ -253,18 +256,18 @@ export const AlertIcons = (): {
         warning: WarningIcon
     };
 };
- 
-export const AppSwitcherIcons = (): Record<string, any> => { 
+
+export const AppSwitcherIcons = (): Record<string, any> => {
     return {
         console: ConsoleIcon,
         myAccount: MyAccountIcon
     };
 };
- 
-export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
+
+export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return QRCodeScanIcon;
 };
- 
-export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => { 
+
+export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return EnterVerificationCodeIcon;
 };
