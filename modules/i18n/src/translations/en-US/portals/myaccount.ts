@@ -699,8 +699,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
-                description: "Use backup codes when you don’t have access to your authenticator app. You can " +
-                    "regenerate new codes if required.",
+                description: "Use backup codes to access your account in the event you cannot receive multi-factor " +
+                    "authentication codes. You can regenerate new codes if required.",
                 download: {
                     heading: "Backup codes for {{productName}}",
                     info1: "You can only use each backup code once.",

@@ -442,7 +442,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                 </Label>
                             </List.Header>
                             <List.Description data-testid={ `${componentid}-message` }>
-                                { /* TODO: Revise description text */ }
                                 { t(translateKey + "description") }
                             </List.Description>
                         </List.Content>

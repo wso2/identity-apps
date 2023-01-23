@@ -718,8 +718,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Régénérer"
             },
             backupCode: {
-                description: "Vous pouvez utiliser des codes de secours pour vous connecter si vous "
-                    + "ne pouvez pas recevoir de code de vérification via l'application d'authentification.",
+                description: "Utilisez des codes de secours pour accéder à votre compte au cas où vous ne pourriez pas " +
+                    "recevoir de codes d'authentification multifacteur. Vous pouvez régénérer de nouveaux codes si nécessaire.",
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",

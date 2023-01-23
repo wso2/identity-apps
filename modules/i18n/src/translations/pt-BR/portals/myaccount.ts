@@ -699,8 +699,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
-                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código "
-                    + "de verificação por meio do aplicativo autenticador.",
+                description: "Use códigos de backup para acessar sua conta caso não consiga receber códigos de autenticação " +
+                    "multifator. Você pode regenerar novos códigos, se necessário.",
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
