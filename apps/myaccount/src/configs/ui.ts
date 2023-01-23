@@ -218,8 +218,8 @@ export const getEmptyPlaceholderIllustrations = (): {
         emptyList: BoxIcon,
         genericError: CloseIcon,
         loginError: ForbiddenIcon,
-        pageNotFound: BlockedMagnifierIcon,
         newList: EmptyListResultsIllustration,
+        pageNotFound: BlockedMagnifierIcon,
         search: EmptySearchResultsIllustration
     };
 };
