@@ -41,7 +41,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Label, Ref } from "semantic-ui-react";
+import { Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
@@ -406,8 +406,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     return (
         <PageLayout
             pageTitle={ t("console:manage.features.validation.pageTitle") }
-            title={
-                (<>
+            title={ (
+                <>
                     { t("console:manage.features.validation.pageTitle") }
                 </>
             ) }
