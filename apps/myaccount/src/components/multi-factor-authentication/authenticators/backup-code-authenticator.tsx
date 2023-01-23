@@ -469,54 +469,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            { /* TODO: Remove previous component */ }
-            <Grid padded={ true } data-testid={ componentid }>
-                <Grid.Column width={ 1 } className="first-column"/>
-                <Grid.Column width={ 13 } className="first-column">
-                    <Message
-                        className="display-flex"
-                        size="small"
-                        info={ !isWarnRemaingBackupCodes }
-                        warning={ isWarnRemaingBackupCodes }
-                        data-testid={ `${componentid}-message` }
-                    >
-                        {
-                            isWarnRemaingBackupCodes
-                                ? <Icon name="warning sign" color="orange" size="large"/>
-                                : <Icon className="mt-1" name="info circle" color="teal" size="large"/>
-                        }
-                        <List.Content>
-                            <List.Header>
-                                { "Backup Codes" }
-                                <Label
-                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes
-                                        ? "warning" : "info" }` }
-                                    data-testid={ `${componentid}-remaining-count-label` }
-                                >
-                                    { `${remainingBackupCodes} Remaining` }
-                                </Label>
-                            </List.Header>
-                            <List.Description>
-                                <div className="backup-code-description">
-                                    { t(translateKey + "description") }
-                                </div>
-                                <LinkButton
-                                    compact
-                                    className="mt-2"
-                                    floated="right"
-                                    onClick={ () => {
-                                        setIsConfirmRegenerationModalOpen(true);
-                                    } }
-                                    data-testid={ `${componentid}-regenerate-button` }
-                                >
-                                    <Icon name="refresh" />
-                                    { t(translateKey + "modals.actions.regenerate") }
-                                </LinkButton>
-                            </List.Description>
-                        </List.Content>
-                    </Message>
-                </Grid.Column>
-            </Grid>
         </>
     );
 };
