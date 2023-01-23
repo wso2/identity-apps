@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,20 +17,41 @@
  */
 
 import React, { ReactElement, ReactNode } from "react";
+import { TFunction } from "react-i18next";
 import { Divider, Grid, Header } from "semantic-ui-react";
-import { ServerConfigurationConfig } from "./models/server-configuration";
+import {
+    PasswordHistoryCountInterface,
+    ServerConfigurationConfig
+} from "./models/server-configuration";
 import { GovernanceConnectorInterface } from "../../features/server-configurations";
+import { ValidationFormInterface } from "../../features/validation/models";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
-    connectorPropertiesToShow: [
-        "all"
-    ],
+    connectorPropertiesToShow: [ "all" ],
     connectorToggleName: {},
-    connectorsToShow: [
-        "all"
-    ],
+    connectorsToShow: [ "all" ],
     intendSettings: true,
+    passwordHistoryCountComponent: (
+        _componentId: string,
+        _passwordHistoryEnabled: boolean,
+        _setPasswordHistoryEnabled: (state: boolean) => void,
+        _t: TFunction<"translation", undefined>
+    ): ReactElement => {
+        return null;
+    },
+    processInitialValues: (
+        _initialValues: ValidationFormInterface,
+        _passwordHistoryCount: GovernanceConnectorInterface,
+        _setPasswordHistoryEnabled: (state: boolean) => void
+    ): PasswordHistoryCountInterface => {
+        return;
+    },
+    processPasswordCountSubmitData: (
+        _data: PasswordHistoryCountInterface
+    ): Promise<any> => {
+        return;
+    },
     renderConnector: (
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
@@ -39,7 +60,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         connectorSubHeading: ReactNode,
         message: ReactNode
     ): ReactElement => {
-        return(
+        return (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
@@ -73,5 +94,30 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     renderConnectorWithinEmphasizedSegment: true,
     showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: true,
-    showPageHeading: true
+    showPageHeading: true,
+    usePasswordHistory: () => ({
+        data: null,
+        error: null,
+        isLoading: false,
+        isValidating: false,
+        mutate: () => {
+            return Promise.resolve({
+                config: {},
+                data: {
+                    category: "",
+                    displayName: "",
+                    friendlyName: "",
+                    id: "",
+                    name: "",
+                    order: "",
+                    properties: [],
+                    subCategory: ""
+                },
+                headers: {},
+                request: {},
+                status: 200,
+                statusText: "OK"
+            });
+        }
+    })
 };

@@ -138,3 +138,17 @@
         background-color: #dcf0fa;
     }
 }
+
+/***************************************
+    Password Validation Error Labels
+***************************************/
+
+.criteria {
+    .ui.label {
+        &.pointing.above.prompt {
+            position: relevant;
+            width: 300px;
+            left: -105px;
+        }
+    }
+}
