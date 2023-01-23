@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { ContentLoader, GenericIcon, Heading, LinkButton } from "@wso2is/react-components";
+import { ContentLoader, GenericIcon, Heading, LinkButton, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -441,7 +441,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                     { `${remainingBackupCodes} ` + t(translateKey + "remaining") }
                                 </Label>
                             </List.Header>
-                            <List.Description>
+                            <List.Description data-testid={ `${componentid}-message` }>
                                 { /* TODO: Revise description text */ }
                                 { t(translateKey + "description") }
                             </List.Description>
@@ -449,16 +449,22 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     </Grid.Column>
                     <Grid.Column width={ 3 } className="last-column" verticalAlign="middle">
                         <List.Content floated="right">
-                            <Icon
-                                link={ true }
-                                className="list-icon"
-                                size="small"
-                                color="grey"
-                                name="refresh"
-                                onClick={ () => {
-                                    setIsConfirmRegenerationModalOpen(true);
-                                } }
-                                data-testid={ `${componentid}-regenerate-button` }
+                            <Popup
+                                trigger={
+                                    (<Icon
+                                        link={ true }
+                                        className="list-icon"
+                                        size="small"
+                                        color="grey"
+                                        name="refresh"
+                                        onClick={ () => {
+                                            setIsConfirmRegenerationModalOpen(true);
+                                        } }
+                                        data-testid={ `${componentid}-regenerate-button` }
+                                    />)
+                                }
+                                content={ t(translateKey + "modals.actions.regenerate") }
+                                inverted
                             />
                         </List.Content>
                     </Grid.Column>
