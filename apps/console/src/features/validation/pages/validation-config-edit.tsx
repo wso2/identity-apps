@@ -261,9 +261,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             title={ (
                 <>
                     { t("console:manage.features.validation.pageTitle") }
-                    <Label size="medium" className="preview-label ml-2">
-                        { t("common:preview") }
-                    </Label>
                 </>
             ) }
             description={ (
