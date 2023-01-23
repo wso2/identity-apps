@@ -214,15 +214,12 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                             />
                         </List.Item>
                     ) : null }
-                { /* TODO: Verify render conditions */ }
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
                     ? (
                         <>
                             <List.Item
-                                className="inner-list-item"
-                                // TODO: Move inline styles to theme
-                                style={ { background: "rgba(0,0,0,.05)", color: "rgba(0,0,0,.95)" } }
+                                className="inner-list-item recovery-options-muted-header"
                             >
                                 <Grid padded={ true }>
                                     <Grid.Row columns={ 1 }>
