@@ -192,9 +192,9 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
     }
     const config: ValidationDataInterface = passwordConf[0];
 
-    const rules: ValidationConfInterface[] = config.rules;
+    const rules: ValidationConfInterface[] = config?.rules;
 
-    if (rules.length < 1) {
+    if (rules?.length < 1) {
 
         return;
     }
@@ -239,7 +239,7 @@ export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
         return data.validator === validator;
     });
 
-    if (config.length > 0) {
+    if (config?.length > 0) {
         let properties: ValidationPropertyInterface[] = config[0].properties;
 
         properties = properties.filter((data: ValidationPropertyInterface) => data.key === attribute);
