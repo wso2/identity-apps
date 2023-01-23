@@ -740,6 +740,7 @@ export const myAccount: MyAccountNS = {
                     warn: "இந்த குறியீடுகள் ஒருமுறை மட்டுமே தோன்றும். இப்போது அவற்றைச் சேமித்து, "
                         + "பாதுகாப்பான ஆனால் அணுகக்கூடிய இடத்தில் சேமிக்கவும்."
                 },
+                mutedHeader: "மீட்பு விருப்பங்கள்",
                 notifications: {
                     deleteError: {
                         error: {
@@ -815,7 +816,8 @@ export const myAccount: MyAccountNS = {
                             message: "ஏதோ தவறு நடந்துவிட்டது"
                         }
                     }
-                }
+                },
+                remaining: "மீதமுள்ள"
             },
             fido: {
                 description: "உங்கள் கணக்கில் உள்நுழைய, உங்கள் சாதனத்தில் FIDO2 பாதுகாப்பு விசை அல்லது " +

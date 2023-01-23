@@ -732,6 +732,7 @@ export const myAccount: MyAccountNS = {
                     warn: "මෙම කේත දිස්වන්නේ එක් වරක් පමණි. ඒවා දැන් සුරැකීමට සහ ආරක්ෂිත නමුත් ප්‍රවේශ විය හැකි "
                         + "ස්ථානයක ගබඩා කිරීමට වග බලා ගන්න."
                 },
+                mutedHeader: "ප්රතිසාධන විකල්ප",
                 notifications: {
                     deleteError: {
                         error: {
@@ -803,7 +804,8 @@ export const myAccount: MyAccountNS = {
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     }
-                }
+                },
+                remaining: "ඉතිරිව ඇත"
             },
             fido: {
                 description: "ඔබට ඔබගේ ගිණුමට පුරනය වීමට ඔබගේ උපාංගයේ FIDO2 ආරක්‍ෂක යතුරක් හෝ ජෛවමිතික භාවිත කළ හැක.",

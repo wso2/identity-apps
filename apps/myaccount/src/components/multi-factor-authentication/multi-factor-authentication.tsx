@@ -228,8 +228,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                             width={ 16 }
                                             className="first-column"
                                         >
-                                            { /* TODO: Add i18n strings */ }
-                                            Recovery Options
+                                            { t(translateKey + "mutedHeader") }
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

@@ -432,14 +432,13 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
                         <List.Content>
                             <List.Header>
-                                { /* TODO: Add i18n strings */ }
-                                { "Backup Codes" }
+                                { t(translateKey + "heading") }
                                 <Label
                                     className={ `backup-code-label ${ isWarnRemaingBackupCodes
                                         ? "warning" : "info" }` }
                                     data-testid={ `${componentid}-remaining-count-label` }
                                 >
-                                    { `${remainingBackupCodes} Remaining` }
+                                    { `${remainingBackupCodes} ` + t(translateKey + "remaining") }
                                 </Label>
                             </List.Header>
                             <List.Description>

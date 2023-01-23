@@ -734,6 +734,7 @@ export const myAccount: MyAccountNS = {
                     warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los "
                         + "em algum lugar seguro, mas acessível."
                 },
+                mutedHeader: "Opções de recuperação",
                 notifications: {
                     deleteError: {
                         error: {
@@ -805,7 +806,8 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         }
                     }
-                }
+                },
+                remaining: "restante"
             },
             fido: {
                 description: "Você pode usar uma chave de segurança FIDO2 ou biometria em seu dispositivo " +
