@@ -114,12 +114,12 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     const getRemainingCount = (): void => {
         getRemainingBackupCodesCount()
             .then((response: BackupCodesCountInterface) => {
-                const remainingCount = response.remainingBackupCodesCount;
+                const remainingCount: number = response.remainingBackupCodesCount;
 
                 setRemainingBackupCodes(remainingCount);
                 setIsWarnRemaingBackupCodes(remainingCount <= minBackupCodesLimit);
             })
-            .catch((errorMessage)=> {
+            .catch((errorMessage: string)=> {
                 onAlertFired({
                     description: t(
                         translateKey + "notifications.retrieveError.error.description",
@@ -143,7 +143,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             .then((response: BackupCodeInterface) => {
                 setBackupCodes(response?.backupCodes ?? []);
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: string) => {
                 onAlertFired({
                     description: t(
                         translateKey + "notifications.refreshError.error.description",
@@ -174,7 +174,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             .then((response: BackupCodeInterface) => {
                 setBackupCodes(response?.backupCodes ?? []);
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: string) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.refreshError.error.description",
                         {
@@ -197,7 +197,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         if (backupCodes) {
             let backupCodeString: string = "";
 
-            for (let i = 0; i < backupCodes.length; i += 2) {
+            for (let i: number = 0; i < backupCodes.length; i += 2) {
                 if (backupCodes[i + 1] !== undefined) {
                     backupCodeString +=
                         [ i + 1 ] +
@@ -213,7 +213,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 }
             }
 
-            const blob = new Blob(
+            const blob: Blob = new Blob(
                 [
                     t(translateKey + "download.heading", { productName }) + "\n\n",
                     t(translateKey + "download.subHeading", { productName }) + "\n\n",
@@ -225,8 +225,8 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 { type: "application/json" }
             );
 
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
+            const url: string = window.URL.createObjectURL(blob);
+            const a: HTMLAnchorElement = document.createElement("a");
 
             a.style.display = "none";
             a.href = url;
@@ -306,7 +306,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                             <Segment>
                                 <Grid container columns={ 2 } textAlign="center">
                                     {
-                                        backupCodes?.map((code, index)=> {
+                                        backupCodes?.map((code: string, index: number)=> {
                                             return (
                                                 <GridColumn
                                                     key={ index }

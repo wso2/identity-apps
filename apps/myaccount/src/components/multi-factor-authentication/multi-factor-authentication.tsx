@@ -21,6 +21,7 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { getEnabledAuthenticators } from "../../api";
@@ -56,10 +57,11 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string =
+        useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
@@ -72,7 +74,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
     const totpAuthenticatorName: string = "totp";
-    const backupCodeAuthenticatorName = "backup-code-authenticator";
+    const backupCodeAuthenticatorName: string = "backup-code-authenticator";
 
     /**
      * Fetch enabled authenticators and set to state.
@@ -84,7 +86,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
                 setEnabledAuthenticators(authenticatorList);
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: string) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
                         error: errorMessage
