@@ -21,8 +21,10 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
+    DocumentationLink,
     EmphasizedSegment,
-    PageLayout
+    PageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
@@ -65,6 +67,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const dispatch: Dispatch = useDispatch();
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
@@ -266,6 +269,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             description={ (
                 <>
                     { t("console:manage.features.validation.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.validation.passwordValidation.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
                 </>
             ) }
             data-componentid={ `${ componentId }-page-layout` }
