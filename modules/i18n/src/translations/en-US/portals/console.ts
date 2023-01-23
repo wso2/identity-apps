@@ -1027,8 +1027,8 @@ export const console: ConsoleNS = {
                                                 search: "Search by secret name",
                                                 tooltips: {
                                                     keyIcon: "Securely store access keys as secrets. A secret can " +
-                                                        "replace the API key in <1>callChoreo()</1> function in the " +
-                                                        "conditional authentication scripts.",
+                                                        "replace the consumer secret in <1>callChoreo()</1> function " +
+                                                        "in the conditional authentication scripts.",
                                                     plusIcon: "Add to the script"
                                                 }
                                             }
@@ -2792,7 +2792,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "Mapped user attributes cannot be duplicated.",
                             message: "Update error"
                         },
                         genericError: {
@@ -3201,10 +3201,6 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
-                            forTestingOnlyNotice: {
-                                firstLine: "Test SMS OTP two-factor authentication using our default SMS provider.",
-                                secondLine: "(Limited to 15 messages per month)"
-                            },
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
@@ -4637,6 +4633,22 @@ export const console: ConsoleNS = {
                         content: "Remove the associations from these applications before deleting:",
                         header: "Unable to Delete",
                         message: "There are applications using this identity provider. "
+                    }
+                },
+                connectedApps: {
+                    action: "Go to Sign-in Method",
+                    header: "Connected Application(s) of {{idpName}}.",
+                    subHeader: "Applications connected to {{idpName}} are listed here.",
+                    placeholders: {
+                        search: "Search by application name",
+                        emptyList: "There are no applications connected to {{idpName}} at the moment."
+                    },
+                    applicationEdit: {
+                        back: "Go back to {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Error occurred while trying to retrieve connected applications.",
+                        message: "Error Occurred."
                     }
                 },
                 dangerZoneGroup: {
@@ -10219,6 +10231,47 @@ export const console: ConsoleNS = {
                         user: "User"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve validation configuration data.",
+                        message: "Something went wrong"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "Minimum length should be less than maximum length.",
+                    uniqueChrMismatch: "Number of unique characters should be less than tha minimum length of " +
+                        "the password.",
+                    consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
+                        "length of the password.",
+                    invalidConfig: "Unable to create password with the above configurations.",
+                    minLimitError: "The minimum length cannot be less than 8.",
+                    maxLimitError: "The maximum length cannot be more than 30.",
+                    wrongCombination: "The combination is not allowed"
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update password validation configuration.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated password validation configuration.",
+                        message: "Update successful"
+                    }
+                },
+                pageTitle: "Password validation configuration",
+                description: "Customize password validation rules for your users.",
+                goBackToApplication: "Go back to application",
+                goBackToValidationConfig: "Go back to Account Security"
             }
         },
         notifications: {

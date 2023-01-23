@@ -230,7 +230,23 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                     featureConfig?.organization_roles,
                     featureConfig?.organization_roles?.scopes?.create,
                     allowedScopes
-                )
+                ),     
+                [ AccessControlConstants.EVENT_CONFIG_READ ] : hasRequiredScopes(
+                    featureConfig?.eventConfiguration,
+                    featureConfig?.eventConfiguration?.scopes?.read,
+                    allowedScopes),
+                [ AccessControlConstants.EVENT_CONFIG_WRITE ] : hasRequiredScopes(
+                    featureConfig?.eventConfiguration,
+                    featureConfig?.eventConfiguration?.scopes?.create,
+                    allowedScopes),
+                [ AccessControlConstants.EVENT_CONFIG_EDIT ] : hasRequiredScopes(
+                    featureConfig?.eventConfiguration,
+                    featureConfig?.eventConfiguration?.scopes?.update,
+                    allowedScopes),
+                [ AccessControlConstants.EVENT_CONFIG_DELETE ] : hasRequiredScopes(
+                    featureConfig?.eventConfiguration,
+                    featureConfig?.eventConfiguration?.scopes?.delete,
+                    allowedScopes)
             }
         });
 

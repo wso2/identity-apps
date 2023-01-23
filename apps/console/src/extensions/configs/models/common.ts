@@ -30,13 +30,13 @@ export interface CommonConfig {
     header: {
         /**
          * Get the extensions for the header.
-         * @returns
+         * @returns Header extensions.
          */
         getHeaderExtensions: () => HeaderExtension[];
         /**
          * Get the extensions for the Header sub panel.
          * These will come along with the `Manage` & `Develop` links.
-         * @returns
+         * @returns Header sub panel items
          */
         getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
         /**
@@ -45,7 +45,7 @@ export interface CommonConfig {
          * @param tenantDomain - Current tenant.
          * @param associatedTenants - Tenant list.
          *
-         * @returns
+         * @returns A promise that resolves with header link categories
          */
         getUserDropdownLinkExtensions: (tenantDomain: string,
             associatedTenants: any[]) => Promise<HeaderLinkCategoryInterface[]>;

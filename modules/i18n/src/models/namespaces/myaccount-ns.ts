@@ -209,10 +209,28 @@ export interface MyAccountNS {
                             description: string;
                             message: string;
                         };
-                        passwordCaseRequirement: string,
-                        passwordCharRequirement: string,
+                        invalidNewPassword: {
+                            description: string;
+                            message: string;
+                        };
+                        validationConfig: {
+                            error: {
+                                description: string;
+                                message: string;
+                            },
+                            genericError: {
+                                description: string;
+                                message: string;
+                            }
+                        },
+                        passwordCaseRequirement: string;
+                        passwordCharRequirement: string;
+                        passwordLowerCaseRequirement: string;
+                        passwordUpperCaseRequirement: string;
                         passwordLengthRequirement: string,
                         passwordNumRequirement: string,
+                        passwordUniqueChrRequirement: string;
+                        passwordRepeatedChrRequirement: string;
                         submitError: {
                             description: string;
                             message: string;

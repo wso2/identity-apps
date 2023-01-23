@@ -19,7 +19,11 @@
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../../server-configurations";
+import {
+    GovernanceCategoryForOrgsInterface,
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils
+} from "../../server-configurations";
 
 /**
  * Class containing app constants.
@@ -247,6 +251,8 @@ export class AppConstants {
             .set("APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications`)
             .set("APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates`)
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
+            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath()
+            }/applications/:id:tabName`)
             .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
             .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
@@ -280,6 +286,8 @@ export class AppConstants {
                     ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
                     :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
             )
+            .set("EVENTS_PATH", `${ AppConstants.getDeveloperViewBasePath() }/events`)
+            .set("EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit`)
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
             .set("LOGIN",  window[ "AppUtils" ]?.getConfig()?.routes.login)
@@ -316,29 +324,31 @@ export class AppConstants {
             .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
             .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`)
             .set("MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account`)
-            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`);
+            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`)
+            .set("VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration`)
+            .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`);
     }
 
     /**
      * Filter governance connectors for the side panel for a sub organization.
 
      * @param governanceConnectorCategories - List of governance connector categories to evaluate.
-     * 
+     *
      * @returns Filtered governance connector categories.
      */
     public static filterGoverananceConnectors(
         governanceConnectorCategories: GovernanceConnectorCategoryInterface[]
     ) : GovernanceConnectorCategoryInterface[] {
-        const showGovernanceConnectorsIdOfSuborgs = [];
+        const showGovernanceConnectorsIdOfSuborgs: string[] = [];
 
         GovernanceConnectorUtils.SHOW_GOVERNANCE_CONNECTORS_FOR_SUBORGS
-            .forEach(connector => {
+            .forEach((connector: GovernanceCategoryForOrgsInterface) => {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
-        for (let i = governanceConnectorCategories.length-1; i >=0 ; i--) {
+        for (let i: number = governanceConnectorCategories.length-1; i >=0 ; i--) {
 
-            const connector = governanceConnectorCategories[i];
+            const connector: GovernanceConnectorCategoryInterface = governanceConnectorCategories[i];
 
             if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
                 governanceConnectorCategories.splice(i,1);
@@ -356,7 +366,7 @@ export class AppConstants {
     /**
      * Error given by server when the user has denied consent.
      */
-    public static readonly USER_DENIED_CONSENT_SERVER_ERROR = "User denied the consent";
+    public static readonly USER_DENIED_CONSENT_SERVER_ERROR: string = "User denied the consent";
 
     /**
      * Set of login errors to be used as search params to toggle unauthorized page appearance.

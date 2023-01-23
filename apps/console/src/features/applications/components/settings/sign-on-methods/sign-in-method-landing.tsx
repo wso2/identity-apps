@@ -69,7 +69,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const eventPublisher = EventPublisher.getInstance();
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     return (
         <Segment basic loading={ isLoading } data-testid={ testId } className="sign-in-method-landing">
@@ -166,6 +166,28 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             "client-id": clientId
                                         });
                                         onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP);
+                                    } }
+                                />
+                            ) }
+                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
+                                <InfoCard
+                                    fluid
+                                    data-testid="sms-otp-mfa-flow-card"
+                                    image={ getAuthenticatorIcons().smsOTP }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
+                                            "client-id": clientId
+                                        } );
+                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
                                     } }
                                 />
                             ) }

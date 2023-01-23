@@ -330,5 +330,25 @@ export class AccessControlConstants {
      * Organization read permission.
      */
     public static readonly ORGANIZATION_ROLES_READ: string = "organization_roles:read";
+    
+    /**
+     * Event configuration read permission
+     */
+    public static readonly EVENT_CONFIG_READ: string = "internal_event_config_view";
+
+    /**
+     * Event configuration write permission
+     */
+    public static readonly EVENT_CONFIG_WRITE: string = "internal_event_config_update";
+
+    /**
+     * EventConfig edit permission
+     */
+    public static readonly EVENT_CONFIG_EDIT: string = "internal_event_config_update";
+    
+    /**
+     * EventConfig delete permission
+     */
+    public static readonly EVENT_CONFIG_DELETE: string = "internal_event_config_update";
 
 }

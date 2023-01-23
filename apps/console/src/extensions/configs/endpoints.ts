@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,14 +17,17 @@
  */
 
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
+import { DeploymentConfigInterface } from "../../features/core";
 
 /**
  * Get the resource endpoints for the extended features.
- *
- * @param {string} serverHost - Server Host.
- * @return {ExtendedFeatureResourceEndpointsInterface}
+ * 
+ * @param serverHost - Server Host.
+ * @returns ExtendedFeatureResourceEndpointsInterface
+ * serverHost - Server Host.
  */
-export const getExtendedFeatureResourceEndpoints = (serverHost: string): ExtendedFeatureResourceEndpointsInterface => {
+export const getExtendedFeatureResourceEndpoints = (_serverHost: string, 
+    _deploymentConfig: DeploymentConfigInterface): ExtendedFeatureResourceEndpointsInterface => {
     
-    return {};
+    return;
 };

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -92,6 +92,7 @@ export interface ServiceResourceEndpointsInterface {
     user: string;
     revoke: string;
     wellKnown: string;
+    validationMgt: string;
 
     /**
      * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}
@@ -115,7 +116,7 @@ export interface ServiceResourceEndpointsInterface {
     /**
      * Documentation {@link https://is.docs.wso2.com/en/5.11.0/develop/configs-rest-api/#/Server%20Configs}
      *
-     * Below {@code homeRealmIdentifiers} is the route that we use to fetch the home realm identifiers
+     * Below homeRealmIdentifiers is the route that we use to fetch the home realm identifiers.
      * from server configurations.
      * @see fetchHomeRealmIdentifiers to see the usages.
      */
@@ -141,7 +142,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Implies whether the profile username attribute
      * dialect is readonly or not. By default the value
-     * is {@code false}.
+     * of code false.
      */
     isProfileUsernameReadonly: boolean;
     /**
@@ -170,31 +171,31 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      showAppSwitchButton?: boolean;
     }
 
+/**
+ * Interface for defining settings and configs of an external app.
+ */
+ interface ExternalAppConfigInterface {
     /**
-     * Interface for defining settings and configs of an external app.
+     * App base path. ex: `/account`, `/admin` etc.
      */
-     interface ExternalAppConfigInterface {
-        /**
-         * App base path. ex: `/account`, `/admin` etc.
-         */
-        basePath: string;
-        /**
-         * Display name for the app.
-         */
-        displayName: string;
-        /**
-         * Access path/URL for the app.
-         */
-        path: string;
-    }
+    basePath: string;
+    /**
+     * Display name for the app.
+     */
+    displayName: string;
+    /**
+     * Access path/URL for the app.
+     */
+    path: string;
+}
+
+/**
+ * Portal Deployment config interface inheriting the common configs from core module.
+ */
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseMode, Storage> {
 
     /**
-     * Portal Deployment config interface inheriting the common configs from core module.
+     * Configs of the Console app.
      */
-    export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseMode, Storage> {
-
-        /**
-         * Configs of the Console app.
-         */
-        consoleApp: ExternalAppConfigInterface;
-    }
+    consoleApp: ExternalAppConfigInterface;
+}

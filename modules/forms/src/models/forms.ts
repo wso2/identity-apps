@@ -145,7 +145,7 @@ export interface RadioField extends FormFieldModel {
  * Checkbox field child model
  */
 export interface CheckboxChild {
-    label: string;
+    label: string | JSX.Element;
     value: string;
     readOnly?: boolean;
     /**

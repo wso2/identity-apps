@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.6.141-SNAPSHOT</version>
+        <version>1.6.188-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -55,6 +55,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>javax.ws.rs</groupId>
@@ -80,6 +81,7 @@
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-multipart</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -121,6 +123,7 @@
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.mgt.endpoint.util</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>

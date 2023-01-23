@@ -115,6 +115,11 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
 
     /**
+     * Value for sign in method tab url.
+     */
+    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
+
+    /**
      * Default application template loading strategy.
      */
     public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =
@@ -216,7 +221,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ]
     };
 
@@ -337,7 +343,9 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.

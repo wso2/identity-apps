@@ -277,10 +277,19 @@ export const myAccount: MyAccountNS = {
                                 "novamente",
                             message: "Alterar erro de senha"
                         },
-                        passwordCaseRequirement: "Pelo menos uma letra maiúscula e minúscula",
-                        passwordCharRequirement: "Pelo menos um dos símbolos !@#$%^&*",
-                        passwordLengthRequirement: "Mais de 8 caracteres",
-                        passwordNumRequirement: "Pelo menos um numero",
+                        invalidNewPassword: {
+                            description: "A senha não atende às restrições exigidas.",
+                            message: "Senha inválida"
+                        },
+                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} " +
+                            "letras minúsculas",
+                        passwordCharRequirement: "Pelo menos {{minSpecialChr}} de caracteres especiais",
+                        passwordLengthRequirement: "Deve ter entre {{min}} e {{max}} caracteres",
+                        passwordLowerCaseRequirement: "Pelo menos {{minLowerCase}} letra(s) minúscula(s)",
+                        passwordNumRequirement: "Pelo menos {{min}} número(s)",
+                        passwordRepeatedChrRequirement: "Não mais que {{repeatedChr}} caracter(es) repetido(s)",
+                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) exclusivo(s)",
+                        passwordUpperCaseRequirement: "Pelo menos {{minUpperCase}} letra(s) maiúscula(s)",
                         submitError: {
                             description: "{{description}}",
                             message: "Alterar erro de senha"
@@ -288,6 +297,16 @@ export const myAccount: MyAccountNS = {
                         submitSuccess: {
                             description: "A senha foi alterada com sucesso",
                             message: "Redefinição de senha bem-sucedida"
+                        },
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Erro de recuperação"
+                            },
+                            genericError: {
+                                description: "Não foi possível recuperar os dados de configuração de validação.",
+                                message: "algo deu errado"
+                            }
                         }
                     }
                 }
@@ -1389,7 +1408,7 @@ export const myAccount: MyAccountNS = {
                         "As alterações da opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. " +
                         "Recomendamos que você os encerre.",
                     primaryAction: "Terminar tudo",
-                    secondaryAction: "Revisar e encerrar"    
+                    secondaryAction: "Revisar e encerrar"
 
                 },
                 terminateAllUserSessionsModal: {

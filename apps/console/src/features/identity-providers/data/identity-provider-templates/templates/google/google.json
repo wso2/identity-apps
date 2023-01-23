@@ -1,5 +1,5 @@
 {
-    "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+    "id": "google-idp",
     "name": "Google",
     "description": "Enable login for users with existing Google accounts.",
     "image": "google",

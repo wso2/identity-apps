@@ -3,7 +3,7 @@
     "description": "Configure a new enterprise identity provider with OpenID Connect",
     "templateGroup": "enterprise-protocols",
     "displayOrder": 4,
-    "id": "oidc-idp",
+    "id": "enterprise-oidc-idp",
     "tags": [ "OIDC" ],
     "idp": {
         "certificate": {},

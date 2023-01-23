@@ -1035,7 +1035,7 @@ export const console: ConsoleNS = {
                                                 tooltips: {
                                                     keyIcon: "රහස්‍ය ලෙස ප්‍රවේශ යතුරු ආරක්ෂිතව ගබඩා කරන්න. " +
                                                         "කොන්දේසි සහිත සත්‍යාපනය සඳහා <1>callChoreo</1> ශ්‍රිතයේ " +
-                                                        "API යතුර රහස් වලට ආදේශ කළ හැකිය.",
+                                                        "consumer key පරාමිතිය රහසකට ආදේශ කළ හැකිය.",
                                                     plusIcon: "ස්ක්‍රිප්ට් එකට එකතු කරන්න"
                                                 }
                                             }
@@ -2770,7 +2770,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "අනුරූප පරිශීලක ගුණාංග අනුපිටපත් විය නොහැක",
                             message: "යාවත්කාලීන දෝෂයකි"
                         },
                         genericError: {
@@ -3162,6 +3162,22 @@ export const console: ConsoleNS = {
                         content: "මකා දැමීමට පෙර මෙම යෙදුම් වලින් සංගම් ඉවත් කරන්න:",
                         header: "මකා දැමිය නොහැක",
                         message: "මෙම අනන්‍යතා සැපයුම්කරු භාවිතා කරන යෙදුම් තිබේ."
+                    }
+                },
+                connectedApps: {
+                    action: "පුරනය වීමේ ක්‍රමය වෙත යන්න",
+                    header: "{{idpName}} හා සබැඳුණු යෙදවුම්.",
+                    subHeader: "{{idpName}} හා සබැඳුණු යෙදවුම් මෙහි දක්වා ඇත.",
+                    placeholders: {
+                        search: "යෙදවුමේ නාමයෙන් සොයන්න",
+                        emptyList: "මේ අවස්ථාවේදී {{idpName}} සමඟ කිසිදු යෙදවුමක් සබැඳී නොමැත."
+                    },
+                    applicationEdit: {
+                        back: "නැවත {{idpName}} වෙත යන්න"
+                    },
+                    genericError: {
+                        description: "සබැඳුනු යෙදවුම් ලබා ගැනීමට යාමේදී දෝෂයක් ඇති වී ඇත.",
+                        message: "යම් දෝෂයක් ඇති වී ඇත"
                     }
                 },
                 dangerZoneGroup: {
@@ -8568,6 +8584,45 @@ export const console: ConsoleNS = {
                         user: "පරිශීලක"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "වලංගුකරණ වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "අවම දිග උපරිම දිගට වඩා අඩු විය යුතුය.",
+                    uniqueChrMismatch: "අද්විතීය අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    consecutiveChrMismatch: "අඛණ්ඩ අක්ෂර ගණන මුරපදයේ අවම දිගට වඩා අඩු විය යුතුය.",
+                    invalidConfig: "ඉහත වින්‍යාසයන් සමඟ මුරපදයක් සෑදිය නොහැක.",
+                    minLimitError: "අවම දිග 8 ට වඩා අඩු විය නොහැක.",
+                    maxLimitError: "උපරිම දිග 30 ට වඩා වැඩි විය නොහැක.",
+                    wrongCombination: "සංයෝජනයට අවසර නැත"
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "මුරපද වලංගුකරණ වින්‍යාසය යාවත්කාලීන කිරීමට අසමත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "මුරපද වලංගු කිරීමේ වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "මුරපද වලංගු වින්‍යාසය",
+                description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
             }
         },
         notifications: {

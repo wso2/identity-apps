@@ -35,6 +35,7 @@ import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
 import { getUserstoreResourceEndpoints } from "../../userstores";
+import { getValidationServiceEndpoints } from "../../validation/configs";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
@@ -135,7 +136,7 @@ export class Config {
     public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
         return {
             backend: {
-                loadPath: (language, namespace) => generateBackendPaths(
+                loadPath: (language: string[], namespace: string[]) => generateBackendPaths(
                     language,
                     namespace,
                     window[ "AppUtils" ]?.getConfig()?.appBase,
@@ -196,9 +197,10 @@ export class Config {
             ...getUserstoreResourceEndpoints(this.resolveServerHost()),
             ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
+            ...getValidationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details

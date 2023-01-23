@@ -386,14 +386,14 @@
                                         <div class="external-login blurring external-login-dimmer">
                                             <div class="field" id="googleSignIn" style="display: none;">
                                                 <button
-                                                    class="ui button fluid"
+                                                    class="ui button secondary fluid"
                                                     onclick="handleNoDomain(this,
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                     id="icon-<%=iconId%>"
                                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
                                                 >
-                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <img role="presentation" class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
                                                 </button>
                                             </div>
@@ -471,7 +471,7 @@
                                                     id="icon-<%=iconId%>"
                                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"
                                                 >
-                                                    <img class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <img role="presentation" class="ui image" src="<%=Encode.forHtmlAttribute(imageURL)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpName)%></span>
                                                 </button>
                                             </div>
@@ -520,7 +520,7 @@
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>">
                                     <i class="usb icon"></i>
-                                    <img src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
+                                    <img role="presentation" src="libs/themes/default/assets/images/icons/fingerprint.svg" alt="Fido Logo" />
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>
@@ -539,7 +539,7 @@
                                         title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
-                                        <img class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
+                                        <img role="presentation" class="ui image" src="libs/themes/default/assets/images/icons/magic-link-icon.svg" alt="Magic Link Logo" />
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link")%>
