@@ -8805,7 +8805,7 @@ export const console: ConsoleNS = {
                         message: "Mise à jour réussie"
                     }
                 },
-                pageTitle: "Configuration de la validation du mot de passe",
+                pageTitle: "Validation du mot de passe",
                 description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
                 goBackToApplication: "Revenir à l'application",
                 goBackToValidationConfig: "Revenir à la sécurité du compte"

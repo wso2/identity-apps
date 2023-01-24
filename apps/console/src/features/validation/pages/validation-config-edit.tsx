@@ -24,8 +24,10 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
+    DocumentationLink,
     EmphasizedSegment,
-    PageLayout
+    PageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
@@ -39,7 +41,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Label, Ref } from "semantic-ui-react";
+import { Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
@@ -69,6 +71,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const dispatch: Dispatch = useDispatch();
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -403,17 +406,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     return (
         <PageLayout
             pageTitle={ t("console:manage.features.validation.pageTitle") }
-            title={
-                (<>
+            title={ (
+                <>
                     { t("console:manage.features.validation.pageTitle") }
-                    <Label size="medium" className="preview-label ml-2">
-                        { t("common:preview") }
-                    </Label>
-                </>)
-            }
-            description={
-                <>{ t("console:manage.features.validation.description") }</>
-            }
+                </>
+            ) }
+            description={ (
+                <>
+                    { t("console:manage.features.validation.description") }
+                    <DocumentationLink
+                        link={ getLink("manage.validation.passwordValidation.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
