@@ -257,7 +257,10 @@ export const AlertIcons = (): {
     };
 };
 
-export const AppSwitcherIcons = (): Record<string, any> => {
+export const AppSwitcherIcons = (): {
+    console: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    myAccount: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+ } => {
     return {
         console: ConsoleIcon,
         myAccount: MyAccountIcon
