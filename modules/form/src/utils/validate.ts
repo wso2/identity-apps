@@ -91,8 +91,13 @@ export const getDefaultValidation = (
  * @returns Corresponding default validation.
  */
 export const getValidation = (
-    value: string | number | any, meta: string | number | any,
-    field: string, required: boolean, fieldType?: string, validation?: (value: string | number | any) => any
+    value: string | number | any,
+    allValues: Record<string, unknown>,
+    meta: string | number | any,
+    field: string,
+    required: boolean,
+    fieldType?: string,
+    validation?: (value: string | number | any, allValues: Record<string, unknown>) => any
 ): any => {
 
     if (!meta.modified) {
@@ -108,13 +113,13 @@ export const getValidation = (
     }
 
     if (validation instanceof Promise) {
-        validation.then(message => {
+        validation(value, allValues).then((message: string) => {
             return message;
         });
     }
 
     if (typeof(validation) === "function") {
-        return validation(value);
+        return validation(value, allValues);
     }
 
     return getDefaultValidation(field, fieldType, value);
