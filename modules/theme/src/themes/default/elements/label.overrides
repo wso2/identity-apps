@@ -147,8 +147,8 @@
     .ui.label {
         &.pointing.above.prompt {
             position: relevant;
-            width: 300px;
-            left: -105px;
+            width: 200px;
+            left: -55px;
         }
     }
 }
