@@ -1182,6 +1182,10 @@
 .organization-breadcrumb-wrapper {
     display: flex;
     align-items: center;
+
+    .organization-name {
+        min-height: 15px;
+    }
 }
 
 .share-organization-placeholder {
@@ -1199,5 +1203,59 @@
             padding-top: 0.5em;
             padding-bottom: 0.5em;
         }
+    }
+}
+
+/*-------------------------------
+     Validation Configurations
+--------------------------------*/
+
+.validation-configurations {
+    &.password-validation-configurations {
+        .validation-configurations-form {
+
+            .criteria {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: center;
+                align-items: baseline;
+                gap: 10px;
+
+                .labelName {
+                    margin-bottom: 20px;
+                    margin-top: 15px;
+                }
+                &.rule {
+                    margin-left: 30px;
+                }
+
+                .ui.form {
+                    .field {
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*-------------------------------
+     Password Generation
+--------------------------------*/
+.generate-password {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: flex-start;
+    gap: 10px;
+
+    .full-width {
+        flex-grow: 1;
+    }
+
+    .ui.button {
+        margin-top: 23px;
     }
 }

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,6 +29,7 @@ import {
     PrimaryButton,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -34,6 +37,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef,
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions/configs/application";
 import {
@@ -46,8 +50,13 @@ import {
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
 } from "../../core";
+import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
-import { OrganizationInterface } from "../../organizations/models";
+import { 
+    OrganizationInterface, 
+    OrganizationListInterface, 
+    OrganizationResponseInterface 
+} from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
@@ -61,7 +70,8 @@ import {
     State,
     SupportedAuthProtocolTypes,
     additionalSpProperty,
-    emptyApplication
+    emptyApplication,
+    idpInfoTypeInterface
 } from "../models";
 import { ApplicationTemplateManagementUtils } from "../utils";
 
@@ -76,7 +86,7 @@ interface ApplicationEditPageInterface extends TestableComponentInterface, Route
  *
  * @param props - Props injected to the component.
  *
- * @returns
+ * @returns Application edit page.
  */
 const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
@@ -88,13 +98,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     } = props;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
-    const applicationHelpShownStatusKey = "isApplicationHelpShown";
+    const applicationHelpShownStatusKey: string = "isApplicationHelpShown";
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const appDescElement = useRef<HTMLDivElement>(null);
+    const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
@@ -103,7 +113,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
+        state.organization.organization);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -119,6 +130,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
+    const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
+    const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
 
     useEffect(() => {
         /**
@@ -160,7 +174,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          *  @see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668
          */
         if (appDescElement || isApplicationRequestLoading) {
-            const nativeElement = appDescElement.current;
+            const nativeElement: HTMLDivElement = appDescElement.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
@@ -200,15 +214,31 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Fetch the application details on initial component load.
      */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname?.split("/");
+        const id: string = path[ path?.length - 1 ];
 
         if (showHelpPanel()) {
             dispatch(toggleHelpPanelVisibility(true));
             setHelpPanelShown();
         }
         getApplication(id);
+
     }, []);
+
+    /**
+    * Fetch the identity provider id & name when calling the app edit through connected apps
+    */
+    useEffect(() => {
+        if (typeof history.location.state !== "object") {
+            return;
+        }
+
+        setisConnectedAppsRedirect(true);    
+        const idpInfo: idpInfoTypeInterface = history.location.state as idpInfoTypeInterface;
+
+        setcallBackIdpID(idpInfo.id);
+        setcallBackIdpName(idpInfo.name);
+    });
 
     /**
      * Load the template that the application is built on.
@@ -305,7 +335,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        const editApplicationDocs = get(helpPanelDocStructure,
+        const editApplicationDocs: PortalDocumentationStructureInterface[] = get(helpPanelDocStructure,
             ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
         if (!editApplicationDocs) {
@@ -335,9 +365,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             null,
             true,
             false
-        ).then((response) => {
+        ).then((response: OrganizationListInterface) => {
             setSubOrganizationList(response.organizations);
-        }).catch((error) => {
+        }).catch((error: IdentityAppsError) => {
             if (error?.description) {
                 dispatch(
                     addAlert({
@@ -371,9 +401,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getSharedOrganizations(
             currentOrganization.id,
             application.id
-        ).then((response) => {
+        ).then((response: AxiosResponse) => {
             setSharedOrganizationList(response.data.organizations);
-        }).catch((error) => {
+        }).catch((error: IdentityAppsApiException) => {
             if (error.response.data.description) {
                 dispatch(
                     addAlert({
@@ -402,12 +432,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const determineApplicationTemplate = () => {
 
-        let template = applicationTemplates.find((template) => template.id === application.templateId);
+        let template: ApplicationTemplateListItemInterface = applicationTemplates
+            .find((template: ApplicationTemplateListItemInterface) => template.id === application.templateId);
 
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates.find((template) => template.id === CustomApplicationTemplate.id);
+            template = applicationTemplates.find((template: ApplicationTemplateListItemInterface) => 
+                template.id === CustomApplicationTemplate.id);
         }
 
         setApplicationTemplate(template);
@@ -441,7 +473,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     );
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -469,7 +501,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("APPLICATIONS"));
+        if (!isConnectedAppsRedirect) {
+            history.push(AppConstants.getPaths().get("APPLICATIONS"));
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
+                state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+            });
+        }
     };
 
     /**
@@ -490,7 +529,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Resolves the application status label.
-     * @returns
+     *
+     * @returns Application status label.
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const resolveApplicationStatusLabel = (): ReactElement => {
@@ -536,7 +576,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     };
 
-    const onApplicationSharingCompleted = useCallback(() => {
+    const onApplicationSharingCompleted: () => void = useCallback(() => {
         getApplication(application.id);
     }, [ getApplication, application ]);
 
@@ -613,7 +653,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:develop.pages.applicationsEdit.backButton")
+                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back", 
+                    { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

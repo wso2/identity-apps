@@ -279,9 +279,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
-            { authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-                return !authenticator?.name.includes(IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR);
-            }).map((authenticator: GenericAuthenticatorInterface, index: number) => (
+            { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
                 <Popup
                     hoverable
                     hideOnScroll

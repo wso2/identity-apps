@@ -19,7 +19,13 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    CopyInputField,
+    ResourceTab,
+    ResourceTabPaneInterface
+} from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
@@ -38,7 +44,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { ComponentExtensionPlaceholder, applicationConfig } from "../../../extensions";
+import { applicationConfig } from "../../../extensions";
 import {
     AppState,
     CORSOriginsListInterface,
@@ -156,7 +162,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
     const [ isApplicationUpdated, setIsApplicationUpdated ] = useState<boolean>(false);
@@ -249,6 +255,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 // Change the tab index to defaultActiveIndex for invalid URL fragments.
                 handleDefaultTabIndexChange(defaultActiveIndex);
             }
+        } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
+            // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
+            const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();
+            const SignInMethodtabIndex: number = renderedTabPanes.indexOf(renderedTabPanes.
+                find((element: {"componentId": string}) =>
+                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG));
+
+            handleActiveTabIndexChange(SignInMethodtabIndex);
         } else {
             // Change the tab index to defaultActiveIndex for invalid URL fragments.
             handleDefaultTabIndexChange(defaultActiveIndex);
@@ -358,23 +372,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
-            component: "application",
-            props: {
-                application: application,
-                content: template.content.quickStart,
-                inboundProtocolConfig: inboundProtocolConfig,
-                inboundProtocols: inboundProtocolList,
-                onApplicationUpdate: () => {
-                    onUpdate(application?.id);
-                },
-                onTriggerTabUpdate: (tabIndex: number) => {
-                    setActiveTabIndex(tabIndex);
-                },
-                template: template
+        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions({
+            application: application,
+            content: template.content.quickStart,
+            inboundProtocolConfig: inboundProtocolConfig,
+            inboundProtocols: inboundProtocolList,
+            onApplicationUpdate: () => {
+                onUpdate(application?.id);
             },
-            subComponent: "edit",
-            type: "tab"
+            onTriggerTabUpdate: (tabIndex: number) => {
+                setActiveTabIndex(tabIndex);
+            },
+            template: template
         });
 
         setTabPaneExtensions(extensions);
@@ -594,7 +603,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
-                hiddenFields={ [ "imageUrl" ] }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 application = { application }
@@ -728,14 +736,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      *
      * @returns Resolved tab panes.
      */
-    const resolveTabPanes = (): any[] => {
-        const panes: any[] = [];
+    const resolveTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
             return [];
         }
 
@@ -743,8 +750,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             && application?.templateId !== CustomApplicationTemplate.id
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            && application?.templateId !== ApplicationManagementConstants.MOBILE) {
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
             panes.push(...tabPaneExtensions);
         }
 
@@ -1045,8 +1051,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-            || application?.templateId === ApplicationManagementConstants.MOBILE)
+            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
             ? (
                 <>
                     <ResourceTab

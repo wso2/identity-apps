@@ -130,6 +130,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userStores: "",
             users: "",
             usersSuperOrganization: "",
+            validationServiceMgt: "",
             wellKnown: ""
         },
         features: {

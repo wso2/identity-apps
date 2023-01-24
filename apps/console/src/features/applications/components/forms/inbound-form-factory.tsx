@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement } from "react";
 import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
@@ -81,14 +81,15 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      */
     isLoading?: boolean;
     setIsLoading?: any;
+    containerRef?: MutableRefObject<HTMLElement>;
 }
 
 /**
  * Inbound protocol form factory.
  *
- * @param {InboundFormFactoryInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns
  */
 export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> = (
     props: InboundFormFactoryInterface
@@ -112,6 +113,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         SAMLCreationOption,
         isLoading,
         setIsLoading,
+        containerRef,
         [ "data-testid" ]: testId
     } = props;
 
@@ -134,6 +136,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     readOnly={ readOnly }
                     template={ template }
                     data-testid={ testId }
+                    containerRef={ containerRef }
                 />
             );
         case SupportedAuthProtocolTypes.OAUTH2_OIDC:
@@ -154,6 +157,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     readOnly={ readOnly }
                     template={ template }
                     data-testid={ testId }
+                    containerRef={ containerRef }
                 />
             );
         case SupportedAuthProtocolTypes.SAML:
@@ -180,6 +184,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
                     data-testid={ testId }
+                    containerRef={ containerRef }
                 />
             );
         case SupportedAuthProtocolTypes.WS_TRUST:

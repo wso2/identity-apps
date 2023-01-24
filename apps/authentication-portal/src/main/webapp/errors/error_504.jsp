@@ -31,7 +31,7 @@
 %>
 
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <%-- header --%>
     <%

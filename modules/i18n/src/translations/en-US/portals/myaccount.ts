@@ -277,10 +277,19 @@ export const myAccount: MyAccountNS = {
                             description: "The current password you entered appears to be invalid. Please try again",
                             message: "Change password error"
                         },
-                        passwordCaseRequirement: "At least one uppercase and lowercase letter",
-                        passwordCharRequirement: "At least one of the symbols !@#$%^&*",
-                        passwordLengthRequirement: "More than 8 characters",
-                        passwordNumRequirement: "At least one number",
+                        invalidNewPassword: {
+                            description: "Password does not satisfy the required constraints.",
+                            message: "Invalid password"
+                        },
+                        passwordCaseRequirement: "At least {{minUpperCase}} uppercase and {{minLowerCase}} " +
+                            "lowercase letters",
+                        passwordCharRequirement: "At least {{minSpecialChr}} of special character(s)",
+                        passwordLengthRequirement: "Must be between {{min}} and {{max}} characters",
+                        passwordLowerCaseRequirement: "At least {{minLowerCase}} lowercase letter(s)",
+                        passwordNumRequirement: "At least {{min}} number(s)",
+                        passwordRepeatedChrRequirement: "No more than {{repeatedChr}} repeated character(s)",
+                        passwordUniqueChrRequirement: "At least {{uniqueChr}} unique character(s)",
+                        passwordUpperCaseRequirement: "At least {{minUpperCase}} uppercase letter(s)",
                         submitError: {
                             description: "{{description}}",
                             message: "Change password error"
@@ -288,6 +297,16 @@ export const myAccount: MyAccountNS = {
                         submitSuccess: {
                             description: "The password has been changed successfully",
                             message: "Password reset successful"
+                        },
+                        validationConfig: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Retrieval error"
+                            },
+                            genericError: {
+                                description: "Couldn't retrieve validation configuration data.",
+                                message: "Something went wrong"
+                            }
                         }
                     }
                 }
@@ -1401,7 +1420,7 @@ export const myAccount: MyAccountNS = {
                         "The second-factor authentication (2FA) option changes will not be applied to your active sessions. We recommend " +
                         "that you terminate them.",
                     primaryAction: "Terminate all",
-                    secondaryAction: "Review and terminate"    
+                    secondaryAction: "Review and terminate"
 
                 },
                 terminateAllUserSessionsModal: {

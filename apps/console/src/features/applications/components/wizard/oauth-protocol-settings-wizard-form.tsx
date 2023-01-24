@@ -34,6 +34,7 @@ import SinglePageApplicationTemplate
 import {
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate,
+    GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MainApplicationInterface,
     OIDCMetadataInterface
@@ -204,7 +205,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         getAuthProtocolMetadata(selectedTemplate.authenticationProtocol)
-            .then((response) => {
+            .then((response: OIDCMetadataInterface) => {
                 setOIDCMeta(response);
             });
     }, [ OIDCMeta ]);
@@ -215,10 +216,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             return;
         }
 
-        const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
+        const allowedGrantTypes: string[] = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
 
         if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0
-            && selectedTemplate.id !== SinglePageApplicationTemplate.id) {
+            && selectedTemplate.id !== SinglePageApplicationTemplate.id
+            && selectedTemplate.id !== ApplicationManagementConstants.MOBILE) {
 
             setShowRefreshToken(true);
         }
@@ -231,7 +233,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @returns Prepared callback URL.
      */
     const buildCallBackUrlWithRegExp = (urls: string): string => {
-        let callbackURL = urls?.replace(/['"]+/g, "");
+        let callbackURL: string = urls?.replace(/['"]+/g, "");
 
         if (callbackURL?.split(",").length > 1) {
             callbackURL = "regexp=(" + callbackURL?.split(",").join("|") + ")";
@@ -306,11 +308,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         } else {
             calBackUrls.push(urls);
         }
-        const normalizedOrigins = calBackUrls?.map(
-            (url) => URLUtils.urlComponents(url)?.origin
+        const normalizedOrigins: string[] = calBackUrls?.map(
+            (url: string) => URLUtils.urlComponents(url)?.origin
         );
 
-        return [ ...new Set(normalizedOrigins.filter(value => allowCORSUrls.includes(value))) ];
+        return [ ...new Set(normalizedOrigins.filter((value:string) => allowCORSUrls.includes(value))) ];
     };
 
     /**
@@ -321,7 +323,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @returns Prepared values.
      */
     const getFormValues = (values: any, urls?: string): Record<string, unknown> => {
-        const config = {
+        const config: Partial<MainApplicationInterface> = {
             inboundProtocolConfiguration: {
                 oidc: { }
             }
@@ -363,7 +365,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @param url - Removing origin.
      */
     const handleRemoveAllowOrigin = (url: string): void => {
-        const allowedURLs = [ ...allowCORSUrls ];
+        const allowedURLs: string[] = [ ...allowCORSUrls ];
 
         if (allowedURLs.includes(url)) {
             allowedURLs.splice(allowedURLs.indexOf(url), 1);
@@ -377,7 +379,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @param url - Allowed origin.
      */
     const handleAddAllowOrigin = (url: string): void => {
-        const allowedURLs = [ ...allowCORSUrls ];
+        const allowedURLs: string[] = [ ...allowCORSUrls ];
 
         allowedURLs.push(url);
         setAllowCORSUrls(allowedURLs);
@@ -391,11 +393,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @returns Allowed Grant Type List
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
-        const allowedList = [];
+        const allowedList: GrantTypeInterface[] = [];
 
         if (metadataProp) {
-            metadataProp.options.map((grant) => {
-                allowedList.push({ label: grant.displayName, value: grant.name });
+            metadataProp.options.map((grant: GrantTypeInterface) => {
+                allowedList.push({ displayName: grant.displayName, name: grant.name });
             });
 
         }
@@ -424,7 +426,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         templateValues
             ? (
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
                                 if (isEmpty(callBackUrls) && isEmpty(url)) {
@@ -459,7 +461,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             children={ getAllowedGranTypeList(OIDCMeta?.allowedGrantTypes) }
                                             value={ templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes }
                                             data-testid={ `${ testId }-grant-type-checkbox-group` }
-                                            listen={ (values) => handleGrantTypeChange(values) }
+                                            listen={ (values: Map<string, FormValue>) => handleGrantTypeChange(values) }
                                         />
                                         <Hint>
                                             {
@@ -479,8 +481,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
                                         }
                                         labelEnabled={ true }
-                                        handleAddAllowedOrigin={ (url) => handleAddAllowOrigin(url) }
-                                        handleRemoveAllowedOrigin={ (url) => handleRemoveAllowOrigin(url) }
+                                        handleAddAllowedOrigin={ (url: string) => handleAddAllowOrigin(url) }
+                                        handleRemoveAllowedOrigin={ (url: string) => handleRemoveAllowOrigin(url) }
                                         tenantDomain={ tenantDomain }
                                         allowedOrigins={ allowCORSUrls }
                                         urlState={ callBackUrls }
@@ -594,9 +596,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                         (callBackUrls === undefined || callBackUrls === "") && (
                                                             <LinkButton
                                                                 className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (e) => {
+                                                                onClick={ (
+                                                                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                                                                ) => {
                                                                     e.preventDefault();
-                                                                    const host = new URL(callBackURLFromTemplate);
+                                                                    const host: URL = new URL(callBackURLFromTemplate);
 
                                                                     handleAddAllowOrigin(host.origin);
                                                                     setCallBackUrls(callBackURLFromTemplate);

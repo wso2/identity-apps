@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -110,7 +110,7 @@ export interface OIDCDataInterface {
     clientId?: string;
     clientSecret?: string;
     state?: State;
-    grantTypes: string[];
+    grantTypes?: string[];
     callbackURLs?: string[];
     allowedOrigins?: string[];
     publicClient?: boolean;
@@ -127,7 +127,6 @@ export interface OIDCDataInterface {
  * Enum for the supported auth protocol types.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedAuthProtocolTypes {
     SAML = "saml",
@@ -142,7 +141,6 @@ export enum SupportedAuthProtocolTypes {
  * Enum for the supported auth protocol names.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedAuthProtocolName {
     SAML = "saml",
@@ -155,7 +153,6 @@ export enum SupportedAuthProtocolName {
  * Enum for the default protocol template ids.
  *
  * @readonly
- * @enum {string}
  */
 export enum DefaultProtocolTemplate {
     SAML = "default-saml",
@@ -168,7 +165,6 @@ export enum DefaultProtocolTemplate {
  * Enum for the supported quick start template types.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedQuickStartTemplateTypes {
     SPA = "spa",
@@ -183,7 +179,6 @@ export enum SupportedQuickStartTemplateTypes {
  * metadata for the following auth protocols.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedAuthProtocolMetaTypes {
     SAML = "saml",
@@ -426,7 +421,6 @@ export interface OIDCEndpointsInterface {
  * Enum for the access token binding types.
  *
  * @readonly
- * @enum {string}
  */
 export enum SupportedAccessTokenBindingTypes {
     NONE = "None"
@@ -436,7 +430,6 @@ export enum SupportedAccessTokenBindingTypes {
  * Enum for the SAML configuration modes.
  *
  * @readonly
- * @enum {string}
  */
 export enum SAMLConfigModes {
     MANUAL = "manualConfiguration",

@@ -151,8 +151,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param identityProvider Identity provider object.
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
-        // TODO Uncomment below once BE support is available for templateId
-        // identityProvider.templateId = template.id
+
+        identityProvider.templateId = template.templateId;
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)

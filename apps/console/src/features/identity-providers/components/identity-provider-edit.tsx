@@ -17,7 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, ResourceTab } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    EmphasizedSegment,
+    ResourceTab,
+    ResourceTabPaneInterface
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -29,12 +34,13 @@ import {
     AdvanceSettings,
     AttributeSettings,
     AuthenticatorSettings,
+    ConnectedApps,
     GeneralSettings,
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { ComponentExtensionPlaceholder, identityProviderConfig } from "../../../extensions";
-import { IdentityProviderManagementConstants } from "../constants";
+import { identityProviderConfig } from "../../../extensions";
+import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
@@ -63,8 +69,8 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     onUpdate: (id: string) => void;
     /**
- * Check if IDP is Google
- */
+     * Check if IDP is Google
+     */
     isGoogle: boolean;
     /**
      * Check if the requesting IDP is enterprise
@@ -87,9 +93,17 @@ interface EditIdentityProviderPropsInterface extends TestableComponentInterface 
      */
     type: string;
     /**
-    * Specifies if the component should only be read-only.
-    */
+     * Specifies if the component should only be read-only.
+     */
     isReadOnly: boolean;
+    /**
+     * Specifies if it is needed to redirect to a specific tabindex
+     */
+    isAutomaticTabRedirectionEnabled?: boolean;
+    /**
+     * Specifies, to which tab(tabid) it need to redirect.
+     */
+    tabIdentifier?: string;
 }
 
 /**
@@ -113,13 +127,15 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         isTabExtensionsAvailable,
         type,
         isReadOnly,
+        isAutomaticTabRedirectionEnabled,
+        tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
 
-    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<any>(0);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
 
-    const isOrganizationEnterpriseAuthenticator = identityProvider.federatedAuthenticators
+    const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
@@ -251,6 +267,18 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const ConnectedAppsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <ConnectedApps
+                editingIDP={ identityProvider }
+                isReadOnly={ isReadOnly }
+                isLoading={ isLoading }
+                loader={ Loader }
+                data-componentid={ `${ testId }-connected-apps-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+
     useEffect(() => {
         if (tabPaneExtensions) {
             return;
@@ -260,16 +288,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             return;
         }
 
-        const extensions: any[] = ComponentExtensionPlaceholder({
-            component: "identityProvider",
-            props: {
+        const extensions: ResourceTabPaneInterface[] = identityProviderConfig
+            .editIdentityProvider.getTabExtensions({
                 content: template.content.quickStart,
                 identityProvider: identityProvider,
                 template: template
-            },
-            subComponent: "edit",
-            type: "tab"
-        });
+            });
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
@@ -286,18 +310,20 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     ]);
 
     const getPanes = () => {
-        const panes = [];
+        const panes: ResourceTabPaneInterface[] = [];
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
             panes.push(...tabPaneExtensions);
         }
 
         panes.push({
+            "data-tabid": IdentityProviderConstants.GENERAL_TAB_ID,
             menuItem: "General",
             render: GeneralIdentityProviderSettingsTabPane
         });
 
         !isOrganizationEnterpriseAuthenticator && panes.push({
+            "data-tabid": IdentityProviderConstants.SETTINGS_TAB_ID,
             menuItem: "Settings",
             render: AuthenticatorSettingsTabPane
         });
@@ -310,20 +336,29 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
          * {@link apps/console/src/extensions#} configs folder and
          * models folder for types. identity-provider.ts
          */
-        const attributesForSamlEnabled = isSaml && identityProviderConfig.editIdentityProvider.attributesSettings;
+        const attributesForSamlEnabled: boolean = isSaml &&
+            identityProviderConfig.editIdentityProvider.attributesSettings;
 
         // Evaluate whether to Show/Hide `Attributes`.
         if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.ATTRIBUTES_TAB_ID,
                 menuItem: "Attributes",
                 render: AttributeSettingsTabPane
             });
         }
 
+        panes.push({
+            "data-tabid": IdentityProviderConstants.CONNECTED_APPS_TAB_ID,
+            menuItem: "Connected Apps",
+            render: ConnectedAppsTabPane
+        });
+
         if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
             && !isOrganizationEnterpriseAuthenticator ) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.OUTBOUND_PROVISIONING_TAB_ID,
                 menuItem: "Outbound Provisioning",
                 render: OutboundProvisioningSettingsTabPane
             });
@@ -332,6 +367,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if (identityProviderConfig.editIdentityProvider.showJitProvisioning
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.JIT_PROVISIONING_TAB_ID,
                 menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
                 render: JITProvisioningSettingsTabPane
             });
@@ -340,6 +376,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
+                "data-tabid": IdentityProviderConstants.ADVANCED_TAB_ID,
                 menuItem: "Advanced",
                 render: AdvancedSettingsTabPane
             });
@@ -353,7 +390,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
      *
      * @param type - IDP Type.
      *
-     * @returns Boolean value 
+     * @returns Should show attribute settings or not.
      */
     const shouldShowAttributeSettings = (type: string): boolean => {
 
@@ -376,9 +413,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             data-testid={ `${ testId }-resource-tabs` }
             panes={ getPanes() }
             defaultActiveIndex={ defaultActiveIndex }
-            onTabChange={ (e, data: TabProps ) => {
+            onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps ) => {
                 setDefaultActiveIndex(data.activeIndex);
             } }
+            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+            tabIdentifier={ tabIdentifier }
         />
     );
 };

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * The action types of the totp post endpoint
@@ -34,14 +34,15 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 enum PostTOTPActions {
     VALIDATE = "VALIDATE",
     INIT = "INIT",
-    REFRESH = "REFRESH"
+    REFRESH = "REFRESH",
+    VIEW = "VIEW",
 }
 
 /**
  * This API is used to retrieve the QR code URL of the authenticated user.
  */
 export const getTotpQrCode = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
@@ -51,24 +52,24 @@ export const getTotpQrCode = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. Server returned ${response.status}.`);
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
 
 /**
  * Validate the user-entered verification code
- * @param code The verification code
+ * @param code - The verification code
  */
 export const validateTOTPCode = (code: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             action: PostTOTPActions.VALIDATE,
             verificationCode: code
@@ -82,14 +83,14 @@ export const validateTOTPCode = (code: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -98,7 +99,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
  * Refresh TOTP secret key of the authenticated user
  */
 export const refreshTOTPCode = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             action: PostTOTPActions.REFRESH
         },
@@ -111,14 +112,14 @@ export const refreshTOTPCode = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             } else {
                 return Promise.resolve(response);
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -127,7 +128,7 @@ export const refreshTOTPCode = (): Promise<any> => {
  * Generate TOTP QR code URL for the authenticated user
  */
 export const initTOTPCode = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             action: PostTOTPActions.INIT
         },
@@ -140,14 +141,43 @@ export const initTOTPCode = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * View TOTP QR code for the authenticated user
+ */
+export const viewTOTPCode = (): Promise<any> => {
+    const requestConfig: HttpRequestConfig = {
+        data: {
+            action: PostTOTPActions.VIEW
+        },
+        headers: {
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.totp
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -156,7 +186,7 @@ export const initTOTPCode = (): Promise<any> => {
  * This API is used to delete the TOTP credentials of the authenticated user.
  */
 export const deleteTOTP = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
@@ -166,14 +196,14 @@ export const deleteTOTP = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -182,7 +212,7 @@ export const deleteTOTP = (): Promise<any> => {
  * This API is used to retrieve the TOTP secret of the authenticated user.
  */
 export const getTOTPSecret = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
@@ -192,14 +222,14 @@ export const getTOTPSecret = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -208,7 +238,7 @@ export const getTOTPSecret = (): Promise<any> => {
  * This API is used to check if the TOTP secret key is added for the user
  */
 export const checkIfTOTPEnabled = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -218,11 +248,11 @@ export const checkIfTOTPEnabled = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
-            const totpEnabled = response?.["data"]?.[SCIMConfigs.scim.customEnterpriseSchema]?.["totpEnabled"];
+            const totpEnabled: string = response?.["data"]?.[SCIMConfigs.scim.customEnterpriseSchema]?.["totpEnabled"];
 
             if (totpEnabled && totpEnabled == "true") {
                 return true;
@@ -230,7 +260,7 @@ export const checkIfTOTPEnabled = (): Promise<any> => {
                 return false;
             }
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };

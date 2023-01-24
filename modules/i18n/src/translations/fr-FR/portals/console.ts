@@ -1038,9 +1038,9 @@ export const console: ConsoleNS = {
                                                 search: "Recherche par nom secret",
                                                 tooltips: {
                                                     keyIcon: "Stockez en toute sécurité les clés d'accès en tant que " +
-                                                        "secrets. Les secrets peuvent remplacer la clé API dans la " +
-                                                        "fonction <1>callChoreo</1> pour l'authentification " +
-                                                        "conditionnelle.",
+                                                        "secrets. Les secrets peuvent remplacer le secret du " +
+                                                        "consommateur dans la fonction <1>callChoreo</1> pour " +
+                                                        "l'authentification conditionnelle.",
                                                     plusIcon: "Ajouter au script"
                                                 }
                                             }
@@ -2842,7 +2842,7 @@ export const console: ConsoleNS = {
                     },
                     updateClaimConfig: {
                         error: {
-                            description: "{{description}}",
+                            description: "Les attributs utilisateur mappés ne peuvent pas être dupliqués.",
                             message: "Erreur de mise à jour"
                         },
                         genericError: {
@@ -3249,6 +3249,22 @@ export const console: ConsoleNS = {
                         content: "Supprimez les associations de ces applications avant de supprimer:",
                         header: "Impossible de supprimer",
                         message: "Il existe des applications utilisant ce fournisseur d'identité."
+                    }
+                },
+                connectedApps: {
+                    action: "Aller à la méthode de connexion",
+                    header: "Applications connectées de {{idpName}}",
+                    subHeader: "Les applications connectées à {{idpName}} sont listées ici.",
+                    placeholders: {
+                        search: "Rechercher par nom d'application",
+                        emptyList: "Il n'y a pas d'applications connectées à {{idpName}} pour le moment."
+                    },
+                    applicationEdit: {
+                        back: "Revenir à {{idpName}}"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la tentative de récupération des applications connectées.",
+                        message: "Erreur est survenue."
                     }
                 },
                 dangerZoneGroup: {
@@ -8752,6 +8768,47 @@ export const console: ConsoleNS = {
                         user: "Utilisateurs"
                     }
                 }
+            },
+            validation: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de récupération"
+                    },
+                    genericError: {
+                        description: "Impossible de récupérer les données de configuration de validation.",
+                        message: "Quelque chose s'est mal passé"
+                    }
+                },
+                validationError: {
+                    minMaxMismatch: "La longueur minimale doit être inférieure à la longueur maximale.",
+                    uniqueChrMismatch: "Le nombre de caractères uniques doit être inférieur à la longueur " +
+                        "minimale du mot de passe.",
+                    consecutiveChrMismatch: "Le nombre de caractères consécutifs doit être inférieur à la " +
+                        "longueur minimale du mot de passe.",
+                    invalidConfig: "Impossible de créer un mot de passe avec les configurations ci-dessus.",
+                    minLimitError: "La longueur minimale ne peut pas être inférieure à 8.",
+                    maxLimitError: "La longueur maximale ne peut pas être supérieure à 30.",
+                    wrongCombination: "La combinaison n'est pas autorisée"
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de mise à jour"
+                    },
+                    genericError: {
+                        description: "Échec de la mise à jour de la configuration de validation du mot de passe.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Configuration de la validation du mot de passe mise à jour avec succès.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                pageTitle: "Configuration de la validation du mot de passe",
+                description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
+                goBackToApplication: "Revenir à l'application",
+                goBackToValidationConfig: "Revenir à la sécurité du compte"
             }
         },
         notifications: {
