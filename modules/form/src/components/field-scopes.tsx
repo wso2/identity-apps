@@ -90,7 +90,7 @@ export const FieldScopes = (props: FieldInputPropsInterface): ReactElement => {
                 parse={ <T = any>(value: T) => value }
                 component={ ScopeFieldAdapter }
                 validate={ (value: any, meta: Record<string, unknown>) =>
-                    getValidation(value, meta, "text", props.required, inputType, validation)
+                    getValidation(value, null, meta, "text", props.required, inputType, validation)
                 }
                 defaultValue={ defaultValue }
                 hint={ hint }
