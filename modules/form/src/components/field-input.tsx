@@ -89,8 +89,8 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ (value: any) => value }
                     component={ PasswordFieldAdapter }
-                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                        getValidation(value, meta, "password", props.required, inputType, validation)
+                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                        getValidation(value, allValues, meta, "password", props.required, inputType, validation)
                     }
                     { ...rest }
                 />
@@ -103,8 +103,8 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ (value: any) => value }
                     component={ CopyFieldAdapter }
-                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                        getValidation(value, meta, "text", props.required, inputType, validation)
+                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                        getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }
                     { ...rest }
                 />
@@ -117,8 +117,8 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ (value: any) => value }
                     component={ TextFieldAdapter }
-                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                        getValidation(value, meta, "text", props.required, inputType, validation)
+                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                        getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }
                     { ...rest }
                 />
@@ -131,8 +131,8 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ (value: any) => value }
                     component={ TextFieldAdapter }
-                    validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                        getValidation(value, meta, "text", props.required, inputType, validation)
+                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                        getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }
                     { ...props }
                 />

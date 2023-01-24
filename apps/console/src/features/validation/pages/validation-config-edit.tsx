@@ -471,17 +471,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minLength"
                                                             inputType="number"
                                                             name="minLength"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
+                                                                const min: number = ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
-                                                                }
+                                                                    .PASSWORD_MIN_VALUE;
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                if (numValue < min) {
+                                                                    return t("common:minValidation", { min });
+                                                                }
+                                                                const max: number = allValues.maxLength
+                                                                    ? parseInt(allValues.maxLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -535,20 +538,24 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="maxLength"
                                                             inputType="number"
                                                             name="maxLength"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
-                                                                }
-
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const min: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
+                                                                        .PASSWORD_MIN_VALUE;
+
+                                                                if (numValue < min) {
+                                                                    return t("common:minValidation", { min });
+                                                                }
+
+                                                                const max: number = ValidationConfigConstants
+                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                                                    .PASSWORD_MAX_VALUE;
 
                                                                 if (numValue > max) {
                                                                     return t("common:maxValidation", { max });
@@ -613,17 +620,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minNumbers"
                                                             inputType="number"
                                                             name="minNumbers"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
+                                                                const min: number = ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
+                                                                    .MIN_VALUE;
+
+                                                                if (numValue < min ) {
+                                                                    return t("common:minValidation", { min });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -681,17 +692,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minUpperCaseCharacters"
                                                             inputType="number"
                                                             name="minUpperCaseCharacters"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
+                                                                const min: number = ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
+                                                                    .MIN_VALUE;
+
+                                                                if (numValue < min) {
+                                                                    return t("common:minValidation", { min });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -750,17 +765,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minLowerCaseCharacters"
                                                             inputType="number"
                                                             name="minLowerCaseCharacters"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
+                                                                const min: number = ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
+                                                                    .MIN_VALUE;
+
+                                                                if (numValue < min) {
+                                                                    return t("common:minValidation", { min });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -819,17 +838,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minSpecialCharacters"
                                                             inputType="number"
                                                             name="minSpecialCharacters"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
-
-                                                                if (numValue < ValidationConfigConstants
+                                                                const min: number = ValidationConfigConstants
                                                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE) {
-                                                                    return t("common:minValidation", { min: 1 });
+                                                                    .MIN_VALUE;
+
+                                                                if (numValue < min) {
+                                                                    return t("common:minValidation", { min });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -905,15 +928,18 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="minUniqueCharacters"
                                                             inputType="number"
                                                             name="minUniqueCharacters"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
 
                                                                 if (numValue < 1) {
                                                                     return t("common:minValidation", { min: 1 });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
@@ -994,15 +1020,18 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                             ariaLabel="maxConsecutiveCharacters"
                                                             inputType="number"
                                                             name="maxConsecutiveCharacters"
-                                                            validation={ (value: string): string | undefined => {
+                                                            validation={ (
+                                                                value: string,
+                                                                allValues: Record<string, unknown>
+                                                            ): string | undefined => {
                                                                 const numValue: number = parseInt(value);
 
                                                                 if (numValue < 1) {
                                                                     return t("common:minValidation", { min: 1 });
                                                                 }
 
-                                                                const max: number = currentValues.minLength
-                                                                    ? parseInt(currentValues.minLength)
+                                                                const max: number = allValues.minLength
+                                                                    ? parseInt(allValues.minLength as string)
                                                                     : ValidationConfigConstants
                                                                         .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                                                         .PASSWORD_MAX_VALUE;
