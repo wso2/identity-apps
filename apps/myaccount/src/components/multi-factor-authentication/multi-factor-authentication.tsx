@@ -57,7 +57,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser: string =
