@@ -57,7 +57,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser: string =
@@ -215,6 +215,10 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         </List.Item>
                     ) : null }
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
+                    ) &&
                     isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
                     ? (
                         <>
