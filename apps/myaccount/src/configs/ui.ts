@@ -35,7 +35,7 @@ import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
 import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
-import ConsoleIcon from "../themes/default/assets/images/icons/console-icon.svg";
+import { ReactComponent as ConsoleIcon } from "../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
@@ -47,7 +47,7 @@ import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icon
 import { ReactComponent as KeyboardIcon } from "../themes/default/assets/images/icons/keyboard.svg";
 import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
-import MyAccountIcon from "../themes/default/assets/images/icons/myaccount-icon.svg";
+import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
 import {
@@ -262,7 +262,7 @@ export const AppSwitcherIcons = (): {
     myAccount: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
     return {
-        console: ConsoleIcon,
+        console: ConsoleIcon as React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
         myAccount: MyAccountIcon
     };
 };
