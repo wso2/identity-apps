@@ -452,7 +452,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     <Form
                                         id={ FORM_ID }
                                         uncontrolledForm={ false }
-                                        onSubmit={ (values: any): void => {
+                                        onSubmit={ (values: Record<string, any>): void => {
                                             onSubmit(values);
                                         } }
                                         data-testid={ testId }
