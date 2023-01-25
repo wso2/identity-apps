@@ -18,8 +18,9 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { EditSection, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, 
 {
     FunctionComponent, 
@@ -34,6 +35,7 @@ import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { Grid, Icon, List, Modal } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core";
+import { PatchRoleDataInterface } from "../../roles";
 import { 
     ConnectorPropertyInterface, 
     GovernanceConnectorInterface,
@@ -152,7 +154,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         setPasswordResetOption("setPassword");
     };
 
-    const passwordResetOptions: any = [
+    const passwordResetOptions: RadioChild[] = [
         {
             label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.setPassword"),
             value: "setPassword"
@@ -204,7 +206,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
-        const data: any = {
+        const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "add",
@@ -235,7 +237,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             handleCloseChangePasswordModal();
             handleUserUpdate(user.id);
         })
-            .catch((error: any) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     onAlertFired({
                         description: error.response.data.description,
@@ -371,7 +373,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const handleChangeUserPassword = (values: Map<string, string | string[]>): void => {
 
-        const data: any = {
+        const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
