@@ -86,8 +86,8 @@ export const FieldDropdown = (props: FieldDropdownPropsInterface): ReactElement 
                 name={ props.name }
                 parse={ (value: any) => value }
                 component={ SelectAdapter }
-                validate={ (value: any, _allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                    getValidation(value, meta, props.type, props.required)
+                validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
+                    getValidation(value, allValues, meta, props.type, props.required)
                 }
                 { ...rest }
             />
