@@ -464,6 +464,7 @@ export interface MyAccountNS {
                     subHeading: string;
                     warn: string;
                 },
+                mutedHeader: string;
                 notifications: {
                     deleteError: {
                         error: NotificationItem;
@@ -494,7 +495,8 @@ export interface MyAccountNS {
                         genericError: NotificationItem;
                     };
 
-                }
+                },
+                remaining: string;
             }
         };
         loginVerifyData: {

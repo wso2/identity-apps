@@ -718,8 +718,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Régénérer"
             },
             backupCode: {
-                description: "Vous pouvez utiliser des codes de secours pour vous connecter si vous "
-                    + "ne pouvez pas recevoir de code de vérification via l'application d'authentification.",
+                description: "Utilisez des codes de secours pour accéder à votre compte au cas où vous ne pourriez pas " +
+                    "recevoir de codes d'authentification multifacteur. Vous pouvez régénérer de nouveaux codes si nécessaire.",
                 download: {
                     heading: "ENREGISTREZ VOS CODES DE SECOURS.",
                     info1: "Vous ne pouvez utiliser chaque code de secours qu'une seule fois.",
@@ -754,6 +754,7 @@ export const myAccount: MyAccountNS = {
                     warn: "Ces codes n'apparaîtront qu'une seule fois. Assurez-vous de les enregistrer "
                         + "maintenant et de les stocker dans un endroit sûr mais accessible."
                 },
+                mutedHeader: "Options de récupération",
                 notifications: {
                     deleteError: {
                         error: {
@@ -829,7 +830,8 @@ export const myAccount: MyAccountNS = {
                             message: "Quelque chose s'est mal passé"
                         }
                     }
-                }
+                },
+                remaining: "restant"
             },
             fido: {
                 description: "Vous pouvez utiliser une clé de sécurité FIDO2 ou des données biométriques" +

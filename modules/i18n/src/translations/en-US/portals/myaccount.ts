@@ -699,8 +699,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerate"
             },
             backupCode: {
-                description: "Use backup codes when you don’t have access to your authenticator app. You can " +
-                    "regenerate new codes if required.",
+                description: "Use backup codes to access your account in the event you cannot receive multi-factor " +
+                    "authentication codes. You can regenerate new codes if required.",
                 download: {
                     heading: "Backup codes for {{productName}}",
                     info1: "You can only use each backup code once.",
@@ -732,6 +732,7 @@ export const myAccount: MyAccountNS = {
                     warn: "These codes will appear only once. Be sure to save them now and store "
                         + "them somewhere safe but accessible."
                 },
+                mutedHeader: "Recovery Options",
                 notifications: {
                     deleteError: {
                         error: {
@@ -803,7 +804,8 @@ export const myAccount: MyAccountNS = {
                             message: "Something went wrong"
                         }
                     }
-                }
+                },
+                remaining: "remaining"
             },
             fido: {
                 description: "You can use a FIDO2 security key or biometrics in " +

@@ -1,0 +1,35 @@
+<!--
+/**
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="22px" viewBox="0 0 600 926" class="icon">
+  <g id="backup-code-icon" transform="translate(17725 16358)">
+    <path id="Union_218" data-name="Union 218" d="M408,319V238h0c0-.167,0-.332,0-.5C408,142.934,331.289,66,237,66S66,142.934,66,237.5v.063c0,.146,0,.29,0,.437h0v81H-7V234h.025a246.57,246.57,0,0,1,4.932-45.775A243.776,243.776,0,0,1,409.534,64.613a244.922,244.922,0,0,1,52.291,77.717,243.652,243.652,0,0,1,14.217,45.9A246.572,246.572,0,0,1,480.975,234H481v85Z" transform="translate(-17662 -16351)" fill="#d2d2d2"/>
+    <rect id="Rectangle_1290" data-name="Rectangle 1290" width="600" height="600" rx="31" transform="translate(-17725 -16032)" fill="#969595"/>
+    <rect id="Rectangle_1291" data-name="Rectangle 1291" width="132" height="132" rx="16" transform="translate(-17666 -15976)" fill="#ff7300"/>
+    <rect id="Rectangle_1292" data-name="Rectangle 1292" width="132" height="132" rx="16" transform="translate(-17667 -15798)" fill="#e0e0e0"/>
+    <rect id="Rectangle_1293" data-name="Rectangle 1293" width="132" height="132" rx="16" transform="translate(-17666 -15620)" fill="#fff"/>
+    <rect id="Rectangle_1294" data-name="Rectangle 1294" width="132" height="132" rx="16" transform="translate(-17491 -15976)" fill="#e0e0e0"/>
+    <rect id="Rectangle_1295" data-name="Rectangle 1295" width="132" height="132" rx="16" transform="translate(-17492 -15798)" fill="#fff"/>
+    <rect id="Rectangle_1296" data-name="Rectangle 1296" width="132" height="132" rx="16" transform="translate(-17491 -15620)" fill="#e0e0e0"/>
+    <rect id="Rectangle_1297" data-name="Rectangle 1297" width="132" height="132" rx="16" transform="translate(-17316 -15976)" fill="#fff"/>
+    <rect id="Rectangle_1298" data-name="Rectangle 1298" width="132" height="132" rx="16" transform="translate(-17317 -15798)" fill="#e0e0e0"/>
+    <rect id="Rectangle_1299" data-name="Rectangle 1299" width="132" height="132" rx="16" transform="translate(-17316 -15620)" fill="#e0e0e0"/>
+  </g>
+</svg>
