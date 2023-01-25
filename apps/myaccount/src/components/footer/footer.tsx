@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { CookieStorageUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     FooterLinkInterface,
@@ -24,7 +25,7 @@ import {
     FooterPropsInterface as ReusableFooterPropsInterface
 } from "@wso2is/react-components";
 import * as moment from "moment";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../../constants";
@@ -61,6 +62,14 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    useEffect(() => {
+        const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
+
+        if (localeCookie) {
+            handleLanguageSwitch(localeCookie.replace("_", "-"));
+        }
+    }, []);
+
     /**
      * Handles language switch action.
      * @param language - Selected language.
@@ -68,9 +77,45 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
     const handleLanguageSwitch = (language: string): void => {
         moment.locale(language ?? "en");
         I18n.instance.changeLanguage(language)
-            .catch((error) => {
+            .catch((error: string | Record<string, unknown>) => {
                 throw new LanguageChangeException(language, error);
             });
+
+        const cookieSupportedLanguage: string = language.replace("-", "_");
+        const domain: string = ";domain=" + extractDomainFromHost();
+        const cookieExpiryTime: number = 30;
+        const expires: string = "; expires=" + new Date().setTime(cookieExpiryTime * 24 * 60 * 60 * 1000);
+        const cookieString: string = "ui_lang=" + (cookieSupportedLanguage || "")  + expires + domain + "; path=/";
+
+        CookieStorageUtils.setItem(cookieString);
+    };
+
+    /**
+     * Extracts the domain from the hostname.
+     * If parsing fails, undefined will be returned.
+     *
+     * @returns current domain
+     */
+    const extractDomainFromHost = (): string => {
+
+        let domain: string = undefined;
+
+        /**
+         * Extract the domain from the hostname.
+         * Ex: If console.wso2-is.com is parsed, `wso2-is.com` will be set as the domain.
+         */
+        try {
+            const hostnameTokens: string[] = window.location.hostname.split(".");
+
+            if (hostnameTokens.length > 1) {
+                domain = hostnameTokens.slice((hostnameTokens.length - 2), hostnameTokens.length).join(".");
+            }
+        } catch (e) {
+            // Couldn't parse the hostname. Log the error in debug mode.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        return domain;
     };
 
     /**
