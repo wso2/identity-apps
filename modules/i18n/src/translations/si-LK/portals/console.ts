@@ -8619,7 +8619,7 @@ export const console: ConsoleNS = {
                         message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                     }
                 },
-                pageTitle: "මුරපද වලංගු වින්‍යාසය",
+                pageTitle: "මුරපදය වලංගු කිරීම",
                 description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
                 goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"

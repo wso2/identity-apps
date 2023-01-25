@@ -10268,7 +10268,7 @@ export const console: ConsoleNS = {
                         message: "Update successful"
                     }
                 },
-                pageTitle: "Password validation configuration",
+                pageTitle: "Password Validation",
                 description: "Customize password validation rules for your users.",
                 goBackToApplication: "Go back to application",
                 goBackToValidationConfig: "Go back to Account Security"
