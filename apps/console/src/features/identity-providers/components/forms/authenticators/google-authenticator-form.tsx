@@ -200,7 +200,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 .find((meta) => meta.key === value.key);
 
             /**
-            * Parsing string  to boolean only for Google One Tap value
+            * Parsing string  to boolean only for Google One Tap value.
             */
             let localValue : any;
 
@@ -632,4 +632,3 @@ GoogleAuthenticatorForm.defaultProps = {
     "data-testid": "google-authenticator-form",
     enableSubmitButton: true
 };
-

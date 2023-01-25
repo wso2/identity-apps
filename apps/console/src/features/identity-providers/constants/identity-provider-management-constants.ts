@@ -199,7 +199,7 @@ export class IdentityProviderManagementConstants {
     };
 
     /**
-     * Google One Tap enabling request parameter
+     * Google One Tap enabling request parameter.
      */
     public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
 

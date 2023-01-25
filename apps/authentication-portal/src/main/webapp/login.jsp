@@ -18,11 +18,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
-<%@ page import="org.apache.commons.collections.CollectionUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.model.ExternalIdPConfig" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
@@ -360,7 +356,7 @@
                                     </div>
                                     <br>
                                 <% } else { %>
-                                    <% if (StringUtils.equals(idpEntry.getValue(),GOOGLE_AUTHENTICATOR)) {
+                                    <% if (GOOGLE_AUTHENTICATOR.equals(idpEntry.getValue())) {
                                             isGoogleIdp = true;
                                             IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
                                             List<String> configKeys = new ArrayList<>();
@@ -374,9 +370,7 @@
                                                     GOOGLE_CLIENT_ID = idpConfigMap.get("ClientId");
                                                     GOOGLE_CALLBACK_URL = idpConfigMap.get("callbackUrl");
                                                     String oneTapEnabledString = idpConfigMap.get("IsGoogleOneTapEnabled");
-                                                    if (StringUtils.isNotEmpty(oneTapEnabledString)) {
-                                                        GOOGLE_ONE_TAP_ENABLED = oneTapEnabledString.equals("true");
-                                                   }
+                                                    GOOGLE_ONE_TAP_ENABLED = Boolean.parseBoolean(oneTapEnabledString);
                                                 }
                                             } catch (IdentityProviderDataRetrievalClientException e) {
                                                 // Exception is ignored
@@ -435,7 +429,7 @@
                                                     }
 
                                                     if (restrictedBrowsersForGOT !== null
-                                                        && restrictedBrowsersForGOT !== ''
+                                                        && restrictedBrowsersForGOT.trim() !== ''
                                                         && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
                                                         document.getElementById("googleSignIn").style.display = "block";
                                                     } else {
