@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,25 +13,41 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
- * under the License
+ * under the License.
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
+import { EditSection, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import React, 
+{
+    FunctionComponent, 
+    LazyExoticComponent, 
+    ReactElement, 
+    ReactNode, 
+    Suspense, 
+    useEffect, 
+    useState 
+} from "react";
 import { useTranslation } from "react-i18next";
+import PasswordStrengthBar from "react-password-strength-bar";
 import { Grid, Icon, List, Modal } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "../../server-configurations";
+import { 
+    ConnectorPropertyInterface, 
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorDetails
+} from "../../server-configurations";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores";
 import { updateUserInfo } from "../api";
 
 /**
  * import pass strength bat dynamically.
  */
-const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
+const PasswordMeter: LazyExoticComponent<typeof PasswordStrengthBar> = React.lazy(
+    () => import("react-password-strength-bar"));
 
 /**
  * Prop types for the change user password component.
@@ -70,8 +86,8 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
 /**
  * Change user password component.
  *
- * @param {ChangePasswordPropsInterface} props - Props injected to the change user password component.
- * @return {ReactElement}
+ * @param props - Props injected to the change user password component.
+ * @returns ChangePasswordComponent
  */
 export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInterface> = (
     props: ChangePasswordPropsInterface
@@ -136,7 +152,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         setPasswordResetOption("setPassword");
     };
 
-    const passwordResetOptions = [
+    const passwordResetOptions: any = [
         {
             label: t("console:manage.features.user.modals.changePasswordModal.passwordOptions.setPassword"),
             value: "setPassword"
@@ -148,7 +164,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     ];
 
     const resolveConfigurationList = (governanceConnectorProperties: ConnectorPropertyInterface[]): ReactNode => {
-        return governanceConnectorProperties?.map((property, index) => {
+        return governanceConnectorProperties?.map((property: ConnectorPropertyInterface, index: number) => {
             if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
                 && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
                 && property?.name !== ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME
@@ -188,7 +204,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
-        const data = {
+        const data: any = {
             "Operations": [
                 {
                     "op": "add",
@@ -199,7 +215,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     }
                 }
             ],
-            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);
@@ -219,7 +235,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             handleCloseChangePasswordModal();
             handleUserUpdate(user.id);
         })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     onAlertFired({
                         description: error.response.data.description,
@@ -313,47 +329,49 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value=""
-                                validation={ (value: string, validation: Validation, formValues) => {
-                                    if (formValues.get("newPassword") !== value) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:manage.features.user.forms.addUserForm.inputs" +
+                                validation={ 
+                                    (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
+                                        if (formValues.get("newPassword") !== value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
-                                    }
-                                } }
+                                        }
+                                    } 
+                                }
                             />
                         </Grid.Column>
                     </Grid.Row>
                 </>
             );
         } else {
-           return (
-               <>
-                   <Grid.Row>
-                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <p>
-                               Following are the password reset options available. Please make sure
-                           you have enabled the required configurations.
-                           </p>
-                           {
-                               governanceConnectorProperties?.length > 1 && (
-                                   <EditSection>
-                                       <List>
-                                           { resolveConfigurationList(governanceConnectorProperties) }
-                                       </List>
-                                   </EditSection>
-                               )
-                           }
-                       </Grid.Column>
-                   </Grid.Row>
-               </>
-           );
+            return (
+                <>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <p>
+                                Following are the password reset options available. Please make sure
+                                you have enabled the required configurations.
+                            </p>
+                            {
+                                governanceConnectorProperties?.length > 1 && (
+                                    <EditSection>
+                                        <List>
+                                            { resolveConfigurationList(governanceConnectorProperties) }
+                                        </List>
+                                    </EditSection>
+                                )
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
         }
     };
 
     const handleChangeUserPassword = (values: Map<string, string | string[]>): void => {
 
-        const data = {
+        const data: any = {
             "Operations": [
                 {
                     "op": "replace",
@@ -362,7 +380,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     }
                 }
             ],
-            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         setIsSubmitting(true);
@@ -381,52 +399,67 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             handleModalClose();
             handleUserUpdate(user.id);
         })
-        .catch((error) => {
-            if (error.response && error.response.data && error.response.data.description) {
+            .catch((error: any) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.user.profile.notifications.changeUserPassword.error." +
+                        "message")
+                    });
+
+                    return;
+                }
+
                 onAlertFired({
-                    description: error.response.data.description,
+                    description: t("console:manage.features.user.profile.notifications.changeUserPassword" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.profile.notifications.changeUserPassword.error." +
+                    message: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
                         "message")
                 });
-
-                return;
-            }
-
-            onAlertFired({
-                description: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
-                    "message")
+                handleCloseChangePasswordModal();
+                handleModalClose();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
             });
-            handleCloseChangePasswordModal();
-            handleModalClose();
-        })
-        .finally(() => {
-            setIsSubmitting(false);
-        });
     };
 
     /**
      * The following function checks if the password pattern is valid against the user store regEx.
      *
-     * @param password
+     * @param password - new password entered
      */
     const setPasswordRegEx = async (password: string): Promise<void> => {
-        let passwordRegex = "";
-        const userStore = user?.userName?.split("/")?.length > 1 ? user?.userName?.split("/")[0] : "primary";
+        let passwordRegex: string = "";
+        const userStore: string = user?.userName?.split("/")?.length > 1 ? user?.userName?.split("/")[0] : "primary";
 
         if (userStore !== "primary") {
             // Set the username regEx of the secondary user store.
             await SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setPasswordRegExLoading(true);
                     passwordRegex = response;
                 });
         } else {
-            // Set the username regEx of the primary user store.
-            passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
+            let passwordPolicyEnabled: boolean = false;
+
+            await getConnectorDetails(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID, 
+                ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID)
+                .then((response: GovernanceConnectorInterface) => {
+                    passwordRegex = response?.properties?.filter((property: ConnectorPropertyInterface) => {
+                        return property.name === "passwordPolicy.pattern";
+                    })[0].value;
+
+                    passwordPolicyEnabled = response?.properties?.filter((property: ConnectorPropertyInterface) => {
+                        return property.name === "passwordPolicy.enable";
+                    })[0].value === "true";
+                });
+            if (!passwordPolicyEnabled){
+                // Set the username regEx of the primary user store.
+                passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
+            }
         }
         setIsPasswordPatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex));
     };
@@ -434,10 +467,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     /**
      * The following function handles the change of the password.
      *
-     * @param values
+     * @param values - values of form field
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
+        
         setPassword(password);
 
         setPasswordRegEx(password)
@@ -463,7 +497,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     "radioButton.label") }
                                 name="passwordOption"
                                 default="setPassword"
-                                listen={ (values) => {
+                                listen={ (values: Map<string, FormValue>) => {
                                     setPasswordResetOption(values.get("passwordOption").toString());
                                 } }
                                 children={ passwordResetOptions }
@@ -487,86 +521,87 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             );
         } else {
             return (
-               <>
-                   <Grid.Row>
-                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <Field
-                               data-testid="user-mgt-edit-user-form-newPassword-input"
-                               className="addon-field-wrapper"
-                               hidePassword={ t("common:hidePassword") }
-                               label={ t(
-                                   "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
-                               ) }
-                               name="newPassword"
-                               placeholder={ t(
-                                   "console:manage.features.user.forms.addUserForm.inputs." +
+                <>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                data-testid="user-mgt-edit-user-form-newPassword-input"
+                                className="addon-field-wrapper"
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                                ) }
+                                name="newPassword"
+                                placeholder={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
                                    "newPassword.placeholder"
-                               ) }
-                               required={ true }
-                               requiredErrorMessage={ t(
-                                   "console:manage.features.user.forms.addUserForm." +
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "console:manage.features.user.forms.addUserForm." +
                                    "inputs.newPassword.validations.empty"
-                               ) }
-                               showPassword={ t("common:showPassword") }
-                               type="password"
-                               value=""
-                               listen={ handlePasswordChange }
-                               loading={ isPasswordRegExLoading }
-                               validation={ (value: string, validation: Validation) => {
-                                   if (!isPasswordPatternValid) {
-                                       validation.isValid = false;
-                                       validation.errorMessages.push( t("console:manage.features.user.forms." +
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value=""
+                                listen={ handlePasswordChange }
+                                loading={ isPasswordRegExLoading }
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!isPasswordPatternValid) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
-                                   }
-                               } }
-                           />
-                           <Suspense fallback={ null } >
-                               <PasswordMeter password={ password } />
-                           </Suspense>
-                       </Grid.Column>
-                   </Grid.Row>
-                   <Grid.Row>
-                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <Field
-                               data-testid="user-mgt-edit-user-form-confirmPassword-input"
-                               className="addon-field-wrapper"
-                               hidePassword={ t("common:hidePassword") }
-                               label={ t(
-                                   "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
-                               ) }
-                               name="confirmPassword"
-                               placeholder={ t(
-                                   "console:manage.features.user.forms.addUserForm.inputs." +
+                                    }
+                                } }
+                            />
+                            <Suspense fallback={ null } >
+                                <PasswordMeter password={ password } />
+                            </Suspense>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Field
+                                data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                                className="addon-field-wrapper"
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
+                                ) }
+                                name="confirmPassword"
+                                placeholder={ t(
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
                                    "confirmPassword.placeholder"
-                               ) }
-                               required={ true }
-                               requiredErrorMessage={ t(
-                                   "console:manage.features.user.forms.addUserForm." +
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "console:manage.features.user.forms.addUserForm." +
                                    "inputs.confirmPassword.validations.empty"
-                               ) }
-                               showPassword={ t("common:showPassword") }
-                               type="password"
-                               value=""
-                               validation={ (value: string, validation: Validation, formValues) => {
-                                   if (formValues.get("newPassword") !== value) {
-                                       validation.isValid = false;
-                                       validation.errorMessages.push(
-                                           t("console:manage.features.user.forms.addUserForm.inputs" +
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value=""
+                                validation={ 
+                                    (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
+                                        if (formValues.get("newPassword") !== value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:manage.features.user.forms.addUserForm.inputs" +
                                                ".confirmPassword.validations.mismatch"));
-                                   }
-                               } }
-                           />
-                       </Grid.Column>
-                   </Grid.Row>
-                   <Grid.Row>
-                       <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                           <Message
-                               type="warning"
-                               content={ t("console:manage.features.user.modals.changePasswordModal.message") }
-                           />
-                       </Grid.Column>
-                   </Grid.Row>
-               </>
+                                        }
+                                    } }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Message
+                                type="warning"
+                                content={ t("console:manage.features.user.modals.changePasswordModal.message") }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
             );
         }
     };
@@ -583,7 +618,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             <Modal.Content>
                 <Forms
                     data-testid={ `${ testId }-form` }
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         if (passwordResetOption === "setPassword") {
                             handleChangeUserPassword(values);
                         } else {
