@@ -43,6 +43,7 @@ export interface ResourceTabPaneInterface {
     render?: () => React.ReactNode
     "data-tabid"?: string
     componentId?: string
+    index?: number
 }
 
 /**
