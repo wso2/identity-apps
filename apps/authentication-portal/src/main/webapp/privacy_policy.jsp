@@ -88,11 +88,9 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <% String onThisPageText = AuthenticationEndpointUtil.i18n(resourceBundle, "on.this.page"); %>
-
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript">
-        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4><%=onThisPageText%>:</h4>" + "<ul class='ui list nav'>";
+        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul class='ui list nav'>";
         var newLine, el, title, link;
 
         $("#privacyPolicy h2, #privacyPolicy h3").each(function() {

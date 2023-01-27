@@ -147,8 +147,6 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <% String pleaseSelectRecaptchaText = AuthenticationEndpointUtil.i18n(resourceBundle, "please.select.recaptch"); %>
-
     <script>
         function goBack() {
             window.history.back();
@@ -163,7 +161,7 @@
                     var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
                     if (reCaptchaResponse.trim() == '') {
-                        errorMessage.text("<%=pleaseSelectRecaptchaText%>");
+                        errorMessage.text("Please select reCaptcha.");
                         errorMessage.show();
                         return false;
                     }

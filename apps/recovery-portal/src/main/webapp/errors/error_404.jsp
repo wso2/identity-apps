@@ -17,7 +17,6 @@
   --%>
 
 <%@ page import="java.io.File" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -58,7 +57,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <div class="ui visible negative message">
-                   <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.404")%>
+                   Error 404 - Page Not Found
                 </div>
             </div>
         </layout:component>

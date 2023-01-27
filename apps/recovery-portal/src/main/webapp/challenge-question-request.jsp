@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~  WSO2 LLC. licenses this file to you under the Apache License,
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
   ~  in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -14,8 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
---%>
-
+  --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
@@ -48,7 +47,7 @@
                 if (request.getParameter("g-recaptcha-response") != null) {
                     requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
                 }
-
+                
                 SecurityQuestionApi securityQuestionApi = new SecurityQuestionApi();
                 InitiateAllQuestionResponse initiateAllQuestionResponse = securityQuestionApi.securityQuestionsGet(
                         user.getUsername(), user.getRealm(), user.getTenantDomain(), requestHeaders);
