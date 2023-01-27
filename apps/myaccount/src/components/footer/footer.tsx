@@ -68,7 +68,7 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
     const handleLanguageSwitch = (language: string): void => {
         moment.locale(language ?? "en");
         I18n.instance.changeLanguage(language)
-            .catch((error) => {
+            .catch((error: string | Record<string, unknown>) => {
                 throw new LanguageChangeException(language, error);
             });
     };
