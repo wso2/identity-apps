@@ -19,7 +19,6 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.TreeMap" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%!
@@ -51,7 +50,7 @@
     data-testid="request-claims-page-form-field-claim-${param.claim}-input"
     name="claim_mand_${param.claim}" id="claim_mand_${param.claim}">
     <i class="dropdown icon"></i>
-    <div class="default text"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.country")%></div>
+    <div class="default text">Select Country</div>
     <div class="menu">
         <c:forEach items="<%=getCountryList()%>" var="country">
             <div class="item" data-value="${country.value}">

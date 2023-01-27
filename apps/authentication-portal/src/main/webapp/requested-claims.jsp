@@ -112,7 +112,7 @@
                                 claimDisplayName = claimDisplayName.replaceAll(".*/", "");
                                 claimDisplayName = claimDisplayName.substring(0, 1).toUpperCase() + claimDisplayName.substring(1);
                                 if (claim.contains("claims/dob")) {
-                                    claimDisplayName = AuthenticationEndpointUtil.i18n(resourceBundle, "dob.with.format");
+                                    claimDisplayName = "Date of Birth (YYYY-MM-DD)";
                                 }
                             %>
                                 <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
