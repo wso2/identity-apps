@@ -584,7 +584,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
 
     return (
         <TabPageLayout
-            pageTitle={ "Edit Connection" }
+            pageTitle="Edit Connection" 
             isLoading={ isConnectorDetailsFetchRequestLoading }
             loadingStateOptions={ {
                 count: 5,

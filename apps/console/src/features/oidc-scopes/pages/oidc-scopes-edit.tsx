@@ -24,11 +24,13 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import {
     Divider,
     DropdownItemProps,
@@ -83,7 +85,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         /**
          * Sets the attributes by which the list can be sorted
          */
-        const SORT_BY = [
+        const SORT_BY: {
+            key: number;
+            text: string;
+            value: string;
+        }[] = [
             {
                 key: 0,
                 text: t("console:manage.features.claims.external.attributes.attributeURI", { type: "OIDC" }),
@@ -96,7 +102,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             }
         ];
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
 
         const [ scope, setScope ] = useState<OIDCScopesListInterface>({});
         const [ claims, setClaims ] = useState<Claim[]>([]);
@@ -113,13 +119,13 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-        const initialRender = useRef(true);
+        const initialRender: MutableRefObject<boolean> = useRef(true);
 
         const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
         const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
         const SCOPE_DESCRIPTION_MAX_LENGTH: number = 100;
 
-        const isReadOnly = useMemo(() => (
+        const isReadOnly: boolean = useMemo(() => (
             !hasRequiredScopes(
                 featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
         ), [ featureConfig, allowedScopes ]);
@@ -134,10 +140,10 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         useEffect(() => {
             getAllLocalClaims(null)
-                .then((response) => {
+                .then((response: Claim[]) => {
                     setClaims(response);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     dispatch(
                         addAlert({
                             description:
@@ -157,7 +163,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
             if (OIDCAttributes) {
                 return;
             }
-            const OIDCAttributeId = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
+            const OIDCAttributeId: string = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
 
             if (!claims || claims.length === 0) {
                 return;
@@ -179,18 +185,18 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 return;
             }
 
-            const selected = [];
+            const selected: ExternalClaim[] = [];
 
-            scope?.claims?.map((claim) => {
-                selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
+            scope?.claims?.map((claim: string) => {
+                selected.push(OIDCAttributes.find((item: ExternalClaim) => item?.claimURI == claim));
             });
 
-            const filteredSelected = selected.filter(item => !!item);
-            const sortedSelected = sortBy(filteredSelected, "localClaimDisplayName");
+            const filteredSelected: ExternalClaim[] = selected.filter((item: ExternalClaim) => !!item);
+            const sortedSelected: ExternalClaim[] = sortBy(filteredSelected, "localClaimDisplayName");
 
             setSelectedAttributes(sortedSelected);
             setTempSelectedAttributes(sortedSelected);
-            setUnselectedAttributes(OIDCAttributes.filter((x) => !filteredSelected?.includes(x)));
+            setUnselectedAttributes(OIDCAttributes.filter((x: ExternalClaim) => !filteredSelected?.includes(x)));
         };
 
         /**
@@ -207,10 +213,10 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const getOIDCAttributes = (claimId: string) => {
             setIsAttributeRequestLoading(true);
             getAllExternalClaims(claimId, null)
-                .then((response) => {
-                    response?.forEach((externalClaim) => {
-                        const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
-                        const matchedLocalClaim = claims.filter((localClaim) => {
+                .then((response: ExternalClaim[]) => {
+                    response?.forEach((externalClaim: ExternalClaim) => {
+                        const mappedLocalClaimUri: string = externalClaim.mappedLocalClaimURI;
+                        const matchedLocalClaim: Claim[] = claims.filter((localClaim: Claim) => {
                             return localClaim.claimURI === mappedLocalClaimUri;
                         });
 
@@ -220,7 +226,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     });
                     setOIDCAttributes(response);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(
                             addAlert({
@@ -255,8 +261,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 });
         };
 
-        const searchSelectedAttributes = (event) => {
-            const changeValue = event.target.value;
+        const searchSelectedAttributes = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const changeValue: string = event.target.value;
 
             setAttributeSearchQuery(changeValue);
             if (changeValue.length > 0) {
@@ -283,7 +289,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 .then((response: OIDCScopesListInterface) => {
                     setScope(response);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(
                             addAlert({
@@ -342,7 +348,11 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         * @param data - Dropdown data.
         */
         const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-            setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+            setSortByStrategy(SORT_BY.filter((option: {
+                key: number;
+                text: string;
+                value: string;
+            }) => option.value === data.value)[ 0 ]);
         };
 
         /**
@@ -412,7 +422,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         return (
             <PageLayout
-                pageTitle={ "Update Scope" }
+                pageTitle="Update Scope"
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                 title={ scope.displayName }
                 contentTopMargin={ true }
@@ -442,7 +452,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     <Form
                                         id={ FORM_ID }
                                         uncontrolledForm={ false }
-                                        onSubmit={ (values): void => {
+                                        onSubmit={ (values: Record<string, any>): void => {
                                             onSubmit(values);
                                         } }
                                         data-testid={ testId }
