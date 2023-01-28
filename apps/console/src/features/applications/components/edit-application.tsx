@@ -738,6 +738,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const resolveTabPanes = (): ResourceTabPaneInterface[] => {
         const panes: ResourceTabPaneInterface[] = [];
+        const extensionPanes: ResourceTabPaneInterface[] = [];
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -751,7 +752,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
-            panes.push(...tabPaneExtensions);
+            extensionPanes.push(...tabPaneExtensions);
         }
 
         if (featureConfig) {
@@ -886,6 +887,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: InfoTabPane
                  });
             }
+            
+            extensionPanes.forEach(
+                (extensionPane: ResourceTabPaneInterface) => {
+                    panes.splice(extensionPane.index, 0, extensionPane);
+                }
+            );
 
             return panes;
         }
