@@ -52,12 +52,12 @@ import {
 } from "../../core";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
+import { OrganizationType } from "../../organizations/constants";
 import { 
     OrganizationInterface, 
     OrganizationListInterface, 
     OrganizationResponseInterface 
 } from "../../organizations/models";
-import { OrganizationType } from "../../organizations/constants";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
 import { ApplicationShareModal } from "../components/modals/application-share-modal";
