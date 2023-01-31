@@ -52,6 +52,7 @@ import {
 } from "../../core";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
+import { OrganizationType } from "../../organizations/constants";
 import { 
     OrganizationInterface, 
     OrganizationListInterface, 
@@ -99,6 +100,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
     const applicationHelpShownStatusKey: string = "isApplicationHelpShown";
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     const { t } = useTranslation();
 
@@ -675,7 +678,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             && application.access === ApplicationAccessTypes.WRITE
                             && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                             && hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update, allowedScopes)) && (
+                                featureConfig?.applications?.scopes?.update, allowedScopes)
+                            && orgType !== OrganizationType.SUBORGANIZATION) && (
                             <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
                                 { t("console:develop.features.applications.edit.sections" +
                                     ".shareApplication.shareApplication") }
