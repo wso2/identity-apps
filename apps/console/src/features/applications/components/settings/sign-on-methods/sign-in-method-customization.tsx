@@ -42,6 +42,7 @@ import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
+import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -128,6 +129,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const dispatch: Dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
@@ -649,7 +652,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             {
-                isAdaptiveAuthenticationAvailable
+                (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }
