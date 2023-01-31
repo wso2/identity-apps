@@ -43,6 +43,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     DropdownItemProps,
@@ -119,7 +120,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -164,7 +165,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
-                const enableProperty = myAccountStatus["value"];
+                const enableProperty: string = myAccountStatus["value"];
 
                 if (enableProperty && enableProperty === "false") {
                     status = false;
@@ -247,7 +248,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
         data: DropdownProps): void => {
-        setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option: DropdownItemProps) => {
             return data.value === option.value;
         }));
     };
@@ -432,7 +433,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ (
+            action={ orgType !== OrganizationType.SUBORGANIZATION && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
                         onClick={ (): void => {
