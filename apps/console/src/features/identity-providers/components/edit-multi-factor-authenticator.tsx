@@ -131,14 +131,16 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const handleAuthenticatorConfigFormSubmit = (values: MultiFactorAuthenticatorInterface): void => {
         setIsSubmitting(true);
 
+        const i18nKeyForMFAuthenticator: string = getI18nKeyForMultiFactorAuthenticator(authenticator);
+
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider" +
-                        ".notifications.updateEmailOTPAuthenticator.success.description"),
+                        ".notifications." + i18nKeyForMFAuthenticator + ".success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.authenticationProvider.notifications." +
-                        "updateEmailOTPAuthenticator.success.message")
+                        i18nKeyForMFAuthenticator + ".success.message")
                 }));
 
                 onUpdate(authenticator.id);
@@ -147,28 +149,39 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateEmailOTPAuthenticator.error.description",
+                            ".notifications." + i18nKeyForMFAuthenticator + ".error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateEmailOTPAuthenticator.error.message")
+                            ".notifications." + i18nKeyForMFAuthenticator + ".error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications" +
-                        ".updateEmailOTPAuthenticator.genericError.description"),
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        i18nKeyForMFAuthenticator + ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications" +
-                        ".updateEmailOTPAuthenticator.genericError.message")
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        i18nKeyForMFAuthenticator + ".genericError.message")
                 }));
             })
             .finally(() => {
                 setIsSubmitting(false);
             });
     };
+
+    const getI18nKeyForMultiFactorAuthenticator =
+        (authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
+            if(authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID){
+                return "updateSMSOTPAuthenticator";
+            } else if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID){
+                return "updateEmailOTPAuthenticator";
+            } else {
+                return "updateGenericAuthenticator";
+            }
+        };
 
     /**
      * Authenticator settings tab content.

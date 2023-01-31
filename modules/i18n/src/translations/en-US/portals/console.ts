@@ -4126,6 +4126,34 @@ export const console: ConsoleNS = {
                             message: "Update successful"
                         }
                     },
+                    updateSMSOTPAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the SMS OTP connector.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated the SMS OTP connector.",
+                            message: "Update successful"
+                        }
+                    },
+                    updateGenericAuthenticator: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the connector.",
+                            message: "Update error"
+                        },
+                        success: {
+                            description: "Successfully updated the connector.",
+                            message: "Update successful"
+                        }
+                    },
                     updateFederatedAuthenticator: {
                         error: {
                             description: "{{ description }}",
