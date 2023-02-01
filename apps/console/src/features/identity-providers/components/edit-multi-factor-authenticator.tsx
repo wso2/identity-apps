@@ -176,7 +176,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         (authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
             if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
                 return "updateSMSOTPAuthenticator";
-            } else if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID){
+            } else if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
                 return "updateEmailOTPAuthenticator";
             } else {
                 return "updateGenericAuthenticator";
