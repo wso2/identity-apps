@@ -131,16 +131,16 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const handleAuthenticatorConfigFormSubmit = (values: MultiFactorAuthenticatorInterface): void => {
         setIsSubmitting(true);
 
-        const i18nKeyForMFAuthenticator: string = getI18nKeyForMultiFactorAuthenticator(authenticator);
+        const i18nKeyForMFAAuthenticator: string = getI18nKeyForMultiFactorAuthenticator(authenticator);
 
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider" +
-                        ".notifications." + i18nKeyForMFAuthenticator + ".success.description"),
+                        ".notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.authenticationProvider.notifications." +
-                        i18nKeyForMFAuthenticator + ".success.message")
+                        i18nKeyForMFAAuthenticator + ".success.message")
                 }));
 
                 onUpdate(authenticator.id);
@@ -149,11 +149,11 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAuthenticator + ".error.description",
+                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAuthenticator + ".error.message")
+                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.message")
                     }));
 
                     return;
@@ -161,10 +161,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications." +
-                        i18nKeyForMFAuthenticator + ".genericError.description"),
+                        i18nKeyForMFAAuthenticator + ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.authenticationProvider.notifications." +
-                        i18nKeyForMFAuthenticator + ".genericError.message")
+                        i18nKeyForMFAAuthenticator + ".genericError.message")
                 }));
             })
             .finally(() => {
@@ -174,7 +174,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     const getI18nKeyForMultiFactorAuthenticator =
         (authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
-            if(authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID){
+            if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
                 return "updateSMSOTPAuthenticator";
             } else if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID){
                 return "updateEmailOTPAuthenticator";
