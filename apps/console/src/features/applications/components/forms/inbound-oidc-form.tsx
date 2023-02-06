@@ -1324,7 +1324,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     allowedOrigins={ union(allowedOriginList, allowedOrigins.split(",")) }
                                     labelEnabled={ true }
                                     urlState={ callBackUrls }
-                                    setURLState={ setCallBackUrls }
+                                    setURLState={ (url: string) => {
+                                        setCallBackUrls(url);
+
+                                        const initialUrl: string = initialValues?.callbackURLs?.toString()
+                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                                initialValues.callbackURLs.toString())
+                                            : "";
+
+                                        if (initialUrl !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
                                     labelName={
                                         isMobileApplication
                                             ? "Authorized redirect URIs"
@@ -1429,7 +1440,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <URLInput
                                     handleAddAllowedOrigin={ (url: string) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
-                                    setURLState={ setAllowedOrigins }
+                                    setURLState={ (url: string) => {
+                                        setAllowedOrigins(url);
+
+                                        if (allowedOrigins !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
                                     onlyOrigin={ true }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundOIDC" +
@@ -1942,7 +1959,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         onlyOrigin={ false }
                         labelEnabled={ false }
                         urlState={ audienceUrls }
-                        setURLState={ setAudienceUrls }
+                        setURLState={ (url: string) => {
+                            setAudienceUrls(url);
+
+                            const initialUrl: string = initialValues?.idToken?.audience.toString()
+                                ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                    initialValues?.idToken?.audience.toString())
+                                : "";
+
+                            if (initialUrl !== url) {
+                                setIsFormStale(true);
+                            }
+                        } }
                         labelName={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.audience.label")
