@@ -299,7 +299,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
-        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP){
+        } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "second-factor-email-otp"
             });
@@ -307,7 +307,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorEMAILOTPSequenceTemplate)
             });
-        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP){
+        } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "second-factor-sms-otp"
             });
@@ -315,7 +315,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorSMSOTPSequenceTemplate)
             });
-        }else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
+        } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "first-factor-fido"
             });
