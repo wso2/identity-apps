@@ -93,6 +93,32 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
 }
 
 /**
+ * Form values interface.
+ */
+export interface GeneralDetailsFormValuesInterface {
+    /**
+     * Application access URL.
+     */
+    accessUrl?: string;
+    /**
+     * Application description.
+     */
+    description?: string;
+    /**
+     * Is the application discoverable.
+     */
+    discoverableByEndUsers?: boolean;
+    /**
+     * Application logo URL.
+     */
+    imageUrl?: string;
+    /**
+     * Name of the application.
+     */
+    name: string;
+}
+
+/**
  * Proptypes for the applications general details form error messages.
  */
 export interface GeneralDetailsFormErrorValidationsInterface {
@@ -149,7 +175,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const updateConfigurations = (values) => {
+    const updateConfigurations = (values: GeneralDetailsFormValuesInterface) => {
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
@@ -168,7 +194,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @param values - Form Values.
      * @returns Form validation.
      */
-    const validateForm = (values):
+    const validateForm = (values: GeneralDetailsFormValuesInterface):
         GeneralDetailsFormErrorValidationsInterface => {
 
         const errors: GeneralDetailsFormErrorValidationsInterface = {
@@ -230,13 +256,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
         if (myAccountStatus) {
-            const enableProperty = myAccountStatus["value"];
+            const enableProperty: string = myAccountStatus["value"];
 
-            if ( enableProperty && enableProperty === "false" ) {
+            if (enableProperty && enableProperty === "false") {
 
                 status = false;
             }
         }
+
         setMyAccountStatus(status);
     }, [ isMyAccountStatusLoading ]);
 
@@ -252,7 +279,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: GeneralDetailsFormValuesInterface) => {
                 updateConfigurations(values);
             } }
             initialValues={ {
@@ -298,7 +325,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     value={ name }
                     readOnly={ readOnly }
-                    validation ={ (value) => validateName(value.toString().trim()) }
+                    validation ={ (value: string) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
                     data-testid={ `${ testId }-application-name-input` }
@@ -319,7 +346,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 }
                 value={ description }
                 readOnly={ readOnly }
-                validation ={ (value) => validateDescription(value.toString().trim()) }
+                validation ={ (value: string) => validateDescription(value.toString().trim()) }
                 maxLength={ 300 }
                 minLength={ 3 }
                 data-testid={ `${ testId }-application-description-textarea` }
@@ -362,7 +389,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     initialValue={ isDiscoverable }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-application-discoverable-checkbox` }
-                    listen={ (value) => setDiscoverability(value) }
+                    listen={ (value: boolean) => setDiscoverability(value) }
                     hint={ (
                         <Trans
                             i18nKey={
