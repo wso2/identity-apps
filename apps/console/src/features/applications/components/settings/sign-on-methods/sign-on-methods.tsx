@@ -50,7 +50,7 @@ import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
+    AuthenticationSequenceType, AuthenticatorInterface,
     LoginFlowTypes
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
@@ -485,7 +485,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
             authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
         }
-        modifiedSequenceTemplate.steps[0].options.forEach((option) => {
+        modifiedSequenceTemplate.steps[0].options.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === authenticatorType) {
                 option.idp = idp;
             }
@@ -670,11 +670,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     <div className="authenticator-grid">
                         {
                             authenticators
-                                .filter((authenticator) => {
+                                .filter((authenticator: GenericAuthenticatorInterface) => {
                                     return authenticator.name !== IdentityProviderManagementConstants
                                         .BACKUP_CODE_AUTHENTICATOR;
                                 })
-                                .map((authenticator, index) => (
+                                .map((authenticator: GenericAuthenticatorInterface, index: number) => (
                                     <LabeledCard
                                         key={ index }
                                         multilineLabel

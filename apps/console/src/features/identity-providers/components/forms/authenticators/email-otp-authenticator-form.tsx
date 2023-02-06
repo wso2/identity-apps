@@ -180,14 +180,14 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonAuthenticatorFormFieldMetaInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
             if (moderatedName === IdentityProviderManagementConstants
                 .AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
-                const expiryTimeInMinutes = Math.round(parseInt(value.value, 10) / 60);
+                const expiryTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
@@ -242,7 +242,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 const moderatedName: string = name.replace(/_/g, ".");
 
                 if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
-                    const timeInSeconds = value * 60;
+                    const timeInSeconds: number = value * 60;
 
                     properties.push({
                         name: moderatedName,
@@ -324,7 +324,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: EmailOTPAuthenticatorFormInitialValuesInterface) => {
                 onSubmit(getUpdatedConfigurations(values as EmailOTPAuthenticatorFormInitialValuesInterface));
             } }
             initialValues={ initialValues }
