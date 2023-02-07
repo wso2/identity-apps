@@ -45,6 +45,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import { getIdPIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -89,6 +90,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates);
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
@@ -466,9 +469,13 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 template: IdentityProviderTemplateInterface,
                                                 templateIndex: number
                                             ) => {
-                                                const isOrgIdp = template.templateId === "organization-enterprise-idp";
+                                                const isOrgIdp: boolean = template.templateId === "organization-enterprise-idp";
 
                                                 if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                    return null;
+                                                }
+
+                                                if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
                                                     return null;
                                                 }
 

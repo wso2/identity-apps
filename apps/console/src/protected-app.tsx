@@ -384,10 +384,18 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             axios
                 .get(Config.getServiceResourceEndpoints().wellKnown)
                 .then((response: AxiosResponse) => {
+
+                    let serverHost: string;
+                    
                     // Use token endpoint to extract the host url.
                     const splitted: string[] =
                         response?.data?.token_endpoint?.split("/") ?? [];
-                    const serverHost: string = splitted.slice(0, -2).join("/");
+                       serverHost = splitted.slice(0, -2).join("/");
+
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = Config.getDeploymentConfig().serverOrigin + 
+                        Config.getDeploymentConfig().appBaseName
+                    }   
 
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
                 })

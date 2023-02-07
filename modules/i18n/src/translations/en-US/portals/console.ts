@@ -5771,6 +5771,7 @@ export const console: ConsoleNS = {
                 title: "Register New Application"
             },
             applications: {
+                alternateSubTitle: "Manage your applications and customize login flows.",
                 subTitle: "Register and manage your applications and configure sign-in.",
                 title: "Applications"
             },

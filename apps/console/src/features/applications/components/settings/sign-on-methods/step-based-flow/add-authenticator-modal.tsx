@@ -42,6 +42,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
     Card,
     Divider,
@@ -66,6 +67,7 @@ import {
 } from "../../../../../identity-providers";
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
+import { OrganizationType } from "../../../../../organizations/constants";
 
 /**
  * Prop-types for the Add authenticator modal component.
@@ -180,12 +182,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
 
-    const classes = classNames(
+    const classes: string = classNames(
         "add-authenticator-modal",
         className
     );
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     /**
      * Update the internal filtered authenticators state when the prop changes.
@@ -403,28 +407,41 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         category.templates.map((
                                             template: IdentityProviderTemplateInterface,
                                             templateIndex: number
-                                        ) => (
-                                            <ResourceGrid.Card
-                                                key={ templateIndex }
-                                                resourceName={ template.name }
-                                                isResourceComingSoon={ template.comingSoon }
-                                                disabled={ template.disabled }
-                                                comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                resourceDescription={ template.description }
-                                                resourceImage={
-                                                    IdentityProviderManagementUtils
-                                                        .resolveTemplateImage(template.image, getIdPIcons())
-                                                }
-                                                tags={ template.tags }
-                                                onClick={ () => {
-                                                    onIDPCreateWizardTrigger(template.id, () => {
-                                                        setShowAddNewAuthenticatorView(false);
-                                                    }, template);
-                                                } }
-                                                showTooltips={ false }
-                                                data-testid={ `${ testId }-${ template.name }` }
-                                            />
-                                        ))
+                                        ) => {
+
+                                            const isOrgIdp: boolean = template.templateId === "organization-enterprise-idp";
+
+                                            if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                return null;
+                                            }
+
+                                            if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
+                                                return null;
+                                            }
+
+                                            return (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={ template.name }
+                                                    isResourceComingSoon={ template.comingSoon }
+                                                    disabled={ template.disabled }
+                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={
+                                                        IdentityProviderManagementUtils
+                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                    }
+                                                    tags={ template.tags }
+                                                    onClick={ () => {
+                                                        onIDPCreateWizardTrigger(template.id, () => {
+                                                            setShowAddNewAuthenticatorView(false);
+                                                        }, template);
+                                                    } }
+                                                    showTooltips={ false }
+                                                    data-testid={ `${ testId }-${ template.name }` }
+                                                />
+                                            )
+                                        })
                                     }
                                 </ResourceGrid>
                             );
