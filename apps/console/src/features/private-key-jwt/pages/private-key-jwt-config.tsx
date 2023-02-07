@@ -1,4 +1,3 @@
-/* eslint-disable header/header */
 /**
  * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
@@ -19,10 +18,11 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
+import { useTokenReuseConfigData } from "../api";
 
 /**
  * Props for my account settings page.
@@ -40,6 +40,20 @@ export const PrivateKeyJWTConfig: FunctionComponent<MyAccountSettingsPageInterfa
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
 
+    const {
+        data: tokenReuseData,
+        isLoading: isLoading,
+        error: tokenReuseDataFetchError,
+        mutate: mutateTokenReuseData
+    } = useTokenReuseConfigData();
+
+    useEffect(() => {
+        if (isLoading) {
+            return;
+        }
+
+    }, [ isLoading ]);
+
     /**
      * Handle connector advance setting selection.
      */
@@ -56,7 +70,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<MyAccountSettingsPageInterfa
             header={ "Private Key JWT Client Authentication for OIDC" }
             onPrimaryActionClick={ handleSelection }
             primaryAction={ "Configure" }
-            connectorEnabled={ false }
+            connectorEnabled={ isLoading ? undefined : tokenReuseData.tokenReuse }
         >
             <Divider hidden/>
         </Section>

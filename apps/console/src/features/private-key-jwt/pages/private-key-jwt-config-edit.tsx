@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import {
 } from "@wso2is/core/models";
 import {
     DocumentationLink,
+    GridLayout,
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
@@ -33,6 +34,7 @@ import { useTranslation } from "react-i18next";
 import { Checkbox, Grid, Icon, Message } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
+import { useTokenReuseConfigData } from "../api";
 
 /**
  * Private key JWT client authentication for OIDC configuration page.
@@ -47,6 +49,13 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const [ enableTokenReuse, setEnableTokenReuse ] = useState<boolean>(true);
+
+    const {
+        data: tokenReuseData,
+        isLoading: isLoading,
+        error: tokenReuseDataFetchError,
+        mutate: mutateTokenReuseData
+    } = useTokenReuseConfigData();
 
     /**
      * Handles back button click event
@@ -69,7 +78,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         setEnableTokenReuse(!enableTokenReuse);
     };
 
-    return (
+    return (!isLoading ? (
         <PageLayout
             pageTitle="Private Key JWT Client Authentication for OIDC"
             title={ (
@@ -101,10 +110,10 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         >
             <>
                 <Checkbox
-                    label={ enableTokenReuse ? "Token Reuse Enabled" : "Token Reuse Disabled" }
+                    label={ tokenReuseData.tokenReuse ? "Token Reuse Enabled" : "Token Reuse Disabled" }
                     toggle
                     onChange={ handleTokenReuseToggle }
-                    checked={ enableTokenReuse }
+                    checked={ tokenReuseData.tokenReuse }
                     readOnly={ false }
                     data-testId={ `${ componentId }-enable-toggle` }
                 />
@@ -126,7 +135,11 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </PageLayout>
+        </PageLayout>) : (
+        <GridLayout
+            isLoading={ isLoading }
+            className={ "pt-5" }
+        />)
     );
 };
 
