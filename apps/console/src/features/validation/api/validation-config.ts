@@ -56,7 +56,6 @@ export const updateValidationConfigData = (formData: ValidationFormInterface, pa
     const config: ValidationDataInterface[] = configArry.filter((item) =>
         item != null);
 
-
     const requestConfig: AxiosRequestConfig = {
         data: config,
         headers: {
@@ -127,7 +126,6 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 
     if(values.field=="username"){
         return;
-
     }
 
     let rules: ValidationConfInterface[] = [
@@ -222,7 +220,6 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
 
     if(values.field=="password"){
         return;
-
     }
 
     let rules: ValidationConfInterface[] = [];
@@ -256,7 +253,6 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
                 validator: "LengthValidator"
             }
         );
-
     }
 
     return {
