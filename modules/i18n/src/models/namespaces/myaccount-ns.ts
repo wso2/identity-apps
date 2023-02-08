@@ -728,6 +728,8 @@ export interface MyAccountNS {
                 profileImage: string;
                 phoneNumbers: string;
                 userName: string;
+                // Below is to allow all set of SCIM attributes, that are dynamically called
+                [key: string]: string | Record<string, string>;
             };
             forms: {
                 generic: {
