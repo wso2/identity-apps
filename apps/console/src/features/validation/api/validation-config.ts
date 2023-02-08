@@ -44,7 +44,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns response - updated validation configurations.
  */
-export const updateValidationConfigData = (formData: ValidationFormInterface, passwordData: ValidationDataInterface, usernameData: ValidationDataInterface): Promise<ValidationDataInterface[]> => {
+export const updateValidationConfigData = (
+    formData: ValidationFormInterface,
+    passwordData: ValidationDataInterface,
+    usernameData: ValidationDataInterface
+): Promise<ValidationDataInterface[]> => {
 
     const configArry: ValidationDataInterface[] = [
         passwordData,
@@ -53,7 +57,7 @@ export const updateValidationConfigData = (formData: ValidationFormInterface, pa
         prepareUsernameValidationConfigData(formData)
     ];
 
-    const config: ValidationDataInterface[] = configArry.filter((item) =>
+    const config: ValidationDataInterface[] = configArry.filter((item: ValidationDataInterface) =>
         item != null);
 
     const requestConfig: AxiosRequestConfig = {
