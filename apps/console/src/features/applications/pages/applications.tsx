@@ -458,7 +458,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </p>
-                ) : (
+                ) 
+                : (
                     <p>
                         { t("console:develop.pages.applications.alternateSubTitle") }
                         <DocumentationLink

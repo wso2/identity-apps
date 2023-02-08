@@ -36,6 +36,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../../extensions/configs";
 import {
     AppConstants,
@@ -50,6 +51,7 @@ import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import { getIdPIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    FederatedAuthenticatorListItemInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
@@ -81,13 +83,14 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
+    const availableAuthenticators: FederatedAuthenticatorListItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider.meta.authenticators);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates);
     const orgType: OrganizationType = useSelector((state: AppState) =>
@@ -158,7 +161,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
          * we need to group the existing templates based on their
          * template-group.
          */
-        const skipGrouping = false, sortTemplates = true;
+        const skipGrouping: boolean = false, sortTemplates: boolean = true;
 
         IdentityProviderTemplateManagementUtils
             .getIdentityProviderTemplates(useAPI, skipGrouping, sortTemplates)
@@ -250,7 +253,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
          * Find the matching template for the selected card.
          * if found then set the template to state.
          */
-        const selectedTemplate = identityProviderTemplates.find(({ id: templateId }) => (templateId === id));
+        const selectedTemplate: IdentityProviderTemplateItemInterface = identityProviderTemplates.find(
+            ({ id: templateId }: { id: string }) => (templateId === id));
 
         if (selectedTemplate) {
             setSelectedTemplate(selectedTemplate);
@@ -305,7 +309,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             }
 
             return template.tags
-                .some((selectedLabel) => filterLabels.includes(selectedLabel));
+                .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
         
         const templatesClone: IdentityProviderTemplateCategoryInterface[] = cloneDeep(originalCategorizedTemplates);
@@ -320,7 +324,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 const name: string = template.name.toLocaleLowerCase();
 
                 if (name.includes(query)
-                    || template.tags.some((tag) => tag.toLocaleLowerCase().includes(query)
+                    || template.tags.some((tag: string) => tag.toLocaleLowerCase().includes(query)
                         || startCase(tag).toLocaleLowerCase().includes(query))) {
 
                     return isFiltersMatched(template);
@@ -469,7 +473,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 template: IdentityProviderTemplateInterface,
                                                 templateIndex: number
                                             ) => {
-                                                const isOrgIdp: boolean = template.templateId === "organization-enterprise-idp";
+                                                const isOrgIdp: boolean = template.templateId === "organi" +
+                                                    "zation-enterprise-idp";
 
                                                 if (isOrgIdp && !isOrganizationManagementEnabled) {
                                                     return null;
