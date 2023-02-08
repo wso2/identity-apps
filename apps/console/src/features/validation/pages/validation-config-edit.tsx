@@ -346,7 +346,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         setSubmitting(true);
         Promise.all([
             updatePasswordHistory,
-            updateValidationConfigData(processedFormValues)
+            updateValidationConfigData(processedFormValues, null, validationData[0])
         ])
             .then(() => {
                 mutateValidationConfigFetchRequest();

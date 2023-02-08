@@ -44,11 +44,18 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns response - updated validation configurations.
  */
-export const updateValidationConfigData = (data: ValidationFormInterface): Promise<ValidationDataInterface[]> => {
+export const updateValidationConfigData = (formData: ValidationFormInterface, passwordData: ValidationDataInterface, usernameData: ValidationDataInterface): Promise<ValidationDataInterface[]> => {
 
-    const config: ValidationDataInterface[] = [
-        prepareValidationConfigData(data)
+    const configArry: ValidationDataInterface[] = [
+        passwordData,
+        usernameData,
+        preparePasswordValidationConfigData(formData),
+        prepareUsernameValidationConfigData(formData)
     ];
+
+    const config: ValidationDataInterface[] = configArry.filter((item) =>
+        item != null);
+
 
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -116,7 +123,12 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
     };
 };
 
-const prepareValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+const preparePasswordValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+
+    if(values.field=="username"){
+        return;
+
+    }
 
     let rules: ValidationConfInterface[] = [
         {
@@ -202,6 +214,53 @@ const prepareValidationConfigData = (values: ValidationFormInterface): Validatio
 
     return {
         field: "password",
+        rules: rules
+    };
+};
+
+const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+
+    if(values.field=="password"){
+        return;
+
+    }
+
+    let rules: ValidationConfInterface[] = [];
+
+    if (values.enableValidator=="false"){
+        rules = [
+            {
+                properties: [
+                    {
+                        key: "enable.validator",
+                        value: values.enableValidator ? values.enableValidator : "false"
+                    }
+                ],
+                validator: "AlphanumericValidator"
+            }
+        ];
+        
+    } else {
+        rules.push(
+            {
+                properties: [
+                    {
+                        key: "min.length",
+                        value: values.minLength ? values.minLength : "8"
+                    },
+                    {
+                        key: "max.length",
+                        value: values.maxLength ? values.maxLength : "30"
+                    }
+                ],
+                validator: "LengthValidator"
+            }
+        );
+
+    }
+
+    return {
+        field: "username",
         rules: rules
     };
 };
