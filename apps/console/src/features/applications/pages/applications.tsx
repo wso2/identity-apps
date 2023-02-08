@@ -448,16 +448,28 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </Show>
             ) }
             title={ t("console:develop.pages.applications.title") }
-            description={ (
-                <p>
-                    { t("console:develop.pages.applications.subTitle") }
-                    <DocumentationLink
-                        link={ getLink("develop.applications.learnMore") }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                </p>
-            ) }
+            description={ orgType !== OrganizationType.SUBORGANIZATION 
+                ? (
+                    <p>
+                        { t("console:develop.pages.applications.subTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.applications.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </p>
+                ) 
+                : (
+                    <p>
+                        { t("console:develop.pages.applications.alternateSubTitle") }
+                        <DocumentationLink
+                            link={ getLink("develop.applications.learnMore") }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </p>
+                )
+            }
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
