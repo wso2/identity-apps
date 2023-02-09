@@ -42,6 +42,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
     Card,
     Divider,
@@ -56,7 +57,7 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
+import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
 import {
     GenericAuthenticatorInterface,
     IdentityProviderManagementUtils,
@@ -64,6 +65,7 @@ import {
     IdentityProviderTemplateInterface,
     getIdPIcons
 } from "../../../../../identity-providers";
+import { OrganizationType } from "../../../../../organizations/constants";
 import { getGeneralIcons } from "../../../../configs";
 import { AuthenticationStepInterface } from "../../../../models";
 
@@ -180,12 +182,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
 
-    const classes = classNames(
+    const classes: string = classNames(
         "add-authenticator-modal",
         className
     );
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
 
     /**
      * Update the internal filtered authenticators state when the prop changes.
@@ -229,7 +233,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         const options: DropdownItemProps[] = [];
 
-        for (let i = 0; i < stepCount; i++) {
+        for (let i: number = 0; i < stepCount; i++) {
             options.push({
                 key: i,
                 text: `${ t("common:step") } ${ i + 1 }`,
@@ -257,7 +261,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const handleModalSubmit = (): void => {
 
         eventPublisher.compute(() => {
-            selectedAuthenticators?.forEach(element => {
+            selectedAuthenticators?.forEach((element: GenericAuthenticatorInterface) => {
                 eventPublisher.publish("application-sign-in-method-add-new-authenticator", {
                     type: kebabCase(element["defaultAuthenticator"]["name"])
                 });
@@ -301,7 +305,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             }
 
             return IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
-                .some((selectedLabel) => filterLabels.includes(selectedLabel));
+                .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
 
         return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
@@ -314,7 +318,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
             if (name.includes(query)
                 || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
-                    .some((tag) => tag?.toLocaleLowerCase()?.includes(query)
+                    .some((tag: string) => tag?.toLocaleLowerCase()?.includes(query)
                         || startCase(tag)?.toLocaleLowerCase()?.includes(query))
                 || authenticator.category?.toLocaleLowerCase()?.includes(query)
                 || authenticator.categoryDisplayName?.toLocaleLowerCase()?.includes(query)) {
@@ -403,28 +407,42 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                         category.templates.map((
                                             template: IdentityProviderTemplateInterface,
                                             templateIndex: number
-                                        ) => (
-                                            <ResourceGrid.Card
-                                                key={ templateIndex }
-                                                resourceName={ template.name }
-                                                isResourceComingSoon={ template.comingSoon }
-                                                disabled={ template.disabled }
-                                                comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                resourceDescription={ template.description }
-                                                resourceImage={
-                                                    IdentityProviderManagementUtils
-                                                        .resolveTemplateImage(template.image, getIdPIcons())
-                                                }
-                                                tags={ template.tags }
-                                                onClick={ () => {
-                                                    onIDPCreateWizardTrigger(template.id, () => {
-                                                        setShowAddNewAuthenticatorView(false);
-                                                    }, template);
-                                                } }
-                                                showTooltips={ false }
-                                                data-testid={ `${ testId }-${ template.name }` }
-                                            />
-                                        ))
+                                        ) => {
+
+                                            const isOrgIdp: boolean = 
+                                                template.templateId === "organization-enterprise-idp";
+
+                                            if (isOrgIdp && !isOrganizationManagementEnabled) {
+                                                return null;
+                                            }
+
+                                            if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
+                                                return null;
+                                            }
+
+                                            return (
+                                                <ResourceGrid.Card
+                                                    key={ templateIndex }
+                                                    resourceName={ template.name }
+                                                    isResourceComingSoon={ template.comingSoon }
+                                                    disabled={ template.disabled }
+                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                    resourceDescription={ template.description }
+                                                    resourceImage={
+                                                        IdentityProviderManagementUtils
+                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                    }
+                                                    tags={ template.tags }
+                                                    onClick={ () => {
+                                                        onIDPCreateWizardTrigger(template.id, () => {
+                                                            setShowAddNewAuthenticatorView(false);
+                                                        }, template);
+                                                    } }
+                                                    showTooltips={ false }
+                                                    data-testid={ `${ testId }-${ template.name }` }
+                                                />
+                                            );
+                                        })
                                     }
                                 </ResourceGrid>
                             );
@@ -459,7 +477,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     (filterLabels && Array.isArray(filterLabels) && filterLabels.length > 0) && (
                         <Label.Group>
                             {
-                                filterLabels.map((label, index: number) => {
+                                filterLabels.map((label: string, index: number) => {
                                     const isSelected: boolean = selectedFilterLabels.includes(label);
 
                                     return (
@@ -495,7 +513,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     refreshAuthenticators={ refreshAuthenticators }
                                     authenticators={ filteredAuthenticators }
                                     authenticationSteps={ authenticationSteps }
-                                    onAuthenticatorSelect={ (authenticators) => {
+                                    onAuthenticatorSelect={ (authenticators: GenericAuthenticatorInterface[]) => {
                                         setSelectedAuthenticators(authenticators);
                                     } }
                                     selected={ selectedAuthenticators }

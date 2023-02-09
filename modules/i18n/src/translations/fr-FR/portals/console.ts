@@ -4371,6 +4371,7 @@ export const console: ConsoleNS = {
                 title: "Enregistrer une nouvelle candidature"
             },
             applications: {
+                alternateSubTitle: "Gérez vos applications et personnalisez les flux de connexion.",
                 subTitle: "Enregistrez et gérez vos applications et configurez la connexion.",
                 title: "Applications"
             },
