@@ -49,15 +49,14 @@ export const updateValidationConfigData = (
     passwordData: ValidationDataInterface,
     usernameData: ValidationDataInterface
 ): Promise<ValidationDataInterface[]> => {
-
-    const configArry: ValidationDataInterface[] = [
+    const configArray: ValidationDataInterface[] = [
         passwordData,
         usernameData,
         preparePasswordValidationConfigData(formData),
         prepareUsernameValidationConfigData(formData)
     ];
 
-    const config: ValidationDataInterface[] = configArry.filter((item: ValidationDataInterface) =>
+    const config: ValidationDataInterface[] = configArray.filter((item: ValidationDataInterface) =>
         item != null);
 
     const requestConfig: AxiosRequestConfig = {
@@ -221,37 +220,49 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 };
 
 const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
-
+ 
     if(values.field=="password"){
         return;
+
     }
 
-    let rules: ValidationConfInterface[] = [];
+    const rules: ValidationConfInterface[] = [];
 
     if (values.enableValidator=="false"){
-        rules = [
+        rules.push(
             {
                 properties: [
                     {
                         key: "enable.validator",
-                        value: values.enableValidator ? values.enableValidator : "false"
+                        value: "true"
                     }
                 ],
-                validator: "AlphanumericValidator"
+                validator: "EmailFormatValidator"
             }
-        ];
+        );
         
     } else {
         rules.push(
             {
                 properties: [
                     {
+                        key: "enable.validator",
+                        value: "true"
+                    }
+                ],
+                validator: "AlphanumericValidator"
+            }
+        );
+        rules.push(
+            {
+                properties: [
+                    {
                         key: "min.length",
-                        value: values.minLength ? values.minLength : "8"
+                        value: values.minLength ? values.minLength : "3"
                     },
                     {
                         key: "max.length",
-                        value: values.maxLength ? values.maxLength : "30"
+                        value: values.maxLength ? values.maxLength : "50"
                     }
                 ],
                 validator: "LengthValidator"
