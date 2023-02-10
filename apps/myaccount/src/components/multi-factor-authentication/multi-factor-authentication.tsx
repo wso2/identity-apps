@@ -21,7 +21,8 @@ import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { List } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Grid, List } from "semantic-ui-react";
 import { BackupCodeAuthenticator, FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { getEnabledAuthenticators } from "../../api";
 import { AppConstants } from "../../constants";
@@ -56,10 +57,11 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string =
+        useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
@@ -72,7 +74,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
     const translateKey: string = "myAccount:components.mfa.backupCode.";
     const totpAuthenticatorName: string = "totp";
-    const backupCodeAuthenticatorName = "backup-code-authenticator";
+    const backupCodeAuthenticatorName: string = "backup-code-authenticator";
 
     /**
      * Fetch enabled authenticators and set to state.
@@ -84,7 +86,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
                 setEnabledAuthenticators(authenticatorList);
             })
-            .catch((errorMessage) => {
+            .catch((errorMessage: string) => {
                 onAlertFired({
                     description: t(translateKey + "notifications.retrieveAuthenticatorError.error.description", {
                         error: errorMessage
@@ -210,19 +212,41 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     setShowSessionTerminationModal(true);
                                 } }
                             />
-                            { isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
-                                ? (
-                                    <BackupCodeAuthenticator
-                                        onAlertFired={ onAlertFired }
-                                        initBackupCodeFlow={ initBackupCodeFlow }
-                                        onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
-                                        handleSessionTerminationModalVisibility={
-                                            () => setShowSessionTerminationModal(true)
-                                        }
-                                    />
-                                ) : null
-                            }
                         </List.Item>
+                    ) : null }
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
+                    ) &&
+                    isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
+                    ? (
+                        <>
+                            <List.Item
+                                className="inner-list-item recovery-options-muted-header"
+                            >
+                                <Grid padded={ true }>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column
+                                            width={ 16 }
+                                            className="first-column"
+                                        >
+                                            { t(translateKey + "mutedHeader") }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </List.Item>
+                            <List.Item className="inner-list-item">
+                                <BackupCodeAuthenticator
+                                    onAlertFired={ onAlertFired }
+                                    initBackupCodeFlow={ initBackupCodeFlow }
+                                    onBackupFlowCompleted={ handleBackupCodeFlowCompleted }
+                                    handleSessionTerminationModalVisibility={
+                                        () => setShowSessionTerminationModal(true)
+                                    }
+                                />
+                            </List.Item>
+                        </>
                     ) : null }
             </List>
             <UserSessionTerminationModal

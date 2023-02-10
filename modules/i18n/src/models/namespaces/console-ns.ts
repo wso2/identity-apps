@@ -1808,6 +1808,8 @@ export interface ConsoleNS {
                     updateFederatedAuthenticator: Notification;
                     updateFederatedAuthenticators: Notification;
                     updateEmailOTPAuthenticator: Notification;
+                    updateSMSOTPAuthenticator: Notification;
+                    updateGenericAuthenticator: Notification;
                     updateIDP: Notification;
                     updateIDPCertificate: Notification;
                     updateIDPRoleMappings: Notification;

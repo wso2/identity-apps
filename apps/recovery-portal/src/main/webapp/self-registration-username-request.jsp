@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~  WSO2 LLC. licenses this file to you under the Apache License,
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
   ~  in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -49,24 +49,22 @@
         errorCode = errorCodeObj.toString();
     }
     if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
-        errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain") + " - " + user.getTenantDomain();
+        errorMsg = "Invalid tenant domain - " + user.getTenantDomain();
     } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
-        errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
-            + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "already.taken.username");
+        errorMsg = "Username '" + username + "' is already taken. Please pick a different username";
     } else if (SelfRegistrationStatusCodes.ERROR_CODE_SELF_REGISTRATION_DISABLED.equalsIgnoreCase(errorCode)) {
-        errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "self.registration.disabled.for.tenant")
-            + " - " + user.getTenantDomain();
+        errorMsg = "Self registration is disabled for tenant - " + user.getTenantDomain();
     } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
         if (request.getAttribute("errorMessage") != null) {
             errorMsg = (String) request.getAttribute("errorMessage");
         } else {
-            errorMsg = user.getUsername() + " " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.user.name.pick.valid.username");
+            errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
         }
     } else if (StringUtils.equalsIgnoreCase(SelfRegistrationStatusCodes.ERROR_CODE_INVALID_EMAIL_USERNAME,
             errorCode)) {
-        errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.username.should.be.in.email.format");
+        errorMsg = "Username is invalid. Username should be in email format.";
     } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
-        errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
+        errorMsg = "Invalid user store domain - " + user.getRealm();
     } else if (errorMsgObj != null) {
         errorMsg = errorMsgObj.toString();
     }
@@ -235,7 +233,7 @@
 
                         if (normalizedUsername) {
                             if (!/^[^/].*[^@]$/g.test(normalizedUsername)) {
-                                $("#error-msg").text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.pattern.violated")%>");
+                                $("#error-msg").text("Username pattern policy violated");
                                 $("#error-msg").show();
                                 $("#username").val("");
                                 return;

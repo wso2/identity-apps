@@ -34,6 +34,7 @@ export interface DangerZone {
 export interface Page {
     title: string;
     subTitle: string;
+    alternateSubTitle?: string;
 }
 
 /**

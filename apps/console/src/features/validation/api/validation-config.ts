@@ -44,11 +44,20 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns response - updated validation configurations.
  */
-export const updateValidationConfigData = (data: ValidationFormInterface): Promise<ValidationDataInterface[]> => {
-
-    const config: ValidationDataInterface[] = [
-        prepareValidationConfigData(data)
+export const updateValidationConfigData = (
+    formData: ValidationFormInterface,
+    passwordData: ValidationDataInterface,
+    usernameData: ValidationDataInterface
+): Promise<ValidationDataInterface[]> => {
+    const configArray: ValidationDataInterface[] = [
+        passwordData,
+        usernameData,
+        preparePasswordValidationConfigData(formData),
+        prepareUsernameValidationConfigData(formData)
     ];
+
+    const config: ValidationDataInterface[] = configArray.filter(
+        (item: ValidationDataInterface) => item != null);
 
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -116,7 +125,11 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
     };
 };
 
-const prepareValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+const preparePasswordValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+
+    if(values.field==="username"){
+        return;
+    }
 
     let rules: ValidationConfInterface[] = [
         {
@@ -202,6 +215,60 @@ const prepareValidationConfigData = (values: ValidationFormInterface): Validatio
 
     return {
         field: "password",
+        rules: rules
+    };
+};
+
+const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
+ 
+    if(values.field==="password"){
+        return;
+    }
+
+    const rules: ValidationConfInterface[] = [];
+
+    if (values.enableValidator==="false"){
+        rules.push(
+            {
+                properties: [
+                    {
+                        key: "enable.validator",
+                        value: "true"
+                    }
+                ],
+                validator: "EmailFormatValidator"
+            }
+        );
+        
+    } else {
+        rules.push(
+            {
+                properties: [
+                    {
+                        key: "enable.validator",
+                        value: "true"
+                    }
+                ],
+                validator: "AlphanumericValidator"
+            },
+            {
+                properties: [
+                    {
+                        key: "min.length",
+                        value: values.minLength ? values.minLength : "3"
+                    },
+                    {
+                        key: "max.length",
+                        value: values.maxLength ? values.maxLength : "50"
+                    }
+                ],
+                validator: "LengthValidator"
+            }
+        );
+    }
+
+    return {
+        field: "username",
         rules: rules
     };
 };
