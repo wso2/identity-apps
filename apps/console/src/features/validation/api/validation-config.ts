@@ -227,7 +227,7 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
 
     const rules: ValidationConfInterface[] = [];
 
-    if (values.enableValidator=="false"){
+    if (values.enableValidator==="false"){
         rules.push(
             {
                 properties: [
