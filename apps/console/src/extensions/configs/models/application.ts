@@ -17,7 +17,6 @@
  */
 
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import { FeatureConfigInterface } from "../../../features/core";
 import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
 import {
@@ -26,6 +25,7 @@ import {
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
+import { FeatureConfigInterface } from "../../../features/core";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
