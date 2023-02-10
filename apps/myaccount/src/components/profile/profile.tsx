@@ -605,7 +605,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
-            const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
+            const fieldName: string = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
 
@@ -645,29 +645,34 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             <Placeholder><Placeholder.Line /></Placeholder>
                                                         )
                                                         : profileInfo.get(schema.name)
-                                                    || (
-                                                        <a
-                                                            className="placeholder-text"
-                                                            tabIndex={ 0 }
-                                                            onClick={ () => {
-                                                                setShowMobileUpdateWizard(true);
-                                                            } }
-                                                            onKeyPress={
-                                                                ({ key }: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                                        || (
+                                                            <a
+                                                                className="placeholder-text"
+                                                                tabIndex={ 0 }
+                                                                onClick={ () => {
+                                                                    setShowMobileUpdateWizard(true);
+                                                                } }
+                                                                onKeyPress={ (
+                                                                    { key }: React.KeyboardEvent<HTMLAnchorElement>
+                                                                ) =>
+                                                                {
                                                                     if (key === "Enter") {
                                                                         setShowMobileUpdateWizard(true);
                                                                     }
-                                                                } }
-                                                            data-testid={
-                                                                `${testId}-schema-mobile-editing-section-${
-                                                                    schema.name.replace(".", "-")
-                                                                }-placeholder`
-                                                            }
-                                                        >
-                                                            { t("myAccount:components.profile.forms.generic.inputs." +
-                                                                "placeholder", { fieldName: fieldName.toLowerCase() }) }
-                                                        </a>
-                                                    )
+                                                                }
+                                                                }
+                                                                data-testid={
+                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-placeholder`
+                                                                }
+                                                            >
+                                                                { t("myAccount:components.profile.forms.generic." +
+                                                                    "inputs.placeholder", {
+                                                                    fieldName: fieldName.toLowerCase() })
+                                                                }
+                                                            </a>
+                                                        )
                                                 }
                                             </List.Description>
                                         </List.Content>
@@ -715,7 +720,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     label=""
                                                     name={ schema.name }
                                                     placeholder={ t("myAccount:components.profile.forms." +
-                                                    "countryChangeForm.inputs.country.placeholder") }
+                                                        "countryChangeForm.inputs.country.placeholder") }
                                                     required={ schema.required }
                                                     requiredErrorMessage={
                                                         t("myAccount:components.profile.forms.generic" +
@@ -748,7 +753,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     required={ schema.required }
                                                     requiredErrorMessage={
                                                         t("myAccount:components.profile.forms.generic." +
-                                                        "inputs.validations.empty", { fieldName })
+                                                            "inputs.validations.empty", { fieldName })
                                                     }
                                                     type="text"
                                                     validation={ (value: string, validation: Validation) => {
@@ -867,7 +872,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     )
             );
         } else {
-            const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
+            const fieldName: string = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
 
@@ -931,9 +936,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             <a
                                                                 className="placeholder-text"
                                                                 tabIndex={ 0 }
-                                                                onKeyPress={ (
-                                                                    e: React.KeyboardEvent<HTMLAnchorElement>
-                                                                ) => {
+                                                                onKeyPress={ (e: React.KeyboardEvent<HTMLElement>) => {
                                                                     if (e.key === "Enter") {
                                                                         dispatch(
                                                                             setActiveForm(
