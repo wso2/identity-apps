@@ -1332,7 +1332,7 @@ export const myAccount: MyAccountNS = {
                 phoneNumbers: "Numéros de téléphone",
                 profileImage: "Image de profil",
                 profileUrl: "URL",
-                userName: "Nom d'utilisateur",
+                userName: "Nom d'utilisateur"
             },
             forms: {
                 countryChangeForm: {

@@ -26,14 +26,12 @@ import {
     resolveUserEmails
 } from "@wso2is/core/helpers";
 import {
-    CommonConfigReducerStateInterface,
     ProfileSchemaInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     EditAvatarModal,
     LinkButton,
@@ -56,10 +54,9 @@ import { commonConfig, profileConfig } from "../../extensions";
 import {
     AlertInterface,
     AlertLevels,
-    AuthStateInterface, BasicProfileInterface,
-    DeploymentConfigInterface,
+    AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
-    ProfileSchema, ServiceResourceEndpointsInterface, UIConfigInterface
+    ProfileSchema
 } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
@@ -100,12 +97,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser: string = useSelector((state: AppState) =>
         state.authenticationInformation.profileInfo.isReadOnly);
-    const config: ConfigReducerStateInterface = ...
-        DeploymentConfigInterface,
-        ServiceResourceEndpointsInterface,
-        FeatureConfigInterface,
-        I18nModuleOptionsInterface,
-        UIConfigInterface> = useSelector((state: AppState) => state.config);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
