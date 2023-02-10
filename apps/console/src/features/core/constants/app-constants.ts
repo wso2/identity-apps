@@ -326,7 +326,9 @@ export class AppConstants {
             .set("MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account`)
             .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`)
             .set("VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration`)
-            .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`);
+            .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`)
+            .set("ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login`)
+            .set("USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation`);
     }
 
     /**

@@ -152,3 +152,16 @@
         }
     }
 }
+
+/***************************************
+        Username Validation
+***************************************/
+
+.criteria-username {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: baseline;
+    gap: 10px;
+}
