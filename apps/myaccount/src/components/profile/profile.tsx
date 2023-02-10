@@ -42,6 +42,7 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -498,7 +499,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         data.Operations[0].value = value;
-        updateProfileInfo(data).then((response: any) => {
+        updateProfileInfo(data).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -660,8 +661,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 setShowMobileUpdateWizard(true);
                                                             } }
                                                             onKeyPress={
-                                                                (e: React.KeyboardEvent<HTMLAnchorElement>) => {
-                                                                    if (e.key === "Enter") {
+                                                                ({ key }: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                                                    if (key === "Enter") {
                                                                         setShowMobileUpdateWizard(true);
                                                                     }
                                                                 } }
@@ -732,7 +733,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     children={ countryList
                                                         ? countryList.map((list: DropdownItemProps) => {
                                                             return {
-                                                                "data-testid": `${testId}-` + list.value as string,
+                                                                "data-testid": `${testId}-${list.value as string}`,
                                                                 flag: list.flag,
                                                                 key: list.key as string,
                                                                 text: list.text as string,
