@@ -100,7 +100,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser: string = useSelector((state: AppState) =>
         state.authenticationInformation.profileInfo.isReadOnly);
-    const config: CommonConfigReducerStateInterface<
+    const config: ConfigReducerStateInterface = ...
         DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,
         FeatureConfigInterface,
