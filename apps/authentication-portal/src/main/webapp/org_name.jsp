@@ -35,6 +35,9 @@
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
 
+    // Log the actual error for localized error fallbacks
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
+
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
 
@@ -43,6 +46,10 @@
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+            } else if (errorMessage.equalsIgnoreCase("Invalid Organization Name")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.name");
+            } else if (isErrorFallbackLocale) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
         }
     }
@@ -119,7 +126,7 @@
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button type="submit" class="ui primary large button">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
                             </button>
                         </div>
                     </form>
