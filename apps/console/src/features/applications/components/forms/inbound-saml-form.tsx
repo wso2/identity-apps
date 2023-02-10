@@ -623,7 +623,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <URLInput
                                     urlState={ assertionConsumerUrls }
-                                    setURLState={ setAssertionConsumerUrls }
+                                    setURLState={ (url: string) => {
+                                        setAssertionConsumerUrls(url);
+
+                                        if (initialValues?.assertionConsumerUrls?.toString() !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.label")
@@ -1124,7 +1130,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <URLInput
                                     urlState={ audiences }
-                                    setURLState={ setAudiences }
+                                    setURLState={ (url: string) => {
+                                        setAudiences(url);
+
+                                        if (initialValues
+                                            ?.singleSignOnProfile?.assertion?.audiences?.toString() !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.audience.label")
@@ -1193,7 +1206,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <URLInput
                                     urlState={ recipients }
-                                    setURLState={ setRecipients }
+                                    setURLState={ (url: string) => {
+                                        setRecipients(url);
+
+                                        if (initialValues
+                                            ?.singleSignOnProfile?.assertion?.recipients?.toString() !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
                                     labelName={
                                         t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.recipients.label")
@@ -1681,7 +1701,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <div ref={ returnToURL }></div>
                         <URLInput
                             urlState={ returnToURLS }
-                            setURLState={ setReturnToURLS }
+                            setURLState={ (url: string) => {
+                                setReturnToURLS(url);
+
+                                if (initialValues
+                                    ?.singleLogoutProfile?.idpInitiatedSingleLogout?.returnToUrls?.toString() !== url) {
+                                    setIsFormStale(true);
+                                }
+                            } }
                             labelName={
                                 t("console:develop.features.applications.forms.inboundSAML.sections" +
                                     ".idpInitiatedSLO.fields.returnToURLs.label")

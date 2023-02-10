@@ -170,3 +170,13 @@
         }
     }
 }
+
+/*-------------------------------
+  Compact description for form fields  
+--------------------------------*/
+
+.ui.form {
+    .field-compact-description{
+        padding-left: 2.75rem;
+    }
+}
