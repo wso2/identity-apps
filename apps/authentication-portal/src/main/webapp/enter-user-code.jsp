@@ -83,7 +83,7 @@
                                         value=""
                                         name="user_code"
                                         tabindex="0"
-                                        placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "device.flow.user.code") %>"
+                                        placeholder="user code"
                                         required>
                                 <i aria-hidden="true" class="user icon"></i>
                             </div>

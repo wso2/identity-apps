@@ -50,7 +50,7 @@ import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
+    AuthenticationSequenceType, AuthenticatorInterface,
     LoginFlowTypes
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils";
@@ -299,7 +299,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
-        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP){
+        } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "second-factor-email-otp"
             });
@@ -307,7 +307,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorEMAILOTPSequenceTemplate)
             });
-        } else if(loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP){
+        } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "second-factor-sms-otp"
             });
@@ -315,7 +315,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorSMSOTPSequenceTemplate)
             });
-        }else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
+        } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "first-factor-fido"
             });
@@ -485,7 +485,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
             authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
         }
-        modifiedSequenceTemplate.steps[0].options.forEach((option) => {
+        modifiedSequenceTemplate.steps[0].options.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === authenticatorType) {
                 option.idp = idp;
             }
@@ -670,11 +670,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     <div className="authenticator-grid">
                         {
                             authenticators
-                                .filter((authenticator) => {
+                                .filter((authenticator: GenericAuthenticatorInterface) => {
                                     return authenticator.name !== IdentityProviderManagementConstants
                                         .BACKUP_CODE_AUTHENTICATOR;
                                 })
-                                .map((authenticator, index) => (
+                                .map((authenticator: GenericAuthenticatorInterface, index: number) => (
                                     <LabeledCard
                                         key={ index }
                                         multilineLabel

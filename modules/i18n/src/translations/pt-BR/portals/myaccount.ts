@@ -699,8 +699,8 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
-                description: "Você pode usar códigos de backup para fazer login se não conseguir receber um código "
-                    + "de verificação por meio do aplicativo autenticador.",
+                description: "Use códigos de backup para acessar sua conta caso não consiga receber códigos de autenticação " +
+                    "multifator. Você pode regenerar novos códigos, se necessário.",
                 download: {
                     heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
                     info1: "Você só pode usar cada código de backup uma vez.",
@@ -734,6 +734,7 @@ export const myAccount: MyAccountNS = {
                     warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los "
                         + "em algum lugar seguro, mas acessível."
                 },
+                mutedHeader: "Opções de recuperação",
                 notifications: {
                     deleteError: {
                         error: {
@@ -805,7 +806,8 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         }
                     }
-                }
+                },
+                remaining: "restante"
             },
             fido: {
                 description: "Você pode usar uma chave de segurança FIDO2 ou biometria em seu dispositivo " +

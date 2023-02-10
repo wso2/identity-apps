@@ -52,6 +52,8 @@ export interface FormPropsInterface extends FormProps {
     uncontrolledForm: boolean;
 }
 
+const FIELD_COMPACT_DESCRIPTION: string = "field-compact-description";
+
 /**
  * Implementation of the Form component.
  * @param props - Props injected to the component.
@@ -161,6 +163,16 @@ export const Form: ForwardRefExoticComponent<PropsWithChildren<FormPropsInterfac
                 }
                 if (child.props.childFieldProps && child.props?.childFieldProps?.hidden) {
                     return null;
+                }
+
+                if (child.props?.className?.split(" ")[0] === FIELD_COMPACT_DESCRIPTION ) {
+                    return (
+                        <Grid.Row className="p-0" key={ index }>
+                            <Grid.Column className="p-0" width={ child.props.childFieldProps?.width }>
+                                { child }
+                            </Grid.Column>
+                        </Grid.Row>
+                    );
                 }
 
                 return (

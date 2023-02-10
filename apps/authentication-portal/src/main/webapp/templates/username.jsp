@@ -26,7 +26,6 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <%!
     private static final String UTF_8 = "UTF-8";
