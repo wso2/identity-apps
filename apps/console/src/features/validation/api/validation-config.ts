@@ -56,8 +56,8 @@ export const updateValidationConfigData = (
         prepareUsernameValidationConfigData(formData)
     ];
 
-    const config: ValidationDataInterface[] = configArray.filter((item:
-        ValidationDataInterface) => item != null);
+    const config: ValidationDataInterface[] = configArray.filter(
+        (item: ValidationDataInterface) => item != null);
 
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -127,7 +127,7 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
 
 const preparePasswordValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
 
-    if(values.field=="username"){
+    if(values.field==="username"){
         return;
     }
 
@@ -221,7 +221,7 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 
 const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
  
-    if(values.field=="password"){
+    if(values.field==="password"){
         return;
     }
 
