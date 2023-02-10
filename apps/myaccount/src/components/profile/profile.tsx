@@ -17,6 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     getUserNameWithoutDomain,
     hasRequiredScopes,
@@ -24,9 +25,13 @@ import {
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    ProfileSchemaInterface,
+    SBACInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     EditAvatarModal,
     LinkButton,
@@ -35,16 +40,24 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import { updateProfileImageURL, updateProfileInfo } from "../../api";
 import { AppConstants, CommonConstants, UIConstants } from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";
-import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
+import {
+    AlertInterface,
+    AlertLevels,
+    AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    ProfileSchema
+} from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { CommonUtils } from "../../utils";
@@ -75,16 +88,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
     const { isMobileViewport } = useMediaContext();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const isReadOnlyUser = useSelector((state: AppState) =>
+    const isReadOnlyUser: string = useSelector((state: AppState) =>
         state.authenticationInformation.profileInfo.isReadOnly);
-    const config = useSelector((state: AppState) => state.config);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -124,20 +137,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
+     * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = ProfileUtils.flattenSchemas([ ...profileDetails.profileSchemas ])
-            .filter(item => item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchema, b: ProfileSchema) => {
-                if (!a.displayOrder) {
-                    return -1;
-                } else if (!b.displayOrder) {
-                    return 1;
-                } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
-                }
-            });
+        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas(
+            [ ...profileDetails.profileSchemas ]
+        ).filter((item: ProfileSchemaInterface) =>
+            item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
+        ).sort((a: ProfileSchema, b: ProfileSchema) => {
+            if (!a.displayOrder) {
+                return -1;
+            } else if (!b.displayOrder) {
+                return 1;
+            } else {
+                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+            }
+        });
 
         setProfileSchema(sortedSchemas);
 
@@ -155,7 +170,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 // this splits for the sub-attributes
                 const schemaNames: string[] = schema.name.split(".");
 
-                let isCanonical = false;
+                let isCanonical: boolean = false;
 
                 // this splits for the canonical types
                 const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
@@ -170,9 +185,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo.pendingEmails[0].value as string);
                         } else {
-                            const primaryEmail = profileDetails.profileInfo[schemaNames[0]] &&
+                            const primaryEmail: string = profileDetails.profileInfo[schemaNames[0]] &&
                                 profileDetails.profileInfo[schemaNames[0]]
-                                    .find((subAttribute) => typeof subAttribute === "string");
+                                    .find((subAttribute: string) => typeof subAttribute === "string");
 
                             // Set the primary email value.
                             tempProfileInfo.set(schema.name, primaryEmail);
@@ -215,7 +230,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
 
                     } else if (isCanonical) {
-                        let indexOfType = -1;
+                        let indexOfType: number = -1;
 
                         profileDetails?.profileInfo[
                             schemaNamesCanonicalType[0]
@@ -246,9 +261,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         ][schemaNames[0]][schemaNames[1]]
                                     : "");
                         } else {
-                            const subValue = profileDetails.profileInfo[schemaNames[0]]
-                                && profileDetails.profileInfo[schemaNames[0]]
-                                    .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                            const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
+                                && profileDetails.profileInfo[schemaNames[0]].find(
+                                    (subAttribute: BasicProfileInterface) => subAttribute.type === schemaNames[1]
+                                );
 
                             if (schemaNames[0] === "addresses") {
                                 tempProfileInfo.set(
@@ -291,7 +307,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         isExtended: boolean,
         schema: ProfileSchema
     ): void => {
-        const data = {
+        const data: { Operations: Array<{ op: string, value: Record<string, string> }>, schemas: Array<string> } = {
             Operations: [
                 {
                     op: "replace",
@@ -306,7 +322,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         // this splits for the sub-attributes
         const schemaNames: string[] = formName.split(".");
 
-        let isCanonical = false;
+        let isCanonical: boolean = false;
 
         // this splits for the canonical types
         const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
@@ -317,16 +333,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
             schemaNames[0] === "phoneNumbers") {
-            const attributeValues = [];
+            const attributeValues: string[] = [];
 
             if (schemaNames.length === 1) {
                 // List of sub attributes.
-                const subValue = profileDetails.profileInfo[schemaNames[0]]
+                const subValue: string[] = profileDetails.profileInfo[schemaNames[0]]
                     && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute) => typeof subAttribute === "object");
+                        .filter((subAttribute: string) => typeof subAttribute === "object");
 
                 if (subValue && subValue.length > 0) {
-                    subValue.map((value) => {
+                    subValue.map((value: string) => {
                         attributeValues.push(value);
                     });
                 }
@@ -349,22 +365,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     };
                 }
             } else {
-                let primaryValue = "";
+                let primaryValue: string = "";
 
                 // The primary value of the email attribute.
                 if (schemaNames[0] === "emails" && profileDetails?.profileInfo[schemaNames[0]]) {
                     primaryValue = profileDetails.profileInfo[schemaNames[0]]
                         && profileDetails.profileInfo[schemaNames[0]]
-                            .find((subAttribute) => typeof subAttribute === "string");
+                            .find((subAttribute: string) => typeof subAttribute === "string");
                 }
 
                 // List of sub attributes.
-                const subValues = profileDetails.profileInfo[schemaNames[0]]
+                const subValues: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                     && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute) => typeof subAttribute ===  "object");
+                        .filter((subAttribute: string) => typeof subAttribute ===  "object");
 
                 if (subValues && subValues.length > 0) {
-                    subValues.map((value) => {
+                    subValues.map((value: string) => {
                         attributeValues.push(value);
                     });
                 }
@@ -460,13 +476,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * `USER-STORE/` segment. This block will re append the
          * value to the expected format.
          */
-        const attrKey = "userName";
+        const attrKey: string = "userName";
 
         if (attrKey in value) {
-            const oldValue = profileInfo?.get(schema?.name);
+            const oldValue: string = profileInfo?.get(schema?.name);
 
             if (oldValue?.indexOf("/") > -1) {
-                const fragments = oldValue.split("/");
+                const fragments: string[] = oldValue.split("/");
 
                 if (fragments?.length > 1) {
                     value[attrKey] = `${ fragments[0] }/${ value[attrKey] }`;
@@ -475,7 +491,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         data.Operations[0].value = value;
-        updateProfileInfo(data).then((response) => {
+        updateProfileInfo(data).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -490,7 +506,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
             }
-        }).catch(error => {
+        }).catch((error: any) => {
             onAlertFired({
                 description: error?.detail ?? t(
                     "myAccount:components.profile.notifications.updateProfileInfo.genericError.description"
@@ -514,7 +530,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns True/False
      */
     const checkSchemaType = (schema: string, type: string): boolean => {
-        return schema.split(".").filter((name) => {
+        return schema.split(".").filter((name: string) => {
             return name === type;
         }).length > 0;
     };
@@ -525,7 +541,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const resolveProfileInfoSchemaValue = (schema: ProfileSchema): string => {
 
-        let schemaFormValue = profileInfo.get(schema.name);
+        let schemaFormValue: string = profileInfo.get(schema.name);
 
         /**
          * Remove the user-store-name prefix from the userName
@@ -572,7 +588,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
-            const usernameClaim = "username";
+            const usernameClaim: string = "username";
 
             if (name?.toLowerCase() === usernameClaim || displayName?.toLowerCase() === usernameClaim) {
                 schema.mutability = ProfileConstants.READONLY_SCHEMA;
@@ -594,7 +610,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             );
 
             // Define the field placeholder for text fields.
-            let innerPlaceholder = t("myAccount:components.profile.forms.generic." +
+            let innerPlaceholder: string = t("myAccount:components.profile.forms.generic." +
                 "inputs.placeholder",
             {
                 fieldName: fieldName.toLowerCase()
@@ -629,28 +645,29 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             <Placeholder><Placeholder.Line /></Placeholder>
                                                         )
                                                         : profileInfo.get(schema.name)
-                                                    || (
-                                                        <a
-                                                            className="placeholder-text"
-                                                            tabIndex={ 0 }
-                                                            onClick={ () => {
-                                                                setShowMobileUpdateWizard(true);
-                                                            } }
-                                                            onKeyPress={ (e) => {
-                                                                if (e.key === "Enter") {
+                                                        || (
+                                                            <a
+                                                                className="placeholder-text"
+                                                                tabIndex={ 0 }
+                                                                onClick={ () => {
                                                                     setShowMobileUpdateWizard(true);
+                                                                } }
+                                                                onKeyPress={
+                                                                    ({ key }: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                                                        if (key === "Enter") {
+                                                                            setShowMobileUpdateWizard(true);
+                                                                        }
+                                                                    } }
+                                                                data-testid={
+                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-placeholder`
                                                                 }
-                                                            } }
-                                                            data-testid={
-                                                                `${testId}-schema-mobile-editing-section-${
-                                                                    schema.name.replace(".", "-")
-                                                                }-placeholder`
-                                                            }
-                                                        >
-                                                            { t("myAccount:components.profile.forms.generic.inputs." +
-                                                                "placeholder", { fieldName: fieldName.toLowerCase() }) }
-                                                        </a>
-                                                    )
+                                                            >
+                                                                { t("myAccount:components.profile.forms.generic.inputs." +
+                                                                    "placeholder", { fieldName: fieldName.toLowerCase() }) }
+                                                            </a>
+                                                        )
                                                 }
                                             </List.Description>
                                         </List.Content>
@@ -688,7 +705,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
                                     <Grid.Column width={ 12 }>
                                         <Forms
-                                            onSubmit={ (values) => {
+                                            onSubmit={ (values: Map<string, FormValue>) => {
                                                 handleSubmit(values, schema.name, schema.extended, schema);
                                             } }
                                         >
@@ -698,22 +715,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     label=""
                                                     name={ schema.name }
                                                     placeholder={ t("myAccount:components.profile.forms." +
-                                                    "countryChangeForm.inputs.country.placeholder") }
+                                                        "countryChangeForm.inputs.country.placeholder") }
                                                     required={ schema.required }
                                                     requiredErrorMessage={
                                                         t("myAccount:components.profile.forms.generic" +
                                                             ".inputs.validations.empty", { fieldName })
                                                     }
                                                     type="dropdown"
-                                                    children={ countryList ? countryList.map(list => {
-                                                        return {
-                                                            "data-testid": `${testId}-` + list.value as string,
-                                                            flag: list.flag,
-                                                            key: list.key as string,
-                                                            text: list.text as string,
-                                                            value: list.value as string
-                                                        };
-                                                    }) : [] }
+                                                    children={ countryList
+                                                        ? countryList.map((list: DropdownItemProps) => {
+                                                            return {
+                                                                "data-testid": `${testId}-${list.value as string}`,
+                                                                flag: list.flag,
+                                                                key: list.key as string,
+                                                                text: list.text as string,
+                                                                value: list.value as string
+                                                            };
+                                                        }) : [] }
                                                     value={ resolveProfileInfoSchemaValue(schema) }
                                                     disabled={ false }
                                                     clearable={ !schema.required }
@@ -730,7 +748,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     required={ schema.required }
                                                     requiredErrorMessage={
                                                         t("myAccount:components.profile.forms.generic." +
-                                                        "inputs.validations.empty", { fieldName })
+                                                            "inputs.validations.empty", { fieldName })
                                                     }
                                                     type="text"
                                                     validation={ (value: string, validation: Validation) => {
@@ -972,7 +990,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         size="small"
                                                         color="grey"
                                                         tabIndex={ 0 }
-                                                        onKeyPress={ (e) => {
+                                                        onKeyPress={ (e: React.KeyboardEvent<HTMLElement>) => {
                                                             if (e.key === "Enter") {
                                                                 dispatch(
                                                                     setActiveForm(
@@ -1036,7 +1054,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t("myAccount:components.profile.notifications.updateProfileInfo.error" +
@@ -1073,7 +1091,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 showGravatarLabel
                 size="tiny"
                 tabIndex={ 0 }
-                onKeyPress={ (e) => {
+                onKeyPress={ (e: React.KeyboardEvent<HTMLElement>) => {
                     if (e.key === "Enter" && !isProfileUrlReadOnly()) {
                         handleAvatarOnClick();
                     }
