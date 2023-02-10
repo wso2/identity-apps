@@ -56,8 +56,8 @@ export const updateValidationConfigData = (
         prepareUsernameValidationConfigData(formData)
     ];
 
-    const config: ValidationDataInterface[] = configArray.filter((item: ValidationDataInterface) =>
-        item != null);
+    const config: ValidationDataInterface[] = configArray.filter((item:
+        ValidationDataInterface) => item != null);
 
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -223,7 +223,6 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
  
     if(values.field=="password"){
         return;
-
     }
 
     const rules: ValidationConfInterface[] = [];
@@ -251,9 +250,7 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
                     }
                 ],
                 validator: "AlphanumericValidator"
-            }
-        );
-        rules.push(
+            },
             {
                 properties: [
                     {
