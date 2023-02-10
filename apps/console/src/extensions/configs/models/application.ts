@@ -17,6 +17,7 @@
  */
 
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import { FeatureConfigInterface } from "../../../features/core";
 import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
 import {
@@ -66,7 +67,10 @@ export interface ApplicationConfig {
          * @param props - Props for the component.
          * @returns Array of tab extensions.
          */
-        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
+        getTabExtensions: (
+            props: Record<string, unknown>,
+            features: FeatureConfigInterface
+        ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
