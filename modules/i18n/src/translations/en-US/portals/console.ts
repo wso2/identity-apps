@@ -1167,6 +1167,10 @@ export const console: ConsoleNS = {
                                             socialLogin: "Social Login"
                                         },
                                         types: {
+                                            apple: {
+                                                description: "Enable users to login with Apple ID.",
+                                                heading: "Add Apple login"
+                                            },
                                             defaultConfig: {
                                                 description: "Build your login flow starting with Username & "
                                                     + "Password login.",
@@ -3155,6 +3159,79 @@ export const console: ConsoleNS = {
                         }
                     },
                     authenticatorSettings: {
+                        apple: {
+                            additionalQueryParameters: {
+                                hint: "Additional query parameters to be sent to Apple.",
+                                label: "Additional Query Parameters",
+                                placeholder: "Enter additional query parameters.",
+                                validations: {
+                                    required: "Additional query parameters is not a required field."
+                                }
+                            },
+                            callbackUrl: {
+                                hint: "The authorized redirect URI used to obtain Apple credentials.",
+                                label: "Authorized redirect URI",
+                                placeholder: "Enter Authorized redirect URI.",
+                                validations: {
+                                    required: "Authorized redirect URI is a required field."
+                                }
+                            },
+                            clientId: {
+                                hint: "The unique identifier which is provided when creating the Apple Services ID.",
+                                label: "Services ID",
+                                placeholder: "Enter Services ID registered for the Apple application.",
+                                validations: {
+                                    required: "Services ID is a required field."
+                                }
+                            },
+                            keyId: {
+                                hint: "The key identifier which is generated when registering the private key for " +
+                                    "the Apple application.",
+                                label: "Key ID",
+                                placeholder: "Enter Key ID of the Apple private key.",
+                                validations: {
+                                    required: "Key ID is a required field."
+                                }
+                            },
+                            privateKey: {
+                                hint: "The generated private key for the Apple application.",
+                                label: "Private Key",
+                                placeholder: "Enter Private Key generated for the Apple application.",
+                                validations: {
+                                    required: "Private Key is a required field."
+                                }
+                            },
+                            secretValidityPeriod: {
+                                hint: "The validity period of the generated client secret. A new client secret " + 
+                                    "will be generated after this time.",
+                                label: "Client Secret Validity Period",
+                                placeholder: "Enter Validity Period for the Client Secret.",
+                                validations: {
+                                    required: "Client Secret Validity Period is not a required field."
+                                }
+                            },
+                            scopes: {
+                                heading: "Scopes",
+                                hint: "The type of access provided for the connected apps to access data " +
+                                    "from Apple. Click <1>here</1> to learn more.",
+                                list: {
+                                    email: {
+                                        description: "Grants read access to a user's email address."
+                                    },
+                                    name: {
+                                        description: "Grants read access to a user's name fields."
+                                    }
+                                }
+                            },
+                            teamId: {
+                                hint: "The generated unique ID which is assigned to the Apple developer team.",
+                                label: "Team ID",
+                                placeholder: "Enter Team ID of the Apple developer team.",
+                                validations: {
+                                    required: "Team ID is a required field."
+                                }
+                            }
+                        },
                         emailOTP: {
                             enableBackupCodes: {
                                 hint: "Allow users to authenticate with backup codes.",
@@ -4335,6 +4412,43 @@ export const console: ConsoleNS = {
                     }
                 },
                 templates: {
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Services ID</1> created at Apple.",
+                                heading: "Services ID"
+                            },
+                            heading: "Help",
+                            keyId: {
+                                description: "Provide the <1>Key Identifier</1> of the private key generated.",
+                                heading: "Key ID"
+                            },
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                heading: "Name"
+                            },
+                            preRequisites: {
+                                configureAppleSignIn: "See Apple's guide on configuring environment for" + 
+                                " Sign in with Apple.",
+                                configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
+                                configureWebDomain: "Use the following as a <1>Web Domain</1>.",
+                                getCredentials: "Before you begin, create a <1>Sign in With Apple Enabled App</1>" + 
+                                    " on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" + 
+                                    " <5>Private Key</5>.",
+                                heading: "Prerequisite"
+                            },
+                            privateKey: {
+                                description: "Provide the Apple <1>Private Key</1> generated for the app.",
+                                heading: "Private Key"
+                            },
+                            subHeading: "Use the guide below",
+                            teamId: {
+                                description: "Provide the Apple developer <1>Team ID</1>.",
+                                heading: "Team ID"
+                            }
+                        }
+                    },
                     enterprise: {
                         addWizard: {
                             subtitle: "Configure an IDP to connect with standard authentication protocols.",

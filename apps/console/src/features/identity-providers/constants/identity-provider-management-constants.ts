@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { authenticatorConfig } from "../../../extensions/configs/authenticator";
+import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
@@ -84,6 +85,7 @@ export class IdentityProviderManagementConstants {
      * Set of IDP template Ids.
      */
     public static readonly IDP_TEMPLATE_IDS: {
+        APPLE: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
         FACEBOOK: string;
@@ -94,6 +96,7 @@ export class IdentityProviderManagementConstants {
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
     } = {
+        APPLE: AppleIdPTemplate.id,
         ENTERPRISE: EnterpriseIdPTemplate.id,
         EXPERT_MODE: ExpertModeIdPTemplate.id,
         FACEBOOK: FacebookIdPTemplate.id,
@@ -179,6 +182,33 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MAX_VALUE: 10,
         OTP_LENGTH_MIN_LENGTH: 1,
         OTP_LENGTH_MIN_VALUE: 4
+    };
+
+    /**
+     * Apple Authenticator Settings Form element constraints.
+     */
+    public static readonly APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: number,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: number,
+        KEY_ID_MAX_LENGTH: number,
+        KEY_ID_MIN_LENGTH: number,
+        PRIVATE_KEY_MAX_LENGTH: number,
+        PRIVATE_KEY_MIN_LENGTH: number,
+        SECRET_VALIDITY_PERIOD_MAX_LENGTH: number,
+        SECRET_VALIDITY_PERIOD_MIN_LENGTH: number,
+        TEAM_ID_MAX_LENGTH: number,
+        TEAM_ID_MIN_LENGTH: number
+    } = {
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
+        KEY_ID_MAX_LENGTH: 10,
+        KEY_ID_MIN_LENGTH: 10,
+        PRIVATE_KEY_MAX_LENGTH: 1000,
+        PRIVATE_KEY_MIN_LENGTH: 100,
+        SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
+        SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
+        TEAM_ID_MAX_LENGTH: 10,
+        TEAM_ID_MIN_LENGTH: 10
     };
 
     /**
@@ -280,6 +310,32 @@ export class IdentityProviderManagementConstants {
         "age_range",
         "link"
     ];
+
+    /**
+     * Apple scope mappings.
+     */
+    public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        NAME: "name"
+    };
+
+    /**
+     * Scopes to request from Apple.
+     */
+    public static readonly APPLE_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME
+    ];
+
+    /**
+     * Default Apple client secret validity period.
+     */
+    public static readonly APPLE_AUTHENTICATOR_CLIENT_SECRET_VALIDITY_PERIOD: string = "15777000";
+
+    /**
+     * Apple authenticator query parameters.
+     */
+    public static readonly APPLE_AUTHENTICATOR_ADDITIONAL_QUERY_PARAMETERS: string = "response_mode=form_post";
 
     /**
      * Default IDP template loading strategy.
@@ -404,6 +460,7 @@ export class IdentityProviderManagementConstants {
     public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
+    public static readonly APPLE_AUTHENTICATOR_ID: string = "QXBwbGVPSURDQXV0aGVudGljYXRvcg";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
@@ -422,12 +479,14 @@ export class IdentityProviderManagementConstants {
     public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
     public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
+    public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
     public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
+    public static readonly APPLE_AUTHENTICATOR_DISPLAY_NAME: string = "Apple";
 
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";

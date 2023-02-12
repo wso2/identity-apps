@@ -269,6 +269,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
  */
 interface IdentityProviderTemplatesConfigInterface {
     /**
+     * Apple template config.
+     */
+    apple: IdentityProviderTemplateConfigInterface;
+    /**
      * Enterprise OIDC template config.
      */
     enterpriseOIDC: IdentityProviderTemplateConfigInterface;

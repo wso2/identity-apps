@@ -26,6 +26,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
 import { SignInMethodLanding } from "./sign-in-method-landing";
+import AppleLoginSequenceTemplate from "./templates/apple-login-sequence.json";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.json";
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
@@ -127,6 +128,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ facebookAuthenticators, setFacebookAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ microsoftAuthenticators, setMicrosoftAuthenticators ] =
     useState<GenericAuthenticatorInterface[]>(undefined);
+    const [ appleAuthenticators, setAppleAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
     const [ showMissingSocialAuthenticatorModal, setShowMissingSocialAuthenticatorModal ] = useState<boolean>(false);
     const [ isAuthenticatorsFetchRequestLoading, setIsAuthenticatorsFetchRequestLoading ] = useState<boolean>(true);
     const [
@@ -195,7 +197,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         google: GenericAuthenticatorInterface[],
         github: GenericAuthenticatorInterface[],
         facebook: GenericAuthenticatorInterface[],
-        microsoft: GenericAuthenticatorInterface[]
+        microsoft: GenericAuthenticatorInterface[],
+        apple: GenericAuthenticatorInterface[]
     ) => void): Promise<void> => {
 
         setIsAuthenticatorsFetchRequestLoading(true);
@@ -207,6 +210,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 const gitHub: GenericAuthenticatorInterface[] = [];
                 const facebook: GenericAuthenticatorInterface[] = [];
                 const microsoft: GenericAuthenticatorInterface[] = [];
+                const apple: GenericAuthenticatorInterface[] = [];
 
                 response[1].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
@@ -226,6 +230,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         authenticator.description === MicrosoftIDPTemplate.description) {
 
                         microsoft.push(authenticator);
+                    } else if (authenticator.defaultAuthenticator.authenticatorId
+                        === IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID) {
+
+                        apple.push(authenticator);
                     }
                 });
 
@@ -233,12 +241,13 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 setGitHubAuthenticators(gitHub);
                 setFacebookAuthenticators(facebook);
                 setMicrosoftAuthenticators(microsoft);
+                setAppleAuthenticators(apple);
                 setAuthenticators(response);
 
                 // Trigger the onsuccess callback and send the responses to the calller.
                 // Reason for this is that the invoker needs the responses ASAP,
                 // but the state update takes time.
-                onSuccess && onSuccess(response, google, gitHub, facebook, microsoft);
+                onSuccess && onSuccess(response, google, gitHub, facebook, microsoft, apple);
             })
             .finally(() => {
                 setIsAuthenticatorsFetchRequestLoading(false);
@@ -274,12 +283,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      * @param gitHubAuthenticators - Set of configured GutHub Authenticators.
      * @param facebookAuthenticators - Set of configured Facebook Authenticators.
      * @param microsoftAuthenticators - Set of configured Microsoft Authenticators.
+     * @param appleAuthenticators - Set of configured Apple Authenticators.
      */
     const handleLoginFlowSelect = (loginFlow: LoginFlowTypes,
         googleAuthenticators: GenericAuthenticatorInterface[],
         gitHubAuthenticators: GenericAuthenticatorInterface[],
         facebookAuthenticators: GenericAuthenticatorInterface[],
-        microsoftAuthenticators: GenericAuthenticatorInterface[]): void => {
+        microsoftAuthenticators: GenericAuthenticatorInterface[],
+        appleAuthenticators: GenericAuthenticatorInterface[]): void => {
 
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
@@ -446,6 +457,37 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         LoginFlowTypes.MICROSOFT_LOGIN)
                 });
             }
+        } else if (loginFlow === LoginFlowTypes.APPLE_LOGIN) {
+            eventPublisher.publish("application-sign-in-method-click-add", {
+                type: "apple-login"
+            });
+
+            setSocialDisclaimerModalType(LoginFlowTypes.APPLE_LOGIN);
+
+            // If there are no IDP's with Apple authenticator, show missing authenticator modal.
+            if (isEmpty(appleAuthenticators)) {
+                setShowMissingSocialAuthenticatorModal(true);
+
+                return;
+            }
+
+            // If there are more than 1 IDP's with Apple authenticator, show authenticator select modal.
+            if (appleAuthenticators.length > 1) {
+                // Set the first element as the selected Apple authenticator.
+                setSelectedSocialAuthenticator(appleAuthenticators[0]);
+                setShowDuplicateSocialAuthenticatorSelectionModal(true);
+
+                return;
+            }
+
+            // If there are only 1 IDP's with Apple authenticator, move on.
+            if (appleAuthenticators.length === 1) {
+                setModeratedAuthenticationSequence({
+                    ...authenticationSequence,
+                    ...updateSocialLoginSequenceWithIDPName(appleAuthenticators[0].idp,
+                        LoginFlowTypes.APPLE_LOGIN)
+                });
+            }
         } else if (loginFlow === LoginFlowTypes.MAGIC_LINK) {
             eventPublisher.publish("application-sign-in-method-click-add", {
                 type: "magic-link-login"
@@ -484,6 +526,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (loginType === LoginFlowTypes.MICROSOFT_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
             authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
+        } else if (loginType === LoginFlowTypes.APPLE_LOGIN) {
+            modifiedSequenceTemplate = cloneDeep(AppleLoginSequenceTemplate);
+            authenticatorType = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
         }
         modifiedSequenceTemplate.steps[0].options.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === authenticatorType) {
@@ -516,6 +561,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
             idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT;
             authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
+            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE;
+            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -605,6 +653,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
             authenticators = [ ...microsoftAuthenticators ];
             authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+        } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
+            authenticators = [ ...appleAuthenticators ];
+            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -735,7 +786,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         google: GenericAuthenticatorInterface[],
                         github: GenericAuthenticatorInterface[],
                         facebook: GenericAuthenticatorInterface[],
-                        microsoft: GenericAuthenticatorInterface[]) => {
+                        microsoft: GenericAuthenticatorInterface[],
+                        apple: GenericAuthenticatorInterface[]) => {
 
                         // Housekeeping...Reset IDP wizard related states.
                         setIDPTemplateTypeToTrigger(undefined);
@@ -747,7 +799,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         // If the IDP creation is triggered from the landing page, handle the relevant
                         // login flow changes so that we can navigate the user to the customizing page.
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
-                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook, microsoft);
+                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook, microsoft, 
+                                apple);
                         }
                     }).finally();
                 } }
@@ -775,7 +828,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         googleAuthenticators,
                                         gitHubAuthenticators,
                                         facebookAuthenticators,
-                                        microsoftAuthenticators);
+                                        microsoftAuthenticators,
+                                        appleAuthenticators);
                                 } }
                                 data-testid={ `${testId}-landing` }
                             />

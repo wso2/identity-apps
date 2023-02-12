@@ -1175,6 +1175,10 @@ export const console: ConsoleNS = {
                                             socialLogin: "සමාජ පිවිසුම"
                                         },
                                         types: {
+                                            apple: {
+                                                description: "ඇපල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                                                heading: "ඇපල් පිවිසුම එක් කරන්න"
+                                            },
                                             defaultConfig: {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ " +
                                                     "පිවිසුම් ප්‍රවාහය ගොඩනඟන්න.",
@@ -2971,6 +2975,43 @@ export const console: ConsoleNS = {
             },
             authenticationProvider: {
                 templates: {
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Provide the <1>Services ID</1> created at Apple.",
+                                heading: "Services ID"
+                            },
+                            heading: "Help",
+                            keyId: {
+                                description: "Provide the <1>Key Identifier</1> of the private key generated.",
+                                heading: "Key ID"
+                            },
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                idpDescription: "Provide a unique name for the identity provider.",
+                                heading: "Name"
+                            },
+                            preRequisites: {
+                                configureAppleSignIn: "See Apple's guide on configuring environment for" + 
+                                " Sign in with Apple.",
+                                configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
+                                configureWebDomain: "Use the following as a <1>Web Domain</1>.",
+                                getCredentials: "Before you begin, create a <1>Sign in With Apple Enabled App</1>" + 
+                                    " on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" + 
+                                    " <5>Private Key</5>.",
+                                heading: "Prerequisite"
+                            },
+                            privateKey: {
+                                description: "Provide the Apple <1>Private Key</1> generated for the app.",
+                                heading: "Private Key"
+                            },
+                            subHeading: "Use the guide below",
+                            teamId: {
+                                description: "Provide the Apple developer <1>Team ID</1>.",
+                                heading: "Team ID"
+                            }
+                        }
+                    },
                     enterprise: {
                         addWizard: {
                             subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ සම්බන්ධ වීමට IDP වින්‍යාස කරන්න.",

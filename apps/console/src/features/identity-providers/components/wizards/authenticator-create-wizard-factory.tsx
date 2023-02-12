@@ -21,6 +21,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { AppleAuthenticationProviderCreateWizard } from "./apple";
 import { EnterpriseIDPCreateWizard } from "./enterprise-idp-create-wizard";
 import { ExpertModeAuthenticationProviderCreateWizard } from "./expert-mode";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
@@ -40,7 +41,8 @@ import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateInterface,
-    IdentityProviderTemplateLoadingStrategies
+    IdentityProviderTemplateLoadingStrategies,
+    StrictIdentityProviderInterface
 } from "../../models";
 import { IdentityProviderTemplateManagementUtils } from "../../utils";
 import { handleGetIDPTemplateAPICallError } from "../utils";
@@ -202,17 +204,17 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
         if (useAPI) {
             getIdentityProviderTemplate(templateId)
-                .then((response) => {
+                .then((response: any) => {
                     if (!response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     }
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         } else {
             IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
-                .then((response) => {
+                .then((response: any) => {
                     /**
                      * If for some reason we can't find the given template by id
                      * and the template is disabled from file level, we can assure
@@ -232,7 +234,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         }
                     }
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         }
@@ -248,7 +250,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         getIdentityProviderList(null, null, "name sw " + idpName)
             .then((response: IdentityProviderListResponseInterface) => {
                 setPossibleListOfDuplicateIDPs(response?.totalResults
-                    ? response?.identityProviders?.map(eachIdp => eachIdp.name)
+                    ? response?.identityProviders?.map((eachIdp:StrictIdentityProviderInterface) => eachIdp.name)
                     : []
                 );
             });
@@ -265,7 +267,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
         let idpName: string = initialIdpName;
 
-        for (let i = 2; ; i++) {
+        for (let i: number = 2; ; i++) {
             if (!idpList?.includes(idpName)) {
                 break;
             }
@@ -340,6 +342,24 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <MicrosoftAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <AppleAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

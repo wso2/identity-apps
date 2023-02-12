@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,8 +56,7 @@ import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.p
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
-import AppleLogo
-    from "../../../themes/default/assets/images/third-party/apple-logo.svg";
+import AppleLogo from "../../../themes/default/assets/images/third-party/apple-logo.svg";
 import LinkedInLogo
     from "../../../themes/default/assets/images/third-party/linkedin-logo.svg";
 import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
@@ -83,6 +82,7 @@ export const getIdentityProviderWizardStepIcons = (): any => {
 export const getAuthenticatorIcons = (): any => {
 
     return {
+        apple: AppleLogo,
         basic: BasicAuthIcon,
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,
@@ -142,6 +142,7 @@ export const getIdPIcons = (): any => {
 export const getIdPTemplateDocsIcons = (): any => {
 
     return {
+        apple: AppleLogo,
         facebook: FacebookLogo,
         github: GithubIdPIcon,
         google: GoogleLogo,

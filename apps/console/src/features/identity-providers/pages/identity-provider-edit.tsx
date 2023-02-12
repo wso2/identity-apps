@@ -250,6 +250,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML;
                 } else if (authenticatorId === IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID) {
                     return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
+                } else if (authenticatorId === IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID) {
+                    return IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE;
                 }
             }
 
