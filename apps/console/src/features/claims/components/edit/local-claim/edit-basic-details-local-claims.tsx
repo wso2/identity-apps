@@ -23,6 +23,7 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    AssociatedExternalClaim,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -116,43 +117,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ claim ]);
 
     useEffect(() => {
-        const dialectID = getDialectID();
+        const dialectURI = getDialectURI();
 
         if(claim) {
-            const externalClaimRequest = [];
-
-            dialectID.forEach((dialectId) => {
-                externalClaimRequest.push(getExternalClaims(dialectId));
-            });
-
-            Axios.all(externalClaimRequest).then(response => {
-                const claims = [].concat(...response);
-
-                if (claims.find((externalClaim) => externalClaim.mappedLocalClaimURI === claim.claimURI)) {
+            const associatedExternalClaims = claim.associatedExternalClaims;
+            associatedExternalClaims.forEach((externalClaim:AssociatedExternalClaim) => {
+                if (dialectURI.indexOf(externalClaim.claimDialectURI) > -1) {
                     setHasMapping(true);
+                    return;
                 }
-
-            }).catch((error) => {
-                dispatch(
-                    addAlert({
-                        description: error.response.description,
-                        level: AlertLevels.ERROR,
-                        message: "Error occurred while trying to get external mappings for the claim."
-                    })
-                );
-            }).finally(() => setMappingChecked(true));
+            });
+            setMappingChecked(true);
         }
     }, [ claim ]);
 
-    const getDialectID = (): string[]  => {
-        const dialectID: string[] = [];
+    const getDialectURI = (): string[]  => {
+        const dialectURI: string[] = [];
 
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
-        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
-
-        return dialectID;
+        ClaimManagementConstants.SCIM_TABS.filter((claim => {
+            if(claim.name == "Core Schema") dialectURI.push(claim.uri);
+            if(claim.name == "User Schema") dialectURI.push(claim.uri);
+            if(claim.name == "Enterprise Schema") dialectURI.push(claim.uri);
+        }));
+        dialectURI.push(SCIMConfigs.scimDialectID.customEnterpriseSchemaURI)
+        console.log(dialectURI);
+        return dialectURI;
     };
 
     // Temporary fix to check system claims and make them readonly

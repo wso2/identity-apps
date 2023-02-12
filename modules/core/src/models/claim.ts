@@ -31,7 +31,18 @@ export interface Claim {
     required: boolean;
     supportedByDefault: boolean;
     attributeMapping: AttributeMapping[];
+    associatedExternalClaims?: AssociatedExternalClaim[];
+
     properties?: Property[];
+}
+
+/**
+ * Type of associated external claims
+ */
+export interface AssociatedExternalClaim {
+    id: string;
+    claimURI: string;
+    claimDialectURI: string;
 }
 
 /**
