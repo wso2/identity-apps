@@ -605,7 +605,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
-            const fieldName: string = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
                 { defaultValue: schema.displayName }
             );
 
@@ -872,7 +872,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     )
             );
         } else {
-            const fieldName: string = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
                 { defaultValue: schema.displayName }
             );
 
@@ -936,7 +936,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             <a
                                                                 className="placeholder-text"
                                                                 tabIndex={ 0 }
-                                                                onKeyPress={ (e: React.KeyboardEvent<HTMLElement>) => {
+                                                                onKeyPress={ (
+                                                                    e: React.KeyboardEvent<HTMLAnchorElement>
+                                                                ) => {
                                                                     if (e.key === "Enter") {
                                                                         dispatch(
                                                                             setActiveForm(
