@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  WSO2 LLC. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
   ~  in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -357,7 +357,7 @@
                     const firstName = $("#first-name").val();
 
                     if (firstName === "") {
-                        errorMessage.text("Please fill the first name.");
+                        errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "fill.the.first.name")%>");
                         errorMessage.show();
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
