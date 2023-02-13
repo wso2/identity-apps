@@ -384,7 +384,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             axios
                 .get(Config.getServiceResourceEndpoints().wellKnown)
                 .then((response: AxiosResponse) => {
-                    
+
                     // Use token endpoint to extract the host url.
                     const splitted: string[] =
                         response?.data?.token_endpoint?.split("/") ?? [];
@@ -392,9 +392,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     let serverHost: string = splitted.slice(0, -2).join("/");
 
                     if (orgType === OrganizationType.SUBORGANIZATION) {
-                        serverHost = Config.getDeploymentConfig().serverOrigin + 
+                        serverHost = Config.getDeploymentConfig().serverOrigin +
                         Config.getDeploymentConfig().appBaseName;
-                    }   
+                    }
 
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
                 })
@@ -844,13 +844,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             });
 
             return;
-        }
-
-        if (window.top === window.self) {
-            const authCallbackUrl: string = window.location.pathname + window.location.hash;
-
-            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(
-                CommonAppConstants.CONSOLE_APP, authCallbackUrl);
         }
     }, []);
 
