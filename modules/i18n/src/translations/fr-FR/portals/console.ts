@@ -3057,37 +3057,37 @@ export const console: ConsoleNS = {
                     apple: {
                         wizardHelp: {
                             clientId: {
-                                description: "Provide the <1>Services ID</1> created at Apple.",
-                                heading: "Services ID"
+                                description: "Fournissez l'<1>ID de services</1> créé chez Apple.",
+                                heading: "ID de services"
                             },
-                            heading: "Help",
+                            heading: "Aider",
                             keyId: {
-                                description: "Provide the <1>Key Identifier</1> of the private key generated.",
-                                heading: "Key ID"
+                                description: "Fournissez l'<1>identifiant de clé</1> de la clé privée générée.",
+                                heading: "ID de clé"
                             },
                             name: {
-                                connectionDescription: "Provide a unique name for the connection.",
-                                idpDescription: "Provide a unique name for the identity provider.",
-                                heading: "Name"
+                                connectionDescription: "Fournissez un nom unique pour la connexion.",
+                                idpDescription: "Fournissez un nom unique pour le fournisseur d'identité.",
+                                heading: "Nom"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "See Apple's guide on configuring environment for" + 
-                                " Sign in with Apple.",
-                                configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
-                                configureWebDomain: "Use the following as a <1>Web Domain</1>.",
-                                getCredentials: "Before you begin, create a <1>Sign in With Apple Enabled App</1>" + 
-                                    " on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" + 
-                                    " <5>Private Key</5>.",
-                                heading: "Prerequisite"
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de" + 
+                                    " l'environnement pour se connecter avec Apple.",
+                                configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
+                                configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
+                                getCredentials: "Avant de commencer, créez une <1>application de connexion avec" + 
+                                    " Apple activée</1> sur le <3>programme pour développeurs Apple</3> avec un" + 
+                                    " <5>identifiant de services</5> et une <5>clé privée</5>.",
+                                heading: "Prérequis"
                             },
                             privateKey: {
-                                description: "Provide the Apple <1>Private Key</1> generated for the app.",
-                                heading: "Private Key"
+                                description: "Fournissez la <1>clé privée</1> Apple générée pour l'application.",
+                                heading: "Clé privée"
                             },
-                            subHeading: "Use the guide below",
+                            subHeading: "Utilisez le guide ci-dessous.",
                             teamId: {
-                                description: "Provide the Apple developer <1>Team ID</1>.",
-                                heading: "Team ID"
+                                description: "Fournissez l'<1>identifiant d'équipe</1> du développeur Apple.",
+                                heading: "ID d'équipe"
                             }
                         }
                     },

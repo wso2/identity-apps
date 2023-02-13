@@ -2978,37 +2978,37 @@ export const console: ConsoleNS = {
                     apple: {
                         wizardHelp: {
                             clientId: {
-                                description: "Provide the <1>Services ID</1> created at Apple.",
-                                heading: "Services ID"
+                                description: "ඇපල්හි නිර්මාණය කරන ලද <1>සේවා හැඳුනුම්පත</1> සපයන්න.",
+                                heading: "සේවා හැඳුනුම්පත"
                             },
-                            heading: "Help",
+                            heading: "උදව්",
                             keyId: {
-                                description: "Provide the <1>Key Identifier</1> of the private key generated.",
-                                heading: "Key ID"
+                                description: "උත්පාදනය කරන ලද පුද්ගලික යතුරේ <1>යතුරු හැඳුනුම්කාරකය</1> සපයන්න.",
+                                heading: "යතුරු හැඳුනුම්පත"
                             },
                             name: {
-                                connectionDescription: "Provide a unique name for the connection.",
-                                idpDescription: "Provide a unique name for the identity provider.",
-                                heading: "Name"
+                                connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් ලබා දෙන්න.",
+                                idpDescription: "අනන්යතා සපයන්නා සඳහා අද්විතීය නමක් ලබා දෙන්න.",
+                                heading: "නම"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "See Apple's guide on configuring environment for" + 
-                                " Sign in with Apple.",
-                                configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
-                                configureWebDomain: "Use the following as a <1>Web Domain</1>.",
-                                getCredentials: "Before you begin, create a <1>Sign in With Apple Enabled App</1>" + 
-                                    " on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" + 
-                                    " <5>Private Key</5>.",
-                                heading: "Prerequisite"
+                                configureAppleSignIn: "ඇපල් සමඟින් පුරනය වීම සඳහා පරිසරය වින්‍යාස කිරීම පිළිබඳ" + 
+                                    " ඇපල්හි මාර්ගෝපදේශය බලන්න.",
+                                configureReturnURL: "පහත URL එක <1>ආපසු URL</1> ලෙස එක් කරන්න.",
+                                configureWebDomain: "පහත සඳහන් දේ <1>වෙබ් වසමක්</1> ලෙස භාවිතා කරන්න.",
+                                getCredentials: "ඔබ ආරම්භ කිරීමට පෙර, <5>සේවා හැඳුනුම්පත</5> සහ" + 
+                                    " <5>පෞද්ගලික යතුරක්</5> සමඟින් <3>ඇපල් සංවර්ධක වැඩසටහන</3> මත" + 
+                                    " <1>ඇපල් සබල කර ඇති යෙදුමක් සමඟින් පුරනය වන්න</1>.",
+                                heading: "පූර්ව අවශ්යතාව"
                             },
                             privateKey: {
-                                description: "Provide the Apple <1>Private Key</1> generated for the app.",
-                                heading: "Private Key"
+                                description: "යෙදුම සඳහා ජනනය කරන ලද ඇපල් <1>පුද්ගලික යතුර</1> සපයන්න.",
+                                heading: "පුද්ගලික යතුර"
                             },
-                            subHeading: "Use the guide below",
+                            subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න",
                             teamId: {
-                                description: "Provide the Apple developer <1>Team ID</1>.",
-                                heading: "Team ID"
+                                description: "ඇපල් සංවර්ධක <1>කණ්ඩායම් හැඳුනුම්පත</1> සපයන්න.",
+                                heading: "කණ්ඩායම් හැඳුනුම්පත"
                             }
                         }
                     },
