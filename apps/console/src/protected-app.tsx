@@ -529,7 +529,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     window[ "AppUtils" ].getConfig().clientOriginWithTenant
                 )
             );
-            
+
             loginSuccessRedirect(idToken);
         });
     }, []);
@@ -583,7 +583,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         AuthenticationCallbackUrl ===
                         `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
                     AppUtils.isAuthCallbackURLFromAnotherTenant(
-                        AuthenticationCallbackUrl, 
+                        AuthenticationCallbackUrl,
                         CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
                     )
                     ? AppConstants.getAppHomePath()
@@ -844,6 +844,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             });
 
             return;
+        }
+
+        if (window.top === window.self) {
+            const authCallbackUrl: string = window.location.pathname + window.location.hash;
+
+            CommonAuthenticateUtils.updateAuthenticationCallbackUrl(
+                CommonAppConstants.CONSOLE_APP, authCallbackUrl);
         }
     }, []);
 

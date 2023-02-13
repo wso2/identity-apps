@@ -115,6 +115,13 @@
                     window.location.href = applicationDomain + '/' + "<%= htmlWebpackPlugin.options.basename %>" + '/authenticate?disable_silent_sign_in=true&invite_user=true';
                 } else {
                     auth.initialize(authConfig);
+
+                    if (window.top === window.self) {
+                        var authCallbackUrl = window.location.pathname + window.location.hash;
+
+                        sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
+                    }
+
                     auth.signIn();
                 }
             }
