@@ -225,6 +225,12 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         : CommonAuthenticatorFormInitialValuesInterface => {
 
         const properties: any = [];
+        const originalValues: any = {};
+        let regenerateSecret: boolean = false;
+
+        originalInitialValues?.properties?.map((entry: any) => {
+            originalValues[entry.key] = entry.value;
+        });
 
         for (const [ key, value ] of Object.entries(values)) {
             if (key !== undefined) {
@@ -232,7 +238,24 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     key: key,
                     value: value
                 });
+
+                // Check if the client secret should be regenerated.
+                if (!regenerateSecret
+                    && IdentityProviderManagementConstants
+                        .APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS.indexOf(key) !== -1
+                    && originalValues[key]
+                    && value !== originalValues[key]) {
+                    regenerateSecret = true;
+                }
             }
+        }
+
+        // Set the client secret regenerate property.
+        if (regenerateSecret === true) {
+            properties.push({
+                key: IdentityProviderManagementConstants.APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY,
+                value: true
+            });
         }
 
         return {

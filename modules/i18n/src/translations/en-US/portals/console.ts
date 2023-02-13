@@ -3202,7 +3202,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             secretValidityPeriod: {
-                                hint: "The validity period of the generated client secret. A new client secret " + 
+                                hint: "The validity period of the generated client secret in seconds. A new client secret " + 
                                     "will be generated after this time.",
                                 label: "Client Secret Validity Period",
                                 placeholder: "Enter Validity Period for the Client Secret.",

@@ -122,6 +122,84 @@
                             "options": [],
                             "defaultValue": "",
                             "subProperties": []
+                        },
+                        {
+                            "key": "SecretValidityPeriod",
+                            "displayName": "Client Secret Validity Period",
+                            "description": "Enter the validity period of the generated client secret in seconds.",
+                            "type": "STRING",
+                            "displayOrder": 5,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "15777000",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "callbackUrl",
+                            "displayName": "Callback URL",
+                            "description": "Enter the callback URL used to obtain Apple credentials.",
+                            "type": "STRING",
+                            "displayOrder": 6,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "Scopes",
+                            "displayName": "Scopes",
+                            "description": "Enter a space separated list of scopes to request from the user.",
+                            "type": "STRING",
+                            "displayOrder": 7,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "AdditionalQueryParameters",
+                            "displayName": "Additional Query Parameters",
+                            "description": "Additional query parameters to be sent to Apple.",
+                            "type": "STRING",
+                            "displayOrder": 8,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "ClientSecret",
+                            "displayName": "Client Secret",
+                            "description": "Apple client secret generated for the app",
+                            "type": "STRING",
+                            "displayOrder": 9,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": true,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "RegenerateClientSecret",
+                            "displayName": "Regenerate Client Secret",
+                            "description": "Specifies if the client secret should be re-generated.",
+                            "type": "BOOLEAN",
+                            "displayOrder": 10,
+                            "regex": ".*",
+                            "isMandatory": false,
+                            "isConfidential": false,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
                         }
                     ]
                 }

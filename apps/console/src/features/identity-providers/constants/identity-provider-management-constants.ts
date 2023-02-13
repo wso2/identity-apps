@@ -338,6 +338,34 @@ export class IdentityProviderManagementConstants {
     public static readonly APPLE_AUTHENTICATOR_ADDITIONAL_QUERY_PARAMETERS: string = "response_mode=form_post";
 
     /**
+     * Map of Apple authenticator secret regenerative fields.
+     */
+    public static readonly APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY: Record<string, string> = {
+        CLIENT_ID: "ClientId",
+        KEY_ID: "KeyId",
+        PRIVATE_KEY: "PrivateKey",
+        SECRET_VALIDITY_PERIOD: "SecretValidityPeriod",
+        TEAM_ID: "TeamId"
+    };
+
+    /**
+     * Secret regenerative fields of Apple authenticator.
+     * Upon updating the value of any of these fields, a new client secret should be generated.
+     */
+    public static readonly APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS: string[] = [
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.CLIENT_ID,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.KEY_ID,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.PRIVATE_KEY,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
+    ];
+
+    /**
+     * Key of the Apple client secret regenerate attribute.
+     */
+    public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
+
+    /**
      * Default IDP template loading strategy.
     **/
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
