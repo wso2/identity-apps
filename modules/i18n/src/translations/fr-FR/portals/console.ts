@@ -2421,7 +2421,7 @@ export const console: ConsoleNS = {
                         inboundKey: "Clé entrante"
                     },
                     labels: {
-                        fragment: "Fragmenter App"
+                        fragment: "Application partagée"
                     }
                 },
                 myaccount: {
