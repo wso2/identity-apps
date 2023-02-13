@@ -25,6 +25,7 @@ import {
     SelectedDialectInterface
 } from "../../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
+import { FeatureConfigInterface } from "../../../features/core";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
@@ -66,7 +67,10 @@ export interface ApplicationConfig {
          * @param props - Props for the component.
          * @returns Array of tab extensions.
          */
-        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
+        getTabExtensions: (
+            props: Record<string, unknown>,
+            features: FeatureConfigInterface
+        ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
