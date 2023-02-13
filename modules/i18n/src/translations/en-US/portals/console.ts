@@ -3548,6 +3548,32 @@ export const console: ConsoleNS = {
                                 placeholder: "e.g: openid"
                             }
                         },
+                        hypr: {
+                            appId: {
+                                hint: "The <1>Application ID</1> you received from HYPR for your OAuth app.",
+                                label: "",
+                                placeholder: "Enter App ID from HYPR application.",
+                                validations: {
+                                    required: "Relying Party App ID is a required field."
+                                }
+                            },
+                            apiToken: {
+                                hint: "The relying party app access token generated in the control center.",
+                                label: "API Token",
+                                placeholder: "Enter API token from HYPR",
+                                validations: {
+                                    required: "API token is a required field."
+                                }
+                            },
+                            baseUrl: {
+                                hint: "The base URL of your HYPR server deployment.",
+                                label: "Base URL",
+                                placeholder: "Enter HYPR server base URL",
+                                validations: {
+                                    required: "Base URL is a required field."
+                                }
+                            }
+                        },
                         saml: {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
@@ -4614,6 +4640,33 @@ export const console: ConsoleNS = {
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
+                        }
+                    },
+                    hypr: {
+                        wizardHelp: {
+                            apiToken: {
+                                description: "Provide the <1>API Token</1> obtained from HYPR. This will be used to access HYPR's APIs.",
+                                heading: "API Token"
+                            },
+                            appId: {
+                                description: "Provide the <1>Application ID</1> of the application registered in HYPR control center.",
+                                heading: "App ID"
+                            },
+                            baseUrl: {
+                                description: "Provide the <1>base URL</1> of your HYPR server deployment.",
+                                heading: "Base URL"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            preRequisites: {
+                                rpDescription: "Before you begin, create a relying party application in <1>HYPR control center</1>, and obtain the application ID.",
+                                tokenDescription: "You also have to obtain an <1>API token</1> for the application you have created.",
+                                heading: ""
+                            }
                         }
                     },
                     manualSetup: {

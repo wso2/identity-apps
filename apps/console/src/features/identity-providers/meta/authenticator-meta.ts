@@ -119,6 +119,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
             ]
         }, authenticatorId);
     }

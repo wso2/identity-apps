@@ -141,6 +141,7 @@ export interface IdentityProviderConfig {
         enterprise: boolean;
         expertMode: boolean;
         microsoft: boolean;
+        hypr: boolean;
         /**
          * Adding `saml` and `oidc` template enabled property to this
          * config under the group `enterprise-protocols`.

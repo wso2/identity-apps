@@ -115,6 +115,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         facebook: true,
         github: true,
         google: true,
+        hypr: true,
         microsoft: true,
         oidc: true,
         organizationEnterprise: true,
