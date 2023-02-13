@@ -28,6 +28,7 @@ import ExpertModeIdentityProviderTemplate from "./templates/expert-mode/expert-m
 import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GitHubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
+import HYPRIDPTemplate from "./templates/hypr/hypr.json";
 import MicrosoftIDPTemplate from "./templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdentityProviderTemplate
     from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
@@ -150,6 +151,15 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 ?? identityProviderConfig.templates.microsoft,
                             id: MicrosoftIDPTemplate.id,
                             resource: MicrosoftIDPTemplate
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/hypr/create-wizard-help"))
+                            },
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.hypr?.enabled
+                                ?? identityProviderConfig.templates.hypr,
+                            id: HYPRIDPTemplate.id,
+                            resource: HYPRIDPTemplate
                         },
                         {
                             content: {

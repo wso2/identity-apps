@@ -25,6 +25,7 @@ import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates
 import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
 import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
 import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
+import HYPRIdPTemplate from "../data/identity-provider-templates/templates/hypr/hypr.json";
 import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdPTemplate from
     "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
@@ -89,6 +90,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
+        HYPR: string;
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
@@ -99,6 +101,7 @@ export class IdentityProviderManagementConstants {
         FACEBOOK: FacebookIdPTemplate.id,
         GITHUB: GitHubIdPTemplate.id,
         GOOGLE: GoogleIdPTemplate.id,
+        HYPR: HYPRIdPTemplate.id,
         MICROSOFT: MicrosoftIDPTemplate.id,
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
@@ -404,6 +407,7 @@ export class IdentityProviderManagementConstants {
     public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
+    public static readonly HYPR_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";

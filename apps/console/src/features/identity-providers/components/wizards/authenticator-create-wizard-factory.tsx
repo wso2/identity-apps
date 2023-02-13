@@ -26,6 +26,7 @@ import { ExpertModeAuthenticationProviderCreateWizard } from "./expert-mode";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
+import { HyprAuthenticationProviderCreateWizard } from "./hypr";
 import { MicrosoftAuthenticationProviderCreateWizard } from "./microsoft";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import {
@@ -202,17 +203,17 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
         if (useAPI) {
             getIdentityProviderTemplate(templateId)
-                .then((response) => {
+                .then((response: IdentityProviderTemplateInterface) => {
                     if (!response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     }
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         } else {
             IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
-                .then((response) => {
+                .then((response: IdentityProviderTemplateInterface) => {
                     /**
                      * If for some reason we can't find the given template by id
                      * and the template is disabled from file level, we can assure
@@ -232,7 +233,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         }
                     }
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         }
@@ -248,7 +249,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         getIdentityProviderList(null, null, "name sw " + idpName)
             .then((response: IdentityProviderListResponseInterface) => {
                 setPossibleListOfDuplicateIDPs(response?.totalResults
-                    ? response?.identityProviders?.map(eachIdp => eachIdp.name)
+                    ? response?.identityProviders?.map(( eachIdp: IdentityProviderTemplateInterface ) => eachIdp.name)
                     : []
                 );
             });
@@ -265,7 +266,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
         let idpName: string = initialIdpName;
 
-        for (let i = 2; ; i++) {
+        for (let i: number = 2; ; i++) {
             if (!idpList?.includes(idpName)) {
                 break;
             }
@@ -394,6 +395,24 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <ExpertModeAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <HyprAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

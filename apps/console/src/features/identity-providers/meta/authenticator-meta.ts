@@ -114,7 +114,10 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
-            ]
+            ],
+            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ] 
         }, authenticatorId);
     }
 
