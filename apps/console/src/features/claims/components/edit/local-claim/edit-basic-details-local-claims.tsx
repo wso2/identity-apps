@@ -22,8 +22,8 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
-    Claim,
     AssociatedExternalClaim,
+    Claim,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -39,7 +39,6 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
-import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,7 +47,7 @@ import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import { getProfileSchemas } from "../../../../users/api";
-import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
+import { deleteAClaim, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**
@@ -122,8 +121,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if(claim) {
             const associatedExternalClaims = claim.associatedExternalClaims;
             associatedExternalClaims.forEach((externalClaim:AssociatedExternalClaim) => {
+
                 if (dialectURI.indexOf(externalClaim.claimDialectURI) > -1) {
                     setHasMapping(true);
+
                     return;
                 }
             });
@@ -139,8 +140,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             if(claim.name == "User Schema") dialectURI.push(claim.uri);
             if(claim.name == "Enterprise Schema") dialectURI.push(claim.uri);
         }));
-        dialectURI.push(SCIMConfigs.scimDialectID.customEnterpriseSchemaURI)
-        console.log(dialectURI);
+        dialectURI.push(SCIMConfigs.scimDialectID.customEnterpriseSchemaURI);
+
         return dialectURI;
     };
 
