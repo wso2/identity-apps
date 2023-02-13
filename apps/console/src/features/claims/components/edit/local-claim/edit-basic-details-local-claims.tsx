@@ -120,6 +120,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if(claim) {
             const associatedExternalClaims = claim.associatedExternalClaims;
+
             associatedExternalClaims.forEach((externalClaim:AssociatedExternalClaim) => {
 
                 if (dialectURI.indexOf(externalClaim.claimDialectURI) > -1) {
