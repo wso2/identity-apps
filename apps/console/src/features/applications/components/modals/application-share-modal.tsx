@@ -128,20 +128,22 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         setCheckedUnassignedListItems
     ] = useState<OrganizationInterface[]>([]);
     const [ shareType, setShareType ] = useState<ShareType>(
-        ShareType.SHARE_SELECTED
+        ShareType.SHARE_ALL
     );
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
             setShareType(ShareType.SHARE_ALL);
+        } else if ((sharedOrganizationList && sharedOrganizationList?.length > 0) &&
+            isSharedWithAll === ShareWithOrgStatus.FALSE
+        ) {
+            setShareType(ShareType.SHARE_SELECTED);
         } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
             isSharedWithAll === ShareWithOrgStatus.FALSE
         ) {
             setShareType(ShareType.UNSHARE);
-        } else {
-            setShareType(ShareType.SHARE_SELECTED);
-        }
+        } 
     }, [ isSharedWithAll, sharedOrganizationList ]);
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
@@ -446,6 +448,20 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 <Segment basic>
                     <Radio
                         label={ t(
+                            "console:manage.features.organizations.shareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
+                        checked={ shareType === ShareType.SHARE_ALL }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.shareApplicationInfo"
+                        ) }
+                    </Hint>
+                    <Divider hidden />
+                    <Radio
+                        label={ t(
                             "console:manage.features.organizations.shareWithSelectedOrgsRadio"
                         ) }
                         onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
@@ -532,20 +548,6 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             ) }
                         </TransferList>
                     </TransferComponent>
-                    <Divider hidden />
-                    <Radio
-                        label={ t(
-                            "console:manage.features.organizations.shareApplicationRadio"
-                        ) }
-                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
-                        checked={ shareType === ShareType.SHARE_ALL }
-                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
-                    />
-                    <Hint>
-                        { t(
-                            "console:manage.features.organizations.shareApplicationInfo"
-                        ) }
-                    </Hint>
                     <Divider hidden />
                     <Radio
                         label={ t(
