@@ -422,6 +422,9 @@ interface CustomWindow extends Window {
                 },
                 hiddenUserStores: [],
                 identityProviderTemplates: {
+                    apple: {
+                        enabled: true
+                    },
                     enterpriseOIDC: {
                         enabled: true
                     },
