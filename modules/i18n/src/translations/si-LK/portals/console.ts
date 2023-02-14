@@ -2362,7 +2362,7 @@ export const console: ConsoleNS = {
                         inboundKey: "අභ්යන්තර යොමුගත යතුර"
                     },
                     labels: {
-                        fragment: "ඛණ්ඩක යෙදුම"
+                        fragment: "හවුල් යෙදුම"
                     }
                 },
                 myaccount: {

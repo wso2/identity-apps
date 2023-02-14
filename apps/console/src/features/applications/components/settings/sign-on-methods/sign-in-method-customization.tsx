@@ -383,8 +383,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleUpdateClick = (): void => {
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
-            setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
-            setIsDefaultScript(true);
+            if (!isAdaptiveAuthenticationAvailable || (orgType === OrganizationType.SUBORGANIZATION)) {
+                setAdaptiveScript("");
+            } else {
+                setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
+                setIsDefaultScript(true);
+            }
         }
 
         eventPublisher.compute(() => {
