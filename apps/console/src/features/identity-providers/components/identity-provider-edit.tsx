@@ -364,7 +364,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             });
         }
 
-        if (identityProviderConfig.editIdentityProvider.showJitProvisioning
+        if (identityProviderConfig.editIdentityProvider.isJitProvisioningEnabled(type)
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 "data-tabid": IdentityProviderConstants.JIT_PROVISIONING_TAB_ID,

@@ -51,6 +51,17 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return null;
         },
         getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
+        isJitProvisioningEnabled: (templateId: string): boolean => {
+            const disabledTemplates: Set<string> = new Set<string>([
+                IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR           
+            ]);
+
+            if (disabledTemplates.has(templateId)) {
+                return false;
+            }
+
+            return true;
+        },
         isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
 
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([

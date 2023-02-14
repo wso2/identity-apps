@@ -69,6 +69,7 @@ export interface IdentityProviderConfig {
          * @param tabType - Tab Type.
          */
         isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
+        isJitProvisioningEnabled: (templateId: string) => boolean;
         /**
          * Used to the IDP settings form of a certain IDP template type.
          * @param type - The IDP Authenticator ID.
