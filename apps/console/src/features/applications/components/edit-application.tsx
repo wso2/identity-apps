@@ -372,19 +372,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             inboundProtocolConfig.issuer = samlConfigurations.issuer;
         }
 
-        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions({
-            application: application,
-            content: template.content.quickStart,
-            inboundProtocolConfig: inboundProtocolConfig,
-            inboundProtocols: inboundProtocolList,
-            onApplicationUpdate: () => {
-                onUpdate(application?.id);
+        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions(
+            {
+                application: application,
+                content: template.content.quickStart,
+                inboundProtocolConfig: inboundProtocolConfig,
+                inboundProtocols: inboundProtocolList,
+                onApplicationUpdate: () => {
+                    onUpdate(application?.id);
+                },
+                onTriggerTabUpdate: (tabIndex: number) => {
+                    setActiveTabIndex(tabIndex);
+                },
+                template: template
             },
-            onTriggerTabUpdate: (tabIndex: number) => {
-                setActiveTabIndex(tabIndex);
-            },
-            template: template
-        });
+            featureConfig
+        );
 
         setTabPaneExtensions(extensions);
         setIsApplicationUpdated(false);
@@ -738,6 +741,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const resolveTabPanes = (): ResourceTabPaneInterface[] => {
         const panes: ResourceTabPaneInterface[] = [];
+        const extensionPanes: ResourceTabPaneInterface[] = [];
 
         if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
             && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -746,12 +750,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return [];
         }
 
-        if (tabPaneExtensions && tabPaneExtensions.length > 0
-            && application?.templateId !== CustomApplicationTemplate.id
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
-            panes.push(...tabPaneExtensions);
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+            extensionPanes.push(...tabPaneExtensions);
         }
 
         if (featureConfig) {
@@ -886,6 +886,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: InfoTabPane
                  });
             }
+            
+            extensionPanes.forEach(
+                (extensionPane: ResourceTabPaneInterface) => {
+                    panes.splice(extensionPane.index, 0, extensionPane);
+                }
+            );
 
             return panes;
         }

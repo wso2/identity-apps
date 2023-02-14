@@ -35,6 +35,9 @@
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
 
+    // Log the actual error for localized error fallbacks
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
+
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
 
@@ -43,6 +46,10 @@
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+            } else if (errorMessage.equalsIgnoreCase("Invalid Organization Name")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.name");
+            } else if (isErrorFallbackLocale) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
         }
     }
@@ -95,7 +102,7 @@
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2>Sign In with <%= StringUtils.isNotBlank(idp) ? idp : "Organization Login" %></h2>
+                    <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? idp : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
@@ -111,7 +118,7 @@
 
 
                     <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
-                        <p>Name of the Organization:</p>
+                        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name")%>:</p>
                         <input type="text" id='ORG_NAME' name="org" size='30'/>
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                         <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
@@ -119,7 +126,7 @@
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <button type="submit" class="ui primary large button">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Submit")%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
                             </button>
                         </div>
                     </form>
