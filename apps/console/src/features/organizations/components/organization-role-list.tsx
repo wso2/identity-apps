@@ -318,7 +318,8 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                         featureConfig?.organizationsRoles,
                         featureConfig?.organizationsRoles?.scopes?.delete,
                         allowedScopes
-                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME;
+                    ) || role.displayName === OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
+                    || role.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: OrganizationRoleListItemInterface): void => {

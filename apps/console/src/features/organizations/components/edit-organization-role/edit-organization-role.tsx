@@ -98,7 +98,10 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RolePermissionDetails
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ 
+                                isReadOnly || 
+                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME 
+                            }
                             data-testid="role-mgt-edit-role-permissions"
                             isGroup={ false }
                             roleObject={ roleObject }

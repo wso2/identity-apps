@@ -67,6 +67,7 @@ export class OrganizationRoleManagementConstants {
 
     public static readonly SUPER_ADMIN_PERMISSION_KEY = "/permission/protected";
     public static readonly ORG_CREATOR_ROLE_NAME = "org-creator";
+    public static readonly ORG_ADMIN_ROLE_NAME = "Administrator";
 }
 
 export const APPLICATION_DOMAIN = "Application/";

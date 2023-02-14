@@ -325,7 +325,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             {
                 (
                     !isReadOnly &&
-                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
+                    (roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME &&
+                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME)
                 ) && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
