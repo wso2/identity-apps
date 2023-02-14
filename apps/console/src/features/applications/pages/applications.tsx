@@ -433,7 +433,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ orgType !== OrganizationType.SUBORGANIZATION && (
+            action={ (orgType !== OrganizationType.SUBORGANIZATION && applicationList?.totalResults > 0) && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
                         onClick={ (): void => {
