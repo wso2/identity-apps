@@ -9750,7 +9750,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Username"
+                    placeholder: "Search by Email"
                 },
                 all: {
                     heading: "Users",

@@ -8254,7 +8254,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Rechercher par nom d'utilisateur"
+                    placeholder: "Rechercher par e-mail"
                 },
                 all: {
                     heading: "Utilisateurs",
