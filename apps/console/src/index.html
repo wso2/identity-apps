@@ -33,6 +33,12 @@
             var tenantPrefixGlobal = "t";
             var isAdaptiveAuthenticationAvailable = false;
             var isOrganizationManagementEnabled = true;
+
+            if (window.top === window.self) {
+                var authCallbackUrl = window.location.pathname + window.location.hash;
+
+                sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
+            }
         </script>
     </head>
     <body>

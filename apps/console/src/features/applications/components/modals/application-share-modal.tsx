@@ -29,10 +29,12 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import differenceBy from "lodash-es/differenceBy";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    FormEvent,
     FunctionComponent,
     useCallback,
     useEffect,
@@ -40,6 +42,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Divider,
     Modal,
@@ -55,6 +58,7 @@ import {
 } from "../../../organizations/api";
 import {
     OrganizationInterface,
+    OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "../../../organizations/models";
 import { ShareWithOrgStatus } from "../../constants";
@@ -109,10 +113,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         ...rest
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const currentOrganization = useSelector(
+    const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
 
@@ -124,20 +128,22 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         setCheckedUnassignedListItems
     ] = useState<OrganizationInterface[]>([]);
     const [ shareType, setShareType ] = useState<ShareType>(
-        ShareType.SHARE_SELECTED
+        ShareType.SHARE_ALL
     );
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
             setShareType(ShareType.SHARE_ALL);
+        } else if ((sharedOrganizationList && sharedOrganizationList?.length > 0) &&
+            isSharedWithAll === ShareWithOrgStatus.FALSE
+        ) {
+            setShareType(ShareType.SHARE_SELECTED);
         } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
             isSharedWithAll === ShareWithOrgStatus.FALSE
         ) {
             setShareType(ShareType.UNSHARE);
-        } else {
-            setShareType(ShareType.SHARE_SELECTED);
-        }
+        } 
     }, [ isSharedWithAll, sharedOrganizationList ]);
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
@@ -149,7 +155,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         [ sharedOrganizationList ]
     );
 
-    const handleShareApplication = useCallback(async () => {
+    const handleShareApplication: () => Promise<void> = useCallback(async () => {
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
 
@@ -161,7 +167,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             let addedOrganizations: string[];
 
             if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
-                addedOrganizations = checkedUnassignedListItems.map((org) => org.id);
+                addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
                 await unshareApplication(applicationId, currentOrganization.id);
 
@@ -170,7 +176,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     checkedUnassignedListItems,
                     sharedOrganizationList,
                     "id"
-                ).map(organization => organization.id);
+                ).map((organization: OrganizationInterface) => organization.id);
 
                 removedOrganization = differenceBy(
                     sharedOrganizationList,
@@ -191,7 +197,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 applicationId,
                 shareAppData
             )
-                .then(_response => {
+                .then(() => {
                     onClose(null, null);
                     dispatch(
                         addAlert({
@@ -210,7 +216,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         "client-id": clientId
                     });
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     onClose(null, null);
                     if (error.response.data.message) {
                         dispatch(
@@ -244,13 +250,13 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 })
                 .finally(() => onApplicationSharingCompleted());
 
-            removedOrganization?.forEach(removedOrganization => {
+            removedOrganization?.forEach((removedOrganization: OrganizationInterface) => {
                 stopSharingApplication(
                     currentOrganization.id,
                     applicationId,
                     removedOrganization.id
                 )
-                    .then(_response => {
+                    .then(() => {
                         onClose(null, null);
                         dispatch(
                             addAlert({
@@ -270,7 +276,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             "client-id": clientId
                         });
                     })
-                    .catch(error => {
+                    .catch((error: AxiosError) => {
                         onClose(null, null);
                         if (error.response.data.message) {
                             dispatch(
@@ -328,7 +334,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         "client-id": clientId
                     });
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     onClose(null, null);
                     if (error.response.data.message) {
                         dispatch(
@@ -373,15 +379,15 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         shareType
     ]);
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredOrganizationList = [];
+    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredOrganizationList: OrganizationInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
             subOrganizationList &&
-                subOrganizationList.map(organization => {
+                subOrganizationList.map((organization: OrganizationInterface) => {
                     isMatch = re.test(organization.name);
                     if (isMatch) {
                         filteredOrganizationList.push(organization);
@@ -394,10 +400,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         }
     };
 
-    const handleUnassignedItemCheckboxChange = organization => {
-        const checkedOrganizations = [ ...checkedUnassignedListItems ];
-        const index = checkedOrganizations.findIndex(
-            org => org.id === organization.id
+    const handleUnassignedItemCheckboxChange = (organization: OrganizationInterface) => {
+        const checkedOrganizations: OrganizationInterface[] = [ ...checkedUnassignedListItems ];
+        const index: number = checkedOrganizations.findIndex(
+            (org: OrganizationInterface) => org.id === organization.id
         );
 
         if (index !== -1) {
@@ -409,7 +415,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         }
     };
 
-    const handleHeaderCheckboxChange = useCallback(() => {
+    const handleHeaderCheckboxChange: () => void = useCallback(() => {
         if (checkedUnassignedListItems.length === subOrganizationList.length) {
             setCheckedUnassignedListItems([]);
 
@@ -440,6 +446,20 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             </Modal.Header>
             <Modal.Content>
                 <Segment basic>
+                    <Radio
+                        label={ t(
+                            "console:manage.features.organizations.shareApplicationRadio"
+                        ) }
+                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
+                        checked={ shareType === ShareType.SHARE_ALL }
+                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                    />
+                    <Hint>
+                        { t(
+                            "console:manage.features.organizations.shareApplicationInfo"
+                        ) }
+                    </Hint>
+                    <Divider hidden />
                     <Radio
                         label={ t(
                             "console:manage.features.organizations.shareWithSelectedOrgsRadio"
@@ -494,12 +514,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             ) }
                         >
                             { tempOrganizationList?.map(
-                                (organization, index) => {
-                                    const organizationName =
+                                (organization: OrganizationInterface, index: number) => {
+                                    const organizationName: string =
                                             organization?.name;
-                                    const isChecked =
+                                    const isChecked: boolean =
                                             checkedUnassignedListItems.findIndex(
-                                                org =>
+                                                (org: OrganizationInterface) =>
                                                     org.id === organization.id
                                             ) !== -1;
 
@@ -531,20 +551,6 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     <Divider hidden />
                     <Radio
                         label={ t(
-                            "console:manage.features.organizations.shareApplicationRadio"
-                        ) }
-                        onChange={ () => setShareType(ShareType.SHARE_ALL) }
-                        checked={ shareType === ShareType.SHARE_ALL }
-                        data-componentid={ `${ componentId }-share-with-all-checkbox` }
-                    />
-                    <Hint>
-                        { t(
-                            "console:manage.features.organizations.shareApplicationInfo"
-                        ) }
-                    </Hint>
-                    <Divider hidden />
-                    <Radio
-                        label={ t(
                             "console:manage.features.organizations.unshareApplicationRadio"
                         ) }
                         onChange={ () => setShareType(ShareType.UNSHARE) }
@@ -563,7 +569,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
-                    disabled={ !checkedUnassignedListItems }
+                    disabled={ 
+                        !checkedUnassignedListItems || 
+                        (shareType === ShareType.SHARE_SELECTED && !subOrganizationList) 
+                    }
                     onClick={ () => {
                         handleShareApplication();
                     } }

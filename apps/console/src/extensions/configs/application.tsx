@@ -25,6 +25,7 @@ import {
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../features/applications/models";
+import { FeatureConfigInterface } from "../../features/core";
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
@@ -90,7 +91,10 @@ export const applicationConfig: ApplicationConfig = {
                 return 4; // Anything else
             }
         },
-        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
+        getTabExtensions: (
+            _props: Record<string, unknown>,
+            _features: FeatureConfigInterface
+        ): ResourceTabPaneInterface[] => [],
         getTabPanelReadOnlyStatus: (_tabPanelName: string, _applicationName: ApplicationInterface): boolean => {
             return false;
         },

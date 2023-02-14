@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  WSO2 LLC. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
   ~  in compliance with the License.
   ~  You may obtain a copy of the License at
@@ -140,6 +140,9 @@
     <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
+    <% String invalidCallbackErrorMessageText = IdentityManagementEndpointUtil
+        .i18n(recoveryResourceBundle, "invalid.callback.url.found.in.the.request"); %>
+
     <script type="application/javascript">
         $(document).ready(function () {
             $(".notify").modal({
@@ -155,7 +158,7 @@
                     }
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
-                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                        request.setAttribute("errorMsg", invalidCallbackErrorMessageText);
                         request.getRequestDispatcher("error.jsp").forward(request, response);
                         return;
                     }
