@@ -61,7 +61,8 @@
             "jit": {
                 "isEnabled": true,
                 "scheme": "PROVISION_SILENTLY",
-                "userstore": "DEFAULT"
+                "userstore": "DEFAULT",
+                "attributeSyncMethod": "PRESERVE_LOCAL"
             }
         },
         "federatedAuthenticators": {

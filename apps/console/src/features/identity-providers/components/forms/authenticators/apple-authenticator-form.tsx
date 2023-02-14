@@ -91,7 +91,7 @@ interface AppleAuthenticatorFormInitialValuesInterface {
     /**
      * Apple Authenticator scopes field value.
      */
-    Scope: string;
+    Scopes: string;
     /**
      * Apple Authenticator client id field value.
      */
@@ -125,7 +125,7 @@ interface AppleAuthenticatorFormFieldsInterface {
     /**
      * Apple Authenticator scopes.
      */
-    Scope: CommonAuthenticatorFormFieldInterface;
+    Scopes: CommonAuthenticatorFormFieldInterface;
     /**
      * Apple Authenticator client secret validity period field.
      */
@@ -564,9 +564,9 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 data-testid={ `${ componentId }-additional-query-parameters` }
             />
             {
-                formFields?.Scope?.value
-                && formFields.Scope.value.split
-                && formFields.Scope.value.split(",").length > 0
+                formFields?.Scopes?.value
+                && formFields.Scopes.value.split
+                && formFields.Scopes.value.split(",").length > 0
                 && (
                     <FormSection
                         heading={
@@ -576,7 +576,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     >
                         <div className="authenticator-dynamic-properties">
                             {
-                                formFields.Scope.value
+                                formFields.Scopes.value
                                     .split(",")
                                     .map((scope: string, index: number) => {
 
