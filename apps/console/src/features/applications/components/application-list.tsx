@@ -53,6 +53,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -157,6 +159,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -516,7 +519,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder" : "" }
-                    action={ onEmptyListPlaceholderActionClick && (
+                    action={ (onEmptyListPlaceholderActionClick && orgType !== OrganizationType.SUBORGANIZATION) && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                             <PrimaryButton
                                 onClick={ () => {
