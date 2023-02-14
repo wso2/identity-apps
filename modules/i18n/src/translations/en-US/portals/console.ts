@@ -3474,7 +3474,7 @@ export const console: ConsoleNS = {
                         hypr: {
                             appId: {
                                 hint: "The <1>Application ID</1> you received from HYPR for your OAuth app.",
-                                label: "",
+                                label: "Relying Party App ID",
                                 placeholder: "Enter App ID from HYPR application.",
                                 validations: {
                                     required: "Relying Party App ID is a required field."
