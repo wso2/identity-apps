@@ -330,7 +330,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                 "value": config?.deployment?.customServerHost + "/commonauth"
             },
             {
-                "key": "Scope",
+                "key": "Scopes",
                 "value": IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_REQUESTED_SCOPES.join(",")
             },
             {
