@@ -570,8 +570,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 </LinkButton>
                 <PrimaryButton
                     disabled={ 
-                        !checkedUnassignedListItems || 
-                        (shareType === ShareType.SHARE_SELECTED && !subOrganizationList) 
+                        shareType === ShareType.SHARE_SELECTED &&
+                        (checkedUnassignedListItems?.length == 0 || !subOrganizationList) 
                     }
                     onClick={ () => {
                         handleShareApplication();
