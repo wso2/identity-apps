@@ -8072,7 +8072,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "පරිශීලක නාමයෙන් සොයන්න"
+                    placeholder: "විද්‍යුත් තැපෑලෙන් සොයන්න"
                 },
                 all: {
                     heading: "පරිශීලකයින්",

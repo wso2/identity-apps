@@ -575,7 +575,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 ".placeholder")
                         }
                         placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                        defaultSearchAttribute="userName"
+                        defaultSearchAttribute="emails"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                     />
@@ -676,7 +676,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                         ".placeholder")
                                 }
                                 placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                                defaultSearchAttribute="userName"
+                                defaultSearchAttribute="emails"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
                             />
