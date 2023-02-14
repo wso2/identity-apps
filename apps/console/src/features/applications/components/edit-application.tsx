@@ -362,7 +362,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
-        if (!template?.content?.quickStart || !application?.id || isInboundProtocolConfigRequestLoading) {
+        if (!application?.id || isInboundProtocolConfigRequestLoading) {
             return;
         }
 
@@ -375,7 +375,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions(
             {
                 application: application,
-                content: template.content.quickStart,
+                content: template?.content?.quickStart,
                 inboundProtocolConfig: inboundProtocolConfig,
                 inboundProtocols: inboundProtocolList,
                 onApplicationUpdate: () => {
@@ -1054,10 +1054,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading && inboundProtocolList != undefined
-        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML)
+        && (tabPaneExtensions || !applicationConfig.editApplication.extendTabs)
             ? (
                 <>
                     <ResourceTab
