@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -84,7 +84,10 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ 
+                                isReadOnly || 
+                                roleObject?.displayName === OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME 
+                            }
                             data-testid="role-mgt-edit-role-basic"
                             roleId={ roleId }
                             isGroup={ isGroup }
@@ -143,6 +146,6 @@ export const EditOrganizationRole: FunctionComponent<EditRoleProps> = (props: Ed
     };
 
     return (
-        <ResourceTab panes={ resolveResourcePanes() } />
+        roleObject ? <ResourceTab panes={ resolveResourcePanes() } /> : <ContentLoader/>
     );
 };
