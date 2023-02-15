@@ -1,14 +1,14 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by organizationlicable law or agreed to in writing,
+ * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
@@ -20,7 +20,6 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
     TestableComponentInterface
@@ -38,10 +37,12 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
@@ -62,8 +63,7 @@ import { OrganizationRoleListItemInterface } from "../models";
 interface OrganizationRolesListPropsInterface
     extends SBACInterface<FeatureConfigInterface>,
         LoadableComponentInterface,
-        TestableComponentInterface,
-        IdentifiableComponentInterface {
+        TestableComponentInterface {
     /**
      * Advanced Search component.
      */
@@ -138,13 +138,12 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
         showListItemActions,
         isSetStrongerAuth,
         isRenderedOnPortal,
-        ["data-testid"]: testId,
-        ["data-componentid"]: componentId
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -158,7 +157,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     /**
      * Redirects to the organization role edit page when the edit button is clicked.
      *
-     * @param {string} organizationId - Organization id.
+     * @param organizationId - Organization id.
      */
     const handleOrganizationEdit = (organizationId: string): void => {
         history.push({
@@ -171,7 +170,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     /**
      * Deletes an organization when the delete organization button is clicked.
      *
-     * @param {string} roleId - Selected Role id.
+     * @param roleId - Selected Role id.
      */
     const handleOrganizationDelete = (roleId: string): void => {
         deleteOrganizationRole(organizationId, roleId)
@@ -193,7 +192,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 setShowDeleteConfirmationModal(false);
                 onOrganizationRoleDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         setAlert({
@@ -228,7 +227,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns TableColumnInterface[] Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -274,7 +273,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns TableActionsInterface[] Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -335,7 +334,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement Placeholder.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -454,7 +453,6 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
  * Default props for the component.
  */
 OrganizationRoleList.defaultProps = {
-    "data-componentid": "organization-roles",
     "data-testid": "organization-role-list",
     selection: true,
     showListItemActions: true

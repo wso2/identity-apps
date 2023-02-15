@@ -44,7 +44,7 @@ export class OrganizationManagementConstants {
         status: "ACTIVE"
     };
 
-    public static readonly ORGANIZATION_ROUTES = "organizations";
+    public static readonly ORGANIZATION_ROUTES: string = "organizations";
 }
 
 export enum ORGANIZATION_TYPE {
@@ -65,20 +65,20 @@ export class OrganizationRoleManagementConstants {
         .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
         .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
 
-    public static readonly SUPER_ADMIN_PERMISSION_KEY = "/permission/protected";
-    public static readonly ORG_CREATOR_ROLE_NAME = "org-creator";
-    public static readonly ORG_ADMIN_ROLE_NAME = "Administrator";
+    public static readonly SUPER_ADMIN_PERMISSION_KEY: string = "/permission/protected";
+    public static readonly ORG_CREATOR_ROLE_NAME: string = "org-creator";
+    public static readonly ORG_ADMIN_ROLE_NAME: string = "Administrator";
 }
 
-export const APPLICATION_DOMAIN = "Application/";
-export const INTERNAL_DOMAIN = "Internal";
-export const PRIMARY_DOMAIN = "Primary";
-export const ROLE_VIEW_PATH = "/organization-roles/";
+export const APPLICATION_DOMAIN: string = "Application/";
+export const INTERNAL_DOMAIN: string = "Internal";
+export const PRIMARY_DOMAIN: string = "Primary";
+export const ROLE_VIEW_PATH: string = "/organization-roles/";
 
-export const ORGANIZATION_NAME_MIN_LENGTH = 3;
-export const ORGANIZATION_NAME_MAX_LENGTH = 32;
-export const ORGANIZATION_DESCRIPTION_MIN_LENGTH = 3;
-export const ORGANIZATION_DESCRIPTION_MAX_LENGTH = 300;
+export const ORGANIZATION_NAME_MIN_LENGTH: number = 3;
+export const ORGANIZATION_NAME_MAX_LENGTH: number = 32;
+export const ORGANIZATION_DESCRIPTION_MIN_LENGTH: number = 3;
+export const ORGANIZATION_DESCRIPTION_MAX_LENGTH: number = 300;
 
 /**
  * Contains all the possible types of organizations.
