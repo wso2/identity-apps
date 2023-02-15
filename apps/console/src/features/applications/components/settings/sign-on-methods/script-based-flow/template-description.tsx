@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@
  */
 
 import {
+    Code,
     CodeEditor,
     DocumentationLink,
     LinkButton,
@@ -53,9 +54,9 @@ interface TemplateDescriptionPropsInterface {
 /**
  * The modal that contains template description.
  *
- * @param {TemplateDescriptionPropsInterface} props React component props.
+ * @param props - React component props.
  *
- * @returns {ReactElement} Template Description component.
+ * @returns Template Description component.
  */
 export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInterface> = (
     props: TemplateDescriptionPropsInterface
@@ -72,7 +73,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
     /**
      * Resolves the documentation link when a template is selected.
-     * @return {React.ReactElement}
+     * @returns the resolved documentation link.
      */
     const resolveDocumentationLink = (): ReactElement => {
         const templateName: string = template?.name;
@@ -111,6 +112,45 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
         );
 
     };
+
+    const getParameters = (): string[] => {
+        const params : string[] = [];
+        
+        if (isObject(template.parametersDescription)) {
+            Object.entries(template.parametersDescription).map(([ param ]: string[]) => {
+                params.push(param);
+            });
+        }
+
+        return params;
+    };
+
+    const generatePrerequisite = (prerequisite: string, params: string[]): ReactElement => {
+        const sentenceArray: string[] = prerequisite.split(" ");
+        const modified: ReactElement[] = [];
+        let content: string = "";
+
+        sentenceArray.map((word: string, index: number) => {
+            if (params.includes(word)) {
+                modified.push(<span key={ index }>{ content } </span>);
+                modified.push(
+                    <span key={ index }>
+                        <Code>{ word }</Code> 
+                    </span>
+                );
+                content = "";
+            } else {
+                content = content.concat(word + " ");
+            }
+        });
+        modified.push(<span>{ content }</span>);
+        
+        return (
+            <p>
+                { modified.map((element: ReactElement) => element) }
+            </p>
+        );
+    };
     
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
@@ -131,10 +171,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             </h4>
                             <List>
                                 { template.preRequisites.map((prerequisite: string, index: number) => {
+                                    const params: string[] = getParameters();
+                                    
                                     return (
                                         <List.Item key={ index }>
                                             <List.Icon name="check circle outline" color="green"/>
-                                            <List.Content>{ prerequisite }</List.Content>
+                                            <List.Content>{ generatePrerequisite(prerequisite, params) }</List.Content>
                                         </List.Item>
                                     );
                                 }) }
@@ -164,10 +206,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                 </Table.Header>
                                 <Table.Body>
                                     { Object.entries(template.parametersDescription)
-                                        .map(([ param, description ], index: number) => {
+                                        .map(([ param, description ]: [ string, string ], index: number) => {
                                             return (
                                                 <Table.Row key={ index }>
-                                                    <Table.Cell>{ param }</Table.Cell>
+                                                    <Table.Cell>
+                                                        <Code>{ param }</Code>
+                                                    </Table.Cell>
                                                     <Table.Cell>{ description }</Table.Cell>
                                                 </Table.Row>
                                             );
@@ -188,7 +232,11 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             </h4>
                             {
                                 Object.entries(template.defaultStepsDescription)
-                                    .map(([ step, description ], index: number, steps) => {
+                                    .map((
+                                        [ step, description ]: [ string, string ], 
+                                        index: number, 
+                                        steps: [string, string][]
+                                    ) => {
                                         return (
                                             <div className="stepper" key={ `${ index }-${ step }` }>
                                                 <div className="step-number">{ index + 1 }</div>
@@ -217,9 +265,9 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             <Message
                                 type="info"
                                 content={
-                                    <a target="_blank" href={ template.helpLink } rel="noreferrer">
+                                    (<a target="_blank" href={ template.helpLink } rel="noreferrer">
                                         { template.helpLink }
-                                    </a>
+                                    </a>)
                                 }
                             />
                         </>
