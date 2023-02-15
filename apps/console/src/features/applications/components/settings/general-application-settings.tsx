@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,9 +26,11 @@ import {
     DangerZoneGroup,
     EmphasizedSegment
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
@@ -106,9 +108,9 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
 /**
  * Component to edit general details of the application.
  *
- * @param {GeneralApplicationSettingsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns ReactElement
  */
 export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSettingsInterface> = (
     props: GeneralApplicationSettingsInterface
@@ -132,7 +134,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -161,7 +163,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 setShowDeleteConfirmationModal(false);
                 onDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 setIsDeletionInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
@@ -187,7 +189,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     /**
      * Handles form submit action.
      *
-     * @param {ApplicationInterface} updatedDetails - Form values.
+     * @param updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
         setIsSubmitting(true);
@@ -203,7 +205,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -231,7 +233,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     /**
      * Resolves the danger actions.
      *
-     * @return {React.ReactElement} DangerZoneGroup element.
+     * @returns React.ReactElement DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
@@ -248,7 +250,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         }
 
         if (hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)) {
+            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)
+            && !application?.advancedConfigurations?.fragment) {
             return (
                 <DangerZoneGroup sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }>
                     {
