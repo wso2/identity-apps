@@ -23,6 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } fro
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
 import { AppConstants, AppState, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
@@ -31,6 +32,7 @@ import { OrganizationRoleManagementConstants } from "../../constants";
 import {
     OrganizationResponseInterface,
     OrganizationRoleInterface,
+    OrganizationRoleListResponseInterface,
     PatchOrganizationRoleDataInterface
 } from "../../models";
 
@@ -67,7 +69,7 @@ interface BasicRoleProps extends TestableComponentInterface {
  */
 export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         roleId,
@@ -103,7 +105,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             return;
         }
         fetchUserstoreRegEx()
-            .then((response) => {
+            .then((response: string) => {
                 setUserStoreRegEx(response);
                 setRegExLoading(false);
             });
@@ -209,7 +211,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         <>
             <EmphasizedSegment padded="very">
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         updateRoleName(values);
                     } }
                 >
@@ -253,14 +255,14 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         value={ nameValue }
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
-                                                const filter = "name eq " + value.toString();
+                                                const filter: string = "name eq " + value.toString();
 
                                                 await getOrganizationRoles(
                                                     currentOrganization.id,
                                                     filter,
                                                     10,
                                                     null
-                                                ).then(response => {
+                                                ).then((response: OrganizationRoleListResponseInterface) => {
                                                     if (response?.Resources && response?.Resources?.length !== 0) {
                                                         if (response?.Resources[0]?.id !== roleId) {
                                                             validation.isValid = false;
@@ -325,7 +327,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             {
                 (
                     !isReadOnly &&
-                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME
+                    (roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME &&
+                    roleObject?.displayName !== OrganizationRoleManagementConstants.ORG_ADMIN_ROLE_NAME)
                 ) && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
