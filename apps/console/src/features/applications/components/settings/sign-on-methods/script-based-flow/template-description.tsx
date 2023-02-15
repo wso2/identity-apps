@@ -113,38 +113,44 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
     };
 
-    const getParameters = () : string[] => {
-        const params = [];
+    const getParameters = (): string[] => {
+        const params : string[] = [];
+        
         if (isObject(template.parametersDescription)) {
-            Object.entries(template.parametersDescription).map(([param]) => {
+            Object.entries(template.parametersDescription).map(([ param ]) => {
                 params.push(param);
             });
         }
+
         return params;
-    }
+    };
 
     const generatePrerequisite = (prerequisite: string, params: Array<string>): ReactElement => {
-        const sentenceArray = prerequisite.split(" ");
-        const modified = [];
-        let content = ""
-        sentenceArray.map((word, index) => {
+        const sentenceArray: string[] = prerequisite.split(" ");
+        const modified: ReactElement[] = [];
+        let content: string = "";
+
+        sentenceArray.map((word: string, index: number) => {
             if (params.includes(word)) {
-                modified.push(<span key={index}>{content} </span>)
-                modified.push(<span key={index}><Code>{word}</Code> </span>)
-                content = ""
+                modified.push(<span key={ index }>{ content } </span>);
+                modified.push(
+                    <span key={ index }>
+                        <Code>{ word }</Code> 
+                    </span>
+                );
+                content = "";
             } else {
                 content = content.concat(word + " ");
             }
         });
-        modified.push(<span>{content}</span>)
+        modified.push(<span>{ content }</span>);
+        
         return (
             <p>
-                <React.Fragment>
-                    {modified.map((element) => element)}
-                </React.Fragment>
+                { modified.map((element: ReactElement) => element) }
             </p>
         );
-    }
+    };
     
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
@@ -165,7 +171,8 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             </h4>
                             <List>
                                 { template.preRequisites.map((prerequisite: string, index: number) => {
-                                    const params = getParameters();
+                                    const params: string[] = getParameters();
+                                    
                                     return (
                                         <List.Item key={ index }>
                                             <List.Icon name="check circle outline" color="green"/>
@@ -202,7 +209,9 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                         .map(([ param, description ], index: number) => {
                                             return (
                                                 <Table.Row key={ index }>
-                                                    <Table.Cell><Code>{ param }</Code></Table.Cell>
+                                                    <Table.Cell>
+                                                        <Code>{ param }</Code>
+                                                    </Table.Cell>
                                                     <Table.Cell>{ description }</Table.Cell>
                                                 </Table.Row>
                                             );
