@@ -125,7 +125,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
         return params;
     };
 
-    const generatePrerequisite = (prerequisite: string, params: Array<string>): ReactElement => {
+    const generatePrerequisite = (prerequisite: string, params: string[]): ReactElement => {
         const sentenceArray: string[] = prerequisite.split(" ");
         const modified: ReactElement[] = [];
         let content: string = "";
