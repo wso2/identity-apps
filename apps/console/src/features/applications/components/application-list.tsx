@@ -38,9 +38,11 @@ import {
     TableColumnInterface,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
 import { applicationListConfig } from "../../../extensions/configs/application-list";
@@ -150,7 +152,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -232,7 +234,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(false);
                 onApplicationDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
                         description: error.response.data.description,
@@ -291,7 +293,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         templateDisplayName = applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
+                            && applicationTemplates.find((template: ApplicationTemplateListItemInterface) => {
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
@@ -299,7 +301,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
-                            && applicationTemplates.find((template) => {
+                            && applicationTemplates.find((template: ApplicationTemplateListItemInterface) => {
                                 return template.id === app.templateId;
                             });
 
@@ -309,14 +311,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             templateDisplayName = groupedApplicationTemplates
                                 && groupedApplicationTemplates instanceof Array
                                 && groupedApplicationTemplates.length > 0
-                                && groupedApplicationTemplates.find((group) => {
+                                && groupedApplicationTemplates.find((group: ApplicationTemplateListItemInterface) => {
                                     return (group.id === templateGroupId || group.templateGroup === templateGroupId);
                                 }).name;
                         } else {
                             templateDisplayName = applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates?.length > 0
-                            && applicationTemplates.find((template) => {
+                            && applicationTemplates.find((template: ApplicationTemplateListItemInterface) => {
                                 return template?.id === app?.templateId;
                             })?.name;
                         }
