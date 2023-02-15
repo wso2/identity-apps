@@ -326,7 +326,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                 "value": values.privateKey.toString()
             },
             {
-                "key": "callBackUrl",
+                "key": "callbackUrl",
                 "value": config?.deployment?.customServerHost + "/commonauth"
             },
             {
@@ -336,6 +336,14 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
             {
                 "key": "AdditionalQueryParameters",
                 "value": IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ADDITIONAL_QUERY_PARAMETERS
+            },
+            {
+                "key": "RegenerateClientSecret",
+                "value": "false"
+            },
+            {
+                "key": "SecretExpiryEpochTime",
+                "value": "0"
             }
         ];
 

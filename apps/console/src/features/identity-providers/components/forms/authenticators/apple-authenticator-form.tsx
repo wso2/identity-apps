@@ -87,7 +87,7 @@ interface AppleAuthenticatorFormInitialValuesInterface {
     /**
      * Apple Authenticator callback URL field value.
      */
-    CallBackUrl: string;
+    callbackUrl: string;
     /**
      * Apple Authenticator scopes field value.
      */
@@ -109,7 +109,7 @@ interface AppleAuthenticatorFormFieldsInterface {
     /**
      * Apple Authenticator callback URL field.
      */
-    callBackUrl: CommonAuthenticatorFormFieldInterface;
+    callbackUrl: CommonAuthenticatorFormFieldInterface;
     /**
      * Apple Authenticator client id field.
      */
@@ -495,7 +495,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
             <Field.Input
                 ariaLabel="Apple authenticator authorized redirect URL"
                 inputType="copy_input"
-                name="CallBackUrl"
+                name="callbackUrl"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.callbackUrl.label")
@@ -508,16 +508,16 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.callbackUrl.hint")
                 }
-                required={ formFields?.callBackUrl?.meta?.isMandatory }
-                value={ formFields?.callBackUrl?.value }
+                required={ formFields?.callbackUrl?.meta?.isMandatory }
+                value={ formFields?.callbackUrl?.value }
                 readOnly={
                     readOnly || (
                         mode === AuthenticatorSettingsFormModes.CREATE
                             ? false
-                            : formFields?.callBackUrl?.meta?.readOnly
+                            : formFields?.callbackUrl?.meta?.readOnly
                     )
                 }
-                maxLength={ formFields?.callBackUrl?.meta?.maxLength }
+                maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
                     IdentityProviderManagementConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number

@@ -62,7 +62,7 @@
                 "isEnabled": true,
                 "scheme": "PROVISION_SILENTLY",
                 "userstore": "DEFAULT",
-                "attributeSyncMethod": "PRESERVE_LOCAL"
+                "attributeSyncMethod": "NONE"
             }
         },
         "federatedAuthenticators": {
