@@ -17,6 +17,7 @@
  */
 
 import {
+    Code,
     CodeEditor,
     DocumentationLink,
     LinkButton,
@@ -111,6 +112,39 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
         );
 
     };
+
+    const getParameters = () : string[] => {
+        const params = [];
+        if (isObject(template.parametersDescription)) {
+            Object.entries(template.parametersDescription).map(([param]) => {
+                params.push(param);
+            });
+        }
+        return params;
+    }
+
+    const generatePrerequisite = (prerequisite: string, params: Array<string>): ReactElement => {
+        const sentenceArray = prerequisite.split(" ");
+        const modified = [];
+        let content = ""
+        sentenceArray.map((word, index) => {
+            if (params.includes(word)) {
+                modified.push(<span key={index}>{content} </span>)
+                modified.push(<span key={index}><Code>{word}</Code> </span>)
+                content = ""
+            } else {
+                content = content.concat(word + " ");
+            }
+        });
+        modified.push(<span>{content}</span>)
+        return (
+            <p>
+                <React.Fragment>
+                    {modified.map((element) => element)}
+                </React.Fragment>
+            </p>
+        );
+    }
     
     return (
         <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
@@ -131,10 +165,11 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             </h4>
                             <List>
                                 { template.preRequisites.map((prerequisite: string, index: number) => {
+                                    const params = getParameters();
                                     return (
                                         <List.Item key={ index }>
                                             <List.Icon name="check circle outline" color="green"/>
-                                            <List.Content>{ prerequisite }</List.Content>
+                                            <List.Content>{ generatePrerequisite(prerequisite, params) }</List.Content>
                                         </List.Item>
                                     );
                                 }) }
@@ -167,7 +202,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                                         .map(([ param, description ], index: number) => {
                                             return (
                                                 <Table.Row key={ index }>
-                                                    <Table.Cell>{ param }</Table.Cell>
+                                                    <Table.Cell><Code>{ param }</Code></Table.Cell>
                                                     <Table.Cell>{ description }</Table.Cell>
                                                 </Table.Row>
                                             );
