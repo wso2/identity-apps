@@ -231,7 +231,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     /**
      * Resolves the danger actions.
      *
-     * @return {React.ReactElement} DangerZoneGroup element.
+     * @returns React.ReactElement DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
@@ -248,7 +248,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         }
 
         if (hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)) {
+            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)
+            && !application?.advancedConfigurations?.fragment) {
             return (
                 <DangerZoneGroup sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }>
                     {
