@@ -196,7 +196,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
     }
 
