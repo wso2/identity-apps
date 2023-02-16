@@ -4665,7 +4665,7 @@ export const console: ConsoleNS = {
                             preRequisites: {
                                 rpDescription: "Before you begin, create a relying party application in <1>HYPR control center</1>, and obtain the application ID.",
                                 tokenDescription: "You also have to obtain an <1>API token</1> for the application you have created.",
-                                heading: ""
+                                heading: "Prerequisite"
                             }
                         }
                     },
