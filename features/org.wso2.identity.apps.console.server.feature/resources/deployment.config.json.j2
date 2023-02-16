@@ -95,7 +95,7 @@
         {% endif %}
         {% if console.extensions is defined %}
         {% for key, value in console.extensions.items() %}
-        {% if value is number %}
+        {% if value is number or value is boolean %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
         {% elif value is mapping %}
             "{{ key }}": {
