@@ -21,7 +21,7 @@ import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
 import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import { ButtonProps, Card, CardProps, Dimmer, Icon } from "semantic-ui-react";
-import MadeByAsgardeoLabel from "../../assets/images/made-by-asgardeo-label.svg";
+import ByAsgardeoLabel from "../../assets/images/by-asgardeo-label.svg";
 import { LinkButton } from "../button";
 import { GenericIcon } from "../icon";
 
@@ -148,9 +148,9 @@ export const LargeTechnologyCard: FunctionComponent<LargeTechnologyCardPropsInte
                 }
                 <div className="made-by-asgardeo-label">
                     <img
-                        width="170"
+                        width="132"
                         height="35"
-                        src={ MadeByAsgardeoLabel }
+                        src={ ByAsgardeoLabel }
                         alt="Made by Asgardeo label"
                     />
                 </div>
@@ -193,7 +193,7 @@ export const LargeTechnologyCard: FunctionComponent<LargeTechnologyCardPropsInte
                         onClick={ !disabled && onSampleAppClick }
                         compact
                     >
-                        <Icon name="download" />
+                        <Icon name="github" />
                         Sample App
                     </LinkButton>
                 </Card.Content>
