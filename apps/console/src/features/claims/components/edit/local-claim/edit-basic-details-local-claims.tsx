@@ -42,6 +42,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
@@ -82,7 +83,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
     const [ shouldShowOnProfile, isSupportedByDefault ] = useState<boolean>(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
@@ -91,10 +92,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
 
-    const nameField = useRef<HTMLElement>(null);
-    const regExField = useRef<HTMLElement>(null);
-    const displayOrderField = useRef<HTMLElement>(null);
-    const descriptionField = useRef<HTMLElement>(null);
+    const nameField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const regExField:  React.MutableRefObject<HTMLElement>= useRef<HTMLElement>(null);
+    const displayOrderField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const descriptionField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -116,10 +117,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ claim ]);
 
     useEffect(() => {
-        const dialectURI = getDialectURI();
+        const dialectURI: string[] = getDialectURI();
 
         if(claim) {
-            const associatedExternalClaims = claim.associatedExternalClaims;
+            const associatedExternalClaims: AssociatedExternalClaim[] = claim.associatedExternalClaims;
 
             associatedExternalClaims.forEach((externalClaim:AssociatedExternalClaim) => {
 
@@ -136,18 +137,18 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const getDialectURI = (): string[]  => {
         const dialectURI: string[] = [];
 
-        ClaimManagementConstants.SCIM_TABS.filter((claim => {
+        ClaimManagementConstants.SCIM_TABS.filter((claim:{name: string, uri: string}) => {
             if(claim.name == "Core Schema") dialectURI.push(claim.uri);
             if(claim.name == "User Schema") dialectURI.push(claim.uri);
             if(claim.name == "Enterprise Schema") dialectURI.push(claim.uri);
-        }));
+        });
         dialectURI.push(SCIMConfigs.scimDialectID.customEnterpriseSchemaURI);
 
         return dialectURI;
     };
 
     // Temporary fix to check system claims and make them readonly
-    const isReadOnly = useMemo(() => {
+    const isReadOnly: boolean = useMemo(() => {
         if (hideSpecialClaims) {
             return true;
         } else {
@@ -198,7 +199,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
                 }
             ));
-        }).catch(error => {
+        }).catch((error: any) => {
             dispatch(addAlert(
                 {
                     description: error?.description
@@ -250,7 +251,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             });
     };
 
-    const onSubmit = (values) => {
+    const onSubmit = (values: any) => {
         const data: Claim = {
             attributeMapping: claim.attributeMapping,
             claimURI: claim.claimURI,
@@ -280,7 +281,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             ));
             update();
             fetchUpdatedSchemaList();
-        }).catch(error => {
+        }).catch((error:any) => {
             dispatch(addAlert(
                 {
                     description: error?.description
@@ -320,7 +321,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 <Form
                     id={ FORM_ID }
                     uncontrolledForm={ false }
-                    onSubmit={ (values): void => {
+                    onSubmit={ (values: Record<string, any>): void => {
                         onSubmit(values as any);
                     } }
                     data-testid={ testId }
@@ -437,7 +438,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("console:manage.features.claims.local.forms.supportedByDefault.label") }
                                 required={ false }
                                 defaultValue={ claim?.supportedByDefault }
-                                listen={ (values) => {
+                                listen={ (values: any) => {
                                     setIsShowDisplayOrder(!!values?.supportedByDefault);
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
@@ -490,7 +491,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-required-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.requiredHint") }
-                                listen ={ (value) => {
+                                listen ={ (value: any) => {
                                     isSupportedByDefault(value);
                                 } }
                                 disabled={ isClaimReadOnly || !hasMapping }
@@ -520,7 +521,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-readonly-checkbox` }
                                 readOnly={ isReadOnly }
                                 hint={ t("console:manage.features.claims.local.forms.readOnlyHint") }
-                                listen={ (value) => {
+                                listen={ (value: any) => {
                                     setIsClaimReadOnly(value);
                                 } }
                                 disabled={ !hasMapping }
