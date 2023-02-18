@@ -32,7 +32,6 @@ export interface Claim {
     supportedByDefault: boolean;
     attributeMapping: AttributeMapping[];
     associatedExternalClaims?: AssociatedExternalClaim[];
-
     properties?: Property[];
 }
 
