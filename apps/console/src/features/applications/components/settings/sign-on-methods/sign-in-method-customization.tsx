@@ -50,7 +50,7 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../models";
-import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
+import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, FederatedConflictWithSMSOTPReturnValue, SignInMethodUtils } from "../../../utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -144,6 +144,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
+    const [ smsValidationResult, setSmsValidationResult ] =
+        useState<FederatedConflictWithSMSOTPReturnValue | undefined>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -158,6 +160,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         });
 
         setValidationResult(result);
+
+        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValue = SignInMethodUtils.isFederatedConflictWithSMSOTP({
+            federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
+            steps: updatedSteps,
+            subjectStepId: authenticationSequence?.subjectStepId
+        });
+
+        setSmsValidationResult(federatedSMSConflictResult);
 
     }, [ steps, authenticators, updatedSteps ]);
 
@@ -558,6 +568,49 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         );
     };
 
+    const SMSOTPConflictMessage = () => {
+
+        const FIRST_ENTRY: number = 0;
+        const { idpList } = smsValidationResult;
+        const moreThan1IdP: boolean = idpList.length > 1;
+
+        return (
+            <Message
+                data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
+                data-testid="jit-provisioning-mfa-in-sequence-warning-message"
+                type="info"
+                // Semantic hides warning messages inside <form> by default.
+                // Overriding the behaviour here to make sure it renders properly.
+                content={ (
+                    <>
+                        {
+                            moreThan1IdP
+                                ? (
+                                    <>
+                                        Asgardeo requires the user&apos;s profile containing the <i>mobile number</i> to configure 
+                                        <strong> SMS OTP</strong> with the following connections.
+                                        <ul className="mb-3">
+                                            { idpList?.map(({ name }:{name: string}, index: number) => (
+                                                <li key={ index }>
+                                                    <strong>{ name }</strong>
+                                                </li>
+                                            )) }
+                                        </ul>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        Asgardeo requires the user&apos;s profile containing the mobile number to configure 
+                                        <strong> SMS OTP</strong> with <strong>{ idpList[FIRST_ENTRY].name }</strong> connection. 
+                                    </>
+                                )
+                        }
+                    </>
+                ) }
+            />
+        );
+    };
+
     return (
         <div>
             <div>
@@ -632,6 +685,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         }
                     />
                 )
+            }
+            { !validationResult?.conflicting && smsValidationResult?.conflicting && smsValidationResult?.idpList.length
+                ? SMSOTPConflictMessage()
+                : null
             }
             <StepBasedFlow
                 refreshAuthenticators={ refreshAuthenticators }
