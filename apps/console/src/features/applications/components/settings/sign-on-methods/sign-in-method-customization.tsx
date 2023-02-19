@@ -50,7 +50,11 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../models";
-import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, FederatedConflictWithSMSOTPReturnValue, SignInMethodUtils } from "../../../utils";
+import { 
+    AdaptiveScriptUtils,
+    ConnectionsJITUPConflictWithMFAReturnValue,
+    FederatedConflictWithSMSOTPReturnValue,
+    SignInMethodUtils } from "../../../utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -161,7 +165,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setValidationResult(result);
 
-        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValue = SignInMethodUtils.isFederatedConflictWithSMSOTP({
+        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValue = 
+        SignInMethodUtils.isFederatedConflictWithSMSOTP({
             federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
             steps: updatedSteps,
             subjectStepId: authenticationSequence?.subjectStepId
@@ -587,7 +592,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             moreThan1IdP
                                 ? (
                                     <>
-                                        Asgardeo requires the user&apos;s profile containing the <i>mobile number</i> to configure 
+                                        Asgardeo requires the user&apos;s profile containing the
+                                        <i> mobile number</i> to configure 
                                         <strong> SMS OTP</strong> with the following connections.
                                         <ul className="mb-3">
                                             { idpList?.map(({ name }:{name: string}, index: number) => (
@@ -600,8 +606,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 )
                                 : (
                                     <>
-                                        Asgardeo requires the user&apos;s profile containing the mobile number to configure 
-                                        <strong> SMS OTP</strong> with <strong>{ idpList[FIRST_ENTRY].name }</strong> connection. 
+                                        Asgardeo requires the user&apos;s profile containing the 
+                                        <i> mobile number</i> to configure <strong> SMS OTP </strong> 
+                                        with <strong>{ idpList[FIRST_ENTRY].name }</strong> connection. 
                                     </>
                                 )
                         }

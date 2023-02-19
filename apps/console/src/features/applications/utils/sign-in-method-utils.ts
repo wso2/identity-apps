@@ -382,7 +382,8 @@ export class SignInMethodUtils {
             );
 
             const SMS_OTP_AUTHENTICATOR_NAME: string = "sms-otp-authenticator";
-            const isSMSOTPConfigured = allOtherOptions.some(op => op.authenticator === SMS_OTP_AUTHENTICATOR_NAME);
+            const isSMSOTPConfigured: boolean = allOtherOptions.some(
+                (op: AuthenticatorInterface) => op.authenticator === SMS_OTP_AUTHENTICATOR_NAME);
     
             /** Finally compose the outcome **/
             return {
