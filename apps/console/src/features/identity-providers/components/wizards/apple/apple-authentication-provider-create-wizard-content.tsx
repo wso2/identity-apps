@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,8 +32,7 @@ import { handleGetIDPListCallError } from "../../utils";
 /**
  * Proptypes for the Apple Authentication Provider create wizard content.
  */
-interface AppleAuthenticationProviderCreateWizardContentPropsInterface extends IdentifiableComponentInterface, 
-    TestableComponentInterface {
+interface AppleAuthenticationProviderCreateWizardContentPropsInterface extends IdentifiableComponentInterface {
 
     /**
      * Trigger form submit.
@@ -87,8 +86,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -199,7 +197,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                 triggerPrevious={ (previousFunction: any) => triggerPrevious(previousFunction) }
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
-                data-testid={ testId }
+                data-testid={ componentId }
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
@@ -220,7 +218,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             IdentityProviderManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
                         }
-                        data-testid={ `${ testId }-idp-name` }
+                        data-testid={ `${ componentId }-idp-name` }
                         width={ 13 }
                     />
                     <Field.Input
@@ -250,7 +248,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             IdentityProviderManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                         }
-                        data-testid={ `${ testId }-idp-client-id` }
+                        data-testid={ `${ componentId }-idp-client-id` }
                         width={ 13 }
                     />
                     <Field.Input
@@ -280,7 +278,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             IdentityProviderManagementConstants
                                 .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TEAM_ID_MIN_LENGTH as number
                         }
-                        data-testid={ `${ testId }-idp-team-id` }
+                        data-testid={ `${ componentId }-idp-team-id` }
                         width={ 13 }
                     />
                     <Field.Input
@@ -310,7 +308,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             IdentityProviderManagementConstants
                                 .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.KEY_ID_MIN_LENGTH as number
                         }
-                        data-testid={ `${ testId }-idp-key-id` }
+                        data-testid={ `${ componentId }-idp-key-id` }
                         width={ 13 }
                     />
                     <Field.Input
@@ -342,7 +340,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                                 .PRIVATE_KEY_MIN_LENGTH as number
                         }
-                        data-testid={ `${ testId }-idp-private-key` }
+                        data-testid={ `${ componentId }-idp-private-key` }
                         width={ 13 }
                     />
                 </WizardPage>
@@ -355,6 +353,5 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
  * Default props for the Apple Authentication Provider Create Wizard Page Component.
  */
 AppleAuthenticationProviderCreateWizardContent.defaultProps = {
-    "data-componentid": "apple-idp-create-wizard-content",
-    "data-testid": "apple-idp-create-wizard-content"
+    "data-componentid": "apple-idp-create-wizard-content"
 };

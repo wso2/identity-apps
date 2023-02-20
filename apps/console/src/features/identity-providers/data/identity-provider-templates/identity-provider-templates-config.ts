@@ -50,7 +50,7 @@ import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGrou
  *
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EnterpriseIdentityProviderTemplateExtended = {
+const EnterpriseIdentityProviderTemplateExtended: any = {
     ...EnterpriseIdentityProviderTemplate,
     ...EnterpriseIdentityProviderTemplateExtension
 };

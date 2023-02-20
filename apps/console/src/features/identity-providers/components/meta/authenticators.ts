@@ -24,7 +24,7 @@ import { FederatedAuthenticatorMetaDataInterface } from "../../models";
 /**
  * The metadata set of connectors shipped OOTB by Identity Server.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
@@ -119,7 +119,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
 /**
  * The metadata set of connectors that we know are supported by Identity Server.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
@@ -143,7 +143,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
 /**
  * The metadata set of connectors that are added by user.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
     return window[ "AppUtils" ]?.getConfig()?.extensions?.connectors ?? [];
@@ -152,7 +152,7 @@ const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDat
 /**
  * The metadata set of all the connectors that are available.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 export const getConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
 
