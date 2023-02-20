@@ -35,8 +35,7 @@ export interface SCIMConfigInterface {
         profileUrl: string
     };
     scimDialectID: {
-        customEnterpriseSchema: string,
-        customEnterpriseSchemaURI:string
+        customEnterpriseSchema:string
     };
     serverSupportedClaimsAvailable: string[];
 }
