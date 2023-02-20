@@ -70,11 +70,6 @@ export interface IdentityProviderConfig {
          */
         isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
         /**
-         * This is used to enable/disable JIT provisioning for certain IDP template types.
-         * @param templateId - The IDP Template Type.
-         */
-        isJitProvisioningEnabled: (templateId: string) => boolean;
-        /**
          * Used to the IDP settings form of a certain IDP template type.
          * @param type - The IDP Authenticator ID.
          * @param templateId - The IDP Template Type.
