@@ -31,7 +31,8 @@ import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
-    CommonPluggableComponentMetaPropertyInterface
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
 } from "../../../models";
 
 /**
@@ -224,8 +225,8 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
     const getUpdatedConfigurations = (values: AppleAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
-        const properties: any = [];
-        const originalValues: any = {};
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
+        const originalValues: Record<string, unknown> = {};
         let regenerateSecret: boolean = false;
 
         originalInitialValues?.properties?.map((entry: any) => {
@@ -254,7 +255,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         if (regenerateSecret === true) {
             properties.push({
                 key: IdentityProviderManagementConstants.APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY,
-                value: true
+                value: "true"
             });
         }
 

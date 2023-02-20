@@ -185,10 +185,10 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
 
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                    "success.description"),
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                    "success.message")
+                        "success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -300,7 +300,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
         identityProvider.name = values.name.toString();
         identityProvider.templateId = template.templateId;
 
-        identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
+        identityProvider.federatedAuthenticators.authenticators[0].properties = [
             {
                 "key": "ClientId",
                 "value": values.clientId.toString()
@@ -335,7 +335,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
             },
             {
                 "key": "AdditionalQueryParameters",
-                "value": IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ADDITIONAL_QUERY_PARAMETERS
+                "value": ""
             },
             {
                 "key": "RegenerateClientSecret",

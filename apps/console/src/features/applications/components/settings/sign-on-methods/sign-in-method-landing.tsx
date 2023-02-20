@@ -362,15 +362,15 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             data-testid="apple-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().apple }
-                                            header={ t(
-                                                "console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder.types.apple.heading"
-                                            ) }
-                                            description={ t(
-                                                "console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder." +
-                                                "types.apple.description"
-                                            ) }
+                                            header={
+                                                t("console:develop.features.applications.edit.sections" + 
+                                                    ".signOnMethod.sections.landing.flowBuilder.types.apple.heading")
+                                            }
+                                            description={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                                    "types.apple.description")
+                                            }
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.APPLE_LOGIN) }
                                         />
                                     ) }

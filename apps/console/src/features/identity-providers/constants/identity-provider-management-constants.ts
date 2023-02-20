@@ -333,11 +333,6 @@ export class IdentityProviderManagementConstants {
     public static readonly APPLE_AUTHENTICATOR_CLIENT_SECRET_VALIDITY_PERIOD: string = "15777000";
 
     /**
-     * Apple authenticator query parameters.
-     */
-    public static readonly APPLE_AUTHENTICATOR_ADDITIONAL_QUERY_PARAMETERS: string = "response_mode=form_post";
-
-    /**
      * Map of Apple authenticator secret regenerative fields.
      */
     public static readonly APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY: Record<string, string> = {
