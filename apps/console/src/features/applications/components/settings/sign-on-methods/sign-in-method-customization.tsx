@@ -587,7 +587,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 content={ (
                     <>
                         {
-                            moreThan1IdP
+                            idpList.length > 1
                                 ? (
                                     <>
                                         Asgardeo requires the user&apos;s profile containing the
