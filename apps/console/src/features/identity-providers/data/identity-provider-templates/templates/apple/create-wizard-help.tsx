@@ -86,7 +86,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                     href="https://developer.apple.com/"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                Apple Developer Program
+                                Apple Developer Portal
                                 </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
                             </Trans>
                         </p>
