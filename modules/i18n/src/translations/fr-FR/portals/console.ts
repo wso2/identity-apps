@@ -3071,17 +3071,17 @@ export const console: ConsoleNS = {
                                 heading: "Nom"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de" + 
-                                    " l'environnement pour se connecter avec Apple.",
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" + 
+                                    " environnement pour Se connecter avec Apple.",
                                 configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
                                 configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
-                                getCredentials: "Avant de commencer, créez une <1>application de connexion avec" + 
-                                    " Apple activée</1> sur le <3>programme pour développeurs Apple</3> avec un" + 
-                                    " <5>identifiant de services</5> et une <5>clé privée</5>.",
+                                getCredentials: "Avant de commencer, créez une application compatible" + 
+                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" + 
+                                    " avec un <5>identifiant de services</5> et une <5>clé privée</5>.",
                                 heading: "Prérequis"
                             },
                             privateKey: {
-                                description: "Fournissez la <1>clé privée</1> Apple générée pour l'application.",
+                                description: "Fournissez la <1>clé privée</1> générée pour l'application.",
                                 heading: "Clé privée"
                             },
                             subHeading: "Utilisez le guide ci-dessous.",

@@ -81,7 +81,8 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                     "wizardHelp.preRequisites.getCredentials"
                                 }
                             >
-                                Before you begin, create a <strong>Sign in With Apple Enabled App</strong> on <a
+                                Before you begin, create a <strong>Sign in With Apple</strong> enabled 
+                                application on <a
                                     href="https://developer.apple.com/"
                                     target="_blank"
                                     rel="noopener noreferrer">
@@ -219,7 +220,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                             "wizardHelp.privateKey.description"
                     }
                 >
-                        Provide the Apple <Code>Private Key</Code> generated for the app.
+                    Provide the <Code>Private Key</Code> generated for the application.
                 </Trans>
             </p>
         </div>

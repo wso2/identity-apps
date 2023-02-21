@@ -3171,7 +3171,7 @@ export const console: ConsoleNS = {
                             callbackUrl: {
                                 hint: "The authorized redirect URI used to obtain Apple credentials.",
                                 label: "Authorized redirect URI",
-                                placeholder: "Enter Authorized redirect URI.",
+                                placeholder: "Enter the Authorized redirect URI.",
                                 validations: {
                                     required: "Authorized redirect URI is a required field."
                                 }
@@ -3179,7 +3179,7 @@ export const console: ConsoleNS = {
                             clientId: {
                                 hint: "The unique identifier which is provided when creating the Apple Services ID.",
                                 label: "Services ID",
-                                placeholder: "Enter Services ID registered for the Apple application.",
+                                placeholder: "Enter the Services ID registered for the Apple application.",
                                 validations: {
                                     required: "Services ID is a required field."
                                 }
@@ -3188,7 +3188,7 @@ export const console: ConsoleNS = {
                                 hint: "The key identifier which is generated when registering the private key for " +
                                     "the Apple application.",
                                 label: "Key ID",
-                                placeholder: "Enter Key ID of the Apple private key.",
+                                placeholder: "Enter the the Key ID of the application's private key.",
                                 validations: {
                                     required: "Key ID is a required field."
                                 }
@@ -3196,7 +3196,7 @@ export const console: ConsoleNS = {
                             privateKey: {
                                 hint: "The generated private key for the Apple application.",
                                 label: "Private Key",
-                                placeholder: "Enter Private Key generated for the Apple application.",
+                                placeholder: "Enter the Private Key generated for the Apple application.",
                                 validations: {
                                     required: "Private Key is a required field."
                                 }
@@ -3205,7 +3205,7 @@ export const console: ConsoleNS = {
                                 hint: "The validity period of the generated client secret in seconds. A new client secret " + 
                                     "will be generated after this time.",
                                 label: "Client Secret Validity Period",
-                                placeholder: "Enter Validity Period for the Client Secret.",
+                                placeholder: "Enter the Validity Period for the Client Secret.",
                                 validations: {
                                     required: "Client Secret Validity Period is not a required field."
                                 }
@@ -3226,7 +3226,7 @@ export const console: ConsoleNS = {
                             teamId: {
                                 hint: "The generated unique ID which is assigned to the Apple developer team.",
                                 label: "Team ID",
-                                placeholder: "Enter Team ID of the Apple developer team.",
+                                placeholder: "Enter the Team ID of the Apple developer team.",
                                 validations: {
                                     required: "Team ID is a required field."
                                 }
@@ -4429,17 +4429,17 @@ export const console: ConsoleNS = {
                                 heading: "Name"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "See Apple's guide on configuring environment for" + 
+                                configureAppleSignIn: "See Apple's guide on configuring your environment for" + 
                                 " Sign in with Apple.",
                                 configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
                                 configureWebDomain: "Use the following as a <1>Web Domain</1>.",
-                                getCredentials: "Before you begin, create a <1>Sign in With Apple Enabled App</1>" + 
-                                    " on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" + 
+                                getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" + 
+                                    " application on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" +
                                     " <5>Private Key</5>.",
                                 heading: "Prerequisite"
                             },
                             privateKey: {
-                                description: "Provide the Apple <1>Private Key</1> generated for the app.",
+                                description: "Provide the <1>Private Key</1> generated for the application.",
                                 heading: "Private Key"
                             },
                             subHeading: "Use the guide below",
