@@ -597,7 +597,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         <strong> SMS OTP</strong> with the following connections.
                                         <ul className="mb-3">
                                             { idpList?.map(({ name }:{name: string}, index: number) => (
-                                                <li key={ index }>
+                                                <li key={ name }>
                                                     <strong>{ name }</strong>
                                                 </li>
                                             )) }
