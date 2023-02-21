@@ -606,7 +606,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     <>
                                         Asgardeo requires the user&apos;s profile containing the 
                                         <i> mobile number</i> to configure <strong> SMS OTP </strong> 
-                                        with <strong>{ idpList[FIRST_ENTRY].name }</strong> connection. 
+                                        with <strong>{ idpList[0].name }</strong> connection. 
                                     </>
                                 )
                         }
