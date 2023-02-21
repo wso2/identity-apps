@@ -229,7 +229,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         const originalValues: Record<string, unknown> = {};
         let regenerateSecret: boolean = false;
 
-        originalInitialValues?.properties?.map((entry: any) => {
+        originalInitialValues?.properties?.map((entry: CommonPluggableComponentPropertyInterface) => {
             originalValues[entry.key] = entry.value;
         });
 
@@ -310,7 +310,10 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ 
+                (values: Record<string, any>) => 
+                    onSubmit(getUpdatedConfigurations(values as AppleAuthenticatorFormInitialValuesInterface)) 
+            }
             initialValues={ initialValues }
         >
             <Field.Input

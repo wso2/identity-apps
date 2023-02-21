@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -204,17 +205,17 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
 
         if (useAPI) {
             getIdentityProviderTemplate(templateId)
-                .then((response: any) => {
+                .then((response: IdentityProviderTemplateInterface) => {
                     if (!response.disabled) {
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     }
                 })
-                .catch((error: any) => {
+                .catch((error: IdentityAppsApiException) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         } else {
             IdentityProviderTemplateManagementUtils.getIdentityProviderTemplate(templateId)
-                .then((response: any) => {
+                .then((response: IdentityProviderTemplateInterface) => {
                     /**
                      * If for some reason we can't find the given template by id
                      * and the template is disabled from file level, we can assure

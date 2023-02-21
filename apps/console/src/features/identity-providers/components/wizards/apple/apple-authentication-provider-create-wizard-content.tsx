@@ -110,7 +110,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
         setIdPListRequestLoading(true);
 
         getIdentityProviderList(null, null, null)
-            .then((response: any) => {
+            .then((response: IdentityProviderListResponseInterface) => {
                 setIdPList(response);
             })
             .catch((error: any) => {
@@ -193,8 +193,8 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                 onSubmit={
                     (values: AppleAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                 }
-                triggerSubmit={ (submitFunction: any) => triggerSubmission(submitFunction) }
-                triggerPrevious={ (previousFunction: any) => triggerPrevious(previousFunction) }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-testid={ componentId }
