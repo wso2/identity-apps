@@ -18,6 +18,8 @@
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
+import { OrganizationType } from "../../../../organizations/constants";
+import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -68,6 +70,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isMobileViewport } = useMediaContext();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -169,7 +172,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     } }
                                 />
                             ) }
-                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
+                            { (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
+                                orgType !== OrganizationType.SUBORGANIZATION) && (
                                 <InfoCard
                                     fluid
                                     data-testid="sms-otp-mfa-flow-card"
