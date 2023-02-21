@@ -40,6 +40,8 @@ import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
+import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
+
 
 /**
  * Class to handle application config operations.
@@ -198,6 +200,7 @@ export class Config {
             ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
+            ...getJWTAuthenticationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),

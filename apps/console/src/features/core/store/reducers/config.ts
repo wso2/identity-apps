@@ -102,6 +102,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             governanceConnectorCategories: "",
             groups: "",
             identityProviders: "",
+            jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",

@@ -40,6 +40,7 @@ import { ServerConfigurationsResourceEndpointsInterface } from "../../server-con
 import { UsersResourceEndpointsInterface } from "../../users";
 import { UserstoreResourceEndpointsInterface } from "../../userstores";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
+import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -319,7 +320,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
-    ValidationServiceEndpointsInterface {
+    ValidationServiceEndpointsInterface,
+    JWTAuthenticationServiceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
