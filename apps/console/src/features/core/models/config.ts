@@ -34,13 +34,13 @@ import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
+import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
 import { UsersResourceEndpointsInterface } from "../../users";
 import { UserstoreResourceEndpointsInterface } from "../../userstores";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,

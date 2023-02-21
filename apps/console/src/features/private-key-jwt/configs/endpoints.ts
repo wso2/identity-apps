@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,13 @@
 import { JWTAuthenticationServiceEndpointsInterface } from "../models";
 
 /**
- * Get the resource endpoints for the Validation Management feature.
+ * Get the resource endpoints for the JWT Private Key Authtneitcation Management feature.
  *
  * @param serverHost - Server Host.
- * @returns The resource endpoints for the Validation Management feature.
+ * @returns The resource endpoints for the JWT Private Key Authtneitcation Management feature.
  */
-export const getJWTAuthenticationServiceEndpoints = (serverHost: string): JWTAuthenticationServiceEndpointsInterface => {
+export const getJWTAuthenticationServiceEndpoints = 
+(serverHost: string): JWTAuthenticationServiceEndpointsInterface => {
     return {
         jwtAuthenticationServiceMgt: `${ serverHost }/api/server/v1/configs/jwt-key-validator`
     };

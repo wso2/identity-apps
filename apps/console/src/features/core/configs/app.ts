@@ -29,6 +29,7 @@ import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
+import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
@@ -40,7 +41,6 @@ import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
-import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 
 
 /**

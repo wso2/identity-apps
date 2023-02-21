@@ -27,18 +27,18 @@ import { Trans, useTranslation } from "react-i18next";
 
 
 /**
- * Props for my account settings page.
+ * Props for PrivateKey JWT Config Interface settings page.
  */
-type MyAccountSettingsPageInterface = IdentifiableComponentInterface;
+type PrivateKeyJWTConfigPageInterface = IdentifiableComponentInterface;
 
 /**
- * Governance connector listing page.
+ * PrivateKey JWT connector listing page.
  *
  * @param props - Props injected to the component.
- * @returns Governance connector listing page component.
+ * @returns PrivateKey JWT connector listing page component.
  */
-export const PrivateKeyJWTConfig: FunctionComponent<MyAccountSettingsPageInterface> = (
-    props: MyAccountSettingsPageInterface
+export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInterface> = (
+    props: PrivateKeyJWTConfigPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
     const { t } = useTranslation();

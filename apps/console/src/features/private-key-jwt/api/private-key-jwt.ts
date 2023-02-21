@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -25,8 +26,7 @@ import useRequest, {
 } from "../../../features/core/hooks/use-request";
 import { store } from "../../core";
 import { Config } from "../../core/configs";
-import {UpdateJWTAuthenticatorConfigInterface} from "../models/private-key-jwt-config";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { UpdateJWTAuthenticatorConfigInterface } from "../models/private-key-jwt-config";
 
 
 /**
@@ -38,9 +38,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get JTI reuse state
+ * Call Get API to hook JWT Private-key Authentication configuration state
  *
- * @returns The response of the JTI reuse state.
+ * @returns The response of the JWT Private-key Authentication configuration state.
  */
 export const useTokenReuseConfigData = <Data = any, Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
@@ -69,16 +69,14 @@ export const useTokenReuseConfigData = <Data = any, Error = RequestErrorInterfac
 };
 
 /**
- * Hook to update enterprise login enable config.
+ * Hook to update JWT Private-key Authentication config.
  *
- * @param {OrganizationInterface} isEnterpriseLoginEnabled - Enterpriselogin is enabled/disabled.
- * 
- * @return {Promise<any>} A promise containing the response.
+ * @param data - UpdateJWTAuthenticatorConfigInterface /enableTokenReuse - TokenReuse is enabled/disabled. 
  */
 export const updateJWTConfig = (data: UpdateJWTAuthenticatorConfigInterface): Promise<any> => {
     
     const requestConfig: AxiosRequestConfig = {
-        data:[data],
+        data:[ data ],
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -88,9 +86,9 @@ export const updateJWTConfig = (data: UpdateJWTAuthenticatorConfigInterface): Pr
         url: Config.getServiceResourceEndpoints().jwtAuthenticationServiceMgt
     };
 
-    return httpClient(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response : AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error) => {
+    }).catch((error : AxiosError) => {
         return Promise.reject(error);
     });
 };

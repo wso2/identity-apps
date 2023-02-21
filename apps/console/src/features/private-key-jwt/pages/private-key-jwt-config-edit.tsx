@@ -19,6 +19,7 @@
 import {
     AlertLevels, IdentifiableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     DocumentationLink,
     GridLayout,
@@ -27,18 +28,18 @@ import {
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    SyntheticEvent,
     ReactElement,
-    useState,
-    useEffect
+    SyntheticEvent,
+    useEffect,
+    useState
 } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { CheckboxProps, Checkbox, Grid, Icon, Message } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
-import { useTokenReuseConfigData, updateJWTConfig } from "../api";
+import { updateJWTConfig, useTokenReuseConfigData } from "../api";
 
 /**
  * Private key JWT client authentication for OIDC configuration page.
@@ -51,7 +52,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const [ enableTokenReuse, setEnableTokenReuse ] = useState<boolean>(true);
@@ -59,9 +60,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
 
     const {
         data: tokenReuseData,
-        isLoading: isLoading,
-        error: tokenReuseDataFetchError,
-        mutate: mutateTokenReuseData
+        isLoading: isLoading
     } = useTokenReuseConfigData();
 
     useEffect(() => {
@@ -98,7 +97,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
 
         return (
             t("console:manage.features.jwtPrivateKeyConfiguration.notifications.success.description")
-         );
+        );
     };
 
     const handleUpdateSuccess = () => {
