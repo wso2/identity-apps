@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -33,6 +35,7 @@ import {
     URLInput
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
@@ -48,11 +51,14 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { getSharedOrganizations } from "../../../organizations/api";
 import { OrganizationType } from "../../../organizations/constants";
+import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
 import { getGeneralIcons } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -77,7 +83,8 @@ import {
     OIDCMetadataInterface,
     State,
     SupportedAccessTokenBindingTypes,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    additionalSpProperty
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
@@ -163,10 +170,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const { t } = useTranslation();
 
+    const dispatch: Dispatch = useDispatch();
+
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
+        state.organization.organization);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
@@ -233,6 +244,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
+
+    const [ isAppShared, setIsAppShared ] = useState<boolean>(false); 
+    const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -305,6 +319,56 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
         }
     };
+
+    useEffect(() => {
+        if (sharedOrganizationsList) {
+            return;
+        }
+
+        getSharedOrganizations(
+            currentOrganization.id,
+            application.id
+        ).then((response: AxiosResponse) => {
+            setSharedOrganizationsList(response.data.organizations);
+        }).catch((error: IdentityAppsApiException) => {
+            if (error.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                                ".getSharedOrganizations.genericError.message")
+                    })
+                );
+    
+                return;
+            }
+    
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                            ".getSharedOrganizations.genericError.message")
+                })
+            );
+        }
+        );
+    }, [ application ]);
+
+    useEffect(() => {
+        const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
+            ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
+                property?.name === "shareWithAllChildren");    
+
+        if ((sharedOrganizationsList?.length > 0) || (isSharedWithAll?.length > 0 && 
+            JSON.parse(isSharedWithAll[ 0 ].value))) {
+
+            setIsAppShared(true);
+        }
+
+    }, [ sharedOrganizationsList ]);
 
     /**
      * Check whether the application is a Single Page Application
@@ -700,7 +764,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                 // Hides the organization switch grant type if the organization management feature disabled.
                 if (name === ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-                    && (!isOrganizationManagementEnabled || orgType === OrganizationType.TENANT)) {
+                    && (!isOrganizationManagementEnabled || orgType === OrganizationType.TENANT || !isAppShared)) {
                     return;
                 }
 
