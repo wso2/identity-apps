@@ -49,8 +49,8 @@ import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGrou
  * the enterprise idp configuration with yours.
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EnterpriseIdentityProviderTemplateExtended = {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/typedef
+const EnterpriseIdentityProviderTemplateExtended= {
     ...EnterpriseIdentityProviderTemplate,
     ...EnterpriseIdentityProviderTemplateExtension
 };
