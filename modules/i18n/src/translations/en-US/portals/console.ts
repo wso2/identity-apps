@@ -4434,7 +4434,7 @@ export const console: ConsoleNS = {
                                 configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
                                 configureWebDomain: "Use the following as a <1>Web Domain</1>.",
                                 getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" + 
-                                    " application on <3>Apple Developer Program</3> with a <5>Services ID</5> and a" +
+                                    " application on <3>Apple Developer Portal</3> with a <5>Services ID</5> and a" +
                                     " <5>Private Key</5>.",
                                 heading: "Prerequisite"
                             },
