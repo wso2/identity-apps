@@ -259,7 +259,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||
-                                !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN)) && (
+                                !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN) ||
+                                !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN)) && (
                                 <>
                                     <Heading as="h4">
                                         { t(
@@ -353,6 +354,24 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.MICROSOFT_LOGIN);
                                             } }
+                                        />
+                                    ) }
+                                    { !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN) && (
+                                        <InfoCard
+                                            fluid
+                                            data-testid="apple-login-flow-card"
+                                            imageSize="mini"
+                                            image={ getAuthenticatorIcons().apple }
+                                            header={
+                                                t("console:develop.features.applications.edit.sections" + 
+                                                    ".signOnMethod.sections.landing.flowBuilder.types.apple.heading")
+                                            }
+                                            description={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                                    "types.apple.description")
+                                            }
+                                            onClick={ () => onLoginFlowSelect(LoginFlowTypes.APPLE_LOGIN) }
                                         />
                                     ) }
                                 </>

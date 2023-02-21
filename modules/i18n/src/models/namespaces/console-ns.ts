@@ -682,6 +682,10 @@ export interface ConsoleNS {
                                             passwordlessLogin: string;
                                         }
                                         types: {
+                                            apple: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             defaultConfig: {
                                                 description: string;
                                                 heading: string;
@@ -1283,6 +1287,27 @@ export interface ConsoleNS {
                         };
                     };
                     authenticatorSettings: {
+                        apple: {
+                            additionalQueryParameters: FormAttributes;
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            keyId: FormAttributes;
+                            privateKey: FormAttributes;
+                            secretValidityPeriod: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    name: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                            teamId: FormAttributes;
+                        };
                         emailOTP: {
                             enableBackupCodes: {
                                 hint: string;
@@ -1592,6 +1617,40 @@ export interface ConsoleNS {
                     quickSetup?: {
                         heading: string;
                         subHeading: string;
+                    };
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            keyId: {
+                                description: string;
+                                heading: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                idpDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureAppleSignIn: string;
+                                configureReturnURL: string;
+                                configureWebDomain: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            privateKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                            teamId: {
+                                description: string;
+                                heading: string;
+                            };
+                        };
                     };
                     expert: {
                         wizardHelp: {

@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { authenticatorConfig } from "../../../extensions/configs/authenticator";
+import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
@@ -39,7 +40,7 @@ import { IdentityProviderTemplateLoadingStrategies } from "../models";
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS = 3;
+    public static readonly MAXIMUM_NUMBER_OF_LIST_ITEMS_TO_SHOW_INSIDE_CALLOUTS: number = 3;
 
     /**
      * Identifier for the local IDP.
@@ -49,13 +50,13 @@ export class IdentityProviderManagementConstants {
     /**
      * Doc key for the IDP overview page.
      */
-    public static readonly IDP_OVERVIEW_DOCS_KEY = `${
+    public static readonly IDP_OVERVIEW_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
 
     /**
      * Doc key for the IDP edit page.
      */
-    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY = `${
+    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
 
     /**
@@ -67,23 +68,24 @@ export class IdentityProviderManagementConstants {
     /**
      * Key for the URL search param for IDP state.
      */
-    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY = "state";
+    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY: string = "state";
 
     /**
      * URL Search param for newly created IDPs.
      */
-    public static readonly NEW_IDP_URL_SEARCH_PARAM = `?${
+    public static readonly NEW_IDP_URL_SEARCH_PARAM: string = `?${
         IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
      * Key for the URL search param for IDP create wizard trigger.
      */
-    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY = "open";
+    public static readonly IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY: string = "open";
 
     /**
      * Set of IDP template Ids.
      */
     public static readonly IDP_TEMPLATE_IDS: {
+        APPLE: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
         FACEBOOK: string;
@@ -94,6 +96,7 @@ export class IdentityProviderManagementConstants {
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
     } = {
+        APPLE: AppleIdPTemplate.id,
         ENTERPRISE: EnterpriseIdPTemplate.id,
         EXPERT_MODE: ExpertModeIdPTemplate.id,
         FACEBOOK: FacebookIdPTemplate.id,
@@ -179,6 +182,33 @@ export class IdentityProviderManagementConstants {
         OTP_LENGTH_MAX_VALUE: 10,
         OTP_LENGTH_MIN_LENGTH: 1,
         OTP_LENGTH_MIN_VALUE: 4
+    };
+
+    /**
+     * Apple Authenticator Settings Form element constraints.
+     */
+    public static readonly APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: number,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: number,
+        KEY_ID_MAX_LENGTH: number,
+        KEY_ID_MIN_LENGTH: number,
+        PRIVATE_KEY_MAX_LENGTH: number,
+        PRIVATE_KEY_MIN_LENGTH: number,
+        SECRET_VALIDITY_PERIOD_MAX_LENGTH: number,
+        SECRET_VALIDITY_PERIOD_MIN_LENGTH: number,
+        TEAM_ID_MAX_LENGTH: number,
+        TEAM_ID_MIN_LENGTH: number
+    } = {
+        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
+        KEY_ID_MAX_LENGTH: 10,
+        KEY_ID_MIN_LENGTH: 10,
+        PRIVATE_KEY_MAX_LENGTH: 1000,
+        PRIVATE_KEY_MIN_LENGTH: 100,
+        SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
+        SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
+        TEAM_ID_MAX_LENGTH: 10,
+        TEAM_ID_MIN_LENGTH: 10
     };
 
     /**
@@ -282,6 +312,55 @@ export class IdentityProviderManagementConstants {
     ];
 
     /**
+     * Apple scope mappings.
+     */
+    public static readonly APPLE_SCOPE_DICTIONARY: Record<string, string> = {
+        EMAIL: "email",
+        NAME: "name"
+    };
+
+    /**
+     * Scopes to request from Apple.
+     */
+    public static readonly APPLE_AUTHENTICATOR_REQUESTED_SCOPES: string[] = [
+        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL,
+        IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME
+    ];
+
+    /**
+     * Default Apple client secret validity period.
+     */
+    public static readonly APPLE_AUTHENTICATOR_CLIENT_SECRET_VALIDITY_PERIOD: string = "15777000";
+
+    /**
+     * Map of Apple authenticator secret regenerative fields.
+     */
+    public static readonly APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY: Record<string, string> = {
+        CLIENT_ID: "ClientId",
+        KEY_ID: "KeyId",
+        PRIVATE_KEY: "PrivateKey",
+        SECRET_VALIDITY_PERIOD: "SecretValidityPeriod",
+        TEAM_ID: "TeamId"
+    };
+
+    /**
+     * Secret regenerative fields of Apple authenticator.
+     * Upon updating the value of any of these fields, a new client secret should be generated.
+     */
+    public static readonly APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS: string[] = [
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.CLIENT_ID,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.KEY_ID,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.PRIVATE_KEY,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
+        IdentityProviderManagementConstants.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
+    ];
+
+    /**
+     * Key of the Apple client secret regenerate attribute.
+     */
+    public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
+
+    /**
      * Default IDP template loading strategy.
     **/
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
@@ -290,7 +369,7 @@ export class IdentityProviderManagementConstants {
     /**
      * Doc key for the IDP create page.
     **/
-    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY = `${
+    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY: string = `${
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
@@ -404,6 +483,7 @@ export class IdentityProviderManagementConstants {
     public static readonly MS_LIVE_AUTHENTICATOR_ID: string = "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_ID: string = "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y";
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
+    public static readonly APPLE_AUTHENTICATOR_ID: string = "QXBwbGVPSURDQXV0aGVudGljYXRvcg";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
@@ -422,15 +502,17 @@ export class IdentityProviderManagementConstants {
     public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
     public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
     public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
+    public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
 
     // Known Social authenticator display names;
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
     public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
     public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
     public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
+    public static readonly APPLE_AUTHENTICATOR_DISPLAY_NAME: string = "Apple";
 
     // Keys for the initial values of Email OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY = "EmailOTP_ExpiryTime";
+    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
     // Authenticator Endpoints
     public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
@@ -441,12 +523,12 @@ export class IdentityProviderManagementConstants {
     "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     // Keys for the initial values of SMS OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY = "SmsOTP_ExpiryTime";
+    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 
     /**
      * Identity provider create limit reached error.
     **/
-    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "IDP-60035",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.description",
         "console:develop.features.idp.notifications.apiLimitReachedError.error.message",
@@ -456,7 +538,7 @@ export class IdentityProviderManagementConstants {
     /**
      * AuthenticationProvider Connections create limit reached error.
     **/
-     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP = new IdentityAppsError(
+     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
          "IDP-60035",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.description",
          "console:develop.features.authenticationProvider.notifications.apiLimitReachedError.error.message",

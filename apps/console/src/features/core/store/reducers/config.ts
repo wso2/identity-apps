@@ -185,6 +185,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             i18nConfigs: null,
             identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
+                apple: {
+                    enabled: false
+                },
                 enterpriseOIDC: {
                     enabled: false
                 },

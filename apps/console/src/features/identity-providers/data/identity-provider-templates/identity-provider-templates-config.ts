@@ -22,6 +22,7 @@ import values from "lodash-es/values";
 import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralIdentityProviderTemplateCategory from "./categories/general-identity-provider-template-category.json";
 import EnterpriseIdentityProviderTemplateGroup from "./groups/enterprise-idp-template-group.json";
+import AppleIDPTemplate from "./templates/apple/apple.json";
 import EnterpriseIdentityProviderTemplate
     from "./templates/enterprise-identity-provider/enterprise-identity-provider.json";
 import ExpertModeIdentityProviderTemplate from "./templates/expert-mode/expert-mode.json";
@@ -49,7 +50,7 @@ import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGrou
  *
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EnterpriseIdentityProviderTemplateExtended = {
+const EnterpriseIdentityProviderTemplateExtended: any = {
     ...EnterpriseIdentityProviderTemplate,
     ...EnterpriseIdentityProviderTemplateExtension
 };
@@ -150,6 +151,15 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 ?? identityProviderConfig.templates.microsoft,
                             id: MicrosoftIDPTemplate.id,
                             resource: MicrosoftIDPTemplate
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/apple/create-wizard-help"))
+                            },
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.apple?.enabled
+                                ?? identityProviderConfig.templates.apple,
+                            id: AppleIDPTemplate.id,
+                            resource: AppleIDPTemplate
                         },
                         {
                             content: {

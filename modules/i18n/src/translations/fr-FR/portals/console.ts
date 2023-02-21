@@ -1196,6 +1196,10 @@ export const console: ConsoleNS = {
                                             socialLogin: "Connexion sociale"
                                         },
                                         types: {
+                                            apple: {
+                                                description: "Permettre aux utilisateurs de se connecter avec Apple ID.",
+                                                heading: "Ajouter une connexion Apple"
+                                            },
                                             defaultConfig: {
                                                 description: "Créez votre flux de connexion en commençant par la " +
                                                     "connexion Nom d'utilisateur et mot de passe.",
@@ -3050,6 +3054,43 @@ export const console: ConsoleNS = {
             },
             authenticationProvider: {
                 templates: {
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Fournissez l'<1>ID de services</1> créé chez Apple.",
+                                heading: "ID de services"
+                            },
+                            heading: "Aider",
+                            keyId: {
+                                description: "Fournissez l'<1>identifiant de clé</1> de la clé privée générée.",
+                                heading: "ID de clé"
+                            },
+                            name: {
+                                connectionDescription: "Fournissez un nom unique pour la connexion.",
+                                idpDescription: "Fournissez un nom unique pour le fournisseur d'identité.",
+                                heading: "Nom"
+                            },
+                            preRequisites: {
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" + 
+                                    " environnement pour Se connecter avec Apple.",
+                                configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
+                                configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
+                                getCredentials: "Avant de commencer, créez une application compatible" + 
+                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" + 
+                                    " avec un <5>identifiant de services</5> et une <5>clé privée</5>.",
+                                heading: "Prérequis"
+                            },
+                            privateKey: {
+                                description: "Fournissez la <1>clé privée</1> générée pour l'application.",
+                                heading: "Clé privée"
+                            },
+                            subHeading: "Utilisez le guide ci-dessous.",
+                            teamId: {
+                                description: "Fournissez l'<1>identifiant d'équipe</1> du développeur Apple.",
+                                heading: "ID d'équipe"
+                            }
+                        }
+                    },
                     enterprise: {
                         addWizard: {
                             subtitle: "Configurez un fournisseur d'identité pour se connecter avec des " +
