@@ -575,9 +575,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const SMSOTPConflictMessage = () => {
 
-        const FIRST_ENTRY: number = 0;
         const { idpList } = smsValidationResult;
-        const moreThan1IdP: boolean = idpList.length > 1;
 
         return (
             <Message
