@@ -18,14 +18,14 @@
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
-import { OrganizationType } from "../../../../organizations/constants";
-import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers";
+import { OrganizationType } from "../../../../organizations/constants";
+import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
 
