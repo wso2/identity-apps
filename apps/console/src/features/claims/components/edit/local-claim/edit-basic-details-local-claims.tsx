@@ -130,6 +130,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             Axios.all(externalClaimRequest).then(response => {
                 const claims = [].concat(...response);
 
+                if (claims.find((externalClaim) => externalClaim.mappedLocalClaimURI === claim.claimURI)) {
+                    setHasMapping(true);
+                }
+
             }).catch((error) => {
                 dispatch(
                     addAlert({
