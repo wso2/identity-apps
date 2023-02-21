@@ -113,7 +113,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         );
     };
 
-    const handleUpdateError = (error) => {
+    const handleUpdateError = (error: any) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -145,27 +145,17 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     /**
      * Handles token reuse toggle button
      */
-    const handleTokenReuseToggle: () => void = () => {
-        setEnableTokenReuse(!enableTokenReuse);
-    };
-
-
-    /**
-     * Handles token reuse toggle button
-     */
     const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
         setEnableTokenReuse(data.checked);
-        const updateData = {
+        const updateData: any = {
             operation: "ADD",
             path: "/enableTokenReuse",
             value: data.checked
         };
-        console.log(updateData);
-        updateJWTConfig(updateData)
-        .then(() => {
+
+        updateJWTConfig(updateData).then(() => {
             handleUpdateSuccess();
-        })
-        .catch((error) => {
+        }).catch((error: any) => {
             handleUpdateError(error);
         });
     };
@@ -193,7 +183,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     };
 
 
-    return (!isLoading ? 
+    return (!isLoading ? (
         <PageLayout
             pageTitle="Private Key JWT Client Authentication for OIDC"
             title={ t(
@@ -201,7 +191,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             ) }
             description={ (
                 <>
-                {t("console:manage.features.jwtPrivateKeyConfiguration.description" )}
+                    { t("console:manage.features.jwtPrivateKeyConfiguration.description" ) }
                     <DocumentationLink
                         link={ getLink("manage.validation.passwordValidation.learnMore") }
                     >
@@ -225,25 +215,25 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                 connectorToggle()
             }
             {
-            <Grid className={ "mt-2" } >
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 10 }>
-                        <Message
-                            info
-                            content={ (
-                                <>
-                                    <Icon name="info circle"/>
-                                    If enabled, the JTI in the JWT will be unique per the request if the previously
-                                    used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique
-                                    identifier for the JWT.
-                                </>
-                            ) }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                <Grid className={ "mt-2" } >
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 10 }>
+                            <Message
+                                info
+                                content={ (
+                                    <>
+                                        <Icon name="info circle"/>
+                                        If enabled, the JTI in the JWT will be unique per the request if the previously
+                                        used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique
+                                        identifier for the JWT.
+                                    </>
+                                ) }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             }
-        </PageLayout> : (
+        </PageLayout> ) : (
         <GridLayout
             isLoading={ isLoading }
             className={ "pt-5" }

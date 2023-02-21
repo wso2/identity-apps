@@ -19,11 +19,11 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
 import { useTokenReuseConfigData } from "../api";
-import { Trans, useTranslation } from "react-i18next";
 
 
 /**
@@ -45,9 +45,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
 
     const {
         data: tokenReuseData,
-        isLoading: isLoading,
-        error: tokenReuseDataFetchError,
-        mutate: mutateTokenReuseData
+        isLoading: isLoading
     } = useTokenReuseConfigData();
 
     useEffect(() => {
@@ -68,7 +66,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
         <Section
             data-componentid={ `${componentId}-settings-section` }
             // eslint-disable-next-line max-len
-            description={ t("console:manage.features.jwtPrivateKeyConfiguration.description")}
+            description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
             icon={ getSettingsSectionIcons().passwordValidation }
             header={ t(
                 "console:manage.features.jwtPrivateKeyConfiguration.pageTitle" 
