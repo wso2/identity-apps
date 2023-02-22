@@ -32,9 +32,10 @@ import {
     ORGANIZATION_DESCRIPTION_MIN_LENGTH,
     ORGANIZATION_NAME_MAX_LENGTH,
     ORGANIZATION_NAME_MIN_LENGTH,
-    ORGANIZATION_TYPE, OrganizationManagementConstants
+    ORGANIZATION_TYPE, 
+    OrganizationManagementConstants
 } from "../constants";
-import { AddOrganizationInterface, GenericOrganization } from "../models";
+import { AddOrganizationInterface, GenericOrganization, OrganizationResponseInterface } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -69,7 +70,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>("");
@@ -77,7 +78,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const submitForm: any = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const currentOrganization: any = useSelector((state: AppState) => state.organization.organization);
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
+        state.organization.organization);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
