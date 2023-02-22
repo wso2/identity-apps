@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,12 +31,12 @@ import { handleGetIDPListCallError } from "../../utils";
 /**
  * Proptypes for the HyprAuthenticationWizardFrom.
  */
-interface HyprAuthenticationProviderCreateWizardContentPropsInterface extends TestableComponentInterface {
+interface HyprAuthenticationProviderCreateWizardContentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Trigger form submit.
-     * @param submitFunctionCb - Callback.
+     * @param submitFunctionCallback - Callback.
      */
-    triggerSubmission: (submitFunctionCb: () => void) => void;
+    triggerSubmission: (submitFunctionCallback: () => void) => void;
     /**
      * Trigger previous page.
      * @param previousFunctionCb - Callback.
@@ -84,7 +84,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -133,7 +133,6 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
             idpList?.identityProviders.map((idp: IdentityProviderTemplateInterface) => {
                 if (idp?.name === value) {
                     nameExist = true;
-
                 }
             });
         }
@@ -182,15 +181,15 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     return (
         (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
-            ? (
+            && (
                 <Wizard
                     id={ FORM_ID }
                     initialValues={ { name: template?.idp?.name } }
                     onSubmit={
                         (values: HyprAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                     }
-                    triggerSubmit={ (submitFunction: any) => triggerSubmission(submitFunction) }
-                    triggerPrevious={ (previousFunction: any) => triggerPrevious(previousFunction) }
+                    triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                    triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                     changePage={ (step: number) => changePageNumber(step) }
                     setTotalPage={ (step: number) => setTotalPage(step) }
                     data-testid={ testId }
@@ -314,13 +313,12 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                     </WizardPage>
                 </Wizard>
             )
-            : null
     );
 };
 
 /**
- * Default props for the Microsoft Authentication Provider Create Wizard Page Component.
+ * Default props for the hypr Authentication Provider Create Wizard Page Component.
  */
 HyprAuthenticationProviderCreateWizardContent.defaultProps = {
-    "data-testid": "microsoft-idp-create-wizard-page"
+    "data-componentid": "hypr-idp-create-wizard-page"
 };

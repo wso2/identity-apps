@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -26,14 +26,14 @@ import { identityProviderConfig } from "../../../../../../extensions/configs";
 /**
  * Prop types of the component.
  */
-type HyprIDPCreateWizardHelpPropsInterface = TestableComponentInterface
+type HyprIDPCreateWizardHelpPropsInterface = IdentifiableComponentInterface
 
 const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInterface> = (
     props: HyprIDPCreateWizardHelpPropsInterface
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-componentid"]: testId
     } = props;
 
     const hyprControlCentreDocUrl: string = 
@@ -179,7 +179,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
  * Default props for the component
  */
 HyprIDPCreateWizardHelp.defaultProps = {
-    "data-testid": "hypr-idp-create-wizard-help"
+    "data-componentid": "hypr-idp-create-wizard-help"
 };
 
 export default HyprIDPCreateWizardHelp;

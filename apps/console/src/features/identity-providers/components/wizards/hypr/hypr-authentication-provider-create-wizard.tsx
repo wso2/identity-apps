@@ -403,16 +403,16 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                                 <div className="ml-1">
                                     { title }
                                     { subTitle &&
-                                (
-                                    <Heading as="h6">
-                                        { subTitle }
-                                        <DocumentationLink
-                                            link={ getLink("develop.connections.newConnection.hypr.learnMore") }
-                                        >
-                                            { t("common:learnMore") }
-                                        </DocumentationLink>
-                                    </Heading>
-                                )
+                                        (
+                                            <Heading as="h6">
+                                                { subTitle }
+                                                <DocumentationLink
+                                                    link={ getLink("develop.connections.newConnection.hypr.learnMore") }
+                                                >
+                                                    { t("common:learnMore") }
+                                                </DocumentationLink>
+                                            </Heading>
+                                        )
                                     }
                                 </div>
                             </div>
