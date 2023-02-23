@@ -40,6 +40,7 @@ import {
 } from "./hypr-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
+    AppConstants,
     EventPublisher,
     ModalWithSidePanel
 } from "../../../../../features/core";
@@ -168,6 +169,17 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                     "value": values.baseUrl.toString()
                 }
             ];
+
+            if (AppConstants.getClientOrigin()) {
+                if (AppConstants.getAppBasename()) {
+                    identityProvider.image = AppConstants.getClientOrigin() +
+                    "/" + AppConstants.getAppBasename() +
+                    "/libs/themes/default/assets/images/identity-providers/hypr.svg";
+                } else {
+                    identityProvider.image = AppConstants.getClientOrigin() +
+                    "/libs/themes/default/assets/images/identity-providers/hypr.svg";
+                }
+            }
 
             createNewIdentityProvider(identityProvider);
         };
