@@ -42,7 +42,6 @@ import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
-
 /**
  * Class to handle application config operations.
  */

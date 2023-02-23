@@ -8840,7 +8840,9 @@ export const console: ConsoleNS = {
                 description: "Authentifiez les clients confidentiels auprès du serveur d'autorisation lors de l'utilisation du point de terminaison de jeton.",
                 goBackToApplication: "Revenir à l'application",
                 goBackToAccountSecurityConfig: "Revenir à la sécurité du compte",
-                messageInfo: "S'il est activé, le JTI dans le JWT sera unique par demande si le JWT précédemment utilisé n'a pas déjà expiré. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT."
+                messageInfo: "S'il est activé, le JTI dans le JWT sera unique par demande si le JWT précédemment utilisé n'a pas déjà expiré. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT.",
+                tokenReuseEnabled: "Réutilisation du jeton activée",
+                tokenReuseDisabled: "Réutilisation du jeton désactivée"
             }
         },
         notifications: {

@@ -10331,7 +10331,9 @@ export const console: ConsoleNS = {
                 description: "Authenticate confidential clients to the authorization server when using the token endpoint.",
                 goBackToApplication: "Go back to application",
                 goBackToAccountSecurityConfig: "Go back to Account Security",
-                messageInfo: "If enabled, the JTI in the JWT will be unique per the request if the previously used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique identifier for the JWT."
+                messageInfo: "If enabled, the JTI in the JWT will be unique per the request if the previously used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                tokenReuseEnabled: "Token Reuse Enabled",
+                tokenReuseDisabled: "Token Reuse Disabled"
             }
         },
         notifications: {

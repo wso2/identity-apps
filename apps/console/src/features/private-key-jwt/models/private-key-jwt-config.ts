@@ -20,7 +20,6 @@
  * Interface for the JWT Private Key Authtneitcation Management configurations.
  */
 export interface JWTConfigFormInterface {
-
     enableTokenReuse?: boolean;
 }
 
@@ -28,5 +27,4 @@ export interface UpdateJWTAuthenticatorConfigInterface {
 	operation: string;
     path: string;
 	value: boolean;
-
 }

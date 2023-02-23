@@ -62,10 +62,9 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
         history.push(AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"));
     };
 
-    return (
-        <Section
+    return ( tokenReuseData ?
+        (<Section
             data-componentid={ `${componentId}-settings-section` }
-            // eslint-disable-next-line max-len
             description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
             icon={ getSettingsSectionIcons().passwordValidation }
             header={ t(
@@ -76,7 +75,8 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
             connectorEnabled={ isLoading ? undefined : tokenReuseData.enableTokenReuse }
         >
             <Divider hidden/>
-        </Section>
+        </Section>)
+        : null
     );
 };
 

@@ -5100,6 +5100,8 @@ export interface ConsoleNS {
                 goBackToApplication: string;
                 goBackToAccountSecurityConfig: string;
                 messageInfo: string;
+                tokenReuseEnabled: string;
+                tokenReuseDisabled: string;
             };
         };
         notifications: {

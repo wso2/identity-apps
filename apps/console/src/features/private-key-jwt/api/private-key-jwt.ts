@@ -28,7 +28,6 @@ import { store } from "../../core";
 import { Config } from "../../core/configs";
 import { UpdateJWTAuthenticatorConfigInterface } from "../models/private-key-jwt-config";
 
-
 /**
  * Get an axios instance.
  *
@@ -72,6 +71,7 @@ export const useTokenReuseConfigData = <Data = any, Error = RequestErrorInterfac
  * Hook to update JWT Private-key Authentication config.
  *
  * @param data - UpdateJWTAuthenticatorConfigInterface /enableTokenReuse - TokenReuse is enabled/disabled. 
+ * @returns The response of the JWT Private-key Authentication configuration state.
  */
 export const updateJWTConfig = (data: UpdateJWTAuthenticatorConfigInterface): Promise<any> => {
     

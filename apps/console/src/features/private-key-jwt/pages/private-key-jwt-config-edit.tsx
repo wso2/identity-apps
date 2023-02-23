@@ -26,6 +26,7 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -57,20 +58,16 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     const { getLink } = useDocumentation();
     const [ enableTokenReuse, setEnableTokenReuse ] = useState<boolean>(true);
 
-
     const {
         data: tokenReuseData,
         isLoading: isLoading
     } = useTokenReuseConfigData();
 
     useEffect(() => {
-
         if (tokenReuseData) {
             setEnableTokenReuse(tokenReuseData?.enableTokenReuse);
         }
-
     }, []);
-
 
     /**
      * Handles back button click event
@@ -93,6 +90,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                 { description: error.response.data.description })
         );
     };
+
     const resolveConnectorUpdateSuccessMessage = (): string => {
 
         return (
@@ -113,7 +111,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         );
     };
 
-    const handleUpdateError = (error: any) => {
+    const handleUpdateError = (error: AxiosError) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -155,7 +153,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
 
         updateJWTConfig(updateData).then(() => {
             handleUpdateSuccess();
-        }).catch((error: any) => {
+        }).catch((error: AxiosError) => {
             handleUpdateError(error);
         });
     };
@@ -167,15 +165,13 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         return (
             <>
                 <Checkbox
-                    label={ enableTokenReuse ? "Token Reuse Enabled" : "Token Reuse Disabled" }
+                    label={ enableTokenReuse 
+                        ? t("console:manage.features.jwtPrivateKeyConfiguration.tokenReuseEnabled") 
+                        : t("console:manage.features.jwtPrivateKeyConfiguration.tokenReuseDisabled") }
                     toggle
-                    onChange={
-                        handleToggle
-                    }
+                    onChange={ handleToggle }
                     checked={ enableTokenReuse }
-                    readOnly={
-                        false
-                    }
+                    readOnly={ false }
                     data-testId={ `${ componentId }-enable-toggle` }
                 />
             </>
@@ -223,9 +219,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                                 content={ (
                                     <>
                                         <Icon name="info circle"/>
-                                        If enabled, the JTI in the JWT will be unique per the request if the previously
-                                        used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique
-                                        identifier for the JWT.
+                                        { t("console:manage.features.jwtPrivateKeyConfiguration.messageInfo") }
                                     </>
                                 ) }
                             />
