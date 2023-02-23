@@ -25,7 +25,6 @@ import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
 import { useTokenReuseConfigData } from "../api";
 
-
 /**
  * Props for PrivateKey JWT Config Interface settings page.
  */
@@ -52,7 +51,6 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
         if (isLoading) {
             return;
         }
-
     }, [ isLoading ]);
 
     /**

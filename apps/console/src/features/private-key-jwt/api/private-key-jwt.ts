@@ -33,8 +33,7 @@ import { UpdateJWTAuthenticatorConfigInterface } from "../models/private-key-jwt
  *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Call Get API to hook JWT Private-key Authentication configuration state

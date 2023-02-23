@@ -67,7 +67,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         if (tokenReuseData) {
             setEnableTokenReuse(tokenReuseData?.enableTokenReuse);
         }
-    }, []);
+    }, [ tokenReuseData ]);
 
     /**
      * Handles back button click event
@@ -83,7 +83,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         );
     };
 
-    const resolveConnectorUpdateErrorMessage = (error: any): string => {
+    const resolveConnectorUpdateErrorMessage = (error: AxiosError): string => {
         
         return (
             t("console:manage.features.jwtPrivateKeyConfiguration.notifications.error.description",
@@ -91,17 +91,10 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         );
     };
 
-    const resolveConnectorUpdateSuccessMessage = (): string => {
-
-        return (
-            t("console:manage.features.jwtPrivateKeyConfiguration.notifications.success.description")
-        );
-    };
-
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: resolveConnectorUpdateSuccessMessage(),
+                description: t("console:manage.features.jwtPrivateKeyConfiguration.notifications.success.description"),
                 level: AlertLevels.SUCCESS,
                 message: t(
                     "console:manage.features.jwtPrivateKeyConfiguration.notifications." +
@@ -172,12 +165,11 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                     onChange={ handleToggle }
                     checked={ enableTokenReuse }
                     readOnly={ false }
-                    data-testId={ `${ componentId }-enable-toggle` }
+                    data-componentid={ `${ componentId }-enable-toggle` }
                 />
             </>
         );
     };
-
 
     return (!isLoading ? (
         <PageLayout
@@ -197,7 +189,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             ) }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
-                "data-testid": `${ componentId }-page-back-button`,
+                "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t(
                     "console:manage.features.jwtPrivateKeyConfiguration.goBackToAccountSecurityConfig"
