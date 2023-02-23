@@ -29,6 +29,7 @@ import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
+import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
@@ -198,6 +199,7 @@ export class Config {
             ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
+            ...getJWTAuthenticationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),

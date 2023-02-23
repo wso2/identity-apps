@@ -8865,6 +8865,39 @@ export const console: ConsoleNS = {
                 description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
                 goBackToApplication: "Revenir à l'application",
                 goBackToValidationConfig: "Revenir à la sécurité du compte"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de récupération"
+                    },
+                    genericError: {
+                        description: "Impossible de récupérer les données de configuration de validation.",
+                        message: "Quelque chose s'est mal passé"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de mise à jour"
+                    },
+                    genericError: {
+                        description: "Échec de la mise à jour de la configuration de l'authentificateur de clé privée jwt.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "La configuration de l'authentificateur de clé privée jwt a bien été mise à jour.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                pageTitle: "Authentification du client JWT par clé privée pour OIDC",
+                description: "Authentifiez les clients confidentiels auprès du serveur d'autorisation lors de l'utilisation du point de terminaison de jeton.",
+                goBackToApplication: "Revenir à l'application",
+                goBackToAccountSecurityConfig: "Revenir à la sécurité du compte",
+                messageInfo: "S'il est activé, le JTI dans le JWT sera unique par demande si le JWT précédemment utilisé n'a pas déjà expiré. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT.",
+                tokenReuseEnabled: "Réutilisation du jeton activée",
+                tokenReuseDisabled: "Réutilisation du jeton désactivée"
             }
         },
         notifications: {

@@ -8678,6 +8678,39 @@ export const console: ConsoleNS = {
                 description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
                 goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "OIDC සඳහා පුද්ගලික යතුරු JWT සේවාලාභී සත්‍යාපනය",
+                description: "ටෝකන් අන්ත ලක්ෂ්‍යය භාවිතා කරන විට රහස්‍ය සේවාලාභීන් බලයලත් සේවාදායකය වෙත සත්‍යාපනය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToAccountSecurityConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න",
+                messageInfo: "සබල කර ඇත්නම්, කලින් භාවිතා කළ JWT දැනටමත් කල් ඉකුත් වී නොමැති නම්, JWT හි JTI ඉල්ලීම අනුව අනන්‍ය වේ. JTI (JWT ID) යනු JWT සඳහා අනන්‍ය හඳුනාගැනීමක් සපයන හිමිකම් පෑමකි.",
+                tokenReuseEnabled: "ටෝකන් නැවත භාවිතය සබල කර ඇත",
+                tokenReuseDisabled: "ටෝකන් නැවත භාවිතා කිරීම අක්‍රීය කර ඇත"
             }
         },
         notifications: {

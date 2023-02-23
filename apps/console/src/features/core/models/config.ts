@@ -34,6 +34,7 @@ import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
+import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -323,7 +324,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
-    ValidationServiceEndpointsInterface {
+    ValidationServiceEndpointsInterface,
+    JWTAuthenticationServiceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
