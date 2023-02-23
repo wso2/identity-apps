@@ -62,8 +62,6 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser: string =
         useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
-    const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
-    const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
     const [ enabledAuthenticators, setEnabledAuthenticators ] = useState<Array<string>>([]);
     const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
@@ -196,10 +194,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                             <TOTPAuthenticator
                                 enabledAuthenticators={ enabledAuthenticators }
                                 onAlertFired={ onAlertFired }
-                                isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
                                 isSuperTenantLogin={ isSuperTenantLogin() }
                                 onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
-                                triggerBackupCodesFlow={ () => setInitBackupCodeFlow(true) }
                                 handleSessionTerminationModalVisibility={ () => {
                                     // Show the session termination modal only if the backup code flow is not activated
                                     // to stop showing duplicate modals.
