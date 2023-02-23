@@ -84,7 +84,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -192,7 +192,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                     triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                     changePage={ (step: number) => changePageNumber(step) }
                     setTotalPage={ (step: number) => setTotalPage(step) }
-                    data-testid={ testId }
+                    data-testid={ componentId }
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
@@ -217,7 +217,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
                             }
-                            data-testid={ `${ testId }-idp-name` }
+                            data-testid={ `${ componentId }-idp-name` }
                             width={ 13 }
                         />
                         <Field.Input
@@ -246,7 +246,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                             }
-                            data-testid={ `${ testId }-idp-app-id` }
+                            data-testid={ `${ componentId }-idp-app-id` }
                             width={ 13 }
                         />
                         <Field.Input
@@ -275,7 +275,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                             }
-                            data-testid={ `${ testId }-idp-base-url` }
+                            data-testid={ `${ componentId }-idp-base-url` }
                             width={ 13 }
                         />
                         <Field.Input
@@ -307,7 +307,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                                 IdentityProviderManagementConstants
                                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                             }
-                            data-testid={ `${ testId }-idp-api-token` }
+                            data-testid={ `${ componentId }-idp-api-token` }
                             width={ 13 }
                         />
                     </WizardPage>
