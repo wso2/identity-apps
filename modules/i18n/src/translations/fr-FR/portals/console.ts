@@ -3052,6 +3052,20 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "Voir les forfaits",
+                            
+                            subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
+                                "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
+                            title: "Vous avez atteint le nombre maximal de sous-organisations autorisé pour cette organisation. "
+                        },
+                        heading: "Vous avez atteint la limite maximale pour les sous-organisations"
+                    }
+                }
+            },
             authenticationProvider: {
                 templates: {
                     apple: {

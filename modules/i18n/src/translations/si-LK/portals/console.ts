@@ -2973,6 +2973,19 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "ඔබට සංවිධානයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
+                                "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
+                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම උප සංවිධාන සංඛ්‍යාවට ළඟා වී ඇත."
+                        },
+                        heading: "ඔබ උප සංවිධාන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    }
+                }
+            },
             authenticationProvider: {
                 templates: {
                     apple: {

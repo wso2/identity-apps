@@ -1978,6 +1978,14 @@ export interface ConsoleNS {
                     };
                 };
             };
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
+                }
+            },
             footer: {
                 copyright: string;
             };
