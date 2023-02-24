@@ -64,7 +64,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
         (<Section
             data-componentid={ `${componentId}-settings-section` }
             description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
-            icon={ getSettingsSectionIcons().passwordValidation }
+            icon={ getSettingsSectionIcons().jwtPrivateKeyValidation }
             header={ t(
                 "console:manage.features.jwtPrivateKeyConfiguration.pageTitle" 
             ) }
