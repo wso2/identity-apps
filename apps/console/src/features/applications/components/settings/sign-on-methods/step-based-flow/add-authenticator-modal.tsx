@@ -60,6 +60,7 @@ import { Authenticators } from "./authenticators";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
 import {
     GenericAuthenticatorInterface,
+    IdentityProviderManagementConstants,
     IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
@@ -199,9 +200,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             return;
         }
 
-        setFilteredAuthenticators(authenticators);
-
-        extractAuthenticatorLabels(authenticators);
+        // Remove SMS OTP authenticator from the list at the sub org level.
+        const filteredAuthenticators: GenericAuthenticatorInterface[] = (orgType === OrganizationType.SUBORGANIZATION) 
+            ? authenticators.filter((authenticator: GenericAuthenticatorInterface) => {       
+                return authenticator.name !== IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID; })
+            : authenticators;
+        
+        setFilteredAuthenticators(filteredAuthenticators);
+        extractAuthenticatorLabels(filteredAuthenticators);
     }, [ authenticators ]);
 
     /**
