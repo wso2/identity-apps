@@ -361,10 +361,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         dropDownOptions={
                             createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
                                 .filter(element => !isEmpty(element))
-                                .filter(hideIdentityClaimAttributes
-                                    ? ({ value }) => !isLocalIdentityClaim(value)
-                                    : (_) => true
-                                )
                         }
                         initialRoleUri={ roleClaimUri }
                         initialSubjectUri={ subjectClaimUri }
