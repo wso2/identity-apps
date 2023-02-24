@@ -103,7 +103,6 @@
 
             org.wso2.carbon.base; version="${carbon.base.imp.pkg.version.range}",
             org.wso2.carbon.core; version="${carbon.kernel.imp.pkg.version.range}",
-            org.wso2.carbon.ui; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.context.*; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.user.api; version="${carbon.user.api.imp.pkg.version.range}",
