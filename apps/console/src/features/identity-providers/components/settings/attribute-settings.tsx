@@ -86,7 +86,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     /**
      * This boolean attribute specifies whether provisioning attributes
      * section should be enabled or not. By default this is not a required
-     * prop and the component itself defaults this to `true}`. Please
+     * prop and the component itself defaults this to `true`. Please
      * see {@link AttributeSettings.defaultProps}.
      */
     provisioningAttributesEnabled?: boolean;
