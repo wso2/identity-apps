@@ -49,6 +49,10 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.registry.core</artifactId>
         </dependency>
         <dependency>
@@ -98,6 +102,7 @@
             org.apache.commons.logging; version="${commons-logging.imp.pkg.version.range}",
 
             org.wso2.carbon.base; version="${carbon.base.imp.pkg.version.range}",
+            org.wso2.carbon.core; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.ui; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.context.*; version="${carbon.kernel.imp.pkg.version.range}",
