@@ -143,5 +143,23 @@
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.french")%>
 
         </div>
+
+        <div class="item"
+             data-value="es_ES"
+             style="background-color: var(--language-selector-background-color) !important;
+             color: var(--language-selector-text-color) !important;"
+        >
+            <i class="es flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.spanish")%>
+        </div>
+
+        <div class="item"
+             data-value="pt_PT"
+             style="background-color: var(--language-selector-background-color) !important;
+             color: var(--language-selector-text-color) !important;"
+        >
+            <i class="pt flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.portuguese")%>
+        </div>
     </div>
 </div>
