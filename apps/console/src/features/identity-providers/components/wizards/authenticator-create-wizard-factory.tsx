@@ -432,7 +432,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                 : null;
         case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
-                && (
+                ? (
                     <HyprAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
@@ -446,7 +446,8 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
                     />
-                );
+                )
+                : null;
         default:
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? identityProviderConfig.createIdentityProvider.getOverriddenCreateWizard(type, {

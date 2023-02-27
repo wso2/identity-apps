@@ -181,7 +181,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     return (
         (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
-            && (
+            ? (
                 <Wizard
                     id={ FORM_ID }
                     initialValues={ { name: template?.idp?.name } }
@@ -313,6 +313,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                     </WizardPage>
                 </Wizard>
             )
+            : null
     );
 };
 

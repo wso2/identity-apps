@@ -4649,7 +4649,7 @@ export const console: ConsoleNS = {
                                 heading: "API Token"
                             },
                             appId: {
-                                description: "Provide the <1>Application ID</1> of the application registered in HYPR control center.",
+                                description: "Provide the <1>Application ID</1> of the application registered in the HYPR control center.",
                                 heading: "App ID"
                             },
                             baseUrl: {
@@ -4663,8 +4663,8 @@ export const console: ConsoleNS = {
                                 idpDescription: "Provide a unique name for the identity provider."
                             },
                             preRequisites: {
-                                rpDescription: "Before you begin, create a relying party application in <1>HYPR control center</1>, and obtain the application ID.",
-                                tokenDescription: "You also have to obtain an <1>API token</1> for the application you have created.",
+                                rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
+                                tokenDescription: "You also have to obtain an <1>API token</1> for your application created on HYPR.",
                                 heading: "Prerequisite"
                             }
                         }
