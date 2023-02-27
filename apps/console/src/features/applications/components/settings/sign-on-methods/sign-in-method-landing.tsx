@@ -24,6 +24,8 @@ import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../../identity-providers";
+import { OrganizationType } from "../../../../organizations/constants";
+import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
 
@@ -68,6 +70,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isMobileViewport } = useMediaContext();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -169,28 +172,31 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     } }
                                 />
                             ) }
-                            { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) && (
-                                <InfoCard
-                                    fluid
-                                    data-testid="sms-otp-mfa-flow-card"
-                                    image={ getAuthenticatorIcons().smsOTP }
-                                    imageSize="mini"
-                                    header={ t(
-                                        "console:develop.features.applications.edit.sections" +
-                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
-                                    ) }
-                                    description={ t(
-                                        "console:develop.features.applications.edit.sections" +
-                                        ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
-                                    ) }
-                                    onClick={ () => {
-                                        eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
-                                            "client-id": clientId
-                                        } );
-                                        onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
-                                    } }
-                                />
-                            ) }
+                            { 
+                                (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
+                                    orgType !== OrganizationType.SUBORGANIZATION) && (
+                                    <InfoCard
+                                        fluid
+                                        data-testid="sms-otp-mfa-flow-card"
+                                        image={ getAuthenticatorIcons().smsOTP }
+                                        imageSize="mini"
+                                        header={ t(
+                                            "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.heading"
+                                        ) }
+                                        description={ t(
+                                            "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
+                                        ) }
+                                        onClick={ () => {
+                                            eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
+                                                "client-id": clientId
+                                            } );
+                                            onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
+                                        } }
+                                    />
+                                ) 
+                            }
                         </div>
                     </Grid.Column>
                     <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
@@ -259,7 +265,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||
-                                !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN)) && (
+                                !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN) ||
+                                !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN)) && (
                                 <>
                                     <Heading as="h4">
                                         { t(
@@ -353,6 +360,24 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.MICROSOFT_LOGIN);
                                             } }
+                                        />
+                                    ) }
+                                    { !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN) && (
+                                        <InfoCard
+                                            fluid
+                                            data-testid="apple-login-flow-card"
+                                            imageSize="mini"
+                                            image={ getAuthenticatorIcons().apple }
+                                            header={
+                                                t("console:develop.features.applications.edit.sections" + 
+                                                    ".signOnMethod.sections.landing.flowBuilder.types.apple.heading")
+                                            }
+                                            description={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                                    "types.apple.description")
+                                            }
+                                            onClick={ () => onLoginFlowSelect(LoginFlowTypes.APPLE_LOGIN) }
                                         />
                                     ) }
                                 </>

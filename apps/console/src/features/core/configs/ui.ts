@@ -100,6 +100,9 @@ import { ReactComponent as CertificateBadge } from "../../../themes/default/asse
 import {
     ReactComponent as CertificateIllustration
 } from "../../../themes/default/assets/images/illustrations/certificate.svg";
+import {
+    ReactComponent as JWTKey
+} from "../../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
 import { ReactComponent as CertificateRibbon } from "../../../themes/default/assets/images/illustrations/ribbon.svg";
 import {
     ReactComponent as BrokenPageIllustration
@@ -209,6 +212,7 @@ export type GetSidePanelIconsInterface = {
     emailTemplates: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
+    jwtKey: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
@@ -248,6 +252,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         emailTemplates: PaperRocketIcon,
         groups: UserGroupIcon,
         identityProviders: IDPOutlineIcon,
+        jwtKey: JWTKey,
         organization: LDAPOutlineIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,

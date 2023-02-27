@@ -350,6 +350,8 @@ export class ApplicationManagementConstants {
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
+        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,

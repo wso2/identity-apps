@@ -69,7 +69,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
-                "log in passwordless"
+                "log in passwordless",
+            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
+            "their Apple IDs."
         }, authenticatorId);
     }
 
@@ -114,6 +116,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ]
         }, authenticatorId);
     }
@@ -193,7 +198,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined"
+            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple"
         }, authenticatorId);
     }
 
@@ -238,7 +244,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "twitter",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml"
+            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
+            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }
 }

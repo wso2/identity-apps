@@ -29,6 +29,7 @@ import {
     FederatedAuthenticatorWithMetaInterface
 } from "../../../models";
 import {
+    AppleAuthenticatorForm,
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
     FacebookAuthenticatorForm,
@@ -238,6 +239,21 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     />
                 );
             }
+        case IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID:
+            return (
+                <AppleAuthenticatorForm
+                    mode={ mode }
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-componentid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
         default:
             return (
                 <CommonAuthenticatorForm

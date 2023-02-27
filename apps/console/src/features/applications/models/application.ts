@@ -694,6 +694,7 @@ export enum DefaultTemplateGroupIds {
  * @readonly
  */
 export enum LoginFlowTypes {
+    APPLE_LOGIN = "APPLE_LOGIN",
     FACEBOOK_LOGIN = "FACEBOOK_LOGIN",
     GOOGLE_LOGIN = "GOOGLE_LOGIN",
     GITHUB_LOGIN = "GITHUB_LOGIN",

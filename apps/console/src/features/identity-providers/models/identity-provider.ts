@@ -333,6 +333,7 @@ export enum SupportedQuickStartTemplateTypes {
  */
 export enum SupportedAuthenticators {
     NONE = "none",
+    APPLE = "AppleOIDCAuthenticator",
     FACEBOOK = "FacebookAuthenticator",
     GOOGLE = "GoogleOIDCAuthenticator",
     TWITTER = "TwitterAuthenticator",

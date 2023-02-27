@@ -102,6 +102,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             governanceConnectorCategories: "",
             groups: "",
             identityProviders: "",
+            jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",
@@ -185,6 +186,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             i18nConfigs: null,
             identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
+                apple: {
+                    enabled: false
+                },
                 enterpriseOIDC: {
                     enabled: false
                 },

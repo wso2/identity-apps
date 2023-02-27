@@ -136,6 +136,7 @@ import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
 import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
+import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/third-party/apple-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { SupportedAuthProtocolTypes } from "../models";
 
@@ -211,6 +212,7 @@ export const getApplicationWizardStepIcons = (): {
 };
 
 export const getAuthenticatorIcons = (): {
+    apple: FunctionComponent<SVGProps<SVGSVGElement>>;
     basic: string;
     default: FunctionComponent<SVGProps<SVGSVGElement>>;
     emailOTP: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -232,6 +234,7 @@ export const getAuthenticatorIcons = (): {
 } => {
 
     return {
+        apple: AppleLogo,
         basic: BasicAuthIcon,
         default: LockShieldIcon,
         emailOTP: EmailOTPIcon,

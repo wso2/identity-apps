@@ -1175,6 +1175,10 @@ export const console: ConsoleNS = {
                                             socialLogin: "සමාජ පිවිසුම"
                                         },
                                         types: {
+                                            apple: {
+                                                description: "ඇපල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                                                heading: "ඇපල් පිවිසුම එක් කරන්න"
+                                            },
                                             defaultConfig: {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ " +
                                                     "පිවිසුම් ප්‍රවාහය ගොඩනඟන්න.",
@@ -2969,8 +2973,58 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "ඔබට සංවිධානයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
+                                "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
+                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම උප සංවිධාන සංඛ්‍යාවට ළඟා වී ඇත."
+                        },
+                        heading: "ඔබ උප සංවිධාන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    }
+                }
+            },
             authenticationProvider: {
                 templates: {
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "ඇපල්හි නිර්මාණය කරන ලද <1>සේවා හැඳුනුම්පත</1> සපයන්න.",
+                                heading: "සේවා හැඳුනුම්පත"
+                            },
+                            heading: "උදව්",
+                            keyId: {
+                                description: "උත්පාදනය කරන ලද පුද්ගලික යතුරේ <1>යතුරු හැඳුනුම්කාරකය</1> සපයන්න.",
+                                heading: "යතුරු හැඳුනුම්පත"
+                            },
+                            name: {
+                                connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් ලබා දෙන්න.",
+                                idpDescription: "අනන්යතා සපයන්නා සඳහා අද්විතීය නමක් ලබා දෙන්න.",
+                                heading: "නම"
+                            },
+                            preRequisites: {
+                                configureAppleSignIn: "ඇපල් සමඟින් පුරනය වීම සඳහා ඔබේ පරිසරය වින්‍යාස කිරීම පිළිබඳ" + 
+                                    " ඇපල්හි මාර්ගෝපදේශය බලන්න.",
+                                configureReturnURL: "පහත URL එක <1>ආපසු URL</1> ලෙස එක් කරන්න.",
+                                configureWebDomain: "පහත සඳහන් දේ <1>වෙබ් වසමක්</1> ලෙස භාවිතා කරන්න.",
+                                getCredentials: "ඔබ ආරම්භ කිරීමට පෙර, <5>සේවා හැඳුනුම්පත</5> සහ" + 
+                                    " <5>පෞද්ගලික යතුරක්</5> සමඟින් <3>ඇපල් සංවර්ධක වැඩසටහන</3> මත" + 
+                                    " <1>ඇපල් සමඟින් පුරනය වන්න</1> සබල කර ඇති යෙදුමක් සාදන්න.",
+                                heading: "පූර්ව අවශ්යතාව"
+                            },
+                            privateKey: {
+                                description: "යෙදුම සඳහා ජනනය කරන ලද <1>පුද්ගලික යතුර</1> සපයන්න.",
+                                heading: "පුද්ගලික යතුර"
+                            },
+                            subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න",
+                            teamId: {
+                                description: "ඇපල් සංවර්ධක <1>කණ්ඩායම් හැඳුනුම්පත</1> සපයන්න.",
+                                heading: "කණ්ඩායම් හැඳුනුම්පත"
+                            }
+                        }
+                    },
                     enterprise: {
                         addWizard: {
                             subtitle: "සම්මත සත්‍යාපන ප්‍රොටෝකෝල සමඟ සම්බන්ධ වීමට IDP වින්‍යාස කරන්න.",
@@ -8624,6 +8678,39 @@ export const console: ConsoleNS = {
                 description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
                 goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "OIDC සඳහා පුද්ගලික යතුරු JWT සේවාලාභී සත්‍යාපනය",
+                description: "ටෝකන් අන්ත ලක්ෂ්‍යය භාවිතා කරන විට රහස්‍ය සේවාලාභීන් බලයලත් සේවාදායකය වෙත සත්‍යාපනය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToAccountSecurityConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න",
+                messageInfo: "සබල කර ඇත්නම්, කලින් භාවිතා කළ JWT දැනටමත් කල් ඉකුත් වී නොමැති නම්, JWT හි JTI ඉල්ලීම අනුව අනන්‍ය වේ. JTI (JWT ID) යනු JWT සඳහා අනන්‍ය හඳුනාගැනීමක් සපයන හිමිකම් පෑමකි.",
+                tokenReuseEnabled: "ටෝකන් නැවත භාවිතය සබල කර ඇත",
+                tokenReuseDisabled: "ටෝකන් නැවත භාවිතා කිරීම අක්‍රීය කර ඇත"
             }
         },
         notifications: {

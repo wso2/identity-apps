@@ -134,6 +134,7 @@ export interface IdentityProviderConfig {
      */
     useNewConnectionsView: boolean;
     templates: {
+        apple: boolean;
         facebook: boolean;
         google: boolean;
         github: boolean;

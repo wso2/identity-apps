@@ -44,6 +44,8 @@ import {
     UIConstants,
     history
 } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid, IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -120,6 +122,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -165,6 +168,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                     if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
                         authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
+                    }
+
+                    if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
+                        orgType === OrganizationType.SUBORGANIZATION) {
+                        return false;
                     }
 
                     const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
@@ -251,6 +259,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                         if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
                             authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
+                        }
+
+                        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
+                            orgType === OrganizationType.SUBORGANIZATION) {
+                            return false;
                         }
 
                         if (filter?.startsWith("tag")) {

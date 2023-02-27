@@ -60,7 +60,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE
                     ])
                 ]
             ]);
@@ -108,6 +109,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         }
     },
     templates: {
+        apple: true,
         enterprise: true,
         expertMode: true,
         facebook: true,

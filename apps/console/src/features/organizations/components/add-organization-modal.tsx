@@ -23,17 +23,19 @@ import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-compo
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AppState, EventPublisher } from "../../core";
+import { AppState, EventPublisher, TierLimitReachErrorModal } from "../../core";
 import { addOrganization } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
     ORGANIZATION_DESCRIPTION_MIN_LENGTH,
     ORGANIZATION_NAME_MAX_LENGTH,
     ORGANIZATION_NAME_MIN_LENGTH,
-    ORGANIZATION_TYPE
+    ORGANIZATION_TYPE, 
+    OrganizationManagementConstants
 } from "../constants";
-import { AddOrganizationInterface, GenericOrganization } from "../models";
+import { AddOrganizationInterface, GenericOrganization, OrganizationResponseInterface } from "../models";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -68,15 +70,17 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ error, setError ] = useState<string>("");
 
-    const submitForm = useRef<() => void>();
+    const submitForm: any = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
+        state.organization.organization);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
         const organization: AddOrganizationInterface = {
@@ -114,15 +118,19 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     onUpdate();
                 }
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error?.description) {
-                    setError(t(
-                        "console:manage.features.organizations.notifications." +
-                                "addOrganization.error.description",
-                        {
-                            description: error.description
-                        }
-                    ));
+                    if (error.code === OrganizationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                        setOpenLimitReachedModal(true);
+                    } else {
+                        setError(t(
+                            "console:manage.features.organizations.notifications." +
+                            "addOrganization.error.description",
+                            {
+                                description: error.description
+                            }
+                        ));
+                    }
                 } else {
                     setError(t(
                         "console:manage.features.organizations.notifications." +
@@ -142,8 +150,37 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         closeWizard();
     };
 
+    /**
+     * Close the limit reached modal.
+     */
+    const handleLimitReachedModalClose = (): void => {
+        setOpenLimitReachedModal(false);
+        handleWizardClose();
+    };
+
     return (
         <>
+            { openLimitReachedModal && (
+                <TierLimitReachErrorModal
+                    actionLabel={ t(
+                        "console:develop.features.suborganizations.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.action"
+                    ) }
+                    handleModalClose={ handleLimitReachedModalClose }
+                    header={ t(
+                        "console:develop.features.suborganizations.notifications.tierLimitReachedError.heading"
+                    ) }
+                    description={ t(
+                        "console:develop.features.suborganizations.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.subtitles"
+                    ) }
+                    message={ t(
+                        "console:develop.features.suborganizations.notifications." +
+                        "tierLimitReachedError.emptyPlaceholder.title"
+                    ) }
+                    openModal={ openLimitReachedModal }
+                />
+            ) }
             <Modal
                 open={ true }
                 className="wizard application-create-wizard"
@@ -179,7 +216,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     id={ FORM_ID }
                                     uncontrolledForm={ false }
                                     onSubmit={ submitOrganization }
-                                    triggerSubmit={ (submit) => (submitForm.current = submit) }
+                                    triggerSubmit={ (submit: () => void) => (submitForm.current = submit) }
                                 >
                                     <Field.Input
                                         ariaLabel="Organization Name"

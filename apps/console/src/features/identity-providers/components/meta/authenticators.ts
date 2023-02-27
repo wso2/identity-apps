@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import { FederatedAuthenticatorMetaDataInterface } from "../../models";
 /**
  * The metadata set of connectors shipped OOTB by Identity Server.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
@@ -105,6 +105,13 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             displayName: "SMS OTP",
             icon: getIdPIcons().smsOTP,
             name: IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID,
+            description: "Login users with their Apple IDs.",
+            displayName: "Apple",
+            icon: getIdPIcons().apple,
+            name: IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME
         }
     ];
 };
@@ -112,7 +119,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
 /**
  * The metadata set of connectors that we know are supported by Identity Server.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
@@ -136,7 +143,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
 /**
  * The metadata set of connectors that are added by user.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDataInterface[] => {
     return window[ "AppUtils" ]?.getConfig()?.extensions?.connectors ?? [];
@@ -145,7 +152,7 @@ const getExternalConnectorMetadataExtensions = (): FederatedAuthenticatorMetaDat
 /**
  * The metadata set of all the connectors that are available.
  * TODO: Remove this mapping once there's an API to get the connector icons, etc.
- * @returns {FederatedAuthenticatorMetaDataInterface[]}
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
  */
 export const getConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
 

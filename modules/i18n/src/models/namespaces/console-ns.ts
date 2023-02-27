@@ -682,6 +682,10 @@ export interface ConsoleNS {
                                             passwordlessLogin: string;
                                         }
                                         types: {
+                                            apple: {
+                                                description: string;
+                                                heading: string;
+                                            },
                                             defaultConfig: {
                                                 description: string;
                                                 heading: string;
@@ -1283,6 +1287,27 @@ export interface ConsoleNS {
                         };
                     };
                     authenticatorSettings: {
+                        apple: {
+                            additionalQueryParameters: FormAttributes;
+                            callbackUrl: FormAttributes;
+                            clientId: FormAttributes;
+                            keyId: FormAttributes;
+                            privateKey: FormAttributes;
+                            secretValidityPeriod: FormAttributes;
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    name: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                            teamId: FormAttributes;
+                        };
                         emailOTP: {
                             enableBackupCodes: {
                                 hint: string;
@@ -1592,6 +1617,40 @@ export interface ConsoleNS {
                     quickSetup?: {
                         heading: string;
                         subHeading: string;
+                    };
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            keyId: {
+                                description: string;
+                                heading: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                idpDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureAppleSignIn: string;
+                                configureReturnURL: string;
+                                configureWebDomain: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            privateKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                            teamId: {
+                                description: string;
+                                heading: string;
+                            };
+                        };
                     };
                     expert: {
                         wizardHelp: {
@@ -1919,6 +1978,14 @@ export interface ConsoleNS {
                     };
                 };
             };
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
+                }
+            },
             footer: {
                 copyright: string;
             };
@@ -5069,6 +5136,39 @@ export interface ConsoleNS {
                 description: string;
                 goBackToApplication: string;
                 goBackToValidationConfig: string;
+            };
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                },
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                pageTitle: string;
+                description: string;
+                goBackToApplication: string;
+                goBackToAccountSecurityConfig: string;
+                messageInfo: string;
+                tokenReuseEnabled: string;
+                tokenReuseDisabled: string;
             };
         };
         notifications: {

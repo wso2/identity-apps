@@ -1196,6 +1196,10 @@ export const console: ConsoleNS = {
                                             socialLogin: "Connexion sociale"
                                         },
                                         types: {
+                                            apple: {
+                                                description: "Permettre aux utilisateurs de se connecter avec Apple ID.",
+                                                heading: "Ajouter une connexion Apple"
+                                            },
                                             defaultConfig: {
                                                 description: "Créez votre flux de connexion en commençant par la " +
                                                     "connexion Nom d'utilisateur et mot de passe.",
@@ -3048,8 +3052,59 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "Voir les forfaits",
+                            
+                            subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
+                                "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
+                            title: "Vous avez atteint le nombre maximal de sous-organisations autorisé pour cette organisation. "
+                        },
+                        heading: "Vous avez atteint la limite maximale pour les sous-organisations"
+                    }
+                }
+            },
             authenticationProvider: {
                 templates: {
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: "Fournissez l'<1>ID de services</1> créé chez Apple.",
+                                heading: "ID de services"
+                            },
+                            heading: "Aider",
+                            keyId: {
+                                description: "Fournissez l'<1>identifiant de clé</1> de la clé privée générée.",
+                                heading: "ID de clé"
+                            },
+                            name: {
+                                connectionDescription: "Fournissez un nom unique pour la connexion.",
+                                idpDescription: "Fournissez un nom unique pour le fournisseur d'identité.",
+                                heading: "Nom"
+                            },
+                            preRequisites: {
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" + 
+                                    " environnement pour Se connecter avec Apple.",
+                                configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
+                                configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
+                                getCredentials: "Avant de commencer, créez une application compatible" + 
+                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" + 
+                                    " avec un <5>identifiant de services</5> et une <5>clé privée</5>.",
+                                heading: "Prérequis"
+                            },
+                            privateKey: {
+                                description: "Fournissez la <1>clé privée</1> générée pour l'application.",
+                                heading: "Clé privée"
+                            },
+                            subHeading: "Utilisez le guide ci-dessous.",
+                            teamId: {
+                                description: "Fournissez l'<1>identifiant d'équipe</1> du développeur Apple.",
+                                heading: "ID d'équipe"
+                            }
+                        }
+                    },
                     enterprise: {
                         addWizard: {
                             subtitle: "Configurez un fournisseur d'identité pour se connecter avec des " +
@@ -8810,6 +8865,39 @@ export const console: ConsoleNS = {
                 description: "Personnalisez les règles de validation des mots de passe pour vos utilisateurs.",
                 goBackToApplication: "Revenir à l'application",
                 goBackToValidationConfig: "Revenir à la sécurité du compte"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de récupération"
+                    },
+                    genericError: {
+                        description: "Impossible de récupérer les données de configuration de validation.",
+                        message: "Quelque chose s'est mal passé"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de mise à jour"
+                    },
+                    genericError: {
+                        description: "Échec de la mise à jour de la configuration de l'authentificateur de clé privée jwt.",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "La configuration de l'authentificateur de clé privée jwt a bien été mise à jour.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                pageTitle: "Authentification du client JWT par clé privée pour OIDC",
+                description: "Authentifiez les clients confidentiels auprès du serveur d'autorisation lors de l'utilisation du point de terminaison de jeton.",
+                goBackToApplication: "Revenir à l'application",
+                goBackToAccountSecurityConfig: "Revenir à la sécurité du compte",
+                messageInfo: "S'il est activé, le JTI dans le JWT sera unique par demande si le JWT précédemment utilisé n'a pas déjà expiré. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT.",
+                tokenReuseEnabled: "Réutilisation du jeton activée",
+                tokenReuseDisabled: "Réutilisation du jeton désactivée"
             }
         },
         notifications: {

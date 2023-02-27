@@ -25,21 +25,19 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.wso2.carbon.core.ServerStartupObserver;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.application.mgt.listener.ApplicationMgtListener;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
-import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.ui.CarbonSSOSessionManager;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
-import org.wso2.identity.apps.common.util.AppPortalConstants;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import java.util.HashSet;
@@ -101,12 +99,9 @@ public class AppsCommonServiceComponent {
                 }
             }
 
-            for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
-                log.info(appPortal.getName() + " URL : " + IdentityUtil
-                        .getServerURL(appPortal.getEndpoint(), true, true));
-            }
-
-            log.info("Identity apps common service component activated successfully.");
+            // AppsCommonServiceStartupObserver will wait until server startup is completed
+            bundleContext.registerService(ServerStartupObserver.class.getName(),
+                new AppsCommonServiceStartupObserver(), null);
         } catch (Throwable e) {
             log.error("Failed to activate identity apps common service component.", e);
         }
@@ -187,21 +182,6 @@ public class AppsCommonServiceComponent {
     }
 
     protected void unsetIdentityCoreInitializedEventService(IdentityCoreInitializedEvent identityCoreInitializedEvent) {
-
-    }
-
-    @Reference(name = "carbon.sso.session.manager.service",
-               service = CarbonSSOSessionManager.class,
-               cardinality = ReferenceCardinality.MANDATORY,
-               policy = ReferencePolicy.DYNAMIC,
-               unbind = "unsetCarbonSSOSessionManager")
-    protected void setCarbonSSOSessionManager(CarbonSSOSessionManager carbonSSOSessionManager) {
-
-        // Reference CarbonSSOSessionManager service to guarantee that this component will wait until management
-        // console URL is already added to the log.
-    }
-
-    protected void unsetCarbonSSOSessionManager(CarbonSSOSessionManager carbonSSOSessionManager) {
 
     }
 

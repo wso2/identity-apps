@@ -399,6 +399,9 @@
         "googleOneTapEnabledTenants": [],
         "hiddenUserStores": [ ],
         "identityProviderTemplates": {
+            "apple": {
+                "enabled": true
+            },
             "enterpriseOIDC": {
                 "enabled": true
             },

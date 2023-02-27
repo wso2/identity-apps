@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./apple-authenticator-form";
 export * from "./common-authenticator-form";
 export * from "./email-otp-authenticator-form";
 export * from "./facebook-authenticator-form";
