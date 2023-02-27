@@ -38,13 +38,25 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
+import { getUsernameConfiguration } from "apps/console/src/features/users";
 import Axios from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+    Dispatch,
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useMemo,
+    useRef,
+    useState 
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
+import { useValidationConfigData } from "../../../../../features/validation/api";
+import { ValidationFormInterface } from "../../../../../features/validation/models";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import { getProfileSchemas } from "../../../../users/api";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
@@ -82,7 +94,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any>= useDispatch();
     const [ shouldShowOnProfile, isSupportedByDefault ] = useState<boolean>(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
@@ -91,16 +103,50 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
 
-    const nameField = useRef<HTMLElement>(null);
-    const regExField = useRef<HTMLElement>(null);
-    const displayOrderField = useRef<HTMLElement>(null);
-    const descriptionField = useRef<HTMLElement>(null);
+    const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const displayOrderField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const descriptionField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
+    const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
 
     const { t } = useTranslation();
+
+    const { data: validationData } = useValidationConfigData();
+ 
+    /**
+     * Get username configuration.
+     */
+    useEffect(() => {
+        if (validationData) {
+            setUsernameConfig(getUsernameConfiguration(validationData));
+        }
+
+    }, [ validationData ]);
+ 
+    /**
+     * Get username configuration.
+     */
+    useEffect(() => {
+
+        if (
+            usernameConfig?.enableValidator === "true"
+            && attributeConfig?.systemClaims.includes("http://wso2.org/claims/emailaddress")
+        ){
+            const emailClaimIndex: number 
+                = attributeConfig?.systemClaims.indexOf("http://wso2.org/claims/emailaddress");
+
+            attributeConfig?.systemClaims.splice(emailClaimIndex, 1);
+        } else if (
+            usernameConfig?.enableValidator === "false"
+            && !(attributeConfig?.systemClaims.includes("http://wso2.org/claims/emailaddress")))
+        {
+            attributeConfig?.systemClaims.push("http://wso2.org/claims/emailaddress");
+        }
+    }, [ usernameConfig, attributeConfig ]);
 
     useEffect(() => {
         if (claim?.supportedByDefault) {
@@ -109,14 +155,21 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (claim?.readOnly) {
             setIsClaimReadOnly(true);
         }
-        if (claim && (attributeConfig?.systemClaims.length <= 0
-            || attributeConfig?.systemClaims.indexOf(claim?.claimURI) === -1)) {
+        if (claim 
+            && (
+                attributeConfig?.systemClaims.length <= 0
+                || attributeConfig?.systemClaims.indexOf(claim?.claimURI) === -1
+            )
+        ) {
             setHideSpecialClaims(false);
+        }
+        else {
+            setHideSpecialClaims(true);
         }
     }, [ claim ]);
 
     useEffect(() => {
-        const dialectID = getDialectID();
+        const dialectID: string[] = getDialectID();
 
         if(claim) {
             const externalClaimRequest = [];
@@ -156,7 +209,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     // Temporary fix to check system claims and make them readonly
-    const isReadOnly = useMemo(() => {
+    const isReadOnly: boolean = useMemo(() => {
         if (hideSpecialClaims) {
             return true;
         } else {
@@ -517,24 +570,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
-                            && !hideSpecialClaims && mappingChecked &&
-                        (
-                            <Field.Checkbox
-                                ariaLabel="readOnly"
-                                name="readOnly"
-                                required={ false }
-                                label={ t("console:manage.features.claims.local.forms.readOnly.label") }
-                                requiredErrorMessage=""
-                                defaultValue={ claim?.readOnly }
-                                data-testid={ `${ testId }-form-readonly-checkbox` }
-                                readOnly={ isReadOnly }
-                                hint={ t("console:manage.features.claims.local.forms.readOnlyHint") }
-                                listen={ (value) => {
-                                    setIsClaimReadOnly(value);
-                                } }
-                                disabled={ !hasMapping }
-                            />
-                        )
+                            && !hideSpecialClaims
+                            && mappingChecked
+                            && usernameConfig.enableValidator === "false"
+                            &&  (
+                                <Field.Checkbox
+                                    ariaLabel="readOnly"
+                                    name="readOnly"
+                                    required={ false }
+                                    label={ t("console:manage.features.claims.local.forms.readOnly.label") }
+                                    requiredErrorMessage=""
+                                    defaultValue={ claim?.readOnly }
+                                    data-testid={ `${ testId }-form-readonly-checkbox` }
+                                    readOnly={ isReadOnly }
+                                    hint={ t("console:manage.features.claims.local.forms.readOnlyHint") }
+                                    listen={ (value) => {
+                                        setIsClaimReadOnly(value);
+                                    } }
+                                    disabled={ !hasMapping }
+                                />
+                            )
                     }
                     {
                         hasRequiredScopes(
