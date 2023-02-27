@@ -161,5 +161,14 @@
             <i class="pt flag"></i>
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.portuguese")%>
         </div>
+
+        <div class="item"
+             data-value="de_DE"
+             style="background-color: var(--language-selector-background-color) !important;
+             color: var(--language-selector-text-color) !important;"
+        >
+            <i class="de flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.german")%>
+        </div>
     </div>
 </div>
