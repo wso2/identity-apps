@@ -293,7 +293,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             ) {
                 canSubmit = false;
             }
-            claimConfigurations[ "provisioningClaims" ] = selectedProvisioningClaimsWithDefaultValue.map(
+            claimConfigurations.provisioningClaims = selectedProvisioningClaimsWithDefaultValue.map(
                 (element: IdentityProviderCommonClaimMappingInterface) => {
                     return {
                         claim: element.claim,
