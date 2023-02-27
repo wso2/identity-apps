@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -25,6 +26,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
@@ -84,7 +86,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     /**
      * This boolean attribute specifies whether provisioning attributes
      * section should be enabled or not. By default this is not a required
-     * prop and the component itself defaults this to {@code true}. Please
+     * prop and the component itself defaults this to `true`. Please
      * see {@link AttributeSettings.defaultProps}.
      */
     provisioningAttributesEnabled?: boolean;
@@ -93,14 +95,14 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      * should be hidden or not. By default we will show these attributes
      * see {@link AttributeSettings.defaultProps}.
      *
-     * For an example, setting this to {@code true} will hide:-
+     * For an example, setting this to `true` will hide:-
      *  - http://wso2.org/claims/identity/accountLocked
      *  - http://wso2.org/claims/identity/isExistingLiteUser
      *  - etc...
      */
     hideIdentityClaimAttributes?: boolean;
     /**
-     * If enabled with {@code true} this component will render both uri
+     * If enabled with `true` this component will render both uri
      * mapping and the external claim mappings table.
      */
     isRoleMappingsEnabled: boolean;
@@ -118,7 +120,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     isSaml: boolean;
 }
 
-export const LocalDialectURI = "http://wso2.org/claims";
+export const LocalDialectURI: string = "http://wso2.org/claims";
 
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -139,7 +141,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -171,13 +173,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
     // Trigger role mapping field to submission.
-    const [ triggerSubmission, setTriggerSubmission ] = useTrigger();
+    const [ triggerSubmission ] = useTrigger();
 
     /**
      * When IdP loads, this component is responsible for fetching the
      * available claims. So, to to indicate a network call is happening
-     * we need this to hide the form. iff {@code !isLocalClaimsLoading}
-     * and {@code !isLoading} will load the form.
+     * we need this to hide the form. if `!isLocalClaimsLoading`
+     * and `!isLoading` will load the form.
      */
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
 
@@ -185,7 +187,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         setIsLocalClaimsLoading(true);
         getAllLocalClaims(null)
             .then((response: Claim[]) => {
-                setAvailableLocalClaims(response?.map(claim => {
+                setAvailableLocalClaims(response?.map((claim: Claim) => {
                     return {
                         displayName: claim.displayName,
                         id: claim.id,
@@ -194,7 +196,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }));
                 setIsLocalClaimsLoading(false);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 setIsLocalClaimsLoading(false);
                 handleGetAllLocalClaimsError(error);
             });
@@ -226,61 +228,84 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         // mappings configured. In this case, they need to fall back to local claims.
         if (isEmpty(selectedClaimsWithMapping)) {
             // Set provisioning claims.
-            setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
-                availableLocalClaims.find(claim => claim.uri === element.claim.uri)));
+            setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(
+                (element: IdentityProviderCommonClaimMappingInterface) =>
+                    availableLocalClaims.find(
+                        (claim: IdentityProviderClaimInterface) => claim.uri === element.claim.uri
+                    )
+            ));
 
             // Set subject URI.
-            if (isEmpty(availableLocalClaims?.find(element => element.uri === subjectClaimUri))) {
+            if (isEmpty(availableLocalClaims?.find(
+                (element: IdentityProviderClaimInterface) => element.uri === subjectClaimUri))
+            ) {
                 setSubjectClaimUri("");
             }
         } else {
             setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(
-                claimWithDefaultValue => isClaimExistsInIdPClaims(claimWithDefaultValue, selectedClaimsWithMapping)));
+                (claimWithDefaultValue: IdentityProviderCommonClaimMappingInterface) => isClaimExistsInIdPClaims(
+                    claimWithDefaultValue, selectedClaimsWithMapping
+                ))
+            );
 
             // Set role URI.
-            if (isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === roleClaimUri))) {
+            if (isEmpty(selectedClaimsWithMapping?.find(
+                (element: IdentityProviderCommonClaimMappingInterface) => element.mappedValue === roleClaimUri))
+            ) {
                 setRoleClaimUri("");
             }
 
             // Set subject URI.
-            if (isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === subjectClaimUri))) {
+            if (isEmpty(selectedClaimsWithMapping?.find(
+                (element: IdentityProviderCommonClaimMappingInterface) => element.mappedValue === subjectClaimUri))
+            ) {
                 setSubjectClaimUri("");
             }
         }
     }, [ selectedClaimsWithMapping ]);
 
-    const handleAttributesUpdate = () => {
+    const handleAttributesUpdate = (): void => {
 
         setIsSubmitting(true);
 
-        let canSubmit = true;
+        let canSubmit: boolean = true;
         const claimConfigurations: IdentityProviderClaimsInterface = { ...initialClaims };
 
         // Prepare claim mapping for submission.
-        if (!isEmpty(selectedClaimsWithMapping?.filter(element => isEmpty(element.mappedValue)))) {
+        if (!isEmpty(selectedClaimsWithMapping?.filter(
+            (element: IdentityProviderCommonClaimMappingInterface) => isEmpty(element.mappedValue)))
+        ) {
             canSubmit = false;
         }
-        claimConfigurations["mappings"] = selectedClaimsWithMapping.map(element => {
-            return {
-                idpClaim: element.mappedValue,
-                localClaim: element.claim
-            } as IdentityProviderClaimMappingInterface;
-        });
+        claimConfigurations["mappings"] = selectedClaimsWithMapping.map(
+            (element: IdentityProviderCommonClaimMappingInterface) => {
+                return {
+                    idpClaim: element.mappedValue,
+                    localClaim: element.claim
+                } as IdentityProviderClaimMappingInterface;
+            }
+        );
 
         if (provisioningAttributesEnabled) {
             // Prepare provisioning claims for submission.
-            if (!isEmpty(selectedProvisioningClaimsWithDefaultValue?.filter(element => isEmpty(element.mappedValue)))) {
+            if (!isEmpty(selectedProvisioningClaimsWithDefaultValue?.filter(
+                (element: IdentityProviderCommonClaimMappingInterface) => isEmpty(element.mappedValue)))
+            ) {
                 canSubmit = false;
             }
-            claimConfigurations[ "provisioningClaims" ] = selectedProvisioningClaimsWithDefaultValue.map(element => {
-                return {
-                    claim: element.claim,
-                    defaultValue: element.mappedValue
-                } as IdentityProviderProvisioningClaimInterface;
-            });
+            claimConfigurations.provisioningClaims = selectedProvisioningClaimsWithDefaultValue.map(
+                (element: IdentityProviderCommonClaimMappingInterface) => {
+                    return {
+                        claim: element.claim,
+                        defaultValue: element.mappedValue
+                    } as IdentityProviderProvisioningClaimInterface;
+                }
+            );
         }
 
-        const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
+        const matchingLocalClaim: IdentityProviderClaimInterface = availableLocalClaims.find(
+            (element: IdentityProviderClaimInterface) => element.uri === subjectClaimUri
+        );
 
         claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
             IdentityProviderClaimInterface;
@@ -295,7 +320,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 } else {
                     setRoleError(false);
                 }
-                const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
+                const matchingLocalClaim: IdentityProviderClaimInterface = availableLocalClaims.find(
+                    (element: IdentityProviderClaimInterface) => element.uri === roleClaimUri
+                );
 
                 claimConfigurations[ "roleClaim" ] = matchingLocalClaim ? matchingLocalClaim : { uri: roleClaimUri } as
                     IdentityProviderClaimInterface;
@@ -341,13 +368,16 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <AttributesSelectionV2
-                                onAttributesSelected={ (mappingsToBeAdded) => {
-                                    setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
-                                } }
+                                onAttributesSelected={ 
+                                    (mappingsToBeAdded : IdentityProviderCommonClaimMappingInterface[]) => {
+                                        setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
+                                    } 
+                                }
                                 attributeList={
                                     hideIdentityClaimAttributes
-                                        ? availableLocalClaims.filter(({ uri }) => !isLocalIdentityClaim(uri))
-                                        : availableLocalClaims
+                                        ? availableLocalClaims.filter(
+                                            ({ uri }: IdentityProviderClaimInterface) => !isLocalIdentityClaim(uri)
+                                        ) : availableLocalClaims
                                 }
                                 mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                 isReadOnly = { isReadOnly }
@@ -356,28 +386,28 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     </Grid.Row>
                     <Divider hidden/>
 
-                    { selectedClaimsWithMapping &&
-                    (<UriAttributesSettings
-                        dropDownOptions={
-                            createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
-                                .filter(element => !isEmpty(element))
-                                .filter(hideIdentityClaimAttributes
-                                    ? ({ value }) => !isLocalIdentityClaim(value)
-                                    : (_) => true
-                                )
-                        }
-                        initialRoleUri={ roleClaimUri }
-                        initialSubjectUri={ subjectClaimUri }
-                        claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
-                        updateRole={ setRoleClaimUri }
-                        updateSubject={ setSubjectClaimUri }
-                        data-testid={ `${ testId }-uri-attribute-settings` }
-                        roleError={ isSubmitting && roleError && !roleClaimUri }
-                        subjectError={ isSubmitting && !subjectClaimUri }
-                        isReadOnly={ isReadOnly }
-                        isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
-                        isSaml={ isSaml }
-                    />) }
+                    { 
+                        selectedClaimsWithMapping && (
+                            <UriAttributesSettings
+                                dropDownOptions={
+                                    createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
+                                        (element: DropdownOptionsInterface) => !isEmpty(element)
+                                    )
+                                }
+                                initialRoleUri={ roleClaimUri }
+                                initialSubjectUri={ subjectClaimUri }
+                                claimMappingOn={ isRoleMappingsEnabled && !isEmpty(selectedClaimsWithMapping) }
+                                updateRole={ setRoleClaimUri }
+                                updateSubject={ setSubjectClaimUri }
+                                data-testid={ `${ testId }-uri-attribute-settings` }
+                                roleError={ isSubmitting && roleError && !roleClaimUri }
+                                subjectError={ isSubmitting && !subjectClaimUri }
+                                isReadOnly={ isReadOnly }
+                                isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
+                                isSaml={ isSaml }
+                            />
+                        ) 
+                    }
                     <Divider hidden/>
 
                     { /* Select attributes for provisioning. */ }
@@ -386,7 +416,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     (<AttributeSelection
                         attributeList={
                             buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
-                                .filter(element => !isEmpty(element?.uri)) }
+                                .filter((element: IdentityProviderClaimInterface) => !isEmpty(element?.uri)) }
                         selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
                         setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                         uiProps={ {
