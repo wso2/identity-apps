@@ -3500,9 +3500,9 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         role: {
                             heading: "Rôle",
-                            hint: "Spécifie l'attribut qui identifie les rôles chez le fournisseur d'identité",
+                            hint: "Spécifie l'attribut qui identifie les rôles chez le fournisseur d'identité.",
                             label: "Attribut de rôle",
-                            placeHolder: "Sélectionner un attribut",
+                            placeHolder: "Rôle par défaut",
                             validation: {
                                 empty: "Veuillez sélectionner un attribut pour le rôle"
                             }

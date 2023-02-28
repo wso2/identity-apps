@@ -3414,9 +3414,9 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         role: {
                             heading: "කාර්යභාරය",
-                            hint: "හැඳුනුම් සැපයුම්කරුගේ භූමිකාවන් හඳුනා ගන්නා ගුණාංගය නියම කරයි",
+                            hint: "හැඳුනුම් සැපයුම්කරුගේ භූමිකාවන් හඳුනා ගන්නා ගුණාංගය නියම කරයි.",
                             label: "භූමිකාව",
-                            placeHolder: "ගුණාංගය තෝරන්න",
+                            placeHolder: "පෙරනිමි කාර්යභාරය",
                             validation: {
                                 empty: "කරුණාකර භූමිකාව සඳහා ලක්ෂණයක් තෝරන්න"
                             }
