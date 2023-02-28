@@ -590,11 +590,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             idpList.length > 1
                                 ? (
                                     <>
-                                        Asgardeo requires the user&apos;s profile containing the
-                                        <i> mobile number</i> to configure 
-                                        <strong> SMS OTP</strong> with the following connections.
+                                        <Trans
+                                            i18nKey={
+                                                "console:develop.features.applications.edit.sections." +
+                                                "signOnMethod.sections.authenticationFlow.sections." +
+                                                "stepBased.federatedSMSOTPConflictNote.multipleIdps"
+                                            }>
+                                            Asgardeo requires the user&apos;s profile containing the
+                                            <i> mobile number</i> to configure 
+                                            <strong> SMS OTP</strong> with the following connections.
+                                        </Trans>
+
                                         <ul className="mb-3">
-                                            { idpList?.map(({ name }:{name: string}, index: number) => (
+                                            { idpList?.map(({ name }:{name: string}) => (
                                                 <li key={ name }>
                                                     <strong>{ name }</strong>
                                                 </li>
@@ -604,9 +612,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 )
                                 : (
                                     <>
-                                        Asgardeo requires the user&apos;s profile containing the 
-                                        <i> mobile number</i> to configure <strong> SMS OTP </strong> 
-                                        with <strong>{ idpList[0].name }</strong> connection. 
+
+                                        <Trans
+                                            i18nKey={
+                                                "console:develop.features.applications.edit.sections." +
+                                                "signOnMethod.sections.authenticationFlow.sections." + 
+                                                "stepBased.federatedSMSOTPConflictNote.singleIdp"
+                                            }
+                                            values={ { idpName: idpList[0].name } }
+                                        >
+                                            Asgardeo requires the user&apos;s profile containing the 
+                                            <i> mobile number</i> to configure <strong> SMS OTP </strong> 
+                                            with <strong>{ idpList[0].name }</strong> connection. 
+                                        </Trans>
                                     </>
                                 )
                         }

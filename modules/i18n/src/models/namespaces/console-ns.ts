@@ -653,6 +653,10 @@ export interface ConsoleNS {
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             firstFactorDisabled: string;
+                                            federatedSMSOTPConflictNote: {
+                                                multipleIdps: string;
+                                                singleIdp: string;
+                                            };
                                         };
                                     };
                                 };

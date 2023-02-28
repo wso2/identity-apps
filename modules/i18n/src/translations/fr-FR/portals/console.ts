@@ -1127,7 +1127,15 @@ export const console: ConsoleNS = {
                                                 " d'approvisionnement juste-à-temps à partir des" +
                                                 " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
-                                                "facteur ne peuvent pas être utilisés dans la première étape."
+                                                "facteur ne peuvent pas être utilisés dans la première étape.",
+                                            federatedSMSOTPConflictNote:{
+                                                multipleIdps: "Asgardeo nécessite le profil de l'utilisateur" +
+                                                " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
+                                                " avec les connexions suivantes.",
+                                                singleIdp: "Asgardeo nécessite le profil de l'utilisateur" +
+                                                " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
+                                                " avec Connexion <5>{{idpName}}</5>."
+                                            }
                                         }
                                     }
                                 },

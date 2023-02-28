@@ -1108,7 +1108,15 @@ export const console: ConsoleNS = {
                                                 " you should enable the Just-in-Time provisioning" +
                                                 " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step."
+                                                "not be used in the first step.",
+                                            federatedSMSOTPConflictNote: {
+                                                multipleIdps: "Asgardeo requires the user's profile containing" +
+                                                " the <1>mobile number</1> to configure <3>SMS OTP</3> with the" +
+                                                " following connections.",
+                                                singleIdp: "Asgardeo requires the user's profile containing the"+
+                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" + 
+                                                " <5>{{idpName}}</5> connection."
+                                            }
                                         }
                                     }
                                 },
