@@ -435,7 +435,7 @@
                                                     }
 
                                                     if (restrictedBrowsersForGOT !== null
-                                                        && restrictedBrowsersForGOT !== ''
+                                                        && restrictedBrowsersForGOT.trim() !== ''
                                                         && restrictedBrowsersForGOT.toLowerCase().includes(browserName)) {
                                                         document.getElementById("googleSignIn").style.display = "block";
                                                     } else {
@@ -614,6 +614,28 @@
     <script>
         function onMoment(notification) {
             displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
+
+            const observed = document.querySelector('#credential_picker_container');
+
+            if(observed != null && notification.isDisplayed()){
+                let style = window.getComputedStyle(observed);
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.find(function(mutation) {
+                        if(style.display == "none") {
+                          displayGoogleSignIn(true);
+                        }
+                        return true;
+                    });
+                    observer.takeRecords();
+                    observer.disconnect();
+                });
+                observer.observe(observed, {
+                    attributesList: ["style"],
+                    attributes: true,
+                    subtree: true,
+                    childList: true
+                });
+            }
         }
 
         function displayGoogleSignIn(display) {
