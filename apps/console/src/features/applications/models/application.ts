@@ -23,8 +23,8 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { TemplateContentInterface } from "../data/application-templates";
 import { GenericAuthenticatorInterface } from "../../identity-providers";
+import { TemplateContentInterface } from "../data/application-templates";
 
 /**
  *  Captures the basic details in the applications.
