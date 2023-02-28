@@ -153,7 +153,7 @@ export const common: CommonNS = {
     save: "Salvar",
     sdks: "SDK",
     search: "Buscar",
-    security: "SEGURIDAD",
+    security: "Seguridad",
     services: "Servicios",
     settings: "AJUSTES",
     setup: "Configurar",
