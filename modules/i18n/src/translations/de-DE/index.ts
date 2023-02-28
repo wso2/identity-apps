@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,13 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./es-ES";
-export * from "./de-DE";
+import { meta } from "./meta";
+import * as portals from "./portals";
+import { LocaleBundle } from "../../models";
+
+export const DE_DE: LocaleBundle = {
+    meta,
+    resources: {
+        portals
+    }
+};
