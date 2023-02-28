@@ -54,7 +54,8 @@ import {
     AdaptiveScriptUtils,
     ConnectionsJITUPConflictWithMFAReturnValue,
     FederatedConflictWithSMSOTPReturnValue,
-    SignInMethodUtils } from "../../../utils";
+    SignInMethodUtils 
+} from "../../../utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.

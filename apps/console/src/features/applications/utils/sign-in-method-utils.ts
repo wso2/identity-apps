@@ -244,9 +244,7 @@ export class SignInMethodUtils {
          */
 
         try {
-
             /** Start solving the 1st problem **/
-
             const allOptions: AuthenticatorInterface[] = flatten(
                 steps
                     .filter(({ id } : { id: number }) => id === subjectStepId)
@@ -274,7 +272,7 @@ export class SignInMethodUtils {
             /** Start solving the 2nd problem **/
 
             /**
-             * This means that we have only one step, and implies =\>
+             * This means that we have only one step, and implies that
              * no MFA is being configured. This is because the interface only
              * allows MFA to be added to step 2 or beyond.
              */
@@ -304,7 +302,6 @@ export class SignInMethodUtils {
             );
 
             /** Finally compose the outcome **/
-
             return {
                 conflicting: jitDisabledIdPsInSubjectIdStep.length > 0
                     && configuredForwardMFA.length > 0,
