@@ -23,7 +23,12 @@ import {
     ProvisioningInterface
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../models";
+import { 
+    AuthenticationStepInterface, 
+    AuthenticatorInterface, 
+    FederatedConflictWithSMSOTPArgs, 
+    FederatedConflictWithSMSOTPReturnValue 
+} from "../models";
 
 /**
  * Utility class for Sign In Method.
@@ -418,23 +423,3 @@ export type ConnectionsJITUPConflictWithMFAReturnValue = {
     conflicting: boolean;
     idpList: GenericAuthenticatorWithProvisioningConfigs[];
 };
-
-export type FederatedConflictWithSMSOTPArgs = {
-    
-    /**
-     * This parameter should only pass in the configured federated
-     * authenticators under a tenant.
-     */
-    federatedAuthenticators: GenericAuthenticatorInterface[];
-    /**
-     * All the steps in the authentication sequence. Callee must pass
-     * all the authentication options without skipping any.
-     */
-    steps: AuthenticationStepInterface[];
-    subjectStepId: number;
-};
-
-export type FederatedConflictWithSMSOTPReturnValue = {
-    conflicting: boolean;
-    idpList: GenericAuthenticatorInterface[];
-}

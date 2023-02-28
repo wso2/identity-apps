@@ -48,12 +48,12 @@ import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
-    AuthenticatorInterface
+    AuthenticatorInterface,
+    FederatedConflictWithSMSOTPReturnValue
 } from "../../../models";
 import { 
     AdaptiveScriptUtils,
     ConnectionsJITUPConflictWithMFAReturnValue,
-    FederatedConflictWithSMSOTPReturnValue,
     SignInMethodUtils 
 } from "../../../utils";
 
@@ -150,7 +150,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
     const [ smsValidationResult, setSmsValidationResult ] =
-        useState<FederatedConflictWithSMSOTPReturnValue | undefined>(undefined);
+        useState<FederatedConflictWithSMSOTPReturnValue>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

@@ -24,6 +24,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { TemplateContentInterface } from "../data/application-templates";
+import { GenericAuthenticatorInterface } from "../../identity-providers";
 
 /**
  *  Captures the basic details in the applications.
@@ -652,6 +653,25 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
     sloUrl: "",
     ssoUrl: ""
 });
+
+export type FederatedConflictWithSMSOTPArgs = {
+    /**
+     * This parameter should only pass in the configured federated
+     * authenticators under a tenant.
+     */
+    federatedAuthenticators: GenericAuthenticatorInterface[];
+    /**
+     * All the steps in the authentication sequence. Callee must pass
+     * all the authentication options without skipping any.
+     */
+    steps: AuthenticationStepInterface[];
+    subjectStepId: number;
+};
+
+export type FederatedConflictWithSMSOTPReturnValue = {
+    conflicting: boolean;
+    idpList: GenericAuthenticatorInterface[];
+}
 
 /**
  * Enum for adaptive auth template types.
