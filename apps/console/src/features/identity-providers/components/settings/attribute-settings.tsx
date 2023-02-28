@@ -165,9 +165,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Sets if the form is submitting.
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    // Sets role URI error.
-    const [ roleError, setRoleError ] = useState<boolean>(false);
-
     // Selected role mapping.
     const [ roleMapping, setRoleMapping ] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
@@ -313,13 +310,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (isRoleMappingsEnabled) {
             // Prepare role for submission.
             if (!isEmpty(selectedClaimsWithMapping)) {
-                if (isEmpty(roleClaimUri)) {
-                    // Trigger form field validation on the empty subject uri.
-                    setRoleError(true);
-                    canSubmit = false;
-                } else {
-                    setRoleError(false);
-                }
                 const matchingLocalClaim: IdentityProviderClaimInterface = availableLocalClaims.find(
                     (element: IdentityProviderClaimInterface) => element.uri === roleClaimUri
                 );
@@ -400,7 +390,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 updateRole={ setRoleClaimUri }
                                 updateSubject={ setSubjectClaimUri }
                                 data-testid={ `${ testId }-uri-attribute-settings` }
-                                roleError={ isSubmitting && roleError && !roleClaimUri }
+                                roleError={ isSubmitting && !roleClaimUri }
                                 subjectError={ isSubmitting && !subjectClaimUri }
                                 isReadOnly={ isReadOnly }
                                 isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
