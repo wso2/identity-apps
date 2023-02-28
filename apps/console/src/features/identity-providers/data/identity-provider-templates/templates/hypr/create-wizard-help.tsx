@@ -148,7 +148,6 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                     }
                 >
                     Provide the <Code>base URL</Code> of your HYPR server deployment. 
-                    
                 </Trans>
             </p>
             
