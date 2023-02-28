@@ -107,7 +107,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 "uriAttributeSettings.subject." +
                                 "placeHolder") }
                             onChange={
-                                (_: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+                                (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                     updateSubject(data.value.toString());
                                 }
                             }
@@ -182,7 +182,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     placeholder={ t("console:develop.features.authenticationProvider" +
                                         ".forms.uriAttributeSettings.role.placeHolder") }
                                     onChange={
-                                        (_: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+                                        (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                             updateRole(data.value.toString());
                                         }
                                     }
