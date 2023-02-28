@@ -346,19 +346,16 @@ export class SignInMethodUtils {
                     .map(({ options } : { options: AuthenticatorInterface[] }) => options)
             );
 
-            /**
-             * Get the list of idps configured in the subject identifier step.
-             */
-            const idPsInSubjectIdStep: GenericAuthenticatorInterface[] =
-                // Extract all the IdP names.
-                [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ]
-                    // Find the authenticator model.
-                    .map((idpName: string) => federatedAuthenticators.find(
-                        ({ name } : { name: string }) => name === idpName))
-                    // Remove all the {@code undefined|null} ones please.
-                    .filter(Boolean);
+            /** Get the list of idps configured in the subject identifier step. **/
 
-            /** Start solving the 2nd problem **/
+            // Extract all the IdP names.
+            const uniqueIdpNames: string[] = [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ];
+            // Find the authenticator model.
+            const idPsInSubjectIdStep: GenericAuthenticatorInterface[] = 
+                uniqueIdpNames.map((idpName: string) => federatedAuthenticators
+                    .find(({ name } : { name: string }) => name === idpName)).filter(Boolean);
+
+            /** Start solving the 2nd problem. **/
 
             /**
              * This means that we have only one step, and implies =\>
