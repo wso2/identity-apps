@@ -52,7 +52,7 @@ export const fetchPasswordValidationConfig = (): Promise<any> => {
 
     return httpClient(requestConfig)
         .then((response: any) => {
-            return getPasswordConfig(response.data) as ValidationFormInterface;
+            return response.data as ValidationFormInterface;
         })
         .catch((error: any) => {
             return Promise.reject(error);
@@ -134,4 +134,45 @@ export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
     }
 
     return null;
+};
+
+/**
+ * Username validation configurations in the required format.
+ *
+ * @param configs - validation configurations for an organization.
+ * @returns the username validation configuration.
+ */
+export const getUsernameConfiguration = (configs: ValidationDataInterface[]): ValidationFormInterface => {
+
+    const usernameConf: ValidationDataInterface[] =
+        configs?.filter((data: ValidationDataInterface) => data.field === "username");
+
+    if (usernameConf === undefined || usernameConf.length < 1) {
+        return;
+    }
+    const config: ValidationDataInterface = usernameConf[0];
+
+    const rules: ValidationConfInterface[] = config?.rules;
+
+    if (rules?.length < 1) {
+        return;
+    }
+
+    return {
+        enableValidator: 
+                (getConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
+                || !(getConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
+                    ? "true" 
+                    : "false",
+        field: "username",
+        maxLength: 
+        Number(getConfig(rules, "LengthValidator", "max.length"))
+            ? Number(getConfig(rules, "LengthValidator", "max.length"))
+            : null,
+        minLength:
+        Number(getConfig(rules, "LengthValidator", "min.length"))
+            ? Number(getConfig(rules, "LengthValidator", "min.length"))
+            : null,
+        type: "rules"
+    };
 };
