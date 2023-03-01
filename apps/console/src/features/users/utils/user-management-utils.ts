@@ -112,30 +112,3 @@ const getValidationConfig = (
 
     return null;
 };
-
-/**
- * Get the value of a specific validator configuration..
- *
- * @param ruleSet - list of rules configured.
- * @param validator - validator name.
- * @param attribute - attribute name.
- * @returns the value of the validator configuration.
- */
-export const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
-
-    const config: ValidationConfInterface[] = ruleSet?.filter((data: ValidationConfInterface) => {
-        return data.validator === validator;
-    });
-
-    if (config?.length > 0) {
-        let properties: ValidationPropertyInterface[] = config[0].properties;
-
-        properties = properties.filter((data: ValidationPropertyInterface) => data.key === attribute);
-
-        if (properties.length > 0) {
-            return properties[0].value;
-        }
-    }
-
-    return null;
-};

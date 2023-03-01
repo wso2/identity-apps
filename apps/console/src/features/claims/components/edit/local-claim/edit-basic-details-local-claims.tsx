@@ -23,6 +23,7 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ExternalClaim,
     ProfileSchemaInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -62,7 +63,6 @@ import { useValidationConfigData } from "../../../../validation/api";
 import { ValidationFormInterface } from "../../../../validation/models";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
-import { AddExternalClaim } from "../../../models";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -172,18 +172,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         const dialectID: string[] = getDialectID();
 
         if(claim) {
-            const externalClaimRequest: string[] = [];
+            const externalClaimRequest: any = [];
 
             dialectID.forEach((dialectId: string) => {
-                getExternalClaims((dialectId)).then((response: string) => {
-                    externalClaimRequest.push(response);
-                });
+                externalClaimRequest.push(getExternalClaims(dialectId));
             });
 
-            Axios.all(externalClaimRequest).then((response: string[]) => {
-                const claims: AddExternalClaim[] = [].concat(...response);
+            Axios.all(externalClaimRequest).then((response: ExternalClaim[]) => {
+                const claims: ExternalClaim[] = [].concat(...response);
 
-                if (claims.find((externalClaim: AddExternalClaim)=>
+                if (claims.find((externalClaim: ExternalClaim) => 
                     externalClaim.mappedLocalClaimURI === claim.claimURI)) {
                     setHasMapping(true);
                 }
