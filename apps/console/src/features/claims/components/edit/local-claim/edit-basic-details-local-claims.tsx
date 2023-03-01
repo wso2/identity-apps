@@ -170,13 +170,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         const dialectID: string[] = getDialectID();
 
         if(claim) {
-            const externalClaimRequest: any = [];
+            const externalClaimRequest: Promise<string>[] = [];
 
             dialectID.forEach((dialectId: string) => {
                 externalClaimRequest.push(getExternalClaims(dialectId));
             });
 
-            Axios.all(externalClaimRequest).then((response: ExternalClaim[]) => {
+            Axios.all(externalClaimRequest).then((response: string[]) => {
                 const claims: ExternalClaim[] = [].concat(...response);
 
                 if (claims.find((externalClaim: ExternalClaim) => 
