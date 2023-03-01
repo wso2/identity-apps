@@ -48,10 +48,10 @@ export class UserManagementUtils {
 }
 
 /**
- * The following function is to get the password validation configurations in the required format.
+ * Get the userbane validation configurations in the required format.
  *
  * @param configs - validation configurations for an organization.
- * @returns the password validation configuration.
+ * @returns the userbane validation configuration.
  */
 export const getUsernameConfiguration = (configs: ValidationDataInterface[]): ValidationFormInterface => {
 
@@ -114,7 +114,7 @@ const getValidationConfig = (
 };
 
 /**
- * The following function is to get the value of a specific validator configuration..
+ * Get the value of a specific validator configuration..
  *
  * @param ruleSet - list of rules configured.
  * @param validator - validator name.
