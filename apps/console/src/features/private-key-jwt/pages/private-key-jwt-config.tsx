@@ -70,7 +70,6 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
             ) }
             onPrimaryActionClick={ handleSelection }
             primaryAction={ "Configure" }
-            connectorEnabled={ isLoading ? undefined : tokenReuseData.enableTokenReuse }
         >
             <Divider hidden/>
         </Section>)
