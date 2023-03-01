@@ -126,14 +126,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (validationData) {
             setUsernameConfig(getUsernameConfiguration(validationData));
         }
-
     }, [ validationData ]);
  
     /**
      * Get username configuration.
      */
     useEffect(() => {
-
         if (
             usernameConfig?.enableValidator === "true"
             && attributeConfig?.systemClaims.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)
