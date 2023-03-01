@@ -38,7 +38,6 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
-import { getUsernameConfiguration } from "apps/console/src/features/users";
 import Axios from "axios";
 import { IdentityAppsError } from "modules/core/dist/types/errors/identity-apps-error";
 import React, {
@@ -56,10 +55,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
-import { useValidationConfigData } from "../../../../../features/validation/api";
-import { ValidationFormInterface } from "../../../../../features/validation/models";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import { getUsernameConfiguration } from "../../../../users";
 import { getProfileSchemas } from "../../../../users/api";
+import { useValidationConfigData } from "../../../../validation/api";
+import { ValidationFormInterface } from "../../../../validation/models";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -136,17 +136,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (
             usernameConfig?.enableValidator === "true"
-            && attributeConfig?.systemClaims.includes("http://wso2.org/claims/emailaddress")
+            && attributeConfig?.systemClaims.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)
         ){
             const emailClaimIndex: number 
-                = attributeConfig?.systemClaims.indexOf("http://wso2.org/claims/emailaddress");
+                = attributeConfig?.systemClaims.indexOf(ClaimManagementConstants.EMAIL_CLAIM_URI);
 
             attributeConfig?.systemClaims.splice(emailClaimIndex, 1);
-        } else if (
-            usernameConfig?.enableValidator === "false"
-            && !(attributeConfig?.systemClaims.includes("http://wso2.org/claims/emailaddress")))
+        } else 
         {
-            attributeConfig?.systemClaims.push("http://wso2.org/claims/emailaddress");
+            attributeConfig?.systemClaims.push(ClaimManagementConstants.EMAIL_CLAIM_URI);
         }
     }, [ usernameConfig, attributeConfig ]);
 
