@@ -71,8 +71,8 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
 
     return {
         enableValidator: 
-                (getValidationConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
-                || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
+                (getValidationConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
+                || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator") === "true"))
                     ? "true" 
                     : "false",
         field: "username",
