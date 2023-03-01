@@ -132,6 +132,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      * Get username configuration.
      */
     useEffect(() => {
+        // If the alpha-numeric username validator is enabled, remove the email claim from the system claims.
         if (
             usernameConfig?.enableValidator === "true"
             && attributeConfig?.systemClaims.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)
@@ -140,7 +141,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 = attributeConfig?.systemClaims.indexOf(ClaimManagementConstants.EMAIL_CLAIM_URI);
 
             attributeConfig?.systemClaims.splice(emailClaimIndex, 1);
-        } else 
+        } else if (
+            usernameConfig?.enableValidator === "false"
+             && !attributeConfig?.systemClaims.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)
+        )
         {
             attributeConfig?.systemClaims.push(ClaimManagementConstants.EMAIL_CLAIM_URI);
         }
