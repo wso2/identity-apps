@@ -29,6 +29,7 @@ import {
     Announcement,
     AppSwitcher,
     GenericIcon,
+    HeaderExtension,
     HeaderLinkCategoryInterface,
     Logo,
     ProductBrand,
@@ -128,7 +129,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
     const [ headerLinks, setHeaderLinks ] = useState<HeaderLinkCategoryInterface[]>([]);
-
+    const [ headerExtensions, setHeaderExtensions ] = useState<HeaderExtension[]>([]);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
@@ -169,6 +170,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 setHeaderLinks(response);
             } );
     }, [ tenantDomain, associatedTenants ]);
+
+    useEffect(() => {
+        commonConfig?.header?.getHeaderExtensions().then((response: HeaderExtension[]) => {
+            // Remove upgrade button if the user is a privileged user.
+            if (isPrivilegedUser) {
+                response.pop();
+            }
+            setHeaderExtensions(response);
+        });
+    }, []);
 
     /**
      * Check if there are applications registered and set the value to local storage.
@@ -443,7 +454,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={
                 // Remove false values. Needed for `&&` operator.
                 compact([
-                    ...commonConfig?.header?.getHeaderExtensions(),
+                    ...headerExtensions,
                     showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         component: renderAppSwitcher(),
                         floated: "right"

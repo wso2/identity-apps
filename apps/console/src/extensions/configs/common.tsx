@@ -28,7 +28,7 @@ export const commonConfig: CommonConfig = {
     checkForUIResourceScopes: false,
     enableOrganizationAssociations: false,
     header: {
-        getHeaderExtensions: (): HeaderExtension[] => [],
+        getHeaderExtensions: (): Promise<HeaderExtension[]> => Promise.resolve([]),
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
         getUserDropdownLinkExtensions: (
             _tenantDomain: string,
