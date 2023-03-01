@@ -171,9 +171,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             } );
     }, [ tenantDomain, associatedTenants ]);
 
+    /**
+     * Get the header extensions.
+     */
     useEffect(() => {
         commonConfig?.header?.getHeaderExtensions().then((response: HeaderExtension[]) => {
-            // Remove upgrade button if the user is a privileged user.
             if (isPrivilegedUser) {
                 response.pop();
             }
