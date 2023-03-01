@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,47 +28,34 @@ export class ClaimManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
      * Claim URI Attribute key.
-     * @constant
-     * @type {number}
-     * @default
      */
     public static readonly CLAIM_URI_ATTRIBUTE_KEY: string = "claimURI";
 
     /**
      * Key for the URL search param for Dialect state.
-     * @constant
-     * @type {string}
      */
-    public static readonly DIALECT_STATE_URL_SEARCH_PARAM_KEY = "state";
+    public static readonly DIALECT_STATE_URL_SEARCH_PARAM_KEY: string = "state";
 
     /**
      * URL Search param for newly created Dialects.
-     * @constant
-     * @type {string}
      */
-    public static readonly NEW_DIALECT_URL_SEARCH_PARAM = `?${
+    public static readonly NEW_DIALECT_URL_SEARCH_PARAM: string = `?${
         ClaimManagementConstants.DIALECT_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     /**
      * Key for the URL search param for Local Claim state.
-     * @constant
-     * @type {string}
      */
-    public static readonly LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY = "state";
+    public static readonly LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY: string = "state";
 
     /**
      * URL Search param for Local Claim state.
-     * @constant
-     * @type {string}
      */
-    public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM = `?${
+    public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM: string = `?${
         ClaimManagementConstants.LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY }=new`;
 
     // API errors
@@ -80,7 +67,6 @@ export class ClaimManagementConstants {
 
     /**
      * Map to access the attribute dialect ids.
-     * @type {Map<string, any>}
      */
     public static readonly ATTRIBUTE_DIALECT_IDS: Map<string, any> = new Map<string, any>()
         .set("AXSCHEMA", "aHR0cDovL2F4c2NoZW1hLm9yZw")
@@ -98,7 +84,6 @@ export class ClaimManagementConstants {
 
     /**
      * Set of dialects packed OOTB.
-     * @type {any[]}
      */
     public static readonly DEFAULT_DIALECTS: string[] = [
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA"),
@@ -123,7 +108,10 @@ export class ClaimManagementConstants {
     public static readonly SCIM: string = "scim";
     public static readonly OTHERS: string = "others";
 
-    public static readonly SCIM_TABS = [
+    public static readonly SCIM_TABS: {
+        name: string;
+        uri: string;
+    }[] = [
         { name: "Core Schema", uri: "urn:ietf:params:scim:schemas:core:2.0" },
         { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
@@ -138,8 +126,9 @@ export class ClaimManagementConstants {
     public static readonly USER_NAME_CLAIM_URI: string = "http://wso2.org/claims/username";
     public static readonly GROUPS_CLAIM_URI: string = "http://wso2.org/claims/groups";
     public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
+    public static readonly EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
 
-    public static readonly EMPTY_STRING = "";
+    public static readonly EMPTY_STRING: string = "";
 
     /**
      * The error code that is returned when there is no item in the list
