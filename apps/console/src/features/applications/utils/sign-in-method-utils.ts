@@ -26,8 +26,8 @@ import { ApplicationManagementConstants } from "../constants";
 import { 
     AuthenticationStepInterface, 
     AuthenticatorInterface, 
-    FederatedConflictWithSMSOTPArgs, 
-    FederatedConflictWithSMSOTPReturnValue 
+    FederatedConflictWithSMSOTPArgsInterface, 
+    FederatedConflictWithSMSOTPReturnValueInterface 
 } from "../models";
 
 /**
@@ -322,8 +322,8 @@ export class SignInMethodUtils {
     }
 
     public static isFederatedConflictWithSMSOTP(
-        args: FederatedConflictWithSMSOTPArgs
-    ): FederatedConflictWithSMSOTPReturnValue {
+        args: FederatedConflictWithSMSOTPArgsInterface
+    ): FederatedConflictWithSMSOTPReturnValueInterface {
 
         const { federatedAuthenticators, steps, subjectStepId } = args;
 

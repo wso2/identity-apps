@@ -49,7 +49,7 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface,
-    FederatedConflictWithSMSOTPReturnValue
+    FederatedConflictWithSMSOTPReturnValueInterface
 } from "../../../models";
 import { 
     AdaptiveScriptUtils,
@@ -150,7 +150,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
     const [ smsValidationResult, setSmsValidationResult ] =
-        useState<FederatedConflictWithSMSOTPReturnValue>(null);
+        useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -166,7 +166,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setValidationResult(result);
 
-        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValue = 
+        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValueInterface = 
         SignInMethodUtils.isFederatedConflictWithSMSOTP({
             federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
             steps: updatedSteps,

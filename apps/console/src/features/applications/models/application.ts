@@ -635,6 +635,38 @@ export interface MyAccountPortalStatusInterface {
     value?: string;
 }
 
+/**
+ * Interface for the parameters value of the `federatedConflictWithSMSOTP` function.
+ */
+export interface FederatedConflictWithSMSOTPArgsInterface {
+    /**
+     * This parameter should only pass in the configured federated
+     * authenticators under a tenant.
+     */
+    federatedAuthenticators: GenericAuthenticatorInterface[];
+    /**
+     * All the steps in the authentication sequence. Callee must pass
+     * all the authentication options without skipping any.
+     */
+    steps: AuthenticationStepInterface[];
+    subjectStepId: number;
+}
+
+/**
+ * Interface for the return value of the `federatedConflictWithSMSOTP` function.
+ */
+export interface FederatedConflictWithSMSOTPReturnValueInterface {
+    /**
+     * Specifies whether there is any conflict between the 
+     * federated authenticators and the SMS OTP.
+     */
+    conflicting: boolean;
+    /**
+     * List of conflicting authenticators.
+     */
+    idpList: GenericAuthenticatorInterface[];
+}
+
 export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
     endSessionEndpoint: "",
@@ -653,25 +685,6 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
     sloUrl: "",
     ssoUrl: ""
 });
-
-export type FederatedConflictWithSMSOTPArgs = {
-    /**
-     * This parameter should only pass in the configured federated
-     * authenticators under a tenant.
-     */
-    federatedAuthenticators: GenericAuthenticatorInterface[];
-    /**
-     * All the steps in the authentication sequence. Callee must pass
-     * all the authentication options without skipping any.
-     */
-    steps: AuthenticationStepInterface[];
-    subjectStepId: number;
-};
-
-export type FederatedConflictWithSMSOTPReturnValue = {
-    conflicting: boolean;
-    idpList: GenericAuthenticatorInterface[];
-}
 
 /**
  * Enum for adaptive auth template types.
