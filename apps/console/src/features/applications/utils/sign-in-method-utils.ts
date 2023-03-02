@@ -23,7 +23,12 @@ import {
     ProvisioningInterface
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../models";
+import { 
+    AuthenticationStepInterface, 
+    AuthenticatorInterface, 
+    FederatedConflictWithSMSOTPArgsInterface, 
+    FederatedConflictWithSMSOTPReturnValueInterface 
+} from "../models";
 
 /**
  * Utility class for Sign In Method.
@@ -244,9 +249,7 @@ export class SignInMethodUtils {
          */
 
         try {
-
             /** Start solving the 1st problem **/
-
             const allOptions: AuthenticatorInterface[] = flatten(
                 steps
                     .filter(({ id } : { id: number }) => id === subjectStepId)
@@ -274,7 +277,7 @@ export class SignInMethodUtils {
             /** Start solving the 2nd problem **/
 
             /**
-             * This means that we have only one step, and implies =\>
+             * This means that we have only one step, and implies that
              * no MFA is being configured. This is because the interface only
              * allows MFA to be added to step 2 or beyond.
              */
@@ -304,11 +307,87 @@ export class SignInMethodUtils {
             );
 
             /** Finally compose the outcome **/
-
             return {
                 conflicting: jitDisabledIdPsInSubjectIdStep.length > 0
                     && configuredForwardMFA.length > 0,
                 idpList: jitDisabledIdPsInSubjectIdStep ?? []
+            };
+
+        } catch (e) {
+            return {
+                conflicting: false,
+                idpList: []
+            };
+        }
+    }
+
+    public static isFederatedConflictWithSMSOTP(
+        args: FederatedConflictWithSMSOTPArgsInterface
+    ): FederatedConflictWithSMSOTPReturnValueInterface {
+
+        const { federatedAuthenticators, steps, subjectStepId } = args;
+
+        /**
+         * We are solving two problems:
+         *
+         * 1) Find out the subject step all federated IdPs:
+         *    We have an array of `federatedAuthenticators` and
+         *    the configured steps. We are only focused on federated
+         *    authentications configured on subject identifier step.
+         *
+         * 2) Walk forward and check other steps (step 2 and beyond) for SMS OTP:
+         *    The reason to do this check is that, if SMS OTP is configured with 
+         *    a federated authenticator, Asgardeo should receive the user's profile
+         *    (including the mobile number) configured on the federated IdP.
+         */
+
+        try {
+
+            /** Start solving the 1st problem **/
+
+            const allOptions: AuthenticatorInterface[] = flatten(
+                steps
+                    .filter(({ id } : { id: number }) => id === subjectStepId)
+                    .map(({ options } : { options: AuthenticatorInterface[] }) => options)
+            );
+
+            /** Get the list of idps configured in the subject identifier step. **/
+
+            // Extract all the IdP names.
+            const uniqueIdpNames: string[] = [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ];
+            // Find the authenticator model.
+            const idPsInSubjectIdStep: GenericAuthenticatorInterface[] = 
+                uniqueIdpNames.map((idpName: string) => federatedAuthenticators
+                    .find(({ name } : { name: string }) => name === idpName)).filter(Boolean);
+
+            /** Start solving the 2nd problem. **/
+
+            /**
+             * This means that we have only one step, and implies =\>
+             * no SMS OTP is being configured. This is because the interface only
+             * allows SMS OTP to be added to step 2 or beyond.
+             */
+            if (steps.length < 2) {
+                return {
+                    conflicting: false,
+                    idpList: []
+                };
+            }
+
+            const allOtherOptions: AuthenticatorInterface[] = flatten(
+                steps
+                    .slice(1) // Remove the first element (subject identifier step)
+                    .map(({ options } : { options: AuthenticatorInterface[] }) => options) // Get all the options.
+            );
+
+            const SMS_OTP_AUTHENTICATOR_NAME: string = "sms-otp-authenticator";
+            const isSMSOTPConfigured: boolean = allOtherOptions.some(
+                (op: AuthenticatorInterface) => op.authenticator === SMS_OTP_AUTHENTICATOR_NAME);
+    
+            /** Finally compose the outcome **/
+            return {
+                conflicting: idPsInSubjectIdStep.length > 0 && isSMSOTPConfigured,
+                idpList: idPsInSubjectIdStep ?? []
             };
 
         } catch (e) {

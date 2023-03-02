@@ -48,9 +48,14 @@ import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
-    AuthenticatorInterface
+    AuthenticatorInterface,
+    FederatedConflictWithSMSOTPReturnValueInterface
 } from "../../../models";
-import { AdaptiveScriptUtils, ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils";
+import { 
+    AdaptiveScriptUtils,
+    ConnectionsJITUPConflictWithMFAReturnValue,
+    SignInMethodUtils 
+} from "../../../utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -144,6 +149,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
+    const [ smsValidationResult, setSmsValidationResult ] =
+        useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -158,6 +165,15 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         });
 
         setValidationResult(result);
+
+        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValueInterface = 
+        SignInMethodUtils.isFederatedConflictWithSMSOTP({
+            federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
+            steps: updatedSteps,
+            subjectStepId: authenticationSequence?.subjectStepId
+        });
+
+        setSmsValidationResult(federatedSMSConflictResult);
 
     }, [ steps, authenticators, updatedSteps ]);
 
@@ -558,6 +574,66 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         );
     };
 
+    const SMSOTPConflictMessage = () => {
+
+        const { idpList } = smsValidationResult;
+
+        return (
+            <Message
+                data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
+                data-testid="jit-provisioning-mfa-in-sequence-warning-message"
+                type="info"
+                // Semantic hides warning messages inside <form> by default.
+                // Overriding the behaviour here to make sure it renders properly.
+                content={ (
+                    <>
+                        {
+                            idpList.length > 1
+                                ? (
+                                    <>
+                                        <Trans
+                                            i18nKey={
+                                                "console:develop.features.applications.edit.sections." +
+                                                "signOnMethod.sections.authenticationFlow.sections." +
+                                                "stepBased.federatedSMSOTPConflictNote.multipleIdps"
+                                            }>
+                                            Asgardeo requires the user&apos;s profile containing the
+                                            <i> mobile number</i> to configure 
+                                            <strong> SMS OTP</strong> with the following connections.
+                                        </Trans>
+
+                                        <ul className="mb-3">
+                                            { idpList?.map(({ name }:{name: string}) => (
+                                                <li key={ name }>
+                                                    <strong>{ name }</strong>
+                                                </li>
+                                            )) }
+                                        </ul>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        <Trans
+                                            i18nKey={
+                                                "console:develop.features.applications.edit.sections." +
+                                                "signOnMethod.sections.authenticationFlow.sections." + 
+                                                "stepBased.federatedSMSOTPConflictNote.singleIdp"
+                                            }
+                                            values={ { idpName: idpList[0].name } }
+                                        >
+                                            Asgardeo requires the user&apos;s profile containing the 
+                                            <i> mobile number</i> to configure <strong> SMS OTP </strong> 
+                                            with <strong>{ idpList[0].name }</strong> connection. 
+                                        </Trans>
+                                    </>
+                                )
+                        }
+                    </>
+                ) }
+            />
+        );
+    };
+
     return (
         <div>
             <div>
@@ -632,6 +708,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         }
                     />
                 )
+            }
+            { !validationResult?.conflicting && smsValidationResult?.conflicting && smsValidationResult?.idpList.length
+                ? SMSOTPConflictMessage()
+                : null
             }
             <StepBasedFlow
                 refreshAuthenticators={ refreshAuthenticators }
