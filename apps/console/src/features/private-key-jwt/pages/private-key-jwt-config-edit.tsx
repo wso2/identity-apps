@@ -180,11 +180,6 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             description={ (
                 <>
                     { t("console:manage.features.jwtPrivateKeyConfiguration.description" ) }
-                    <DocumentationLink
-                        link={ getLink("manage.validation.passwordValidation.learnMore") }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
                 </>
             ) }
             data-componentid={ `${ componentId }-page-layout` }
