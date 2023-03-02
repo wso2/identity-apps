@@ -21,10 +21,8 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    DocumentationLink,
     GridLayout,
-    PageLayout,
-    useDocumentation
+    PageLayout
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
@@ -55,7 +53,6 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
     const [ enableTokenReuse, setEnableTokenReuse ] = useState<boolean>(true);
 
     const {
