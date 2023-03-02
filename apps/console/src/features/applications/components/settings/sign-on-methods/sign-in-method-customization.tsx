@@ -613,7 +613,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 )
                                 : (
                                     <>
-
                                         <Trans
                                             i18nKey={
                                                 "console:develop.features.applications.edit.sections." +
