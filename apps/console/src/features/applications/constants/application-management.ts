@@ -335,15 +335,15 @@ export class ApplicationManagementConstants {
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
     ];
