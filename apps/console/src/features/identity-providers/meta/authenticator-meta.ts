@@ -109,7 +109,7 @@ export class AuthenticatorMeta {
                 AuthenticatorLabels.SAML
             ],
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.MULTI_FACTOR, AuthenticatorLabels.PASSWORDLESS
             ],
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.MULTI_FACTOR
