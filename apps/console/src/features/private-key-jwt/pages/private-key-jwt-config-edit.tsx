@@ -181,7 +181,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                 <>
                     { t("console:manage.features.jwtPrivateKeyConfiguration.description" ) }
                     <DocumentationLink
-                        link={ getLink("manage.validation.passwordValidation.learnMore") }
+                        link={ getLink("manage.privateKeyJWT.learnMore") }
                     >
                         { t("common:learnMore") }
                     </DocumentationLink>
