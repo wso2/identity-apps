@@ -617,11 +617,11 @@
 
             const observed = document.querySelector('#credential_picker_container');
 
-            if(observed != null && notification.isDisplayed()){
+            if (observed != null && notification.isDisplayed()) {
                 let style = window.getComputedStyle(observed);
                 const observer = new MutationObserver(function(mutations) {
                     mutations.find(function(mutation) {
-                        if(style.display == "none") {
+                        if (style.display == "none") {
                           displayGoogleSignIn(true);
                         }
                         return true;
