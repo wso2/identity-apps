@@ -1515,7 +1515,7 @@ export const myAccount: MyAccountNS = {
         "readOnlyProfileBanner": "Ihr Profil kann von diesem Portal aus nicht geändert werden. Bitte kontaktieren Sie Ihren Administrator für weitere Details.",
         "security": {
             "subTitle": "Schützen Sie Ihr Konto, indem Sie Einwilligungen, Sitzungen und Sicherheitseinstellungen verwalten",
-            "title": "SICHERHEIT"
+            "title": "Sicherheit"
         }
     },
     "placeholders": {
