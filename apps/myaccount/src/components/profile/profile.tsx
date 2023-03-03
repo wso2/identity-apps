@@ -48,7 +48,12 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
-import { updateProfileImageURL, updateProfileInfo } from "../../api";
+import {
+    fetchPasswordValidationConfig,
+    getUsernameConfiguration,
+    updateProfileImageURL,
+    updateProfileInfo
+} from "../../api";
 import { AppConstants, CommonConstants, UIConstants } from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";
 import {
@@ -56,7 +61,8 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
-    ProfileSchema
+    ProfileSchema,
+    ValidationFormInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
@@ -108,6 +114,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
@@ -135,6 +142,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             dispatch(getProfileInformation());
         }
     }, []);
+
+    /**
+     * Get the configurations.
+     */
+    useEffect(() => {
+        getConfigurations();
+    }, [ profileSchema ]);
 
     /**
      * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
@@ -292,6 +306,43 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
         setCountryList(ReusableCommonUtils.getCountryList());
     }, []);
+
+    /**
+     * API call to get validation configurations.
+     */
+    const getConfigurations = (): void => {
+
+        fetchPasswordValidationConfig()
+            .then((response: ValidationFormInterface[]) => {
+                setUsernameConfig(getUsernameConfiguration(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.detail) {
+                    onAlertFired({
+                        description:
+                            t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "validationConfig.error.description",
+                            { description: error?.response?.data?.detail }),
+                        level: AlertLevels.ERROR,
+                        message:
+                            t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "validationConfig.error.message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description:
+                        t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message:
+                        t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.message")
+                });
+            });
+    };
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -882,8 +933,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 {
-                                    !commonConfig.userProfilePage.showEmail &&  fieldName.toLowerCase() === "username"
-                                        ? fieldName + "(Email)"
+                                    (
+                                        !commonConfig.userProfilePage.showEmail 
+                                        ||  usernameConfig?.enableValidator === "false"
+                                    )
+                                    &&  fieldName.toLowerCase() === "username"
+                                        ? fieldName + " (Email)"
                                         : fieldName
                                 }
                             </List.Content>
@@ -1249,8 +1304,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                            || (!commonConfig.userProfilePage.showEmail &&
-                                schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
+                            || ((
+                                !commonConfig.userProfilePage.showEmail
+                                || usernameConfig?.enableValidator === "false"
+                            )
+                                && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {
                             return (
                                 <>
