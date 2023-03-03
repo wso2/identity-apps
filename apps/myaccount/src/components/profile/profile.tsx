@@ -317,7 +317,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 setUsernameConfig(getUsernameConfiguration(response));
             })
             .catch((error: IdentityAppsApiException) => {
-                if (error?.response && error?.response?.data && error?.response?.detail) {
+                if (error?.response?.data?.detail) {
                     onAlertFired({
                         description:
                             t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
@@ -1306,7 +1306,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
                             || ((
                                 !commonConfig.userProfilePage.showEmail
-                                || usernameConfig?.enableValidator==="false"
+                                || usernameConfig?.enableValidator === "false"
                             )
                                 && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {

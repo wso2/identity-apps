@@ -160,8 +160,8 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
 
     return {
         enableValidator: 
-            String((getConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
-            || !(getConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))),
+            String((getConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
+            || !(getConfig(rules, "EmailFormatValidator", "enable.validator") === "true"))),
         field: "username",
         maxLength: 
             Number(getConfig(rules, "LengthValidator", "max.length"))
