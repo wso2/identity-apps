@@ -308,7 +308,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * Calls API to get validation configuration.
+     * API call to get validation configurations.
      */
     const getConfigurations = (): void => {
 
@@ -319,31 +319,27 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
-                        description: t(
-                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        description:
+                            t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "validationConfig.error.description",
-                            { description: error.response.data.detail }
-                        ),
+                            { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: t(
-                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
-                            "validationConfig.error.message"
-                        )
+                        message:
+                            t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "validationConfig.error.message")
                     });
 
                     return;
                 }
 
                 onAlertFired({
-                    description: t(
-                        "myAccount:components.changePassword.forms.passwordResetForm.validations." +
-                        "validationConfig.genericError.description"
-                    ),
+                    description:
+                        t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t(
-                        "myAccount:components.changePassword.forms.passwordResetForm.validations." +
-                        "validationConfig.genericError.message"
-                    )
+                    message:
+                        t("myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                        "validationConfig.genericError.message")
                 });
             });
     };
@@ -937,8 +933,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 {
-                                    (!commonConfig.userProfilePage.showEmail 
-                                        ||  usernameConfig?.enableValidator==="false")
+                                    (
+                                        !commonConfig.userProfilePage.showEmail 
+                                        ||  usernameConfig?.enableValidator==="false"
+                                    )
                                     &&  fieldName.toLowerCase() === "username"
                                         ? fieldName + " (Email)"
                                         : fieldName
@@ -1306,8 +1304,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                            || ((!commonConfig.userProfilePage.showEmail
-                                || usernameConfig?.enableValidator==="false")
+                            || ((
+                                !commonConfig.userProfilePage.showEmail
+                                || usernameConfig?.enableValidator==="false"
+                            )
                                 && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {
                             return (

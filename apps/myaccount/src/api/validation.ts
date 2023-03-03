@@ -150,8 +150,8 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     if (usernameConf === undefined || usernameConf.length < 1) {
         return;
     }
-    const config: ValidationDataInterface = usernameConf[0];
 
+    const config: ValidationDataInterface = usernameConf[0];
     const rules: ValidationConfInterface[] = config?.rules;
 
     if (rules?.length < 1) {
@@ -160,19 +160,21 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
 
     return {
         enableValidator: 
-                (getConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
-                || !(getConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
+                (
+                    getConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
+                    || !(getConfig(rules, "EmailFormatValidator", "enable.validator")=="true")
+                )
                     ? "true" 
                     : "false",
         field: "username",
         maxLength: 
-        Number(getConfig(rules, "LengthValidator", "max.length"))
-            ? Number(getConfig(rules, "LengthValidator", "max.length"))
-            : null,
+            Number(getConfig(rules, "LengthValidator", "max.length"))
+                ? Number(getConfig(rules, "LengthValidator", "max.length"))
+                : null,
         minLength:
-        Number(getConfig(rules, "LengthValidator", "min.length"))
-            ? Number(getConfig(rules, "LengthValidator", "min.length"))
-            : null,
+            Number(getConfig(rules, "LengthValidator", "min.length"))
+                ? Number(getConfig(rules, "LengthValidator", "min.length"))
+                : null,
         type: "rules"
     };
 };
