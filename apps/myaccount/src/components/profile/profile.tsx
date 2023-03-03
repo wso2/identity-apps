@@ -935,7 +935,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 {
                                     (
                                         !commonConfig.userProfilePage.showEmail 
-                                        ||  usernameConfig?.enableValidator==="false"
+                                        ||  usernameConfig?.enableValidator === "false"
                                     )
                                     &&  fieldName.toLowerCase() === "username"
                                         ? fieldName + " (Email)"
