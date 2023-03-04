@@ -118,6 +118,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                 <Header
                     fluid={ fluid }
                     showSidePanelToggle={ false }
+                    featureAnnouncement={ true }
                 />
             ) }
             footer={ (

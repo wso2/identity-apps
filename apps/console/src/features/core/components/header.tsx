@@ -34,7 +34,10 @@ import {
     Logo,
     ProductBrand,
     Header as ReusableHeader,
-    HeaderPropsInterface as ReusableHeaderPropsInterface
+    HeaderPropsInterface as ReusableHeaderPropsInterface,
+    DocumentationLink,
+    LinkButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
@@ -43,7 +46,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Container, Menu } from "semantic-ui-react";
+import { Container, Icon, Menu } from "semantic-ui-react";
 import { commonConfig, organizationConfigs } from "../../../extensions";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
@@ -63,6 +66,10 @@ interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basic
      * Active view.
      */
     activeView?: AppViewTypes;
+    /**
+     * Flag to enable feature announcement.
+     */
+    featureAnnouncement?: boolean;
 }
 
 /**
@@ -95,6 +102,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const {
         activeView: externallyProvidedActiveView,
+        featureAnnouncement,
         fluid,
         onSidePanelToggleClick,
         [ "data-testid" ]: testId,
@@ -103,6 +111,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector(
@@ -467,6 +476,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     }
                 ])
             }
+            featureAnnouncement={ featureAnnouncement }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
             isPrivilegedUser={ isPrivilegedUser }
@@ -528,6 +538,35 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </div>
                 )
             }
+            {
+                featureAnnouncement && (
+                    <Announcement
+                        message={ t("console:common.header.featureAnnouncements.organizations.message") }
+                        onDismiss={ handleAnnouncementDismiss }
+                        isFeatureAnnouncement={ true }
+                        showCloseIcon={ false }
+                    >
+                        <>
+                            <DocumentationLink
+                                className="pl-3 pr-0"
+                                link={ getLink("manage.organizations.learnMore") }
+                                showIcon={ false }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                            <LinkButton 
+                                className="ml-0"
+                                onClick={ () => {
+                                    history.push(AppConstants.getPaths().get("ORGANIZATIONS"));
+                                } }
+                            >
+                                { t("console:common.header.featureAnnouncements.organizations.buttons.tryout") }
+                                <Icon name="angle right" />
+                            </LinkButton>
+                        </>
+                    </Announcement>
+                )
+            }
         </ReusableHeader>
     );
 };
@@ -537,5 +576,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
  */
 Header.defaultProps = {
     "data-testid": "app-header",
+    featureAnnouncement: false,
     fluid: true
 };

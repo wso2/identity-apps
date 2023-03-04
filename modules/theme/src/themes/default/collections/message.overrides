@@ -24,6 +24,14 @@
         }
     }
 
+    &.feature-announcement { 
+        margin-top: 0; 
+        text-align: center;
+        border-bottom: none;
+        background: #d7e2de;
+        border-radius: 0;
+    }
+
     &.with-close-button {
         padding: 1em 2em 1em 1.5em;
     }
