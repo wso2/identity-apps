@@ -90,6 +90,15 @@ export const console: ConsoleNS = {
                 },
                 tooltip: "Apps"
             },
+            featureAnnouncements: {
+                organizations: {
+                    message: "Présentation des organisations B2B. Commencez à construire votre plateforme " + 
+                    "B2B en intégrant vos organisations partenaires/clientes.",
+                    buttons: {
+                        tryout: "Essaye le"
+                    }
+                }
+            },
             organizationSwitch: {
                 breadcrumbError: {
                     description: "Une erreur s'est produite lors de la récupération de la hiérarchie de l'organisation.",
