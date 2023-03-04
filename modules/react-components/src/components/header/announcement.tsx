@@ -20,7 +20,6 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import {
-    Container,
     Message, MessageProps,
     SemanticCOLORS
 } from "semantic-ui-react";
@@ -83,7 +82,6 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
         isFeatureAnnouncement,
         color,
         className,
-        fluid,
         message,
         onDismiss,
         showCloseIcon,

@@ -28,15 +28,15 @@ import {
 import {
     Announcement,
     AppSwitcher,
+    DocumentationLink,
     GenericIcon,
     HeaderExtension,
     HeaderLinkCategoryInterface,
+    LinkButton,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
     HeaderPropsInterface as ReusableHeaderPropsInterface,
-    DocumentationLink,
-    LinkButton,
     useDocumentation
 } from "@wso2is/react-components";
 import compact from "lodash-es/compact";
