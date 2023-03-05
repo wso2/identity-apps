@@ -59,6 +59,10 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
     brandLink?: string;
     children?: any;
     className?: string;
+    /**
+     * Flag to check feature announcement.
+     */
+    featureAnnouncement?: boolean;
     fixed?: "left" | "right" | "bottom" | "top";
     fluid?: boolean;
     isProfileInfoLoading?: boolean;
@@ -174,6 +178,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         children,
         className,
         extensions,
+        featureAnnouncement,
         fixed,
         fluid,
         isProfileInfoLoading,
@@ -202,6 +207,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         {
             [ "fluid-header" ]: fluid,
             [ "has-announcement" ]: announcement !== undefined,
+            [ "has-feature-announcement" ]: featureAnnouncement == true,
             "show-hamburger": showSidePanelToggle
         }
         , className
