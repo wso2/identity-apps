@@ -89,6 +89,15 @@ export const console: ConsoleNS = {
                 },
                 tooltip: "Apps"
             },
+            featureAnnouncements: {
+                organizations: {
+                    message: "B2B සංවිධාන හඳුන්වා දීම. ඔබේ සහකරු/පාරිභෝගික සංවිධාන ඇතුළත් කිරීමෙන් ඔබේ " + 
+                    "B2B වේදිකාව ගොඩනැගීම ආරම්භ කරන්න.",
+                    buttons: {
+                        tryout: "අත්හදා බලන්න"
+                    }
+                }
+            },
             organizationSwitch: {
                 breadcrumbError: {
                     description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",

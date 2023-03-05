@@ -46,6 +46,10 @@ interface DocumentationLinkPropsInterface extends IdentifiableComponentInterface
      * Specifies if a link text with an empty link or a `#` should be shown.
      */
     showEmptyLink?: boolean;
+    /**
+     * Show documentation icon.
+     */
+    showIcon?: boolean;
 }
 
 /**
@@ -66,6 +70,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
         isLinkRef,
         target,
         showEmptyLink,
+        showIcon,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -88,7 +93,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
             data-componentid={ componentId }
         >
             { children }
-            <Icon className="ml-1" name="external alternate"/>
+            { showIcon && (<Icon className="ml-2" name="external alternate"/>) }
         </a>)
     );
 };
@@ -99,5 +104,6 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
 DocumentationLink.defaultProps = {
     "data-componentid": "documentation-link",
     showEmptyLink: true,
+    showIcon: true,
     target: "_blank"
 };
