@@ -89,6 +89,15 @@ export const console: ConsoleNS = {
                 },
                 tooltip: "Apps"
             },
+            featureAnnouncements: {
+                organizations: {
+                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " + 
+                    "partner/customer organizations.",
+                    buttons: {
+                        tryout: "Try It Out"
+                    }
+                }
+            },
             organizationSwitch: {
                 breadcrumbError: {
                     description: "An error occurred while fetching the organization hierarchy.",

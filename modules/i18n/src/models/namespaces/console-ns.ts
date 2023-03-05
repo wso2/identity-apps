@@ -96,6 +96,14 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            featureAnnouncements: {
+                organizations: {
+                    message: string;
+                    buttons: {
+                        tryout: string; 
+                    };
+                };
+            };
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
