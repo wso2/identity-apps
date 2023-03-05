@@ -94,7 +94,7 @@ export const console: ConsoleNS = {
                     message: "B2B සංවිධාන හඳුන්වා දීම. ඔබේ සහකරු/පාරිභෝගික සංවිධාන ඇතුළත් කිරීමෙන් ඔබේ " + 
                     "B2B වේදිකාව ගොඩනැගීම ආරම්භ කරන්න.",
                     buttons: {
-                        tryout: "Essaye le"
+                        tryout: "අත්හදා බලන්න"
                     }
                 }
             },
