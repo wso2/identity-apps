@@ -20,11 +20,11 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import {
-    Container,
     Message, MessageProps,
     SemanticCOLORS
 } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../assets/images/cross-icon.svg";
+import { ReactComponent as SpeakerIcon } from "../../assets/images/icons/speaker-outline.svg";
 import { GenericIcon } from "../icon";
 
 /**
@@ -41,13 +41,17 @@ export interface AnnouncementPropsInterface extends StrictAnnouncementPropsInter
  */
 export interface StrictAnnouncementPropsInterface {
     /**
+     * Flag to show if it's a feature announcement.
+     */
+    isFeatureAnnouncement?: boolean;
+    /**
      * Main message for the announcement.
      */
     message?: ReactNode;
     /**
      * Background color.
      */
-    color: SemanticCOLORS | "primary" | "secondary" | string;
+    color?: SemanticCOLORS | "primary" | "secondary" | string;
     /**
      * Is fluid layout.
      */
@@ -56,6 +60,10 @@ export interface StrictAnnouncementPropsInterface {
      * Show close icon.
      */
     showCloseIcon?: boolean;
+    /**
+     * Child components.
+     */
+    children?: ReactElement;
 }
 
 /**
@@ -70,9 +78,10 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
 ): ReactElement => {
 
     const {
+        children,
+        isFeatureAnnouncement,
         color,
         className,
-        fluid,
         message,
         onDismiss,
         showCloseIcon,
@@ -85,7 +94,7 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
     const classes = classNames(
         "announcement",
         {
-            [ color ]: color
+            [ color ]: !isFeatureAnnouncement ?? color
         }
         , className
     );
@@ -94,30 +103,42 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
         visible
             ? (
                 <Message
-                    className={ classes }
+                    className={ !isFeatureAnnouncement ? classes : `${ classes } feature-announcement` }
                     data-testid={ testId }
                     data-componentid={ componentId }
                     { ...rest }
                 >
-                    <Container fluid={ fluid }>
-                        <p>
-                            { message }
-                            {
-                                showCloseIcon && (
-                                    <GenericIcon
-                                        icon={ CrossIcon }
-                                        size="nano"
-                                        floated="right"
-                                        onClick={ (e: React.MouseEvent<HTMLDivElement>) => onDismiss(e) }
-                                        fill="white"
-                                        inline
-                                        link
-                                        transparent
-                                    />
-                                )
-                            }
-                        </p>
-                    </Container>
+                    <>
+                        {
+                            isFeatureAnnouncement && (
+                                <GenericIcon
+                                    icon={ SpeakerIcon }
+                                    size="x22"
+                                    onClick={ (e: React.MouseEvent<HTMLDivElement>) => onDismiss(e) }
+                                    inline
+                                    transparent
+                                    verticalAlign="middle"
+                                    className="mr-3 mt-1"
+                                />
+                            )
+                        }
+                        { message }
+                        { children }
+                        {
+                            showCloseIcon && (
+                                <GenericIcon
+                                    icon={ CrossIcon }
+                                    size="nano"
+                                    floated="right"
+                                    onClick={ (e: React.MouseEvent<HTMLDivElement>) => onDismiss(e) }
+                                    fill={ !isFeatureAnnouncement ?? "white" }
+                                    inline
+                                    link
+                                    transparent
+                                />
+                            )
+                        }
+                    </>
                 </Message>
             )
             : null
