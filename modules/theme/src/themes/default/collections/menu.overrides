@@ -58,6 +58,11 @@
             display: block;
             height: auto;
         }
+        &.has-feature-announcement {
+            display: block; 
+            height: auto;
+            border-bottom: 0px;
+        }
         .header-extensions {
             .header-link {
                 .header-link-inner {
