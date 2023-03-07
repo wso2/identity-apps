@@ -119,8 +119,7 @@
                                     data-size="invisible"
                                     data-callback="onCompleted"
                                     data-action="usernameRecovery"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%

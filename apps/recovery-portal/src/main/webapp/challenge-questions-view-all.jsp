@@ -132,8 +132,7 @@
                                     data-size="invisible"
                                     data-callback="onCompleted"
                                     data-action="securityQuestion"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
                             </div>
                         </div>
                         <%
