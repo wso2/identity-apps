@@ -130,6 +130,12 @@ export class ServerConfigurationsConstants {
 	public static readonly PASSWORD_HISTORY_CONNECTOR_ID: string = "cGFzc3dvcmRIaXN0b3J5";
 
 	/**
+	 * UUID of the identity governance password expiry connector.
+	 *
+	 */
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
+
+	/**
 	 * UUID of the identity governance captcha for sso login connector.
 	 *
 	 */

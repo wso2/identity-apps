@@ -52,6 +52,9 @@ export const getServerConfigurationsResourceEndpoints = (
         passwordHistory: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+        passwordExpiry: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID}`,
         passwordPolicies: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }`,

@@ -28,6 +28,7 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     loginPolicies: string;
     multiFactorAuthenticators: string;
     passwordHistory: string;
+    passwordExpiry: string;
     passwordPolicies: string;
     passwordPolicy: string;
     selfSignUp: string;

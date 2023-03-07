@@ -20,6 +20,7 @@ import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import {
+    PasswordExpiryInterface,
     PasswordHistoryCountInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
@@ -32,6 +33,26 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorToggleName: {},
     connectorsToShow: [ "all" ],
     intendSettings: true,
+    passwordExpiryComponent: (
+        _componentId: string,
+        _passwordExpiryEnabled: boolean,
+        _setPasswordExpiryEnabled: (state: boolean) => void,
+        _t: TFunction<"translation", undefined>
+    ): ReactElement => {
+        return null;
+    },
+    processPasswordExpiryInitialValues: (
+        _initialValues: ValidationFormInterface,
+        _passwordExpiry: GovernanceConnectorInterface,
+        _setPasswordExpiryEnabled: (state: boolean) => void
+    ): PasswordExpiryInterface => {
+        return;
+    },
+    processPasswordExpirySubmitData: (
+        _data: PasswordExpiryInterface
+    ): Promise<any> => {
+        return;
+    },
     passwordHistoryCountComponent: (
         _componentId: string,
         _passwordHistoryEnabled: boolean,
@@ -95,6 +116,31 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: true,
     showPageHeading: true,
+    usePasswordExpiry: () => ({
+        data: null,
+        error: null,
+        isLoading: false,
+        isValidating: false,
+        mutate: () => {
+            return Promise.resolve({
+                config: {},
+                data: {
+                    category: "",
+                    displayName: "",
+                    friendlyName: "",
+                    id: "",
+                    name: "",
+                    order: "",
+                    properties: [],
+                    subCategory: ""
+                },
+                headers: {},
+                request: {},
+                status: 200,
+                statusText: "OK"
+            });
+        }
+    }),
     usePasswordHistory: () => ({
         data: null,
         error: null,
