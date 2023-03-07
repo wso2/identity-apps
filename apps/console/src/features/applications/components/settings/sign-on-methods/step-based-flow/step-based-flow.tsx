@@ -265,6 +265,25 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
         const hasStepsWithOptions: boolean = steps.some((step: AuthenticationStepInterface) => !isEmpty(step.options));
+        let hasFoundTheSubjectIdentifiableStep: boolean = false;
+
+        authenticationSteps.forEach((step: AuthenticationStepInterface) => {
+            step.options.map((option: AuthenticatorInterface) => {
+                const isSubjectIdentifiableAuthenticator: boolean = ![
+                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                ].includes(option.authenticator);
+
+                if (isSubjectIdentifiableAuthenticator) {
+                    if (step.id !== subjectStepId && !hasFoundTheSubjectIdentifiableStep) {
+                        setSubjectStepId(step.id);
+                        hasFoundTheSubjectIdentifiableStep = true;
+                    }
+                }
+            });
+        });
 
         if (hasStepsWithOptions) {
             onAuthenticationSequenceChange(false, authenticationSteps);
@@ -273,6 +292,33 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
         onAuthenticationSequenceChange(true, authenticationSteps);
     }, [ authenticationSteps ]);
+
+    /**
+     * This identifies what should be the subject identifier for the current authentication steps and set it as
+     * subject id. This resolves the issue of subject identifier always been step 01.
+     */
+    useEffect(() => {
+        let hasFoundTheSubjectIdentifiableStep: boolean = false;
+
+        authenticationSteps.forEach((step: AuthenticationStepInterface) => {
+            step.options.map((option: AuthenticatorInterface) => {
+                const isSubjectIdentifiableAuthenticator: boolean = ![
+                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                ].includes(option.authenticator);
+
+                if (isSubjectIdentifiableAuthenticator) {
+                    if (step.id !== subjectStepId && !hasFoundTheSubjectIdentifiableStep) {
+                        setSubjectStepId(step.id);
+                        hasFoundTheSubjectIdentifiableStep = true;
+                    }
+                }
+            });
+        });
+    }, [ authenticationSteps ]);
+
 
     /**
      * Validates if the addition to the step is valid.
@@ -395,7 +441,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator.authenticators.find(
-            (item: FederatedAuthenticatorInterface) => 
+            (item: FederatedAuthenticatorInterface) =>
                 item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
