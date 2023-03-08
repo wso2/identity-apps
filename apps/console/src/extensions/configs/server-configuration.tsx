@@ -41,18 +41,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ): ReactElement => {
         return null;
     },
-    processPasswordExpiryInitialValues: (
-        _initialValues: ValidationFormInterface,
-        _passwordExpiry: GovernanceConnectorInterface,
-        _setPasswordExpiryEnabled: (state: boolean) => void
-    ): PasswordExpiryInterface => {
-        return;
-    },
-    processPasswordExpirySubmitData: (
-        _data: PasswordExpiryInterface
-    ): Promise<any> => {
-        return;
-    },
     passwordHistoryCountComponent: (
         _componentId: string,
         _passwordHistoryEnabled: boolean,
@@ -70,6 +58,18 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     },
     processPasswordCountSubmitData: (
         _data: PasswordHistoryCountInterface
+    ): Promise<any> => {
+        return;
+    },
+    processPasswordExpiryInitialValues: (
+        _initialValues: ValidationFormInterface,
+        _passwordExpiry: GovernanceConnectorInterface,
+        _setPasswordExpiryEnabled: (state: boolean) => void
+    ): PasswordExpiryInterface => {
+        return;
+    },
+    processPasswordExpirySubmitData: (
+        _data: PasswordExpiryInterface
     ): Promise<any> => {
         return;
     },
