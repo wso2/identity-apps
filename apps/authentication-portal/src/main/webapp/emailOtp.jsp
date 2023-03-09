@@ -48,6 +48,12 @@
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
+            if (errorMessage.equalsIgnoreCase("token.expired")) {
+            	errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.code.expired.resend");
+            }
+            if (errorMessage.equalsIgnoreCase("token.expired.email.sent")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.token.expired.email.sent");
+            }
         }
     }
 %>
@@ -149,15 +155,17 @@
                             <div class="align-right buttons">
                                 <%
                                     if ("true".equals(authenticationFailed)) {
+                                        String authFailureMsg = request.getParameter("authFailureMsg");
+                                        if (!"token.expired.email.sent".equals(authFailureMsg)) {
                                 %>
-                                <a 
-                                    class="ui button secondary" 
-                                    onclick="resendOtp()" 
-                                    tabindex="0" 
+                                <a
+                                    class="ui button secondary"
+                                    onclick="resendOtp()"
+                                    tabindex="0"
                                     onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
-                                <% } %>
+                                <% } }%>
                                 <input type="button" name="authenticate" id="authenticate"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                     class="ui primary button"/>
