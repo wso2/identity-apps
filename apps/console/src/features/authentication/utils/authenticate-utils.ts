@@ -60,6 +60,7 @@ export class AuthenticateUtils {
                 revocationEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.tokenRevocationEndpointURL,
                 tokenEndpoint: window["AppUtils"]?.getConfig()?.idpConfigs?.tokenEndpointURL
             },
+            periodicTokenRefresh: window["AppUtils"]?.getConfig()?.idpConfigs?.periodicTokenRefresh,
             resourceServerURLs: AuthenticateUtils.resolveBaseUrls(),
             responseMode: window["AppUtils"]?.getConfig()?.idpConfigs?.responseMode ?? responseModeFallback,
             scope: window["AppUtils"]?.getConfig()?.idpConfigs?.scope ?? [ TokenConstants.SYSTEM_SCOPE ],
@@ -103,8 +104,8 @@ export class AuthenticateUtils {
      * @returns string[]
      */
     public static resolveBaseUrls(): string[] {
-        let baseUrls = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
-        const serverOrigin = window["AppUtils"]?.getConfig()?.serverOrigin;
+        let baseUrls: string[] = window["AppUtils"]?.getConfig()?.idpConfigs?.baseUrls;
+        const serverOrigin: string = window["AppUtils"]?.getConfig()?.serverOrigin;
 
         if (baseUrls) {
             // If the server origin is not specified in the overridden config, append it.
