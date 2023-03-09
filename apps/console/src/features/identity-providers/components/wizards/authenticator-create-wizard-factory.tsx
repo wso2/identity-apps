@@ -28,6 +28,7 @@ import { ExpertModeAuthenticationProviderCreateWizard } from "./expert-mode";
 import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
+import { HyprAuthenticationProviderCreateWizard } from "./hypr";
 import { MicrosoftAuthenticationProviderCreateWizard } from "./microsoft";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import {
@@ -251,7 +252,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
         getIdentityProviderList(null, null, "name sw " + idpName)
             .then((response: IdentityProviderListResponseInterface) => {
                 setPossibleListOfDuplicateIDPs(response?.totalResults
-                    ? response?.identityProviders?.map((eachIdp:StrictIdentityProviderInterface) => eachIdp.name)
+                    ? response?.identityProviders?.map((eachIdp: StrictIdentityProviderInterface) => eachIdp.name)
                     : []
                 );
             });
@@ -415,6 +416,24 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <ExpertModeAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR:
+            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
+                ? (
+                    <HyprAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {

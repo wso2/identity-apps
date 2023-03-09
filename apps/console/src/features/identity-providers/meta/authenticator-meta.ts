@@ -119,6 +119,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
             ]
         }, authenticatorId);
     }
@@ -199,7 +202,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple"
+            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple",
+            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
     }
 
