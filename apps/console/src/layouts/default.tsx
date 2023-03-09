@@ -46,6 +46,8 @@ import {
     UIConstants,
     getDefaultLayoutRoutes
 } from "../features/core";
+import { OrganizationType } from "../features/organizations/constants";
+import { useGetOrganizationType } from "../features/organizations/hooks/use-get-organization-type";
 
 /**
  * Default page layout component Prop types.
@@ -80,6 +82,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -120,7 +123,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                 <Header
                     fluid={ fluid }
                     showSidePanelToggle={ false }
-                    featureAnnouncement={ true }
+                    featureAnnouncement={ orgType !== OrganizationType.SUBORGANIZATION }
                 />
             ) }
             footer={ (
