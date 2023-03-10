@@ -5717,6 +5717,19 @@ export const console: ConsoleNS = {
                     loginAttemptsSecurity : {
                         name: "පිවිසුම් උත්සාහය ආරක්ෂාව",
                         connectors: {
+                            adminSessionAdvisoryBannerHandler: {
+                                friendlyName: "පරිපාලක සැසි උපදේශන බැනරය",
+                                properties: {
+                                    adminSessionAdvisoryBannerEnable: {
+                                        hint: "පිවිසුම් පිටුවේ දර්ශනය වීමට බැනරය සබල කරන්න",
+                                        label: "බැනරය සක්රිය කරන්න"
+                                    },
+                                    adminSessionAdvisoryBannerDescription: {
+                                        hint: "පිවිසුම් පිටුවේ ප්‍රදර්ශනය කිරීමට බැනර් විස්තරය",
+                                        label: "බැනර් විස්තරය"
+                                    }
+                                }
+                            },
                             accountLockHandler: {
                                 friendlyName: "ගිණුම් අගුල",
                                 properties: {

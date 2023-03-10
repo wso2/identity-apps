@@ -7317,6 +7317,19 @@ export const console: ConsoleNS = {
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
                         connectors: {
+                            adminSessionAdvisoryBannerHandler: {
+                                friendlyName: "Admin Session Advisory Banner",
+                                properties: {
+                                    adminSessionAdvisoryBannerEnable: {
+                                        hint: "Enable banner to be displayed in the login page",
+                                        label: "Enable Banner"
+                                    },
+                                    adminSessionAdvisoryBannerDescription: {
+                                        hint: "Banner description to be displayed in the login page",
+                                        label: "Banner Description"
+                                    }
+                                }
+                            },
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
                                 properties: {

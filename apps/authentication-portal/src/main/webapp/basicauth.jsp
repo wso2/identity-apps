@@ -143,6 +143,8 @@
     Boolean isUsernameRecoveryEnabledInTenant;
     Boolean isPasswordRecoveryEnabledInTenant;
     Boolean isMultiAttributeLoginEnabledInTenant;
+    Boolean isAdminSessionAdvisoryControlEnabledInTenant;
+    String adminSessionAdvisoryControlDescriptionOfTenant;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -156,6 +158,8 @@
         isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
         isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+        isAdminSessionAdvisoryControlEnabledInTenant = preferenceRetrievalClient.checkAdminSessionAdvisoryBannerControlEnabled(tenantDomain);
+        adminSessionAdvisoryControlDescriptionOfTenant = preferenceRetrievalClient.getAdminSessionAdvisoryBannerDescription(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", AuthenticationEndpointUtil
@@ -286,6 +290,12 @@
         </form>
     </div>
     <div class="ui divider hidden"></div>
+<% } %>
+
+<% if (isAdminSessionAdvisoryControlEnabledInTenant == true) { %>
+    <div class="ui warning message" data-testid="login-page-admin-session-advisory-banner">
+        <%=adminSessionAdvisoryControlDescriptionOfTenant%>
+    </div>
 <% } %>
 
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="loginForm">

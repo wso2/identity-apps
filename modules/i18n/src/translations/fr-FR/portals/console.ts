@@ -5845,6 +5845,19 @@ export const console: ConsoleNS = {
                     loginAttemptsSecurity : {
                         name: "La connexion tente la sécurité",
                         connectors: {
+                            adminSessionAdvisoryBannerHandler: {
+                                friendlyName: "Bannière d'avis de session d'administration",
+                                properties: {
+                                    adminSessionAdvisoryBannerEnable: {
+                                        hint: "Activer la bannière à afficher dans la page de connexion",
+                                        label: "Activer la bannière"
+                                    },
+                                    adminSessionAdvisoryBannerDescription: {
+                                        hint: "Description de la bannière à afficher dans la page de connexion",
+                                        label: "Description de la bannière"
+                                    }
+                                }
+                            },
                             accountLockHandler: {
                                 friendlyName: "Verrouillage du compte",
                                 properties: {

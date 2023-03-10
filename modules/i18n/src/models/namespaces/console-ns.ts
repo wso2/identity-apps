@@ -3733,6 +3733,19 @@ export interface ConsoleNS {
                     loginAttemptsSecurity : {
                         name: string;
                         connectors: {
+                            adminSessionAdvisoryBannerHandler: {
+                                friendlyName: string;
+                                properties: {
+                                    adminSessionAdvisoryBannerEnable: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    adminSessionAdvisoryBannerDescription: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                };
+                            },
                             accountLockHandler: {
                                 friendlyName: string;
                                 properties: {
