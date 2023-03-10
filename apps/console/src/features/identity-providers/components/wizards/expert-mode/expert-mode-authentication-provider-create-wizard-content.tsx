@@ -63,6 +63,10 @@ interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface exte
      * @param values - Form values.
      */
     onSubmit: (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+     * On focus callback.
+     */
+    setOnFocus: any;
 }
 
 const FORM_ID: string = "expert-mode-authenticator-wizard-form";
@@ -86,6 +90,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             template,
             setTotalPage,
             onSubmit,
+            setOnFocus,
             [ "data-componentid" ]: componentId
         } = props;
 
@@ -180,6 +185,9 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
+                        onFocus={ () => { 
+                            setOnFocus(0);
+                        } }
                         ariaLabel="Expert Mode IDP Name"
                         inputType="name"
                         name="name"
@@ -205,6 +213,9 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         width={ 13 }
                     />
                     <Field.Textarea
+                        onFocus={ () => { 
+                            setOnFocus(1);
+                        } }
                         ariaLabel="Expert Mode IDP Description"
                         inputType="description"
                         name="description"

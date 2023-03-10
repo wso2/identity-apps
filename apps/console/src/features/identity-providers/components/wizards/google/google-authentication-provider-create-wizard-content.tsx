@@ -58,6 +58,11 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * @param values - Form values.
      */
     onSubmit: (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    
+    /**
+     * On focus callback.
+     */
+    setOnFocus: any;
 }
 
 /**
@@ -103,6 +108,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
+        setOnFocus,
         [ "data-testid" ]: testId
     } = props;
 
@@ -198,6 +204,9 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         } }
                     >
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(1);
+                            } }
                             ariaLabel="Google IDP Name"
                             inputType="name"
                             name="name"
@@ -223,6 +232,9 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(2);
+                            } }
                             ariaLabel="Google Client ID"
                             inputType="client_id"
                             name="clientId"
@@ -253,6 +265,9 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => {
+                                setOnFocus(3);
+                            } }
                             ariaLabel="Google Client Secret"
                             inputType="password"
                             className="addon-field-wrapper"

@@ -61,6 +61,10 @@ interface HyprAuthenticationProviderCreateWizardContentPropsInterface extends Id
      * @param values - Form values.
      */
     onSubmit: (values: HyprAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+     * On focus callback.
+     */
+    setOnFocus: any;
 }
 
 const FORM_ID: string = "hypr-authenticator-wizard-form";
@@ -84,6 +88,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
+        setOnFocus,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -196,6 +201,9 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(1);
+                            } }
                             ariaLabel="HYPR IDP Name"
                             inputType="name"
                             name="name"
@@ -221,6 +229,9 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(2);
+                            } }
                             ariaLabel="HYPR App ID"
                             inputType="client_id"
                             name="appId"
@@ -250,6 +261,9 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(3);
+                            } }
                             ariaLabel="HYPR Base URL"
                             inputType="url"
                             name="baseUrl"
@@ -279,6 +293,9 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(4);
+                            } }
                             ariaLabel="HYPR API Token"
                             inputType="password"
                             className="addon-field-wrapper"

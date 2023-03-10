@@ -143,6 +143,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
+        const [ current , setCurrent ] = useState <number>(0);
 
         /**
         * Track wizard steps from wizard component.
@@ -413,7 +414,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
                         <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp/>
+                            <WizardHelp current={ current }/>
                         </Suspense>
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
@@ -495,6 +496,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                         >
                             { alert && alertComponent }
                             <GitHubAuthenticationProviderCreateWizardContent
+                                setOnFocus={ setCurrent }
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunctionCb: () => void) => {
                                     submitForm = submitFunctionCb;

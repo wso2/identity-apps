@@ -520,10 +520,11 @@
                         opacity: 1;
 
                         .modal-content {
-                           position: absolute;
-                           bottom: 0;
-                           height: auto !important;
-                           top: @sidePanelModalHeaderHeight;
+                            padding: 0px;
+                            position: absolute;
+                            bottom: 0;
+                            height: auto !important;
+                            top: @sidePanelModalHeaderHeight;
                         }
                     }
 

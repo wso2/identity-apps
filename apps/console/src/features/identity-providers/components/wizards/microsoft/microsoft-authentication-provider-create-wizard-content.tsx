@@ -62,6 +62,11 @@ interface MicrosoftAuthenticationProviderCreateWizardContentPropsInterface exten
      * @param values - Form values.
      */
     onSubmit: (values: MicrosoftAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    
+    /**
+     * On focus callback.
+     */
+    setOnFocus: any;
 }
 
 const FORM_ID: string = "microsoft-authenticator-wizard-form";
@@ -85,6 +90,7 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
         template,
         setTotalPage,
         onSubmit,
+        setOnFocus,
         [ "data-testid" ]: testId
     } = props;
 
@@ -193,6 +199,9 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(1);
+                            } }
                             ariaLabel="Microsoft IDP Name"
                             inputType="name"
                             name="name"
@@ -218,6 +227,9 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(2);
+                            } }
                             ariaLabel="Microsoft Client ID"
                             inputType="client_id"
                             name="clientId"
@@ -248,6 +260,9 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => { 
+                                setOnFocus(3);
+                            } }
                             ariaLabel="Microsoft Client Secret"
                             inputType="password"
                             className="addon-field-wrapper"

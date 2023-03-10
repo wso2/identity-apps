@@ -1,172 +1,218 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable sort-keys */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/typedef */
+/* eslint-disable header/header */
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
 
-/**
- * Prop types of the component.
- */
-type GoogleIDPCreateWizardHelpPropsInterface = TestableComponentInterface
-
-/**
- * Help content for the custom IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- * @returns React Element for Google Create Wizard
- */
-const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpPropsInterface> = (
-    props: GoogleIDPCreateWizardHelpPropsInterface
-): ReactElement => {
-
-    const {
-        [ "data-testid" ]: testId
-    } = props;
-
+type props = {
+    current: any
+}
+const GoogleIDPCreateWizardHelp = ({ current } : props) => {
     const { t } = useTranslation();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const [ currentState, setCurrentState ] = useState <any>();
 
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
     useEffect(() => {
+        setCurrentState(current);
+    }, [ current ]);
+    const CONTENTS = [
+        {
+            id: 0,
+            body: (
+                <><Message
+                    type="info"
+                    header={
+                        t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                        "preRequisites.heading")
+                    }
+                    content={
+                        (<>
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                    "preRequisites.getCredentials"
+                                    }
+                                >
+                                Before you begin, create an <strong>OAuth credential</strong> on the <a
+                                        href="https://console.developers.google.com"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                </Trans>
+                            </p>
+                            <p>
 
-        if (useNewConnectionsView !== undefined) {
-            return;
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
+                                    ".preRequisites.configureRedirectURL"
+                                    }
+                                >
+                                Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                                </Trans>
+
+                                <CopyInputField
+                                    className="copy-input-dark spaced"
+                                    value={ config?.deployment?.customServerHost + "/commonauth" }
+                                />
+
+                                <a
+                                    href="https://support.google.com/googleapi/answer/6158849"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    {
+                                        t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
+                                        "preRequisites.configureOAuthApps")
+                                    }
+                                </a>
+                            </p>
+                        </>)
+                    }
+                />
+                </>
+                    
+            )
+        },
+        {
+            id: 1,
+            title:  t("console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.name.heading"), 
+            body:(    
+                          
+                <p>
+                    { useNewConnectionsView
+                        ? t("console:develop.features.authenticationProvider.templates.google." +
+                                    "wizardHelp.name.connectionDescription")
+                        : t("Provide a unique name for the selected identity provider to be easily identifiable.") }
+                </p>                
+            )
+
+        },
+        {
+            id: 2,
+            title: t("console:develop.features.authenticationProvider.templates.google.wizardHelp.clientId.heading"),
+            body:(
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.clientId.description"
+                        }
+                    >
+                    Provide the <Code>Client ID</Code> obtained from Google.
+                    </Trans>
+                </p>
+            )
+        },
+        {
+            id: 3,
+            title: t("console:develop.features.authenticationProvider.templates.google" +
+            ".wizardHelp.clientSecret.heading"),
+            body: (
+                <p>
+                    <Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.templates.google" +
+                        ".wizardHelp.clientSecret.description"
+                        }
+                    >
+                    Provide the <Code>Client Secret</Code> obtained from Google.
+                    </Trans>
+                </p>
+            )
         }
+    ];
 
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
+    const [ currentContent, setCurrentContent ] = useState(0);
+
+    const handleClickLeft = () => {
+
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
+        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
+    };
+    const handleClickRight = () =>{
+        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+        setCurrentState(currentState === 3 ?  3 : currentState + 1);
+    };
+
+    const isLeftButtonDisabled = currentState === 0;
+    const isRightButtonDisabled = currentState === 3;
+
+    const leftButtonColor = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor = isRightButtonDisabled ? "grey" : "orange";
+
+    const progress = (currentState / (3)) * 100;
+
+    const [ sidebarprogress, setSidebarprogress ] = useState(0);
 
     return (
-        <div data-testid={ testId }>
-            <Message
-                type="info"
-                header={
-                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                        "preRequisites.heading")
-                }
-                content={
-                    (<>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                    "preRequisites.getCredentials"
-                                }
-                            >
-                                Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                    href="https://console.developers.google.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
-                            </Trans>
-                        </p>
-                        <p>
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content">
 
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
-                                    ".preRequisites.configureRedirectURL"
-                                }
-                            >
-                                Use the following URL as the <strong>Authorized Redirect URI</strong>.
-                            </Trans>
-
-                            <CopyInputField
-                                className="copy-input-dark spaced"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
-
-                            <a
-                                href="https://support.google.com/googleapi/answer/6158849"
-                                target="_blank"
-                                rel="noopener noreferrer">
-                                {
-                                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                        "preRequisites.configureOAuthApps")
-                                }
-                            </a>
-                        </p>
-                    </>)
-                }
-            />
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.google" +
-                        ".wizardHelp.name.heading")
-                }
-            </Heading>
-            <p>
-                {
-                    useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.google." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.google." +
-                            "wizardHelp.name.idpDescription")
-                }
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.google.wizardHelp.clientId.heading") }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.google" +
-                        ".wizardHelp.clientId.description"
-                    }
-                >
-                    Provide the <Code>Client ID</Code> obtained from Google.
-                </Trans>
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.google" +
-                        ".wizardHelp.clientSecret.heading")
-                }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.google" +
-                        ".wizardHelp.clientSecret.description"
-                    }
-                >
-                    Provide the <Code>Client Secret</Code> obtained from Google.
-                </Trans>
-            </p>
-        </div>
+                    { CONTENTS.map(({ id, title, body }) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ leftButtonColor }
+                            onClick={ handleClickLeft }
+                            className="idp-sidepanel-button"
+                            disabled={ isLeftButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ rightButtonColor }
+                            onClick={ handleClickRight }
+                            className="idp-sidepanel-button"
+                            disabled={ isRightButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
     );
 };
 

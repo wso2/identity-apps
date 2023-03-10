@@ -1,94 +1,187 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable sort-keys */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/typedef */
+/* eslint-disable header/header */
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
+import React, { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Icon } from "semantic-ui-react";
-import { store } from "../../../../../core";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { Button, Icon, Progress, Segment, Sidebar } from "semantic-ui-react";
 
-/**
- * Prop types of the component.
- */
-type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
+type props = {
+    current: any
+}
+const CustomIdentityProviderCreateWizardHelp = ({ current } : props) => {
+    const { t } = useTranslation();
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const [ currentState, setCurrentState ] = useState <any>();
 
-/**
- * Help content for the custom IDP template creation wizard.
- *
- * @param {CustomIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
- */
-const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface>
-    = ( props: CustomIdentityProviderCreateWizardHelpPropsInterface ): ReactElement => {
-
-        const {
-            [ "data-testid" ]: testId
-        } = props;
-
-        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-        return (
-            <div data-testid={ testId }>
-                <Message
-                    type="info"
-                    header="Prerequisite"
-                    content={
-                        <p>Before you begin, register an application in the Identity Provider, and obtain a
-                            <strong> client ID & secret</strong>. Use the following URL as the <strong>
+    useEffect(() => {
+        setCurrentState(current);
+    }, [ current ]);
+    const CONTENTS = [
+        {
+            id: 0,
+            body: (
+                <>
+                    <Message
+                        type="info"
+                        header="Prerequisite"
+                        content={
+                            (<p>Before you begin, register an application in the Identity Provider, and obtain a
+                                <strong> client ID & secret</strong>. Use the following URL as the <strong>
                                 Authorized Redirect URL</strong>.
-                            <br />
-                            <br />
-                            <CopyInputField
-                                className="copy-input-dark"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
-                            <br />
-                            <Icon name="info circle" />
+                                <br />
+                                <br />
+                                <CopyInputField
+                                    className="copy-input-dark"
+                                    value={ config?.deployment?.customServerHost + "/commonauth" }
+                                />
+                                <br />
+                                <Icon name="info circle" />
                             The URL to which the authorization code is sent upon authentication and where the
                             user is redirected to upon logout.
-                        </p>
-                    }
-                />
-                <Heading as="h5">Client ID</Heading>
-                <p>Provide the client ID obtained from the identity provider.</p>
-                <Divider />
-                <Heading as="h5">Client secret</Heading>
-                <p>Provide the client secret obtained from the identity provider.</p>
-                <Divider />
-                <Heading as="h5">Authorization endpoint URL</Heading>
-                <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-                <p>E.g., https://enterprise_domain/authorize</p>
-                <Divider />
-                <Heading as="h5">Token endpoint URL</Heading>
-                <p>Provide the standard token endpoint URL of the identity provider.</p>
-                <p>E.g., https://enterprise_domain/token</p>
+                            </p>)
+                        }
+                    />
+                </>
+                    
+            )
+        },
+        {
+            id: 1,
+            title:  t("Client ID"), 
+            body:(    
+                          
+                <p>Provide the client ID obtained from the identity provider.</p>         
+            )
 
-            </div>
-        );
+        },
+        {
+            id: 2,
+            title: t("Client secret"),
+            body:(
+
+                <p>Provide the client secret obtained from the identity provider.</p>
+
+            )
+        },
+        {
+            id: 3,
+            title: t("Authorization endpoint URL"),
+            body: (
+                <>
+                    <p>Provide the standard authorization endpoint URL of the identity provider.</p>
+                    <p>E.g., https://enterprise_domain/authorize</p>
+                </>
+            )
+        },
+        {
+            id: 4,
+            title: t("Token endpoint URL"),
+            body: (
+                <>
+                    <p>Provide the standard token endpoint URL of the identity provider.</p>
+                    <p>E.g., https://enterprise_domain/token</p>
+                </>
+            )
+        }
+
+    ];
+
+    const [ currentContent, setCurrentContent ] = useState(0);
+
+    const handleClickLeft = () => {
+
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
+        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
+    };
+    const handleClickRight = () =>{
+        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+        setCurrentState(currentState === 4 ?  4 : currentState + 1);
+    };
+
+    const isLeftButtonDisabled = currentState === 0;
+    const isRightButtonDisabled = currentState === 4;
+
+    const leftButtonColor = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor = isRightButtonDisabled ? "grey" : "orange";
+
+    const progress = (currentState / (4)) * 100;
+
+    const [ sidebarprogress, setSidebarprogress ] = useState(0);
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content-large">
+
+                    { CONTENTS.map(({ id, title, body }) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ leftButtonColor }
+                            onClick={ handleClickLeft }
+                            className="idp-sidepanel-button"
+                            disabled={ isLeftButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ rightButtonColor }
+                            onClick={ handleClickRight }
+                            className="idp-sidepanel-button"
+                            disabled={ isRightButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
+    );
 };
 
 /**
  * Default props for the component
  */
 CustomIdentityProviderCreateWizardHelp.defaultProps = {
-    "data-testid": "custom-app-create-wizard-help"
+    "data-testid": "google-idp-create-wizard-help"
 };
 
 /**

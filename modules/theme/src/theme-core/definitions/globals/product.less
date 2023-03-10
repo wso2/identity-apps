@@ -2100,6 +2100,10 @@ code {
     &.one-liner {
         .CodeMirror {
             padding: @codeEditorOneLinerPadding;
+
+            .CodeMirror-lines {
+                max-width: 230px;
+            }
         }
     }
 }

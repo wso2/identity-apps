@@ -120,6 +120,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
+        const [ current , setCurrent ] = useState <number>(0);
 
         /**
         * Track wizard steps from wizard component.
@@ -345,7 +346,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
                         <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp/>
+                            <WizardHelp current={ current }/>
                         </Suspense>
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
@@ -428,6 +429,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                         >
                             { alert && alertComponent }
                             <ExpertModeAuthenticationProviderCreateWizardContent
+                                setOnFocus={ setCurrent }
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunctionCb: () => void) => {
                                     submitForm = submitFunctionCb;
