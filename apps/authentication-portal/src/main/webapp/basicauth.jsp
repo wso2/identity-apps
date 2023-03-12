@@ -293,7 +293,7 @@
 <% } %>
 
 <% if (isAdminSessionAdvisoryControlEnabledInTenant == true) { %>
-    <div class="ui warning message" data-testid="login-page-admin-session-advisory-banner">
+    <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
         <%=adminSessionAdvisoryControlDescriptionOfTenant%>
     </div>
 <% } %>
