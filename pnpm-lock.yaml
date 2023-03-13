@@ -326,7 +326,7 @@ importers:
 
   apps/console:
     specifiers:
-      '@asgardeo/auth-react': ^1.1.21
+      '@asgardeo/auth-react': ^1.1.22
       '@pmmmwh/react-refresh-webpack-plugin': ^0.4.3
       '@svgr/webpack': 4.3.2
       '@testing-library/dom': ^7.24.3
@@ -422,7 +422,7 @@ importers:
       typescript: ^4.6.4
       ua-parser-js: 0.7.28
     dependencies:
-      '@asgardeo/auth-react': 1.1.21_lgf4z6atbkptvpgsbfea37y6zq
+      '@asgardeo/auth-react': 1.1.22_lgf4z6atbkptvpgsbfea37y6zq
       '@wso2is/access-control': link:../../modules/access-control
       '@wso2is/core': link:../../modules/core
       '@wso2is/form': link:../../modules/form
@@ -521,7 +521,7 @@ importers:
 
   apps/myaccount:
     specifiers:
-      '@asgardeo/auth-react': ^1.1.21
+      '@asgardeo/auth-react': ^1.1.22
       '@babel/polyfill': ^7.0.0
       '@testing-library/jest-dom': ^5.11.9
       '@types/history': ^4.7.3
@@ -593,7 +593,7 @@ importers:
       typescript: ^4.6.4
       ua-parser-js: 0.7.28
     dependencies:
-      '@asgardeo/auth-react': 1.1.21_lgf4z6atbkptvpgsbfea37y6zq
+      '@asgardeo/auth-react': 1.1.22_lgf4z6atbkptvpgsbfea37y6zq
       '@babel/polyfill': 7.12.1
       '@wso2is/access-control': link:../../modules/access-control
       '@wso2is/core': link:../../modules/core
@@ -723,7 +723,7 @@ importers:
 
   modules/core:
     specifiers:
-      '@asgardeo/auth-react': ^1.1.21
+      '@asgardeo/auth-react': ^1.1.22
       '@braintree/sanitize-url': ^5.0.0
       '@types/crypto-js': ^3.1.43
       '@types/jest': ^26.0.14
@@ -757,7 +757,7 @@ importers:
       typescript: ^4.6.4
       ua-parser-js: 0.7.28
     dependencies:
-      '@asgardeo/auth-react': 1.1.21
+      '@asgardeo/auth-react': 1.1.22
       '@braintree/sanitize-url': 5.0.2
       '@types/jest': 26.0.24
       axios: 0.21.4
@@ -1284,28 +1284,28 @@ packages:
     resolution: {integrity: sha512-Wl+JzGF+xy7yesscJh57jXYMqMKd9X13n9Xuxhlhi1n+wb/jcVsYua5Fw6UvOA/+eCwh6f7F93frfzZdVHpqmg==}
     dev: false
 
-  /@asgardeo/auth-react/1.1.21:
-    resolution: {integrity: sha512-MFfax53grOiwSYd5uNYNN3c2bp4nqMNd30NotCW5XgzH1lHDjy8kCoqWoMcLPL/v2zO/iV9c3gJ3ascrbO0wqA==}
+  /@asgardeo/auth-react/1.1.22:
+    resolution: {integrity: sha512-jTrpt7lU+FV4SRb/7bpCld0zhVRMGLhuWP/zaZbNr+GE9Y2KLE11YwSwpffLRWpkJyBNDEFVYvHeg7hnctWi/w==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^5.2.0
     dependencies:
-      '@asgardeo/auth-spa': 0.4.11
+      '@asgardeo/auth-spa': 0.4.12
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@asgardeo/auth-react/1.1.21_lgf4z6atbkptvpgsbfea37y6zq:
-    resolution: {integrity: sha512-MFfax53grOiwSYd5uNYNN3c2bp4nqMNd30NotCW5XgzH1lHDjy8kCoqWoMcLPL/v2zO/iV9c3gJ3ascrbO0wqA==}
+  /@asgardeo/auth-react/1.1.22_lgf4z6atbkptvpgsbfea37y6zq:
+    resolution: {integrity: sha512-jTrpt7lU+FV4SRb/7bpCld0zhVRMGLhuWP/zaZbNr+GE9Y2KLE11YwSwpffLRWpkJyBNDEFVYvHeg7hnctWi/w==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^5.2.0
     dependencies:
-      '@asgardeo/auth-spa': 0.4.11
+      '@asgardeo/auth-spa': 0.4.12
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-router-dom: 4.3.1_react@18.2.0
@@ -1313,8 +1313,8 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-spa/0.4.11:
-    resolution: {integrity: sha512-XAj+IFH8xrYMhH4liCc4Hpq80HzmJcLRB7JpEWSSyxIg2QKwlVk+jjpU4t9W8aGXfj+0qqqs9XNx0bFPXMerOQ==}
+  /@asgardeo/auth-spa/0.4.12:
+    resolution: {integrity: sha512-b3cn81uJUDGYZPmg6GYmQVMlowrNzVlbtKfUpJ/TbVLtGxs8cJagk4ffncI9/j5U8jI8Z85hajVkybUOBRtSZw==}
     dependencies:
       '@asgardeo/auth-js': 2.0.14
       await-semaphore: 0.1.3
