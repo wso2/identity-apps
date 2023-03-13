@@ -292,7 +292,7 @@
     <div class="ui divider hidden"></div>
 <% } %>
 
-<% if (isAdminSessionAdvisoryControlEnabledInTenant == true) { %>
+<% if (isAdminSessionAdvisoryControlEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
         <%=adminSessionAdvisoryControlDescriptionOfTenant%>
     </div>
