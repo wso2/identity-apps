@@ -161,16 +161,6 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     const config: ValidationDataInterface = usernameConf[0];
     const rules: ValidationConfInterface[] = config?.rules;
 
-    if (rules?.length < 1) {
-        return {
-            enableValidator: "false",
-            field: "username",
-            maxLength: 255,
-            minLength: 3,
-            type: "rules"
-        };
-    }
-
     return {
         enableValidator: 
             String((getConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
