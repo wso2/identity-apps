@@ -124,6 +124,11 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             ).length > 0
         ) {
             setIsMFAConfigured(true);
+        } else {
+            setIsMFAConfigured(false);
+            if (isMFAConfigured) {
+                handleDeleteBackupCodes();
+            }
         }
     }, [ enabledAuthenticators ]);
 
@@ -596,7 +601,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         <List.Content>
                             <List.Header>
                                 { t(translateKey + "heading") }
-                                { isBackupCodesConfigured ? (
+                                { isMFAConfigured && isBackupCodesConfigured ? (
                                     <Label
                                         className={ `backup-code-label ${ isWarnRemainingBackupCodes
                                             ? "warning" : "info" }` }
