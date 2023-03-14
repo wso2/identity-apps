@@ -206,7 +206,7 @@
     <filter>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <filter-class>
-           org.wso2.carbon.ui.filters.cache.ContentTypeBasedCachePreventionFilter
+           org.wso2.carbon.tomcat.ext.filter.ContentTypeBasedCachePreventionFilter
         </filter-class>
         <init-param>
            <param-name>patterns</param-name>
@@ -465,7 +465,7 @@
         <servlet-name>select_org.do</servlet-name>
         <jsp-file>/select_org.jsp</jsp-file>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>

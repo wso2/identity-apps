@@ -34,7 +34,9 @@ import React, {
 } from "react";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { StaticContext } from "react-router";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import {
     AppConstants,
     AppState,
@@ -44,6 +46,8 @@ import {
     UIConstants,
     getDefaultLayoutRoutes
 } from "../features/core";
+import { OrganizationType } from "../features/organizations/constants";
+import { useGetOrganizationType } from "../features/organizations/hooks/use-get-organization-type";
 
 /**
  * Default page layout component Prop types.
@@ -68,7 +72,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { fluid } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { headerHeight, footerHeight } = useUIElementSizes({
         footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
         headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
@@ -78,6 +82,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -88,7 +93,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         setDefaultLayoutRoutes(getDefaultLayoutRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
-    const handleAlertSystemInitialize = (system) => {
+    const handleAlertSystemInitialize = (system: any) => {
         dispatch(initializeAlertSystem(system));
     };
 
@@ -118,6 +123,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                 <Header
                     fluid={ fluid }
                     showSidePanelToggle={ false }
+                    featureAnnouncement={ orgType !== OrganizationType.SUBORGANIZATION }
                 />
             ) }
             footer={ (
@@ -129,7 +135,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                 <Switch>
                     {
-                        defaultLayoutRoutes.map((route, index) => (
+                        defaultLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
                                 ? <Redirect to={ route.redirectTo }/>
                                 : route.protected
@@ -144,8 +150,11 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
-                                                route.component
+                                            render={ 
+                                                (renderProps: RouteComponentProps<{
+                                                    [x: string]: string; }, 
+                                                    StaticContext, unknown>
+                                                ) => route.component
                                                     ? <route.component { ...renderProps } />
                                                     : null
                                             }
