@@ -618,7 +618,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     setIsConfigTOTPModalOpen(false);
                     setQrCode(null);
                     setTOTPModalCurrentStep(0);
-
                     handleSessionTerminationModalVisibility(true);
                 } }
             >

@@ -62,6 +62,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser: string =
         useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
+    const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
     const [ enabledAuthenticators, setEnabledAuthenticators ] = useState<Array<string>>([]);
     const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
@@ -199,7 +201,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                 handleSessionTerminationModalVisibility={ () => {
                                     // Show the session termination modal only if the backup code flow is not activated
                                     // to stop showing duplicate modals.
-                                    if (isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured) {
+                                    if (isSuperTenantLogin() && isTOTPEnabled) {
                                         setShowSessionTerminationModal(false);
 
                                         return;
@@ -215,7 +217,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         featureConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
                     ) &&
-                    isSuperTenantLogin() && isTOTPEnabled && isBackupCodesConfigured
+                    isSuperTenantLogin()
                     ? (
                         <>
                             <List.Item
@@ -240,6 +242,12 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     handleSessionTerminationModalVisibility={
                                         () => setShowSessionTerminationModal(true)
                                     }
+                                    isBackupCodesConfigured={ isBackupCodesConfigured }
+                                    enabledAuthenticators={ enabledAuthenticators }
+                                    backupCodeAuthenticatorName={ backupCodeAuthenticatorName }
+                                    isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
+                                    isSuperTenantLogin={ isSuperTenantLogin() }
+                                    onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 />
                             </List.Item>
                         </>
