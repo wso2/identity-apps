@@ -147,16 +147,19 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     const usernameConf: ValidationDataInterface[] =
         configs?.filter((data: ValidationDataInterface) => data.field === "username");
 
-    if (usernameConf === undefined || usernameConf.length < 1) {
-        return;
+    if (usernameConf === undefined || usernameConf.length < 1
+        || usernameConf[0].rules === undefined || usernameConf[0].rules.length < 1) {
+        return {
+            enableValidator: "false",
+            field: "username",
+            maxLength: 255,
+            minLength: 3,
+            type: "rules"
+        };
     }
 
     const config: ValidationDataInterface = usernameConf[0];
     const rules: ValidationConfInterface[] = config?.rules;
-
-    if (rules?.length < 1) {
-        return;
-    }
 
     return {
         enableValidator: 
