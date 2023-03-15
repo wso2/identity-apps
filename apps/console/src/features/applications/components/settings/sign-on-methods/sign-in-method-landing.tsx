@@ -113,9 +113,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             "sections.landing.flowBuilder.types.defaultConfig.description"
                                         ) }
                                         onClick={ () => {
-                                            eventPublisher.publish("application-begin-sign-in-default-configuration", {
-                                                "client-id": clientId
-                                            });
+                                            eventPublisher.publish(
+                                                "application-begin-sign-in-default-configuration", 
+                                                { "client-id": clientId }
+                                            );
                                             onLoginFlowSelect(LoginFlowTypes.DEFAULT);
                                         } }
                                     />
@@ -143,9 +144,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         ".signOnMethod.sections.landing.flowBuilder.types.totp.description"
                                     ) }
                                     onClick={ () => {
-                                        eventPublisher.publish("application-begin-sign-in-totp-mfa", {
-                                            "client-id": clientId
-                                        });
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-totp-mfa", 
+                                            { "client-id": clientId }
+                                        );
                                         onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP);
                                     } }
                                 />
@@ -189,9 +191,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             ".signOnMethod.sections.landing.flowBuilder.types.smsOTP.description"
                                         ) }
                                         onClick={ () => {
-                                            eventPublisher.publish("application-begin-sign-in-sms-otp-mfa", {
-                                                "client-id": clientId
-                                            } );
+                                            eventPublisher.publish(
+                                                "application-begin-sign-in-sms-otp-mfa", 
+                                                { "client-id": clientId }
+                                            );
                                             onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
                                         } }
                                     />
@@ -228,9 +231,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             "types.usernameless.description"
                                     ) }
                                     onClick={ () => {
-                                        eventPublisher.publish("application-begin-sign-in-biometrics-password-less", {
-                                            "client-id": clientId
-                                        });
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-biometrics-password-less", 
+                                            { "client-id": clientId }
+                                        );
                                         onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN);
                                     } }
                                 />
@@ -255,9 +259,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             "types.magicLink.description"
                                     ) }
                                     onClick={ () => {
-                                        eventPublisher.publish("application-begin-sign-in-magiclink-password-less", {
-                                            "client-id": clientId
-                                        });
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-magiclink-password-less", 
+                                            { "client-id": clientId }
+                                        );
                                         onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK);
                                     } }
                                 />
@@ -291,10 +296,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.google.description"
                                             ) }
                                             onClick={ () => {
-                                                eventPublisher.publish(
-                                                    "application-begin-sign-in-google-social-login", {
-                                                        type: clientId
-                                                    }
+                                                eventPublisher.publish( 
+                                                    "application-begin-sign-in-google-social-login", 
+                                                    { type: clientId }
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN);
                                             } }
@@ -354,9 +358,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             ) }
                                             onClick={ () => {
                                                 eventPublisher.publish(
-                                                    "application-begin-sign-in-microsoft-social-login", {
-                                                        type: clientId
-                                                    }
+                                                    "application-begin-sign-in-microsoft-social-login", 
+                                                    { type: clientId }
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.MICROSOFT_LOGIN);
                                             } }

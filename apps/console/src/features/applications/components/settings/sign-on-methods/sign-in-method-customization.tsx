@@ -427,10 +427,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             });
 
-            eventPublisher.publish("application-sign-in-method-click-update-button", {
-                "client-id": clientId,
-                type: eventPublisherProperties
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-update-button", 
+                { "client-id": clientId, type: eventPublisherProperties }
+            );
         });
 
         setUpdateTrigger(true);
@@ -652,9 +652,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             <LinkButton
                                 className="pr-0"
                                 onClick={ () => {
-                                    eventPublisher.publish("application-revert-sign-in-method-default", {
-                                        "client-id": clientId
-                                    });
+                                    eventPublisher.publish(
+                                        "application-revert-sign-in-method-default", 
+                                        { "client-id": clientId }
+                                    );
                                     handleSequenceUpdate(null, true);
                                     onReset();
                                 } }

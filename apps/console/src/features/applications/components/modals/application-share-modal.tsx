@@ -212,9 +212,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             )
                         })
                     );
-                    eventPublisher.publish("application-share", {
-                        "client-id": clientId
-                    });
+                    eventPublisher.publish(
+                        "application-share", 
+                        { "client-id": clientId }
+                    );
                 })
                 .catch((error: AxiosError) => {
                     onClose(null, null);
@@ -244,9 +245,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             })
                         );
                     }
-                    eventPublisher.publish("application-share-error", {
-                        "client-id": clientId
-                    });
+                    eventPublisher.publish(
+                        "application-share-error", 
+                        { "client-id": clientId }
+                    );
                 })
                 .finally(() => onApplicationSharingCompleted());
 
@@ -272,9 +274,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 )
                             })
                         );
-                        eventPublisher.publish("application-share", {
-                            "client-id": clientId
-                        });
+                        eventPublisher.publish(
+                            "application-share", 
+                            { "client-id": clientId }
+                        );
                     })
                     .catch((error: AxiosError) => {
                         onClose(null, null);
@@ -308,9 +311,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 })
                             );
                         }
-                        eventPublisher.publish("application-share-error", {
-                            "client-id": clientId
-                        });
+                        eventPublisher.publish(
+                            "application-share-error", 
+                            { "client-id": clientId }
+                        );
                     });
             });
         } else if (shareType === ShareType.UNSHARE) {
@@ -330,9 +334,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             )
                         })
                     );
-                    eventPublisher.publish("application-share", {
-                        "client-id": clientId
-                    });
+                    eventPublisher.publish(
+                        "application-share", 
+                        { "client-id": clientId }
+                    );
                 })
                 .catch((error: AxiosError) => {
                     onClose(null, null);
@@ -362,9 +367,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             })
                         );
                     }
-                    eventPublisher.publish("application-share-error", {
-                        "client-id": clientId
-                    });
+                    eventPublisher.publish(
+                        "application-share-error", 
+                        { "client-id": clientId }
+                    );
                 })
                 .finally(() => onApplicationSharingCompleted());
         }

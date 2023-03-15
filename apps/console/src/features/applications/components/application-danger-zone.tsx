@@ -96,9 +96,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 setShowDeleteConfirmationModal(false);
                 onDelete();
 
-                eventPublisher.publish("application-delete", {
-                    "client-id": clientId
-                });
+                eventPublisher.publish(
+                    "application-delete", 
+                    { "client-id": clientId }
+                );
             })
             .catch((error) => {
                 setIsDeletionInProgress(false);
@@ -120,9 +121,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                          ".message")
                 }));
-                eventPublisher.publish("application-delete-error", {
-                    "client-id": clientId
-                });
+                eventPublisher.publish(
+                    "application-delete-error", 
+                    { "client-id": clientId }
+                );
             });
     };
  
