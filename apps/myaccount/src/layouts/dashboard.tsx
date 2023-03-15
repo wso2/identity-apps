@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Segment } from "semantic-ui-react";
 import { fetchApplications } from "../api";
 import {
     Footer,
@@ -194,6 +195,14 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         dispatch(initializeAlertSystem(system));
     };
 
+    const Loader = () => (
+        <div className="lazy-content-loader">
+            <Segment padded basic>
+                <ContentLoader inline="centered" active/>
+            </Segment>
+        </div>
+    );
+
     return (
         <DashboardLayoutSkeleton
             alert={ (
@@ -259,7 +268,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     />
                 ) }
             >
-                <Suspense fallback={ <ContentLoader /> }>
+                <Suspense fallback={ <Loader /> }>
                     <Switch>
                         {
                             dashboardLayoutRoutes.map((route, index) => (
