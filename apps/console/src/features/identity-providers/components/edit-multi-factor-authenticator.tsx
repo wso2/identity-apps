@@ -20,6 +20,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import { authenticatorConfig } from "apps/console/src/extensions/configs/authenticator";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -27,7 +28,10 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions";
+import {
+    AuthenticatorExtensionsConfigInterface,  
+    identityProviderConfig 
+} from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";
@@ -183,6 +187,14 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             }
         };
 
+    const displayExternalResourcesButton = () => {
+        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            return true;
+        }
+        
+        return false;
+    };
+
     /**
      * Authenticator settings tab content.
      * @returns Functional Component
@@ -209,6 +221,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                                 isSubmitting={ isSubmitting }
                                             />
                                         </EmphasizedSegment>
+                                        {
+                                            displayExternalResourcesButton() && 
+                                            authenticatorConfig.externalResourceButton
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
