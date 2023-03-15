@@ -27,7 +27,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
-import { AuthenticatorExtensionsConfigInterface, identityProviderConfig } from "../../../extensions";
+import {
+    AuthenticatorExtensionsConfigInterface, 
+    authenticatorConfig, 
+    identityProviderConfig 
+} from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";
@@ -183,6 +187,14 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             }
         };
 
+    const displayExternalResourcesButton = () => {
+        if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            return true;
+        }
+        
+        return false;
+    };
+
     /**
      * Authenticator settings tab content.
      * @returns Functional Component
@@ -209,6 +221,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                                 isSubmitting={ isSubmitting }
                                             />
                                         </EmphasizedSegment>
+                                        {
+                                            displayExternalResourcesButton() && 
+                                            authenticatorConfig.externalResourceButton
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
