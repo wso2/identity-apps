@@ -142,6 +142,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                         icon
                                                                         basic
                                                                         labelPosition="right"
+                                                                        className="show-more-button"
                                                                         size="mini"
                                                                         data-testid={
                                                                             `${ testId }-` +

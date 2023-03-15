@@ -192,6 +192,10 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                                     id={ index }
                                                                     labelPosition="right"
                                                                     size="mini"
+                                                                    className={
+                                                                        "session-detail-extension-button "
+                                                                        + "show-more-button"
+                                                                    }
                                                                     onClick={ onUserSessionDetailClick }
                                                                 >
                                                                     {
