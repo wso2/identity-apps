@@ -369,7 +369,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                                         data-testid={ `${ testId }-clear-button` }
                                                         basic
                                                         compact
-                                                        className="input-add-on"
+                                                        className="input-add-on clear-icon"
                                                         onClick={ clearSearchQuery }
                                                     >
                                                         <GenericIcon
