@@ -25,6 +25,7 @@
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
@@ -48,12 +49,6 @@
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
-            if (errorMessage.equalsIgnoreCase("token.expired")) {
-            	errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.code.expired.resend");
-            }
-            if (errorMessage.equalsIgnoreCase("token.expired.email.sent")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.token.expired.email.sent");
-            }
         }
     }
 %>
@@ -61,6 +56,15 @@
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("containerSize", "medium");
+%>
+
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    } else if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
 %>
 
 <html lang="en-US">
@@ -79,6 +83,14 @@
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+    <%
+        if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    %>
+    <script src='<%=(reCaptchaAPI)%>'></script>
+    <%
+        }
+    %>
 </head>
 
 <body class="login-portal layout email-otp-portal-layout">
@@ -151,21 +163,36 @@
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
 
+                            <%
+                                if (reCaptchaEnabled) {
+                                    String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                            %>
+                            <div class="field">
+                                <div class="g-recaptcha"
+                                    data-size="invisible"
+                                    data-callback="onCompleted"
+                                    data-action="register"
+                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                >
+                                </div>
+                            </div>
+                            <%
+                                }
+                            %>
+
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
                                 <%
                                     if ("true".equals(authenticationFailed)) {
-                                        String authFailureMsg = request.getParameter("authFailureMsg");
-                                        if (!"token.expired.email.sent".equals(authFailureMsg)) {
                                 %>
-                                <a
-                                    class="ui button secondary"
-                                    onclick="resendOtp()"
-                                    tabindex="0"
+                                <a 
+                                    class="ui button secondary" 
+                                    onclick="resendOtp()" 
+                                    tabindex="0" 
                                     onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
-                                <% } }%>
+                                <% } %>
                                 <input type="button" name="authenticate" id="authenticate"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                     class="ui primary button"/>
@@ -198,8 +225,23 @@
     <% } %>
 
     <script type="text/javascript">
+        
+        function onCompleted() {
+            $('#register').submit();
+        }
+
         $(document).ready(function () {
             $('#authenticate').click(function () {
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    grecaptcha.execute();
+                    return;
+                }
+                <%
+                    }
+                %>
                 var code = document.getElementById("OTPCode").value;
                 if (code == "") {
                     document.getElementById('alertDiv').innerHTML
