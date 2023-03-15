@@ -163,8 +163,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                 <SettingsSection
                     data-testid={ `${testId}-settings-section` }
                     description={
-                        accountRecoveryConfig.sections.accountRecovery.description == undefined 
-                        ? t("myAccount:sections.accountRecovery.description") 
+                        accountRecoveryConfig.sections.accountRecovery.description == undefined
+                        ? t("myAccount:sections.accountRecovery.description")
                         : accountRecoveryConfig.sections.accountRecovery.description
                     }
                     header={ t("myAccount:sections.accountRecovery.heading") }
@@ -216,7 +216,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                                         : null}
                                 </List.Item>
                             </List>
-                    :   <EmphasizedSegment>
+                    :   <EmphasizedSegment className="placeholder-container">
                             <Placeholder fluid>
                                 <Placeholder.Header image>
                                     <Placeholder.Line />

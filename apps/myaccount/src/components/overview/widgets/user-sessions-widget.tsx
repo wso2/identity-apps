@@ -140,7 +140,7 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                                 : null
                         }
                     />
-                    : <EmphasizedSegment>
+                    : <EmphasizedSegment className="placeholder-container">
                         <Placeholder fluid>
                             <Placeholder.Header image>
                                 <Placeholder.Line />

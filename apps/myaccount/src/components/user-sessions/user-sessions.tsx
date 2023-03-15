@@ -363,7 +363,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     userSessions={userSessions && userSessions.sessions ? userSessions.sessions : null}
                     userSessionsListActiveIndexes={sessionsListActiveIndexes}
                 />
-            : <EmphasizedSegment>
+            : <EmphasizedSegment className="placeholder-container">
                 <Placeholder fluid>
                     <Placeholder.Header image>
                         <Placeholder.Line/>
