@@ -193,10 +193,10 @@
                                         String authFailureMsg = request.getParameter("authFailureMsg");
                                         if (!"token.expired.email.sent".equals(authFailureMsg)) {
                                 %>
-                                <a 
-                                    class="ui button secondary" 
-                                    onclick="resendOtp()" 
-                                    tabindex="0" 
+                                <a
+                                    class="ui button secondary"
+                                    onclick="resendOtp()"
+                                    tabindex="0"
                                     onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
