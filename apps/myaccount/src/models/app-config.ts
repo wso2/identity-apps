@@ -66,6 +66,7 @@ export interface ServiceResourceEndpointsInterface {
     associations: string;
     authorize: string;
     backupCode: string;
+    brandingPreference: string;
     challenges: string;
     challengeAnswers: string;
     federatedAssociations: string;
