@@ -19,4 +19,5 @@
 import { AuthenticatorConfig } from "./models/authenticator";
 
 export const authenticatorConfig : AuthenticatorConfig = {
+    externalResourceButton: null,
 };
