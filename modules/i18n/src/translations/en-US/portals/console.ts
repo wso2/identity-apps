@@ -4458,7 +4458,7 @@ export const console: ConsoleNS = {
                     apple: {
                         wizardHelp: {
                             clientId: {
-                                description: "Provide the <1>Services ID</1> created at Apple.",
+                                description: "Provide the <1>Services ID</1> created at Apple for the relevant connection you wish to use.",
                                 heading: "Services ID"
                             },
                             heading: "Help",
@@ -4467,8 +4467,8 @@ export const console: ConsoleNS = {
                                 heading: "Key ID"
                             },
                             name: {
-                                connectionDescription: "Provide a unique name for the connection.",
-                                idpDescription: "Provide a unique name for the identity provider.",
+                                connectionDescription: "Provide a unique name for the connection to be easily identifiable.",
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -4487,7 +4487,7 @@ export const console: ConsoleNS = {
                             },
                             subHeading: "Use the guide below",
                             teamId: {
-                                description: "Provide the Apple developer <1>Team ID</1>.",
+                                description: "Provide the Apple developer <1>Team ID</1> that you obtained to be used for the relevant connection.",
                                 heading: "Team ID"
                             }
                         }
@@ -4519,7 +4519,7 @@ export const console: ConsoleNS = {
                             description: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             heading: "Help",
                             name: {
@@ -4546,7 +4546,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Facebooks's guide on configuring apps.",
@@ -4575,7 +4575,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             preRequisites: {
                                 configureHomePageURL: "Use the following as the <1>HomePage URL</1>.",
@@ -4604,7 +4604,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Google's guide on configuring OAuth Apps.",
@@ -4647,7 +4647,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Microsoft's guide on configuring OAuth Apps.",
@@ -4677,7 +4677,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection to be easily identifiable."
                             },
                             preRequisites: {
                                 rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
