@@ -1,127 +1,118 @@
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable sort-keys */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/typedef */
-/* eslint-disable header/header */
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
-import React, { useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+
+import { CopyInputField, Message } from "@wso2is/react-components";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Icon, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { ConfigReducerStateInterface } from "../../../../../core/models";
+import { AppState } from "../../../../../core/store";
 
-type props = {
-    current: any
-}
-const CustomIdentityProviderCreateWizardHelp = ({ current } : props) => {
+
+const CustomIdentityProviderCreateWizardHelp = () => {
     const { t } = useTranslation();
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ currentState, setCurrentState ] = useState <any>();
 
-    useEffect(() => {
-        setCurrentState(current);
-    }, [ current ]);
-    const CONTENTS = [
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+      
+    const CONTENTS: Content[] = [
         {
-            id: 0,
             body: (
-                <>
-                    <Message
-                        type="info"
-                        header="Prerequisite"
-                        content={
-                            (<p>Before you begin, register an application in the Identity Provider, and obtain a
-                                <strong> client ID & secret</strong>. Use the following URL as the <strong>
-                                Authorized Redirect URL</strong>.
-                                <br />
-                                <br />
-                                <CopyInputField
-                                    className="copy-input-dark"
-                                    value={ config?.deployment?.customServerHost + "/commonauth" }
-                                />
-                                <br />
-                                <Icon name="info circle" />
-                            The URL to which the authorization code is sent upon authentication and where the
-                            user is redirected to upon logout.
-                            </p>)
-                        }
-                    />
+                <><Message
+                    type="info"
+                    header="Prerequisite"
+                    content={
+                        (<p>Before you begin, register an application in the Identity Provider, and obtain a
+                            <strong> client ID & secret</strong>. Use the following URL as the <strong>
+                            Authorized Redirect URL</strong>.
+                            <br />
+                            <br />
+                            <CopyInputField
+                                className="copy-input-dark"
+                                value={ config?.deployment?.customServerHost + "/commonauth" }
+                            />
+                            <br />
+                            <Icon name="info circle" />
+                        The URL to which the authorization code is sent upon authentication and where the
+                        user is redirected to upon logout.
+                        </p>)
+                    }
+                />
                 </>
-                    
-            )
+            ),
+            id: 0
         },
         {
-            id: 1,
-            title:  t("Client ID"), 
             body:(    
-                          
-                <p>Provide the client ID obtained from the identity provider.</p>         
-            )
-
+                <><p>Provide the client ID obtained from the identity provider.</p>
+                </>      
+            ),
+            id: 1,
+            title:  t("Client ID")
         },
         {
+            body:(    
+                <><p>Provide the client secret obtained from the identity provider.</p>
+                </>      
+            ),
             id: 2,
-            title: t("Client secret"),
-            body:(
-
-                <p>Provide the client secret obtained from the identity provider.</p>
-
-            )
+            title:  t("Client secret")            
         },
         {
-            id: 3,
-            title: t("Authorization endpoint URL"),
-            body: (
+            body:(    
                 <>
                     <p>Provide the standard authorization endpoint URL of the identity provider.</p>
                     <p>E.g., https://enterprise_domain/authorize</p>
-                </>
-            )
+                </>      
+            ),
+            id: 3,
+            title:  t("Authorization endpoint URL")
         },
         {
-            id: 4,
-            title: t("Token endpoint URL"),
-            body: (
+            body:(    
                 <>
                     <p>Provide the standard token endpoint URL of the identity provider.</p>
                     <p>E.g., https://enterprise_domain/token</p>
-                </>
-            )
+                </>      
+            ),
+            id: 4,
+            title:  t("Token endpoint URL")
         }
-
     ];
 
     const [ currentContent, setCurrentContent ] = useState(0);
 
-    const handleClickLeft = () => {
+    const handleClickLeft = () => setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
+    const handleClickRight = () =>
+        setCurrentContent((c:number) => (c < CONTENTS.length - 1 ? c + 1 : c));
 
-        setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
-    };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
-        setCurrentState(currentState === 4 ?  4 : currentState + 1);
-    };
+    const isLeftButtonDisabled:boolean = currentContent === 0;
+    const isRightButtonDisabled:boolean = currentContent === CONTENTS.length - 1;
 
-    const isLeftButtonDisabled = currentState === 0;
-    const isRightButtonDisabled = currentState === 4;
+    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
 
-    const leftButtonColor = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor = isRightButtonDisabled ? "grey" : "orange";
-
-    const progress = (currentState / (4)) * 100;
-
-    const [ sidebarprogress, setSidebarprogress ] = useState(0);
+    const progress:number = (currentContent / (CONTENTS.length - 1)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -135,9 +126,8 @@ const CustomIdentityProviderCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content-large">
-
-                    { CONTENTS.map(({ id, title, body }) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                    { CONTENTS.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
@@ -181,7 +171,7 @@ const CustomIdentityProviderCreateWizardHelp = ({ current } : props) => {
  * Default props for the component
  */
 CustomIdentityProviderCreateWizardHelp.defaultProps = {
-    "data-testid": "google-idp-create-wizard-help"
+    "data-testid": "custom-app-create-wizard-help"
 };
 
 /**
