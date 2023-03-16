@@ -62,11 +62,10 @@ interface MicrosoftAuthenticationProviderCreateWizardContentPropsInterface exten
      * @param values - Form values.
      */
     onSubmit: (values: MicrosoftAuthenticationProviderCreateWizardFormValuesInterface) => void;
-    
-    /**
-     * On focus callback.
-     */
-    setOnFocus: any;
+     /**
+    * On focus callback.
+    */
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "microsoft-authenticator-wizard-form";
