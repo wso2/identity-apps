@@ -66,7 +66,7 @@ interface AppleAuthenticationProviderCreateWizardContentPropsInterface extends I
     /**
      * On focus callback.
      */
-    setOnFocus: any;
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "apple-authenticator-wizard-form";

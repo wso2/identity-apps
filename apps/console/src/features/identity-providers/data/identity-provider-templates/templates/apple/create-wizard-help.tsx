@@ -1,131 +1,149 @@
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable sort-keys */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/typedef */
-/* eslint-disable header/header */
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
+
+import { Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { ConfigReducerStateInterface } from "../../../../../core/models";
+import { AppState } from "../../../../../core/store";
 
+/**
+ * Help content for the Apple IDP template creation wizard.
+ *
+ * @param props - Props injected into the component.
+ *
+ *  @returns React Element
+ */
 type props = {
     current: any
 }
-const GoogleIDPCreateWizardHelp = ({ current } : props) => {
+
+const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
     const { t } = useTranslation();
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const [ currentState, setCurrentState ] = useState <any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-    const CONTENTS = [
+
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+      
+    const CONTENTS: Content[] = [
         {
-            id: 0,
             body: (
-                <><Message
-                    type="info"
-                    header={
-                        t("console:develop.features.authenticationProvider.templates.apple." +
+                <>
+                    <Message
+                        type="info"
+                        header={
+                            t("console:develop.features.authenticationProvider.templates.apple." +
                     "wizardHelp.preRequisites.heading")
-                    }
-                    content={
-                        (<>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.apple." +
+                        }
+                        content={
+                            (<>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.getCredentials"
-                                    }
-                                >
+                                        }
+                                    >
                                 Before you begin, create a <strong>Sign in With Apple</strong> enabled 
                                 application on <a
-                                        href="https://developer.apple.com/"
+                                            href="https://developer.apple.com/"
+                                            target="_blank"
+                                            rel="noopener noreferrer">
+                                Apple Developer Portal
+                                        </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
+                                    </Trans>
+                                </p>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
+                                    "wizardHelp.preRequisites.configureWebDomain"
+                                        }
+                                    >
+                            Use the following as a <strong>Web Domain</strong>.
+                                    </Trans>
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ new URL(config?.deployment?.serverOrigin)?.hostname }
+                                    />
+                                </p>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
+                                    "wizardHelp.preRequisites.configureReturnURL"
+                                        }
+                                    >
+                            Add the following URL as a <strong>Return URL</strong>.
+                                    </Trans>
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ config?.deployment?.customServerHost + "/commonauth" }
+                                    />
+                                    <a
+                                        href={
+                                            "https://developer.apple.com/documentation/sign_in_with_apple" + 
+                                    "/configuring_your_environment_for_sign_in_with_apple"
+                                        }
                                         target="_blank"
                                         rel="noopener noreferrer">
-                                Apple Developer Portal
-                                    </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
-                                </Trans>
-                            </p>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.apple." +
-                                    "wizardHelp.preRequisites.configureWebDomain"
-                                    }
-                                >
-                            Use the following as a <strong>Web Domain</strong>.
-                                </Trans>
-                                <CopyInputField
-                                    className="copy-input-dark spaced"
-                                    value={ new URL(config?.deployment?.serverOrigin)?.hostname }
-                                />
-                            </p>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.apple." +
-                                    "wizardHelp.preRequisites.configureReturnURL"
-                                    }
-                                >
-                            Add the following URL as a <strong>Return URL</strong>.
-                                </Trans>
-                                <CopyInputField
-                                    className="copy-input-dark spaced"
-                                    value={ config?.deployment?.customServerHost + "/commonauth" }
-                                />
-                                <a
-                                    href={
-                                        "https://developer.apple.com/documentation/sign_in_with_apple" + 
-                                    "/configuring_your_environment_for_sign_in_with_apple"
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    {
-                                        t("console:develop.features.authenticationProvider.templates.apple" +
+                                        {
+                                            t("console:develop.features.authenticationProvider.templates.apple" +
                                     ".wizardHelp.preRequisites.configureAppleSignIn")
-                                    }
-                                </a>
-                            </p>
-                        </>)
-                    }
-                />
+                                        }
+                                    </a>
+                                </p>
+                            </>)
+                        }
+                    />
                 </>
                     
-            )
+            ),
+            id: 0
         },
         {
-            id: 1,
-            title:  t("console:develop.features.authenticationProvider.templates.apple" +
-            ".wizardHelp.name.heading"), 
             body:(    
                 <p>
                     {
                         useNewConnectionsView
                             ? t("console:develop.features.authenticationProvider.templates.apple." +
                                 "wizardHelp.name.connectionDescription")
-                            : t("Provide a unique name for the selected identity provider to be easily identifiable.")
+                            : t("console:develop.features.authenticationProvider.templates.apple." +
+                                "wizardHelp.name.idpDescription")
                     }
-                </p>               
-            )
-
+                </p>              
+            ),
+            id: 1,
+            title:  t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.name.heading")
         },
         {
-            id: 2,
-            title: t("console:develop.features.authenticationProvider." +
-            "templates.apple.wizardHelp.clientId.heading"),
             body:(
                 <p>
                     <Trans
@@ -137,12 +155,12 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                     Provide the <Code>Services ID</Code> created at Apple.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 2,
+            title: t("console:develop.features.authenticationProvider." +
+            "templates.apple.wizardHelp.clientId.heading")
         },
         {
-            id: 3,
-            title: t("console:develop.features.authenticationProvider.templates.apple" +
-            ".wizardHelp.teamId.heading"),
             body: (
                 <p>
                     <Trans
@@ -154,12 +172,12 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                     Provide the Apple developer <Code>Team ID</Code>.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 3,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.teamId.heading")
         },
         {
-            id: 4,
-            title: t("console:develop.features.authenticationProvider.templates.apple" +
-            ".wizardHelp.keyId.heading"),
             body:(
                 <p>
                     <Trans
@@ -171,12 +189,12 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                     Provide the <Code>Key Identifier</Code> of the private key generated.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 4,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.keyId.heading")
         },
         {
-            id: 5,
-            title: t("console:develop.features.authenticationProvider.templates.apple" +
-            ".wizardHelp.privateKey.heading"),
             body: (
                 <p>
                     <Trans
@@ -188,11 +206,12 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                     Provide the <Code>Private Key</Code> generated for the application.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 5,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.privateKey.heading")
         }
     ];
-
-    const [ currentContent, setCurrentContent ] = useState(0);
 
     const handleClickLeft = () => {
 
@@ -204,15 +223,13 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
         setCurrentState(currentState === 5 ?  5 : currentState + 1);
     };
 
-    const isLeftButtonDisabled = currentState === 0;
-    const isRightButtonDisabled = currentState === 5;
+    const isLeftButtonDisabled:boolean = currentState === 0;
+    const isRightButtonDisabled:boolean = currentState === 5;
 
-    const leftButtonColor = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor = isRightButtonDisabled ? "grey" : "orange";
+    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
 
-    const progress = (currentState / (5)) * 100;
-
-    const [ sidebarprogress, setSidebarprogress ] = useState(0);
+    const progress:number = (currentState / (5)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -227,7 +244,7 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
             >
                 <div className="idp-sidepanel-content">
 
-                    { CONTENTS.map(({ id, title, body }) => (
+                    { CONTENTS.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -271,8 +288,8 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
 /**
  * Default props for the component
  */
-GoogleIDPCreateWizardHelp.defaultProps = {
-    "data-testid": "google-idp-create-wizard-help"
+AppleIdentityProviderCreateWizardHelp.defaultProps = {
+    "data-componentid": "apple-idp-create-wizard-help"
 };
 
 /**
@@ -280,4 +297,4 @@ GoogleIDPCreateWizardHelp.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default GoogleIDPCreateWizardHelp;
+export default AppleIdentityProviderCreateWizardHelp;
