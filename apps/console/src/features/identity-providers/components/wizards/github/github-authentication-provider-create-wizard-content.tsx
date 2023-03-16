@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -62,11 +61,10 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * @param values - Form values.
      */
     onSubmit: (values: GitHubAuthenticationProviderCreateWizardFormValuesInterface) => void;
-
     /**
-     * On focus callback.
-     */
-    setOnFocus: any;
+    * On focus callback.
+    */
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "github-authenticator-wizard-form";
