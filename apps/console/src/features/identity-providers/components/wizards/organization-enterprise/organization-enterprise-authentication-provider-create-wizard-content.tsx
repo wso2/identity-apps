@@ -63,10 +63,11 @@ interface OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsIn
      * @param values - Form values.
      */
     onSubmit: (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormErrorValidationsInterface) => void;
-    /**
-     * On focus callback.
-     */
-    setOnFocus: any;
+     /**
+    * On focus callback.
+    */
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
+    
 }
 
 const FORM_ID: string = "organization-enterprise-authenticator-wizard-form";
@@ -190,8 +191,8 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                     >
                         <WizardPage validate={ validateForm }>
                             <Field.Input
-                                onFocus={ () => { 
-                                    setOnFocus(0);
+                                onFocus={ () => {
+                                    setOnFocus(0); 
                                 } }
                                 ariaLabel="Organization IDP Name"
                                 inputType="name"
@@ -214,7 +215,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                                 width={ 13 }
                             />
                             <Field.Input
-                                onFocus={ () => { 
+                                onFocus={ () => {
                                     setOnFocus(1);
                                 } }
                                 ariaLabel="Organization IDP Description"

@@ -16,43 +16,40 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider } from "semantic-ui-react";
+import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
 
 /**
- * Prop types of the component.
- */
-type OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
-
-/**
- * Help content for the custom IDP template creation wizard.
+ * Help content for the Apple IDP template creation wizard.
  *
  * @param props - Props injected into the component.
- * @returns OrganizationEnterpriseIdentityProviderCreateWizardHelp component.
+ *
+ *  @returns React Element
  */
-const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
-    FunctionComponent<OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface> = (
-        props: OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface
-    ): ReactElement => {
+type props = {
+    current: any
+}
 
-        const {
-            ["data-testid"]: testId
-        } = props;
+const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : props) => {
+    const { t } = useTranslation();
+    const [ currentState, setCurrentState ] = useState <any>();
 
-        const { t } = useTranslation();
+    useEffect(() => {
+        setCurrentState(current);
+    }, [ current ]);
 
-        return (
-            <>
-                <div data-testid={ testId }>
-                    <Heading as="h5">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.name.heading")
-                        }
-                    </Heading>
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+      
+    const CONTENTS: Content[] = [
+        {
+            body: (
+                <>
                     <p>
                         {
                             t("console:develop.features.authenticationProvider.templates.organizationIDP" +
@@ -60,17 +57,16 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
                         }
                     </p>
                     <p>E.g., MyOrgEnterpriseAuthProvider.</p>
-                </div>
-
-                <Divider/>
-
-                <div data-testid={ testId }>
-                    <Heading as="h5">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.description.heading")
-                        }
-                    </Heading>
+                </>
+                    
+            ),
+            id: 0,
+            title: t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.name.heading")
+        },
+        {
+            body:(    
+                <>
                     <p>
                         {
                             t("console:develop.features.authenticationProvider.templates.organizationIDP" +
@@ -83,10 +79,85 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
                                 ".wizardHelp.description.example")
                         }
                     </p>
-                </div>
-            </>
-        );
+                </>      
+            ),
+            id: 1,
+            title:  t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.description.heading")
+        }
+    ];
+
+    const handleClickLeft = () => {
+
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
+        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
+    const handleClickRight = () =>{
+        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+        setCurrentState(currentState === 1 ?  1 : currentState + 1);
+    };
+
+    const isLeftButtonDisabled:boolean = currentState === 0;
+    const isRightButtonDisabled:boolean = currentState === 1;
+
+    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
+
+    const progress:number = (currentState / (1)) * 100;
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content">
+
+                    { CONTENTS.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ leftButtonColor }
+                            onClick={ handleClickLeft }
+                            className="idp-sidepanel-button"
+                            disabled={ isLeftButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ rightButtonColor }
+                            onClick={ handleClickRight }
+                            className="idp-sidepanel-button"
+                            disabled={ isRightButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
+    );
+};
 
 /**
  * Default props for the component
