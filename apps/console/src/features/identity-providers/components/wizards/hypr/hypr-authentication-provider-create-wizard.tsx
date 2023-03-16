@@ -116,7 +116,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
-        const [ current , setCurrent ] = useState <number>(0);
+        const [ current, setCurrent ] = useState<number>(0);
 
         /**
         * Track wizard steps from wizard component.
@@ -349,7 +349,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
                         <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp current={ current }/>
+                            <WizardHelp current = { current }/>
                         </Suspense>
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
@@ -436,7 +436,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                         >
                             { alert && alertComponent }
                             <HyprAuthenticationProviderCreateWizardContent
-                                setOnFocus={ setCurrent }
+                                setOnFocus = { setCurrent }
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunctionCb: () => void) => {
                                     submitForm = submitFunctionCb;

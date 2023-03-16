@@ -62,9 +62,9 @@ interface HyprAuthenticationProviderCreateWizardContentPropsInterface extends Id
      */
     onSubmit: (values: HyprAuthenticationProviderCreateWizardFormValuesInterface) => void;
     /**
-     * On focus callback.
-     */
-    setOnFocus: any;
+    * On focus callback.
+    */
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "hypr-authenticator-wizard-form";
