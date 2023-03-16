@@ -113,7 +113,6 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
-
     const { t } = useTranslation();
 
     /**

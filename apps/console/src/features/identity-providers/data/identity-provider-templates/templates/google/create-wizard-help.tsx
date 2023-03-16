@@ -36,6 +36,7 @@ type props = {
 }
 
 const GoogleIDPCreateWizardHelp = ({ current } : props) => {
+    
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);

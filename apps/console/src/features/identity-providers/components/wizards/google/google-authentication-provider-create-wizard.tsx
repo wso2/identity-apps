@@ -321,7 +321,6 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             handleWizardFormFinish(identityProvider);
         };
 
-
         const resolveStepActions = (): ReactElement => {
 
             return (
