@@ -269,11 +269,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 );
 
                 if (!isPrivilegedUser) {
-                    // We are actually getting the orgId here rather than orgName
-                    const orgId: string = isFirstLevelOrg
-                        ? orgIdIdToken
-                        : window[ "AppUtils" ].getConfig().organizationName;
-    
                     dispatch(setCurrentOrganization(orgName));
     
                     // This is to make sure the endpoints are generated with the organization path.
