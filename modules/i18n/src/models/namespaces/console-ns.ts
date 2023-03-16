@@ -96,11 +96,19 @@ export interface ConsoleNS {
                 myAccount: AppSwitchItemInterface;
                 tooltip: string;
             };
+            featureAnnouncements: {
+                organizations: {
+                    message: string;
+                    buttons: {
+                        tryout: string; 
+                    };
+                };
+            };
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
                 breadcrumbError: NotificationItem;
-            }
+            };
         },
         modals: {
             editAvatarModal: ModalInterface;
@@ -653,6 +661,10 @@ export interface ConsoleNS {
                                             secondFactorDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             firstFactorDisabled: string;
+                                            federatedSMSOTPConflictNote: {
+                                                multipleIdps: string;
+                                                singleIdp: string;
+                                            };
                                         };
                                     };
                                 };
@@ -1510,6 +1522,11 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                         };
+                        hypr: {
+                            appId: FormAttributes;
+                            apiToken: FormAttributes;
+                            baseUrl: FormAttributes;
+                        };
                         saml: {
                             AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
@@ -1781,6 +1798,33 @@ export interface ConsoleNS {
                                 heading: string;
                             },
                             subHeading: string;
+                        }
+                    };
+                    hypr?: {
+                        wizardHelp: {
+                            apiToken: {
+                                description: string;
+                                heading: string;
+                            };
+                            appId: {
+                                description: string;
+                                heading: string;
+                            };
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                rpDescription: string;
+                                tokenDescription: string;
+                                heading: string;
+                            };
                         }
                     };
                     enterprise?: {
@@ -5149,6 +5193,39 @@ export interface ConsoleNS {
                 description: string;
                 goBackToApplication: string;
                 goBackToValidationConfig: string;
+            };
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                },
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                pageTitle: string;
+                description: string;
+                goBackToApplication: string;
+                goBackToAccountSecurityConfig: string;
+                messageInfo: string;
+                tokenReuseEnabled: string;
+                tokenReuseDisabled: string;
             };
         };
         notifications: {

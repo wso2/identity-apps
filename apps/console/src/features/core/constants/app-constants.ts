@@ -328,7 +328,11 @@ export class AppConstants {
             .set("VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration`)
             .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`)
             .set("ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login`)
-            .set("USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation`);
+            .set("USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation`)
+            .set(
+                "PRIVATE_KEY_JWT_CONFIG_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
+            );
     }
 
     /**

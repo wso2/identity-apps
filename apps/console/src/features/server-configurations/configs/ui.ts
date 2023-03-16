@@ -79,6 +79,9 @@ import {
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+import {
+    default as JWTKeyIcon
+} from "../../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
@@ -119,6 +122,7 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         accountRecovery: LockRecoverIcon,
         botDetection: RobotIcon,
         eventConfiguration: EventConfigurationIcon,
+        jwtPrivateKeyValidation: JWTKeyIcon,
         passwordValidation: PasswordValidationIcon,
         selfRegistration: UserAddIcon
     };

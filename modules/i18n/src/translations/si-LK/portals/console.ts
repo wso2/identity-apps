@@ -89,6 +89,15 @@ export const console: ConsoleNS = {
                 },
                 tooltip: "Apps"
             },
+            featureAnnouncements: {
+                organizations: {
+                    message: "B2B සංවිධාන හඳුන්වා දීම. ඔබේ සහකරු/පාරිභෝගික සංවිධාන ඇතුළත් කිරීමෙන් ඔබේ " + 
+                    "B2B වේදිකාව ගොඩනැගීම ආරම්භ කරන්න.",
+                    buttons: {
+                        tryout: "අත්හදා බලන්න"
+                    }
+                }
+            },
             organizationSwitch: {
                 breadcrumbError: {
                     description: "සංවිධාන ධුරාවලිය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
@@ -1116,7 +1125,14 @@ export const console: ConsoleNS = {
                                                 " වෙතින් යස්ට්-ඉන්-ටයිම් ප්‍රතිපාදන සැකසීම සක්‍රීය කළ යුතුය.",
                                             secondFactorDisabledInFirstStep: "පළමු පියවරේදී" +
                                                 " දෙවන සාධක සත්‍යාපක " +
-                                                "භාවිතා කළ නොහැක."
+                                                "භාවිතා කළ නොහැක.",
+                                            federatedSMSOTPConflictNote:{
+                                                multipleIdps: "පහත සම්බන්ධතා සමඟ <3>SMS OTP</3> වින්‍යාස කිරීමට" +
+                                                " Asgardeo හට <1>ජංගම දුරකථන</1> අංකය අඩංගු පරිශීලක පැතිකඩ අවශ්‍ය වේ.",
+                                                singleIdp: "<5>{{idpName}}</5> සම්බන්ධතාවය සමඟ <3>SMS OTP</3>" +
+                                                " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
+                                                " පැතිකඩ අවශ්‍ය වේ."
+                                            }
                                         }
                                     }
                                 },
@@ -3414,9 +3430,9 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         role: {
                             heading: "කාර්යභාරය",
-                            hint: "හැඳුනුම් සැපයුම්කරුගේ භූමිකාවන් හඳුනා ගන්නා ගුණාංගය නියම කරයි",
+                            hint: "හැඳුනුම් සැපයුම්කරුගේ භූමිකාවන් හඳුනා ගන්නා ගුණාංගය නියම කරයි.",
                             label: "භූමිකාව",
-                            placeHolder: "ගුණාංගය තෝරන්න",
+                            placeHolder: "පෙරනිමි කාර්යභාරය",
                             validation: {
                                 empty: "කරුණාකර භූමිකාව සඳහා ලක්ෂණයක් තෝරන්න"
                             }
@@ -8691,6 +8707,39 @@ export const console: ConsoleNS = {
                 description: "ඔබගේ පරිශීලකයින් සඳහා මුරපද වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
                 goBackToValidationConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "නැවත ලබා ගැනීමේ දෝෂය"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාස දත්ත ලබා ගැනීමට නොහැකි විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය යාවත්කාලීන කිරීමට අපොහොසත් විය.",
+                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                    },
+                    success: {
+                        description: "jwt පුද්ගලික යතුරු සත්‍යාපන වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    }
+                },
+                pageTitle: "OIDC සඳහා පුද්ගලික යතුරු JWT සේවාලාභී සත්‍යාපනය",
+                description: "ටෝකන් අන්ත ලක්ෂ්‍යය භාවිතා කරන විට රහස්‍ය සේවාලාභීන් බලයලත් සේවාදායකය වෙත සත්‍යාපනය කරන්න.",
+                goBackToApplication: "යෙදුම වෙත ආපසු යන්න",
+                goBackToAccountSecurityConfig: "ගිණුම් ආරක්ෂාව වෙත ආපසු යන්න",
+                messageInfo: "සබල කර ඇත්නම්, කලින් භාවිතා කළ JWT දැනටමත් කල් ඉකුත් වී නොමැති නම්, JWT හි JTI ඉල්ලීම අනුව අනන්‍ය වේ. JTI (JWT ID) යනු JWT සඳහා අනන්‍ය හඳුනාගැනීමක් සපයන හිමිකම් පෑමකි.",
+                tokenReuseEnabled: "ටෝකන් නැවත භාවිතය සබල කර ඇත",
+                tokenReuseDisabled: "ටෝකන් නැවත භාවිතා කිරීම අක්‍රීය කර ඇත"
             }
         },
         notifications: {

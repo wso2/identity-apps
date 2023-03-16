@@ -89,6 +89,15 @@ export const console: ConsoleNS = {
                 },
                 tooltip: "Apps"
             },
+            featureAnnouncements: {
+                organizations: {
+                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " + 
+                    "partner/customer organizations.",
+                    buttons: {
+                        tryout: "Try It Out"
+                    }
+                }
+            },
             organizationSwitch: {
                 breadcrumbError: {
                     description: "An error occurred while fetching the organization hierarchy.",
@@ -1108,7 +1117,15 @@ export const console: ConsoleNS = {
                                                 " you should enable the Just-in-Time provisioning" +
                                                 " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
-                                                "not be used in the first step."
+                                                "not be used in the first step.",
+                                            federatedSMSOTPConflictNote: {
+                                                multipleIdps: "Asgardeo requires the user's profile containing" +
+                                                " the <1>mobile number</1> to configure <3>SMS OTP</3> with the" +
+                                                " following connections.",
+                                                singleIdp: "Asgardeo requires the user's profile containing the"+
+                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" + 
+                                                " <5>{{idpName}}</5> connection."
+                                            }
                                         }
                                     }
                                 },
@@ -3548,6 +3565,32 @@ export const console: ConsoleNS = {
                                 placeholder: "e.g: openid"
                             }
                         },
+                        hypr: {
+                            appId: {
+                                hint: "The <1>Application ID</1> you received from HYPR for your OAuth app.",
+                                label: "Relying Party App ID",
+                                placeholder: "Enter App ID from HYPR application.",
+                                validations: {
+                                    required: "Relying Party App ID is a required field."
+                                }
+                            },
+                            apiToken: {
+                                hint: "The relying party app access token generated in the control center.",
+                                label: "API Token",
+                                placeholder: "Enter API token from HYPR",
+                                validations: {
+                                    required: "API token is a required field."
+                                }
+                            },
+                            baseUrl: {
+                                hint: "The base URL of your HYPR server deployment.",
+                                label: "Base URL",
+                                placeholder: "Enter HYPR server base URL",
+                                validations: {
+                                    required: "Base URL is a required field."
+                                }
+                            }
+                        },
                         saml: {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
@@ -3756,9 +3799,9 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         role: {
                             heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Identity Provider",
+                            hint: "Specifies the attribute that identifies the roles at the Identity Provider.",
                             label: "Role Attribute",
-                            placeHolder: "Select Attribute",
+                            placeHolder: "Default Role",
                             validation: {
                                 empty: "Please select an attribute for role"
                             }
@@ -4614,6 +4657,33 @@ export const console: ConsoleNS = {
                                 heading: "Prerequisite"
                             },
                             subHeading: "Use the guide below"
+                        }
+                    },
+                    hypr: {
+                        wizardHelp: {
+                            apiToken: {
+                                description: "Provide the <1>API Token</1> obtained from HYPR. This will be used to access HYPR's APIs.",
+                                heading: "API Token"
+                            },
+                            appId: {
+                                description: "Provide the <1>Application ID</1> of the application registered in the HYPR control center.",
+                                heading: "App ID"
+                            },
+                            baseUrl: {
+                                description: "Provide the <1>base URL</1> of your HYPR server deployment.",
+                                heading: "Base URL"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the identity provider."
+                            },
+                            preRequisites: {
+                                rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
+                                tokenDescription: "You also have to obtain an <1>API token</1> for your application created on HYPR.",
+                                heading: "Prerequisite"
+                            }
                         }
                     },
                     manualSetup: {
@@ -10442,6 +10512,39 @@ export const console: ConsoleNS = {
                 description: "Customize password validation rules for your users.",
                 goBackToApplication: "Go back to application",
                 goBackToValidationConfig: "Go back to Account Security"
+            },
+            jwtPrivateKeyConfiguration: {
+                fetchValidationConfigData: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Impossible de récupérer les données de configuration de l'authentificateur de clé privée jwt.",
+                        message: "Something went wrong"
+                    }
+                },
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update jwt private-key authenticator configuration.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated jwt private-key authenticator configuration.",
+                        message: "Update successful"
+                    }
+                },
+                pageTitle: "Private Key JWT Client Authentication for OIDC",
+                description: "Authenticate confidential clients to the authorization server when using the token endpoint.",
+                goBackToApplication: "Go back to application",
+                goBackToAccountSecurityConfig: "Go back to Account Security",
+                messageInfo: "If enabled, the JTI in the JWT will be unique per the request if the previously used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                tokenReuseEnabled: "Token Reuse Enabled",
+                tokenReuseDisabled: "Token Reuse Disabled"
             }
         },
         notifications: {

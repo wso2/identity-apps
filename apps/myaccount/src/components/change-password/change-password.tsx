@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
-import { fetchPasswordValidationConfig } from "../../api/validation";
+import { fetchPasswordValidationConfig, getPasswordConfig } from "../../api/validation";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
 import { passwordValidationConfig } from "../../extensions/configs/password-validation";
@@ -136,8 +136,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const getConfigurations = (): void => {
 
         fetchPasswordValidationConfig()
-            .then((response: ValidationFormInterface) => {
-                setPasswordConfig(response);
+            .then((response: ValidationFormInterface[]) => {
+                setPasswordConfig(getPasswordConfig(response));
             })
             .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {

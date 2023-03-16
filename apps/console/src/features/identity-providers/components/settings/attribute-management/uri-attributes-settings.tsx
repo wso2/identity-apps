@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import { Code, Heading, Hint } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
@@ -31,7 +31,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     /**
      * Controls whether role claim mapping should be rendered or not.
      * If you only want to get subject attribute then you should make
-     * this {@code false}.
+     * this `false`.
      */
     claimMappingOn: boolean;
     /**
@@ -74,7 +74,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     const { t } = useTranslation();
 
     const getValidatedInitialValue = (initialValue: string) => {
-        return find(dropDownOptions, option => option?.value === initialValue) !== undefined ? initialValue : "";
+        return find(
+            dropDownOptions, 
+            (option: DropdownOptionsInterface) => option?.value === initialValue
+        ) !== undefined ? initialValue : "";
     };
 
     return (
@@ -104,7 +107,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 "uriAttributeSettings.subject." +
                                 "placeHolder") }
                             onChange={
-                                (event, data) => {
+                                (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                     updateSubject(data.value.toString());
                                 }
                             }
@@ -155,47 +158,54 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             </Grid.Row>
             <Divider hidden/>
             {
-                claimMappingOn &&
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column>
-                        <Heading as="h4">
-                            { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
-                                "role.heading") }
-                        </Heading>
-                        <Form>
-                            <Form.Select
-                                required
-                                fluid
-                                options={ dropDownOptions }
-                                value={ getValidatedInitialValue(initialRoleUri) }
-                                placeholder={ t("console:develop.features.authenticationProvider" +
-                                    ".forms.uriAttributeSettings." +
-                                    "role.placeHolder") }
-                                onChange={
-                                    (event, data) => {
-                                        updateRole(data.value.toString());
+                claimMappingOn && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column>
+                            <Heading as="h4">
+                                { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
+                                    "role.heading") }
+                            </Heading>
+                            <Form>
+                                <Form.Select
+                                    fluid
+                                    options={
+                                        dropDownOptions.concat(
+                                            {
+                                                key: "default_subject",
+                                                text: t("console:develop.features.authenticationProvider" +
+                                                    ".forms.uriAttributeSettings.role.placeHolder"),
+                                                value: ""
+                                            } as DropdownOptionsInterface 
+                                        )
                                     }
-                                }
-                                search
-                                fullTextSearch={ false }
-                                label={ t("console:develop.features.authenticationProvider.forms." +
-                                    "uriAttributeSettings.role.label") }
-                                data-testid={ `${ testId }-form-element-role` }
-                                error={ roleError && {
-                                    content: t("console:develop.features.authenticationProvider" +
-                                        ".forms.uriAttributeSettings." +
-                                        "role.validation.empty"),
-                                    pointing: "above"
-                                } }
-                                readOnly={ isReadOnly }
-                            />
-                        </Form>
-                        <Hint>
-                            { t("console:develop.features.authenticationProvider." +
-                                "forms.uriAttributeSettings.role.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                                    value={ getValidatedInitialValue(initialRoleUri) }
+                                    placeholder={ t("console:develop.features.authenticationProvider" +
+                                        ".forms.uriAttributeSettings.role.placeHolder") }
+                                    onChange={
+                                        (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+                                            updateRole(data.value.toString());
+                                        }
+                                    }
+                                    search
+                                    fullTextSearch={ false }
+                                    label={ t("console:develop.features.authenticationProvider.forms." +
+                                        "uriAttributeSettings.role.label") }
+                                    data-testid={ `${ testId }-form-element-role` }
+                                    error={ roleError && {
+                                        content: t("console:develop.features.authenticationProvider" +
+                                            ".forms.uriAttributeSettings.role.validation.empty"),
+                                        pointing: "above"
+                                    } }
+                                    readOnly={ isReadOnly }
+                                />
+                            </Form>
+                            <Hint>
+                                { t("console:develop.features.authenticationProvider." +
+                                    "forms.uriAttributeSettings.role.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
             }
         </>
     );

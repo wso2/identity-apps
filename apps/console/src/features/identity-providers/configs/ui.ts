@@ -46,6 +46,7 @@ import {
 import FacebookLogo from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import HyprLogo from "../../../themes/default/assets/images/identity-providers/hypr.svg";
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
 import OrganizationSSOIcon from "../../../themes/default/assets/images/identity-providers/organization-sso.svg";
@@ -124,6 +125,7 @@ export const getIdPIcons = (): any => {
         facebook: FacebookLogo,
         github: GithubIdPIcon,
         google: GoogleLogo,
+        hypr: HyprLogo,
         iwaKerberos: KerberosLogo,
         linkedIn: LinkedInLogo,
         microsoft: MicrosoftLogo,
