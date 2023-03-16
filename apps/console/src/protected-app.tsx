@@ -240,10 +240,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
-            if (
-                window[ "AppUtils" ].getConfig().organizationName ||
-                (isFirstLevelOrg)
-            ) {
+            if (window[ "AppUtils" ].getConfig().organizationName || isFirstLevelOrg) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId: string = isFirstLevelOrg
                     ? orgIdIdToken
