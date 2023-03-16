@@ -240,10 +240,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
-            if (
-                window[ "AppUtils" ].getConfig().organizationName ||
-                (isFirstLevelOrg && !isPrivilegedUser)
-            ) {
+            if (window[ "AppUtils" ].getConfig().organizationName || isFirstLevelOrg) {
                 // We are actually getting the orgId here rather than orgName
                 const orgId: string = isFirstLevelOrg
                     ? orgIdIdToken
@@ -268,39 +265,41 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     })
                 );
 
-                dispatch(setCurrentOrganization(orgName));
-
-                // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(
-                    setServiceResourceEndpoints(
-                        Config.getServiceResourceEndpoints()
-                    )
-                );
-
-                await requestCustomGrant(
-                    {
-                        attachToken: false,
-                        data: {
-                            client_id: "{{clientID}}",
-                            grant_type: "organization_switch",
-                            scope:
-                                window[ "AppUtils" ]
-                                    .getConfig()
-                                    .idpConfigs?.scope.join(" ") ??
-                                TokenConstants.SYSTEM_SCOPE,
-                            switching_organization: orgId,
-                            token: "{{token}}"
+                if (!isPrivilegedUser) {
+                    dispatch(setCurrentOrganization(orgName));
+    
+                    // This is to make sure the endpoints are generated with the organization path.
+                    await dispatch(
+                        setServiceResourceEndpoints(
+                            Config.getServiceResourceEndpoints()
+                        )
+                    );
+    
+                    await requestCustomGrant(
+                        {
+                            attachToken: false,
+                            data: {
+                                client_id: "{{clientID}}",
+                                grant_type: "organization_switch",
+                                scope:
+                                    window[ "AppUtils" ]
+                                        .getConfig()
+                                        .idpConfigs?.scope.join(" ") ??
+                                    TokenConstants.SYSTEM_SCOPE,
+                                switching_organization: orgId,
+                                token: "{{token}}"
+                            },
+                            id: "orgSwitch",
+                            returnsSession: true,
+                            signInRequired: true
                         },
-                        id: "orgSwitch",
-                        returnsSession: true,
-                        signInRequired: true
-                    },
-                    async (grantResponse: BasicUserInfo) => {
-                        response = { ...grantResponse };
-                    }
-                );
-
-                dispatch(setCurrentOrganization(response.orgName));
+                        async (grantResponse: BasicUserInfo) => {
+                            response = { ...grantResponse };
+                        }
+                    );
+    
+                    dispatch(setCurrentOrganization(response.orgName));
+                }
             }
 
             dispatch(setGetOrganizationLoading(false));
