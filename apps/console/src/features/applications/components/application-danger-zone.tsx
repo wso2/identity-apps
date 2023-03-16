@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,9 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AppConstants, AppState, EventPublisher, FeatureConfigInterface, UIConfigInterface, history } from "../../core";
 import { deleteApplication } from "../api";
    
@@ -52,9 +54,9 @@ interface ApplicationDangerZonePropsInterface extends
 /**
  * Application Danger Zone component
  * 
- * @param { ApplicationDangerZonePropsInterface } props - Props injected to the component.
+ * @param props - Props injected to the component.
  * 
- * @return {React.ReactElement}
+ * @returns ReactElement
  */
 export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDangerZonePropsInterface> = (
     props: ApplicationDangerZonePropsInterface
@@ -69,7 +71,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
@@ -101,7 +103,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                     { "client-id": clientId }
                 );
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 setIsDeletionInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
@@ -138,7 +140,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     /**
      * Resolves the danger actions.
      *
-     * @return {React.ReactElement} DangerZoneGroup element.
+     * @returns ReactElement DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
