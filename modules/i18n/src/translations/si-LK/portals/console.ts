@@ -5725,8 +5725,8 @@ export const console: ConsoleNS = {
                                         label: "බැනරය සක්රිය කරන්න"
                                     },
                                     adminSessionAdvisoryBannerDescription: {
-                                        hint: "පිවිසුම් පිටුවේ ප්‍රදර්ශනය කිරීමට බැනර් විස්තරය",
-                                        label: "බැනර් විස්තරය"
+                                        hint: "පිවිසුම් පිටුවේ ප්‍රදර්ශනය කළ යුතු බැනර් අන්තර්ගතය",
+                                        label: "බැනර් අන්තර්ගතය"
                                     }
                                 }
                             },

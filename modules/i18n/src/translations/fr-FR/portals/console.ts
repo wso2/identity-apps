@@ -5853,8 +5853,8 @@ export const console: ConsoleNS = {
                                         label: "Activer la bannière"
                                     },
                                     adminSessionAdvisoryBannerDescription: {
-                                        hint: "Description de la bannière à afficher dans la page de connexion",
-                                        label: "Description de la bannière"
+                                        hint: "Contenu de la bannière à afficher dans la page de connexion",
+                                        label: "Contenu de la bannière"
                                     }
                                 }
                             },

@@ -7325,8 +7325,8 @@ export const console: ConsoleNS = {
                                         label: "Enable Banner"
                                     },
                                     adminSessionAdvisoryBannerDescription: {
-                                        hint: "Banner description to be displayed in the login page",
-                                        label: "Banner Description"
+                                        hint: "Banner content to be displayed in the login page",
+                                        label: "Banner Content"
                                     }
                                 }
                             },
