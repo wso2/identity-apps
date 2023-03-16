@@ -58,11 +58,10 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * @param values - Form values.
      */
     onSubmit: (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => void;
-    
     /**
-     * On focus callback.
-     */
-    setOnFocus: any;
+    * On focus callback.
+    */
+    setOnFocus: React.Dispatch<React.SetStateAction<number>>;
 }
 
 /**
@@ -265,7 +264,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
-                            onFocus={ () => {
+                            onFocus={ () => { 
                                 setOnFocus(3);
                             } }
                             ariaLabel="Google Client Secret"

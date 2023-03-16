@@ -119,7 +119,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Creates a new identity provider.
         *
-        * @param identityProvider Identity provider object.
+        * @param identityProvider - Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
