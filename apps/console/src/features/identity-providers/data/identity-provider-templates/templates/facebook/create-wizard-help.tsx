@@ -1,39 +1,57 @@
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable sort-keys */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/typedef */
-/* eslint-disable header/header */
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
+import { Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { ConfigReducerStateInterface } from "../../../../../core/models";
+import { AppState } from "../../../../../core/store";
 
+/**
+ * Help content for the Apple IDP template creation wizard.
+ *
+ * @param props - Props injected into the component.
+ *
+ *  @returns React Element
+ */
 type props = {
     current: any
 }
+
 const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
     const { t } = useTranslation();
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const [ currentState, setCurrentState ] = useState <any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-    const CONTENTS = [
+
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+      
+    const CONTENTS: Content[] = [
         {
-            id: 0,
             body: (
                 <>
                     <Message
@@ -105,28 +123,26 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                     />
                 </>
                     
-            )
+            ),
+            id: 0
         },
         {
-            id: 1,
-            title:  t("console:develop.features.authenticationProvider.templates.facebook" +
-            ".wizardHelp.name.heading"), 
             body:(    
                 <p>
                     {
                         useNewConnectionsView
                             ? t("console:develop.features.authenticationProvider.templates.facebook." +
                                     "wizardHelp.name.connectionDescription")
-                            : t("Provide a unique name for the selected identity provider to be easily identifiable.")
+                            : t("console:develop.features.authenticationProvider.templates.facebook." +
+                                    "wizardHelp.name.idpDescription")
                     }
-                </p>                
-            )
-
+                </p>         
+            ),
+            id: 1,
+            title:  t("console:develop.features.authenticationProvider.templates.facebook" +
+            ".wizardHelp.name.heading")
         },
         {
-            id: 2,
-            title: t("console:develop.features.authenticationProvider." +
-            "templates.facebook.wizardHelp.clientId.heading"),
             body:(
                 <p>
                     <Trans
@@ -138,12 +154,12 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                             Provide the <Code>App ID</Code> obtained from Facebook.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 2,
+            title: t("console:develop.features.authenticationProvider." +
+            "templates.facebook.wizardHelp.clientId.heading")
         },
         {
-            id: 3,
-            title: t("console:develop.features.authenticationProvider.templates.facebook" +
-            ".wizardHelp.clientSecret.heading"),
             body: (
                 <p>
                     <Trans
@@ -155,11 +171,12 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                             Provide the <Code>App Secret</Code> obtained from Facebook.
                     </Trans>
                 </p>
-            )
+            ),
+            id: 3,
+            title: t("console:develop.features.authenticationProvider.templates.facebook" +
+            ".wizardHelp.clientSecret.heading")
         }
     ];
-
-    const [ currentContent, setCurrentContent ] = useState(0);
 
     const handleClickLeft = () => {
 
@@ -171,15 +188,13 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
         setCurrentState(currentState === 3 ?  3 : currentState + 1);
     };
 
-    const isLeftButtonDisabled = currentState === 0;
-    const isRightButtonDisabled = currentState === 3;
+    const isLeftButtonDisabled:boolean = currentState === 0;
+    const isRightButtonDisabled:boolean = currentState === 3;
 
-    const leftButtonColor = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor = isRightButtonDisabled ? "grey" : "orange";
+    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
+    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
 
-    const progress = (currentState / (3)) * 100;
-
-    const [ sidebarprogress, setSidebarprogress ] = useState(0);
+    const progress:number = (currentState / (3)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -194,7 +209,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
             >
                 <div className="idp-sidepanel-content">
 
-                    { CONTENTS.map(({ id, title, body }) => (
+                    { CONTENTS.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -239,7 +254,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
  * Default props for the component
  */
 FacebookIdentityProviderCreateWizardHelp.defaultProps = {
-    "data-testid": "google-idp-create-wizard-help"
+    "data-testid": "facebook-idp-create-wizard-help"
 };
 
 /**
