@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ReactElement } from "react";
+
 export interface AuthenticatorConfig {
     overriddenAuthenticatorIds?: {
         SMS_OTP_AUTHENTICATOR_ID?: string;
@@ -23,4 +25,5 @@ export interface AuthenticatorConfig {
     overriddenAuthenticatorNames?: {
         SMS_OTP_AUTHENTICATOR?: string;
     }
+    externalResourceButton: ReactElement;
 }
