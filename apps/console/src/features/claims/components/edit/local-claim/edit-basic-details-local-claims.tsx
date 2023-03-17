@@ -618,6 +618,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             <Divider hidden />
             {
                 attributeConfig.editAttributes.showDangerZone && !hideSpecialClaims
+                && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
                 && (
                     <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
                         <DangerZoneGroup
