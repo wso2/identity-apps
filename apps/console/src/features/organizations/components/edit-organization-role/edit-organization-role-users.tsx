@@ -119,7 +119,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         try {
             await patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, payload);
             handleAlerts({
-                description: t("casdsonsole:manage.features.roles.notifications.updateRole.success.description"),
+                description: t("console:manage.features.roles.notifications.updateRole.success.description"),
                 level: AlertLevels.SUCCESS,
                 message: t("console:manage.features.roles.notifications.updateRole.success.message")
             });
