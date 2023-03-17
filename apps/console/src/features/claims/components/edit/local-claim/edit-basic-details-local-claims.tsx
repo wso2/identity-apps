@@ -617,7 +617,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             </EmphasizedSegment>
             <Divider hidden />
             {
-                attributeConfig.editAttributes.showDangerZone && !hideSpecialClaims
+                attributeConfig.editAttributes.showDangerZone
+                && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
                 && (
                     <Show when={ AccessControlConstants.ATTRIBUTE_DELETE }>
