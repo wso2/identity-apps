@@ -370,7 +370,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (!isEmpty(value)) {
             const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            selectedUsers && selectedUsers.map((user) => {
+            selectedUsers && selectedUsers.map((user: UserBasicInterface) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
                     filteredUserList.push(user);
