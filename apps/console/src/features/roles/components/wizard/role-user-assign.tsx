@@ -454,7 +454,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            usersList?.map((user, index)=> {
+                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -487,7 +487,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            tempUserList?.map((user, index)=> {
+                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -585,7 +585,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     </Table.Header>
                                                     <Table.Body>
                                                         {
-                                                            selectedUsers?.map((user) => {
+                                                            selectedUsers?.map((user: UserBasicInterface) => {
                                                                 return (
                                                                     <Table.Row key={ user.id }>
                                                                         <Table.Cell collapsing>
@@ -679,7 +679,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
-                                            usersList?.map((user, index)=> {
+                                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>
@@ -713,7 +713,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
-                                            tempUserList?.map((user, index)=> {
+                                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>
