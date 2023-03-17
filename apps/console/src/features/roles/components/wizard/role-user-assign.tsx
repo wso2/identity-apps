@@ -384,7 +384,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const seperateOutAddOrRemoveUsers = () => {
         const addedUsers: UserBasicInterface[] = tempUserList;
-        const removedUsers: UserBasicInterface[] =  differenceBy(initialUserList, tempUserList);
+        const removedUsers: UserBasicInterface[] =  differenceBy(usersList, tempUserList);
 
         return { addedUsers, removedUsers };
     };
