@@ -718,6 +718,10 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Régénérer"
             },
             backupCode: {
+                actions: {
+                    add: "Ajouter des codes de secours",
+                    delete: "Supprimer les codes de secours"
+                },
                 description: "Utilisez des codes de secours pour accéder à votre compte au cas où vous ne pourriez pas " +
                     "recevoir de codes d'authentification multifacteur. Vous pouvez régénérer de nouveaux codes si nécessaire.",
                 download: {
@@ -729,12 +733,20 @@ export const myAccount: MyAccountNS = {
                         "de sauvegarde dans un endroit sûr mais accessible."
                 },
                 heading: "Codes de sauvegarde",
+                messages: {
+                    disabledMessage: "Au moins un authentificateur supplémentaire doit être configuré pour activer les codes de sauvegarde."
+                },
                 modals: {
                     actions: {
                         copied: "copié",
                         copy: "Copier les codes",
                         download: "Codes de téléchargement",
                         regenerate: "Régénérer"
+                    },
+                    delete: {
+                        description: "Cette action supprimera les codes de secours et vous ne pourrez plus les utiliser. " +
+                            "Souhaitez-vous continuer?",
+                        heading: "Confirmation"
                     },
                     description: "Utilisez les codes de secours pour vous connecter lorsque vous êtes " +
                         "loin de votre téléphone. Vous pouvez en générer plus lorsqu'ils sont tous utilisés",
@@ -765,6 +777,10 @@ export const myAccount: MyAccountNS = {
                             description: "Une erreur s'est produite lors de la suppression des codes de secours",
                             message: "Quelque chose s'est mal passé"
                         }
+                    },
+                    deleteSuccess: {
+                        genericMessage: "Suppression réussie",
+                        message: "Codes de secours supprimés avec succès."
                     },
                     downloadError: {
                         error: {

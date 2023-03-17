@@ -126,7 +126,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             setIsMFAConfigured(true);
         } else {
             setIsMFAConfigured(false);
-            if (isMFAConfigured) {
+            if (isMFAConfigured && isBackupCodesConfigured) {
                 handleDeleteBackupCodes();
             }
         }
@@ -551,13 +551,10 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             >
                 <Modal.Content data-testid={ `${componentid}-termination-modal-content` }>
                     <Container>
-                        <h3>Confirmation</h3>
+                        <h3>{ t(translateKey + "modals.delete.heading") }</h3>
                     </Container>
                     <br/>
-                    <p>
-                        This action will remove backup codes and you will not be able to use them.
-                        Do you wish to continue?
-                    </p>
+                    <p>{ t(translateKey + "modals.delete.description") }</p>
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${componentid}-termination-modal-actions` }>
                     <Button
@@ -583,7 +580,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             { renderConfirmRegenerateModal() }
             { renderRemoveBackupCodesModal() }
             <Grid padded={ true } data-testid={ componentid }>
-                <Grid.Row columns={ 2 }>
+                <Grid.Row columns={ 3 }>
                     <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
                         <List.Content floated="left">
                             <GenericIcon
@@ -654,7 +651,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                             )
                                         }
                                         inverted
-                                        content="Remove backup codes"
+                                        content={ t(translateKey + "actions.delete") }
                                         position="top right"
                                     />
                                 </>
@@ -662,7 +659,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                 <Popup
                                     trigger={
                                         (<Icon
-                                            link={ true }
+                                            link={ false }
                                             onClick={ initializeBackupCodesConfig }
                                             className="list-icon padded-icon"
                                             size="small"
@@ -672,13 +669,28 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                             data-testid={ `${componentid}-init-button` }
                                         />)
                                     }
-                                    content="Add backup codes"
+                                    content={ t(translateKey + "actions.add") }
                                     inverted
                                 />
                             ) }
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
+                { !isMFAConfigured ? (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
+                        </Grid.Column>
+                        <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
+                            <Message className="display-flex" size="tiny" info>
+                                <Icon name="info" color="teal" corner />
+                                <Message.Content className="tiny">
+                                    { t(translateKey + "messages.disabledMessage") }
+                                </Message.Content>
+                            </Message>
+                        </Grid.Column>
+                    </Grid.Row>) :
+                    null
+                }
             </Grid>
         </>
     );
