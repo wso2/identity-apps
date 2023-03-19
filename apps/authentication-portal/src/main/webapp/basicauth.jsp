@@ -344,11 +344,11 @@
     if (reCaptchaEnabled) {
     %>
         <div class="g-recaptcha"
-                data-size="invisible"
-                data-callback="onCompleted"
-                data-action="login"
-                data-sitekey=
-                        "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+            data-size="invisible"
+            data-callback="onCompleted"
+            data-action="login"
+            data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+        >
         </div>
     <%
         }
@@ -452,11 +452,11 @@
 
         <% if (isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
-            <a 
-                id="backLink" 
-                class="clickable-link" 
-                tabindex="0" 
-                onclick="goBack()" 
+            <a
+                id="backLink"
+                class="clickable-link"
+                tabindex="0"
+                onclick="goBack()"
                 onkeypress="javascript: if (window.event.keyCode === 13) goBack()"
                 data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>

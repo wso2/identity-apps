@@ -280,12 +280,12 @@
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                    data-size="invisible"
-                                    data-callback="onCompleted"
-                                    data-action="passwordRecovery"
-                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                                    data-tabindex="-1"
-                                    >
+                                data-size="invisible"
+                                data-callback="onCompleted"
+                                data-action="passwordRecovery"
+                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-tabindex="-1"
+                            >
                             </div>
                         </div>
                         <%

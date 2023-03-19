@@ -116,11 +116,11 @@
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                    data-size="invisible"
-                                    data-callback="onCompleted"
-                                    data-action="usernameRecovery"
-                                    data-sitekey=
-                                            "<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                                data-size="invisible"
+                                data-callback="onCompleted"
+                                data-action="usernameRecovery"
+                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                            >
                             </div>
                         </div>
                         <%
