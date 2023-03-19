@@ -1042,7 +1042,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             <Grid.Column width={ 12 } className="first-column">
                                 <List.Content>
                                     <List.Header>{ t(translateKey + "heading") }</List.Header>
-                                    <List.Description>
+                                    <List.Description style={ { marginTop: "10px" } }>
                                         { t(translateKey + "description") }
                                     </List.Description>
                                 </List.Content>
@@ -1093,7 +1093,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                         <List.Header>
                                             { t(translateKey + "heading") }
                                         </List.Header>
-                                        <List.Description>
+                                        <List.Description style={ { marginTop: "10px" } }>
                                             { t(translateKey + "description") }
                                         </List.Description>
                                     </List.Content>
