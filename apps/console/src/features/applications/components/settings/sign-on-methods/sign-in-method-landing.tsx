@@ -18,6 +18,7 @@
 
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
+import { identityProviderConfig } from "apps/console/src/extensions";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -217,11 +218,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     data-testid="usernameless-flow-card"
                                     image={ getAuthenticatorIcons().fido }
                                     imageSize="mini"
-                                    header={ t(
-                                        "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.heading"
-                                    ) }
+                                    header={ 
+                                        identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                                            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID, 
+                                            t("console:develop.features.applications.edit.sections.signOnMethod" 
+                                                + ".sections.landing.flowBuilder.types.usernameless.heading")) 
+                                    }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
