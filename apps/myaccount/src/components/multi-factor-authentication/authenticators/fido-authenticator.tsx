@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Icon, Label, List, ModalContent } from "semantic-ui-react";
@@ -91,7 +91,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         // Exception is not handled here since this request is dispatched on page load.
         // TODO: Add a logger to print the exception
         startFidoUsernamelessFlow()
-            .then((response) => {
+            .then((response: any) => {
                 setFidoFlowStartResponse(response);
             });
 
@@ -99,14 +99,13 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         // TODO: Add a logger to print the exception
         commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
             startFidoFlow()
-                .then((response) => {
+                .then((response: any) => {
                     setOldFidoFlowStartResponse(response);
                 });
-
     }, []);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     /**
      * This function fires a notification on failure.
@@ -123,7 +122,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         let devices: FIDODevice[] = [];
 
         getMetaData()
-            .then((response) => {
+            .then((response: any) => {
                 if (response.status === 200) {
                     if (response.data.length > 0) {
                         devices = [ ...response.data ];
@@ -200,7 +199,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const talkToDevice = (request?: any): void => {
         setDeviceErrorModalVisibility(false);
 
-        const fidoRequest = request ?? fidoFlowStartResponse;
+        const fidoRequest: any = request ?? fidoFlowStartResponse;
 
         if (!fidoRequest) {
             fireFailureNotification();
@@ -212,7 +211,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             fidoRequest?.requestId,
             decodePublicKeyCredentialCreationOptions(fidoRequest?.publicKeyCredentialCreationOptions)
         )
-            .then(({ data }) => {
+            .then((data: any) => {
                 setRecentlyAddedDevice(data.credential.id);
                 setIsDeviceSuccessModalVisibility(true);
             })
@@ -235,7 +234,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             }
         } else {
             startFidoFlow()
-                .then((response) => {
+                .then((response: any) => {
                     setOldFidoFlowStartResponse(response);
                     talkToDevice(response);
                 })
@@ -258,7 +257,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             talkToDevice(fidoFlowStartResponse);
         } else {
             startFidoUsernamelessFlow()
-                .then((response) => {
+                .then((response: any) => {
                     setFidoFlowStartResponse(response);
                     talkToDevice(response);
                 })
@@ -289,7 +288,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 fireDeletionSuccessNotification();
                 handleSessionTerminationModalVisibility(true);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 fireDeletionFailureNotification(error);
             });
     };
@@ -319,7 +318,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     fireDeviceNameUpdateSuccessNotification();
                     handleSessionTerminationModalVisibility(true);
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     fireDeviceNameUpdateFailureNotification(error);
                 });
         } else {
@@ -533,7 +532,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         verticalAlign="middle"
                         className="main-content-inner settings-section-inner-list"
                     >
-                        { deviceList.map((device, index) =>
+                        { deviceList.map((device: FIDODevice, index: number) =>
                             editFIDO?.get(device.credential.credentialId) &&
                                 activeForm?.startsWith(CommonConstants.SECURITY + FIDO) ? (
                                     <EditSection
