@@ -949,8 +949,6 @@
 .ui.menu {
     &.organization-breadcrumb, .organization-breadcrumb {
         box-shadow: none;
-        border: 1px solid @defaultBorderColor;
-        border-radius: 25px;
         padding: 0 15px 0 0;
         color: @tenantDropdownTriggerTextColor;
         background: none;
@@ -995,7 +993,7 @@
 
         .separator-icon, .dropdown.breadcrumb-dropdown .icon {
             margin: 0 !important;
-            padding: 0 0 0 5px;
+            padding: 0 0 0 10px;
         }
 
         &.trigger {
