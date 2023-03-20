@@ -30,7 +30,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Breadcrumb, Dropdown, Icon, Menu } from "semantic-ui-react";
+import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, AppState } from "../../../core";
@@ -148,7 +148,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     const generateBreadcrumb = (): ReactElement => {
-        console.log("breadcrumbList", breadcrumbList);
         if (!breadcrumbList || breadcrumbList.length === 1) {
             return (
                 <>
@@ -187,7 +186,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                                     event.stopPropagation();
                                                     handleOrganizationSwitch(breadcrumb);
                                                 }
-                                            }}
+                                            } }
                                             className={
                                                 index ===
                                                 breadcrumbList.length - 1
@@ -343,7 +342,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 }
             </>
         );
-    }
+    };
 
     return (
         <>

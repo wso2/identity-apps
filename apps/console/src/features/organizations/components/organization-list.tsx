@@ -36,10 +36,12 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { organizationConfigs } from "../../../extensions";
 import {
@@ -143,7 +145,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -208,7 +210,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 setShowDeleteConfirmationModal(false);
                 onOrganizationDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     if (error.response.data.code === "ORG-60007") {

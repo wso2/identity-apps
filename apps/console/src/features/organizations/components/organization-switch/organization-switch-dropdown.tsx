@@ -38,7 +38,6 @@ import {
     Button,
     Dropdown,
     Grid,
-    Icon,
     Input,
     Item,
     Loader,
@@ -47,7 +46,7 @@ import {
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState, getMiscellaneousIcons } from "../../../core";
+import { AppState } from "../../../core";
 import { getOrganizations } from "../../api";
 import {
     GenericOrganization,
