@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -92,7 +93,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         // Exception is not handled here since this request is dispatched on page load.
         // TODO: Add a logger to print the exception
         startFidoUsernamelessFlow()
-            .then((response: Record<string, any>) => {
+            .then((response: Record<string, unknown>) => {
                 setFidoFlowStartResponse(response);
             });
 
@@ -100,7 +101,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         // TODO: Add a logger to print the exception
         commonConfig.accountSecurityPage.mfa.fido2.allowLegacyKeyRegistration &&
             startFidoFlow()
-                .then((response: Record<string, any>) => {
+                .then((response: Record<string, unknown>) => {
                     setOldFidoFlowStartResponse(response);
                 });
     }, []);
@@ -123,7 +124,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         let devices: FIDODevice[] = [];
 
         getMetaData()
-            .then((response: Record<string, any>) => {
+            .then((response: AxiosResponse<FIDODevice[]>) => {
                 if (response.status === 200) {
                     if (response.data.length > 0) {
                         devices = [ ...response.data ];
@@ -200,7 +201,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const talkToDevice = (request?: any): void => {
         setDeviceErrorModalVisibility(false);
 
-        const fidoRequest: Record<string, any> = request ?? fidoFlowStartResponse;
+        const fidoRequest: Record<string, unknown> = request ?? fidoFlowStartResponse;
 
         if (!fidoRequest) {
             fireFailureNotification();
@@ -212,7 +213,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             fidoRequest?.requestId,
             decodePublicKeyCredentialCreationOptions(fidoRequest?.publicKeyCredentialCreationOptions)
         )
-            .then(({ data }: Record<string, any>) => {
+            .then(({ data }: AxiosResponse) => {
                 setRecentlyAddedDevice(data.credential.id);
                 setIsDeviceSuccessModalVisibility(true);
             })
@@ -235,7 +236,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             }
         } else {
             startFidoFlow()
-                .then((response: Record<string, any>) => {
+                .then((response: Record<string, unknown>) => {
                     setOldFidoFlowStartResponse(response);
                     talkToDevice(response);
                 })
@@ -258,7 +259,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             talkToDevice(fidoFlowStartResponse);
         } else {
             startFidoUsernamelessFlow()
-                .then((response: Record<string, any>) => {
+                .then((response: Record<string, unknown>) => {
                     setFidoFlowStartResponse(response);
                     talkToDevice(response);
                 })
