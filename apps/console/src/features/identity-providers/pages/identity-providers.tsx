@@ -470,8 +470,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
         <PageLayout
             pageTitle="Connections"
             action={ (
-                !isIdPListRequestLoading &&
-                !isAuthenticatorFetchRequestRequestLoading &&
+                (!isIdPListRequestLoading || !isAuthenticatorFetchRequestRequestLoading) &&
                 !(!searchQuery && idpList?.identityProviders?.length <= 0)) &&
                 identityProviderConfig.useNewConnectionsView !== undefined && 
                 (
