@@ -51,11 +51,12 @@ import {
     AuthenticatorInterface,
     FederatedConflictWithSMSOTPReturnValueInterface
 } from "../../../models";
-import { 
+import {
     AdaptiveScriptUtils,
     ConnectionsJITUPConflictWithMFAReturnValue,
-    SignInMethodUtils 
+    SignInMethodUtils
 } from "../../../utils";
+import {Show} from "../../../../feature-gate/controller/show-feature";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -166,7 +167,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setValidationResult(result);
 
-        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValueInterface = 
+        const federatedSMSConflictResult: FederatedConflictWithSMSOTPReturnValueInterface =
         SignInMethodUtils.isFederatedConflictWithSMSOTP({
             federatedAuthenticators: authenticators && authenticators[FEDERATED_CONNECTIONS],
             steps: updatedSteps,
@@ -598,7 +599,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 "stepBased.federatedSMSOTPConflictNote.multipleIdps"
                                             }>
                                             Asgardeo requires the user&apos;s profile containing the
-                                            <i> mobile number</i> to configure 
+                                            <i> mobile number</i> to configure
                                             <strong> SMS OTP</strong> with the following connections.
                                         </Trans>
 
@@ -616,14 +617,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         <Trans
                                             i18nKey={
                                                 "console:develop.features.applications.edit.sections." +
-                                                "signOnMethod.sections.authenticationFlow.sections." + 
+                                                "signOnMethod.sections.authenticationFlow.sections." +
                                                 "stepBased.federatedSMSOTPConflictNote.singleIdp"
                                             }
                                             values={ { idpName: idpList[0].name } }
                                         >
-                                            Asgardeo requires the user&apos;s profile containing the 
-                                            <i> mobile number</i> to configure <strong> SMS OTP </strong> 
-                                            with <strong>{ idpList[0].name }</strong> connection. 
+                                            Asgardeo requires the user&apos;s profile containing the
+                                            <i> mobile number</i> to configure <strong> SMS OTP </strong>
+                                            with <strong>{ idpList[0].name }</strong> connection.
                                         </Trans>
                                     </>
                                 )
@@ -738,17 +739,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             {
                 (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
                 && (
-                    <ScriptBasedFlow
-                        authenticationSequence={ sequence }
-                        isLoading={ isLoading }
-                        onTemplateSelect={ handleLoadingDataFromTemplate }
-                        onScriptChange={ handleAdaptiveScriptChange }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-script-based-flow` }
-                        authenticationSteps={ steps }
-                        isDefaultScript={ isDefaultScript }
-                        onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-                    />
+                    < Show ifAllowed="console.application.signin.adaptiveAuth">
+                        <ScriptBasedFlow
+                            authenticationSequence={ sequence }
+                            isLoading={ isLoading }
+                            onTemplateSelect={ handleLoadingDataFromTemplate }
+                            onScriptChange={ handleAdaptiveScriptChange }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-script-based-flow` }
+                            authenticationSteps={ steps }
+                            isDefaultScript={ isDefaultScript }
+                            onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                        />
+                    </Show>
                 )
             }
             {
