@@ -36,7 +36,7 @@ export interface FeatureGateInterface {
         enabled: boolean,
         application: {
             enabled: boolean,
-            signin: {
+            signIn: {
                 enabled: boolean,
                 adaptiveAuth : {
                     enabled: boolean
@@ -51,7 +51,7 @@ export const featureGateConfig  = {
         enabled: true,
         application: {
             enabled: true,
-            signin: {
+            signIn: {
                 enabled: true,
                 adaptiveAuth : {
                     enabled: true
@@ -59,4 +59,4 @@ export const featureGateConfig  = {
             }
         }
     }
-}
+};

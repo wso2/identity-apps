@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import { Context, createContext } from 'react';
-import { featureGateConfig, FeatureGateContextInterface } from '../model/feature-gate';
+import { Context, createContext } from "react";
+import { FeatureGateContextInterface, featureGateConfig } from "../model/feature-gate";
 
-const initialState = featureGateConfig;
-
-
-export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({ 
-    features: initialState, 
-    dispatch: () => {} 
+export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({
+    features: featureGateConfig,
+    dispatch: () => {}
 });
 
 

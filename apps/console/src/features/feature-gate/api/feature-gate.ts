@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,11 +20,6 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "../../core/hooks/use-request";
 import { FeatureGateInterface } from "../model/feature-gate";
 
 /**
@@ -36,7 +31,7 @@ const httpClient = AsgardeoSPAClient.getInstance()
 
 /**
  * Retrieve the list of features available for the system.
- * 
+ *
  * @param organization user store
  */
 export const getFeatures = (organization: string): Promise<FeatureGateInterface | any> => {
@@ -48,7 +43,7 @@ export const getFeatures = (organization: string): Promise<FeatureGateInterface 
         },
         method: HttpMethods.GET,
         params: {
-            organization,
+            organization
         },
         url: store.getState().config.endpoints.featureGate
     };

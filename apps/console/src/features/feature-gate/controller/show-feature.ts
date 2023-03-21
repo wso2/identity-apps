@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,24 +16,22 @@
  * under the License.
  */
 
-import React, {
-    createElement,
+import {
     Fragment,
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    ReactNode,
+    createElement,
     useContext
 } from "react";
-import { useAccess } from "react-access-control";
 import { FeatureGateContext } from "../context/feature-gate";
-import { FeatureGateShowInterface } from "../model/feature-gate";
+import { FeatureGateContextInterface, FeatureGateShowInterface } from "../model/feature-gate";
 
 /**
  * Interface for show component.
  */
 export interface AccessControlShowInterface {
-    
+
     /**
      * Granular level resource permissions.
      */
@@ -49,28 +47,29 @@ export interface AccessControlShowInterface {
 export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>> = (
     props: PropsWithChildren<AccessControlShowInterface>
 ): ReactElement<any, any> | null => {
-    const featurePath = props.ifAllowed+".enabled";
+    const featurePath: string = props.ifAllowed+".enabled";
     const { children } = props;
-    const features = useContext(FeatureGateContext); 
+    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
     const getFeatureValue = (keys: string [], featureGateConfig: any) => {
-    
+
         for (const key of keys) {
             featureGateConfig = featureGateConfig[key];
-          }  
-          return featureGateConfig;
-    }
-    
-      const isFeatureEnabled = (featurePath: string): boolean => {
-        console.log("path"+featurePath);
-        const featureValue = getFeatureValue(featurePath.split('.'), features.features);
-        return featureValue !== undefined ? featureValue : false;
-      };
-
-      const isFeatureEnabledForThisPath = isFeatureEnabled(featurePath);
-      if (isFeatureEnabledForThisPath) {
-        console.log("here: "+ isFeatureEnabledForThisPath)
-            return (createElement(Fragment, null, children));
-        } else {
-            return null;
         }
+
+        return featureGateConfig;
     };
+
+    const isFeatureEnabled = (featurePath: string): boolean => {
+        const featureValue:any = getFeatureValue(featurePath.split('.'), features.features);
+
+        return featureValue !== undefined ? featureValue : false;
+    };
+
+    const isFeatureEnabledForThisPath:any = isFeatureEnabled(featurePath);
+
+    if (isFeatureEnabledForThisPath) {
+        return (createElement(Fragment, null, children));
+    } else {
+        return null;
+    }
+};

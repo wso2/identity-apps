@@ -63,7 +63,7 @@ import {
 import { AppState } from "./features/core/store";
 import "moment/locale/si";
 import "moment/locale/fr";
-import {FeatureGateProvider} from "./features/feature-gate/reducer/feature-gate";
+import { FeatureGateProvider } from "./features/feature-gate/reducer/feature-gate";
 
 
 /**

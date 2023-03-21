@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 import React, { useReducer } from "react";
-import { featureGateConfig, FeatureGateInterface } from "../model/feature-gate";
+import { FeatureGateInterface, featureGateConfig } from "../model/feature-gate";
 import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
 import { FeatureGateContext } from "../context/feature-gate";
 
@@ -30,16 +30,13 @@ export const featureGateReducer = (
             return { ...state, ...action.payload}}
 };
 
-const initialState = featureGateConfig;
-
-
 export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.ReactElement => {
     const { children } = props;
-    const [features, dispatch] = useReducer(featureGateReducer, initialState);
-    
-    return (<FeatureGateContext.Provider value={{ features, dispatch }}>{children}</FeatureGateContext.Provider>);
+    const [ features, dispatch ] = useReducer(featureGateReducer, featureGateConfig);
+
+    return (<FeatureGateContext.Provider value={ { features, dispatch } }>{ children }</FeatureGateContext.Provider>);
   };
-    
+
 
 
 

@@ -41,6 +41,7 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import { Show } from "../../../../feature-gate/controller/show-feature";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
@@ -56,7 +57,6 @@ import {
     ConnectionsJITUPConflictWithMFAReturnValue,
     SignInMethodUtils
 } from "../../../utils";
-import {Show} from "../../../../feature-gate/controller/show-feature";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -739,7 +739,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             {
                 (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
                 && (
-                    < Show ifAllowed="console.application.signin.adaptiveAuth">
+                    < Show ifAllowed="console.application.signIn.adaptiveAuth">
                         <ScriptBasedFlow
                             authenticationSequence={ sequence }
                             isLoading={ isLoading }
