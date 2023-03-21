@@ -759,7 +759,8 @@ export enum AuthenticatorLabels {
     SAML = "SAML",
     PASSWORDLESS = "Passwordless",
     HANDLERS = "Handlers",
-    USERNAMELESS = "Usernameless"
+    USERNAMELESS = "Usernameless",
+    PASSKEY = "Passkey"
 }
 
 /**
