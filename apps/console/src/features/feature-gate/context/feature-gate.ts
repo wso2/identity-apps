@@ -20,7 +20,7 @@ import { Context, createContext } from "react";
 import { FeatureGateContextInterface, featureGateConfig } from "../models/feature-gate";
 
 export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({
-    dispatch: () => {},
+    dispatch: () => null,
     features: featureGateConfig
 });
 

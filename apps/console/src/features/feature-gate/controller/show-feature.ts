@@ -46,7 +46,7 @@ export interface AccessControlShowInterface {
  */
 export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>> = (
     props: PropsWithChildren<AccessControlShowInterface>
-): ReactElement<any, any> | null => {
+): ReactElement => {
     const { children, ifAllowed } = props;
     const featurePath: string = `${ ifAllowed }.enabled`;
     const features: FeatureGateContextInterface = useContext(FeatureGateContext);
@@ -60,16 +60,12 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
     };
 
     const isFeatureEnabled = (featurePath: string): boolean => {
-        const featureValue:boolean = getFeatureValue(featurePath.split("."), features.features);
+        const featureValue:any = getFeatureValue(featurePath.split("."), features.features);
 
         return featureValue !== undefined ? featureValue : false;
     };
 
-    const isFeatureEnabledForThisPath:any = isFeatureEnabled(featurePath);
+    const isFeatureEnabledForThisPath:boolean = isFeatureEnabled(featurePath);
 
-    if (isFeatureEnabledForThisPath) {
-        return (createElement(Fragment, null, children));
-    } else {
-        return null;
-    }
+    return isFeatureEnabledForThisPath ? <>{ children }</> : null;
 };

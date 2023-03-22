@@ -22,11 +22,11 @@ import { FeatureGateActionTypes, SetTierFeaturesActionInterface } from "../featu
 
 
 /**
- * This action sets an organization in the redux store.
+ * This action sets features of an organization in the redux store based on tier information.
  *
- * @param organization - An organization object
+ * @param organization - An organization object.
  *
- * @returns - A set organization action
+ * @returns - A set of features for the organization.
  */
 export const setTierFeatuers = (featureGate: FeatureGateInterface): SetTierFeaturesActionInterface => {
     return {
