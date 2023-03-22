@@ -26,17 +26,9 @@ import {
 } from "react";
 import { FeatureGateContext } from "../context/feature-gate";
 import { FeatureGateContextInterface, FeatureGateShowInterface } from "../models/feature-gate";
+import _ from 'lodash-es/';
 
-/**
- * Interface for show component.
- */
-export interface AccessControlShowInterface {
 
-    /**
-     * Granular level resource permissions.
-     */
-    ifAllowed?: string;
-}
 
 /**
  * Show component which will render child elements based on the permissions received.
@@ -45,27 +37,12 @@ export interface AccessControlShowInterface {
  * @returns permission matched child elements
  */
 export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>> = (
-    props: PropsWithChildren<AccessControlShowInterface>
+    props: PropsWithChildren<FeatureGateShowInterface>
 ): ReactElement => {
     const { children, ifAllowed } = props;
     const featurePath: string = `${ ifAllowed }.enabled`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
-    const getFeatureValue = (keys: string [], featureGateConfig: any) => {
-
-        for (const key of keys) {
-            featureGateConfig = featureGateConfig[key];
-        }
-
-        return featureGateConfig;
-    };
-
-    const isFeatureEnabled = (featurePath: string): boolean => {
-        const featureValue:any = getFeatureValue(featurePath.split("."), features.features);
-
-        return featureValue !== undefined ? featureValue : false;
-    };
-
-    const isFeatureEnabledForThisPath:boolean = isFeatureEnabled(featurePath);
+    const features: FeatureGateContextInterface = useContext(FeatureGateContext);    
+    const isFeatureEnabledForThisPath:boolean = _.get(features.features,featurePath);
 
     if (isFeatureEnabledForThisPath) {
         return (createElement(Fragment, null, children));

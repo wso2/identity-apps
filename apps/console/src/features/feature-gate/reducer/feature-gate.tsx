@@ -37,7 +37,7 @@ export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.
     const { children } = props;
     const [ features, dispatch ] = useReducer(featureGateReducer, featureGateConfig);
 
-    return (<FeatureGateContext.Provider value={ { dispatch, features } }>{ children }</FeatureGateContext.Provider>);
+    return (<FeatureGateContext.Provider value={ {  features, dispatch } }>{ children }</FeatureGateContext.Provider>);
 };
 
 
