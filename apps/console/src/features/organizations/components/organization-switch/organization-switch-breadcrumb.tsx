@@ -138,9 +138,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     } 
                     className="organization-breadcrumb-item"
                 >
-                    <span 
-                        className="ellipsis organization-name">
-                            { item?.name }
+                    <span className="ellipsis organization-name">
+                        { item?.name }
                     </span>
                 </Breadcrumb.Section>
                 { breadcrumbList.length === 1 && (
@@ -198,13 +197,13 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         )
                 }
             </>                                                         
-        )
+        );
     };
 
     const generateBreadcrumb = (): ReactElement => {
         if (!breadcrumbList || breadcrumbList.length < 1) {
             return;
-        };
+        }
 
         if (breadcrumbList?.length <= 4) {
             return (
