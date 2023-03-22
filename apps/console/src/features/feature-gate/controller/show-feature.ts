@@ -25,7 +25,7 @@ import {
     useContext
 } from "react";
 import { FeatureGateContext } from "../context/feature-gate";
-import { FeatureGateContextInterface, FeatureGateShowInterface } from "../model/feature-gate";
+import { FeatureGateContextInterface, FeatureGateShowInterface } from "../models/feature-gate";
 
 /**
  * Interface for show component.
@@ -47,8 +47,8 @@ export interface AccessControlShowInterface {
 export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>> = (
     props: PropsWithChildren<AccessControlShowInterface>
 ): ReactElement<any, any> | null => {
-    const featurePath: string = props.ifAllowed+".enabled";
-    const { children } = props;
+    const { children, ifAllowed } = props;
+    const featurePath: string = `${ ifAllowed }.enabled`;
     const features: FeatureGateContextInterface = useContext(FeatureGateContext);
     const getFeatureValue = (keys: string [], featureGateConfig: any) => {
 
@@ -60,7 +60,7 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
     };
 
     const isFeatureEnabled = (featurePath: string): boolean => {
-        const featureValue:any = getFeatureValue(featurePath.split("."), features.features);
+        const featureValue:boolean = getFeatureValue(featurePath.split("."), features.features);
 
         return featureValue !== undefined ? featureValue : false;
     };

@@ -739,7 +739,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             {
                 (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
                 && (
-                    < Show ifAllowed="console.application.signIn.adaptiveAuth">
+                    <Show ifAllowed="console.application.signIn.adaptiveAuth">
                         <ScriptBasedFlow
                             authenticationSequence={ sequence }
                             isLoading={ isLoading }

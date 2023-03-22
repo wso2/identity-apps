@@ -20,17 +20,16 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { FeatureGateInterface } from "../model/feature-gate";
+import { FeatureGateInterface } from "../models/feature-gate";
 
 /**
  * Initialize an axios Http client.
  */
 const httpClient: any = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Retrieve the list of features available for the system.
+ * Retrieve the list of features available for the organization.
  *
  * @param organization user store
  */
@@ -38,7 +37,6 @@ export const getFeatures = (organization: string): Promise<FeatureGateInterface 
 
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -52,6 +50,8 @@ export const getFeatures = (organization: string): Promise<FeatureGateInterface 
         .then((response: AxiosResponse) => {
             if (response.status == 200) {
                 return Promise.resolve(response);
+            } else {
+                return Promise.reject("Error while retrieving the feature list of the organization");
             }
         })
         .catch((error: AxiosError) => {

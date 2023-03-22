@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,14 +17,14 @@
  */
 
 
-import { FeatureGateInterface } from "../../model/feature-gate";
+import { FeatureGateInterface } from "../../models/feature-gate";
 import { FeatureGateActionTypes, SetTierFeaturesActionInterface } from "../feature-gate";
 
 
 /**
  * This action sets an organization in the redux store.
  *
- * @param organization - AN organization object
+ * @param organization - An organization object
  *
  * @returns - A set organization action
  */

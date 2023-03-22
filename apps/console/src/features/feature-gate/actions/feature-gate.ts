@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "apps/console/src/features/feature-gate/model/feature-gate";
+import { FeatureGateInterface } from "apps/console/src/features/feature-gate/models/feature-gate";
 
 export enum FeatureGateActionTypes {
     SET_FEATURE_STATE = "SET_FEATURE_STATE",
@@ -28,5 +28,4 @@ export interface SetTierFeaturesActionInterface {
 }
 
 
-export type FeatureGateAction =
-    | SetTierFeaturesActionInterface
+export type FeatureGateAction = | SetTierFeaturesActionInterface
