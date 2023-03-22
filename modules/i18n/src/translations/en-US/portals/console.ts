@@ -8639,7 +8639,8 @@ export const console: ConsoleNS = {
                     search: {
                         placeholder: "Search by Name"
                     },
-                    subOrganizations: "Sub-organizations"
+                    subOrganizations: "Sub-organizations",
+                    switchLabel: "Organization"
                 },
                 title: "Organizations"
             },

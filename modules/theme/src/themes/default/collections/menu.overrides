@@ -982,6 +982,7 @@
 
                     &.un-clickable {
                         cursor: default;
+                        pointer-events: none;
                     }
                 }
 
