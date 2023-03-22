@@ -163,6 +163,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                     if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                         authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
+                        authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                            authenticator.id, authenticator.displayName);
                     }
 
                     if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
@@ -254,6 +256,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                         if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                             authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
+                            authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                                authenticator.id, authenticator.displayName);
                         }
 
                         if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
