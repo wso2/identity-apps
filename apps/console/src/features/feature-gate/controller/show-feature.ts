@@ -67,5 +67,9 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
 
     const isFeatureEnabledForThisPath:boolean = isFeatureEnabled(featurePath);
 
-    return isFeatureEnabledForThisPath ? <>{ children }</> : null;
+    if (isFeatureEnabledForThisPath) {
+        return (createElement(Fragment, null, children));
+    } else {
+        return null;
+    }
 };
