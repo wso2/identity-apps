@@ -16,9 +16,9 @@
  * under the License.
  */
 import React, { useReducer } from "react";
-import { FeatureGateInterface, featureGateConfig } from "../model/feature-gate";
 import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
 import { FeatureGateContext } from "../context/feature-gate";
+import { FeatureGateInterface, featureGateConfig } from "../model/feature-gate";
 
 
 export const featureGateReducer = (
@@ -27,7 +27,7 @@ export const featureGateReducer = (
 ): FeatureGateInterface => {
     switch (action.type) {
         case FeatureGateActionTypes.SET_FEATURE_STATE:
-            return { ...state, ...action.payload}}
+            return { ...state, ...action.payload };}
 };
 
 export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.ReactElement => {
@@ -35,7 +35,7 @@ export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.
     const [ features, dispatch ] = useReducer(featureGateReducer, featureGateConfig);
 
     return (<FeatureGateContext.Provider value={ { features, dispatch } }>{ children }</FeatureGateContext.Provider>);
-  };
+};
 
 
 

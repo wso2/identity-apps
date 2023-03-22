@@ -60,7 +60,7 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
     };
 
     const isFeatureEnabled = (featurePath: string): boolean => {
-        const featureValue:any = getFeatureValue(featurePath.split('.'), features.features);
+        const featureValue:any = getFeatureValue(featurePath.split("."), features.features);
 
         return featureValue !== undefined ? featureValue : false;
     };
