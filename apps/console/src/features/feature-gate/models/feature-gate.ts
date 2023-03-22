@@ -46,7 +46,7 @@ export interface FeatureGateInterface {
     }
 }
 
-export const featureGateConfig  = {
+export const featureGateConfig: FeatureGateInterface  = {
     console:  {
         application: {
             enabled: true,
