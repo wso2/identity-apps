@@ -31,11 +31,11 @@ const httpClient: any = AsgardeoSPAClient.getInstance()
 /**
  * Retrieve the list of features available for the organization.
  *
- * @param organization user store
+ * @param organization - organization name.
  */
 export const getFeatures = (organization: string): Promise<FeatureGateInterface | any> => {
 
-    const requestConfig = {
+    const requestConfig: any = {
         headers: {
             "Content-Type": "application/json"
         },

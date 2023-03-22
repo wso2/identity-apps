@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import _ from "lodash-es/";
 import {
     Fragment,
     FunctionComponent,
@@ -26,9 +27,6 @@ import {
 } from "react";
 import { FeatureGateContext } from "../context/feature-gate";
 import { FeatureGateContextInterface, FeatureGateShowInterface } from "../models/feature-gate";
-import _ from 'lodash-es/';
-
-
 
 /**
  * Show component which will render child elements based on the permissions received.
@@ -41,7 +39,7 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
 ): ReactElement => {
     const { children, ifAllowed } = props;
     const featurePath: string = `${ ifAllowed }.enabled`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);    
+    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
     const isFeatureEnabledForThisPath:boolean = _.get(features.features,featurePath);
 
     if (isFeatureEnabledForThisPath) {

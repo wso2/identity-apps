@@ -33,30 +33,30 @@ export interface FeatureGateContextInterface {
 
 export interface FeatureGateInterface {
     console:  {
-        enabled: boolean,
         application: {
             enabled: boolean,
             signIn: {
-                enabled: boolean,
                 adaptiveAuth : {
                     enabled: boolean
-                }
+                },
+                enabled: boolean
             }
-        }
+        },
+        enabled: boolean
     }
 }
 
 export const featureGateConfig  = {
     console:  {
-        enabled: true,
         application: {
             enabled: true,
             signIn: {
-                enabled: true,
                 adaptiveAuth : {
                     enabled: true
-                }
+                },
+                enabled: true
             }
-        }
+        },
+        enabled: true
     }
 };
