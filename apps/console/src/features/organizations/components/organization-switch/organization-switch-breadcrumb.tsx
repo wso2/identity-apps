@@ -182,18 +182,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 className="separator-icon"
                             /> 
                         ) : (
-                            <>
-                                {
-                                    breadcrumbList.length <= 2 && (
-                                        <Icon
-                                            key={ index }
-                                            claslName="organization-breadcrumb-icon"
-                                            name={ isDropDownOpen ? "angle up" : "angle down" }
-                                            className="separator-icon"
-                                        /> 
-                                    )
-                                }
-                            </>
+                            breadcrumbList.length <= 2 && (
+                                <Icon
+                                    key={ index }
+                                    claslName="organization-breadcrumb-icon"
+                                    name={ isDropDownOpen ? "angle up" : "angle down" }
+                                    className="separator-icon"
+                                /> 
+                            )
                         )
                 }
             </>                                                         
