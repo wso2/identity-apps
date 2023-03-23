@@ -808,7 +808,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "remaining"
             },
             fido: {
-                description: "You can use a FIDO2 security key or biometrics in " +
+                description: "You can use a <1>Passkey</1>, <1>FIDO2 Security Key</1> or <1>Biometrics</1> in " +
                     "your device to sign in to your account.",
                 form: {
                     label: "Security Key/Biometric",

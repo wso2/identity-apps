@@ -527,6 +527,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             );
         }
 
+        if (connector.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
+            connector.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                connector.id, connector.displayName);
+        }
+
         return connector.friendlyName || connector.displayName || connector.name;
     };
 

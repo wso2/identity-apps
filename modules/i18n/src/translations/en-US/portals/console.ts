@@ -1220,8 +1220,8 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key, "
-                                                    + "biometrics or passkeys.",
+                                                description: "Enable users to log in using a passkey, security key or "
+                                                    + "biometrics.",
                                                 heading: "Add Security Key/Biometrics login",
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "

@@ -152,6 +152,7 @@ export interface IdentityProviderConfig {
     }
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
+    getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string) => string;
 }
 
 /**
