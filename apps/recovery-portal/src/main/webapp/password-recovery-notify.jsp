@@ -153,8 +153,8 @@
                 onHide: function () {
                     <%
                     try {
-                        if (Utils.validateCallbackURL(callback, tenantDomain, IdentityRecoveryConstants.ConnectorConfig
-                                .RECOVERY_CALLBACK_REGEX)) {
+                        if (callback != null && Utils.validateCallbackURL(callback, tenantDomain, IdentityRecoveryConstants
+                            .ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
                     %>
                         location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
