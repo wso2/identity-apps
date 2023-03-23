@@ -119,7 +119,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     } = useValidationConfigData();
 
     useEffect(() => {
-        if (isValidationLoading || isPasswordCountLoading) {
+        if (isValidationLoading || isPasswordCountLoading || isPasswordExpiryLoading) {
             return;
         }
 
@@ -128,16 +128,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         validationData,
         passwordHistoryCountData,
         isValidationLoading,
-        isPasswordCountLoading
-    ]);
-
-    useEffect(() => {
-        if (isValidationLoading || isPasswordExpiryLoading) {
-            return;
-        }
-
-        initializePasswordExpiryForm();
-    }, [
+        isPasswordCountLoading,
         validationData,
         passwordExpiryData,
         isValidationLoading,
@@ -269,25 +260,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
-        setInitialFormValues(
-            serverConfigurationConfig.processInitialValues(
-                getConfiguration(validationData),
-                passwordHistoryCountData,
-                setPasswordHistoryEnabled
-            )
+        let updatedInitialFormValues:ValidationFormInterface = serverConfigurationConfig.processInitialValues(
+            getConfiguration(validationData),
+            passwordHistoryCountData,
+            setPasswordHistoryEnabled
         );
-    };
 
-    /**
-     * Initialize the initial form values for password expiry.
-     */
-    const initializePasswordExpiryForm = (): void => {
+        updatedInitialFormValues = serverConfigurationConfig.processPasswordExpiryInitialValues(
+            updatedInitialFormValues,
+            passwordExpiryData,
+            setPasswordExpiryEnabled
+        );
+
         setInitialFormValues(
-            serverConfigurationConfig.processPasswordExpiryInitialValues(
-                getConfiguration(validationData),
-                passwordExpiryData,
-                setPasswordExpiryEnabled
-            )
+            updatedInitialFormValues
         );
     };
 
@@ -525,16 +511,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                         >
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
-                                                    { serverConfigurationConfig.passwordHistoryCountComponent(
-                                                        componentId,
-                                                        passwordHistoryEnabled,
-                                                        setPasswordHistoryEnabled,
-                                                        t
-                                                    ) }
                                                     { serverConfigurationConfig.passwordExpiryComponent(
                                                         componentId,
                                                         passwordExpiryEnabled,
                                                         setPasswordExpiryEnabled,
+                                                        t
+                                                    ) }
+                                                    { serverConfigurationConfig.passwordHistoryCountComponent(
+                                                        componentId,
+                                                        passwordHistoryEnabled,
+                                                        setPasswordHistoryEnabled,
                                                         t
                                                     ) }
                                                     <div className="criteria">

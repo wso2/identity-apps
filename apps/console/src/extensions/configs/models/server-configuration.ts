@@ -70,11 +70,11 @@ export interface ServerConfigurationConfig {
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {
-    passwordHistoryCount?: number | string;
-    passwordHistoryCountEnabled?: boolean;
+    passwordHistoryCount: number | string;
+    passwordHistoryCountEnabled: boolean;
 }
 
 export interface PasswordExpiryInterface extends ValidationFormInterface {
-    passwordExpiryTime?: number | string;
-    passwordExpiryEnabled?: boolean;
+    passwordExpiryTime: number | string;
+    passwordExpiryEnabled: boolean;
 }

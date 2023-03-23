@@ -268,6 +268,8 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Login policies - API Keyword constants.
 	 */
+    public static readonly PASSWORD_EXPIRY_ENABLE: string = "passwordExpiry.enablePasswordExpiry";
+    public static readonly PASSWORD_EXPIRY_TIME: string = "passwordExpiry.passwordExpiryInDays";
 	public static readonly PASSWORD_HISTORY_ENABLE: string = "passwordHistory.enable";
 	public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
 	public static readonly PASSWORD_POLICY_ENABLE: string = "passwordPolicy.enable";
