@@ -6962,7 +6962,8 @@ export const console: ConsoleNS = {
                         placeholder: "Rechercher par nom"
                     },
                     goBack: "Retourner",
-                    subOrganizations: "Sous-organisations"
+                    subOrganizations: "Sous-organisations",
+                    switchLabel: "Organisation"
                 },
                 title: "Organisations"
             },

@@ -38,7 +38,6 @@ import {
     Button,
     Dropdown,
     Grid,
-    Icon,
     Input,
     Item,
     Loader,
@@ -47,7 +46,7 @@ import {
 import OrganizationListItem from "./organization-list-item";
 import OrganizationSwitcherList from "./organization-switch-list";
 import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppState, getMiscellaneousIcons } from "../../../core";
+import { AppState } from "../../../core";
 import { getOrganizations } from "../../api";
 import {
     GenericOrganization,
@@ -63,8 +62,10 @@ import { AddOrganizationModal } from "../add-organization-modal";
  */
 interface OrganizationSwitchDropdownInterface
     extends IdentifiableComponentInterface {
-    triggerName: string;
+    triggerName?: string;
     isBreadcrumbItem?: boolean;
+    dropdownTrigger?: ReactElement;
+    disable?: boolean;
     handleOrganizationSwitch?: (organization: GenericOrganization) => void;
 }
 
@@ -73,8 +74,8 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
 ): ReactElement => {
     const {
         "data-componentid": componentId,
-        triggerName,
-        isBreadcrumbItem,
+        dropdownTrigger,
+        disable,
         handleOrganizationSwitch
     } = props;
 
@@ -286,46 +287,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
         setIsDropDownOpen(!isDropDownOpen);
     };
 
-    const tenantDropdownTrigger = (
-        name: string,
-        isBreadcrumbItem?: boolean
-    ): ReactElement =>
-        isBreadcrumbItem ? (
-            <div className="item breadcrumb" onClick={ (e: SyntheticEvent) => e.stopPropagation() }>
-                <span
-                    onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
-                    data-componentid={ `${ componentId }-breadcrumb-item` }
-                >
-                    { name }
-                    <Icon name="caret down" className="separator-icon" />
-                </span>
-            </div>
-        ) : (
-            <div
-                className="organization-breadcrumb trigger"
-                data-componentid={ `${ componentId }-breadcrumb-trigger` }
-            >
-                <div className="icon-wrapper">
-                    <GenericIcon
-                        transparent
-                        data-componentid="component-dropdown-trigger-icon"
-                        data-testid="tenant-dropdown-trigger-icon"
-                        icon={ getMiscellaneousIcons().tenantIcon }
-                        size="micro"
-                    />
-                </div>
-                <div className="item breadcrumb">
-                    <span
-                        className="organization-name"
-                        data-componentid={ `${ componentId }-breadcrumb-trigger-name` }
-                    >
-                        { name }
-                    </span>
-                    <Icon name="caret down" className="separator-icon" />
-                </div>
-            </div>
-        );
-
     return (
         <>
             { showNewOrgWizard && (
@@ -335,15 +296,15 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                 />
             ) }
             <Dropdown
+                disabled={ disable }
                 onBlur={ resetTenantDropdown }
                 item
                 floating
-                pointing="top left"
                 className="tenant-dropdown breadcrumb"
                 data-componentid={ `${ componentId }-dropdown` }
                 open={ isDropDownOpen }
                 onClick={ handleCurrentOrgClick }
-                trigger={ tenantDropdownTrigger(triggerName, isBreadcrumbItem) }
+                trigger={ dropdownTrigger }
                 icon={ null }
             >
                 <Dropdown.Menu
@@ -375,26 +336,6 @@ const OrganizationSwitchDropdown: FunctionComponent<OrganizationSwitchDropdownIn
                                                     "switching.subOrganizations"
                                                 ) }
                                             </h5>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 4 }>
-                                            { /* HIDE TEMPORARILY */ }
-                                            { /* { organizationConfigs.canCreateOrganization() && (
-                                                <Show
-                                                    when={
-                                                        AccessControlConstants.ORGANIZATION_WRITE
-                                                    }
-                                                >
-                                                    <Button
-                                                        basic
-                                                        floated="right"
-                                                        onClick={ handleNewClick }
-                                                        data-componentid={ `${ componentId }-new-button` }
-                                                    >
-                                                        <Icon name="add" />
-                                                        { t("common:new") }
-                                                    </Button>
-                                                </Show>
-                                            ) } */ }
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

@@ -6825,7 +6825,8 @@ export const console: ConsoleNS = {
                         placeholder: "නම අනුව සොයන්න"
                     },
                     goBack: "ආපසු යන්න",
-                    subOrganizations: "උප සංවිධාන"
+                    subOrganizations: "උප සංවිධාන",
+                    switchLabel: "ආයතනය"
                 },
                 title: "ආයතන"
             },
