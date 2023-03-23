@@ -29,6 +29,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -151,7 +153,8 @@
                 onHide: function () {
                     <%
                     try {
-                        if (callback != null) {
+                        if (!Utils.validateCallbackURL(callback, tenantDomain, IdentityRecoveryConstants.ConnectorConfig
+                                .RECOVERY_CALLBACK_REGEX)) {
                     %>
                         location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%

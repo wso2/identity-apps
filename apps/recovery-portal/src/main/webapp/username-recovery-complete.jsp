@@ -20,6 +20,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CallBackValidator" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -121,7 +123,8 @@
                 onHide: function () {
                     <%
                     try {
-                        if (callback != null) {
+                        if (!Utils.validateCallbackURL(callback, tenantDomain, IdentityRecoveryConstants.ConnectorConfig
+                            .RECOVERY_CALLBACK_REGEX)) {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
