@@ -23,7 +23,7 @@ import { ServerConfigurationsResourceEndpointsInterface } from "../models";
  * Get the resource endpoints for the server configurations feature.
  *
  * @param serverHost - Server Host.
- * @returns Interface of Server Configurations Resource Endpoints
+ * @returns Interface of Server Configurations Resource Endpoints.
  */
 export const getServerConfigurationsResourceEndpoints = (
     serverHost: string

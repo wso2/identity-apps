@@ -131,7 +131,6 @@ export class ServerConfigurationsConstants {
 
 	/**
 	 * UUID of the identity governance password expiry connector.
-	 *
 	 */
 	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
 

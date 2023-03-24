@@ -216,21 +216,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         }
 
         if (
-            passwordExpiryError.response &&
-            passwordExpiryError.response.data &&
-            passwordExpiryError.response.data.description
+            passwordExpiryError?.response?.data?.description
         ) {
             if (passwordExpiryError.response.status === 404) {
                 return;
             }
             dispatch(
                 addAlert({
-                    description:
-                        ValidationConfigStatusFetchRequestError.response.data
-                            .description ??
-                        t(
-                            "console:manage.features.validation.fetchValidationConfigData.error.description"
-                        ),
+                    description: passwordExpiryError.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.validation.fetchValidationConfigData.error.message"
@@ -260,7 +253,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
-        let updatedInitialFormValues:ValidationFormInterface = serverConfigurationConfig.processInitialValues(
+        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig.processInitialValues(
             getConfiguration(validationData),
             passwordHistoryCountData,
             setPasswordHistoryEnabled
