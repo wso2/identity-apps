@@ -1250,9 +1250,9 @@ export const console: ConsoleNS = {
                                                 heading: "Ajouter TOTP comme deuxième facteur"
                                             },
                                             usernameless: {
-                                                description: "Permettre aux utilisateurs de se connecter à " +
-                                                    "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2, de la biométrie ou de clés d'accès.",
+                                                description: "Autorisez les utilisateurs à se connecter à l'aide " +
+                                                    "d'un mot de passe, d'une clé de sécurité ou de données " +
+                                                    "biométriques.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
@@ -6962,7 +6962,8 @@ export const console: ConsoleNS = {
                         placeholder: "Rechercher par nom"
                     },
                     goBack: "Retourner",
-                    subOrganizations: "Sous-organisations"
+                    subOrganizations: "Sous-organisations",
+                    switchLabel: "Organisation"
                 },
                 title: "Organisations"
             },

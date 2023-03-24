@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
-import { applicationConfig } from "../../../../../../extensions";
+import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
 import {
     AuthenticatorCategories,
@@ -167,6 +167,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
+            if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
+                authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                    authenticator.id, authenticator.displayName);
+            }
+
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 // Backup code authenticator is not available for customer users at the moment.
                 return;

@@ -286,7 +286,6 @@ export class AppConstants {
                     ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
                     :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
             )
-            .set("EVENTS_PATH", `${ AppConstants.getDeveloperViewBasePath() }/events`)
             .set("EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit`)
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)

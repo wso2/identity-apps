@@ -21,14 +21,14 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AppState } from "../../../core";
-import { AddRoleUsers } from "../../../roles";
+import { AddRoleUsers, ScimOperationsInterface } from "../../../roles";
+import { UserBasicInterface } from "../../../users";
 import { patchOrganizationRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import {
-    CreateOrganizationRoleMemberInterface,
-    OrganizationResponseInterface,
-    PatchOrganizationRoleDataInterface
+    OrganizationResponseInterface
 } from "../../models";
 
 interface RoleUserDetailsProps {
@@ -42,7 +42,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     props: RoleUserDetailsProps
 ): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         roleObject,
@@ -57,7 +57,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     );
 
     useEffect(() => {
-        const roleName = roleObject?.displayName;
+        const roleName: string = roleObject?.displayName;
 
         if (roleName?.indexOf("/") !== -1) {
             setCurrentUserStore(roleName?.split("/")[0]);
@@ -75,40 +75,64 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         dispatch(addAlert(alert));
     };
 
-    const onUserUpdate = (userList: any) => {
-        const newUsers: CreateOrganizationRoleMemberInterface[] = [];
+    const onUserUpdate = async (addedUsers: UserBasicInterface[], removedUsers: UserBasicInterface[]) => {
+        if(addedUsers?.length === 0 && removedUsers?.length === 0) {
+            return;
+        }
+        
+        const addedUserIds: string[] = [];
+        const removedUserIds: string[] = [];
 
-        for (const selectedUser of userList) {
-            newUsers.push(selectedUser.id);
+        for (const selectedUser of addedUsers) {
+            addedUserIds.push(selectedUser.id);
         }
 
-        const roleData: PatchOrganizationRoleDataInterface = {
-            operations: [ {
-                "op": "REPLACE",
+        for (const selectedUser of removedUsers) {
+            removedUserIds.push(selectedUser.id);
+        }
+
+        const operations: ScimOperationsInterface[] = [];
+
+        if(addedUserIds?.length > 0) {
+            operations.push({
+                "op": "ADD",
                 "path": "users",
-                "value": newUsers
-            } ]
-        };
+                "value": addedUserIds
+            });
+        }
+
+        if(removedUserIds?.length > 0) {
+            removedUserIds.forEach((userId: string) => {
+                operations.push({
+                    "op": "REMOVE",
+                    "path": "users[ value eq " + userId + " ]]"
+                });
+            });
+        }
+
+        const payload: {
+            operations: ScimOperationsInterface[];
+        } = { operations: operations };
 
         setIsSubmitting(true);
 
-        patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, roleData)
-            .then(() => {
-                handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.roles.notifications.updateRole.success.message")
-                });
-                onRoleUpdate();
-            }).catch(() => {
-                handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
-                });
-            }).finally(() => {
-                setIsSubmitting(false);
+        try {
+            await patchOrganizationRoleDetails(currentOrganization.id, roleObject.id, payload);
+            handleAlerts({
+                description: t("console:manage.features.roles.notifications.updateRole.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("console:manage.features.roles.notifications.updateRole.success.message")
             });
+            onRoleUpdate();
+        } catch (error) {
+            handleAlerts({
+                description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.roles.notifications.updateRole.error.message")
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (

@@ -110,12 +110,11 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const [ localAuthenticators, setLocalAuthenticators ] = useState<AuthenticatorInterface[]>([]);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(undefined);
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(true);
     const [
         isAuthenticatorFetchRequestRequestLoading,
-        setIsAuthenticatorFetchRequestRequestLoading ] = useState<boolean>(
-            undefined
-        );
+        setIsAuthenticatorFetchRequestRequestLoading 
+    ] = useState<boolean>(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ selectedFilterTags, setSelectedFilterTags ] = useState<string[]>([]);
@@ -164,6 +163,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                     if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                         authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
+                        authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                            authenticator.id, authenticator.displayName);
                     }
 
                     if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
@@ -255,6 +256,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
 
                         if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
                             authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
+                            authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
+                                authenticator.id, authenticator.displayName);
                         }
 
                         if (authenticator.id === IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
@@ -471,25 +474,26 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
         <PageLayout
             pageTitle="Connections"
             action={ (
-                isIdPListRequestLoading ||
-                    isAuthenticatorFetchRequestRequestLoading ||
-                    !(!searchQuery && idpList?.identityProviders?.length <= 0)) &&
-                    identityProviderConfig.useNewConnectionsView !== undefined && (
-                <Show when={ AccessControlConstants.IDP_WRITE }>
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            eventPublisher.publish("connections-click-new-connection-button");
-                            history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-add-button` }
-                    >
-                        <Icon name="add" />
-                        { identityProviderConfig.useNewConnectionsView
-                            ? t("console:develop.features.authenticationProvider.buttons.addIDP")
-                            : t("console:develop.features.idp.buttons.addIDP") }
-                    </PrimaryButton>
-                </Show>
-            ) }
+                (!isIdPListRequestLoading || !isAuthenticatorFetchRequestRequestLoading) &&
+                !(!searchQuery && idpList?.identityProviders?.length <= 0)) &&
+                identityProviderConfig.useNewConnectionsView !== undefined && 
+                (
+                    <Show when={ AccessControlConstants.IDP_WRITE }>
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                eventPublisher.publish("connections-click-new-connection-button");
+                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-add-button` }
+                        >
+                            <Icon name="add" />
+                            { identityProviderConfig.useNewConnectionsView
+                                ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                : t("console:develop.features.idp.buttons.addIDP") }
+                        </PrimaryButton>
+                    </Show>
+                )
+            }
             title={
                 identityProviderConfig.useNewConnectionsView
                     ? t("console:develop.pages.authenticationProvider.title")

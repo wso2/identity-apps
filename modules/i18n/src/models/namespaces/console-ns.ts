@@ -2742,6 +2742,7 @@ export interface ConsoleNS {
                     emptyList: string;
                     subOrganizations: string;
                     goBack: string;
+                    switchLabel: string;
                 }
             };
             users: {
