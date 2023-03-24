@@ -46,8 +46,8 @@ export class AuthenticatorMeta {
                 "credentials.",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Provide secure and fast passwordless " +
-                "login experience using FIDO2.",
+            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with Biometrics, Passkeys " +
+                "or Security Keys.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "Time-Based One Time passcode.",
             [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
@@ -222,7 +222,8 @@ export class AuthenticatorMeta {
             AuthenticatorLabels.PASSWORDLESS,
             AuthenticatorLabels.OIDC,
             AuthenticatorLabels.SOCIAL,
-            AuthenticatorLabels.SAML
+            AuthenticatorLabels.SAML,
+            AuthenticatorLabels.PASSKEY
         ];
     }
 

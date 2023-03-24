@@ -1182,6 +1182,44 @@
 .organization-breadcrumb-wrapper {
     display: flex;
     align-items: center;
+    padding: 5px 0px;
+    border-left: 1px solid #000000;
+    margin-left: 5px;
+
+    .organization-breadcrumb {
+        margin-left: 36px; 
+        cursor: pointer;
+
+        .organization-breadcrumb-label {
+            font-size: 11px;
+            color: #000000;
+            margin-bottom: -1px;
+            font-weight: 200;
+        }
+
+        .organization-breadcrumb-icon {
+            color: #000000 !important;
+            align-items: center;
+            margin: 0px 10px;
+        }
+
+        .organization-breadcrumb-item {
+            color: #000000;
+            min-height: 15px; 
+            margin: -3px 0;
+            text-decoration: none;
+
+            &.un-clickable {
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+
+        .organization-breadcrumb-item-divider {
+            margin: 0 5px !important;
+            color: #000000;
+        }
+    }
 
     .organization-name {
         min-height: 15px;

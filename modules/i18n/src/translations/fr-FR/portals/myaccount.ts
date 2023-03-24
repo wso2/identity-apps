@@ -834,8 +834,8 @@ export const myAccount: MyAccountNS = {
                 remaining: "restant"
             },
             fido: {
-                description: "Vous pouvez utiliser une clé de sécurité FIDO2 ou des données biométriques" +
-                    " dans votre appareil pour vous connecter à votre compte.",
+                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " + 
+                    "<1>Des Données Biométriques</1> dans votre appareil pour vous connecter à votre compte.",
                 form: {
                     label: "Clé de sécurité/Biométrie",
                     placeholder: "Entrez un nom pour la clé de sécurité/biométrique",

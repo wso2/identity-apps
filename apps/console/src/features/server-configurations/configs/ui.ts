@@ -17,9 +17,6 @@
  */
 
 import {
-    default as EventConfigurationIcon
-} from "../../../themes/default/assets/images/icons/event-configuration.svg";
-import {
     default as LockRecoverIcon
 } from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
 import {
@@ -121,7 +118,6 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
         botDetection: RobotIcon,
-        eventConfiguration: EventConfigurationIcon,
         jwtPrivateKeyValidation: JWTKeyIcon,
         passwordValidation: PasswordValidationIcon,
         selfRegistration: UserAddIcon

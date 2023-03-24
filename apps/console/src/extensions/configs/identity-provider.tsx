@@ -79,7 +79,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
     fidoTags: [
         AuthenticatorLabels.SECOND_FACTOR,
         AuthenticatorLabels.PASSWORDLESS,
-        AuthenticatorLabels.MULTI_FACTOR
+        AuthenticatorLabels.MULTI_FACTOR,
+        AuthenticatorLabels.PASSKEY
     ],
     filterFidoTags:(tags: string[]): string[] => {
         return tags;
@@ -89,6 +90,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
     },
     getIconExtensions: (): Record<string, string | FunctionComponent<SVGProps<SVGSVGElement>>> => {
         return {};
+    },
+    getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string): string => {
+        return value;
     },
     identityProviderList: {
         useLegacyListing: true
