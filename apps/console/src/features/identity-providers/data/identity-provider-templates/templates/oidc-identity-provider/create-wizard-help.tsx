@@ -16,103 +16,84 @@
  * under the License.
  */
 
-import { CopyInputField, Message } from "@wso2is/react-components";
-import React, { useState } from "react";
+import { Button } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Button, Icon, Progress, Segment, Sidebar } from "semantic-ui-react";
-import { ConfigReducerStateInterface } from "../../../../../core/models";
-import { AppState } from "../../../../../core/store";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
+/**
+ * Props for the Organization SSO authentication provider create wizard help component.
+ */
+interface OrganizationEnterpriseIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [OrganizationEnterpriseIdentityProviderCreateWizardHelp.defaultProps]
+     */
+    current: number;
+}
+const OrganizationEnterpriseIdentityProviderCreateWizardHelp = 
+    ({ current } : OrganizationEnterpriseIdentityProviderCreateWizardHelpProps) => {
+        const { t } = useTranslation();
+        const [ currentState, setCurrentState ] = useState<any>();
 
-const CustomIdentityProviderCreateWizardHelp = () => {
-    const { t } = useTranslation();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
+        useEffect(() => {
+            setCurrentState(current);
+        }, [ current ]);
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
-                <><Message
-                    type="info"
-                    header="Prerequisite"
-                    content={
-                        (<p>Before you begin, register an application in the Identity Provider, and obtain a
-                            <strong> client ID & secret</strong>. Use the following URL as the <strong>
-                            Authorized Redirect URL</strong>.
-                            <br />
-                            <br />
-                            <CopyInputField
-                                className="copy-input-dark"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
-                            <br />
-                            <Icon name="info circle" />
-                        The URL to which the authorization code is sent upon authentication and where the
-                        user is redirected to upon logout.
-                        </p>)
-                    }
-                />
+                <>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.description")
+                        }
+                    </p>
+                    <p>E.g., MyOrgEnterpriseAuthProvider.</p>
                 </>
             ),
-            id: 0
+            id: 0,
+            title: t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.name.heading")
         },
         {
             body:(    
-                <><p>Provide the client ID obtained from the identity provider.</p>
+                <>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.description")
+                        }
+                    </p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.description.example")
+                        }
+                    </p>
                 </>      
             ),
             id: 1,
-            title:  t("Client ID")
-        },
-        {
-            body:(    
-                <><p>Provide the client secret obtained from the identity provider.</p>
-                </>      
-            ),
-            id: 2,
-            title:  t("Client secret")            
-        },
-        {
-            body:(    
-                <>
-                    <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-                    <p>E.g., https://enterprise_domain/authorize</p>
-                </>      
-            ),
-            id: 3,
-            title:  t("Authorization endpoint URL")
-        },
-        {
-            body:(    
-                <>
-                    <p>Provide the standard token endpoint URL of the identity provider.</p>
-                    <p>E.g., https://enterprise_domain/token</p>
-                </>      
-            ),
-            id: 4,
-            title:  t("Token endpoint URL")
+            title:  t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.description.heading")
         }
     ];
-
-    const [ currentContent, setCurrentContent ] = useState(0);
-
-    const handleClickLeft = () => setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
-    const handleClickRight = () =>
-        setCurrentContent((c:number) => (c < CONTENTS.length - 1 ? c + 1 : c));
-
-    const isLeftButtonDisabled:boolean = currentContent === 0;
-    const isRightButtonDisabled:boolean = currentContent === CONTENTS.length - 1;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
-    const progress:number = (currentContent / (CONTENTS.length - 1)) * 100;
+    const handleClickPrevious = () => {
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
+    };
+    const handleClickNext = () =>{
+        setCurrentState(currentState === 1 ?  1 : currentState + 1);
+    };
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 1;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress:number = (currentState / (1)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -125,9 +106,10 @@ const CustomIdentityProviderCreateWizardHelp = () => {
                 vertical
                 className="idp-sidepanel-sidebar"
             >
-                <div className="idp-sidepanel-content-large">
-                    { CONTENTS.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                <div className="idp-sidepanel-content">
+
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
@@ -147,17 +129,17 @@ const CustomIdentityProviderCreateWizardHelp = () => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>
@@ -165,13 +147,13 @@ const CustomIdentityProviderCreateWizardHelp = () => {
             </Sidebar>
         </Sidebar.Pushable>
     );
-};
+    };
 
 /**
  * Default props for the component
  */
-CustomIdentityProviderCreateWizardHelp.defaultProps = {
-    "data-testid": "custom-app-create-wizard-help"
+OrganizationEnterpriseIdentityProviderCreateWizardHelp.defaultProps = {
+    "data-testid": "organization-enterprise-app-create-wizard-help"
 };
 
 /**
@@ -179,4 +161,4 @@ CustomIdentityProviderCreateWizardHelp.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default CustomIdentityProviderCreateWizardHelp;
+export default OrganizationEnterpriseIdentityProviderCreateWizardHelp;

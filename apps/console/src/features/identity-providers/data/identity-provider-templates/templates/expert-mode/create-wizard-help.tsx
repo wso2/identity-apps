@@ -16,66 +16,58 @@
  * under the License.
  */
 
+import { Button } from "@wso2is/react-components";
+import { identityProviderConfig } from "apps/console/src/extensions";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
-
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Expert mode authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface ExpertModeIdPCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [ExpertModeIdPCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const ExpertModeIdPCreateWizardHelp = ({ current } : props) => {
+const ExpertModeIdPCreateWizardHelp = ({ current } : ExpertModeIdPCreateWizardHelpProps) => {
     const { t } = useTranslation();
-    const [ currentState, setCurrentState ] = useState <any>();
-
+    const [ currentState, setCurrentState ] = useState<any>();
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
     /**
      * Checks if the listing view defined in the config is the new connections view.
      */
     useEffect(() => {
-
         if (useNewConnectionsView !== undefined) {
             return;
         }
-
         setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
     }, [ identityProviderConfig ]);
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
-      }
-      
-    const CONTENTS: Content[] = [
+      } 
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
                     <p>
-                {
-                    useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.expert." +
+                        {
+                            useNewConnectionsView
+                                ? t("console:develop.features.authenticationProvider.templates.expert." +
                             "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.expert." +
+                                : t("console:develop.features.authenticationProvider.templates.expert." +
                             "wizardHelp.name.idpDescription")
-                }
-            </p>
+                        }
+                    </p>
                 </>
-                    
             ),
             id: 0,
             title: t("console:develop.features.authenticationProvider.templates.expert" +
@@ -103,23 +95,16 @@ const ExpertModeIdPCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.description.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 1 ?  1 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 1;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonColor:boolean = currentState === 0;
+    const isNextButtonColor:boolean = currentState === 1;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonColor ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonColor ? "grey" : "orange";
     const progress:number = (currentState / (1)) * 100;
 
     return (
@@ -134,8 +119,7 @@ const ExpertModeIdPCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -156,17 +140,17 @@ const ExpertModeIdPCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonColor }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonColor }
                         >
                         </Button>
                     </div>

@@ -16,43 +16,39 @@
  * under the License.
  */
 
-import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Help content for the Google IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Google authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface GoogleIDPCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [GoogleIDPCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const GoogleIDPCreateWizardHelp = ({ current } : props) => {
-    
+const GoogleIDPCreateWizardHelp = ({ current } : GoogleIDPCreateWizardHelpProps) => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -71,12 +67,12 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                                     "preRequisites.getCredentials"
                                         }
                                     >
-                                Before you begin, create an <strong>OAuth credential</strong> on the <a
+                                        Before you begin, create an <strong>OAuth credential</strong> on the <a
                                             href="https://console.developers.google.com"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         > 
-                                        Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                            Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
                                     </Trans>
                                 </p>
                                 <p>
@@ -87,7 +83,7 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                                     ".preRequisites.configureRedirectURL"
                                         }
                                     >
-                                Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
                                     </Trans>
 
                                     <CopyInputField
@@ -109,7 +105,6 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                         }
                     />
                 </>
-                    
             ),
             id: 0
         },
@@ -138,7 +133,7 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                         ".wizardHelp.clientId.description"
                         }
                     >
-                    Provide the <Code>Client ID</Code> obtained from Google.
+                        Provide the <Code>Client ID</Code> obtained from Google.
                     </Trans>
                 </p>
             ),
@@ -154,7 +149,7 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                         ".wizardHelp.clientSecret.description"
                         }
                     >
-                    Provide the <Code>Client Secret</Code> obtained from Google.
+                        Provide the <Code>Client Secret</Code> obtained from Google.
                     </Trans>
                 </p>
             ),
@@ -163,23 +158,16 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.clientSecret.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 3 ?  3 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 3;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 3;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
     const progress:number = (currentState / (3)) * 100;
 
     return (
@@ -194,8 +182,7 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -216,17 +203,17 @@ const GoogleIDPCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>

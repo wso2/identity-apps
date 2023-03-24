@@ -16,42 +16,39 @@
  * under the License.
  */
 
-import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Apple authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface AppleIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [AppleIdentityProviderCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
+const AppleIdentityProviderCreateWizardHelp = ({ current } : AppleIdentityProviderCreateWizardHelpProps) => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
-      }
-      
-    const CONTENTS: Content[] = [
+      } 
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -123,7 +120,6 @@ const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
                         }
                     />
                 </>
-                    
             ),
             id: 0
         },
@@ -212,24 +208,17 @@ const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.privateKey.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
-        setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
+    const handleClickPrevious = () => {
+        setCurrentState(currentState === 0 ? 0 : currentState - 1);
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
-        setCurrentState(currentState === 5 ?  5 : currentState + 1);
+    const handleClickNext = () =>{
+        setCurrentState(currentState === 5 ? 5 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 5;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
-    const progress:number = (currentState / (5)) * 100;
+    const isPreviousButtonDisabled: boolean = currentState === 0;
+    const isNextButtonDisabled: boolean = currentState === 5;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentState / (5)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -243,8 +232,7 @@ const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -265,17 +253,17 @@ const AppleIdentityProviderCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>

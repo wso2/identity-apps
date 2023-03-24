@@ -114,7 +114,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         const [ totalStep, setTotalStep ] = useState<number>(0);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
-        const [ current , setCurrent ] = useState <number>(0);
+        const [ current , setCurrent ] = useState<number>(0);
 
         /**
         * Creates a new identity provider.

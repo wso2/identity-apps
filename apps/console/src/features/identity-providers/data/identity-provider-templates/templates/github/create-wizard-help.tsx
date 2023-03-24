@@ -16,42 +16,39 @@
  * under the License.
  */
 
-import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Github authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface GithubIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [GithubIdentityProviderCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
+const GithubIdentityProviderCreateWizardHelp = ({ current } : GithubIdentityProviderCreateWizardHelpProps) => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -70,11 +67,11 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         "preRequisites.getCredentials"
                                         }
                                     >
-                                    Before you begin, create an <strong>OAuth application</strong> <a
+                                        Before you begin, create an <strong>OAuth application</strong> <a
                                             href="https://github.com/"
                                             target="_blank"
                                             rel="noopener noreferrer">
-                                    on GitHub
+                                        on GitHub
                                         </a>, and obtain a <strong>client ID & secret</strong>.
                                     </Trans>
                                 </p>
@@ -86,7 +83,7 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         ".preRequisites.configureHomePageURL"
                                         }
                                     >
-                                    Use the following URL as the <strong>Homepage URL</strong>.
+                                        Use the following URL as the <strong>Homepage URL</strong>.
                                     </Trans>
 
                                     <CopyInputField
@@ -101,7 +98,7 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         ".preRequisites.configureRedirectURL"
                                         }
                                     >
-                                    Add the following URL as the <strong>Authorization callback URL</strong>.
+                                        Add the following URL as the <strong>Authorization callback URL</strong>.
                                     </Trans>
 
                                     <CopyInputField
@@ -111,7 +108,7 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
 
                                     <a
                                         href={ "https://docs.github.com/en/developers/" 
-                                    +"apps/building-oauth-apps/creating-an-oauth-app" }
+                                            +"apps/building-oauth-apps/creating-an-oauth-app" }
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         {
@@ -124,7 +121,6 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                         }
                     />
                 </>
-                    
             ),
             id: 0
         },
@@ -179,23 +175,16 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.clientSecret.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 3 ?  3 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 3;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 3;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
     const progress:number = (currentState / (3)) * 100;
 
     return (
@@ -210,8 +199,7 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -232,17 +220,17 @@ const GithubIdentityProviderCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>

@@ -16,45 +16,39 @@
  * under the License.
  */
 
-import { Code, Message } from "@wso2is/react-components";
+import { Button, Code, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Hypr authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface HyprIDPCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [HyprIDPCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const HyprIDPCreateWizardHelp = ({ current } : props) => {
-
+const HyprIDPCreateWizardHelp = ({ current } : HyprIDPCreateWizardHelpProps) => {
     const hyprControlCentreDocUrl: string = 
         "https://docs.hypr.com/installinghypr/docs/getting-started-with-fido-control-center";
-
     const hyprTokenDocUrl: string = 
         "https://docs.hypr.com/installinghypr/docs/access-token";
-
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -73,7 +67,7 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
                                     "preRequisites.rpDescription"
                                         }
                                     >
-                                Before you begin, create a RP application in <a
+                                        Before you begin, create a RP application in <a
                                             href={ hyprControlCentreDocUrl }
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -87,7 +81,7 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
                                     "preRequisites.tokenDescription"
                                         }
                                     >
-                                You also have to obtain an <a
+                                        You also have to obtain an <a
                                             href={ hyprTokenDocUrl }
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -98,7 +92,6 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
                         }
                     />
                 </>
-                    
             ),
             id: 0
         },
@@ -170,23 +163,16 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.apiToken.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 4 ?  4 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 4;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 3;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
     const progress:number = (currentState / (4)) * 100;
 
     return (
@@ -201,8 +187,7 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -223,17 +208,17 @@ const HyprIDPCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>

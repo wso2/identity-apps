@@ -16,37 +16,35 @@
  * under the License.
  */
 
-
+import { Button } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Organization SSO authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface OrganizationEnterpriseIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [OrganizationEnterpriseIdentityProviderCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
+const OrganizationEnterpriseIdentityProviderCreateWizardHelp = 
+    ({ current } : OrganizationEnterpriseIdentityProviderCreateWizardHelpProps) => {
+        const { t } = useTranslation();
+        const [ currentState, setCurrentState ] = useState<any>();
 
-const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : props) => {
-    const { t } = useTranslation();
-    const [ currentState, setCurrentState ] = useState <any>();
-
-    useEffect(() => {
-        setCurrentState(current);
-    }, [ current ]);
-
+        useEffect(() => {
+            setCurrentState(current);
+        }, [ current ]);
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -58,7 +56,6 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : pr
                     </p>
                     <p>E.g., MyOrgEnterpriseAuthProvider.</p>
                 </>
-                    
             ),
             id: 0,
             title: t("console:develop.features.authenticationProvider.templates.organizationIDP" +
@@ -86,23 +83,16 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : pr
             ".wizardHelp.description.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 1 ?  1 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 1;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 1;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
     const progress:number = (currentState / (1)) * 100;
 
     return (
@@ -118,7 +108,7 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : pr
             >
                 <div className="idp-sidepanel-content">
 
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -139,17 +129,17 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : pr
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>
@@ -157,7 +147,7 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ current } : pr
             </Sidebar>
         </Sidebar.Pushable>
     );
-};
+    };
 
 /**
  * Default props for the component

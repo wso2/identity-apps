@@ -144,7 +144,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
-        const [ current , setCurrent ] = useState <number>(0);
+        const [ current , setCurrent ] = useState<number>(0);
 
         /**
         * Track wizard steps from wizard component.

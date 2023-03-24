@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { Code, CopyInputField, DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Icon, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Divider, Icon, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
-
 
 const SamlIDPWizardHelp = () => {
     const { t } = useTranslation();
@@ -35,8 +34,7 @@ const SamlIDPWizardHelp = () => {
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -87,8 +85,8 @@ const SamlIDPWizardHelp = () => {
             body:(    
                 <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                    { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
-                as the service provider entity ID.
+                    { " " }{ config.ui.productName } to external Identity Provider (IdP). 
+                    You need to provide a unique value as the service provider entity ID.
                 </p>     
             ),
             id: 1,
@@ -122,20 +120,15 @@ const SamlIDPWizardHelp = () => {
             title:  t("Identity provider entity ID")
         }
     ];
-
     const [ currentContent, setCurrentContent ] = useState(0);
-
-    const handleClickLeft = () => setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
-    const handleClickRight = () =>
-        setCurrentContent((c:number) => (c < CONTENTS.length - 1 ? c + 1 : c));
-
-    const isLeftButtonDisabled:boolean = currentContent === 0;
-    const isRightButtonDisabled:boolean = currentContent === CONTENTS.length - 1;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
-    const progress:number = (currentContent / (CONTENTS.length - 1)) * 100;
+    const handleClickPrevious = () => setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
+    const handleClickNext = () =>
+        setCurrentContent((c:number) => (c < quickHelpContent.length - 1 ? c + 1 : c));
+    const isPreviousButtonDisabled:boolean = currentContent === 0;
+    const isNextButtonDisabled:boolean = currentContent === quickHelpContent.length - 1;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress:number = (currentContent / (quickHelpContent.length - 1)) * 100;
 
     return (
         <Sidebar.Pushable>
@@ -149,7 +142,7 @@ const SamlIDPWizardHelp = () => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content-large">
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -170,17 +163,17 @@ const SamlIDPWizardHelp = () => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>

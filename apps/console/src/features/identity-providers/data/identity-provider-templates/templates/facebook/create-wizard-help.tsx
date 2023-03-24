@@ -15,42 +15,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import { Button, Code, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Progress, Segment, Sidebar } from "semantic-ui-react";
+import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
+ * Props for the Facebook authentication provider create wizard help component.
  */
-type props = {
-    current: any
+interface FacebookIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     * @see [FacebookIdentityProviderCreateWizardHelp.defaultProps]
+     */
+    current: number;
 }
-
-const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
+const FacebookIdentityProviderCreateWizardHelp = ({ current } : FacebookIdentityProviderCreateWizardHelpProps) => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(current);
     }, [ current ]);
-
     interface Content {
         id: number;
         title?: string;
         body: JSX.Element;
       }
-      
-    const CONTENTS: Content[] = [
+    const quickHelpContent: Content[] = [
         {
             body: (
                 <>
@@ -69,11 +66,11 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
-                                Before you begin, create an <strong>application</strong> <a
+                                        Before you begin, create an <strong>application</strong> <a
                                             href="https://developers.facebook.com/"
                                             target="_blank"
                                             rel="noopener noreferrer">
-                                on Facebook Developer Console
+                                        on Facebook Developer Console
                                         </a>, and obtain a <strong>App ID & secret</strong>.
                                     </Trans>
                                 </p>
@@ -85,7 +82,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         "wizardHelp.preRequisites.configureSiteURL"
                                         }
                                     >
-                                Use the following as the <strong>Site URL</strong>.
+                                        Use the following as the <strong>Site URL</strong>.
                                     </Trans>
     
                                     <CopyInputField
@@ -100,7 +97,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                                         "wizardHelp.preRequisites.configureRedirectURL"
                                         }
                                     >
-                                Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
+                                        Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
                                     </Trans>
     
                                     <CopyInputField
@@ -122,7 +119,6 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                         }
                     />
                 </>
-                    
             ),
             id: 0
         },
@@ -177,23 +173,16 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
             ".wizardHelp.clientSecret.heading")
         }
     ];
-
-    const handleClickLeft = () => {
-
+    const handleClickPrevious = () => {
         setCurrentState(currentState === 0 ?  0 : currentState - 1);
-        // setCurrentContent((c) => (c > 0 ? c - 1 : c));
     };
-    const handleClickRight = () =>{
-        // setCurrentContent((c) => (c < CONTENTS.length - 1 ? c + 1 : c));
+    const handleClickNext = () =>{
         setCurrentState(currentState === 3 ?  3 : currentState + 1);
     };
-
-    const isLeftButtonDisabled:boolean = currentState === 0;
-    const isRightButtonDisabled:boolean = currentState === 3;
-
-    const leftButtonColor:any = isLeftButtonDisabled ? "grey" : "orange";
-    const rightButtonColor:any = isRightButtonDisabled ? "grey" : "orange";
-
+    const isPreviousButtonDisabled:boolean = currentState === 0;
+    const isNextButtonDisabled:boolean = currentState === 3;
+    const previousButtonColor:SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor:SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
     const progress:number = (currentState / (3)) * 100;
 
     return (
@@ -208,8 +197,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content">
-
-                    { CONTENTS.map(({ id, title, body }: Content) => (
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
                         <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
@@ -230,17 +218,17 @@ const FacebookIdentityProviderCreateWizardHelp = ({ current } : props) => {
                     <div className="idp-sidepanel-buttons">
                         <Button
                             icon="chevron left"
-                            color={ leftButtonColor }
-                            onClick={ handleClickLeft }
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
                             className="idp-sidepanel-button"
-                            disabled={ isLeftButtonDisabled }
+                            disabled={ isPreviousButtonDisabled }
                         />
                         <Button
                             icon="chevron right"
-                            color={ rightButtonColor }
-                            onClick={ handleClickRight }
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
                             className="idp-sidepanel-button"
-                            disabled={ isRightButtonDisabled }
+                            disabled={ isNextButtonDisabled }
                         >
                         </Button>
                     </div>
