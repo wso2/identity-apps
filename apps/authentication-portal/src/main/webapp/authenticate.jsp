@@ -46,7 +46,7 @@
     String token = "";
     String authAPIURL = application.getInitParameter(AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isNotBlank(authAPIURL)) {
-        // Resolve tenant domain for the authentication API URl.
+        // Resolve tenant domain for the authentication API URL.
         authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
 
         AuthAPIServiceClient authAPIServiceClient = new AuthAPIServiceClient(authAPIURL);
