@@ -115,6 +115,14 @@ export interface ProfileSchema {
     extended?: boolean;
     schemaId?: string;
     regEx?: string;
+    /**
+     * Minimum length limit.
+     */
+    minLength?: number;
+    /**
+     * Maximum length limit.
+     */
+    maxLength?: number;
 }
 
 /**

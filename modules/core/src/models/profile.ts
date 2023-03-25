@@ -198,6 +198,14 @@ export interface ProfileSchemaInterface {
      * Regular expression to validate field.
      */
     regEx?: string;
+    /**
+     * Minimum length limit.
+     */
+    minLength?: number;
+    /**
+     * Maximum length limit.
+     */
+    maxLength?: number;
 }
 
 /**
