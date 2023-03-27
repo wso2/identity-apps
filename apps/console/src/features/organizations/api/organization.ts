@@ -16,8 +16,15 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { 
+    AsgardeoSPAClient, 
+    HttpClientInstance, 
+    HttpError, 
+    HttpRequestConfig, 
+    HttpResponse 
+} from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
@@ -35,7 +42,7 @@ import {
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
@@ -269,7 +276,7 @@ export const shareApplication = (
     applicationId: string,
     data: ShareApplicationRequestInterface
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Accept": "application/json",
@@ -282,13 +289,13 @@ export const shareApplication = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to share the application."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -301,7 +308,7 @@ export const stopSharingApplication = (
     applicationId: string,
     sharedOrganizationId: string
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -313,13 +320,13 @@ export const stopSharingApplication = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if ((response.status !== 204)) {
                 return Promise.reject(new Error("Failed to remove the application sharing."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -331,7 +338,7 @@ export const getSharedOrganizations = (
     currentOrganizationId: string,
     applicationId: string
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -343,13 +350,13 @@ export const getSharedOrganizations = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to get the list of shared organizations of this application."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -360,7 +367,7 @@ export const getSharedOrganizations = (
  * @returns The super organization of the user.
  */
 export const useGetUserSuperOrganization = (): RequestResultInterface<OrganizationInterface, Error> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -380,7 +387,7 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
 export const useGetOrganizationBreadCrumb = (
     shouldSendRequest: boolean
 ): { data: BreadcrumbList, error: Error; isLoading: boolean; } => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -412,8 +419,8 @@ export const useGetOrganizationBreadCrumb = (
 export const unshareApplication = (
     applicationId: string,
     currentOrganizationId: string
-): Promise<void> => {
-    const requestConfig: HttpRequestConfig = {
+): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -421,7 +428,7 @@ export const unshareApplication = (
         method: HttpMethods.DELETE,
         url: `${
             store.getState().config.endpoints.organizations
-        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/fragment-apps`
+        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {
