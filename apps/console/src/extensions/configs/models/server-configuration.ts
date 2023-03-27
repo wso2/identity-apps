@@ -53,9 +53,28 @@ export interface ServerConfigurationConfig {
         setPasswordHistoryEnabled: (state: boolean) => void,
         t: TFunction<"translation", undefined>
     ) => ReactElement;
+
+    usePasswordExpiry: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
+    processPasswordExpiryInitialValues: (
+        initialValues: ValidationFormInterface,
+        passwordExpiry: GovernanceConnectorInterface,
+        setPasswordExpiryEnabled: (state: boolean) => void
+    ) => PasswordExpiryInterface;
+    processPasswordExpirySubmitData: (data: ValidationFormInterface) => Promise<any>;
+    passwordExpiryComponent: (
+        componentId: string,
+        passwordExpiryEnabled: boolean,
+        setPasswordExpiryEnabled: (state: boolean) => void,
+        t: TFunction<"translation", undefined>
+    ) => ReactElement;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {
     passwordHistoryCount: number;
     passwordHistoryCountEnabled: boolean;
+}
+
+export interface PasswordExpiryInterface extends ValidationFormInterface {
+    passwordExpiryTime: number | string;
+    passwordExpiryEnabled: boolean;
 }

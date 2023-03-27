@@ -111,6 +111,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             myAccountConfigMgt: "",
             oidcScopes: "",
             organizations: "",
+            passwordExpiry: "",
             passwordHistory: "",
             passwordPolicies: "",
             passwordPolicy: "",
