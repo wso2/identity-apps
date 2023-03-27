@@ -143,8 +143,8 @@
     Boolean isUsernameRecoveryEnabledInTenant;
     Boolean isPasswordRecoveryEnabledInTenant;
     Boolean isMultiAttributeLoginEnabledInTenant;
-    Boolean isAdminSessionAdvisoryControlEnabledInTenant;
-    String adminSessionAdvisoryControlDescriptionOfTenant;
+    Boolean isAdminAdvisoryBannerEnabledInTenant;
+    String adminAdvisoryBannerContentOfTenant;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -158,8 +158,8 @@
         isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(tenantDomain);
         isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
-        isAdminSessionAdvisoryControlEnabledInTenant = preferenceRetrievalClient.checkAdminSessionAdvisoryBannerControlEnabled(tenantDomain);
-        adminSessionAdvisoryControlDescriptionOfTenant = preferenceRetrievalClient.getAdminSessionAdvisoryBannerDescription(tenantDomain);
+        isAdminAdvisoryBannerEnabledInTenant = preferenceRetrievalClient.checkAdminAdvisoryBannerEnabled(tenantDomain);
+        adminAdvisoryBannerContentOfTenant = preferenceRetrievalClient.retrieveAdminAdvisoryBannerContent(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", AuthenticationEndpointUtil
@@ -292,9 +292,9 @@
     <div class="ui divider hidden"></div>
 <% } %>
 
-<% if (isAdminSessionAdvisoryControlEnabledInTenant) { %>
+<% if (isAdminAdvisoryBannerEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
-        <%=adminSessionAdvisoryControlDescriptionOfTenant%>
+        <%=adminAdvisoryBannerContentOfTenant%>
     </div>
 <% } %>
 
