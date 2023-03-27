@@ -421,7 +421,7 @@ export const unshareApplication = (
         method: HttpMethods.DELETE,
         url: `${
             store.getState().config.endpoints.organizations
-        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/fragment-apps`
+        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {
