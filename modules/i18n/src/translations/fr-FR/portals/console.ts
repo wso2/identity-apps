@@ -5245,6 +5245,8 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
                         "cet attribut sur le profil.",
+                        requiredWarning: "Pour rendre l'attribut e-mail obligatoire sur le profil de " +
+                            "l'utilisateur, vous devez activer la vérification de compte dans votre organisation.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page " +
                                 "d'enregistrement de l'utilisateur"
