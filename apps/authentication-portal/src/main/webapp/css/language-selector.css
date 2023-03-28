@@ -24,9 +24,10 @@
     --language-selector-border-color: #E86D1F;
 }
 
-.language-selector-dropdown {
-    background-color: transparent !important;
-    border: none !important;
+#language-selector-dropdown {
+    color: var(--language-selector-text-color);
+    background-color: transparent;
+    border: none;
     width: 250px !important;
 }
 

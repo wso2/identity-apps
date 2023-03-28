@@ -34,18 +34,18 @@ import {
 import differenceBy from "lodash-es/differenceBy";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
-import { UserBasicInterface, getUsersList } from "../../../users";
+import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
 
 /**
  * Proptypes for the role user list component.
  */
 interface AddRoleUserProps extends TestableComponentInterface {
     triggerSubmit?: boolean;
-    onSubmit?: (values: any) => void;
+    onSubmit?: (addedUsers: UserBasicInterface[], removedUsers: UserBasicInterface[]) => void;
     assignedUsers?: RolesMemberInterface[];
     isEdit: boolean;
     isGroup: boolean;
@@ -98,7 +98,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const [ isSelectedUsersLoading, setIsSelectedUsersLoading ] = useState<boolean>(true);
 
-    const initialRenderTempUsers = useRef(true);
+    const initialRenderTempUsers: MutableRefObject<boolean> = useRef(true);
 
     useEffect(() => {
         if (initialRenderTempUsers.current) {
@@ -141,7 +141,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
         getUsersList(limit, offset, filter, attribute, userStore)
-            .then((response) => {
+            .then((response: UserListInterface) => {
                 if (!response.Resources) {
                     setUsersList([]);
                     setInitialUserList([]);
@@ -150,7 +150,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     return;
                 }
 
-                const responseUsers = response.Resources.map((user) => {
+                const responseUsers: UserBasicInterface[] = response.Resources.map((user: UserBasicInterface) => {
                     const userNames: string[] = user.userName.split("/");
 
                     if (userNames.length === 1) {
@@ -162,7 +162,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     return user;
                 });
 
-                responseUsers.sort((userObject, comparedUserObject) =>
+                responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
                 setUsersList([ ...responseUsers ]);
@@ -172,16 +172,17 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     const selectedUserList: UserBasicInterface[] = [];
 
                     if (responseUsers && responseUsers instanceof Array ) {
-                        responseUsers.slice().reverse().forEach(user => {
-                            assignedUsers.forEach(assignedUser => {
+                        responseUsers.slice().reverse().forEach((user: UserBasicInterface) => {
+                            assignedUsers.forEach((assignedUser: RolesMemberInterface) => {
                                 if (user.id === assignedUser.value) {
                                     selectedUserList.push(user);
                                     responseUsers.splice(responseUsers.indexOf(user), 1);
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) =>
-                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                        selectedUserList.sort(
+                            (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
+                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
@@ -202,17 +203,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     const selectedUserList: UserBasicInterface[] = [];
 
                     if (responseUsers && responseUsers instanceof Array ) {
-                        responseUsers.forEach(user => {
-                            initialValues.forEach(assignedUser => {
+                        responseUsers.forEach((user: UserBasicInterface) => {
+                            initialValues.forEach((assignedUser: UserBasicInterface) => {
                                 if (user.id === assignedUser.id) {
                                     selectedUserList.push(user);
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) =>
-                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                        selectedUserList.sort(
+                            (userObject: UserBasicInterface , comparedUserObject: UserBasicInterface) =>
+                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
-                        setUsersList(responseUsers.filter(function(user) {
+                        setUsersList(responseUsers.filter(function(user: UserBasicInterface) {
                             return selectedUserList.indexOf(user) == -1;
                         }));
                         setSelectedUsers(selectedUserList);
@@ -251,8 +253,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
      * @returns
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray = [];
-        const iterator1 = attributeMap[Symbol.iterator]();
+        const attArray: string[] = [];
+        const iterator1: IterableIterator<string> = attributeMap[Symbol.iterator]();
 
         for (const attribute of iterator1) {
             if (attribute !== "") {
@@ -265,7 +267,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     useEffect(() => {
         if (userListMetaContent) {
-            const attributes = generateAttributesString(userListMetaContent.values());
+            const attributes: string = generateAttributesString(userListMetaContent.values());
 
             if (isGroup) {
                 getList(listItemLimit, listOffset, null, attributes, userStore);
@@ -275,8 +277,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
     }, [ listOffset, listItemLimit ]);
 
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (role: UserBasicInterface) => {
+        const checkedRoles: UserBasicInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedRoles.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -287,14 +289,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
     };
 
-    const handleSearchFieldChange = (e, { value }) => {
-        let isMatch = false;
+    const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
         const filteredRoleList: UserBasicInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            usersList && usersList.map((user) => {
+            usersList && usersList.map((user: UserBasicInterface) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
                     filteredRoleList.push(user);
@@ -306,8 +308,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
     };
 
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedAssignedListItems ];
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
+        const checkedRoles: UserBasicInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedRoles.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -319,16 +321,16 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     };
 
     const addUser = () => {
-        const addedRoles = [ ...tempUserList ];
+        const addedRoles: UserBasicInterface[] = [ ...tempUserList ];
 
         if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((user) => {
+            checkedUnassignedListItems.map((user: UserBasicInterface) => {
                 if (!(tempUserList.includes(user))) {
                     addedRoles.push(user);
                 }
             });
         }
-        setUsersList(usersList.filter(user => (
+        setUsersList(usersList.filter((user: UserBasicInterface) => (
             checkedUnassignedListItems.indexOf(user) === -1
         )));
         setTempUserList(addedRoles);
@@ -337,10 +339,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     };
 
     const removeUser = () => {
-        const removedUsers = [ ...tempUserList ];
+        const removedUsers: UserBasicInterface[] = [ ...tempUserList ];
 
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map(user => {
+            checkedAssignedListItems.map((user: UserBasicInterface) => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
                 usersList.push(user);
             });
@@ -361,14 +363,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         setAddNewUserModalView(false);
     };
 
-    const handleAssignedUserListSearch = (e, { value }) => {
-        let isMatch = false;
+    const handleAssignedUserListSearch = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
         const filteredUserList: UserBasicInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            selectedUsers && selectedUsers.map((user) => {
+            selectedUsers && selectedUsers.map((user: UserBasicInterface) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
                     filteredUserList.push(user);
@@ -380,8 +382,16 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
     };
 
+    const seperateOutAddOrRemoveUsers = () => {
+        const addedUsers: UserBasicInterface[] = tempUserList;
+        const removedUsers: UserBasicInterface[] =  differenceBy(usersList, tempUserList);
+
+        return { addedUsers, removedUsers };
+    };
     const handleAddUserSubmit = () => {
-        onSubmit(tempUserList);
+        const { addedUsers, removedUsers } = seperateOutAddOrRemoveUsers();
+
+        onSubmit(addedUsers, removedUsers);
         setSelectedUsers(tempUserList);
         setAddNewUserModalView(false);
     };
@@ -444,7 +454,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            usersList?.map((user, index)=> {
+                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -477,7 +487,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            tempUserList?.map((user, index)=> {
+                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -575,7 +585,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     </Table.Header>
                                                     <Table.Body>
                                                         {
-                                                            selectedUsers?.map((user) => {
+                                                            selectedUsers?.map((user: UserBasicInterface) => {
                                                                 return (
                                                                     <Table.Row key={ user.id }>
                                                                         <Table.Cell collapsing>
@@ -639,9 +649,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             )
                 : (
                     <Forms
-                        onSubmit={ () => {
-                            onSubmit(tempUserList);
-                        } }
                         submitState={ triggerSubmit }
                     >
                         <Grid>
@@ -672,7 +679,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
-                                            usersList?.map((user, index)=> {
+                                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>
@@ -706,7 +713,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
-                                            tempUserList?.map((user, index)=> {
+                                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>

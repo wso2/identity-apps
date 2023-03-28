@@ -879,7 +879,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 fieldName.toLowerCase().includes("uri")
                                                                 || fieldName.toLowerCase().includes("url")
                                                             )
-                                                                ? -1
+                                                                ? 1024
                                                                 : 30
                                                     }
                                                 />
@@ -934,7 +934,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             <List.Content>
                                 {
                                     (
-                                        !commonConfig.userProfilePage.showEmail 
+                                        !commonConfig.userProfilePage.showEmail
                                         ||  usernameConfig?.enableValidator === "false"
                                     )
                                     &&  fieldName.toLowerCase() === "username"

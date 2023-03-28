@@ -57,6 +57,7 @@ import {
     SemanticWIDTHS
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
+import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
 import {
     GenericAuthenticatorInterface,
@@ -202,8 +203,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         // Remove SMS OTP authenticator from the list at the sub org level.
         const filteredAuthenticators: GenericAuthenticatorInterface[] = (orgType === OrganizationType.SUBORGANIZATION) 
-            ? authenticators.filter((authenticator: GenericAuthenticatorInterface) => {       
-                return authenticator.name !== IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID; })
+            ? authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+                return (
+                    authenticator.name !==
+                          IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
+                    authenticator.name !==authenticatorConfig?.overriddenAuthenticatorNames
+                        ?.SMS_OTP_AUTHENTICATOR
+                );
+            })
             : authenticators;
         
         setFilteredAuthenticators(filteredAuthenticators);
