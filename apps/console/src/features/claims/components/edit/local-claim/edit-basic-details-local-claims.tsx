@@ -215,7 +215,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 setConnector(response);
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
                             description: t(
@@ -231,7 +231,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         })
                     );
                 } else {
-                    // Generic error message
+                    // Generic error message.
                     dispatch(
                         addAlert({
                             description: t(
@@ -247,7 +247,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     );
                 }
             });
-    }, [  ]);
+    }, []);
 
     useEffect(() => {
  
