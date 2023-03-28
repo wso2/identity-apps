@@ -95,3 +95,4 @@ const rootElement: HTMLElement = document.getElementById("root");
 // Moved back to the legacy mode due to unpredictable state update issue.
 // Tracked here: https://github.com/wso2/product-is/issues/14912
 ReactDOM.render(<RootWithConfig />, rootElement);
+
