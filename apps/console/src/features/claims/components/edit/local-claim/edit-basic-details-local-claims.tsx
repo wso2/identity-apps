@@ -231,6 +231,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         })
                     );
                 } else {
+                    // Display general error message.
                     dispatch(
                         addAlert({
                             description: t(
