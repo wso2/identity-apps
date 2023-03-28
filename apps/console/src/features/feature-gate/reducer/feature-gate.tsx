@@ -39,9 +39,3 @@ export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.
 
     return (<FeatureGateContext.Provider value={ {  dispatch, features } }>{ children }</FeatureGateContext.Provider>);
 };
-
-
-
-
-
-
