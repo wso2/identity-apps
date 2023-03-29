@@ -40,11 +40,6 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants,
-    getConnectorDetails } from "apps/console/src/features/server-configurations";
 import Axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -63,6 +58,11 @@ import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorDetails } from "../../../../server-configurations";
 import { getUsernameConfiguration } from "../../../../users";
 import { getProfileSchemas } from "../../../../users/api";
 import { useValidationConfigData } from "../../../../validation/api";
