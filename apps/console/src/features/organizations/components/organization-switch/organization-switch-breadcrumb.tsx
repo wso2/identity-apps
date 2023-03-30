@@ -242,7 +242,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                         >
                                             { breadcrumb.name }
                                         </Breadcrumb.Section>
-                                        { resolveBreadcrumbIcon (index) }
+                                        { resolveBreadcrumbIcon(index) }
                                     </>
                                 );
                             }
