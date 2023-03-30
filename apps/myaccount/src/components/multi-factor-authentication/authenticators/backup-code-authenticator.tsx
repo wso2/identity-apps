@@ -101,7 +101,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     const [ remainingBackupCodes, setRemainingBackupCodes ] = useState<number>(0);
     const [ isCodesCopied, setIsCodesCopied ] = useState<boolean>(false);
     const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
-    const [ isWarnRemainingBackupCodes, setIsWarnRemainingBackupCodes ] = useState<boolean>(false);
+    const [ remainingBackupCodesAmountLow, setRemainingBackupCodesAmountLow ] = useState<boolean>(false);
     const [ isMFAConfigured, setIsMFAConfigured ] = useState<boolean>(false);
     const [ isRemoveBackupCodesModalOpen, setIsRemoveBackupCodesModalOpen ] = useState<boolean>(false);
 
@@ -119,9 +119,9 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
      */
     useEffect(() => {
         if (
-            enabledAuthenticators.filter(
+            enabledAuthenticators.find(
                 (authenticator: string) => authenticator !== backupCodeAuthenticatorName
-            ).length > 0
+            )
         ) {
             setIsMFAConfigured(true);
         } else {
@@ -207,7 +207,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 const remainingCount: number = response.remainingBackupCodesCount;
 
                 setRemainingBackupCodes(remainingCount);
-                setIsWarnRemainingBackupCodes(remainingCount <= minBackupCodesLimit);
+                setRemainingBackupCodesAmountLow(remainingCount <= minBackupCodesLimit);
             })
             .catch((errorMessage: string)=> {
                 onAlertFired({
@@ -600,8 +600,9 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                 { t(translateKey + "heading") }
                                 { isMFAConfigured && isBackupCodesConfigured ? (
                                     <Label
-                                        className={ `backup-code-label ${ isWarnRemainingBackupCodes
-                                            ? "warning" : "info" }` }
+                                        className={
+                                            `backup-code-label ${ remainingBackupCodesAmountLow ? "warning" : "info" }`
+                                        }
                                         data-testid={ `${componentid}-remaining-count-label` }
                                     >
                                         { `${remainingBackupCodes} ` + t(translateKey + "remaining") }
