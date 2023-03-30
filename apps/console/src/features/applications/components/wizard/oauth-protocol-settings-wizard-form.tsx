@@ -235,17 +235,19 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL: string = urls?.replace(/['"]+/g, "");
 
-        const regexChars = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
+        const regexChars: RegExp = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
+
         if (callbackURL.split(",").length > 1) {
-            callbackURL = callbackURL.split(",").map((url) => {
+            callbackURL = callbackURL.split(",").map((url: string) => {
                 if (!/\\/.test(url) && regexChars.test(url)) {
-                    url = url.replace(regexChars, '\\$&'); // Escape the special character.
+                    url = url.replace(regexChars, "\\$&"); // Escape the special character.
                 }
+
                 return url;
             }).join("|");
             callbackURL = `regexp=(${callbackURL})`;
         } else if (regexChars.test(callbackURL)) {
-            callbackURL = callbackURL.replace(regexChars, '\\$&');
+            callbackURL = callbackURL.replace(regexChars, "\\$&");
         }
 
         return callbackURL;
@@ -258,7 +260,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @returns Prepared callback URL.
      */
     const buildCallBackURLWithSeparator = (url: string): string => {
-        if (url.includes("regexp=(")) {
+        if (url && url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
             url = url.split("|").join(",");
