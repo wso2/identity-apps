@@ -164,8 +164,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     /**
     * Handle sort strategy change.
     *
-    * @param event - Synthetic event.
-    * @param data - Dropdown data.
+    * @param event - Dropdown change event.
+    * @param data - Selected dropdown option.
     */
     const handleSortStrategyChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortByStrategy(SORT_BY.filter(
