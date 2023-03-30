@@ -26,6 +26,7 @@
     String oidcLogoutURL = "../oidc/logout";
     String openidServerURL = "../openidserver";
     String logincontextURL = "../logincontext";
+    String longwaitstatusURL = "/longwaitstatus";
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
         samlssoURL = identityServerEndpointContextParam + "/samlsso";
         commonauthURL = identityServerEndpointContextParam + "/commonauth";
@@ -33,6 +34,7 @@
         oidcLogoutURL = identityServerEndpointContextParam + "/oidc/logout";
         openidServerURL = identityServerEndpointContextParam + "/oidc/logout";
         logincontextURL = identityServerEndpointContextParam + "/logincontext";
+        longwaitstatusURL = identityServerEndpointContextParam + "/longwaitstatus";
     }
     
     String tenantDomain;

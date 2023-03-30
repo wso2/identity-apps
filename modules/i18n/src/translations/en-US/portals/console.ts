@@ -1220,8 +1220,8 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a FIDO2 security key, "
-                                                    + "biometrics or passkeys.",
+                                                description: "Enable users to log in using a passkey, security key or "
+                                                    + "biometrics.",
                                                 heading: "Add Security Key/Biometrics login",
                                                 info: "To sign in with passwordless login, your users "
                                                     + "should have their FIDO2 security keys or biometrics "
@@ -6775,6 +6775,8 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "If selected, the user is required to specify a value for this " +
                         "attribute on the profile.",
+                        requiredWarning: "To make the email attribute required on the user's profile, " +
+                            "you need to enable account verification in your organization.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
                         }
@@ -8639,7 +8641,8 @@ export const console: ConsoleNS = {
                     search: {
                         placeholder: "Search by Name"
                     },
-                    subOrganizations: "Sub-organizations"
+                    subOrganizations: "Sub-organizations",
+                    switchLabel: "Organization"
                 },
                 title: "Organizations"
             },
@@ -10529,7 +10532,7 @@ export const console: ConsoleNS = {
                 description: "Authenticate confidential clients to the authorization server when using the token endpoint.",
                 goBackToApplication: "Go back to application",
                 goBackToAccountSecurityConfig: "Go back to Account Security",
-                messageInfo: "If enabled, the JTI in the JWT will be unique per the request if the previously used JWT is not already expired. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                messageInfo: "If enabled, the JWT can be reused again within its expiration period. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
                 tokenReuseEnabled: "Token Reuse Enabled",
                 tokenReuseDisabled: "Token Reuse Disabled"
             }

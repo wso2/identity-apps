@@ -1250,9 +1250,9 @@ export const console: ConsoleNS = {
                                                 heading: "Ajouter TOTP comme deuxième facteur"
                                             },
                                             usernameless: {
-                                                description: "Permettre aux utilisateurs de se connecter à " +
-                                                    "l'aidAjouter une connexion sans nom d'utilisateuré " +
-                                                    "FIDO2, de la biométrie ou de clés d'accès.",
+                                                description: "Autorisez les utilisateurs à se connecter à l'aide " +
+                                                    "d'un mot de passe, d'une clé de sécurité ou de données " +
+                                                    "biométriques.",
                                                 heading: "Ajouter une clé de sécurité/connexion biométrique",
                                                 info: "Pour vous connecter avec une authentification sans mot " +
                                                     "de passe, vos utilisateurs doivent avoir leurs clés de " +
@@ -5245,6 +5245,8 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
                         "cet attribut sur le profil.",
+                        requiredWarning: "Pour rendre l'attribut e-mail obligatoire sur le profil de " +
+                            "l'utilisateur, vous devez activer la vérification de compte dans votre organisation.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page " +
                                 "d'enregistrement de l'utilisateur"
@@ -6962,7 +6964,8 @@ export const console: ConsoleNS = {
                         placeholder: "Rechercher par nom"
                     },
                     goBack: "Retourner",
-                    subOrganizations: "Sous-organisations"
+                    subOrganizations: "Sous-organisations",
+                    switchLabel: "Organisation"
                 },
                 title: "Organisations"
             },
@@ -8912,7 +8915,7 @@ export const console: ConsoleNS = {
                 description: "Authentifiez les clients confidentiels auprès du serveur d'autorisation lors de l'utilisation du point de terminaison de jeton.",
                 goBackToApplication: "Revenir à l'application",
                 goBackToAccountSecurityConfig: "Revenir à la sécurité du compte",
-                messageInfo: "S'il est activé, le JTI dans le JWT sera unique par demande si le JWT précédemment utilisé n'a pas déjà expiré. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT.",
+                messageInfo: "S'il est activé, le JWT peut être réutilisé à nouveau pendant sa période d'expiration. JTI (JWT ID) est une revendication qui fournit un identifiant unique pour le JWT.",
                 tokenReuseEnabled: "Réutilisation du jeton activée",
                 tokenReuseDisabled: "Réutilisation du jeton désactivée"
             }

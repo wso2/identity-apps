@@ -36,7 +36,7 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
-    
+
     String httpMethod = request.getMethod();
     // Some mail providers initially sends a HEAD request to
     // check the validity of the link before redirecting users.
@@ -44,12 +44,14 @@
         response.setStatus(response.SC_OK);
         return;
     }
-    
+
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
     }
+
+    boolean passwordExpired = Boolean.parseBoolean(request.getParameter("passwordExpired"));
 
     try {
         if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
@@ -76,12 +78,12 @@
         tenantDomainProperty.setKey(MultitenantConstants.TENANT_DOMAIN);
         tenantDomainProperty.setValue(tenantDomain);
         properties.add(tenantDomainProperty);
-        
+
         CodeValidationRequest validationRequest = new CodeValidationRequest();
         validationRequest.setCode(confirmationKey);
         validationRequest.setProperties(properties);
         notificationApi.validateCodePostCall(validationRequest);
-        
+
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         if (!StringUtils.isBlank(username)) {
@@ -90,7 +92,7 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    
+
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
@@ -98,11 +100,12 @@
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
-    
+
     if (StringUtils.isNotBlank(confirmationKey)) {
         request.getSession().setAttribute("confirmationKey", confirmationKey);
         request.setAttribute("callback", callback);
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
+        request.setAttribute("passwordExpired", passwordExpired);
         request.getRequestDispatcher("passwordreset.do").forward(request, response);
     } else {
         request.setAttribute("error", true);

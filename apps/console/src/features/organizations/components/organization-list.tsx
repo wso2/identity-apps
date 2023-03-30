@@ -24,6 +24,7 @@ import {
     LoadableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     DataTable,
@@ -35,10 +36,12 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { organizationConfigs } from "../../../extensions";
 import {
@@ -50,10 +53,11 @@ import {
     history
 } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import { deleteOrganization } from "../api";
+import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationInterface, OrganizationListInterface } from "../models";
+import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
+import { OrganizationUtils } from "../utils";
 
 /**
  *
@@ -141,16 +145,33 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state?.organization?.isFirstLevelOrganization
+    );
+    const tenantDomain: string = useSelector(
+        (state: AppState) => state?.auth?.tenantDomain
+    );
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const shouldSendRequest: boolean = useMemo(() => {
+        return (
+            isFirstLevelOrg ||
+            window[ "AppUtils" ].getConfig().organizationName ||
+            tenantDomain === AppConstants.getSuperTenant()
+        );
+    }, [ isFirstLevelOrg, tenantDomain ]);
+
+    const { data: breadcrumbList } = useGetOrganizationBreadCrumb(
+        shouldSendRequest
+    );
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -189,7 +210,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 setShowDeleteConfirmationModal(false);
                 onOrganizationDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     if (error.response.data.code === "ORG-60007") {
@@ -239,6 +260,46 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     })
                 );
             });
+    };
+
+    /**
+     * The following function handles the organization switch.
+     * 
+     * @param organization - Organization to be switch.
+     */
+    const handleOrganizationSwitch = (
+        organization: GenericOrganization
+    ): void => {
+        let newOrgPath: string = "";
+
+        if (
+            breadcrumbList && breadcrumbList.length > 0 &&
+            OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+            breadcrumbList[ 1 ]?.id === organization.id &&
+            organizationConfigs.showSwitcherInTenants
+        ) {
+            newOrgPath =
+                "/t/" +
+                organization.name +
+                "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        } else if (OrganizationUtils.isRootOrganization(organization)) {
+            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+        } else {
+            newOrgPath =
+                "/o/" +
+                organization.id +
+                "/" +
+                window[ "AppUtils" ].getConfig().appBase;
+        }
+
+        // Clear the callback url of the previous organization.
+        SessionStorageUtils.clearItemFromSessionStorage(
+            "auth_callback_url_console"
+        );
+
+        // Redirect the user to the newly selected organization path.
+        window.location.replace(newOrgPath);
     };
 
     /**
@@ -344,6 +405,20 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
                     onListItemClick && onListItemClick(e, organization),
                 popupText: () => t("common:view"),
+                renderer: "semantic-icon"
+            },
+            {
+                "data-componentid": `${ componentId }-item-switch-button`,
+                hidden: (): boolean =>
+                    !isFeatureEnabled(
+                        featureConfig?.organizations,
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+                    ),
+                icon: (): SemanticICONS => "exchange",
+                onClick: (event: SyntheticEvent, organization: OrganizationInterface) => {
+                    event.stopPropagation();
+                    handleOrganizationSwitch && handleOrganizationSwitch(organization); },
+                popupText: (): string => t("common:switch"),
                 renderer: "semantic-icon"
             },
             {

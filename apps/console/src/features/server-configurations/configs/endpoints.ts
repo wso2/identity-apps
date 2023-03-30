@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,8 +22,8 @@ import { ServerConfigurationsResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the server configurations feature.
  *
- * @param {string} serverHost - Server Host.
- * @return {ServerConfigurationsResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ * @returns Interface of Server Configurations Resource Endpoints.
  */
 export const getServerConfigurationsResourceEndpoints = (
     serverHost: string
@@ -49,6 +49,9 @@ export const getServerConfigurationsResourceEndpoints = (
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
         }`,
+        passwordExpiry: `${ serverHost }/api/server/v1/identity-governance/${
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+        }/connectors/${ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID}`,
         passwordHistory: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
