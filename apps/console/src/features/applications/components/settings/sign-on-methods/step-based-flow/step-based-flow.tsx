@@ -135,6 +135,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ secondFactorAuthenticators, setSecondFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ recoveryAuthenticators, setRecoveryAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
@@ -165,6 +166,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
+        const recoveryAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
@@ -173,8 +175,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             }
 
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
-                // Backup code authenticator is not available for customer users at the moment.
-                return;
+                recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
             } else {
@@ -193,6 +194,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
 
         setSecondFactorAuthenticators(secondFactorAuth);
+        setRecoveryAuthenticators(recoveryAuth);
         setLocalAuthenticators(moderatedLocalAuthenticators);
         setEnterpriseAuthenticators(filteredEnterpriseAuthenticators);
         setSocialAuthenticators(filteredSocialAuthenticators);
@@ -339,7 +341,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             ...localAuthenticators,
             ...enterpriseAuthenticators,
             ...socialAuthenticators,
-            ...secondFactorAuthenticators
+            ...secondFactorAuthenticators,
+            ...recoveryAuthenticators
         ];
 
         const authenticator: GenericAuthenticatorInterface = authenticators
@@ -400,7 +403,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator.authenticators.find(
-            (item: FederatedAuthenticatorInterface) => 
+            (item: FederatedAuthenticatorInterface) =>
                 item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
@@ -420,6 +423,27 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const currentStep: AuthenticationStepInterface = steps[stepIndex];
+        const currentAuthenticator: string = currentStep.options[optionIndex].authenticator;
+
+        // check whether the authenticator to be deleted is a 2FA
+        if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
+            currentAuthenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+            currentAuthenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ) {
+
+            // check whether the current step has the backup code authenticator
+            if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
+            )) {
+                // if there is only one 2FA in the step, do not allow it to be deleted
+                if(SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
+                    dispatchTwoFactorAuthDeleteErrorNotification();
+
+                    return;
+                }
+            }
+        }
 
         const [
             leftSideSteps,
@@ -533,6 +557,20 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     "console:develop.features.applications.notifications." +
                     "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
                 )
+            })
+        );
+    };
+
+    /**
+     * This method dispatches a notification when there is an error during validating a
+     * delete action of a 2FA.
+     */
+    const dispatchTwoFactorAuthDeleteErrorNotification = (): void => {
+        dispatch(
+            addAlert({
+                description: "Backup code authenticator in this step depends on this authenticator.",
+                level: AlertLevels.WARNING,
+                message: "Cannot delete this authenticator"
             })
         );
     };
@@ -890,7 +928,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
                     ...moderateAuthenticators(enterpriseAuthenticators,
                         AuthenticatorCategories.ENTERPRISE,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE)))
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE))),
+                    ...moderateAuthenticators(recoveryAuthenticators,
+                        AuthenticatorCategories.RECOVERY,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
                 ] }
                 showStepSelector={ false }
                 stepCount={ authenticationSteps.length }
@@ -925,7 +966,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             ...localAuthenticators,
                                             ...enterpriseAuthenticators,
                                             ...socialAuthenticators,
-                                            ...secondFactorAuthenticators
+                                            ...secondFactorAuthenticators,
+                                            ...recoveryAuthenticators
                                         ] }
                                         onStepDelete={ handleStepDelete }
                                         onStepOptionAuthenticatorChange={

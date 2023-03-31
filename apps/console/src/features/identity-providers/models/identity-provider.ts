@@ -771,7 +771,8 @@ export enum AuthenticatorCategories {
     ENTERPRISE = "ENTERPRISE",
     LOCAL = "LOCAL",
     SECOND_FACTOR = "SECOND_FACTOR",
-    SOCIAL = "SOCIAL"
+    SOCIAL = "SOCIAL",
+    RECOVERY = "RECOVERY"
 }
 
 /**

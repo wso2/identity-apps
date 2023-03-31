@@ -147,7 +147,8 @@ export class AuthenticatorMeta {
                 "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
             [ AuthenticatorCategories.SOCIAL ]: "console:develop.features." +
                 "applications.edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
-                "addAuthenticatorModal.content.authenticatorGroups.social.heading"
+                "addAuthenticatorModal.content.authenticatorGroups.social.heading",
+            [ AuthenticatorCategories.RECOVERY ]: "MFA Recovery"
         }, type);
     }
 

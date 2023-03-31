@@ -134,16 +134,17 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const { t } = useTranslation();
 
-    const classes = classNames("authentication-step-container timeline-body", className);
+    const classes: string = classNames("authentication-step-container timeline-body", className);
 
     const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
 
     useEffect(() => {
-        step.options.map(option => {
+        step.options.map((option: AuthenticatorInterface) => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ]
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {
@@ -152,12 +153,12 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         });
     }, [ JSON.stringify(step.options) ]);
 
-    const isSubjectIdentifierChecked = useMemo(
+    const isSubjectIdentifierChecked: boolean = useMemo(
         () => (subjectStepId === (stepIndex + 1)),
         [ subjectStepId, stepIndex ]
     );
 
-    const isAttributeIdentifierChecked = useMemo(
+    const isAttributeIdentifierChecked: boolean = useMemo(
         () => (attributeStepId === (stepIndex + 1)),
         [ attributeStepId, stepIndex ]
     );
@@ -179,9 +180,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             let authenticator: GenericAuthenticatorInterface = null;
 
             if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
-                authenticator = authenticators.find((item) => item.defaultAuthenticator.name === option.authenticator);
+                authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
+                    item.defaultAuthenticator.name === option.authenticator);
             } else {
-                authenticator = authenticators.find((item) => item.idp === option.idp);
+                authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
+                    item.idp === option.idp);
             }
 
             if (!authenticator) {
@@ -253,7 +256,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 </Label>
                                 <Form data-testid={ `${ testId }-authenticator-selection` }>
                                     {
-                                        authenticator?.authenticators?.map((item) => {
+                                        authenticator?.authenticators?.map((item: FederatedAuthenticatorInterface) => {
                                             return (
                                                 <Form.Field key={ item.authenticatorId }>
                                                     <Radio
@@ -325,7 +328,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             ? (
                                 <>
                                     {
-                                        step.options.map((option, optionIndex) => (
+                                        step.options.map((option: AuthenticatorInterface, optionIndex: number) => (
                                             resolveStepOption(option, stepIndex, optionIndex)
                                         ))
                                     }

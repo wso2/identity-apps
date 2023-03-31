@@ -137,6 +137,24 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
+        if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            // If there is only one step in the flow, backup code authenticator shouldn't be allowed.
+            if (currentStep === 0) {
+                return false;
+            }
+
+            // If there exist 2FAs in the current step backup code authenticator should be enabled.
+            // Otherwise, it should be disabled.
+            if (SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(
+                currentStep,
+                authenticationSteps
+            ) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
@@ -202,6 +220,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     ) }
                 </>
             );
+        } else if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            return (
+                <>
+                    { currentStep === 0 ? (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                Backup code authenticator cannot be used in the first step.
+                            </Text>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                Backup code authenticator can only be used if multi factor
+                                authenticators are present in the current step.
+                            </Text>
+                        </Fragment>
+                    ) }
+                </>
+            );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
                 <Fragment>
@@ -244,7 +283,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return;
         }
 
-        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) => 
+        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) =>
             authenticator.id === selectedAuthenticator.id)) {
             const filtered: GenericAuthenticatorInterface[] = selectedAuthenticators
                 .filter((authenticator: GenericAuthenticatorInterface) => {
