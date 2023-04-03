@@ -386,7 +386,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             // Can get rid of the relative paths when using the custom render function.
             // https://testing-library.com/docs/react-testing-library/setup/#configuring-jest-with-test-utils
             "@unit-testing": path.resolve(__dirname, "test-configs/utils"),
-            react: path.resolve("node_modules/react")
+            react: path.resolve("node_modules/react"),
+            /**
+             * This is a workaround to resolve script getting removed issue when there are two Helmet instances.
+             */
+            "react-helmet": path.resolve("node_modules/react-helmet")
         },
         extensions: [
             ...config.resolve.extensions,

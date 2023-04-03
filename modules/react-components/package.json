@@ -70,7 +70,8 @@
     },
     "peerDependencies": {
         "react": "*",
-        "react-dom": "*"
+        "react-dom": "*",
+        "react-helmet": ">=5"
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
