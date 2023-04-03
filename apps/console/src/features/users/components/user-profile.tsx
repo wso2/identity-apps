@@ -1232,7 +1232,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         }
                     } }
                     maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url") ? -1 : 30
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
+                            ? 1024
+                            : (
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : 30
+                            )
                     }
                 />
             );
@@ -1291,7 +1297,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 value={ domainName[1] }
                                                 key={ key }
                                                 readOnly
-                                                maxLength={ 30 }
+                                                maxLength={ schema.maxLength ? schema.maxLength : 30 }
                                             />
                                         </Form.Field>
                                     ) : (
@@ -1314,7 +1320,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 key={ key }
                                                 readOnly={ isReadOnly ||
                                                     schema.mutability === ProfileConstants.READONLY_SCHEMA }
-                                                maxLength={ 30 }
+                                                maxLength={ schema.maxLength ? schema.maxLength : 30 }
                                             />
                                         </Form.Field>
                                     )

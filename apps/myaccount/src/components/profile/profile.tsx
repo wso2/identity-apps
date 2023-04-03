@@ -880,7 +880,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 || fieldName.toLowerCase().includes("url")
                                                             )
                                                                 ? 1024
-                                                                : 30
+                                                                : (
+                                                                    schema.maxLength
+                                                                        ? schema.maxLength
+                                                                        : 30
+                                                                )
                                                     }
                                                 />
                                             )
