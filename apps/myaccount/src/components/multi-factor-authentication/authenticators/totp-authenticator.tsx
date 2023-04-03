@@ -37,7 +37,6 @@ import {
 } from "semantic-ui-react";
 import {
     checkIfTOTPEnabled,
-    deleteBackupCode,
     deleteTOTP,
     initTOTPCode,
     refreshTOTPCode,
@@ -60,11 +59,9 @@ import { AppState } from "../../../store";
  */
 interface TOTPProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
-    isBackupCodeForced: boolean;
     isSuperTenantLogin: boolean;
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
-    triggerBackupCodesFlow: () => void;
     /**
      * This callback function handles the visibility of the
      * session termination modal.
@@ -83,11 +80,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 ): React.ReactElement => {
     const {
         isSuperTenantLogin,
-        isBackupCodeForced,
         enabledAuthenticators,
         onEnabledAuthenticatorsUpdated,
         onAlertFired,
-        triggerBackupCodesFlow,
         handleSessionTerminationModalVisibility,
         ["data-testid"]: testId
     } = props;
@@ -96,10 +91,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
     const translateKey: string = "myAccount:components.mfa.authenticatorApp.";
     const totpAuthenticatorName: string = "totp";
-    const backupCodeAuthenticatorName: string = "backup-code-authenticator";
 
     const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
-    const shouldContinueToBackupCodes: boolean = isSuperTenantLogin && isBackupCodeForced;
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isTOTPConfigured, setIsTOTPConfigured ] = useState<boolean>(false);
@@ -224,22 +217,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 if (!authenticatorsList.includes(totpAuthenticatorName)) {
                     authenticatorsList.push(totpAuthenticatorName);
                 }
-                if (isSuperTenantLogin
-                        && isBackupCodeForced
-                        && !authenticatorsList.includes(backupCodeAuthenticatorName)) {
-                    authenticatorsList.push(backupCodeAuthenticatorName);
-                }
 
                 break;
             }
             case EnabledAuthenticatorUpdateAction.REMOVE : {
                 if (authenticatorsList.includes(totpAuthenticatorName)) {
                     authenticatorsList.splice(authenticatorsList.indexOf(totpAuthenticatorName), 1);
-                }
-                if (isSuperTenantLogin
-                        && isBackupCodeForced
-                        && authenticatorsList.includes(backupCodeAuthenticatorName)) {
-                    authenticatorsList.splice(authenticatorsList.indexOf(backupCodeAuthenticatorName), 1);
                 }
 
                 break;
@@ -635,15 +618,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     setIsConfigTOTPModalOpen(false);
                     setQrCode(null);
                     setTOTPModalCurrentStep(0);
-
-                    if (shouldContinueToBackupCodes) {
-                        triggerBackupCodesFlow();
-                    }
-
                     handleSessionTerminationModalVisibility(true);
                 } }
             >
-                { shouldContinueToBackupCodes ? t("common:continue") : t("common:done") }
+                { t("common:done") }
             </Button>
         );
     };
@@ -931,34 +909,12 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 setIsTOTPConfigured(false);
                 handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
 
-                // Deletes backup codes.
-                if (shouldContinueToBackupCodes) {
-                    deleteBackupCode()
-                        .then(() => {
-                            onAlertFired({
-                                description: t(translateKey + "notifications.deleteSuccess.message"),
-                                level: AlertLevels.SUCCESS,
-                                message: t(translateKey + "notifications.deleteSuccess.genericMessage")
-                            });
-                            handleSessionTerminationModalVisibility(true);
-                        })
-                        .catch((errorMessage: any) => {
-                            onAlertFired({
-                                description: t(translateKey + "notifications.deleteError.genericError.description", {
-                                    error: errorMessage
-                                }),
-                                level: AlertLevels.ERROR,
-                                message: t(translateKey + "notifications.deleteError.genericError.message")
-                            });
-                        });
-                } else {
-                    onAlertFired({
-                        description: t(translateKey + "notifications.deleteSuccess.message"),
-                        level: AlertLevels.SUCCESS,
-                        message: t(translateKey + "notifications.deleteSuccess.genericMessage")
-                    });
-                    handleSessionTerminationModalVisibility(true);
-                }
+                onAlertFired({
+                    description: t(translateKey + "notifications.deleteSuccess.message"),
+                    level: AlertLevels.SUCCESS,
+                    message: t(translateKey + "notifications.deleteSuccess.genericMessage")
+                });
+                handleSessionTerminationModalVisibility(true);
             })
             .catch((errorMessage: any) => {
                 onAlertFired({
