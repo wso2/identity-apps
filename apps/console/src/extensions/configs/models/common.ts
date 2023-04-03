@@ -59,7 +59,7 @@ export interface CommonConfig {
         headerQuickstartMenuItem: string;
     };
     footer: {
-        customFooterClassName: string;
+        customClassName: string;
     };
     leftNavigation: {
         /**

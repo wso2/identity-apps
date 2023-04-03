@@ -93,7 +93,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     return (
         <ReusableFooter
             currentLanguage={ currentLanguage ?? I18n.instance?.language }
-            className={ commonConfig?.footer?.customFooterClassName || "" }
+            className={ commonConfig?.footer?.customClassName || undefined }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
             copyright={

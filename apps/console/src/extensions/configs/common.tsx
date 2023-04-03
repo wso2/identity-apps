@@ -28,7 +28,7 @@ export const commonConfig: CommonConfig = {
     checkForUIResourceScopes: false,
     enableOrganizationAssociations: false,
     footer: {
-        customFooterClassName: ""
+        customClassName: ""
     },
     header: {
         getHeaderExtensions: (): Promise<HeaderExtension[]> => Promise.resolve([]),
