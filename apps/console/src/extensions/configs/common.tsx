@@ -27,6 +27,9 @@ export const commonConfig: CommonConfig = {
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
     enableOrganizationAssociations: false,
+    footer: {
+        customFooterClassName: ""
+    },
     header: {
         getHeaderExtensions: (): Promise<HeaderExtension[]> => Promise.resolve([]),
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
