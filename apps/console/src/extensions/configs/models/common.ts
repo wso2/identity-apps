@@ -58,6 +58,9 @@ export interface CommonConfig {
          */
         headerQuickstartMenuItem: string;
     };
+    footer: {
+        customFooterClassName: string;
+    };
     leftNavigation: {
         /**
          * Should the side panel be categorized for different views.

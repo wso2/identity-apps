@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import { AppConstants } from "../constants";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
+import { commonConfig } from "../../../extensions";
 
 /**
  * Footer layout Prop types.
@@ -92,6 +93,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     return (
         <ReusableFooter
             currentLanguage={ currentLanguage ?? I18n.instance?.language }
+            className={commonConfig?.footer?.customFooterClassName || '' }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
             copyright={
