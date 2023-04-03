@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+/* eslint-disable @typescript-eslint/typedef */
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -340,16 +340,18 @@ export class ApplicationManagementUtils {
         let callbackURL = urls.replace(/['"]+/g, "");
 
         const regexChars = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
+        
         if (callbackURL.split(",").length > 1) {
             callbackURL = callbackURL.split(",").map((url) => {
                 if (!/\\/.test(url) && regexChars.test(url)) {
-                    url = url.replace(regexChars, '\\$&'); // Escape the special character.
+                    url = url.replace(regexChars, "\\$&"); // Escape the special character.
                 }
+
                 return url;
             }).join("|");
             callbackURL = `regexp=(${callbackURL})`;
         } else if (regexChars.test(callbackURL)) {
-            callbackURL = callbackURL.replace(regexChars, '\\$&');
+            callbackURL = callbackURL.replace(regexChars, "\\$&");
         }
 
         return callbackURL;
