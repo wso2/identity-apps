@@ -341,13 +341,13 @@ export class ApplicationManagementUtils {
 
         const regexChars = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
         if (callbackURL.split(",").length > 1) {
-        callbackURL = callbackURL.split(",").map((url) => {
-            if (!/\\/.test(url) && regexChars.test(url)) {
-                url = url.replace(regexChars, '\\$&'); // Escape the special character.
-            }
-            return url;
-        }).join("|");
-        callbackURL = `regexp=(${callbackURL})`;
+            callbackURL = callbackURL.split(",").map((url) => {
+                if (!/\\/.test(url) && regexChars.test(url)) {
+                    url = url.replace(regexChars, '\\$&'); // Escape the special character.
+                }
+                return url;
+            }).join("|");
+            callbackURL = `regexp=(${callbackURL})`;
         } else if (regexChars.test(callbackURL)) {
             callbackURL = callbackURL.replace(regexChars, '\\$&');
         }
