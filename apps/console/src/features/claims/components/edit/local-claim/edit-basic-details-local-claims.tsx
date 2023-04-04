@@ -638,7 +638,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
                                     && {
                                         content: t("console:manage.features.claims.local.forms.requiredWarning"),
-                                        type: "warning"
+                                        type: "info"
                                     }
                                 }
                                 {
