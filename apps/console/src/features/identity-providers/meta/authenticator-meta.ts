@@ -71,7 +71,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
-            "their Apple IDs."
+            "their Apple IDs.",
+            [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
+            "recovery option."
         }, authenticatorId);
     }
 
@@ -175,7 +177,8 @@ export class AuthenticatorMeta {
             ]: getAuthenticatorIcons()?.sessionExecutor,
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink
+            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
+            [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode
         }, authenticatorId);
 
         return icon ?? getAuthenticatorIcons().default;
