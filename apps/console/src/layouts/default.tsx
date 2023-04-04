@@ -128,7 +128,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             ) }
             footer={ (
                 <Footer
-                    className="console-footer"
                     fluid={ fluid }
                 />
             ) }
