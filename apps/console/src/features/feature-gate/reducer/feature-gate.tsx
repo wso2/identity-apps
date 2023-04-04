@@ -17,9 +17,9 @@
  */
 import React, { useReducer } from "react";
 import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
+import { featureGateConfig } from "../configs/feature-gate";
 import { FeatureGateContext } from "../context/feature-gate";
 import { FeatureGateInterface } from "../models/feature-gate";
-import { featureGateConfig } from "../configs/feature-gate";
 
 export const featureGateReducer = (
     state: FeatureGateInterface,
