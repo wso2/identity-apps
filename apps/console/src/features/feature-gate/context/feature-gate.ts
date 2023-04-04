@@ -17,7 +17,8 @@
  */
 
 import { Context, createContext } from "react";
-import { FeatureGateContextInterface, featureGateConfig } from "../models/feature-gate";
+import { FeatureGateContextInterface } from "../models/feature-gate";
+import { featureGateConfig } from "../configs/feature-gate";
 
 export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({
     dispatch: () => null,

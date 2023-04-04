@@ -16,31 +16,19 @@
  * under the License.
  */
 
-import { FeatureGateAction } from "../actions/feature-gate";
+import { FeatureGateInterface } from "../models/feature-gate";
 
-export interface FeatureGateShowInterface {
-    /**
-     * Permissions needed to render child elements
-     */
-    ifAllowed: string;
-}
-
-export interface FeatureGateContextInterface {
-    features: FeatureGateInterface;
-    dispatch: React.Dispatch<FeatureGateAction>;
-}
-
-export interface FeatureGateInterface {
+export const featureGateConfig: FeatureGateInterface  = {
     console:  {
         application: {
-            enabled: boolean,
+            enabled: true,
             signIn: {
                 adaptiveAuth : {
-                    enabled: boolean
+                    enabled: true
                 },
-                enabled: boolean
+                enabled: true
             }
         },
-        enabled: boolean
+        enabled: true
     }
-}
+};
