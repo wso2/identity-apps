@@ -937,7 +937,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
                 frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
             },
-            publicClient: values.get("supportPublicClients")?.length > 0,
+            publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
             refreshToken: {
                 expiryInSeconds: values.get("expiryInSeconds")
                     ? parseInt(values.get("expiryInSeconds"), 10)
@@ -2765,7 +2765,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowLowExpiryTimesConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
-                        if (!isSPAApplication && !isMobileApplication) {
+                        if (!isSPAApplication) {
                             onSubmit(updateConfiguration(values, url, origin));
                         } else {
                             onSubmit(updateConfigurationForSPA(values, url, origin));
@@ -2864,7 +2864,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         isExpiryTimesTooLowModalShown = isExpiryTimesTooLow(values, url, origin);
 
                         if (!isExpiryTimesTooLowModalShown) {
-                            if (!isSPAApplication && !isMobileApplication) {
+                            if (!isSPAApplication) {
                                 onSubmit(updateConfiguration(values, url, origin));
                             } else {
                                 onSubmit(updateConfigurationForSPA(values, url, origin));
