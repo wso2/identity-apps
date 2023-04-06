@@ -191,7 +191,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 }
                 setHeaderExtensions(response);
             });
-    }, [  tenantDomain, associatedTenants ]);
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Check if there are applications registered and set the value to local storage.
