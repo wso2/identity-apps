@@ -41,7 +41,7 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { Show } from "../../../../feature-gate/controller/show-feature";
+import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";

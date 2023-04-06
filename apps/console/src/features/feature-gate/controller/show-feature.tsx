@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import _ from "lodash-es/";
-import {
-    Fragment,
+import get from 'lodash-es/get';
+import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    createElement,
     useContext
 } from "react";
 import { FeatureGateContext } from "../context/feature-gate";
@@ -40,10 +38,10 @@ export const Show: FunctionComponent<PropsWithChildren<FeatureGateShowInterface>
     const { children, ifAllowed } = props;
     const featurePath: string = `${ ifAllowed }.enabled`;
     const features: FeatureGateContextInterface = useContext(FeatureGateContext);
-    const isFeatureEnabledForThisPath:boolean = _.get(features.features,featurePath);
+    const isFeatureEnabledForThisPath:boolean = get(features.features,featurePath);
 
     if (isFeatureEnabledForThisPath) {
-        return (createElement(Fragment, null, children));
+        return <>{ children }</>;
     } else {
         return null;
     }
