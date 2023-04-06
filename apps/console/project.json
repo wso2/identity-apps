@@ -121,7 +121,7 @@
             "options": {
                 "commands": [
                     "pnpm nx run console:build-prepare",
-                    "pnpm nx run console:build-base",
+                    "pnpm nx run console:build-base --verbose",
                     "pnpm nx run console:build-windup"
                 ],
                 "cwd": "apps/console",
