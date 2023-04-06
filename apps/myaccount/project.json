@@ -84,7 +84,8 @@
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
-                    "vendorChunk": true
+                    "vendorChunk": true,
+                    "verbose": true
                 },
                 "production": {
                     "index": "index.jsp",
@@ -102,7 +103,7 @@
             "options": {
                 "commands": [
                     "pnpm nx run myaccount:build-prepare",
-                    "pnpm nx run myaccount:build-base --verbose"
+                    "pnpm nx run myaccount:build-base"
                 ],
                 "cwd": "apps/myaccount",
                 "parallel": false

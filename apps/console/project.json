@@ -90,7 +90,8 @@
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
-                    "vendorChunk": true
+                    "vendorChunk": true,
+                    "verbose": true
                 },
                 "production": {
                     "index": "index.jsp",
@@ -99,7 +100,8 @@
                     "optimization": true,
                     "outputHashing": "all",
                     "sourceMap": false,
-                    "extractLicenses": false
+                    "extractLicenses": false,
+                    "verbose": true
                 }
             }
         },
@@ -121,14 +123,21 @@
             "options": {
                 "commands": [
                     "pnpm nx run console:build-prepare",
-                    "pnpm nx run console:build-base --verbose",
+                    "pnpm nx run console:build-base",
                     "pnpm nx run console:build-windup"
                 ],
                 "cwd": "apps/console",
                 "parallel": false
+            },
+            "configurations": {
+                "development": {
+                    "verbose": true
+                },
+                "production": {
+                    "verbose": true
+                }
             }
         },
-
         "clean": {
             "executor": "@nrwl/workspace:run-commands",
             "options": {
