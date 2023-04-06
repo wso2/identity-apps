@@ -31,8 +31,10 @@ export const commonConfig: CommonConfig = {
         customClassName: ""
     },
     header: {
-        getHeaderExtensions: (_tenantDomain: string,
-            _associatedTenants: any[]): Promise<HeaderExtension[]> => Promise.resolve([]),
+        getHeaderExtensions: (
+            _tenantDomain: string,
+            _associatedTenants: any[]
+        ): Promise<HeaderExtension[]> => Promise.resolve([]),
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
         getUserDropdownLinkExtensions: (
             _tenantDomain: string,

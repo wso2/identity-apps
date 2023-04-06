@@ -32,8 +32,10 @@ export interface CommonConfig {
          * Get the extensions for the header.
          * @returns Header extensions.
          */
-        getHeaderExtensions: (tenantDomain: string,
-            associatedTenants: any[]) => Promise<HeaderExtension[]>;
+        getHeaderExtensions: (
+            tenantDomain: string,
+            associatedTenants: any[]
+        ) => Promise<HeaderExtension[]>;
         /**
          * Get the extensions for the Header sub panel.
          * These will come along with the `Manage` & `Develop` links.
