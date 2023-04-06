@@ -27,5 +27,4 @@ export interface SetTierFeaturesActionInterface {
     type: FeatureGateActionTypes.SET_FEATURE_STATE;
 }
 
-
-export type FeatureGateAction = | SetTierFeaturesActionInterface
+export type FeatureGateAction = SetTierFeaturesActionInterface

@@ -16,10 +16,8 @@
  * under the License.
  */
 
-
 import { FeatureGateInterface } from "../../models/feature-gate";
 import { FeatureGateActionTypes, SetTierFeaturesActionInterface } from "../feature-gate";
-
 
 /**
  * This action sets features of an organization in the redux store based on tier information.
