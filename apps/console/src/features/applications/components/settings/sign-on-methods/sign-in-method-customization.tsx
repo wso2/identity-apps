@@ -29,6 +29,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -41,7 +42,6 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
