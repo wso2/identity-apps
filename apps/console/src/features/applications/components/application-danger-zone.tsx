@@ -56,7 +56,7 @@ interface ApplicationDangerZonePropsInterface extends
  * 
  * @param props - Props injected to the component.
  * 
- * @returns ReactElement
+ * @returns ApplicationDangerZoneComponent.
  */
 export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDangerZonePropsInterface> = (
     props: ApplicationDangerZonePropsInterface
@@ -140,7 +140,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     /**
      * Resolves the danger actions.
      *
-     * @returns ReactElement DangerZoneGroup element.
+     * @returns DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
         if (!hasRequiredScopes(
