@@ -699,6 +699,10 @@ export const myAccount: MyAccountNS = {
                 regenerate: "Regenerado"
             },
             backupCode: {
+                actions: {
+                    add: "Adicionar códigos alternativos",
+                    delete: "Remover códigos alternativos"
+                },
                 description: "Use códigos de backup para acessar sua conta caso não consiga receber códigos de autenticação " +
                     "multifator. Você pode regenerar novos códigos, se necessário.",
                 download: {
@@ -709,12 +713,20 @@ export const myAccount: MyAccountNS = {
                         "longe do telefone. Mantenha esses códigos de backup em algum lugar seguro, mas acessível."
                 },
                 heading: "Códigos de backup",
+                messages: {
+                    disabledMessage: "Pelo menos um autenticador adicional deve ser configurado para permitir códigos de backup."
+                },
                 modals: {
                     actions: {
                         copied: "Copiado",
                         copy: "Copiar códigos",
                         download: "Códigos de download",
                         regenerate: "Regenerado"
+                    },
+                    delete: {
+                        description: "Esta ação removerá os códigos de backup e você não poderá mais usá-los. " +
+                            "Você deseja continuar?",
+                        heading: "Confirmação"
                     },
                     description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " +
                         "Você pode gerar mais quando todos são usados",
@@ -745,6 +757,10 @@ export const myAccount: MyAccountNS = {
                             description: "Ocorreu um erro ao excluir códigos de backup",
                             message: "Algo deu errado"
                         }
+                    },
+                    deleteSuccess: {
+                        genericMessage: "Removido com sucesso",
+                        message: "Códigos de backup removidos com sucesso."
                     },
                     downloadError: {
                         error: {

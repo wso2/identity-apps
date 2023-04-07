@@ -130,6 +130,11 @@ export class ServerConfigurationsConstants {
 	public static readonly PASSWORD_HISTORY_CONNECTOR_ID: string = "cGFzc3dvcmRIaXN0b3J5";
 
 	/**
+	 * UUID of the identity governance password expiry connector.
+	 */
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
+
+	/**
 	 * UUID of the identity governance captcha for sso login connector.
 	 *
 	 */
@@ -262,6 +267,8 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Login policies - API Keyword constants.
 	 */
+    public static readonly PASSWORD_EXPIRY_ENABLE: string = "passwordExpiry.enablePasswordExpiry";
+    public static readonly PASSWORD_EXPIRY_TIME: string = "passwordExpiry.passwordExpiryInDays";
 	public static readonly PASSWORD_HISTORY_ENABLE: string = "passwordHistory.enable";
 	public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
 	public static readonly PASSWORD_POLICY_ENABLE: string = "passwordPolicy.enable";

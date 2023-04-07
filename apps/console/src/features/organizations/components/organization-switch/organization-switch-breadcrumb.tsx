@@ -19,10 +19,10 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
-import { GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
+    SyntheticEvent,
     useEffect,
     useMemo,
     useState
@@ -30,14 +30,11 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, Icon, Menu } from "semantic-ui-react";
+import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
-import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { AppConstants, AppState, getMiscellaneousIcons } from "../../../core";
+import { AppConstants, AppState } from "../../../core";
 import { useGetOrganizationBreadCrumb } from "../../api";
-import { OrganizationType } from "../../constants";
-import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
 import {
     BreadcrumbItem,
     GenericOrganization
@@ -54,11 +51,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 ): ReactElement => {
     const { "data-componentid": componentId } = props;
 
-    const currentOrganization: string = useSelector(
-        (state: AppState) => state.organization.currentOrganization
-    );
-
-    const [ showBreadcrumb, setShowBreadcrumb ] = useState<boolean>(false);
+    const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
     );
@@ -68,8 +61,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const orgType: OrganizationType = useGetOrganizationType();
 
     const shouldSendRequest: boolean = useMemo(() => {
         return (
@@ -132,21 +123,76 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     const generateSuperBreadcrumbItem = (
-        item: BreadcrumbItem
+        item?: BreadcrumbItem
     ): ReactElement => {
         return OrganizationUtils.isRootOrganization(item) ? (
-            organizationConfigs.superOrganizationBreadcrumb(
-                item,
-                handleOrganizationSwitch
-            )
+            <>
+                <Breadcrumb.Section 
+                    onClick={ 
+                        breadcrumbList.length !== 1 
+                            ? (event: SyntheticEvent<HTMLElement>) => { 
+                                event.stopPropagation();
+                                handleOrganizationSwitch(item); 
+                            }
+                            : null 
+                    } 
+                    className="organization-breadcrumb-item"
+                >
+                    <span className="ellipsis organization-name">
+                        { item?.name }
+                    </span>
+                </Breadcrumb.Section>
+                { breadcrumbList.length === 1 && (
+                    <Icon
+                        claslName="organization-breadcrumb-icon"
+                        name={ isDropDownOpen ? "angle up" : "angle down" }
+                        className="separator-icon"
+                    /> 
+                ) }
+            </>
         ) : (
-            <span
-                onClick={ () => handleOrganizationSwitch(item) }
-                data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
-                className="ellipsis"
+            <Breadcrumb.Section 
+                active
             >
-                { item.name }
-            </span>
+                <span
+                    onClick={ () => handleOrganizationSwitch(item) }
+                    data-componentid={ `${ componentId }-breadcrumb-item-super-organization` }
+                    className="organization-breadcrumb-item ellipsis"
+                >
+                    { item.name }
+                </span>
+            </Breadcrumb.Section>
+        );
+    };
+
+    const resolveBreadcrumbIcon = (index: number): ReactElement => {
+        return index !== breadcrumbList.length - 1 ? (
+            <Breadcrumb.Divider 
+                className="organization-breadcrumb-item-divider"
+            />
+        ) : (
+            <>
+                {
+                    !organizationConfigs.showSwitcherInTenants
+                        ? (
+                            <Icon
+                                key={ index }
+                                claslName="organization-breadcrumb-icon"
+                                name={ isDropDownOpen ? "angle up" : "angle down" }
+                                className="separator-icon"
+                            /> 
+                        ) : (
+                            breadcrumbList.length <= 2 && (
+                                <Icon
+                                    key={ index }
+                                    claslName="organization-breadcrumb-icon"
+                                    name={ isDropDownOpen ? "angle up" : "angle down" }
+                                    className="separator-icon"
+                                /> 
+                            )
+                        )
+                }
+            </>                                                         
         );
     };
 
@@ -157,131 +203,123 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
         if (breadcrumbList?.length <= 4) {
             return (
-                <Menu className="organization-breadcrumb">
-                    { breadcrumbList.map(
+                <>
+                    { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0) {
+                            if (index === 0 && !organizationConfigs.showSwitcherInTenants) {
                                 return (
-                                    <Menu.Item
-                                        className="breadcrumb"
-                                        key={ index }
-                                    >
-                                        { generateSuperBreadcrumbItem(
-                                            breadcrumb
-                                        ) }
-                                        <Icon
-                                            name="angle right"
-                                            className="separator-icon"
-                                        />
-                                    </Menu.Item>
+                                    <>
+                                        { generateSuperBreadcrumbItem(breadcrumb) } 
+                                        {
+                                            breadcrumbList.length !== 1 && (
+                                                <Breadcrumb.Divider 
+                                                    className="organization-breadcrumb-item-divider"
+                                                />
+                                            ) 
+                                        } 
+                                    </>
                                 );
                             }
-                            if (
-                                index !== breadcrumbList.length - 1 ||
-                                !organizationConfigs.canCreateOrganization()
+                            if (index === 1 && 
+                                organizationConfigs.showSwitcherInTenants &&
+                                breadcrumbList?.length === 2
                             ) {
                                 return (
-                                    <Menu.Item
-                                        key={ index }
-                                        className="breadcrumb"
-                                    >
-                                        <span
-                                            onClick={ () =>
-                                                index !==
-                                                breadcrumbList.length - 1 &&
-                                                handleOrganizationSwitch(
-                                                    breadcrumb
-                                                )
+                                    <>
+                                        <Breadcrumb.Section 
+                                            key={ index }
+                                            onClick={ (event: SyntheticEvent<HTMLElement>) => {
+                                                if (index !== breadcrumbList.length - 1) {
+                                                    event.stopPropagation();
+                                                    handleOrganizationSwitch(breadcrumb);
+                                                }
+                                            } }
+                                            className="organization-breadcrumb-item first"
+                                            data-componentid={ 
+                                                `${ componentId }-breadcrumb-item-${ breadcrumb.name }` 
                                             }
+                                            active
+                                        >
+                                            { breadcrumb.name }
+                                        </Breadcrumb.Section>
+                                        { resolveBreadcrumbIcon(index) }
+                                    </>
+                                );
+                            }
+                            if (index > 0) {
+                                return (
+                                    <>
+                                        <Breadcrumb.Section 
+                                            key={ index }
+                                            onClick={ (event: SyntheticEvent<HTMLElement>) => {
+                                                if (index !== breadcrumbList.length - 1) {
+                                                    event.stopPropagation();
+                                                    handleOrganizationSwitch(breadcrumb);
+                                                }
+                                            } }
                                             className={
                                                 index ===
                                                 breadcrumbList.length - 1
-                                                    ? "un-clickable ellipsis"
-                                                    : "ellipsis"
+                                                    ? "organization-breadcrumb-item un-clickable ellipsis"
+                                                    : "organization-breadcrumb-item ellipsis"
                                             }
-                                            data-componentid={ `${ componentId }-breadcrumb-item-${ breadcrumb.name }` }
+                                            data-componentid={ 
+                                                `${ componentId }-breadcrumb-item-${ breadcrumb.name }` 
+                                            }
+                                            active
                                         >
                                             { breadcrumb.name }
-                                        </span>
-                                        { index !==
-                                            breadcrumbList.length - 1 && (
-                                            <Icon
-                                                name="angle right"
-                                                className="separator-icon"
-                                            />
-                                        ) }
-                                    </Menu.Item>
+                                        </Breadcrumb.Section>
+                                        { resolveBreadcrumbIcon (index) }
+                                    </>
                                 );
                             }
-
-                            return (
-                                <OrganizationSwitchDropdown
-                                    key={ index }
-                                    triggerName={ breadcrumb.name }
-                                    handleOrganizationSwitch={
-                                        handleOrganizationSwitch
-                                    }
-                                    isBreadcrumbItem={ true }
-                                />
-                            );
                         }
                     ) }
-
-                    <Menu.Item className="breadcrumb end">
-                        <GenericIcon
-                            size="nano"
-                            defaultIcon
-                            transparent
-                            icon={ CrossIcon }
-                            onClick={ () => setShowBreadcrumb(false) }
-                            className="close-icon"
-                            data-componentid={ `${ componentId }-breadcrumb-close-icon` }
-                        />
-                    </Menu.Item>
-                </Menu>
+                </>
             );
         }
 
         return (
-            <Menu className="organization-breadcrumb">
-                <Menu.Item className="breadcrumb">
-                    { generateSuperBreadcrumbItem(breadcrumbList[ 0 ]) }
-                    <Icon name="angle right" className="separator-icon" />
-                </Menu.Item>
-                <Dropdown
-                    item
-                    text="..."
-                    icon="angle right"
-                    className="breadcrumb-dropdown breadcrumb"
-                    data-componentid={ `${ componentId }-breadcrumb-ellipsis` }
-                >
-                    <Dropdown.Menu>
-                        { breadcrumbList.map(
-                            (breadcrumb: BreadcrumbItem, index: number) => {
-                                if (
-                                    index === 0 ||
-                                    index > breadcrumbList.length - 3
-                                ) {
-                                    return;
-                                }
+            <>
+                { generateSuperBreadcrumbItem(breadcrumbList[ 0 ]) }
+                <Breadcrumb.Divider className="organization-breadcrumb-item-divider" />
+                <Breadcrumb.Section>
+                    <Dropdown
+                        item
+                        text="..."
+                        className="breadcrumb-dropdown breadcrumb"
+                        data-componentid={ `${ componentId }-breadcrumb-ellipsis` }
+                    >
+                        <Dropdown.Menu>
+                            { (breadcrumbList && breadcrumbList?.length > 0) && breadcrumbList?.map(
+                                (breadcrumb: BreadcrumbItem, index: number) => {
+                                    if (
+                                        index === 0 ||
+                                        index > breadcrumbList.length - 3
+                                    ) {
+                                        return;
+                                    }
 
-                                return (
-                                    <Dropdown.Item
-                                        key={ index }
-                                        onClick={ () =>
-                                            handleOrganizationSwitch(breadcrumb)
-                                        }
-                                        icon="angle right"
-                                        text={ breadcrumb.name }
-                                        className="breadcrumb-dropdown-item"
-                                        data-componentid={ `${ componentId }-breadcrumb-menu-${ breadcrumb.name }` }
-                                    />
-                                );
-                            }
-                        ) }
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Menu.Item className="breadcrumb">
+                                    return (
+                                        <Dropdown.Item
+                                            key={ index }
+                                            onClick={ () =>
+                                                handleOrganizationSwitch(breadcrumb)
+                                            }
+                                            icon="angle right"
+                                            text={ breadcrumb.name }
+                                            className="breadcrumb-dropdown-item"
+                                            data-componentid={ `${ componentId }-breadcrumb-menu-${ breadcrumb.name }` }
+                                        />
+                                    );
+                                }
+                            ) }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Breadcrumb.Section>
+                <Breadcrumb.Divider className="organization-breadcrumb-item-divider" />
+                <Breadcrumb.Section active>
                     <span
                         onClick={ () =>
                             handleOrganizationSwitch(
@@ -294,8 +332,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     >
                         { breadcrumbList[ breadcrumbList?.length - 2 ].name }
                     </span>
-                    <Icon name="angle right" className="separator-icon" />
-                </Menu.Item>
+                    <Breadcrumb.Divider className="organization-breadcrumb-item-divider" />
+                </Breadcrumb.Section>
                 { organizationConfigs.canCreateOrganization() ? (
                     <OrganizationSwitchDropdown
                         triggerName={
@@ -305,7 +343,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         isBreadcrumbItem={ true }
                     />
                 ) : (
-                    <Menu.Item className="breadcrumb">
+                    <Breadcrumb.Section active>
                         <span
                             data-componentid={ `${
                                 componentId
@@ -314,98 +352,52 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         >
                             { breadcrumbList[ breadcrumbList.length - 1 ].name }
                         </span>
-                    </Menu.Item>
+                    </Breadcrumb.Section>
                 ) }
-                <Menu.Item className="breadcrumb end">
-                    <GenericIcon
-                        size="nano"
-                        defaultIcon
-                        transparent
-                        icon={ CrossIcon }
-                        onClick={ () => setShowBreadcrumb(false) }
-                        className="close-icon"
-                        data-componentid={ `${ componentId }-breadcrumb-close-icon` }
-                    />
-                </Menu.Item>
-            </Menu>
+            </>
         );
     };
 
-    const resolveTriggerName = (): string => {
-        if (
-            AppConstants.getSuperTenant() === tenantDomain ||
-            window[ "AppUtils" ].getConfig().organizationName
-        ) {
-            return currentOrganization;
-        }
-
-        return tenantDomain;
-    };
-
-    if (!breadcrumbList || breadcrumbList.length === 0) {
-        if (AppConstants.getSuperTenant() === tenantDomain) {
-            return (
-                <div className="organization-breadcrumb-wrapper">
-                    <OrganizationSwitchDropdown
-                        triggerName={ currentOrganization }
-                        handleOrganizationSwitch={ handleOrganizationSwitch }
-                    />
-                </div>
-            );
-        }
-    }
-
-    if (breadcrumbList?.length === 1) {
+    const  triggerOrganizationDropdown = (): ReactElement => {
         return (
-            <div className="organization-breadcrumb-wrapper">
-                <OrganizationSwitchDropdown
-                    triggerName={ currentOrganization }
-                    handleOrganizationSwitch={ handleOrganizationSwitch }
-                />
-            </div>
+            <>
+                {
+                    !isLoading && (
+                        <div className="organization-breadcrumb-wrapper">
+                            <div
+                                tabIndex={ 0 }
+                                onBlur={ () => setIsDropDownOpen(false) } 
+                                className="organization-breadcrumb" 
+                                onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
+                            >
+                                <p className="organization-breadcrumb-label">
+                                    { t("console:manage.features.organizations.switching.switchLabel") }
+                                </p>
+                                <Breadcrumb>
+                                    { generateBreadcrumb() }
+                                </Breadcrumb> 
+                            </div>  
+                        </div>
+                    )
+                }
+            </>
         );
-    }
+    };
 
     return (
-        !isLoading && (
-            <div className="organization-breadcrumb-wrapper">
-                { !showBreadcrumb
+        <>
+            { 
+                !organizationConfigs.showSwitcherInTenants 
                     ? (
-                        orgType === OrganizationType.TENANT &&
-                            organizationConfigs.showSwitcherInTenants
-                            ? (
-                                organizationConfigs.tenantSwitcher()
-                            )
-                            : (
-                                <div
-                                    className="organization-breadcrumb trigger"
-                                    onClick={ () => setShowBreadcrumb(true) }
-                                    data-componentid={ `${ componentId }-breadcrumb-trigger` }
-                                >
-                                    <div className="icon-wrapper">
-                                        <GenericIcon
-                                            transparent
-                                            data-componentid="component-dropdown-trigger-icon"
-                                            data-testid="tenant-dropdown-trigger-icon"
-                                            icon={ getMiscellaneousIcons().tenantIcon }
-                                            size="micro"
-                                        />
-                                    </div>
-                                    <div className="item">
-                                        <span className="ellipsis organization-name">{ resolveTriggerName() }</span>
-                                        <Icon
-                                            name="caret right"
-                                            className="separator-icon"
-                                        />
-                                    </div>
-                                </div>
-                            )
-                    )
-                    : (
-                        generateBreadcrumb()
-                    ) }
-            </div>
-        )
+                        <OrganizationSwitchDropdown 
+                            handleOrganizationSwitch={ handleOrganizationSwitch } 
+                            dropdownTrigger={ triggerOrganizationDropdown() }
+                        />
+                    ) : (
+                        organizationConfigs.tenantSwitcher(triggerOrganizationDropdown(), breadcrumbList?.length > 2)
+                    ) 
+            } 
+        </>
     );
 };
 

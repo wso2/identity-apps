@@ -40,7 +40,8 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
-import Axios from "axios";
+import Axios, { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -57,6 +58,11 @@ import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorDetails } from "../../../../server-configurations";
 import { getUsernameConfiguration } from "../../../../users";
 import { getProfileSchemas } from "../../../../users/api";
 import { useValidationConfigData } from "../../../../validation/api";
@@ -114,6 +120,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
+    const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -199,6 +207,63 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             }).finally(() => setMappingChecked(true));
         }
     }, [ claim ]);
+
+    useEffect(() => {
+        getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID, 
+            ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)
+            .then((response: GovernanceConnectorInterface) => {
+                setConnector(response);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            });
+    }, []);
+
+    useEffect(() => {
+ 
+        if (isEmpty(connector?.properties)) {
+            return;
+        }
+
+        connector.properties.map((property: ConnectorPropertyInterface) => {
+            if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                if (property.value === "false") {
+                    setAccountVerificationEnabled(false);
+                } else {
+                    setAccountVerificationEnabled(true);
+                }
+            }
+        });
+    }, [ connector ]);
 
     const getDialectID = (): string[]  => {
         const dialectID: string[] = [];
@@ -558,7 +623,24 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 listen ={ (value: boolean) => {
                                     isSupportedByDefault(value);
                                 } }
-                                disabled={ isClaimReadOnly || !hasMapping }
+                                disabled={
+                                    isClaimReadOnly
+                                    || !hasMapping
+                                    || (
+                                        accountVerificationEnabled
+                                        && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                                        && usernameConfig?.enableValidator === "true"
+                                    )
+                                }
+                                message={ 
+                                    accountVerificationEnabled
+                                    && usernameConfig?.enableValidator === "true"
+                                    && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                                    && {
+                                        content: t("console:manage.features.claims.local.forms.requiredWarning"),
+                                        type: "info"
+                                    }
+                                }
                                 {
                                     ...( isClaimReadOnly
                                         ? { value: false }

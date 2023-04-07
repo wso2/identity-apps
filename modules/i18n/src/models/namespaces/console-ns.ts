@@ -2742,6 +2742,7 @@ export interface ConsoleNS {
                     emptyList: string;
                     subOrganizations: string;
                     goBack: string;
+                    switchLabel: string;
                 }
             };
             users: {
@@ -3323,6 +3324,7 @@ export interface ConsoleNS {
                         displayOrderHint: string;
                         required: FormField;
                         requiredHint: string;
+                        requiredWarning: string;
                         readOnly: FormField;
                         readOnlyHint: string;
                         attribute: FormField;

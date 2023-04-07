@@ -692,7 +692,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
             return;
         }
-        if (isAppNameReserved(appName)){
+        if (isAppNameReserved(appName)) {
             validation.isValid = false;
             validation.errorMessages.push(
                 t("console:develop.features.applications.forms.generalDetails.fields.name.validations.reserved", {
@@ -707,6 +707,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         try {
             response = await getApplicationList(null, null, "name eq " + value.toString());
+            if (response?.applications?.length > 0) {
+                validation.isValid = false;
+                validation.errorMessages.push(
+                    t("console:develop.features.applications.forms.generalDetails.fields.name.validations.duplicate")
+                );
+            }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
@@ -726,13 +732,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     "fetchApplications.genericError.message")
             }));
         }
-
-        if (response?.applications?.length > 0) {
-            validation.isValid = false;
-            validation.errorMessages.push(
-                t("console:develop.features.applications.forms.generalDetails.fields.name.validations.duplicate")
-            );
-        }
     };
 
     /**
@@ -740,7 +739,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * @param name - Name of the application
      */
     const isAppNameReserved = (name: string) => {
-        if(!reservedAppPattern){
+        if(!reservedAppPattern) {
             return false;
         }
         const reservedAppRegex: RegExp = new RegExp(reservedAppPattern);
