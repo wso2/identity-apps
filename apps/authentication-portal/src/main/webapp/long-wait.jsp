@@ -111,7 +111,9 @@
             }, timeout);
 
             function checkLongWaitStatus() {
-                $.ajax("/longwaitstatus", {
+                $.ajax({
+                	type: "GET",
+                    url: "<%=longwaitstatusURL%>",
                     async: false,
                     data: {waitingId: sessionDataKey},
                     success: function (res) {

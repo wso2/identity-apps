@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import * as moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { commonConfig } from "../../../extensions";
 import { AppConstants } from "../constants";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -38,8 +39,8 @@ type FooterPropsInterface = ReusableFooterPropsInterface;
 /**
  * Implementation of the Reusable Footer component.
  *
- * @param {FooterPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Footer component.
  */
 export const Footer: FunctionComponent<FooterPropsInterface> = (
     props: FooterPropsInterface
@@ -60,12 +61,12 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     /**
      * Handles language switch action.
      *
-     * @param {string} language - Selected language.
+     * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
         moment.locale(language ?? "en");
         I18n.instance.changeLanguage(language)
-            .catch((error) => {
+            .catch((error: string | Record<string, unknown>) => {
                 throw new LanguageChangeException(language, error);
             });
     };
@@ -73,7 +74,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     /**
      * Generates the links to be displayed on the footer.
      *
-     * @return {FooterLinkInterface[]}
+     * @returns footer links.
      */
     const generateFooterLinks = (): FooterLinkInterface[] => {
 
@@ -92,6 +93,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     return (
         <ReusableFooter
             currentLanguage={ currentLanguage ?? I18n.instance?.language }
+            className={ commonConfig?.footer?.customClassName }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
             copyright={

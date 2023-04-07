@@ -84,7 +84,8 @@
                     "extractLicenses": false,
                     "optimization": false,
                     "sourceMap": true,
-                    "vendorChunk": true
+                    "vendorChunk": true,
+                    "verbose": true
                 },
                 "production": {
                     "index": "index.jsp",
@@ -93,7 +94,8 @@
                     "optimization": true,
                     "outputHashing": "all",
                     "sourceMap": false,
-                    "extractLicenses": false
+                    "extractLicenses": false,
+                    "verbose": true
                 }
             }
         },

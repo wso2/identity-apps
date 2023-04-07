@@ -435,6 +435,10 @@ export interface MyAccountNS {
                 };
             };
             backupCode: {
+                actions: {
+                    add: string;
+                    delete: string;
+                };
                 description: string;
                 download: {
                     heading: string;
@@ -443,6 +447,9 @@ export interface MyAccountNS {
                     subHeading: string;
                 };
                 heading: string;
+                messages: {
+                    disabledMessage: string;
+                };
                 modals: {
                     actions: {
                         download: string;
@@ -451,6 +458,10 @@ export interface MyAccountNS {
                         copied: string;
                     };
                     description: string;
+                    delete: {
+                        heading: string;
+                        description: string;
+                    };
                     generate: {
                         description: string;
                         heading: string;
@@ -469,6 +480,10 @@ export interface MyAccountNS {
                     deleteError: {
                         error: NotificationItem;
                         genericError: NotificationItem;
+                    };
+                    deleteSuccess: {
+                        genericMessage: string;
+                        message: string;
                     };
                     downloadError: {
                         error: NotificationItem;

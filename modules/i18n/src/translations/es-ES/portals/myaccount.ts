@@ -680,6 +680,10 @@ export const myAccount: MyAccountNS = {
                 "regenerate": "Regenerado"
             },
             "backupCode": {
+                "actions": {
+                    "add": "Agregar códigos de respaldo",
+                    "delete": "Eliminar códigos de copia de seguridad"
+                },
                 "description": "Use códigos de respaldo para acceder a su cuenta en caso de que no pueda recibir códigos de autenticación de múltiples factores. Puede regenerar nuevos códigos si es necesario.",
                 "download": {
                     "heading": "Códigos de respaldo para {{productName}}",
@@ -688,12 +692,20 @@ export const myAccount: MyAccountNS = {
                     "subHeading": "Puede usar estos códigos de respaldo para iniciar sesión en {{productName}} cuando no esté usando su teléfono. Guarde estos códigos de respaldo en un lugar seguro pero accesible."
                 },
                 "heading": "Códigos de respaldo",
+                "messages": {
+                    "disabledMessage": "Se debe configurar al menos un autenticador adicional para habilitar los códigos de respaldo."
+                },
                 "modals": {
                     "actions": {
                         "copied": "copiado",
                         "copy": "Copiar códigos",
                         "download": "Descargar Códigos",
                         "regenerate": "Regenerado"
+                    },
+                    "delete": {
+                        "description": "Esta acción eliminará los códigos de respaldo y ya no podrá usarlos. " +
+                            "¿Desea continuar?",
+                        "heading": "Confirmación"
                     },
                     "description": "Use códigos de respaldo para iniciar sesión cuando esté lejos de su teléfono.",
                     "generate": {
@@ -720,6 +732,10 @@ export const myAccount: MyAccountNS = {
                             "description": "Ocurrió un error al eliminar los códigos de respaldo",
                             "message": "Algo salió mal"
                         }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "Eliminado exitosamente",
+                        "message": "Códigos de copia de seguridad eliminados con éxito."
                     },
                     "downloadError": {
                         "error": {

@@ -95,12 +95,21 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         boolean
     >(false);
 
+    const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
+
     const {
         data: passwordHistoryCountData,
         error: passwordHistoryCountError,
         isLoading: isPasswordCountLoading,
         mutate: mutatePasswordHistoryCount
     } = serverConfigurationConfig.usePasswordHistory();
+
+    const {
+        data: passwordExpiryData,
+        error: passwordExpiryError,
+        isLoading: isPasswordExpiryLoading,
+        mutate: mutatePasswordExpiry
+    } = serverConfigurationConfig.usePasswordExpiry();
 
     const {
         data: validationData,
@@ -110,7 +119,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     } = useValidationConfigData();
 
     useEffect(() => {
-        if (isValidationLoading || isPasswordCountLoading) {
+        if (isValidationLoading || isPasswordCountLoading || isPasswordExpiryLoading) {
             return;
         }
 
@@ -119,7 +128,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         validationData,
         passwordHistoryCountData,
         isValidationLoading,
-        isPasswordCountLoading
+        isPasswordCountLoading,
+        validationData,
+        passwordExpiryData,
+        isValidationLoading,
+        isPasswordExpiryLoading
     ]);
 
     useEffect(() => {
@@ -142,7 +155,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     useEffect(() => {
         if (
             !ValidationConfigStatusFetchRequestError &&
-            !passwordHistoryCountError
+            !passwordHistoryCountError &&
+            !passwordExpiryError
         ) {
             return;
         }
@@ -201,6 +215,25 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
+        if (
+            passwordExpiryError?.response?.data?.description
+        ) {
+            if (passwordExpiryError.response.status === 404) {
+                return;
+            }
+            dispatch(
+                addAlert({
+                    description: passwordExpiryError.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.validation.fetchValidationConfigData.error.message"
+                    )
+                })
+            );
+
+            return;
+        }
+
         dispatch(
             addAlert({
                 description: t(
@@ -214,18 +247,26 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 )
             })
         );
-    }, [ ValidationConfigStatusFetchRequestError, passwordHistoryCountError ]);
+    }, [ ValidationConfigStatusFetchRequestError, passwordHistoryCountError, passwordExpiryError ]);
 
     /**
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
+        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig.processInitialValues(
+            getConfiguration(validationData),
+            passwordHistoryCountData,
+            setPasswordHistoryEnabled
+        );
+
+        updatedInitialFormValues = serverConfigurationConfig.processPasswordExpiryInitialValues(
+            updatedInitialFormValues,
+            passwordExpiryData,
+            setPasswordExpiryEnabled
+        );
+
         setInitialFormValues(
-            serverConfigurationConfig.processInitialValues(
-                getConfiguration(validationData),
-                passwordHistoryCountData,
-                setPasswordHistoryEnabled
-            )
+            updatedInitialFormValues
         );
     };
 
@@ -325,6 +366,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             processedFormValues
         );
 
+        const updatePasswordExpiry: Promise<any> = serverConfigurationConfig.processPasswordExpirySubmitData(
+            processedFormValues
+        );
+
         if (
             values.uniqueCharacterValidatorEnabled &&
             values.minUniqueCharacters === "0"
@@ -346,11 +391,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         setSubmitting(true);
         Promise.all([
             updatePasswordHistory,
+            updatePasswordExpiry,
             updateValidationConfigData(processedFormValues, null, validationData[0])
         ])
             .then(() => {
                 mutateValidationConfigFetchRequest();
                 mutatePasswordHistoryCount();
+                mutatePasswordExpiry();
                 dispatch(
                     addAlert({
                         description: t(
@@ -457,6 +504,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                         >
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
+                                                    { serverConfigurationConfig.passwordExpiryComponent(
+                                                        componentId,
+                                                        passwordExpiryEnabled,
+                                                        setPasswordExpiryEnabled,
+                                                        t
+                                                    ) }
                                                     { serverConfigurationConfig.passwordHistoryCountComponent(
                                                         componentId,
                                                         passwordHistoryEnabled,

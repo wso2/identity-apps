@@ -680,6 +680,10 @@ export const myAccount: MyAccountNS = {
                 "regenerate": "Regenerieren"
             },
             "backupCode": {
+                "actions": {
+                    "add": "Sicherungscodes hinzufügen",
+                    "delete": "Sicherungscodes entfernen"
+                },
                 "description": "Verwenden Sie Backup-Codes, um auf Ihr Konto zuzugreifen, falls Sie keine Multi-Faktor-Authentifizierungscodes erhalten können. Sie können bei Bedarf neue Codes neu generieren.",
                 "download": {
                     "heading": "Sicherungscodes für {{productName}}",
@@ -688,12 +692,20 @@ export const myAccount: MyAccountNS = {
                     "subHeading": "Sie können diese Backup-Codes verwenden, um sich bei {{productName}} anzumelden, wenn Sie nicht an Ihrem Telefon sind. Bewahren Sie diese Backup-Codes an einem sicheren, aber zugänglichen Ort auf."
                 },
                 "heading": "Backup-Codes",
+                "messages": {
+                    "disabledMessage": "Mindestens ein zusätzlicher Authentifikator sollte konfiguriert werden, um Sicherungscodes zu aktivieren."
+                },
                 "modals": {
                     "actions": {
                         "copied": "Kopiert",
                         "copy": "Codes kopieren",
                         "download": "Codes herunterladen",
                         "regenerate": "Regenerieren"
+                    },
+                    "delete": {
+                        "description": "Durch diese Aktion werden Sicherungscodes entfernt und Sie können sie nicht mehr verwenden. " +
+                            "Möchten Sie fortfahren?",
+                        "heading": "Bestätigung"
                     },
                     "description": "Verwenden Sie Backup-Codes, um sich anzumelden, wenn Sie nicht an Ihrem Telefon sind.",
                     "generate": {
@@ -720,6 +732,10 @@ export const myAccount: MyAccountNS = {
                             "description": "Beim Löschen von Sicherungscodes ist ein Fehler aufgetreten",
                             "message": "Etwas ist schief gelaufen"
                         }
+                    },
+                    "deleteSuccess": {
+                        "genericMessage": "Erfolgreich entfernt",
+                        "message": "Sicherungscodes erfolgreich entfernt."
                     },
                     "downloadError": {
                         "error": {

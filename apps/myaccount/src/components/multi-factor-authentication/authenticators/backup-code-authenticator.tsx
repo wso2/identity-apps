@@ -35,15 +35,18 @@ import {
     Segment
 } from "semantic-ui-react";
 import {
+    deleteBackupCode,
     generateBackupCodes,
-    getRemainingBackupCodesCount
+    getRemainingBackupCodesCount,
+    updateEnabledAuthenticators
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
 import {
     AlertInterface,
     AlertLevels,
     BackupCodeInterface,
-    BackupCodesCountInterface
+    BackupCodesCountInterface,
+    EnabledAuthenticatorUpdateAction
 } from "../../../models";
 import { AppState } from "../../../store";
 
@@ -54,12 +57,18 @@ import { AppState } from "../../../store";
 interface BackupCodeProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     initBackupCodeFlow: boolean;
+    isBackupCodeForced: boolean;
+    isSuperTenantLogin: boolean;
     onBackupFlowCompleted: () => void;
     /**
      * This callback function handles the visibility of the
      * session termination modal.
      */
-     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
+    handleSessionTerminationModalVisibility: (visibility: boolean) => void;
+    isBackupCodesConfigured: boolean;
+    enabledAuthenticators: Array<string>;
+    backupCodeAuthenticatorName: string;
+    onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
 }
 
 export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
@@ -71,7 +80,13 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         initBackupCodeFlow,
         onBackupFlowCompleted,
         handleSessionTerminationModalVisibility,
-        ["data-componentid"]: componentid
+        ["data-componentid"]: componentid,
+        isBackupCodesConfigured,
+        enabledAuthenticators,
+        backupCodeAuthenticatorName,
+        isBackupCodeForced,
+        isSuperTenantLogin,
+        onEnabledAuthenticatorsUpdated
     } = props;
 
     const { t } = useTranslation();
@@ -86,7 +101,9 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     const [ remainingBackupCodes, setRemainingBackupCodes ] = useState<number>(0);
     const [ isCodesCopied, setIsCodesCopied ] = useState<boolean>(false);
     const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
-    const [ isWarnRemaingBackupCodes, setIsWarnRemaingBackupCodes ] = useState<boolean>(false);
+    const [ remainingBackupCodesAmountLow, setRemainingBackupCodesAmountLow ] = useState<boolean>(false);
+    const [ isMFAConfigured, setIsMFAConfigured ] = useState<boolean>(false);
+    const [ isRemoveBackupCodesModalOpen, setIsRemoveBackupCodesModalOpen ] = useState<boolean>(false);
 
     const minBackupCodesLimit: number = 4;
 
@@ -96,6 +113,24 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     useEffect(() => {
         getRemainingCount();
     }, []);
+
+    /**
+     * Check whether one of the additional authenticator is enabled
+     */
+    useEffect(() => {
+        if (
+            enabledAuthenticators.find(
+                (authenticator: string) => authenticator !== backupCodeAuthenticatorName
+            )
+        ) {
+            setIsMFAConfigured(true);
+        } else {
+            setIsMFAConfigured(false);
+            if (isMFAConfigured && isBackupCodesConfigured) {
+                handleDeleteBackupCodes();
+            }
+        }
+    }, [ enabledAuthenticators ]);
 
     /**
      * Starts backup code configuration flow
@@ -109,6 +144,61 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
     }, [ initBackupCodeFlow ]);
 
     /**
+     * Starts backup code configuration flow
+     */
+    const initializeBackupCodesConfig = (): void => {
+        setIsLoading(true);
+        setIsModalOpen(true);
+        initBackupCodes();
+    };
+
+    /**
+     * Update enabled authenticator list based on the update action.
+     *
+     * @param action - The update action.
+     */
+    const handleUpdateEnabledAuthenticators = (action: EnabledAuthenticatorUpdateAction): void => {
+        const authenticatorsList: Array<string> = [ ...enabledAuthenticators ];
+
+        switch(action) {
+            case EnabledAuthenticatorUpdateAction.ADD : {
+                if (isSuperTenantLogin
+                        && isBackupCodeForced
+                        && !authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                    authenticatorsList.push(backupCodeAuthenticatorName);
+                }
+
+                break;
+            }
+            case EnabledAuthenticatorUpdateAction.REMOVE : {
+                if (isSuperTenantLogin
+                        && isBackupCodeForced
+                        && authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                    authenticatorsList.splice(authenticatorsList.indexOf(backupCodeAuthenticatorName), 1);
+                }
+
+                break;
+            }
+        }
+
+        // Update enabled authenticator list.
+        updateEnabledAuthenticators(authenticatorsList.join(","))
+            .then(() => {
+                onEnabledAuthenticatorsUpdated(authenticatorsList);
+            })
+            .catch(((errorMessage: any) => {
+                onAlertFired({
+                    description: t(translateKey +
+                            "notifications.updateAuthenticatorError.error.description", {
+                        error: errorMessage
+                    }),
+                    level: AlertLevels.ERROR,
+                    message: t(translateKey + "notifications.updateAuthenticatorError.error.message")
+                });
+            }));
+    };
+
+    /**
      * Fetch remaining backup codes count
      */
     const getRemainingCount = (): void => {
@@ -117,7 +207,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                 const remainingCount: number = response.remainingBackupCodesCount;
 
                 setRemainingBackupCodes(remainingCount);
-                setIsWarnRemaingBackupCodes(remainingCount <= minBackupCodesLimit);
+                setRemainingBackupCodesAmountLow(remainingCount <= minBackupCodesLimit);
             })
             .catch((errorMessage: string)=> {
                 onAlertFired({
@@ -142,6 +232,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         generateBackupCodes()
             .then((response: BackupCodeInterface) => {
                 setBackupCodes(response?.backupCodes ?? []);
+                handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.ADD);
             })
             .catch((errorMessage: string) => {
                 onAlertFired({
@@ -410,12 +501,86 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         );
     };
 
+    /**
+     *  Initiate deletion of backup codes configuration.
+     */
+    const handleDeleteBackupCodes = (): void => {
+        deleteBackupCode()
+            .then(() => {
+                handleUpdateEnabledAuthenticators(EnabledAuthenticatorUpdateAction.REMOVE);
+                onAlertFired({
+                    description: t(translateKey + "notifications.deleteSuccess.message"),
+                    level: AlertLevels.SUCCESS,
+                    message: t(translateKey + "notifications.deleteSuccess.genericMessage")
+                });
+                handleSessionTerminationModalVisibility(true);
+            })
+            .catch((errorMessage: any) => {
+                onAlertFired({
+                    description: t(translateKey + "notifications.deleteError.genericError.description", {
+                        error: errorMessage
+                    }),
+                    level: AlertLevels.ERROR,
+                    message: t(translateKey + "notifications.deleteError.genericError.message")
+                });
+            })
+            .finally(() => {
+                setIsRemoveBackupCodesModalOpen(false);
+            });
+    };
+
+    /**
+     * Handle the revoke backup codes delete confirmation modal close event.
+     */
+    const handleRemoveBackupCodesModalClose = (): void => {
+        setIsRemoveBackupCodesModalOpen(false);
+    };
+
+    /**
+     * This renders the backup codes delete confirmation Modal.
+     */
+    const renderRemoveBackupCodesModal = () => {
+        return (
+            <Modal
+                data-testid={ `${componentid}-termination-modal` }
+                size="mini"
+                open={ isRemoveBackupCodesModalOpen }
+                onClose={ handleRemoveBackupCodesModalClose }
+                closeOnDimmerClick={ false }
+                dimmer="blurring"
+            >
+                <Modal.Content data-testid={ `${componentid}-termination-modal-content` }>
+                    <Container>
+                        <h3>{ t(translateKey + "modals.delete.heading") }</h3>
+                    </Container>
+                    <br/>
+                    <p>{ t(translateKey + "modals.delete.description") }</p>
+                </Modal.Content>
+                <Modal.Actions data-testid={ `${componentid}-termination-modal-actions` }>
+                    <Button
+                        className="link-button"
+                        onClick={ handleRemoveBackupCodesModalClose }
+                        data-testid={ `${componentid}-termination-modal-actions-cancel-button` }>
+                        { t("common:cancel") }
+                    </Button>
+                    <Button
+                        primary={ true }
+                        onClick={ handleDeleteBackupCodes }
+                        data-testid={ `${componentid}-termination-modal-actions-terminate-button` }>
+                        { t("common:remove") }
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
+
     return (
         <>
             { renderBackupCodeWizard() }
             { renderConfirmRegenerateModal() }
+            { renderRemoveBackupCodesModal() }
             <Grid padded={ true } data-testid={ componentid }>
-                <Grid.Row columns={ 2 }>
+                <Grid.Row columns={ 3 }>
                     <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
                         <List.Content floated="left">
                             <GenericIcon
@@ -433,13 +598,18 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         <List.Content>
                             <List.Header>
                                 { t(translateKey + "heading") }
-                                <Label
-                                    className={ `backup-code-label ${ isWarnRemaingBackupCodes
-                                        ? "warning" : "info" }` }
-                                    data-testid={ `${componentid}-remaining-count-label` }
-                                >
-                                    { `${remainingBackupCodes} ` + t(translateKey + "remaining") }
-                                </Label>
+                                { isMFAConfigured && isBackupCodesConfigured ? (
+                                    <Label
+                                        className={
+                                            `backup-code-label ${ remainingBackupCodesAmountLow ? "warning" : "info" }`
+                                        }
+                                        data-testid={ `${componentid}-remaining-count-label` }
+                                    >
+                                        { `${remainingBackupCodes} ` + t(translateKey + "remaining") }
+                                    </Label>
+                                ) :
+                                    null
+                                }
                             </List.Header>
                             <List.Description data-testid={ `${componentid}-message` }>
                                 { t(translateKey + "description") }
@@ -448,26 +618,80 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     </Grid.Column>
                     <Grid.Column width={ 3 } className="last-column" verticalAlign="middle">
                         <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (<Icon
-                                        link={ true }
-                                        className="list-icon"
-                                        size="small"
-                                        color="grey"
-                                        name="refresh"
-                                        onClick={ () => {
-                                            setIsConfirmRegenerationModalOpen(true);
-                                        } }
-                                        data-testid={ `${componentid}-regenerate-button` }
-                                    />)
-                                }
-                                content={ t(translateKey + "modals.actions.regenerate") }
-                                inverted
-                            />
+                            { isMFAConfigured && isBackupCodesConfigured ? (
+                                <>
+                                    <Popup
+                                        trigger={
+                                            (<Icon
+                                                link={ true }
+                                                className="list-icon"
+                                                size="small"
+                                                color="grey"
+                                                name="refresh"
+                                                onClick={ () => {
+                                                    setIsConfirmRegenerationModalOpen(true);
+                                                } }
+                                                data-testid={ `${componentid}-regenerate-button` }
+                                            />)
+                                        }
+                                        content={ t(translateKey + "modals.actions.regenerate") }
+                                        inverted
+                                    />
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Icon
+                                                    link={ true }
+                                                    onClick={ () => setIsRemoveBackupCodesModalOpen(true) }
+                                                    className="list-icon padded-icon"
+                                                    size="small"
+                                                    color="grey"
+                                                    name="trash alternate"
+                                                    data-testid={ `${componentid}-delete` }
+                                                />
+                                            )
+                                        }
+                                        inverted
+                                        content={ t(translateKey + "actions.delete") }
+                                        position="top right"
+                                    />
+                                </>
+                            ) : (
+                                <Popup
+                                    trigger={
+                                        (<Icon
+                                            link={ false }
+                                            onClick={ initializeBackupCodesConfig }
+                                            className="list-icon padded-icon"
+                                            size="small"
+                                            color="grey"
+                                            name="add"
+                                            disabled={ isLoading || !isMFAConfigured }
+                                            data-testid={ `${componentid}-init-button` }
+                                        />)
+                                    }
+                                    content={ t(translateKey + "actions.add") }
+                                    inverted
+                                />
+                            ) }
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
+                { !isMFAConfigured ? (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
+                        </Grid.Column>
+                        <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
+                            <Message className="display-flex" size="tiny" info>
+                                <Icon name="info" color="teal" corner />
+                                <Message.Content className="tiny">
+                                    { t(translateKey + "messages.disabledMessage") }
+                                </Message.Content>
+                            </Message>
+                        </Grid.Column>
+                    </Grid.Row>) :
+                    null
+                }
             </Grid>
         </>
     );

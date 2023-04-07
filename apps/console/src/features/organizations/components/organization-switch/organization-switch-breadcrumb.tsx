@@ -220,6 +220,32 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                     </>
                                 );
                             }
+                            if (index === 1 && 
+                                organizationConfigs.showSwitcherInTenants &&
+                                breadcrumbList?.length === 2
+                            ) {
+                                return (
+                                    <>
+                                        <Breadcrumb.Section 
+                                            key={ index }
+                                            onClick={ (event: SyntheticEvent<HTMLElement>) => {
+                                                if (index !== breadcrumbList.length - 1) {
+                                                    event.stopPropagation();
+                                                    handleOrganizationSwitch(breadcrumb);
+                                                }
+                                            } }
+                                            className="organization-breadcrumb-item first"
+                                            data-componentid={ 
+                                                `${ componentId }-breadcrumb-item-${ breadcrumb.name }` 
+                                            }
+                                            active
+                                        >
+                                            { breadcrumb.name }
+                                        </Breadcrumb.Section>
+                                        { resolveBreadcrumbIcon(index) }
+                                    </>
+                                );
+                            }
                             if (index > 0) {
                                 return (
                                     <>
@@ -338,7 +364,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 {
                     !isLoading && (
                         <div className="organization-breadcrumb-wrapper">
-                            <div 
+                            <div
+                                tabIndex={ 0 }
+                                onBlur={ () => setIsDropDownOpen(false) } 
                                 className="organization-breadcrumb" 
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                             >

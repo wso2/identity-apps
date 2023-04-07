@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,9 +21,10 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
 import { useOIDCScopesList } from "../api";
@@ -38,14 +39,13 @@ type OIDCScopesPageInterface = TestableComponentInterface;
 /**
  * OIDC Scopes page.
  *
- * @param {OIDCScopesPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns OIDCScopesPage Component.
  */
 const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     props: OIDCScopesPageInterface
 ): ReactElement => {
-
 
     const {
         [ "data-testid" ]: testId
@@ -54,9 +54,9 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const { t } = useTranslation();
 
     /**
-     * Sets the scopes by which the list can be sorted
+     * Sets the scopes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: DropdownItemProps[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -69,7 +69,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         }
     ];
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -102,7 +102,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
      */
     useEffect(() => {
         if (searchQuery.length > 0) {
-            const result = scopeList.filter((item) =>
+            const result: OIDCScopesListInterface[] = scopeList.filter((item: OIDCScopesListInterface) =>
                 item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
 
             setFilteredScopeList(result);
@@ -146,16 +146,16 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     /**
      * Search the scope list.
      *
-     * @param event
+     * @param event - Input change event.
      */
-    const searchScopeList = (event) => {
+    const searchScopeList = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
 
     /**
     * Handles sort order change.
     *
-    * @param {boolean} isAscending.
+    * @param isAscending - Sort order.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending === true ? "ASC" : "DESC");
@@ -164,11 +164,12 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     /**
     * Handle sort strategy change.
     *
-    * @param {React.SyntheticEvent<HTMLElement>} event.
-    * @param {DropdownProps} data.
+    * @param event - Dropdown change event.
+    * @param data - Selected dropdown option.
     */
-    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortByStrategy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+    const handleSortStrategyChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortByStrategy(SORT_BY.filter(
+            (option: { key: number; text: string; value: string; }) => option.value === data.value)[ 0 ]);
     };
 
     return (
@@ -178,7 +179,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                 hasRequiredScopes(
                     featureConfig?.applications, featureConfig?.applications?.scopes?.create,
                     allowedScopes
-                )
+                ) && !isScopeListFetchRequestLoading
                     ? (
                         <PrimaryButton
                             disabled={ isScopeListFetchRequestLoading }

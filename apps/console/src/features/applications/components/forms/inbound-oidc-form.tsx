@@ -937,7 +937,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
                 frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
             },
-            publicClient: values.get("supportPublicClients")?.length > 0,
+            publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
             refreshToken: {
                 expiryInSeconds: values.get("expiryInSeconds")
                     ? parseInt(values.get("expiryInSeconds"), 10)
