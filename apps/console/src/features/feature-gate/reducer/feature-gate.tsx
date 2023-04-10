@@ -15,9 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { useGetUpdatedFeatureGateConfig } from "apps/console/src/extensions/configs/feature-gate";
 import React, { useReducer } from "react";
 import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
-import { featureGateConfig } from "../configs/feature-gate";
 import { FeatureGateContext } from "../context/feature-gate";
 import { FeatureGateInterface } from "../models/feature-gate";
 
@@ -35,7 +36,8 @@ export const featureGateReducer = (
 
 export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.ReactElement => {
     const { children } = props;
-    const [ features, dispatch ] = useReducer(featureGateReducer, featureGateConfig);
+    const updatedFeatureGateConfig: FeatureGateInterface  = useGetUpdatedFeatureGateConfig();
+    const [ features, dispatch ] = useReducer(featureGateReducer, updatedFeatureGateConfig);
 
     return (<FeatureGateContext.Provider value={ {  dispatch, features } }>{ children }</FeatureGateContext.Provider>);
 };
