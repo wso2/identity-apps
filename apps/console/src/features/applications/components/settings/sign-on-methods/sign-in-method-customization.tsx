@@ -29,6 +29,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -41,7 +42,6 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
 import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
@@ -428,10 +428,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             });
 
-            eventPublisher.publish("application-sign-in-method-click-update-button", {
-                "client-id": clientId,
-                type: eventPublisherProperties
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-update-button", 
+                { "client-id": clientId, type: eventPublisherProperties }
+            );
         });
 
         setUpdateTrigger(true);
@@ -653,9 +653,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                             <LinkButton
                                 className="pr-0"
                                 onClick={ () => {
-                                    eventPublisher.publish("application-revert-sign-in-method-default", {
-                                        "client-id": clientId
-                                    });
+                                    eventPublisher.publish(
+                                        "application-revert-sign-in-method-default", 
+                                        { "client-id": clientId }
+                                    );
                                     handleSequenceUpdate(null, true);
                                     onReset();
                                 } }

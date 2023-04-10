@@ -445,9 +445,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.compute(() => {
-            eventPublisher.publish("application-switch-edit-application-tabs", {
-                type: data.panes[data.activeIndex].componentId
-            });
+            eventPublisher.publish(
+                "application-switch-edit-application-tabs", 
+                { type: data.panes[data.activeIndex].componentId }
+            );
         });
 
         handleActiveTabIndexChange(data.activeIndex as number);

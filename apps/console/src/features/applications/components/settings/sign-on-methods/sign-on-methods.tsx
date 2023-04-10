@@ -295,49 +295,55 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         if (!loginFlow) {
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "default"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "default" }
+            );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(DefaultFlowConfigurationSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "second-factor-totp"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "second-factor-totp" }
+            );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorTOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "second-factor-email-otp"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "second-factor-email-otp" }
+            );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorEMAILOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "second-factor-sms-otp"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "second-factor-sms-otp" }
+            );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(SecondFactorSMSOTPSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "first-factor-fido"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "first-factor-fido" }
+            );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(UsernamelessSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "google-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "google-login" }
+            );
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
 
             // If there are no IDP's with google authenticator, show missing authenticator modal.
@@ -365,9 +371,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "github-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "github-login" }
+            );
 
             setSocialDisclaimerModalType(LoginFlowTypes.GITHUB_LOGIN);
 
@@ -396,9 +403,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.FACEBOOK_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "facebook-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add",
+                { type: "facebook-login" }
+            );
 
             setSocialDisclaimerModalType(LoginFlowTypes.FACEBOOK_LOGIN);
 
@@ -427,9 +435,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.MICROSOFT_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "microsoft-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "microsoft-login" }
+            );
 
             setSocialDisclaimerModalType(LoginFlowTypes.MICROSOFT_LOGIN);
 
@@ -458,9 +467,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.APPLE_LOGIN) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "apple-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "apple-login" }
+            );
 
             setSocialDisclaimerModalType(LoginFlowTypes.APPLE_LOGIN);
 
@@ -489,9 +499,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 });
             }
         } else if (loginFlow === LoginFlowTypes.MAGIC_LINK) {
-            eventPublisher.publish("application-sign-in-method-click-add", {
-                type: "magic-link-login"
-            });
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "magic-link-login" }
+            );
 
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
