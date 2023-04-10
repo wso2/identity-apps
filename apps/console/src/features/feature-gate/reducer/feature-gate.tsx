@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import React, { useReducer, useEffect, useState } from "react";
-import { FeatureGateInterface } from "../models/feature-gate";
-import { useAuthContext } from "@asgardeo/auth-react";
-import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
 import { useGetUpdatedFeatureGateConfig } from "apps/console/src/extensions/configs/feature-gate";
+import React, { useReducer } from "react";
+import { FeatureGateAction, FeatureGateActionTypes } from "../actions/feature-gate";
 import { FeatureGateContext } from "../context/feature-gate";
+import { FeatureGateInterface } from "../models/feature-gate";
 
 export const featureGateReducer = (
     state: FeatureGateInterface,
@@ -37,18 +36,8 @@ export const featureGateReducer = (
 
 export const FeatureGateProvider = (props: React.PropsWithChildren<any>): React.ReactElement => {
     const { children } = props;
-    const { getDecodedIDToken } = useAuthContext();
-    const { state } = useAuthContext();
-    const [orgId, setOrgId] = useState<string>();
-
-    useEffect(() => {
-      getDecodedIDToken().then((response)=>{
-        const org_id = response.org_id;
-        setOrgId(org_id);
-      });
-    }, [state]);
-
-    const updatedFeatureGateConfig  = useGetUpdatedFeatureGateConfig(orgId);
+    const updatedFeatureGateConfig:FeatureGateInterface  = useGetUpdatedFeatureGateConfig();
     const [ features, dispatch ] = useReducer(featureGateReducer, updatedFeatureGateConfig);
+
     return (<FeatureGateContext.Provider value={ {  dispatch, features } }>{ children }</FeatureGateContext.Provider>);
 };
