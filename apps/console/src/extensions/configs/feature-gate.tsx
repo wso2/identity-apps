@@ -24,7 +24,7 @@ import { FeatureGateInterface } from "../../features/feature-gate/models/feature
  *
  * @returns The updated feature gate configuration.
  */
-export const useGetUpdatedFeatureGateConfig = (): FeatureGateInterface | null => {
+export const useGetUpdatedFeatureGateConfig = (): FeatureGateInterface => {
 
     return featureGateConfig;
 };
