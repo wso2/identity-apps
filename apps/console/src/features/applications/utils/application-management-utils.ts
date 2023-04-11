@@ -351,7 +351,9 @@ export class ApplicationManagementUtils {
             }).join("|");
             callbackURL = `regexp=(${callbackURL})`;
         } else if (regexChars.test(callbackURL)) {
-            callbackURL = callbackURL.replace(regexChars, "\\$&");
+            if (!/\\/.test(callbackURL) && regexChars.test(callbackURL)) {
+                callbackURL = callbackURL.replace(regexChars, "\\$&"); // Escape the special character.
+            }
         }
 
         return callbackURL;
@@ -365,11 +367,11 @@ export class ApplicationManagementUtils {
      */
     public static buildCallBackURLWithSeparator = (url: string): string => {
 
+        url = url.replace(/\\/g, ""); // Remove escape characters.
         if (url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
             url = url.split("|").join(",");
-            url = url.replace(/\\/g, ""); // Remove escape characters.
         }
 
         return url;
