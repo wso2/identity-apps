@@ -15,7 +15,6 @@
         "recovery-portal": "apps/recovery-portal",
         "tests": "tests",
         "theme": "modules/theme",
-        "theme-component": "components/theme",
         "validation": "modules/validation",
         "x509-certificate-authentication-portal": "apps/x509-certificate-authentication-portal"
     }
