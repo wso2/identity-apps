@@ -339,19 +339,8 @@ export class ApplicationManagementUtils {
 
         let callbackURL = urls.replace(/['"]+/g, "");
 
-        const regexChars = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
-        
         if (callbackURL.split(",").length > 1) {
-            callbackURL = callbackURL.split(",").map((url) => {
-                if (!/\\/.test(url) && regexChars.test(url)) {
-                    url = url.replace(regexChars, "\\$&"); // Escape the special character.
-                }
-
-                return url;
-            }).join("|");
-            callbackURL = `regexp=(${callbackURL})`;
-        } else if (regexChars.test(callbackURL)) {
-            callbackURL = callbackURL.replace(regexChars, "\\$&");
+            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
         }
 
         return callbackURL;
@@ -369,7 +358,6 @@ export class ApplicationManagementUtils {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
             url = url.split("|").join(",");
-            url = url.replace(/\\/g, ""); // Remove escape characters.
         }
 
         return url;
