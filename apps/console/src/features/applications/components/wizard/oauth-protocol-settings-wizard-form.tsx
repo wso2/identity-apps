@@ -245,12 +245,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
                 return url;
             }).join("|");
-            callbackURL = `regexp=(${callbackURL})`;
         } else if (regexChars.test(callbackURL)) {
             if (!/\\/.test(callbackURL) && regexChars.test(callbackURL)) {
                 callbackURL = callbackURL.replace(regexChars, "\\$&"); // Escape the special character.
             }
         }
+        callbackURL = `regexp=(${callbackURL})`;
 
         return callbackURL;
     };
