@@ -235,19 +235,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL: string = urls?.replace(/['"]+/g, "");
 
-        const regexChars: RegExp = /[.*+?^${}()|[\]\\]/g; // Regex that matches special characters.
-
-        if (callbackURL.split(",").length > 1) {
-            callbackURL = callbackURL.split(",").map((url: string) => {
-                if (!/\\/.test(url) && regexChars.test(url)) {
-                    url = url.replace(regexChars, "\\$&"); // Escape the special character.
-                }
-
-                return url;
-            }).join("|");
-            callbackURL = `regexp=(${callbackURL})`;
-        } else if (regexChars.test(callbackURL)) {
-            callbackURL = callbackURL.replace(regexChars, "\\$&");
+        if (callbackURL?.split(",").length > 1) {
+            callbackURL = "regexp=(" + callbackURL?.split(",").join("|") + ")";
         }
 
         return callbackURL;
@@ -264,7 +253,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
             url = url.split("|").join(",");
-            url = url.replace(/\\/g, ""); // Remove escape characters.
         }
 
         return url;
