@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,7 +51,6 @@
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
         <module>apps/x509-certificate-authentication-portal</module>
-        <module>components/theme</module>
         <module>components/org.wso2.identity.apps.common</module>
         <module>tests</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
@@ -233,12 +232,6 @@
                 <artifactId>recovery-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>identity-theme</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
             </dependency>
 
             <dependency>
@@ -650,34 +643,34 @@
 
         <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
         <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
-        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
-        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0]</osgi.framework.imp.pkg.version.range>
+        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0]</osgi.service.component.imp.pkg.version.range>
 
-        <commons-lang.version.range>[2.6.0,3.0.0)</commons-lang.version.range>
-        <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
+        <commons-lang.version.range>[2.6.0,3.0.0]</commons-lang.version.range>
+        <commons-logging.imp.pkg.version.range>[1.2, 2.0]</commons-logging.imp.pkg.version.range>
 
         <carbon.identity.version>5.0.7</carbon.identity.version>
         <carbon.kernel.version>4.9.1</carbon.kernel.version>
-        <carbon.kernel.imp.pkg.version.range>[4.9.1, 5.0.0)</carbon.kernel.imp.pkg.version.range>
-        <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
-        <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
+        <carbon.kernel.imp.pkg.version.range>[4.9.1, 5.0.0]</carbon.kernel.imp.pkg.version.range>
+        <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0]</carbon.kernel.registry.imp.pkg.version.range>
+        <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0]</carbon.user.api.imp.pkg.version.range>
         <carbon.commons.version>4.7.22</carbon.commons.version>
-        <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>
+        <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0]</carbon.commons.imp.pkg.version.range>
         <carbon.logging.version>4.4.39</carbon.logging.version>
 
-        <carbon.base.imp.pkg.version.range>[1.0.0, 2.0.0)</carbon.base.imp.pkg.version.range>
+        <carbon.base.imp.pkg.version.range>[1.0.0, 2.0.0]</carbon.base.imp.pkg.version.range>
         <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
 
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.25.124</carbon.identity.framework.version>
-        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0)</carbon.identity.framework.imp.pkg.version.range>
+        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0]</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.core.service.version>1.0.0
         </identity.organization.management.core.service.version>
-        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0)</identity.org.mgt.core.version.range>
+        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0]</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
-        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
+        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0]</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.5.48</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>
         <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>
@@ -704,7 +697,6 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
-
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>
