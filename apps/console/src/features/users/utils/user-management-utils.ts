@@ -64,7 +64,7 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     const config: ValidationDataInterface = usernameConf[0];
 
     const rules: ValidationConfInterface[] = config?.rules;
-    
+
     if (!rules || rules?.length < 1) {
         return;
     }
