@@ -223,10 +223,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                 sortStrategy={ sortBy }
                 onSortOrderChange={ handleSortOrderChange }
                 onSortStrategyChange={ handleSortStrategyChange }
+                isLoading={ isScopeListFetchRequestLoading }
             >
                 <OIDCScopeList
                     featureConfig={ featureConfig }
-                    isLoading={ isScopeListFetchRequestLoading }
                     list={ filteredScopeList ?? scopeList }
                     onScopeDelete={ () => mutateScopeListFetchRequest() }
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }

@@ -184,13 +184,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * Get the header extensions.
      */
     useEffect(() => {
-        commonConfig?.header?.getHeaderExtensions().then((response: HeaderExtension[]) => {
-            if (isPrivilegedUser) {
-                response.pop();
-            }
-            setHeaderExtensions(response);
-        });
-    }, []);
+        commonConfig?.header?.getHeaderExtensions(tenantDomain, associatedTenants)
+            .then((response: HeaderExtension[]) => {
+                if (isPrivilegedUser) {
+                    response.pop();
+                }
+                setHeaderExtensions(response);
+            });
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Check if there are applications registered and set the value to local storage.

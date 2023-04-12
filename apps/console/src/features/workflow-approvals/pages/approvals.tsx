@@ -22,7 +22,8 @@ import { ListLayout, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Dropdown, DropdownItemProps, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants } from "../../core";
 import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
@@ -50,7 +51,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -62,7 +63,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.ALL);
     const [ searchResult, setSearchResult ] = useState<number>(undefined);
 
-    const APPROVAL_OPTIONS = [
+    const APPROVAL_OPTIONS: DropdownItemProps[] = [
         {
             key: 1,
             text: "All",
@@ -111,11 +112,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      *
      * @param shallowUpdate - A flag to specify if only the statuses should be updated.
      */
-    const getApprovals = (shallowUpdate = false): void => {
+    const getApprovals = (shallowUpdate: boolean = false): void => {
         setApprovalListRequestLoading(true);
 
         fetchPendingApprovals(null, null, filterStatus)
-            .then((response) => {
+            .then((response: ApprovalTaskListItemInterface[]) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
                     setTempApprovals(response);
@@ -123,17 +124,17 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                     return;
                 }
 
-                const approvalsFromState = [ ...approvals ];
-                const approvalsFromResponse = [ ...response ];
-                const filteredApprovals = [];
+                const approvalsFromState: ApprovalTaskListItemInterface[] = [ ...approvals ];
+                const approvalsFromResponse: ApprovalTaskListItemInterface[] = [ ...response ];
+                const filteredApprovals: ApprovalTaskListItemInterface[] = [];
 
                 // Compare the approvals list in the state with the new response
                 // and update the new statuses. When the status of the approval is changed,
                 // it has to be dropped from the list if the filter status is not `ALL`.
                 // Therefore the matching entries are extracted out to the `filteredApprovals` array
                 // and are set to the state.
-                approvalsFromState.forEach((fromState) => {
-                    approvalsFromResponse.forEach((fromResponse) => {
+                approvalsFromState.forEach((fromState: ApprovalTaskListItemInterface) => {
+                    approvalsFromResponse.forEach((fromResponse: ApprovalTaskListItemInterface) => {
                         if (fromState.id === fromResponse.id) {
                             fromState.status = fromResponse.status;
                             filteredApprovals.push(fromState);
@@ -144,7 +145,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 setApprovals(filteredApprovals);
                 setTempApprovals(filteredApprovals);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
@@ -258,7 +259,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             .then(() => {
                 getApprovals(false);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
@@ -292,12 +293,14 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      *
      * @param event - event
      */
-    const searchApprovalList = (event) => {
-        const changeValue = event.target.value;
+    const searchApprovalList = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const changeValue: string = event.target.value;
 
         if (changeValue.length > 0) {
-            const searchResult = approvals.filter((item) =>
-                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const searchResult: ApprovalTaskListItemInterface[] = approvals
+                .filter((item: ApprovalTaskListItemInterface) =>
+                    item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+                );
 
             setTempApprovals(searchResult);
 
@@ -325,6 +328,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 showTopActionPanel={ isApprovalListRequestLoading || !(approvals?.length == 0) }
                 totalPages={ Math.ceil(approvals.length / listItemLimit) }
                 totalListSize={ approvals.length }
+                isLoading={ isApprovalListRequestLoading }
                 data-testid={ `${ testId }-list-layout` }
                 rightActionPanel={
                     (<Dropdown
@@ -352,12 +356,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             >
                 <ApprovalsList
                     filterStatus={ filterStatus }
-                    onChangeStatusFilter={ (status) => setFilterStatus(status) }
+                    onChangeStatusFilter={ (status: string) => setFilterStatus(status) }
                     searchResult={ searchResult }
                     getApprovalsList={ getApprovals }
                     updateApprovalStatus={ updateApprovalStatus }
                     featureConfig={ featureConfig }
-                    isLoading={ isApprovalListRequestLoading }
                     list={ paginate(tempApprovals, listItemLimit, offset) }
                     resolveApprovalTagColor={ resolveApprovalTagColor }
                     data-testid={ `${ testId }-list` }

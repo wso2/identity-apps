@@ -653,6 +653,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable
                 } }
+                isLoading={ isUserListRequestLoading }
             >
                 { userStoreError
                     ? (<EmptyPlaceholder
@@ -701,7 +702,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
-                        isLoading={ isUserListRequestLoading }
                         realmConfigs={ realmConfigs }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }

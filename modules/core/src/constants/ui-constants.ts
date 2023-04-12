@@ -42,7 +42,7 @@ export class UIConstants {
     public static readonly API_RETRIEVAL_ERROR_ALERT_MESSAGE: string = "Retrieval Error";
 
     /**
-     * Default list item size for resources such as applications, IdPs etc.
+     * Default loading list rows count for resources such as applications, IdPs etc.
      */
-    public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
+    public static readonly DEFAULT_RESOURCE_LIST_LOADING_ITEM_LIMIT: number = 4;
 }

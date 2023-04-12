@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     EmptyPlaceholder,
@@ -25,10 +25,12 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -38,8 +40,7 @@ import {
     UIConstants,
     UserStoreProperty,
     getAUserStore,
-    getEmptyPlaceholderIllustrations,
-    store
+    getEmptyPlaceholderIllustrations
 } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { UserStorePostData } from "../../userstores";
@@ -70,10 +71,10 @@ const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * React component to list User Groups.
  *
- * @return {ReactElement}
+ * @returns Groups page component.
  */
 const GroupsPage: FunctionComponent<any> = (): ReactElement => {
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -82,11 +83,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
+    const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ userStore, setUserStore ] = useState(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     // TODO: Check the usage and delete id not required.
-    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
+    const [ , setIsEmptyResults ] = useState<boolean>(false);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -121,7 +122,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             return;
         }
 
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
             setReadOnlyUserStoresList(response);
         });
     }, [ userStore ]);
@@ -130,12 +131,12 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         setGroupsListRequestLoading(true);
 
         getGroupList(userStore)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 if (response.status === 200) {
-                    const groupResources = response.data.Resources;
+                    const groupResources: GroupsInterface[] = response.data.Resources;
 
                     if (groupResources && groupResources instanceof Array && groupResources.length !== 0) {
-                        const updatedResources = groupResources.filter((role: GroupsInterface) => {
+                        const updatedResources: GroupsInterface[] = groupResources.filter((role: GroupsInterface) => {
                             return !role.displayName.includes("Application/")
                                 && !role.displayName.includes("Internal/");
                         });
@@ -159,7 +160,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     setGroupsList([]);
                     setPaginatedGroups([]);
                 }
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
                         ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
@@ -180,7 +181,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [
+        const storeOptions: DropdownItemProps[] = [
             {
                 key: -2,
                 text: "All user stores",
@@ -193,7 +194,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }
         ];
 
-        let storeOption = {
+        let storeOption: DropdownItemProps = {
             key: null,
             text: "",
             value: ""
@@ -203,14 +204,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getUserStoreList()
-                .then((response) => {
+                .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
 
-                    response.data.map((store, index) => {
+                    response.data.map((store: UserstoreListResponseInterface, index: number) => {
                         getAUserStore(store.id).then((response: UserStorePostData) => {
-                            const isDisabled = response.properties.find(
+                            const isDisabled: boolean = response.properties.find(
                                 (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
                             if (!isDisabled) {
@@ -235,11 +236,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option: DropdownItemProps) => {
             return data.value === option.value;
         }));
     };
@@ -259,10 +260,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
         setSearchQuery(searchQuery);
 
-        searchGroupList(searchData).then(response => {
+        searchGroupList(searchData).then((response: AxiosResponse) => {
             if (response.status === 200) {
-                const results = response.data.Resources;
-                let updatedResults = [];
+                const results: GroupsInterface[] = response.data.Resources;
+                let updatedResults: GroupsInterface[] = [];
 
                 if (results) {
                     updatedResults = results.filter((role: RolesInterface) => {
@@ -278,8 +279,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     /**
      * Util method to paginate retrieved email template type list.
      *
-     * @param offsetValue pagination offset value
-     * @param itemLimit pagination item limit
+     * @param offsetValue - pagination offset value.
+     * @param itemLimit - pagination item limit.
      * @param list - Role list.
      */
     const setGroupsPage = (offsetValue: number, itemLimit: number, list: GroupsInterface[]) => {
@@ -291,7 +292,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
         setGroupsPage(offsetValue, listItemLimit, groupList);
@@ -305,7 +306,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
@@ -345,7 +346,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * Handles the `onFilter` callback action from the
      * roles search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
@@ -439,6 +440,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         && paginatedGroups?.length <= 0) }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
+                isLoading={ isGroupsListRequestLoading }
             >
                 { groupsError
                     ? (<EmptyPlaceholder
@@ -480,7 +482,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         ) }
                         data-testid="group-mgt-groups-list"
                         handleGroupDelete={ handleOnDelete }
-                        isLoading={ isGroupsListRequestLoading }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         groupList={ paginatedGroups }
