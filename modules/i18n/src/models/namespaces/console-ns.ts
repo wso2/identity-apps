@@ -100,7 +100,7 @@ export interface ConsoleNS {
                 organizations: {
                     message: string;
                     buttons: {
-                        tryout: string; 
+                        tryout: string;
                     };
                 };
             };
@@ -659,6 +659,8 @@ export interface ConsoleNS {
                                             secondFactorDisabled: string;
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
+                                            backupCodesDisabled: string;
+                                            backupCodesDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             firstFactorDisabled: string;
                                             federatedSMSOTPConflictNote: {

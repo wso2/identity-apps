@@ -227,15 +227,22 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                         <Fragment>
                             { InfoLabel }
                             <Text>
-                                Backup code authenticator cannot be used in the first step.
+                                { t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".backupCodesDisabledInFirstStep"
+                                ) }
                             </Text>
                         </Fragment>
                     ) : (
                         <Fragment>
                             { InfoLabel }
                             <Text>
-                                Backup code authenticator can only be used if multi factor
-                                authenticators are present in the current step.
+                                { t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".backupCodesDisabled"
+                                ) }
                             </Text>
                         </Fragment>
                     ) }

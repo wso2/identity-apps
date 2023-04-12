@@ -92,7 +92,7 @@ export const console: ConsoleNS = {
             },
             featureAnnouncements: {
                 organizations: {
-                    message: "Présentation des organisations B2B. Commencez à construire votre plateforme " + 
+                    message: "Présentation des organisations B2B. Commencez à construire votre plateforme " +
                     "B2B en intégrant vos organisations partenaires/clientes.",
                     buttons: {
                         tryout: "Essaye le"
@@ -1137,6 +1137,10 @@ export const console: ConsoleNS = {
                                                 " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape.",
+                                            backupCodesDisabled: "L'authentificateur de code de secours ne peut être utilisé " +
+                                                "que si des authentificateurs multifacteur sont présents dans l'étape en cours.",
+                                            backupCodesDisabledInFirstStep: "L'authentificateur de code de secours ne peut pas " +
+                                                "être utilisé dans la première étape.",
                                             federatedSMSOTPConflictNote:{
                                                 multipleIdps: "Asgardeo nécessite le profil de l'utilisateur" +
                                                 " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
@@ -3074,7 +3078,7 @@ export const console: ConsoleNS = {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: "Voir les forfaits",
-                            
+
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
                             title: "Vous avez atteint le nombre maximal de sous-organisations autorisé pour cette organisation. "
@@ -3102,12 +3106,12 @@ export const console: ConsoleNS = {
                                 heading: "Nom"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" + 
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" +
                                     " environnement pour Se connecter avec Apple.",
                                 configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
                                 configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
-                                getCredentials: "Avant de commencer, créez une application compatible" + 
-                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" + 
+                                getCredentials: "Avant de commencer, créez une application compatible" +
+                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" +
                                     " avec un <5>identifiant de services</5> et une <5>clé privée</5>.",
                                 heading: "Prérequis"
                             },
