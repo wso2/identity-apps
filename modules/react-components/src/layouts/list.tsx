@@ -296,7 +296,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         <DataTable
                             isLoading={ true }
                             loadingStateOptions={ {
-                                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_LOADING_ITEM_LIMIT,
                                 imageType: "square"
                             } }
                             columns={ [] }

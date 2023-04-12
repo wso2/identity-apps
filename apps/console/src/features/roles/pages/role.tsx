@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,15 +17,23 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
+import { 
+    AlertInterface,
+    AlertLevels,
+    RoleListInterface,
+    RolesInterface,
+    UserstoreListResponseInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, store } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
 import { CreateRoleWizard, RoleList } from "../../roles";
 import { getRolesList } from "../../roles/api";
 import { getUserStoreList } from "../../userstores/api";
@@ -72,16 +80,16 @@ const filterOptions: DropdownItemProps[] = [
 /**
  * React component to list User Roles.
  *
- * @return {ReactElement}
+ * @returns Roles page component.
  */
 const RolesPage = (): ReactElement => {
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isListUpdated, setListUpdated ] = useState(false);
+    const [ , setListUpdated ] = useState(false);
     // TODO: Check the usage and delete if not required.
     const [ , setUserStoresList ] = useState([]);
     const [ userStore ] = useState(undefined);
@@ -108,12 +116,12 @@ const RolesPage = (): ReactElement => {
         setRoleListFetchRequestLoading(true);
 
         getRolesList(userStore)
-            .then((response) => {
+            .then((response: AxiosResponse<RoleListInterface>) => {
                 if (response.status === 200) {
-                    const roleResources = response.data.Resources;
+                    const roleResources: RolesInterface[] = response.data.Resources;
 
                     if (roleResources && roleResources instanceof Array) {
-                        const updatedResources = roleResources.filter((role: RolesInterface) => {
+                        const updatedResources: RolesInterface[] = roleResources.filter((role: RolesInterface) => {
                             if (filterBy === "all") {
                                 return role.displayName;
                             } else if (APPLICATION_DOMAIN === filterBy) {
@@ -138,7 +146,7 @@ const RolesPage = (): ReactElement => {
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [
+        const storeOptions: DropdownItemProps[] = [
             {
                 key: -2,
                 text: "All user stores",
@@ -150,18 +158,18 @@ const RolesPage = (): ReactElement => {
                 value: "primary"
             }
         ];
-        let storeOption = {
+        let storeOption: DropdownItemProps = {
             key: null,
             text: "",
             value: ""
         };
 
         getUserStoreList()
-            .then((response) => {
+            .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                 if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
+                response.data.map((store: UserstoreListResponseInterface, index: number) => {
                     storeOption = {
                         key: index,
                         text: store.name,
@@ -179,11 +187,11 @@ const RolesPage = (): ReactElement => {
     /**
      * Sets the list sorting strategy.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
-     * @param {DropdownProps} data - Dropdown data.
+     * @param event - The event.
+     * @param data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(find(ROLES_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(find(ROLES_SORTING_OPTIONS, (option: DropdownItemProps) => {
             return data.value === option.value;
         }));
     };
@@ -198,20 +206,19 @@ const RolesPage = (): ReactElement => {
         setSearchQuery(searchQuery);
 
         searchRoleList(searchData)
-            .then((response) => {
+            .then((response: AxiosResponse<RoleListInterface>) => {
 
                 if (response.status === 200) {
-                    const results = response?.data?.Resources;
+                    const results: RolesInterface[] = response?.data?.Resources;
 
-                    let updatedResults = [];
+                    let updatedResults: RolesInterface[] = [];
 
                     if (results) {
                         updatedResults = results;
                     }
 
-                    const updatedData = {
-                        ...results,
-                        ...results?.data?.Resources,
+                    const updatedData: RoleListInterface = {
+                        ...response.data,
                         Resources: updatedResults
                     };
 
@@ -224,11 +231,11 @@ const RolesPage = (): ReactElement => {
     /**
      * Util method to paginate retrieved role list.
      *
-     * @param offsetValue pagination offset value
-     * @param itemLimit pagination item limit
+     * @param offsetValue - pagination offset value.
+     * @param itemLimit - pagination item limit.
      */
     const setRolesPage = (offsetValue: number, itemLimit: number, roleList: RoleListInterface) => {
-        const updatedData = {
+        const updatedData: RoleListInterface = {
             ...roleList,
             ...roleList.Resources,
             Resources: roleList?.Resources?.slice(offsetValue, itemLimit + offsetValue)
@@ -238,7 +245,7 @@ const RolesPage = (): ReactElement => {
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
         setRolesPage(offsetValue, listItemLimit, initialRolList);
@@ -256,7 +263,7 @@ const RolesPage = (): ReactElement => {
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
@@ -286,7 +293,7 @@ const RolesPage = (): ReactElement => {
      * Handles the `onFilter` callback action from the
      * roles search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
@@ -385,6 +392,7 @@ const RolesPage = (): ReactElement => {
                         }
                         totalPages={ Math.ceil(initialRolList?.Resources?.length / listItemLimit) }
                         totalListSize={ initialRolList?.Resources?.length }
+                        isLoading={ isRoleListFetchRequestLoading }
                     >
                         <RoleList
                             advancedSearch={ (
@@ -419,7 +427,6 @@ const RolesPage = (): ReactElement => {
                             data-testid="role-mgt-roles-list"
                             handleRoleDelete={ handleOnDelete }
                             isGroup={ false }
-                            isLoading={ isRoleListFetchRequestLoading }
                             onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                             onSearchQueryClear={ handleSearchQueryClear }
                             roleList={ paginatedRoles }

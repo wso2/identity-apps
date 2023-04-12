@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
 import {
@@ -48,9 +49,9 @@ type UserStoresPageInterface = TestableComponentInterface;
 /**
  * This renders the Userstores page.
  *
- * @param {UserStoresPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns User Stores page.
  */
 const UserStores: FunctionComponent<UserStoresPageInterface> = (
     props: UserStoresPageInterface
@@ -65,7 +66,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -91,17 +96,17 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     /**
      * Fetches all userstores.
      *
-     * @param {number} limit.
-     * @param {string} sort.
-     * @param {number} offset.
-     * @param {string} filter.
+     * @param limit - Limit per page.
+     * @param sort - SortBy.
+     * @param offset - Offset.
+     * @param filter - FilterBy.
      */
     const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: QueryParams = {
@@ -112,11 +117,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         };
 
         setIsLoading(true);
-        getUserStores(params).then(response => {
+        getUserStores(params).then((response: UserStoreListItem[]) => {
             setUserStores(response);
             setFilteredUserStores(response);
             setIsLoading(false);
-        }).catch(error => {
+        }).catch((error: any) => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
@@ -142,11 +147,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * This slices and returns a portion of the list.
      *
-     * @param {number} list.
-     * @param {number} limit.
-     * @param {number} offset.
+     * @param list - List to be paginated.
+     * @param limit - Limit per page.
+     * @param offset - Offset value.
      *
-     * @return {UserStoreListItem[]} Paginated list.
+     * @returns Paginated list.
      */
     const paginate = (list: UserStoreListItem[], limit: number, offset: number): UserStoreListItem[] => {
         return list?.slice(offset, offset + limit);
@@ -155,8 +160,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * Handles the change in the number of items to display.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - Click event.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
@@ -165,8 +170,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * This paginates.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {PaginationProps} data.
+     * @param event - Click event.
+     * @param data - Pagination data.
      */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
@@ -175,7 +180,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * Handles sort order change.
      *
-     * @param {boolean} isAscending.
+     * @param isAscending - Sort order.
      */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -184,17 +189,21 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     /**
      * Handle sort strategy change.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - Click event.
+     * @param data - Dropdown data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: {
+            key: number;
+            text: string;
+            value: string;
+        }) => option.value === data.value)[ 0 ]);
     };
 
     /**
      * Handles the `onFilter` callback action from the search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleUserstoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
@@ -290,6 +299,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
                 totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                 totalListSize={ filteredUserStores?.length }
+                isLoading={ isLoading }
                 data-testid={ `${ testId }-list-layout` }
             >
                 <UserStoresList
@@ -329,7 +339,6 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                             data-testid={ `${ testId }-advanced-search` }
                         />)
                     }
-                    isLoading={ isLoading }
                     list={ paginate(filteredUserStores, listItemLimit, offset) }
                     onEmptyListPlaceholderActionClick={
                         () => history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"))
