@@ -681,6 +681,13 @@ export const console: ConsoleNS = {
                         header: "ඔබ හෑන්ඩ්ලර් එකක් එකතු කරනවා",
                         message: "මෙය හසුරුවන්නෙකි."
                     },
+                    backupCodeAuthenticatorAddition: {
+                        assertionHint: "උපස්ථ කේත සත්‍යාපකය එක් කිරීමට තහවුරු කරන්න ක්ලික් කරන්න.",
+                        content: "පරිශීලකයින්ට බහු සාධක සත්‍යාපන කේත ලබා ගැනීමට නොහැකි වූ විට පුරනය වීමට උපස්ථ " +
+                            "කේත සත්‍යාපනය භාවිතා කළ හැක.",
+                        header: "ඔබට මෙම පියවරට උපස්ථ කේත සත්‍යාපකය එක් කිරීමට අවශ්‍යද?",
+                        message: "ඔබ ද්වි සාධක සත්‍යාපකයක් එකතු කරමින් සිටී."
+                    },
                     lowOIDCExpiryTimes: {
                         assertionHint: "පවතින අගයන් සමඟ ඉදිරියට යන්න.",
                         content: "පහත දැක්වෙන වින්‍යාසය සඳහා ඔබ තත්පර 60 ට අඩු අගයක් ඇතුළත් කර ඇත.",
@@ -1080,6 +1087,10 @@ export const console: ConsoleNS = {
                                                             description: "සමාජ ජාල සැපයුම්කරුවෙකුගෙන් පවතින " +
                                                                 "පිවිසුම් තොරතුරු භාවිතා කරන්න.",
                                                             heading: "සමාජ පිවිසුම"
+                                                        },
+                                                        backupCodes: {
+                                                            description: "ද්වි-සාධක සත්‍යාපන ප්‍රතිසාධන විකල්පය.",
+                                                            heading: "MFA ප්රතිසාධනය"
                                                         }
                                                     },
                                                     goBackButton: "නැවත තේරීමට යන්න",
@@ -2511,6 +2522,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "{{StepNo} step පියවරෙන් සත්‍යාපකය සාර්ථකව මකා දමන ලදි.",
                             message: "සාර්ථකව මකන්න"
+                        }
+                    },
+                    deleteOptionErrorDueToSecondFactorsDependency: {
+                        error: {
+                            description: "{{description}}",
+                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
+                        },
+                        genericError: {
+                            description: "මෙම පියවරේදී උපස්ථ කේත සත්‍යාපනය මෙම සත්‍යාපනය මත රඳා පවතී.",
+                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
+                        },
+                        success: {
+                            description: "{{StepNo}} පියවරෙන් සත්‍යාපකය සාර්ථකව මකා දමන ලදි.",
+                            message: "මකා දැමීම සාර්ථකයි"
                         }
                     },
                     deleteProtocolConfig: {

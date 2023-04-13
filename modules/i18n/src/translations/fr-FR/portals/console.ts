@@ -675,6 +675,14 @@ export const console: ConsoleNS = {
                         header: "Vous ajoutez un gestionnaire",
                         message: "C'est un gestionnaire."
                     },
+                    backupCodeAuthenticatorAddition: {
+                        assertionHint: "Cliquez sur Confirmer pour ajouter l'authentificateur de code de " +
+                            "sauvegarde.",
+                        content: "L'authentificateur de code de secours peut être utilisé pour se connecter " +
+                            "lorsque les utilisateurs ne peuvent pas recevoir de codes d'authentification multifacteur.",
+                        header: "Avez-vous besoin d'ajouter l'authentificateur de code de secours à cette étape?",
+                        message: "Vous ajoutez un authentificateur à deux facteurs."
+                    },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Continuez avec les valeurs existantes.",
                         content: "Vous avez entré une valeur inférieure à 60 secondes pour la ou les " +
@@ -1086,6 +1094,11 @@ export const console: ConsoleNS = {
                                                             description: "Utiliser les informations de connexion " +
                                                                 "existantes d'un fournisseur de réseau social.",
                                                             heading: "Connexion sociale"
+                                                        },
+                                                        backupCodes: {
+                                                            description: "Option de récupération de l'authentification " +
+                                                                "à deux facteurs.",
+                                                            heading: "Récupération MFA"
                                                         }
                                                     },
                                                     goBackButton: "Revenir à la Sélection",
@@ -2568,6 +2581,21 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "Il existe des authentificateurs dans d'autres étapes " +
                                 "qui dépendent de cet authentificateur.",
+                            message: "Impossible de supprimer cet authentificateur"
+                        },
+                        success: {
+                            description: "Suppression réussie de l'authentificateur de l'étape {{stepNo}}.",
+                            message: "Suppression réussie"
+                        }
+                    },
+                    deleteOptionErrorDueToSecondFactorsDependency: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Impossible de supprimer cet authentificateur"
+                        },
+                        genericError: {
+                            description: "L'authentificateur de code de sauvegarde dans cette étape " +
+                                "dépend de cet authentificateur.",
                             message: "Impossible de supprimer cet authentificateur"
                         },
                         success: {

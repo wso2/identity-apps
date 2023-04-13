@@ -674,6 +674,13 @@ export const console: ConsoleNS = {
                         header: "You are adding a Handler",
                         message: "This is a handler."
                     },
+                    backupCodeAuthenticatorAddition: {
+                        assertionHint: "Click Confirm to add the backup code authenticator.",
+                        content: "Backup code authenticator can be used to login when users cannot " +
+                            "receive multi-factor authentication codes.",
+                        header: "Do you need to add the backup code authenticator to this step?",
+                        message: "You are adding a two factor authenticator."
+                    },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Click Confirm to continue with your values.",
                         content: "This means that your tokens may expire too soon. Please recheck your values " +
@@ -1072,6 +1079,10 @@ export const console: ConsoleNS = {
                                                         social: {
                                                             description: "Use existing social login account.",
                                                             heading: "Social login"
+                                                        },
+                                                        backupCodes: {
+                                                            description: "Two-factor authentication recovery option.",
+                                                            heading: "MFA Recovery"
                                                         }
                                                     },
                                                     goBackButton: "Go back to selection",
@@ -2525,6 +2536,21 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "There are authenticators in other steps that depend on "
                                 + "this authenticator.",
+                            message: "Cannot delete this authenticator"
+                        },
+                        success: {
+                            description: "Successfully deleted the authenticator from step {{stepNo}}.",
+                            message: "Delete successful"
+                        }
+                    },
+                    deleteOptionErrorDueToSecondFactorsDependency: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Cannot delete this authenticator"
+                        },
+                        genericError: {
+                            description: "Backup code authenticator in this step depends on this " +
+                                "authenticator.",
                             message: "Cannot delete this authenticator"
                         },
                         success: {

@@ -580,9 +580,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const dispatchTwoFactorAuthDeleteErrorNotification = (): void => {
         dispatch(
             addAlert({
-                description: "Backup code authenticator in this step depends on this authenticator.",
+                description: t(
+                    "console:develop.features.applications.notifications." +
+                    "deleteOptionErrorDueToSecondFactorsDependency.genericError.description"
+                ),
                 level: AlertLevels.WARNING,
-                message: "Cannot delete this authenticator"
+                message: t(
+                    "console:develop.features.applications.notifications." +
+                    "deleteOptionErrorDueToSecondFactorsDependency.genericError.message"
+                )
             })
         );
     };
@@ -984,20 +990,19 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             <ConfirmationModal.Header
                 data-componentid={ `${ testId }-backup-code-add-confirmation-modal-header` }
             >
-                Do you need to add the backup code authenticator to this step?
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 info
                 data-componentid={ `${ testId }-backup-code-add-confirmation-modal-message` }
             >
-                You are adding a two factor authenticator.
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-componentid={ `${ testId }-backup-code-add-confirmation-modal-content` }
             >
-                Backup code authenticator can be used to login when users cannot
-                receive multi-factor authentication codes.
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
