@@ -221,13 +221,13 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 
 const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
  
-    if(values.field==="password"){
+    if (!values || values?.field === "password") {
         return;
     }
 
     const rules: ValidationConfInterface[] = [];
 
-    if (values.enableValidator==="false"){
+    if (values?.enableValidator === "false") {
         rules.push(
             {
                 properties: [

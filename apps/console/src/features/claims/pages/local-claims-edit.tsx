@@ -23,6 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { Image } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
@@ -61,12 +62,12 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const claimID = match.params.id;
+    const claimID: string = match.params.id;
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -77,10 +78,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         setIsLocalClaimDetailsRequestLoading(true);
 
         getAClaim(claimID)
-            .then((response) => {
+            .then((response: Claim) => {
                 setClaim(response);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("console:manage.features.claims.local.notifications.getAClaim.genericError.description"),
@@ -102,7 +103,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     /**
      * Contains the data of the panes.
      */
-    const panes = [
+    const panes: {
+        menuItem: string;
+        render: () => JSX.Element;
+    }[] = [
         {
             menuItem: t("console:manage.features.claims.local.pageLayout.edit.tabs.general"),
             render: () => (
@@ -147,7 +151,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
      * @returns The first letter of a claim.
      */
     const generateClaimLetter = (name: string): string => {
-        const stringArray = name?.replace("http://", "")?.split("/");
+        const stringArray: string[] = name?.replace("http://", "")?.split("/");
 
         return stringArray[ stringArray?.length - 1 ][ 0 ]?.toLocaleUpperCase();
     };
