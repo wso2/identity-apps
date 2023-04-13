@@ -216,9 +216,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     isFeatureEnabled(
                         featureConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
-                    ) &&
-                    isSuperTenantLogin()
-                    ? (
+                    ) ? (
                         <>
                             <List.Item
                                 className="inner-list-item recovery-options-muted-header"
@@ -246,7 +244,6 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     enabledAuthenticators={ enabledAuthenticators }
                                     backupCodeAuthenticatorName={ backupCodeAuthenticatorName }
                                     isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
-                                    isSuperTenantLogin={ isSuperTenantLogin() }
                                     onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 />
                             </List.Item>
