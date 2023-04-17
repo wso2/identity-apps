@@ -294,7 +294,7 @@
 
 <% if (isAdminAdvisoryBannerEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
-        <%=adminAdvisoryBannerContentOfTenant%>
+        <%=Encode.forHtml(adminAdvisoryBannerContentOfTenant)%>
     </div>
 <% } %>
 
