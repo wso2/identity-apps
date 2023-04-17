@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,7 +28,8 @@ import { SettingsSection } from "../../shared";
  * Account security widget.
  * Also see {@link AccountSecurityWidget.defaultProps}
  *
- * @return {JSX.Element}
+ * @param props - Props injected to the component.
+ * @returns Account Security Widget.
  */
 export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
 
@@ -41,7 +42,8 @@ export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface
 
     return (
         <div className="widget account-security" data-testid={ testId }>
-            <SettingsSection className="overview"
+            <SettingsSection
+                className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.accountSecurity.header") }
                 description={ t("myAccount:components.overview.widgets.accountSecurity.description") }
@@ -49,7 +51,7 @@ export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().accountSecurity }
                 iconMini={ getWidgetIcons().accountSecurity }
-                iconSize="tiny"
+                iconSize="x60"
                 iconStyle="twoTone"
             />
         </div>

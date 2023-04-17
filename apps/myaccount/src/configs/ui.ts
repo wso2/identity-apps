@@ -34,7 +34,6 @@ import {
 import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
-import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
 import { ReactComponent as ConsoleIcon } from "../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
@@ -49,7 +48,6 @@ import { ReactComponent as LockIcon } from "../themes/default/assets/images/icon
 import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
-import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
 import {
     ReactComponent as SecurityQuestionsIcon
 } from "../themes/default/assets/images/icons/security-questions-icon.svg";
@@ -57,19 +55,12 @@ import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as SuccessIcon } from "../themes/default/assets/images/icons/success-icon.svg";
 import { ReactComponent as TickCircleIcon } from "../themes/default/assets/images/icons/tick-circle-icon.svg";
 import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
-import { default as MyAccountProfileIcon } from "../themes/default/assets/images/icons/user-profile.svg";
 import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
-import AssociatedAccountsMini from "../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
-import AssociatedAccounts from "../themes/default/assets/images/illustrations/associated-accounts.svg";
-import ChangePasswordMini from "../themes/default/assets/images/illustrations/change-password-mini.svg";
-import ChangePassword from "../themes/default/assets/images/illustrations/change-password.svg";
 import {
     ReactComponent as EnterVerificationCodeIcon
 } from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
 import FederatedAssociationsMini from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
 import FederatedAssociations from "../themes/default/assets/images/illustrations/federated-associations.svg";
-import ProfileExportMini from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
-import ProfileExport from "../themes/default/assets/images/illustrations/profile-export.svg";
 import {
     ReactComponent as QRCodeScanIcon
 } from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
@@ -79,6 +70,24 @@ import {
 import {
     ReactComponent as SecurityQuestions
 } from "../themes/default/assets/images/illustrations/security-questions.svg";
+import {
+    ReactComponent as AccountSecurityIconIllustration
+} from "../themes/default/assets/images/illustrations/selfcare-account-security.svg";
+import {
+    ReactComponent as AssociatedAccounts
+} from "../themes/default/assets/images/illustrations/selfcare-associated-accounts.svg";
+import {
+    ReactComponent as ChangePasswordIllustration
+} from "../themes/default/assets/images/illustrations/selfcare-change-password.svg";
+import {
+    ReactComponent as ConsentIllustration
+} from "../themes/default/assets/images/illustrations/selfcare-consent.svg";
+import {
+    ReactComponent as ProfileExport
+} from "../themes/default/assets/images/illustrations/selfcare-export-profile.svg";
+import {
+    ReactComponent as ProfileIllustration
+} from "../themes/default/assets/images/illustrations/selfcare-profile.svg";
 import {
     ReactComponent as EmptyListResultsIllustration
 } from "../themes/default/assets/images/placeholder-illustrations/empty-list-illustration.svg";
@@ -114,27 +123,27 @@ export const getSidePanelIcons = (): {
 };
 
 export const getSettingsSectionIcons = (): {
-    associatedAccounts: string;
-    associatedAccountsMini: string;
-    changePassword: string;
-    changePasswordMini: string;
+    associatedAccounts: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    associatedAccountsMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    changePassword: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    changePasswordMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     federatedAssociations: string;
     federatedAssociationsMini: string;
-    profileExport: string;
-    profileExportMini: string;
+    profileExport: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    profileExportMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     securityQuestions: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     securityQuestionsMini: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
 
     return {
         associatedAccounts: AssociatedAccounts,
-        associatedAccountsMini: AssociatedAccountsMini,
-        changePassword: ChangePassword,
-        changePasswordMini: ChangePasswordMini,
+        associatedAccountsMini: AssociatedAccounts,
+        changePassword: ChangePasswordIllustration,
+        changePasswordMini: ChangePasswordIllustration,
         federatedAssociations: FederatedAssociations,
         federatedAssociationsMini: FederatedAssociationsMini,
         profileExport: ProfileExport,
-        profileExportMini: ProfileExportMini,
+        profileExportMini: ProfileExport,
         securityQuestions: SecurityQuestions,
         securityQuestionsMini: SecurityQuestionsMini
     };
@@ -182,15 +191,15 @@ export const getAccountStatusShields = (): {
 };
 
 export const getWidgetIcons = (): {
-    accountSecurity: string;
-    consents: string;
-    profile: string;
+    accountSecurity: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    consents: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    profile: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
 
     return {
-        accountSecurity: PadlockIcon,
-        consents: ConsentIcon,
-        profile: MyAccountProfileIcon
+        accountSecurity: AccountSecurityIconIllustration,
+        consents: ConsentIllustration,
+        profile: ProfileIllustration
     };
 };
 

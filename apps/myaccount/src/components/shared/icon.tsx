@@ -51,7 +51,8 @@ export type ThemeIconSizes =
     | "large"
     | "big"
     | "huge"
-    | "massive";
+    | "massive"
+    | "x60";
 
 /**
  * Generic component to render icons.
@@ -77,9 +78,9 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         transparent,
         twoTone
     } = props;
-    const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
+    const relaxLevel: string = (relaxed && relaxed === true) ? "" : relaxed;
 
-    const classes = classNames({
+    const classes: string = classNames({
         "bordered": bordered,
         "colored": colored,
         "default": defaultIcon,
