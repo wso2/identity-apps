@@ -63,6 +63,10 @@ interface AppleAuthenticationProviderCreateWizardContentPropsInterface extends I
      * @param values - Form values.
      */
     onSubmit: (values: AppleAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "apple-authenticator-wizard-form";
@@ -86,6 +90,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
+        setCurrentStepInGuidePanel,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -201,6 +206,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(1) }
                         ariaLabel="Apple IDP Name"
                         inputType="name"
                         name="name"
@@ -222,6 +228,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         width={ 13 }
                     />
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(2) }
                         ariaLabel="Apple Client ID"
                         inputType="client_id"
                         name="clientId"
@@ -252,6 +259,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         width={ 13 }
                     />
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(3) }
                         ariaLabel="Apple Team ID"
                         inputType="name"
                         name="teamId"
@@ -282,6 +290,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         width={ 13 }
                     />
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(4) }
                         ariaLabel="Apple Key ID"
                         inputType="name"
                         name="keyId"
@@ -312,6 +321,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         width={ 13 }
                     />
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(5) }
                         ariaLabel="Apple Private Key"
                         inputType="password"
                         name="privateKey"

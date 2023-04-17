@@ -16,43 +16,40 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Button, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
- * Prop types of the component.
+ * Props for the Organization SSO authentication provider create wizard help component.
  */
-type OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
+interface OrganizationEnterpriseIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     */
+    currentStepInSidePanelGuide: number;
+}
+const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: OrganizationEnterpriseIdentityProviderCreateWizardHelpProps) => {
+    const { t } = useTranslation();
+    const [ useNewConnectionsView ] = useState<boolean>(undefined);
+    const [ currentState, setCurrentState ] = useState <any>();
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-/**
- * Help content for the custom IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- * @returns OrganizationEnterpriseIdentityProviderCreateWizardHelp component.
- */
-const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
-    FunctionComponent<OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface> = (
-        props: OrganizationEnterpriseIdentityProviderCreateWizardHelpPropsInterface
-    ): ReactElement => {
+    useEffect(() => {
+        setCurrentState(currentStepInSidePanelGuide);
+    }, [ currentStepInSidePanelGuide ]);
 
-        const {
-            ["data-testid"]: testId
-        } = props;
-
-        const { t } = useTranslation();
-
-        return (
-            <>
-                <div data-testid={ testId }>
-                    <Heading as="h5">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.name.heading")
-                        }
-                    </Heading>
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+    const quickHelpContent: Content[] = [
+        {
+            body: (
+                <>
                     <p>
                         {
                             t("console:develop.features.authenticationProvider.templates.organizationIDP" +
@@ -60,33 +57,95 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
                         }
                     </p>
                     <p>E.g., MyOrgEnterpriseAuthProvider.</p>
-                </div>
-
-                <Divider/>
-
-                <div data-testid={ testId }>
-                    <Heading as="h5">
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.description.heading")
-                        }
-                    </Heading>
+                </>
+            ),
+            id: 0,
+            title: t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.name.heading")
+        },
+        {
+            body:(    
+                <>
                     <p>
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.description.description")
-                        }
+                        { t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                        ".wizardHelp.description.description") }
                     </p>
                     <p>
-                        {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
-                                ".wizardHelp.description.example")
-                        }
+                        { t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            ".wizardHelp.description.example") }
                     </p>
-                </div>
-            </>
-        );
+                </>      
+            ),
+            id: 1,
+            title: t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+            ".wizardHelp.description.heading")
+        }
+    ];
+
+    const handleClickPrevious = () => {
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
     };
+    const handleClickNext = () =>{
+        setCurrentState(currentState === 1 ?  1 : currentState + 1);
+    };
+    const isPreviousButtonDisabled: boolean = currentState === 0;
+    const isNextButtonDisabled: boolean = currentState === 1;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentState / (1)) * 100;
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content">
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
+                            className="idp-sidepanel-button"
+                            disabled={ isPreviousButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
+                            className="idp-sidepanel-button"
+                            disabled={ isNextButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
+    );
+};
 
 /**
  * Default props for the component

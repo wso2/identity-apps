@@ -16,72 +16,154 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { CopyInputField, Message } from "@wso2is/react-components";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Icon } from "semantic-ui-react";
-import { store } from "../../../../../core";
+import { Button, Icon, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
-/**
- * Prop types of the component.
- */
-type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
+const CustomIdentityProviderCreateWizardHelp = () => {
+    const { t } = useTranslation();
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-/**
- * Help content for the custom IDP template creation wizard.
- *
- * @param {CustomIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
- */
-const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface>
-    = ( props: CustomIdentityProviderCreateWizardHelpPropsInterface ): ReactElement => {
-
-        const {
-            [ "data-testid" ]: testId
-        } = props;
-
-        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-        return (
-            <div data-testid={ testId }>
-                <Message
-                    type="info"
-                    header="Prerequisite"
-                    content={
-                        <p>Before you begin, register an application in the Identity Provider, and obtain a
-                            <strong> client ID & secret</strong>. Use the following URL as the <strong>
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+    }
+    const quickHelpContent: Content[] = [
+        {
+            body: (
+                <>
+                    <Message
+                        type="info"
+                        header="Prerequisite"
+                        content={
+                            (<p>Before you begin, register an application in the Identity Provider, and obtain a
+                                <strong> client ID & secret</strong>. Use the following URL as the <strong>
                                 Authorized Redirect URL</strong>.
-                            <br />
-                            <br />
-                            <CopyInputField
-                                className="copy-input-dark"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
-                            <br />
-                            <Icon name="info circle" />
-                            The URL to which the authorization code is sent upon authentication and where the
-                            user is redirected to upon logout.
-                        </p>
-                    }
-                />
-                <Heading as="h5">Client ID</Heading>
-                <p>Provide the client ID obtained from the identity provider.</p>
-                <Divider />
-                <Heading as="h5">Client secret</Heading>
-                <p>Provide the client secret obtained from the identity provider.</p>
-                <Divider />
-                <Heading as="h5">Authorization endpoint URL</Heading>
-                <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-                <p>E.g., https://enterprise_domain/authorize</p>
-                <Divider />
-                <Heading as="h5">Token endpoint URL</Heading>
-                <p>Provide the standard token endpoint URL of the identity provider.</p>
-                <p>E.g., https://enterprise_domain/token</p>
+                                <br />
+                                <br />
+                                <CopyInputField
+                                    className="copy-input-dark"
+                                    value={ config?.deployment?.customServerHost + "/commonauth" }
+                                />
+                                <br />
+                                <Icon name="info circle" />
+                                The URL to which the authorization code is sent upon authentication and where the
+                                user is redirected to upon logout.
+                            </p>)
+                        }
+                    />
+                </>
+            ),
+            id: 0
+        },
+        {
+            body:(    
+                <><p>Provide the client ID obtained from the identity provider.</p>
+                </>      
+            ),
+            id: 1,
+            title:  t("Client ID")
+        },
+        {
+            body:(    
+                <><p>Provide the client secret obtained from the identity provider.</p>
+                </>      
+            ),
+            id: 2,
+            title:  t("Client secret")
+        },
+        {
+            body:(    
+                <>
+                    <p>Provide the standard authorization endpoint URL of the identity provider.</p>
+                    <p>E.g., https://enterprise_domain/authorize</p>
+                </>      
+            ),
+            id: 3,
+            title:  t("Authorization endpoint URL")
+        },
+        {
+            body:(    
+                <>
+                    <p>Provide the standard token endpoint URL of the identity provider.</p>
+                    <p>E.g., https://enterprise_domain/token</p>
+                </>      
+            ),
+            id: 4,
+            title:  t("Token endpoint URL")
+        }
+    ];
 
-            </div>
-        );
+    const [ currentContent, setCurrentContent ] = useState(0);
+
+    const handleClickPrevious = () => {
+        setCurrentContent((c) => (c > 0 ? c - 1 : c));
+    };
+    const handleClickNext = () =>{
+        setCurrentContent((c) => (c < quickHelpContent.length - 1 ? c + 1 : c));
+    };
+    const isPreviousButtonDisabled: boolean = currentContent === 0;
+    const isNextButtonDisabled: boolean = currentContent === quickHelpContent.length - 1;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentContent / (quickHelpContent.length - 1)) * 100;
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content-large">
+                    { quickHelpContent.map(({ id, title, body }) => (
+                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
+                            className="idp-sidepanel-button"
+                            disabled={ isPreviousButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
+                            className="idp-sidepanel-button"
+                            disabled={ isNextButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
+    );
 };
 
 /**

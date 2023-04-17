@@ -16,214 +16,269 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
+import { Button, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Prop types of the component.
+ * Props for the Apple authentication provider create wizard help component.
  */
-type AppleIdentityProviderCreateWizardHelpPropsInterface = IdentifiableComponentInterface;
-
-/**
- * Help content for the Apple IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
- */
-const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProviderCreateWizardHelpPropsInterface> = (
-    props: AppleIdentityProviderCreateWizardHelpPropsInterface
-): ReactElement => {
-
-    const {
-        [ "data-componentid" ]: componentId
-    } = props;
-
+interface AppleIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     */
+    currentStepInSidePanelGuide: number;
+}
+const AppleIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: AppleIdentityProviderCreateWizardHelpProps) => {
     const { t } = useTranslation();
-
+    const [ useNewConnectionsView ] = useState<boolean>(undefined);
+    const [ currentState, setCurrentState ] = useState <any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
     useEffect(() => {
+        setCurrentState(currentStepInSidePanelGuide);
+    }, [ currentStepInSidePanelGuide ]);
 
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
-    
-    return (
-        <div data-componentid={ componentId }>
-            <Message
-                type="info"
-                header={
-                    t("console:develop.features.authenticationProvider.templates.apple." +
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+    const quickHelpContent: Content[] = [
+        {
+            body: (
+                <>
+                    <Message
+                        type="info"
+                        header={
+                            t("console:develop.features.authenticationProvider.templates.apple." +
                     "wizardHelp.preRequisites.heading")
-                }
-                content={
-                    (<>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.apple." +
+                        }
+                        content={
+                            (<>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.getCredentials"
-                                }
-                            >
+                                        }
+                                    >
                                 Before you begin, create a <strong>Sign in With Apple</strong> enabled 
                                 application on <a
-                                    href="https://developer.apple.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
+                                            href="https://developer.apple.com/"
+                                            target="_blank"
+                                            rel="noopener noreferrer">
                                 Apple Developer Portal
-                                </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
-                            </Trans>
-                        </p>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.apple." +
+                                        </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
+                                    </Trans>
+                                </p>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.configureWebDomain"
-                                }
-                            >
+                                        }
+                                    >
                             Use the following as a <strong>Web Domain</strong>.
-                            </Trans>
-                            <CopyInputField
-                                className="copy-input-dark spaced"
-                                value={ new URL(config?.deployment?.serverOrigin)?.hostname }
-                            />
-                        </p>
-                        <p>
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.apple." +
+                                    </Trans>
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ new URL(config?.deployment?.serverOrigin)?.hostname }
+                                    />
+                                </p>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.configureReturnURL"
-                                }
-                            >
+                                        }
+                                    >
                             Add the following URL as a <strong>Return URL</strong>.
-                            </Trans>
-                            <CopyInputField
-                                className="copy-input-dark spaced"
-                                value={ config?.deployment?.customServerHost + "/commonauth" }
-                            />
-                            <a
-                                href={
-                                    "https://developer.apple.com/documentation/sign_in_with_apple" + 
+                                    </Trans>
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ config?.deployment?.customServerHost + "/commonauth" }
+                                    />
+                                    <a
+                                        href={
+                                            "https://developer.apple.com/documentation/sign_in_with_apple" + 
                                     "/configuring_your_environment_for_sign_in_with_apple"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer">
-                                {
-                                    t("console:develop.features.authenticationProvider.templates.apple" +
+                                        }
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                        {
+                                            t("console:develop.features.authenticationProvider.templates.apple" +
                                     ".wizardHelp.preRequisites.configureAppleSignIn")
-                                }
-                            </a>
-                        </p>
-                    </>)
-                }
-            />
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.apple" +
-                            ".wizardHelp.name.heading")
-                }
-            </Heading>
-            <p>
-                {
-                    useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.apple." +
+                                        }
+                                    </a>
+                                </p>
+                            </>)
+                        }
+                    />
+                </>
+            ),
+            id: 0
+        },
+        {
+            body:(    
+                <p>
+                    {
+                        useNewConnectionsView
+                            ? t("console:develop.features.authenticationProvider.templates.apple." +
                                 "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.apple." +
+                            : t("console:develop.features.authenticationProvider.templates.apple." +
                                 "wizardHelp.name.idpDescription")
-                }
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                { t("console:develop.features.authenticationProvider." +
-                        "templates.apple.wizardHelp.clientId.heading") }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.apple" +
+                    }
+                </p>      
+            ),
+            id: 1,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.name.heading")
+        },
+        {
+            body:(
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.clientId.description"
-                    }
-                >
+                            }
+                        >
                     Provide the <Code>Services ID</Code> created at Apple.
-                </Trans>
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.apple" +
-                            ".wizardHelp.teamId.heading")
-                }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.apple." +
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 2,
+            title: t("console:develop.features.authenticationProvider." +
+            "templates.apple.wizardHelp.clientId.heading")
+        },
+        {
+            body: (
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.teamId.description"
-                    }
-                >
+                            }
+                        >
                     Provide the Apple developer <Code>Team ID</Code>.
-                </Trans>
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.apple" +
-                            ".wizardHelp.keyId.heading")
-                }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.apple." +
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 3,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.teamId.heading")
+        },
+        {
+            body: (
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.keyId.description"
-                    }
-                >
+                            }
+                        >
                     Provide the <Code>Key Identifier</Code> of the private key generated.
-                </Trans>
-            </p>
-
-            <Divider/>
-
-            <Heading as="h5">
-                {
-                    t("console:develop.features.authenticationProvider.templates.apple" +
-                            ".wizardHelp.privateKey.heading")
-                }
-            </Heading>
-            <p>
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.templates.apple." +
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 4,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.keyId.heading")     
+        },
+        {
+            body: (
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.privateKey.description"
-                    }
-                >
+                            }
+                        >
                     Provide the <Code>Private Key</Code> generated for the application.
-                </Trans>
-            </p>
-        </div>
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 5,
+            title: t("console:develop.features.authenticationProvider.templates.apple" +
+            ".wizardHelp.privateKey.heading")
+        }
+    ];
+
+    const handleClickPrevious = () => {
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
+    };
+    const handleClickNext = () =>{
+        setCurrentState(currentState === 5 ?  5 : currentState + 1);
+    };
+    const isPreviousButtonDisabled: boolean = currentState === 0;
+    const isNextButtonDisabled: boolean = currentState === 5;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentState / (5)) * 100;
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content">
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
+                            className="idp-sidepanel-button"
+                            disabled={ isPreviousButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
+                            className="idp-sidepanel-button"
+                            disabled={ isNextButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
     );
 };
 

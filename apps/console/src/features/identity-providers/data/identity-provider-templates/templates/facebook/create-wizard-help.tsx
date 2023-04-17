@@ -21,126 +21,112 @@ import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Button, Divider, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../../extensions/configs";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
 /**
- * Prop types of the component.
+ * Props for the Facebook authentication provider create wizard help component.
  */
-type FacebookIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface;
+interface FacebookIdentityProviderCreateWizardHelpProps {
+    /**
+     * Current step of the wizard.
+     */
+    currentStepInSidePanelGuide: number;
+}
+const FacebookIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: FacebookIdentityProviderCreateWizardHelpProps) => {
+    const { t } = useTranslation();
+    const [ useNewConnectionsView ] = useState<boolean>(undefined);
+    const [ currentState, setCurrentState ] = useState <any>();
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-/**
- * Help content for the Facebook IDP template creation wizard.
- *
- * @param props - Props injected into the component.
- *
- *  @returns React Element
- */
-const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
-    FacebookIdentityProviderCreateWizardHelpPropsInterface> = (
-        props: FacebookIdentityProviderCreateWizardHelpPropsInterface
-    ): ReactElement => {
+    useEffect(() => {
+        setCurrentState(currentStepInSidePanelGuide);
+    }, [ currentStepInSidePanelGuide ]);
 
-        const {
-            [ "data-testid" ]: testId
-        } = props;
-
-        const { t } = useTranslation();
-
-        const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-        const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-        /**
-         * Checks if the listing view defined in the config is the new connections view.
-         */
-        useEffect(() => {
-
-            if (useNewConnectionsView !== undefined) {
-                return;
-            }
-
-            setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-        }, [ identityProviderConfig ]);
-        
-        return (
-            <div data-testid={ testId }>
-                <Message
-                    type="info"
-                    header={
-                        t("console:develop.features.authenticationProvider.templates.facebook." +
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+      }
+    const quickHelpContent: Content[] = [
+        {
+            body: (
+                <>
+                    <Message
+                        type="info"
+                        header={
+                            t("console:develop.features.authenticationProvider.templates.facebook." +
                         "wizardHelp.preRequisites.heading")
-                    }
-                    content={
-                        (<>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
+                        }
+                        content={
+                            (<>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.facebook." +
                                         "wizardHelp.preRequisites.getCredentials"
-                                    }
-                                >
+                                        }
+                                    >
                                 Before you begin, create an <strong>application</strong> <a
-                                        href="https://developers.facebook.com/"
+                                            href="https://developers.facebook.com/"
+                                            target="_blank"
+                                            rel="noopener noreferrer">
+                                on Facebook Developer Console
+                                        </a>, and obtain a <strong>App ID & secret</strong>.
+                                    </Trans>
+                                </p>
+                                <p>
+    
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.facebook." +
+                                        "wizardHelp.preRequisites.configureSiteURL"
+                                        }
+                                    >
+                                Use the following as the <strong>Site URL</strong>.
+                                    </Trans>
+    
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ config?.deployment?.customServerHost }
+                                    />
+                                </p>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates.facebook." +
+                                        "wizardHelp.preRequisites.configureRedirectURL"
+                                        }
+                                    >
+                                Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
+                                    </Trans>
+    
+                                    <CopyInputField
+                                        className="copy-input-dark spaced"
+                                        value={ config?.deployment?.customServerHost + "/commonauth" }
+                                    />
+    
+                                    <a
+                                        href="https://developers.facebook.com/docs/development/create-an-app"
                                         target="_blank"
                                         rel="noopener noreferrer">
-                                on Facebook Developer Console
-                                    </a>, and obtain a <strong>App ID & secret</strong>.
-                                </Trans>
-                            </p>
-                            <p>
-    
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
-                                        "wizardHelp.preRequisites.configureSiteURL"
-                                    }
-                                >
-                                Use the following as the <strong>Site URL</strong>.
-                                </Trans>
-    
-                                <CopyInputField
-                                    className="copy-input-dark spaced"
-                                    value={ config?.deployment?.customServerHost }
-                                />
-                            </p>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
-                                        "wizardHelp.preRequisites.configureRedirectURL"
-                                    }
-                                >
-                                Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
-                                </Trans>
-    
-                                <CopyInputField
-                                    className="copy-input-dark spaced"
-                                    value={ config?.deployment?.customServerHost + "/commonauth" }
-                                />
-    
-                                <a
-                                    href="https://developers.facebook.com/docs/development/create-an-app"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                    {
-                                        t("console:develop.features.authenticationProvider.templates.facebook" +
+                                        {
+                                            t("console:develop.features.authenticationProvider.templates.facebook" +
                                         ".wizardHelp.preRequisites.configureOAuthApps")
-                                    }
-                                </a>
-                            </p>
-                        </>)
-                    }
-                />
-    
-                <Heading as="h5">
-                    {
-                        t("console:develop.features.authenticationProvider.templates.facebook" +
-                                ".wizardHelp.name.heading")
-                    }
-                </Heading>
+                                        }
+                                    </a>
+                                </p>
+                            </>)
+                        }
+                    />
+                </>
+            ),
+            id: 0
+        },
+        {
+            body:(    
                 <p>
                     {
                         useNewConnectionsView
@@ -149,46 +135,116 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                             : t("console:develop.features.authenticationProvider.templates.facebook." +
                                     "wizardHelp.name.idpDescription")
                     }
-                </p>
-    
-                <Divider/>
-    
-                <Heading as="h5">
-                    { t("console:develop.features.authenticationProvider." +
-                            "templates.facebook.wizardHelp.clientId.heading") }
-                </Heading>
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.facebook" +
+                </p>        
+            ),
+            id: 1,
+            title: t("console:develop.features.authenticationProvider.templates.facebook" +
+            ".wizardHelp.name.heading")
+        },
+        {
+            body:(
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.facebook" +
                                 ".wizardHelp.clientId.description"
-                        }
-                    >
+                            }
+                        >
                             Provide the <Code>App ID</Code> obtained from Facebook.
-                    </Trans>
-                </p>
-    
-                <Divider/>
-    
-                <Heading as="h5">
-                    {
-                        t("console:develop.features.authenticationProvider.templates.facebook" +
-                                ".wizardHelp.clientSecret.heading")
-                    }
-                </Heading>
-                <p>
-                    <Trans
-                        i18nKey={
-                            "console:develop.features.authenticationProvider.templates.facebook." +
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 2,
+            title: t("console:develop.features.authenticationProvider." +
+            "templates.facebook.wizardHelp.clientId.heading")
+        },
+        {
+            body: (
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.facebook." +
                                 "wizardHelp.clientSecret.description"
-                        }
-                    >
+                            }
+                        >
                             Provide the <Code>App Secret</Code> obtained from Facebook.
-                    </Trans>
-                </p>
-            </div>
-        );
+                        </Trans>
+                    </p>
+                </>
+            ),
+            id: 3,
+            title: t("console:develop.features.authenticationProvider.templates.facebook" +
+            ".wizardHelp.clientSecret.heading")
+        }
+    ];
+
+    const handleClickPrevious = () => {
+        setCurrentState(currentState === 0 ?  0 : currentState - 1);
     };
+    const handleClickNext = () =>{
+        setCurrentState(currentState === 3 ?  3 : currentState + 1);
+    };
+    const isPreviousButtonDisabled: boolean = currentState === 0;
+    const isNextButtonDisabled: boolean = currentState === 3;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentState / (3)) * 100;
+
+    return (
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content">
+                    { quickHelpContent.map(({ id, title, body }: Content) => (
+                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
+                            className="idp-sidepanel-button"
+                            disabled={ isPreviousButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
+                            className="idp-sidepanel-button"
+                            disabled={ isNextButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
+    );
+};
 
 /**
  * Default props for the component

@@ -17,34 +17,100 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { Button, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { ConfigReducerStateInterface, AppState } from "apps/console/src/features/core";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Icon, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
-/**
- * Prop types of the component.
- */
-type CustomIdentityProviderCreateWizardHelpPropsInterface = TestableComponentInterface
+const CustomIdentityProviderCreateWizardHelp = () => {
+    const { t } = useTranslation();
+    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-/**
- * Help content for the custom IDP template creation wizard.
- *
- * @param {CustomIdentityProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
- */
-const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityProviderCreateWizardHelpPropsInterface> = (
-    props: CustomIdentityProviderCreateWizardHelpPropsInterface
-): ReactElement => {
+    interface Content {
+        id: number;
+        title?: string;
+        body: JSX.Element;
+    }
+    const quickHelpContent: Content[] = [
+        {
+            body:(    
+                <>
+                    <p>Provide a unique name for the enterprise authentication provider so that it can be easily identified.</p>
+                    <p>E.g., MyEnterpriseAuthProvider.</p>
+                </>      
+            ),
+            id: 0,
+            title:  t("Name")
+        }
+    ];
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+    const [ currentContent, setCurrentContent ] = useState(0);
+
+    const handleClickPrevious = () => {
+        setCurrentContent((c) => (c > 0 ? c - 1 : c));
+    };
+    const handleClickNext = () =>{
+        setCurrentContent((c) => (c < quickHelpContent.length - 1 ? c + 1 : c));
+    };
+    const isPreviousButtonDisabled: boolean = currentContent === 0;
+    const isNextButtonDisabled: boolean = currentContent === quickHelpContent.length - 1;
+    const previousButtonColor: SemanticCOLORS = isPreviousButtonDisabled ? "grey" : "orange";
+    const nextButtonColor: SemanticCOLORS = isNextButtonDisabled ? "grey" : "orange";
+    const progress: number = (currentContent / (quickHelpContent.length - 1)) * 100;
 
     return (
-        <div data-testid={ testId }>
-            <Heading as="h5">Name</Heading>
-            <p>Provide a unique name for the enterprise authentication provider so that it can be easily identified.</p>
-            <p>E.g., MyEnterpriseAuthProvider.</p>
-        </div>
+        <Sidebar.Pushable>
+            <Sidebar
+                as={ Segment }
+                animation="overlay"
+                direction="left"
+                visible
+                icon="labeled"
+                vertical
+                className="idp-sidepanel-sidebar"
+            >
+                <div className="idp-sidepanel-content-large">
+                    { quickHelpContent.map(({ id, title, body }) => (
+                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                            <Segment
+                                className="idp-sidepanel-segment">
+                                <h2>{ title }</h2>
+                                <p>{ body }</p>
+                            </Segment>
+                        </div>
+                    )) }
+                </div>
+                <div className="idp-sidepanel-footer">
+                    <Progress
+                        percent={ progress }
+                        indicating
+                        className="idp-sidepanel-progress"
+                        color="orange"
+                        size="tiny"
+                    />
+                    <div className="idp-sidepanel-buttons">
+                        <Button
+                            icon="chevron left"
+                            color={ previousButtonColor }
+                            onClick={ handleClickPrevious }
+                            className="idp-sidepanel-button"
+                            disabled={ isPreviousButtonDisabled }
+                        />
+                        <Button
+                            icon="chevron right"
+                            color={ nextButtonColor }
+                            onClick={ handleClickNext }
+                            className="idp-sidepanel-button"
+                            disabled={ isNextButtonDisabled }
+                        >
+                        </Button>
+                    </div>
+                </div>
+            </Sidebar>
+        </Sidebar.Pushable>
     );
 };
 

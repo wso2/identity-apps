@@ -144,6 +144,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
+        const [ currentStepInSidePanelGuide , setCurrentStepInSidePanelGuide ] = useState<number>(0);
 
         /**
         * Track wizard steps from wizard component.
@@ -426,7 +427,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
                         <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp/>
+                            <WizardHelp currentStepInSidePanelGuide = { currentStepInSidePanelGuide }/>
                         </Suspense>
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
@@ -508,6 +509,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                         >
                             { alert && alertComponent }
                             <MicrosoftAuthenticationProviderCreateWizardContent
+                                setCurrentStepInGuidePanel={ setCurrentStepInSidePanelGuide }
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunctionCb: () => void) => {
                                     submitForm = submitFunctionCb;

@@ -114,6 +114,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         const [ totalStep, setTotalStep ] = useState<number>(0);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
+        const [ currentStepInSidePanelGuide , setCurrentStepInSidePanelGuide ] = useState<number>(0);
 
         /**
         * Creates a new identity provider.
@@ -413,7 +414,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
                         <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp/>
+                            <WizardHelp currentStepInSidePanelGuide = { currentStepInSidePanelGuide }/>
                         </Suspense>
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
@@ -484,6 +485,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                             data-testid={ `${ testId }-modal-content-2` }>
                             { alert && alertComponent }
                             <GoogleAuthenticationProviderCreateWizardContent
+                                setCurrentStepInGuidePanel={ setCurrentStepInSidePanelGuide }
                                 onSubmit={ onSubmitWizard }
                                 triggerSubmission={ (submitFunction: () => void) => {
                                     submitAdvanceForm = submitFunction;

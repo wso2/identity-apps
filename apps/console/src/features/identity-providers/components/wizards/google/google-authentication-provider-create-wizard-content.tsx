@@ -58,6 +58,10 @@ interface GitHubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * @param values - Form values.
      */
     onSubmit: (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
 }
 
 /**
@@ -103,6 +107,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
         template,
         setTotalPage,
         onSubmit,
+        setCurrentStepInGuidePanel,
         [ "data-testid" ]: testId
     } = props;
 
@@ -198,6 +203,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         } }
                     >
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(1) }
                             ariaLabel="Google IDP Name"
                             inputType="name"
                             name="name"
@@ -223,6 +229,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(2) }
                             ariaLabel="Google Client ID"
                             inputType="client_id"
                             name="clientId"
@@ -253,6 +260,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(3) }
                             ariaLabel="Google Client Secret"
                             inputType="password"
                             className="addon-field-wrapper"

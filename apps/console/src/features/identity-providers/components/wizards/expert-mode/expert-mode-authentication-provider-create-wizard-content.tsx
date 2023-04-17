@@ -63,6 +63,10 @@ interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface exte
      * @param values - Form values.
      */
     onSubmit: (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "expert-mode-authenticator-wizard-form";
@@ -86,6 +90,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             template,
             setTotalPage,
             onSubmit,
+            setCurrentStepInGuidePanel,
             [ "data-componentid" ]: componentId
         } = props;
 
@@ -180,6 +185,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
+                        onFocus={ () => setCurrentStepInGuidePanel(0) }
                         ariaLabel="Expert Mode IDP Name"
                         inputType="name"
                         name="name"
@@ -205,6 +211,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         width={ 13 }
                     />
                     <Field.Textarea
+                        onFocus={ () => setCurrentStepInGuidePanel(1) }
                         ariaLabel="Expert Mode IDP Description"
                         inputType="description"
                         name="description"

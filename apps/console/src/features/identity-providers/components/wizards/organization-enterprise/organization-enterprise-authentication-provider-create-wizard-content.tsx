@@ -63,6 +63,11 @@ interface OrganizationEnterpriseAuthenticationProviderCreateWizardContentPropsIn
      * @param values - Form values.
      */
     onSubmit: (values: OrganizationEnterpriseAuthenticationProviderCreateWizardFormErrorValidationsInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
+
 }
 
 const FORM_ID: string = "organization-enterprise-authenticator-wizard-form";
@@ -85,6 +90,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
             template,
             setTotalPage,
             onSubmit,
+            setCurrentStepInGuidePanel,
             ["data-componentid"]: componentId
         } = props;
 
@@ -185,6 +191,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                     >
                         <WizardPage validate={ validateForm }>
                             <Field.Input
+                                onFocus={ () => setCurrentStepInGuidePanel(0) }
                                 ariaLabel="Organization IDP Name"
                                 inputType="name"
                                 name="name"
@@ -206,6 +213,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                                 width={ 13 }
                             />
                             <Field.Input
+                                onFocus={ () => setCurrentStepInGuidePanel(1) }
                                 ariaLabel="Organization IDP Description"
                                 inputType="description"
                                 name="description"

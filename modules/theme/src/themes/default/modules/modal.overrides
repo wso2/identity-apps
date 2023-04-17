@@ -520,6 +520,7 @@
                         opacity: 1;
 
                         .modal-content {
+                            padding: 0px;
                            position: absolute;
                            bottom: 0;
                            height: auto !important;

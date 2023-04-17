@@ -62,6 +62,10 @@ interface GithubAuthenticationProviderCreateWizardContentPropsInterface extends 
      * @param values - Form values.
      */
     onSubmit: (values: FacebookAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "facebook-authenticator-wizard-form";
@@ -85,6 +89,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
         template,
         setTotalPage,
         onSubmit,
+        setCurrentStepInGuidePanel,
         [ "data-testid" ]: testId
     } = props;
 
@@ -193,6 +198,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(1) }
                             ariaLabel="Facebook IDP Name"
                             inputType="name"
                             name="name"
@@ -214,6 +220,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(2) }
                             ariaLabel="Facebook Client ID"
                             inputType="client_id"
                             name="clientId"
@@ -244,6 +251,7 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(3) }
                             ariaLabel="Facebook Client Secret"
                             inputType="password"
                             className="addon-field-wrapper"

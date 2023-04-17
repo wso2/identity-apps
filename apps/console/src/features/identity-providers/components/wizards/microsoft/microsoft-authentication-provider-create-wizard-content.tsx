@@ -62,6 +62,10 @@ interface MicrosoftAuthenticationProviderCreateWizardContentPropsInterface exten
      * @param values - Form values.
      */
     onSubmit: (values: MicrosoftAuthenticationProviderCreateWizardFormValuesInterface) => void;
+    /**
+    * Current step in the guide panel.
+    */
+    setCurrentStepInGuidePanel: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FORM_ID: string = "microsoft-authenticator-wizard-form";
@@ -85,6 +89,7 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
         template,
         setTotalPage,
         onSubmit,
+        setCurrentStepInGuidePanel,
         [ "data-testid" ]: testId
     } = props;
 
@@ -193,6 +198,7 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                 >
                     <WizardPage validate={ validateForm }>
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(1) }
                             ariaLabel="Microsoft IDP Name"
                             inputType="name"
                             name="name"
@@ -218,6 +224,7 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(2) }
                             ariaLabel="Microsoft Client ID"
                             inputType="client_id"
                             name="clientId"
@@ -248,6 +255,7 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             width={ 13 }
                         />
                         <Field.Input
+                            onFocus={ () => setCurrentStepInGuidePanel(3) }
                             ariaLabel="Microsoft Client Secret"
                             inputType="password"
                             className="addon-field-wrapper"
