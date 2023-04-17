@@ -75,10 +75,11 @@ export class BrandingPreferenceMeta {
         --asg-colors-illustrations-accent2-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent2?.main };
         --asg-colors-illustrations-accent3-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent3?.main };
 
-        --asg-primary-color: ${ theme[ theme.activeTheme ].colors.primary };
-        --asg-secondary-color: ${ theme[ theme.activeTheme ].colors.secondary };
-        --asg-primary-background-color: ${ theme[ theme.activeTheme ].page.background.backgroundColor };
-        --asg-primary-text-color: ${ theme[ theme.activeTheme ].page.font.color };
+        --asg-colors-primary-main: ${ theme[ theme.activeTheme ].colors.primary.main };
+        --asg-colors-secondary-main: ${ theme[ theme.activeTheme ].colors.secondary.main };
+        --asg-colors-background-body-main: ${ theme[ theme.activeTheme ].colors.background.body.main };
+        --asg-colors-text-primary: ${ theme[ theme.activeTheme ].colors.text.primary };
+
         --asg-footer-text-color: ${ footerFontColor };
         --asg-footer-border-color: ${ theme[ theme.activeTheme ].footer.border.borderColor };
         --asg-primary-font-family: ${ theme[ theme.activeTheme ].typography.font.fontFamily };
@@ -108,6 +109,22 @@ export class BrandingPreferenceMeta {
         background: var(--asg-colors-background-body-main);
     }
 
+
+
+    /*-----------------------------
+            Anchor Tags
+    ------------------------------*/
+
+    /* Anchor Tags */
+    a {
+        color: var(--asg-colors-primary-main);
+    }
+
+    a:hover, a:focus, a:active {
+        color: var(--asg-colors-primary-main);
+        filter: brightness(0.85);
+    }
+
     /*-----------------------------
              Pre Loader
     ------------------------------*/
@@ -118,26 +135,6 @@ export class BrandingPreferenceMeta {
 
     .ui.inverted.dimmer {
         background: var(--asg-colors-background-body-main);
-    }
-
-    /*-----------------------------
-                Page
-    ------------------------------*/
-
-    /* Default Page */
-    .login-portal.layout {
-        color: var(--asg-primary-text-color);
-        background: var(--asg-primary-background-color);
-    }
-
-    /* Default Page with Blurred Patch */
-    .login-portal.layout .page-wrapper {
-        background: var(--asg-primary-background-color);
-    }
-
-    /* Error, Success Pages */
-    .login-portal.layout .page-wrapper.success-page, .login-portal.layout .page-wrapper.error-page {
-        background: var(--asg-primary-background-color);
     }
 
     /*-----------------------------
@@ -219,7 +216,7 @@ export class BrandingPreferenceMeta {
 
     /* Card Actions */
     .ui.card.settings-card .extra-content .action-button .action-button-text {
-        color: var(--asg-primary-color);
+        color: var(--asg-colors-primary-main);
     }
 
     .ui.card.basic-card {
@@ -289,6 +286,11 @@ export class BrandingPreferenceMeta {
     /*-----------------------------
                 Icons
     ------------------------------*/
+
+    /* Primary Icons */
+    i.icon.primary {
+        color: var(--asg-colors-primary-main);
+    }
 
     .theme-icon
         background: var(--asg-colors-background-surface-light);
@@ -374,6 +376,130 @@ export class BrandingPreferenceMeta {
                 Typography
     ------------------------------*/
 
+    /* ------  Font Family ------ */
+
+    /* Body */
+    body {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Headings */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    .ui.header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Inputs */
+    .ui.form input:not([type]),
+    .ui.form input[type="date"],
+    .ui.form input[type="datetime-local"],
+    .ui.form input[type="email"],
+    .ui.form input[type="number"],
+    .ui.form input[type="password"],
+    .ui.form input[type="search"],
+    .ui.form input[type="tel"],
+    .ui.form input[type="time"],
+    .ui.form input[type="text"],
+    .ui.form input[type="file"],
+    .ui.form input[type="url"] {
+
+        font-family: var(--asg-primary-font-family);
+    }
+
+    .ui.input > input {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Search */
+    .ui.search > .results .result .title {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    .ui.search > .results > .message .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    .ui.category.search > .results .category > .name {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Menus */
+    .ui.menu {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Message */
+    .ui.message .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Table */
+    .ui.sortable.table thead th:after {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Button */
+    .ui.button {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Text Container */
+    .ui.text.container {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* List */
+    .ui.list .list > .item .header,
+    .ui.list > .item .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Steps */
+    .ui.steps .step .title {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Accordion */
+    .ui.accordion .title:not(.ui) {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Modal */
+    .ui.modal > .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Popup */
+    .ui.popup > .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Cards */
+    .ui.cards > .card > .content > .header,
+    .ui.card > .content > .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Items */
+    .ui.items > .item > .content > .header {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* Statistics */
+    .ui.statistics .statistic > .value,
+    .ui.statistic > .value {
+        font-family: var(--asg-primary-font-family);
+    }
+
+    /* ------  Font Colors ------ */
+
     .ui.table {
         color: var(--asg-colors-text-primary);
     }
@@ -424,99 +550,13 @@ export class BrandingPreferenceMeta {
         color: var(--asg-colors-text-primary);
     }
 
-    /*-----------------------------
-        My Account Side Panel
-    ------------------------------*/
-
-    .ui.vertical.menu.side-panel {
-        background: var(--asg-colors-background-body-main);
-    }
-
-    /*-----------------------------
-        My Account Header
-    ------------------------------*/
-
-    .ui.menu.app-header {
-        background: var(--asg-colors-background-surface-inverted);
-        border-color: var(--asg-colors-outlined-default-main);
-    }
-
-    .ui.pointing.dropdown>.menu:after {
-        background: var(--asg-colors-background-surface-main);
-        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
-    }
-
-    .ui.menu .user-dropdown .user-dropdown-menu .organization-label {
-        background: var(--asg-colors-alerts-info-main);
-        color: var(--asg-colors-text-secondary);
-    }
-
-    /*-----------------------------
-        My Account Footer
-    ------------------------------*/
-
-    .ui.menu.app-footer {
-        background: var(--asg-colors-background-body-main);
-        border-color: var(--asg-colors-outlined-default-main);
-    }
-
-    .ui.menu.app-footer {
-        color: var(--asg-colors-text-secondary);
-    }
-
-    .ui.menu.app-footer .ui.menu .item.copyright {
-        color: var(--asg-colors-text-secondary);
-    }
-
-    .ui.segment.cookie-consent-banner.inverted {
-        border: 1px solid var(--asg-colors-outlined-default-main);
-        background: var(--asg-colors-background-surface-inverted);
-    }
-
-    /*-----------------------------
-        My Account Applications
-    ------------------------------*/
-
-    .ui.items>.item.application-list-item {
-        background: var(--asg-colors-background-surface-main);
-    }
-
-    .ui.items>.item.application-list-item .text-content-container .item-header {
-        color: var(--asg-colors-text-primary);
-    }
-
-    .ui.image.app-image.app-avatar.default-app-icon .initials {
-        color: var(--asg-primary-color);
-    }
-
-    .ui.card.application-card.recent .application-image.default {
-        background: var(--asg-colors-background-surface-light);
-    }
-
-    .ui.items>.item.application-list-item {
-        border-color: var(--asg-colors-outlined-default-main);
-    }
-
-    /*-----------------------------
-        My Account Specific
-    ------------------------------*/
-
-    .recovery-options-muted-header {
-        background: var(--asg-colors-background-surface-dark);
-        color: var(--asg-colors-text-secondary);
-    }
-
-    /*-----------------------------
-                Typography
-    ------------------------------*/
-
     .ui.header {
         color: var(--asg-heading-text-color);
     }
 
     /* Primary Text */
     .text-typography.primary {
-        color: var(--asg-primary-color);
+        color: var(--asg-colors-primary-main);
     }
 
     .hint-description {
@@ -536,39 +576,30 @@ export class BrandingPreferenceMeta {
     }
 
     /*-----------------------------
-                Icons
-    ------------------------------*/
-
-    /* Primary Icons */
-    i.icon.primary {
-        color: var(--asg-primary-color);
-    }
-
-    /*-----------------------------
                 Buttons
     ------------------------------*/
 
     /* Primary */
     .ui.primary.button {
-        background: var(--asg-primary-color);
+        background: var(--asg-colors-primary-main);
         color: var(--asg-primary-button-base-text-color);
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
     .ui.primary.button:hover, .ui.primary.button:focus, .ui.primary.button:active {
-        background: var(--asg-primary-color);
+        background: var(--asg-colors-primary-main);
         filter: brightness(0.85);
     }
 
     /* Secondary */
     .ui.secondary.button {
-        background: var(--asg-secondary-color);
+        background: var(--asg-colors-secondary-main);
         color: var(--asg-secondary-button-base-text-color);
         border-radius: var(--asg-secondary-button-base-border-radius);
     }
 
     .ui.secondary.button:hover, .ui.secondary.button:focus, .ui.secondary.button:active {
-        background: var(--asg-secondary-color);
+        background: var(--asg-colors-secondary-main);
         filter: brightness(0.85);
     }
 
@@ -592,12 +623,12 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.basic.primary.button, .ui.basic.primary.buttons .button {
-        color: var(--asg-primary-color) !important;
+        color: var(--asg-colors-primary-main) !important;
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
     .ui.basic.primary.button:hover, .ui.basic.primary.buttons .button:hover {
-        color: var(--asg-primary-color) !important;
+        color: var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
     }
 
@@ -828,8 +859,28 @@ export class BrandingPreferenceMeta {
     }
 
     /*-----------------------------
-            Login Box
+            Login Screens
     ------------------------------*/
+
+    /* ------  Login Page ------ */
+
+    /* Default Page */
+    .login-portal.layout {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-body-main);
+    }
+
+    /* Default Page with Blurred Patch */
+    .login-portal.layout .page-wrapper {
+        background: var(--asg-colors-background-body-main);
+    }
+
+    /* Error, Success Pages */
+    .login-portal.layout .page-wrapper.success-page, .login-portal.layout .page-wrapper.error-page {
+        background: var(--asg-colors-background-body-main);
+    }
+
+    /* ------  Login Box ------ */
 
     .login-portal.layout .center-segment>.ui.container>.ui.segment {
         background: var(--asg-login-box-background-color);
@@ -856,7 +907,7 @@ export class BrandingPreferenceMeta {
 
     /* Login Box Links */
     .login-portal.layout .clickable-link {
-        color: var(--asg-primary-color);
+        color: var(--asg-colors-primary-main);
     }
 
     /* Misc Text */
@@ -876,9 +927,7 @@ export class BrandingPreferenceMeta {
         color: var(--asg-login-box-text-color);
     }
 
-    /*-----------------------------
-         Login Screen Footer
-    ------------------------------*/
+    /* ------  Login Footer ------ */
 
     .login-portal.layout .footer {
         border-color: var(--asg-footer-border-color);
@@ -889,144 +938,81 @@ export class BrandingPreferenceMeta {
     }
 
     .login-portal.layout .footer .ui.text.menu .item:not(.no-hover):hover {
-        color: var(--asg-primary-color);
+        color: var(--asg-colors-primary-main);
     }
 
     /*-----------------------------
-            Anchor Tags
+              My Account
     ------------------------------*/
 
-    /* Anchor Tags */
-    a {
-        color: var(--asg-primary-color);
+    .recovery-options-muted-header {
+        background: var(--asg-colors-background-surface-dark);
+        color: var(--asg-colors-text-secondary);
     }
 
-    a:hover, a:focus, a:active {
-        color: var(--asg-primary-color);
-        filter: brightness(0.85);
-    }
-    /*-----------------------------
-            Fonts
-    ------------------------------*/
+    /* ------  My Account Side Panel ------ */
 
-    /* Body */
-    body {
-        font-family: var(--asg-primary-font-family);
+    .ui.vertical.menu.side-panel {
+        background: var(--asg-colors-background-body-main);
     }
 
-    /* Headings */
-    h1,
-    h2,
-    h3,
-    h4,
-    h5 {
-        font-family: var(--asg-primary-font-family);
+    /* ------  My Account Header ------ */
+
+    .ui.menu.app-header {
+        background: var(--asg-colors-background-surface-inverted);
+        border-color: var(--asg-colors-outlined-default-main);
     }
 
-    .ui.header {
-        font-family: var(--asg-primary-font-family);
+    .ui.pointing.dropdown>.menu:after {
+        background: var(--asg-colors-background-surface-main);
+        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
     }
 
-    /* Inputs */
-    .ui.form input:not([type]),
-    .ui.form input[type="date"],
-    .ui.form input[type="datetime-local"],
-    .ui.form input[type="email"],
-    .ui.form input[type="number"],
-    .ui.form input[type="password"],
-    .ui.form input[type="search"],
-    .ui.form input[type="tel"],
-    .ui.form input[type="time"],
-    .ui.form input[type="text"],
-    .ui.form input[type="file"],
-    .ui.form input[type="url"] {
-
-        font-family: var(--asg-primary-font-family);
+    .ui.menu .user-dropdown .user-dropdown-menu .organization-label {
+        background: var(--asg-colors-alerts-info-main);
+        color: var(--asg-colors-text-secondary);
     }
 
-    .ui.input > input {
-        font-family: var(--asg-primary-font-family);
+    /* ------  My Account Footer ------ */
+
+    .ui.menu.app-footer {
+        background: var(--asg-colors-background-body-main);
+        border-color: var(--asg-colors-outlined-default-main);
     }
 
-    /* Search */
-    .ui.search > .results .result .title {
-        font-family: var(--asg-primary-font-family);
+    .ui.menu.app-footer {
+        color: var(--asg-colors-text-secondary);
     }
 
-    .ui.search > .results > .message .header {
-        font-family: var(--asg-primary-font-family);
+    .ui.menu.app-footer .ui.menu .item.copyright {
+        color: var(--asg-colors-text-secondary);
     }
 
-    .ui.category.search > .results .category > .name {
-        font-family: var(--asg-primary-font-family);
+    .ui.segment.cookie-consent-banner.inverted {
+        border: 1px solid var(--asg-colors-outlined-default-main);
+        background: var(--asg-colors-background-surface-inverted);
     }
 
-    /* Menus */
-    .ui.menu {
-        font-family: var(--asg-primary-font-family);
+    /* ------  My Account Applications ------ */
+
+    .ui.items>.item.application-list-item {
+        background: var(--asg-colors-background-surface-main);
     }
 
-    /* Message */
-    .ui.message .header {
-        font-family: var(--asg-primary-font-family);
+    .ui.items>.item.application-list-item .text-content-container .item-header {
+        color: var(--asg-colors-text-primary);
     }
 
-    /* Table */
-    .ui.sortable.table thead th:after {
-        font-family: var(--asg-primary-font-family);
+    .ui.image.app-image.app-avatar.default-app-icon .initials {
+        color: var(--asg-colors-primary-main);
     }
 
-    /* Button */
-    .ui.button {
-        font-family: var(--asg-primary-font-family);
+    .ui.card.application-card.recent .application-image.default {
+        background: var(--asg-colors-background-surface-light);
     }
 
-    /* Text Container */
-    .ui.text.container {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* List */
-    .ui.list .list > .item .header,
-    .ui.list > .item .header {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Steps */
-    .ui.steps .step .title {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Accordion */
-    .ui.accordion .title:not(.ui) {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Modal */
-    .ui.modal > .header {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Popup */
-    .ui.popup > .header {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Cards */
-    .ui.cards > .card > .content > .header,
-    .ui.card > .content > .header {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Items */
-    .ui.items > .item > .content > .header {
-        font-family: var(--asg-primary-font-family);
-    }
-
-    /* Statistics */
-    .ui.statistics .statistic > .value,
-    .ui.statistic > .value {
-        font-family: var(--asg-primary-font-family);
+    .ui.items>.item.application-list-item {
+        border-color: var(--asg-colors-outlined-default-main);
     }`;
     }
     /* eslint-enable max-len */
