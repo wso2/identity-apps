@@ -57,17 +57,23 @@ export class BrandingPreferenceMeta {
         : ""}
 
         :root {
-        --asg-colors-background-body-main: ${ theme[ theme.activeTheme ].colors.background.body.main };
-        --asg-colors-background-surface-main: ${ theme[ theme.activeTheme ].colors.background.surface.main };
-        --asg-colors-background-surface-light: ${ theme[ theme.activeTheme ].colors.background.surface.light };
-        --asg-colors-background-surface-dark: ${ theme[ theme.activeTheme ].colors.background.surface.dark };
-        --asg-colors-outlined-default-main: ${ theme[ theme.activeTheme ].colors.outlined.default };
-        --asg-colors-text-primary: ${ theme[ theme.activeTheme ].colors.text.primary };
-        --asg-colors-text-secondary: ${ theme[ theme.activeTheme ].colors.text.secondary };
-        --asg-colors-action-hover: ${ theme[ theme.activeTheme ].colors.action.hover };
-        --asg-colors-alerts-neutral-main: ${ theme[ theme.activeTheme ].colors.alerts.neutral.main };
-        --asg-colors-alerts-info-main: ${ theme[ theme.activeTheme ].colors.alerts.info.main };
-        --asg-colors-alerts-warning-main: ${ theme[ theme.activeTheme ].colors.alerts.warning.main };
+        --asg-colors-background-body-main: ${ theme[ theme.activeTheme ].colors.background?.body?.main };
+        --asg-colors-background-surface-main: ${ theme[ theme.activeTheme ].colors.background?.surface?.main };
+        --asg-colors-background-surface-light: ${ theme[ theme.activeTheme ].colors.background?.surface?.light };
+        --asg-colors-background-surface-dark: ${ theme[ theme.activeTheme ].colors.background?.surface?.dark };
+        --asg-colors-background-surface-inverted: ${ theme[ theme.activeTheme ].colors.background?.surface?.inverted };
+        --asg-colors-outlined-default-main: ${ theme[ theme.activeTheme ].colors.outlined?.default };
+        --asg-colors-text-primary: ${ theme[ theme.activeTheme ].colors.text?.primary };
+        --asg-colors-text-secondary: ${ theme[ theme.activeTheme ].colors.text?.secondary };
+        --asg-colors-alerts-error-main: ${ theme[ theme.activeTheme ].colors.alerts?.error?.main };
+        --asg-colors-alerts-neutral-main: ${ theme[ theme.activeTheme ].colors.alerts?.neutral?.main };
+        --asg-colors-alerts-info-main: ${ theme[ theme.activeTheme ].colors.alerts?.info?.main };
+        --asg-colors-alerts-warning-main: ${ theme[ theme.activeTheme ].colors.alerts?.warning?.main };
+        --asg-colors-illustrations-primary-main: ${ theme[ theme.activeTheme ].colors.illustrations?.primary?.main };
+        --asg-colors-illustrations-secondary-main: ${ theme[ theme.activeTheme ].colors.illustrations?.secondary?.main };
+        --asg-colors-illustrations-accent1-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent1?.main };
+        --asg-colors-illustrations-accent2-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent2?.main };
+        --asg-colors-illustrations-accent3-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent3?.main };
 
         --asg-primary-color: ${ theme[ theme.activeTheme ].colors.primary };
         --asg-secondary-color: ${ theme[ theme.activeTheme ].colors.secondary };
@@ -97,19 +103,26 @@ export class BrandingPreferenceMeta {
         --asg-input-field-base-border-radius: ${ theme[ theme.activeTheme ].inputs.base.border.borderRadius };
     }
 
+    body {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-body-main);
+    }
+
     /*-----------------------------
-                Page
+             Pre Loader
     ------------------------------*/
 
     .pre-loader-wrapper {
         background: var(--asg-colors-background-body-main);
     }
 
-    /* Body */
-    body {
-        color: var(--asg-colors-text-primary);
+    .ui.inverted.dimmer {
         background: var(--asg-colors-background-body-main);
     }
+
+    /*-----------------------------
+                Page
+    ------------------------------*/
 
     /* Default Page */
     .login-portal.layout {
@@ -131,9 +144,14 @@ export class BrandingPreferenceMeta {
                 Messages
     ------------------------------*/
 
-    /* TODO: Remove the nackground color from .totp-tooltip */
+    /* TODO: Remove the background color from .totp-tooltip */
     .ui.message, .ui.message.totp-tooltip {
         background-color: var(--asg-colors-alerts-neutral-main);
+        color: var(--asg-colors-text-primary) !important;
+    }
+
+    .backup-code-label.info {
+        background-color: var(--asg-colors-alerts-info-main) !important;
         color: var(--asg-colors-text-primary) !important;
     }
 
@@ -145,8 +163,30 @@ export class BrandingPreferenceMeta {
         background-color: var(--asg-colors-alerts-warning-main) !important;
     }
 
+    .ui.message.error {
+        background-color: var(--asg-colors-alerts-error-main) !important;
+    }
+
     /*-----------------------------
-                Surfaces
+                Alert
+    ------------------------------*/
+
+    .alert-wrapper .notifications-wrapper .notification {
+        background: var(--asg-colors-background-surface-main) !important;
+        color: var(--asg-colors-text-primary) !important;
+        border: 1px solid var(--asg-colors-outlined-default-main) !important;
+    }
+
+    .alert-wrapper .notifications-wrapper .notification .notification-message .alert-message .description {
+        color: var(--asg-colors-text-secondary);
+    }
+
+    .alert-wrapper .notifications-wrapper .notification .notification-dismiss {
+        color: var(--asg-colors-text-primary) !important;
+    }
+
+    /*-----------------------------
+                Card
     ------------------------------*/
 
     .ui.card, .ui.cards>.card {
@@ -159,13 +199,36 @@ export class BrandingPreferenceMeta {
         border-color: var(--asg-colors-outlined-default-main);
     }
 
-    .ui.card>.extra, .ui.cards>.card>.extra {
+    .ui.card>.extra, .ui.cards>.card>.extra, .ui.card.settings-card .extra-content {
         background: var(--asg-colors-background-surface-light);
+    }
+
+    .ui.card>.content, .ui.cards>.card>.content {
+        background: var(--asg-colors-background-surface-main);
     }
 
     .ui.card .meta, .ui.cards>.card .meta {
         color: var(--asg-colors-text-secondary);
     }
+
+    /* Security Page Active Sessions Terminate panel */
+    .ui.card.settings-card .top-action-panel {
+        background: var(--asg-colors-background-surface-main);
+        border-color: var(--asg-input-field-base-border-color);
+    }
+
+    /* Card Actions */
+    .ui.card.settings-card .extra-content .action-button .action-button-text {
+        color: var(--asg-primary-color);
+    }
+
+    .ui.card.basic-card {
+        border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    /*-----------------------------
+                Dropdown
+    ------------------------------*/
 
     /* Avatar Modal Inner */
     .ui.dropdown .menu {
@@ -177,6 +240,10 @@ export class BrandingPreferenceMeta {
         color: var(--asg-colors-text-primary);
     }
 
+    /*-----------------------------
+                Menu
+    ------------------------------*/
+
     .ui.menu, .ui.vertical.menu {
         background: var(--asg-colors-background-surface-main);
     }
@@ -184,6 +251,10 @@ export class BrandingPreferenceMeta {
     .ui.menu .dropdown.item .menu {
         background: var(--asg-colors-background-surface-main);
     }
+
+    /*-----------------------------
+                Modal
+    ------------------------------*/
 
     .ui.modal, .ui.modal>.content {
         background: var(--asg-colors-background-surface-main);
@@ -194,92 +265,109 @@ export class BrandingPreferenceMeta {
         border-color: var(--asg-colors-outlined-default-main);
     }
 
-    .ui.segment.edit-segment {
-        background: var(--asg-colors-background-surface-dark);
-    }
-
     .ui.modal>.header {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-surface-light);
     }
 
-    .ui.checkbox label, .ui.checkbox+label {
-        color: var(--asg-input-field-base-label-text-color);
-    }
-
-    .ui.checkbox label:hover, .ui.checkbox+label:hover {
-        color: var(--asg-input-field-base-label-text-color);
-    }
-
-    .ui.checkbox input:focus~label {
-        color: var(--asg-input-field-base-label-text-color);
-    }
-
-    .ui.basic.primary.button, .ui.basic.primary.buttons .button {
-        color: var(--asg-secondary-color) !important;
-        border-radius: var(--asg-primary-button-base-border-radius);
-    }
-
-    .ui.basic.primary.button:hover, .ui.basic.primary.buttons .button:hover {
-        color: var(--asg-primary-color) !important;
-        filter: brightness(0.85);
-    }
-
-    .ui.basic.button, .ui.basic.buttons .button {
-        color: var(--asg-colors-text-primary) !important;
-        background: transparent !important;
-    }
-
-    .ui.basic.button:hover, .ui.basic.button:focus, .ui.basic.button:active, .ui.basic.buttons .button:hover, .ui.basic.buttons .button:active, .ui.basic.buttons .button:focus {
-        color: var(--asg-colors-text-secondary) !important;
-        background: transparent !important;
-    }
-
-    .ui.basic.button.session-detail-extension-button {
-        border: 1px solid var(--asg-colors-outlined-default-main);
-    }
-
-    .ui.basic.button.session-detail-extension-button .arrow.down.icon {
-        border-left: 1px solid var(--asg-colors-outlined-default-main);
-    }
-
-    /* Security Page Active Sessions Terminate panel */
-    .ui.card.settings-card .top-action-panel {
-        background: var(--asg-colors-background-surface-main);
-        border: 1px solid var(--asg-input-field-base-border-color);
-    }
-
     /*-----------------------------
-                No Cat
+                Segment
     ------------------------------*/
 
-    .theme-icon.two-tone svg.icon .fill.primary {
-        fill: var(--asg-primary-color);
+    .ui.segment {
+        background: var(--asg-colors-background-surface-main);
     }
 
-    .theme-icon.two-tone svg.icon .stroke.primary {
-        stroke: var(--asg-primary-color);
-    }
-
-    .theme-icon.two-tone svg.icon .fill.secondary {
-        fill: var(--asg-primary-color);
-        filter: brightness(0.3);
-    }
-
-    .addon-field-wrapper .ui.input {
-        border-color: var(--asg-input-field-base-border-color);
+    .ui.segment.edit-segment {
+        background: var(--asg-colors-background-surface-light);
     }
 
     .ui.segment.emphasized.placeholder-container {
         background: var(--asg-colors-background-surface-main);
     }
 
-    .ui.placeholder, .ui.placeholder .image.header:after, .ui.placeholder .line, .ui.placeholder .line:after, .ui.placeholder>:before {
-        background-color: var(--asg-colors-background-surface-main);
+    /*-----------------------------
+                Icons
+    ------------------------------*/
+
+    .theme-icon
+        background: var(--asg-colors-background-surface-light);
     }
 
-    .addon-field-wrapper .ui.input:focus-within {
-        border-color: var(--asg-input-field-base-border-color);
+    .theme-icon.bordered {
+        border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    .theme-icon.two-tone svg.icon .lighten-1 {
+        filter: brightness(1.08);
+    }
+
+    .theme-icon.two-tone svg.icon .lighten-2 {
+        filter: brightness(1.16);
+    }
+
+    .theme-icon.two-tone svg.icon .darken-1 {
+        filter: brightness(0.9);
+    }
+
+    .theme-icon.two-tone svg.icon .darken-2 {
+        filter: brightness(0.7);
+    }
+
+    .theme-icon.two-tone svg.icon .opacity-80 {
+        opacity: 0.8;
+    }
+
+    .theme-icon.two-tone svg.icon .opacity-60 {
+        opacity: 0.6;
+    }
+
+    .theme-icon.two-tone svg.icon .fill.primary, .theme-icon.two-tone svg.icon .fill-primary {
+        fill: var(--asg-colors-illustrations-primary-main);
+    }
+
+    .theme-icon.two-tone svg.icon .stroke.primary, .theme-icon.two-tone svg.icon .stroke-primary {
+        stroke: var(--asg-colors-illustrations-primary-main);
+    }
+
+    .theme-icon.two-tone svg.icon .fill.secondary, .theme-icon.two-tone svg.icon .fill-secondary {
+        fill: var(--asg-colors-illustrations-secondary-main);
+    }
+
+    .theme-icon.two-tone svg.icon .stroke.secondary, .theme-icon.two-tone svg.icon .stroke-secondary {
+        stroke: var(--asg-colors-illustrations-secondary-main);
+    }
+
+    .theme-icon.two-tone svg.icon .fill.accent1, .theme-icon.two-tone svg.icon .fill-accent1 {
+        fill: var(--asg-colors-illustrations-accent1-main);
+    }
+
+    .theme-icon.two-tone svg.icon .stroke.accent1, .theme-icon.two-tone svg.icon .stroke-accent1 {
+        stroke: var(--asg-colors-illustrations-accent1-main);
+    }
+
+    .theme-icon.two-tone svg.icon .fill.accent2, .theme-icon.two-tone svg.icon .fill-accent2 {
+        fill: var(--asg-colors-illustrations-accent2-main);
+    }
+
+    .theme-icon.two-tone svg.icon .stroke.accent2, .theme-icon.two-tone svg.icon .stroke-accent2 {
+        stroke: var(--asg-colors-illustrations-accent2-main);
+    }
+
+    .theme-icon.two-tone svg.icon .fill.accent3, .theme-icon.two-tone svg.icon .fill-accent3 {
+        fill: var(--asg-colors-illustrations-accent3-main);
+    }
+
+    .theme-icon.two-tone svg.icon .stroke.accent3, .theme-icon.two-tone svg.icon .stroke-accent3 {
+        stroke: var(--asg-colors-illustrations-accent3-main);
+    }
+
+    /*-----------------------------
+             Placeholder
+    ------------------------------*/
+
+    .ui.placeholder, .ui.placeholder .image.header:after, .ui.placeholder .line, .ui.placeholder .line:after, .ui.placeholder>:before {
+        background-color: var(--asg-colors-background-surface-main);
     }
 
     /*-----------------------------
@@ -322,10 +410,17 @@ export class BrandingPreferenceMeta {
 
     .ui.menu .ui.dropdown .menu>.item:hover {
         color: var(--asg-colors-text-primary) !important;
-        background: var(--asg-colors-action-hover) !important;
     }
 
     .ui.vertical.menu.side-panel .side-panel-item .route-name {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .empty-placeholder .subtitle {
+        color: var(--asg-colors-text-secondary);
+    }
+
+    .ui.list .list>.item .header, .ui.list>.item .header {
         color: var(--asg-colors-text-primary);
     }
 
@@ -342,8 +437,18 @@ export class BrandingPreferenceMeta {
     ------------------------------*/
 
     .ui.menu.app-header {
-        background: var(--asg-colors-background-surface-main);
+        background: var(--asg-colors-background-surface-inverted);
         border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.pointing.dropdown>.menu:after {
+        background: var(--asg-colors-background-surface-main);
+        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.menu .user-dropdown .user-dropdown-menu .organization-label {
+        background: var(--asg-colors-alerts-info-main);
+        color: var(--asg-colors-text-secondary);
     }
 
     /*-----------------------------
@@ -351,7 +456,7 @@ export class BrandingPreferenceMeta {
     ------------------------------*/
 
     .ui.menu.app-footer {
-        background: var(--asg-colors-background-surface-main);
+        background: var(--asg-colors-background-body-main);
         border-color: var(--asg-colors-outlined-default-main);
     }
 
@@ -364,8 +469,41 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.segment.cookie-consent-banner.inverted {
-        border-color: var(--asg-colors-outlined-default-main);
+        border: 1px solid var(--asg-colors-outlined-default-main);
+        background: var(--asg-colors-background-surface-inverted);
+    }
+
+    /*-----------------------------
+        My Account Applications
+    ------------------------------*/
+
+    .ui.items>.item.application-list-item {
         background: var(--asg-colors-background-surface-main);
+    }
+
+    .ui.items>.item.application-list-item .text-content-container .item-header {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .ui.image.app-image.app-avatar.default-app-icon .initials {
+        color: var(--asg-primary-color);
+    }
+
+    .ui.card.application-card.recent .application-image.default {
+        background: var(--asg-colors-background-surface-light);
+    }
+
+    .ui.items>.item.application-list-item {
+        border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    /*-----------------------------
+        My Account Specific
+    ------------------------------*/
+
+    .recovery-options-muted-header {
+        background: var(--asg-colors-background-surface-dark);
+        color: var(--asg-colors-text-secondary);
     }
 
     /*-----------------------------
@@ -379,6 +517,22 @@ export class BrandingPreferenceMeta {
     /* Primary Text */
     .text-typography.primary {
         color: var(--asg-primary-color);
+    }
+
+    .hint-description {
+        color: var(--asg-colors-text-secondary) !important;
+    }
+
+    .ui.items>.item.application-list-item .text-content-container .item-description {
+        color: var(--asg-colors-text-secondary);
+    }
+
+    .ui.card.application-card.recent .application-content .text-content-container .application-name {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .ui.card.application-card.recent .application-content .text-content-container .application-description {
+        color: var(--asg-colors-text-secondary);
     }
 
     /*-----------------------------
@@ -418,6 +572,35 @@ export class BrandingPreferenceMeta {
         filter: brightness(0.85);
     }
 
+    /* Basic Button */
+    .ui.basic.button, .ui.basic.buttons .button {
+        color: var(--asg-colors-text-primary) !important;
+        background: transparent !important;
+    }
+
+    .ui.basic.button:hover, .ui.basic.button:focus, .ui.basic.button:active, .ui.basic.buttons .button:hover, .ui.basic.buttons .button:active, .ui.basic.buttons .button:focus {
+        color: var(--asg-colors-text-primary) !important;
+        background: transparent !important;
+    }
+
+    .ui.basic.button.show-more-button {
+        box-shadow: 0 0 0 1px var(--asg-colors-outlined-default-main) inset;
+    }
+
+    .ui.basic.button.show-more-button .arrow.down.icon {
+        border-left: 1px solid var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.basic.primary.button, .ui.basic.primary.buttons .button {
+        color: var(--asg-primary-color) !important;
+        border-radius: var(--asg-primary-button-base-border-radius);
+    }
+
+    .ui.basic.primary.button:hover, .ui.basic.primary.buttons .button:hover {
+        color: var(--asg-primary-color) !important;
+        filter: brightness(0.85);
+    }
+
     /* External Connections */
     .login-portal.layout .center-segment>.ui.container>.ui.segment .social-login .ui.button {
         background: var(--asg-external-login-button-base-background-color);
@@ -430,11 +613,6 @@ export class BrandingPreferenceMeta {
     .login-portal.layout .center-segment>.ui.container>.ui.segment .social-login .ui.button:active {
         background: var(--asg-external-login-button-base-background-color);
         filter: brightness(0.85);
-    }
-
-    /* Card Actions */
-    .ui.card.settings-card .extra-content .action-button .action-button-text {
-        color: var(--asg-primary-color);
     }
 
     /*-----------------------------
@@ -493,6 +671,17 @@ export class BrandingPreferenceMeta {
         color: var(--asg-input-field-base-text-color);
     }
 
+    /* Input calendar icon */
+    .ui.calendar .ui.input.left.icon .calendar.icon {
+        color: var(--asg-input-field-base-text-color);
+    }
+
+    /* Input Readonly */
+    .ui.form input[readonly] {
+        background: var(--asg-input-field-base-background-color) !important;
+        filter: brightness(0.85);
+    }
+
     /* Dropdowns */
     .ui.selection.active.dropdown .menu {
         background: var(--asg-input-field-base-border-color);
@@ -536,6 +725,106 @@ export class BrandingPreferenceMeta {
 
     .ui.checkbox input:checked:focus~.box:after, .ui.checkbox input:checked:focus~label:after, .ui.checkbox input:not([type=radio]):indeterminate:focus~.box:after, .ui.checkbox input:not([type=radio]):indeterminate:focus~label:after {
         color: var(--asg-input-field-base-text-color);
+    }
+
+    .ui.checkbox label, .ui.checkbox+label {
+        color: var(--asg-input-field-base-label-text-color);
+    }
+
+    .ui.checkbox label:hover, .ui.checkbox+label:hover {
+        color: var(--asg-input-field-base-label-text-color);
+    }
+
+    .ui.checkbox input:focus~label {
+        color: var(--asg-input-field-base-label-text-color);
+    }
+
+    /* Input Addons */
+    .addon-field-wrapper .ui.input {
+        border-color: var(--asg-input-field-base-border-color);
+    }
+
+    .addon-field-wrapper .ui.input:focus-within {
+        border-color: var(--asg-input-field-base-border-color);
+    }
+
+    .ui.input>input {
+        color: var(--asg-input-field-base-text-color);
+    }
+
+    .advanced-search-wrapper .ui.input.advanced-search {
+        color: var(--asg-input-field-base-text-color);
+    }
+
+    .advanced-search-wrapper.fill-white .ui.input.advanced-search.with-add-on {
+        border-color: var(--asg-input-field-base-border-color);
+    }
+
+    .advanced-search-wrapper.fill-white .ui.input.advanced-search.with-add-on input {
+        color: var(--asg-input-field-base-text-color);
+        background: var(--asg-input-field-base-background-color);
+        border-radius: var(--asg-input-field-base-border-radius);
+    }
+
+    .advanced-search-wrapper.fill-white .ui.input.advanced-search.with-add-on .input-add-on {
+        background: var(--asg-input-field-base-background-color) !important;
+        border: 1px solid transparent;
+    }
+
+    .ui.input.advanced-search.with-add-on .ui.icon.input>i.icon {
+        color: var(--asg-input-field-base-text-color);
+    }
+
+    .advanced-search-wrapper.fill-white .ui.input.advanced-search.with-add-on .input-add-on:active {
+        background: var(--asg-input-field-base-background-color) !important;
+    }
+
+    /* Labeled Inputs */
+    .ui.labeled.input>.label {
+        background: var(--asg-input-field-base-background-color);
+        color: var(--asg-colors-text-secondary);
+        border: 1px solid var(--asg-input-field-base-border-color);
+    }
+
+    .ui[class*="right labeled"].input>input:focus {
+        border-color: var(--asg-input-field-base-border-color) !important;;
+    }
+
+    /* Error Labels */
+    .ui.form .field .prompt.label {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-surface-main);
+        border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    /*-----------------------------
+                Popup
+    ------------------------------*/
+
+    .ui.popup {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-surface-main);
+        border-color: var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.bottom.popup:before, .ui.top.popup:before, .ui.left.popup:before, .ui.right.popup:before, .ui.left.center.popup:before, .ui.right.center.popup:before {
+        background: var(--asg-colors-background-surface-main);
+    }
+
+    .ui.popup:before {
+        box-shadow: 1px 1px 0 0 var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.bottom.left.popup:before, .ui.bottom.center.popup:before, .ui.bottom.right.popup:before {
+        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.left.center.popup:before {
+        box-shadow: 1px -1px 0 0 var(--asg-colors-outlined-default-main);
+    }
+
+    .ui.right.center.popup:before {
+        box-shadow: -1px 1px 0 0 var(--asg-colors-outlined-default-main);
     }
 
     /*-----------------------------

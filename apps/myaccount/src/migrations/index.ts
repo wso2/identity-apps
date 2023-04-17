@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./use-branding-preference";
-export * from "./use-request";
+export * from "./branding-preference";

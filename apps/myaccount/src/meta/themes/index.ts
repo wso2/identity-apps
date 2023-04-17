@@ -16,5 +16,11 @@
  * under the License.
  */
 
-export * from "./use-branding-preference";
-export * from "./use-request";
+import { DARK_THEME } from "./dark-theme";
+import { LIGHT_THEME } from "./light-theme";
+import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "../../models";
+
+export const THEMES: DynamicBrandingPreferenceThemeInterface = {
+    [ PredefinedThemes.LIGHT ]: LIGHT_THEME,
+    [ PredefinedThemes.DARK ]: DARK_THEME
+};

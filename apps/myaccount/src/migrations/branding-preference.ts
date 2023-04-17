@@ -16,5 +16,22 @@
  * under the License.
  */
 
-export * from "./use-branding-preference";
-export * from "./use-request";
+import merge from "lodash-es/merge";
+import { THEMES } from "../meta";
+import { BrandingPreferenceAPIResponseInterface } from "../models";
+
+/**
+ * Migrates a branding preference API response to include the default themes.
+ *
+ * @param preference - The branding preference API response to migrate.
+ * @returns A new API response object with the default themes merged in.
+ */
+export const getMigratedBrandingPreference = (
+    preference: BrandingPreferenceAPIResponseInterface
+): BrandingPreferenceAPIResponseInterface => {
+    if (!preference) {
+        return preference;
+    }
+
+    return merge({ preference: { theme: THEMES } }, preference);
+};

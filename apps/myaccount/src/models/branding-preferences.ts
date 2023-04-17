@@ -112,7 +112,11 @@ export interface BrandingPreferenceImagesInterface {
     /**
      * Organization Favicon.
      */
-    favicon: Omit<BrandingPreferenceImageInterface, "altText">
+    favicon: Omit<BrandingPreferenceImageInterface, "altText">;
+    /**
+     * Organization My Account Logo.
+     */
+    myAccountLogo: BrandingPreferenceImageInterface;
 }
 
 /**
@@ -127,6 +131,10 @@ export interface BrandingPreferenceImageInterface {
      * Image Alt.
      */
     altText: string;
+    /**
+     * Title.
+     */
+    title?: string;
 }
 
 /**
@@ -216,17 +224,128 @@ export interface StrictBrandingPreferenceThemeInterface {
 }
 
 /**
- * Interface Branding preference theme color palette.
+ * Represents a color palette with different shades and contrast text.
+ */
+export interface PaletteColor {
+    /**
+     * The light shade of the color.
+     */
+    light?: string;
+
+    /**
+     * The main shade of the color.
+     */
+    main: string;
+
+    /**
+     * The dark shade of the color.
+     */
+    dark?: string;
+
+    /**
+     * The contrast text color for the color.
+     */
+    contrastText?: string;
+
+    /**
+     * The inverted color for the color.
+     */
+    inverted?: string;
+}
+
+/**
+ * Interface defining the color palette for a branding preference theme.
  */
 export interface BrandingPreferenceColorsInterface {
     /**
-     * Hex value of the theme primary color.
+     * The primary color palette of the theme.
      */
-    primary: string;
+    primary: PaletteColor;
     /**
-     * Hex value of the theme secondary color.
+     * The secondary color palette of the theme.
      */
-    secondary: string;
+    secondary: PaletteColor;
+    /**
+     * The background color palette of the theme.
+     */
+    background: {
+        /**
+         * The body background color palette of the theme.
+         */
+        body: PaletteColor;
+        /**
+         * The surface background color palette of the theme.
+         */
+        surface: PaletteColor;
+    };
+    /**
+     * The outlined color palette of the theme.
+     */
+    outlined: {
+        /**
+         * The default outlined color palette of the theme.
+         */
+        default: string;
+    },
+    /**
+     * The text color palette of the theme.
+     */
+    text: {
+        /**
+         * The primary text color palette of the theme.
+         */
+        primary: string;
+        /**
+         * The secondary text color palette of the theme.
+         */
+        secondary: string;
+    },
+    /**
+     * The alerts color palette of the theme.
+     */
+    alerts: {
+        /**
+         * The neutral alerts color palette of the theme.
+         */
+        neutral: PaletteColor;
+        /**
+         * The error alerts color palette of the theme.
+         */
+        error: PaletteColor;
+        /**
+         * The info alerts color palette of the theme.
+         */
+        info: PaletteColor;
+        /**
+         * The warning alerts color palette of the theme.
+         */
+        warning: PaletteColor;
+    },
+    /**
+     * The illustrations color palette of the theme.
+     */
+    illustrations: {
+        /**
+         * The primary illustrations color palette of the theme.
+         */
+        primary: PaletteColor;
+        /**
+         * The secondary illustrations color palette of the theme.
+         */
+        secondary: PaletteColor;
+        /**
+         * The accent 1 illustrations color palette of the theme.
+         */
+        accent1: PaletteColor;
+        /**
+         * The accent 2 illustrations color palette of the theme.
+         */
+        accent2: PaletteColor;
+        /**
+         * The accent 3 illustrations color palette of the theme.
+         */
+        accent3: PaletteColor;
+    }
 }
 
 /**
@@ -417,6 +536,15 @@ export enum BrandingPreferenceTypes {
 export enum FontConfigurationStrategies {
     BROWSER_DEFAULT = "BROWSER_DEFAULT",
     CDN = "CDN",
+}
+
+/**
+ * Enum for preview screen types.
+ */
+export enum PreviewScreenType {
+    LOGIN = "login",
+    MY_ACCOUNT = "myaccount",
+    EMAIL_TEMPLATE = "email-template"
 }
 
 /**
