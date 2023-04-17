@@ -87,6 +87,8 @@
                 }
             }
             &.right {
+                justify-content: flex-end;
+
                 >.item {
                     &:not(:last-child) {
                         padding-left: @appHeaderExtensionItemPaddingLeft;
