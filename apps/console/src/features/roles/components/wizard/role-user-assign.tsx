@@ -408,6 +408,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         return user.userName;
     };
 
+    const validateUserDetails = (detail: string): string => {
+        if (detail) {
+            return detail;
+        }
+
+        return "Invalid User";
+    }
+
     const addNewUserModal = () => (
         <Modal
             data-testid={ `${ testId }-assign-user-wizard-modal` }
@@ -595,17 +603,25 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                         <Table.Cell collapsing>
                                                                             <UserAvatar
                                                                                 data-testid={ `${ testId }-users-list-
-                                                                                ${ user.display }-avatar` }
-                                                                                name={ user.display }
+                                                                                ${ validateUserDetails(user.display) }
+                                                                                -avatar` }
+                                                                                name={ 
+                                                                                    validateUserDetails(user.display)
+                                                                                }
                                                                                 size="mini"
                                                                                 floated="left"
                                                                             />
                                                                         </Table.Cell>
                                                                         <Table.Cell>
-                                                                            { user.display }
+                                                                            { user.display ? 
+                                                                                user.display : "Invalid user" }
                                                                         </Table.Cell>
                                                                         <Table.Cell>
-                                                                            { user.orgName }
+                                                                            {
+                                                                                validateUserDetails(user.orgName) 
+                                                                                === "Super" ? "Asgardeo" : 
+                                                                                    validateUserDetails(user.orgName)
+                                                                            }
                                                                         </Table.Cell>
                                                                     </Table.Row>
                                                                 );
