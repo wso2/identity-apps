@@ -244,6 +244,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     enabledAuthenticators={ enabledAuthenticators }
                                     backupCodeAuthenticatorName={ backupCodeAuthenticatorName }
                                     isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
+                                    isSuperTenantLogin={ isSuperTenantLogin() }
                                     onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 />
                             </List.Item>

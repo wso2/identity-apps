@@ -65,6 +65,7 @@ interface BackupCodeProps extends IdentifiableComponentInterface {
      */
     handleSessionTerminationModalVisibility: (visibility: boolean) => void;
     isBackupCodesConfigured: boolean;
+    isSuperTenantLogin: boolean;
     enabledAuthenticators: Array<string>;
     backupCodeAuthenticatorName: string;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
@@ -84,6 +85,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         enabledAuthenticators,
         backupCodeAuthenticatorName,
         isBackupCodeForced,
+        isSuperTenantLogin,
         onEnabledAuthenticatorsUpdated
     } = props;
 
@@ -124,7 +126,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
             setIsMFAConfigured(true);
         } else {
             setIsMFAConfigured(false);
-            if (isMFAConfigured && isBackupCodesConfigured) {
+            if (isMFAConfigured && isBackupCodesConfigured && isSuperTenantLogin) {
                 handleDeleteBackupCodes();
             }
         }
@@ -592,7 +594,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         <List.Content>
                             <List.Header>
                                 { t(translateKey + "heading") }
-                                { isMFAConfigured && isBackupCodesConfigured ? (
+                                { isBackupCodesConfigured ? (
                                     <Label
                                         className={
                                             `backup-code-label ${ remainingBackupCodesAmountLow ? "warning" : "info" }`
@@ -612,7 +614,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     </Grid.Column>
                     <Grid.Column width={ 3 } className="last-column" verticalAlign="middle">
                         <List.Content floated="right">
-                            { isMFAConfigured && isBackupCodesConfigured ? (
+                            { isBackupCodesConfigured ? (
                                 <>
                                     <Popup
                                         trigger={
@@ -660,7 +662,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                             size="small"
                                             color="grey"
                                             name="add"
-                                            disabled={ isLoading || !isMFAConfigured }
+                                            disabled={ isLoading || (!isMFAConfigured && isSuperTenantLogin) }
                                             data-testid={ `${componentid}-init-button` }
                                         />)
                                     }
@@ -671,7 +673,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
-                { !isMFAConfigured ? (
+                { !isMFAConfigured && isSuperTenantLogin ? (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
                         </Grid.Column>
