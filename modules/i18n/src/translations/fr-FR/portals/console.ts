@@ -7378,7 +7378,8 @@ export const console: ConsoleNS = {
                                 subtitles: "Aucun utilisateur n'est assigné à ce rôle pour le moment.",
                                 title: "Aucun utilisateur assigné"
                             },
-                            header: "Utilisateurs"
+                            user: "Utilisateur",
+                            organization: "Dirigé par"
                         }
                     }
                 },

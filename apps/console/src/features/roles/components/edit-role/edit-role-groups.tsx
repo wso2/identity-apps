@@ -18,8 +18,8 @@
 
 import {
     AlertLevels,
+    RoleGroupsInterface,
     RolesInterface,
-    RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -92,11 +92,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ initialTempGroupList, setInitialTempGroupList ] = useState([]);
     const [ primaryGroups, setPrimaryGroups ] = useState(undefined);
     const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
-    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesMemberInterface[]>([]);
-    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesMemberInterface[]>([]);
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RoleGroupsInterface[]>([]);
+    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RoleGroupsInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
-    const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
+    const [ assignedGroups, setAssignedGroups ] = useState<RoleGroupsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
 

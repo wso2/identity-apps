@@ -54,6 +54,8 @@ export interface RolesMetaInterface {
 export interface RolesMemberInterface {
     display: string;
     value: string;
+    orgId: string;
+    orgName: string;
     $ref: string;
 }
 

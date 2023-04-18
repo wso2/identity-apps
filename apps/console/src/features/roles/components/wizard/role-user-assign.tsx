@@ -546,7 +546,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         <Grid.Row>
                             <Grid.Column computer={ 16 }>
                                 {
-                                    selectedUsers?.length > 0 ? (
+                                    assignedUsers?.length > 0 ? (
                                         <EmphasizedSegment className="user-role-edit-header-segment">
                                             <Grid.Row>
                                                 <Grid.Column>
@@ -579,27 +579,33 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                             <Table.HeaderCell/>
                                                             <Table.HeaderCell>
                                                                 { t("console:manage.features.roles.edit.users.list." +
-                                                                "header") }
+                                                                "user") }
+                                                            </Table.HeaderCell>
+                                                            <Table.HeaderCell>
+                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                "organization") }
                                                             </Table.HeaderCell>
                                                         </Table.Row>
                                                     </Table.Header>
                                                     <Table.Body>
                                                         {
-                                                            selectedUsers?.map((user: UserBasicInterface) => {
+                                                            assignedUsers?.map((user: RolesMemberInterface) => {
                                                                 return (
-                                                                    <Table.Row key={ user.id }>
+                                                                    <Table.Row key={ user.value }>
                                                                         <Table.Cell collapsing>
                                                                             <UserAvatar
                                                                                 data-testid={ `${ testId }-users-list-
-                                                                                ${ user.userName }-avatar` }
-                                                                                name={ resolveUserDisplayName(user) }
+                                                                                ${ user.display }-avatar` }
+                                                                                name={ user.display }
                                                                                 size="mini"
                                                                                 floated="left"
-                                                                                image={ user.profileUrl }
                                                                             />
                                                                         </Table.Cell>
                                                                         <Table.Cell>
-                                                                            { user.userName }
+                                                                            { user.display }
+                                                                        </Table.Cell>
+                                                                        <Table.Cell>
+                                                                            { user.orgName }
                                                                         </Table.Cell>
                                                                     </Table.Row>
                                                                 );

@@ -9041,7 +9041,8 @@ export const console: ConsoleNS = {
                                 subtitles: "There are no users assigned to the {{type}} at the moment.",
                                 title: "No Users Assigned"
                             },
-                            header: "Users"
+                            user: "User",
+                            organization: "Managed By"
                         }
                     }
                 },

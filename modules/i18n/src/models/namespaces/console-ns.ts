@@ -4491,8 +4491,9 @@ export interface ConsoleNS {
                     };
                     users: {
                         list: {
-                            header: string;
                             emptyPlaceholder: Placeholder;
+                            user: string;
+                            organization: string;
                         };
                     };
                 };
