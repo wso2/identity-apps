@@ -192,9 +192,14 @@ export interface ThemeConfigInterface {
      */
     images: BrandingPreferenceImagesInterface;
     /**
-     * Page Preferences.
+     * Login Page Preferences.
      */
-    page: BrandingPreferencePageInterface;
+    loginPage?: BrandingPreferencePageInterface;
+    /**
+     * Page Preferences.
+     * @deprecated Renamed to `loginPage` to keep it specific for login page. 
+     */
+    page?: BrandingPreferencePageInterface;
     /**
      * Typography Preferences.
      */

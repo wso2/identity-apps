@@ -158,12 +158,12 @@ export const LIGHT_THEME: ThemeConfigInterface ={
         },
         text: {
             primary: rgbToHex("rgba(0,0,0,.87)"),
-            secondary: rgbToHex("rgba(0,0,0,.4)"),
+            secondary: rgbToHex("rgba(0,0,0,.4)")
         }
     },
     footer: {
         border: {
-            borderColor: rgbToHex("rgba(34, 36, 38, 0.15)")
+            borderColor: ""
         },
         font: {
             color: ""
@@ -189,7 +189,7 @@ export const LIGHT_THEME: ThemeConfigInterface ={
                 backgroundColor: "#FFFFFF"
             },
             border: {
-                borderColor: rgbToHex("rgba(34, 36, 38, 0.15)"),
+                borderColor: "",
                 borderRadius: "4px"
             },
             font: {
@@ -204,10 +204,10 @@ export const LIGHT_THEME: ThemeConfigInterface ={
     },
     loginBox: {
         background: {
-            backgroundColor: "#FFFFFF"
+            backgroundColor: ""
         },
         border: {
-            borderColor: "transparent",
+            borderColor: "",
             borderRadius: "12px",
             borderWidth: "1px"
         },
@@ -215,12 +215,12 @@ export const LIGHT_THEME: ThemeConfigInterface ={
             color: ""
         }
     },
-    page: {
+    loginPage: {
         background: {
-            backgroundColor: "#F5F6F6"
+            backgroundColor: ""
         },
         font: {
-            color: rgbToHex("rgba(0,0,0,.87)")
+            color: ""
         }
     },
     typography: {

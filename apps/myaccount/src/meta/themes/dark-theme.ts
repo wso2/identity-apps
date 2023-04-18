@@ -162,7 +162,7 @@ export const DARK_THEME: ThemeConfigInterface = {
     },
     footer: {
         border: {
-            borderColor: "#333333"
+            borderColor: ""
         },
         font: {
             color: ""
@@ -188,7 +188,7 @@ export const DARK_THEME: ThemeConfigInterface = {
                 backgroundColor: "#000000"
             },
             border: {
-                borderColor: "#292929",
+                borderColor: "",
                 borderRadius: "4px"
             },
             font: {
@@ -203,10 +203,10 @@ export const DARK_THEME: ThemeConfigInterface = {
     },
     loginBox: {
         background: {
-            backgroundColor: "#111111"
+            backgroundColor: ""
         },
         border: {
-            borderColor: "#333333",
+            borderColor: "",
             borderRadius: "12px",
             borderWidth: "1px"
         },
@@ -214,12 +214,12 @@ export const DARK_THEME: ThemeConfigInterface = {
             color: ""
         }
     },
-    page: {
+    loginPage: {
         background: {
-            backgroundColor: "#000000"
+            backgroundColor: ""
         },
         font: {
-            color: "#ffffff"
+            color: ""
         }
     },
     typography: {

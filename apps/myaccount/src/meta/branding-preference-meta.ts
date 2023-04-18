@@ -57,12 +57,14 @@ export class BrandingPreferenceMeta {
         : ""}
 
         :root {
+        --asg-colors-primary-main: ${ theme[ theme.activeTheme ].colors.primary.main };
+        --asg-colors-secondary-main: ${ theme[ theme.activeTheme ].colors.secondary.main };
         --asg-colors-background-body-main: ${ theme[ theme.activeTheme ].colors.background?.body?.main };
         --asg-colors-background-surface-main: ${ theme[ theme.activeTheme ].colors.background?.surface?.main };
         --asg-colors-background-surface-light: ${ theme[ theme.activeTheme ].colors.background?.surface?.light };
         --asg-colors-background-surface-dark: ${ theme[ theme.activeTheme ].colors.background?.surface?.dark };
         --asg-colors-background-surface-inverted: ${ theme[ theme.activeTheme ].colors.background?.surface?.inverted };
-        --asg-colors-outlined-default-main: ${ theme[ theme.activeTheme ].colors.outlined?.default };
+        --asg-colors-outlined-default: ${ theme[ theme.activeTheme ].colors.outlined?.default };
         --asg-colors-text-primary: ${ theme[ theme.activeTheme ].colors.text?.primary };
         --asg-colors-text-secondary: ${ theme[ theme.activeTheme ].colors.text?.secondary };
         --asg-colors-alerts-error-main: ${ theme[ theme.activeTheme ].colors.alerts?.error?.main };
@@ -75,13 +77,9 @@ export class BrandingPreferenceMeta {
         --asg-colors-illustrations-accent2-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent2?.main };
         --asg-colors-illustrations-accent3-main: ${ theme[ theme.activeTheme ].colors.illustrations?.accent3?.main };
 
-        --asg-colors-primary-main: ${ theme[ theme.activeTheme ].colors.primary.main };
-        --asg-colors-secondary-main: ${ theme[ theme.activeTheme ].colors.secondary.main };
-        --asg-colors-background-body-main: ${ theme[ theme.activeTheme ].colors.background.body.main };
-        --asg-colors-text-primary: ${ theme[ theme.activeTheme ].colors.text.primary };
-
+        /* Components */
         --asg-footer-text-color: ${ footerFontColor };
-        --asg-footer-border-color: ${ theme[ theme.activeTheme ].footer.border.borderColor };
+        --asg-footer-border-color: ${ theme[ theme.activeTheme ].footer?.border?.borderColor || "var(--asg-colors-outlined-default)" };
         --asg-primary-font-family: ${ theme[ theme.activeTheme ].typography.font.fontFamily };
         --asg-heading-text-color: ${ headingFontColor };
         --asg-primary-button-base-text-color: ${ theme[ theme.activeTheme ].buttons.primary.base.font.color };
@@ -91,16 +89,18 @@ export class BrandingPreferenceMeta {
         --asg-external-login-button-base-background-color: ${ theme[ theme.activeTheme ].buttons.externalConnection.base.background.backgroundColor };
         --asg-external-login-button-base-text-color: ${ theme[ theme.activeTheme ].buttons.externalConnection.base.font.color };
         --asg-external-login-button-base-border-radius: ${ theme[ theme.activeTheme ].buttons.externalConnection.base.border.borderRadius };
-        --asg-login-box-background-color: ${ theme[ theme.activeTheme ].loginBox.background.backgroundColor };
-        --asg-login-box-border-color: ${ theme[ theme.activeTheme ].loginBox.border.borderColor };
+        --asg-login-box-background-color: ${ theme[ theme.activeTheme ].loginBox?.background?.backgroundColor || "var(--asg-colors-background-surface-main)" };
+        --asg-login-box-border-color: ${ theme[ theme.activeTheme ].loginBox?.border?.borderColor || "var(--asg-colors-outlined-default)" };
         --asg-login-box-border-width: ${ theme[ theme.activeTheme ].loginBox.border.borderWidth };
         --asg-login-box-border-style: solid;
         --asg-login-box-border-radius: ${ theme[ theme.activeTheme ].loginBox.border.borderRadius };
         --asg-login-box-text-color: ${ loginBoxFontColor };
+        --asg-login-page-background-color: ${ theme[ theme.activeTheme ].loginPage?.background?.backgroundColor };
+        --asg-login-page-font-color: ${ theme[ theme.activeTheme ].loginPage?.font?.color };
         --asg-input-field-base-text-color: ${ inputBaseFontColor };
         --asg-input-field-base-background-color: ${ theme[ theme.activeTheme ].inputs.base.background.backgroundColor };
         --asg-input-field-base-label-text-color: ${ inputBaseLabelFontColor };
-        --asg-input-field-base-border-color: ${ theme[ theme.activeTheme ].inputs.base.border.borderColor };
+        --asg-input-field-base-border-color: ${ theme[ theme.activeTheme ].inputs.base.border.borderColor || "var(--asg-colors-outlined-default)" };
         --asg-input-field-base-border-radius: ${ theme[ theme.activeTheme ].inputs.base.border.borderRadius };
     }
 
@@ -108,8 +108,6 @@ export class BrandingPreferenceMeta {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-body-main);
     }
-
-
 
     /*-----------------------------
             Anchor Tags
@@ -171,7 +169,7 @@ export class BrandingPreferenceMeta {
     .alert-wrapper .notifications-wrapper .notification {
         background: var(--asg-colors-background-surface-main) !important;
         color: var(--asg-colors-text-primary) !important;
-        border: 1px solid var(--asg-colors-outlined-default-main) !important;
+        border: 1px solid var(--asg-colors-outlined-default) !important;
     }
 
     .alert-wrapper .notifications-wrapper .notification .notification-message .alert-message .description {
@@ -188,12 +186,12 @@ export class BrandingPreferenceMeta {
 
     .ui.card, .ui.cards>.card {
         background: var(--asg-colors-background-surface-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.card, .ui.card.settings-card {
         background: var(--asg-colors-background-surface-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.card>.extra, .ui.cards>.card>.extra, .ui.card.settings-card .extra-content {
@@ -220,7 +218,7 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.card.basic-card {
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     /*-----------------------------
@@ -230,7 +228,7 @@ export class BrandingPreferenceMeta {
     /* Avatar Modal Inner */
     .ui.dropdown .menu {
         background: var(--asg-colors-background-surface-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
         color: var(--asg-colors-text-primary);
     }
     .ui.dropdown .menu .selected.item, .ui.dropdown.selected {
@@ -259,7 +257,7 @@ export class BrandingPreferenceMeta {
 
     .ui.modal>.actions {
         background: var(--asg-colors-background-surface-light);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.modal>.header {
@@ -297,7 +295,7 @@ export class BrandingPreferenceMeta {
     }
 
     .theme-icon.bordered {
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .theme-icon.two-tone svg.icon .lighten-1 {
@@ -615,11 +613,11 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.basic.button.show-more-button {
-        box-shadow: 0 0 0 1px var(--asg-colors-outlined-default-main) inset;
+        box-shadow: 0 0 0 1px var(--asg-colors-outlined-default) inset;
     }
 
     .ui.basic.button.show-more-button .arrow.down.icon {
-        border-left: 1px solid var(--asg-colors-outlined-default-main);
+        border-left: 1px solid var(--asg-colors-outlined-default);
     }
 
     .ui.basic.primary.button, .ui.basic.primary.buttons .button {
@@ -825,7 +823,7 @@ export class BrandingPreferenceMeta {
     .ui.form .field .prompt.label {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-surface-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     /*-----------------------------
@@ -835,7 +833,7 @@ export class BrandingPreferenceMeta {
     .ui.popup {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-surface-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.bottom.popup:before, .ui.top.popup:before, .ui.left.popup:before, .ui.right.popup:before, .ui.left.center.popup:before, .ui.right.center.popup:before {
@@ -843,19 +841,19 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.popup:before {
-        box-shadow: 1px 1px 0 0 var(--asg-colors-outlined-default-main);
+        box-shadow: 1px 1px 0 0 var(--asg-colors-outlined-default);
     }
 
     .ui.bottom.left.popup:before, .ui.bottom.center.popup:before, .ui.bottom.right.popup:before {
-        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
+        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default);
     }
 
     .ui.left.center.popup:before {
-        box-shadow: 1px -1px 0 0 var(--asg-colors-outlined-default-main);
+        box-shadow: 1px -1px 0 0 var(--asg-colors-outlined-default);
     }
 
     .ui.right.center.popup:before {
-        box-shadow: -1px 1px 0 0 var(--asg-colors-outlined-default-main);
+        box-shadow: -1px 1px 0 0 var(--asg-colors-outlined-default);
     }
 
     /*-----------------------------
@@ -866,18 +864,18 @@ export class BrandingPreferenceMeta {
 
     /* Default Page */
     .login-portal.layout {
-        color: var(--asg-colors-text-primary);
-        background: var(--asg-colors-background-body-main);
+        color: var(--asg-login-page-font-color);
+        background: var(--asg-login-page-background-color);
     }
 
     /* Default Page with Blurred Patch */
     .login-portal.layout .page-wrapper {
-        background: var(--asg-colors-background-body-main);
+        background: var(--asg-login-page-background-color);
     }
 
     /* Error, Success Pages */
     .login-portal.layout .page-wrapper.success-page, .login-portal.layout .page-wrapper.error-page {
-        background: var(--asg-colors-background-body-main);
+        background: var(--asg-login-page-background-color);
     }
 
     /* ------  Login Box ------ */
@@ -960,12 +958,12 @@ export class BrandingPreferenceMeta {
 
     .ui.menu.app-header {
         background: var(--asg-colors-background-surface-inverted);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.pointing.dropdown>.menu:after {
         background: var(--asg-colors-background-surface-main);
-        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default-main);
+        box-shadow: -1px -1px 0 0 var(--asg-colors-outlined-default);
     }
 
     .ui.menu .user-dropdown .user-dropdown-menu .organization-label {
@@ -977,7 +975,7 @@ export class BrandingPreferenceMeta {
 
     .ui.menu.app-footer {
         background: var(--asg-colors-background-body-main);
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }
 
     .ui.menu.app-footer {
@@ -989,7 +987,7 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.segment.cookie-consent-banner.inverted {
-        border: 1px solid var(--asg-colors-outlined-default-main);
+        border: 1px solid var(--asg-colors-outlined-default);
         background: var(--asg-colors-background-surface-inverted);
     }
 
@@ -1012,7 +1010,7 @@ export class BrandingPreferenceMeta {
     }
 
     .ui.items>.item.application-list-item {
-        border-color: var(--asg-colors-outlined-default-main);
+        border-color: var(--asg-colors-outlined-default);
     }`;
     }
     /* eslint-enable max-len */
