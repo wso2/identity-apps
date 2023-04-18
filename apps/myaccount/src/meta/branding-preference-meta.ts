@@ -95,13 +95,16 @@ export class BrandingPreferenceMeta {
         --asg-login-box-border-style: solid;
         --asg-login-box-border-radius: ${ theme[ theme.activeTheme ].loginBox.border.borderRadius };
         --asg-login-box-text-color: ${ loginBoxFontColor };
-        --asg-login-page-background-color: ${ theme[ theme.activeTheme ].loginPage?.background?.backgroundColor };
-        --asg-login-page-font-color: ${ theme[ theme.activeTheme ].loginPage?.font?.color };
-        --asg-input-field-base-text-color: ${ inputBaseFontColor };
+        --asg-login-page-background-color: ${ theme[ theme.activeTheme ].loginPage?.background?.backgroundColor || "var(--asg-colors-background-body-main)" };
+        --asg-login-page-font-color: ${ theme[ theme.activeTheme ].loginPage?.font?.color || "var(--asg-colors-text-primary)" };
+        --asg-input-field-base-text-color: ${ inputBaseFontColor || "var(--asg-colors-text-primary)" };
         --asg-input-field-base-background-color: ${ theme[ theme.activeTheme ].inputs.base.background.backgroundColor };
         --asg-input-field-base-label-text-color: ${ inputBaseLabelFontColor };
         --asg-input-field-base-border-color: ${ theme[ theme.activeTheme ].inputs.base.border.borderColor || "var(--asg-colors-outlined-default)" };
         --asg-input-field-base-border-radius: ${ theme[ theme.activeTheme ].inputs.base.border.borderRadius };
+        --language-selector-background-color: var(--asg-login-page-background-color) !important;
+        --language-selector-text-color: var(--asg-footer-text-color) !important;
+        --language-selector-border-color: var(--asg-asg-colors-primary-main) !important;
     }
 
     body {
@@ -158,7 +161,7 @@ export class BrandingPreferenceMeta {
         background-color: var(--asg-colors-alerts-warning-main) !important;
     }
 
-    .ui.message.error {
+    .ui.message.error, .ui.negative.message {
         background-color: var(--asg-colors-alerts-error-main) !important;
     }
 
