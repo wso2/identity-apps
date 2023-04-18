@@ -104,7 +104,7 @@ export class BrandingPreferenceMeta {
         --asg-input-field-base-border-radius: ${ theme[ theme.activeTheme ].inputs.base.border.borderRadius };
         --language-selector-background-color: var(--asg-login-page-background-color) !important;
         --language-selector-text-color: var(--asg-footer-text-color) !important;
-        --language-selector-border-color: var(--asg-asg-colors-primary-main) !important;
+        --language-selector-border-color: var(--asg-colors-primary-main) !important;
     }
 
     body {

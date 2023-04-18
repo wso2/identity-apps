@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import { THEMES } from "../meta";
-import { BrandingPreferenceAPIResponseInterface } from "../models";
+import { BrandingPreferenceAPIResponseInterface, PredefinedThemes } from "../models";
 
 /**
  * Migrates a branding preference API response to include the default themes.
@@ -27,11 +28,83 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
  * @returns A new API response object with the default themes merged in.
  */
 export const getMigratedBrandingPreference = (
-    preference: BrandingPreferenceAPIResponseInterface
+    original: BrandingPreferenceAPIResponseInterface
 ): BrandingPreferenceAPIResponseInterface => {
-    if (!preference) {
-        return preference;
+    if (!original) {
+        return original;
     }
 
-    return merge({ preference: { theme: THEMES } }, preference);
+    const migratedThemePreference: BrandingPreferenceAPIResponseInterface = cloneDeep(original);
+
+    // If the preference is of v1, create a `theme` object and set the defaults.
+    if (!original?.preference?.theme) {
+        migratedThemePreference.preference.theme = {
+            activeTheme: PredefinedThemes.LIGHT,
+            ...THEMES
+        };
+    }
+
+    for (const theme in PredefinedThemes) {
+        // v2 Migrations!
+        // If the preference is of v1, move `images` inside the theme.
+        if (original?.preference?.images) {
+            migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].images = original.preference.images;
+        }
+
+        // v3 Migrations!
+        const originalPrimaryColor: string = migratedThemePreference.preference.theme[
+            PredefinedThemes[ theme ]
+        ].colors.primary;
+
+        if (typeof originalPrimaryColor === "string") {
+            delete migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.primary;
+            migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.primary = {
+                main: originalPrimaryColor
+            };
+        }
+
+        const originalSecondaryColor: string = migratedThemePreference.preference.theme[
+            PredefinedThemes[ theme ]
+        ].colors.secondary;
+
+        if (typeof originalSecondaryColor === "string") {
+            delete migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.secondary;
+            migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.secondary = {
+                main: originalSecondaryColor
+            };
+        }
+
+        if (migratedThemePreference.preference.theme[PredefinedThemes[ theme ]].page) {
+            const originalLoginPageBackgroundColor: string = migratedThemePreference.preference.theme[
+                PredefinedThemes[ theme ]
+            ].page?.background?.backgroundColor;
+
+            if (!migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors?.background
+                && originalLoginPageBackgroundColor) {
+                migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.background = {
+                    body: {
+                        main: originalLoginPageBackgroundColor
+                    }
+                };
+            }
+
+            const originalPageFontColor: string = migratedThemePreference.preference.theme[
+                PredefinedThemes[ theme ]
+            ].page?.font?.color;
+
+            if (!migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors?.text
+                && originalPageFontColor) {
+                migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].colors.text = {
+                    primary: originalPageFontColor
+                };
+            }
+
+            migratedThemePreference.preference.theme[
+                PredefinedThemes[ theme ]
+            ].loginPage = migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].page;
+            delete migratedThemePreference.preference.theme[ PredefinedThemes[ theme ] ].page;
+        }
+    }
+
+    return merge({ preference: { theme: THEMES } }, migratedThemePreference);
 };
