@@ -78,7 +78,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         transparent,
         twoTone
     } = props;
-    const relaxLevel: string = (relaxed && relaxed === true) ? "" : relaxed;
+    const relaxLevel: string | boolean  = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes: string = classNames({
         "bordered": bordered,
