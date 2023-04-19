@@ -42,6 +42,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     Divider,
@@ -61,6 +62,7 @@ import {
     OrganizationRoleInterface,
     PatchOrganizationRoleDataInterface
 } from "../../models";
+import { GroupListInterface, GroupsInterface } from "../../../groups/models";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -88,7 +90,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
@@ -148,18 +150,18 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
     useEffect(() => {
         getGroupList(null)
-            .then((response) => {
-                setPrimaryGroups(response.data.Resources);
+            .then((response: GroupListInterface | any) => {
+                setPrimaryGroups(response.data.Resources as GroupsInterface[]);
             });
         setIsLoadingAssignedGroups(false);
     }, []);
 
     const mapUserRoles = () => {
-        const groupsMap = new Map<string, string> ();
+        const groupsMap: Map<string, string> = new Map<string, string> ();
 
         if (role.groups && role.groups instanceof Array) {
-            forEachRight (role.groups, (group) => {
-                const groupName = group.display.split("/");
+            forEachRight (role.groups, (group: RoleGroupsInterface) => {
+                const groupName: string[] = group.display.split("/");
 
                 if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
                     groupsMap.set(group.display, group.value);
@@ -175,14 +177,14 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const groupListCopy = primaryGroups ? [ ...primaryGroups ] : [];
+        const groupListCopy: GroupsInterface[] = primaryGroups ? [ ...primaryGroups ] : [];
 
-        const addedGroups = [];
+        const addedGroups: GroupsInterface[] = [];
 
         if (groupListCopy && primaryGroupsList) {
-            const primaryGroupValues = Array.from(primaryGroupsList?.values());
+            const primaryGroupValues: string[] = Array.from(primaryGroupsList?.values());
 
-            forEach(groupListCopy, (group) => {
+            forEach(groupListCopy, (group: GroupsInterface) => {
                 if (primaryGroupValues.includes(group?.id)) {
                     addedGroups.push(group);
                 }
