@@ -5217,7 +5217,7 @@ export const console: ConsoleNS = {
                         },
                         name: {
                             label: "Nom",
-                            placeholder: "Saisir un nom pour l'attribut",
+                            placeholder: "Entrez le nom d'affichage",
                             requiredErrorMessage: "Un nom est requis",
                             validationErrorMessages: {
                                 invalidName: "Le nom que vous avez entré contient des caractères non autorisés. Il" +

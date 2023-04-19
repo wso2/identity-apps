@@ -6751,7 +6751,7 @@ export const console: ConsoleNS = {
                         },
                         name: {
                             label: "Attribute Display Name",
-                            placeholder: "Enter a name for the attribute",
+                            placeholder: "Enter the display name",
                             requiredErrorMessage: "Name is required",
                             validationErrorMessages: {
                                 invalidName: "The name you entered contains disallowed characters. It can only" +
