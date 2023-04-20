@@ -34,7 +34,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, Dispatch } from "redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { Label, Menu } from "semantic-ui-react";
 import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
@@ -60,7 +61,7 @@ type HeaderPropsInterface = Omit<ReusableHeaderPropsInterface, "basicProfileInfo
 export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPropsInterface): ReactElement => {
     const { fluid, onSidePanelToggleClick, ...rest } = props;
 
-    const dispatch: Dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
 
     const { t } = useTranslation();
 
@@ -144,7 +145,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         try {
-            dispatch(handleAccountSwitching(account) as unknown as AnyAction);
+            dispatch(handleAccountSwitching(account));
             refreshPage();
         } catch (error) {
             if (error.response && error.response.data && error.response.detail) {

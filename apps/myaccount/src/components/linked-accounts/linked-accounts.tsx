@@ -22,7 +22,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, Dispatch } from "redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
 import { LinkedAccountsList } from "./linked-accounts-list";
 import {
@@ -63,7 +64,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -74,7 +75,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      */
     useEffect(() => {
         if (isEmpty(linkedAccounts)) {
-            dispatch(getProfileLinkedAccounts() as unknown as AnyAction);
+            dispatch(getProfileLinkedAccounts());
         }
     }, []);
 
@@ -127,7 +128,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 dispatch(setActiveForm(null));
 
                 // Re-fetch the linked accounts list.
-                dispatch(getProfileLinkedAccounts() as unknown as AnyAction);
+                dispatch(getProfileLinkedAccounts());
             })
             .catch((error: AxiosError) => {
                 onAlertFired({
@@ -149,7 +150,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         try {
-            dispatch(handleAccountSwitching(account) as unknown as AnyAction);
+            dispatch(handleAccountSwitching(account));
             refreshPage();
         } catch (error) {
 
@@ -199,7 +200,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 });
 
                 // Re-fetch the linked accounts list.
-                dispatch(getProfileLinkedAccounts() as unknown as AnyAction);
+                dispatch(getProfileLinkedAccounts());
             })
             .catch((error: AxiosError & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
