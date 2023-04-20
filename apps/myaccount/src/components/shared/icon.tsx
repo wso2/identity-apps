@@ -60,7 +60,7 @@ export type ThemeIconSizes =
  * @param props - Props injected to the component.
  * @returns Icon component.
  */
-export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.Element => {
+export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props: ThemeIconProps): JSX.Element => {
     const {
         bordered,
         className,

@@ -49,11 +49,12 @@ interface UserSessionsListProps extends TestableComponentInterface {
     userSessionsListActiveIndexes?: number[];
 }
 
-const userAgentParser = new UserAgentParser();
+const userAgentParser: UserAgentParser = new UserAgentParser();
 
 /**
  * User sessions list component.
  *
+ * @param props - Props injected to the component.
  * @returns User Sessions List component.
  */
 export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
@@ -76,7 +77,20 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
      * @returns Device Icon.
      */
     const resolveDeviceType = (type: string): SemanticICONS => {
-        const deviceType = {
+        const deviceType: {
+            desktop: {
+                icon: string;
+                values: string[];
+            },
+            mobile: {
+                icon: string;
+                values: string[];
+            },
+            tablet: {
+                icon: string;
+                values: string[];
+            }
+        } = {
             desktop: {
                 icon: "computer",
                 values: [ "desktop" ]
@@ -108,7 +122,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                 userSessions
                 && userSessions.length
                 && userSessions.length > 0
-                    ? userSessions.map((userSession, index) => {
+                    ? userSessions.map((userSession: UserSession, index: number) => {
                         userAgentParser.uaString = userSession.userAgent;
 
                         return (

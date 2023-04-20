@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { getWidgetIcons } from "../../../configs";
@@ -24,13 +24,17 @@ import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 
+type ConsentManagementWidgetPropsInterface = TestableComponentInterface & IdentifiableComponentInterface;
+
 /**
  * Consent management widget.
  *
  * @param props - Props injected to the component.
  * @returns Consent Management Widget.
  */
-export const ConsentManagementWidget: FunctionComponent<TestableComponentInterface> = (props): ReactElement => {
+export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetPropsInterface> = (
+    props: ConsentManagementWidgetPropsInterface
+): ReactElement => {
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();

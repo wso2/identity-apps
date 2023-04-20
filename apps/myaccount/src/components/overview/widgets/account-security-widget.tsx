@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
+
+type AccountSecurityWidgetPropsInterface = TestableComponentInterface & IdentifiableComponentInterface;
 
 /**
  * Account security widget.
@@ -31,7 +33,9 @@ import { SettingsSection } from "../../shared";
  * @param props - Props injected to the component.
  * @returns Account Security Widget.
  */
-export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+export const AccountSecurityWidget: FunctionComponent<AccountSecurityWidgetPropsInterface> = (
+    props: AccountSecurityWidgetPropsInterface
+): JSX.Element => {
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
