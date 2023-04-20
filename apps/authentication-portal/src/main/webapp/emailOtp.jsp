@@ -20,6 +20,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="includes/localize.jsp" %>
@@ -54,6 +55,9 @@
             if (errorMessage.equalsIgnoreCase("token.expired.email.sent")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.token.expired.email.sent");
             }
+            if (errorMessage.equalsIgnoreCase("recaptcha.failed")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.recaptcha.failed");
+            }
         }
     }
 %>
@@ -79,6 +83,51 @@
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+
+    <script type="text/javascript">
+        function onSubmit(token) {
+
+            submitOtpForm();
+        }
+
+        function validate(event) {
+
+            event.preventDefault();
+            var code = document.getElementById("OTPCode").value;
+            if (code == "") {
+                document.getElementById('alertDiv').innerHTML
+                    = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                        + '<div class="ui divider hidden"></div>';
+            } else {
+                grecaptcha.execute();
+            }
+        }
+
+        function onload() {
+
+            var element = document.getElementById('authenticate');
+            element.onclick = validate;
+        }
+
+        function submitOtpForm(){
+
+              if ($('#codeForm').data("submitted") === true) {
+                  console.warn("Prevented a possible double submit event");
+              } else {
+                  $('#codeForm').data("submitted", true);
+                  $('#codeForm').submit();
+              }
+        }
+    </script>
+
+    <%
+        if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+    %>
+    <script src='<%=(reCaptchaAPI)%>' async defer></script>
+    <%
+        }
+    %>
 </head>
 
 <body class="login-portal layout email-otp-portal-layout">
@@ -122,6 +171,18 @@
                             if (loginFailed != null && "true".equals(loginFailed)) {
                                 String authFailureMsg = request.getParameter("authFailureMsg");
                                 if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
+                        %>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="g-recaptcha"
+                            data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                            data-callback="onSubmit"
+                            data-size="invisible">
+                        </div>
+                        <%
+                            }
                         %>
                         <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%>
                         </div>
@@ -171,6 +232,7 @@
                                     class="ui primary button"/>
                             </div>
                     </form>
+                    <script>onload();</script>
                 </div>
             </div>
         </layout:component>
@@ -198,23 +260,6 @@
     <% } %>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#authenticate').click(function () {
-                var code = document.getElementById("OTPCode").value;
-                if (code == "") {
-                    document.getElementById('alertDiv').innerHTML
-                        = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
-                            +'<div class="ui divider hidden"></div>';
-                } else {
-                    if ($('#codeForm').data("submitted") === true) {
-                        console.warn("Prevented a possible double submit event");
-                    } else {
-                        $('#codeForm').data("submitted", true);
-                        $('#codeForm').submit();
-                    }
-                }
-            });
-        });
 
         function resendOtp() {
             document.getElementById("resendCode").value = "true";
