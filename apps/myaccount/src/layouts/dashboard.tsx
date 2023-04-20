@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Dispatch } from "redux";
 import { Segment } from "semantic-ui-react";
 import { fetchApplications } from "../api";
 import {
@@ -48,7 +49,7 @@ import {
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface } from "../models";
+import { ApplicationList, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { toggleApplicationsPageVisibility } from "../store/actions";
 import { AppUtils, filterRoutes } from "../utils";
@@ -76,7 +77,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const { location } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { isMobileViewport } = useMediaContext();
     const { headerHeight, footerHeight } = useUIElementSizes({
         footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
@@ -89,7 +90,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+    const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
 
     const [
         selectedRoute,
@@ -109,7 +110,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         // Fetches the list of applications to see if the list is empty.
         // If it is empty, hides the side panel item.
         fetchApplications(null, null, null)
-            .then((response) => {
+            .then((response: ApplicationList) => {
                 if (isEmpty(response.applications)) {
                     dispatch(toggleApplicationsPageVisibility(false));
 
@@ -271,7 +272,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                 <Suspense fallback={ <Loader /> }>
                     <Switch>
                         {
-                            dashboardLayoutRoutes.map((route, index) => (
+                            dashboardLayoutRoutes.map((route: RouteInterface, index: number) => (
                                 route.redirectTo
                                     ? <Redirect to={ route.redirectTo } />
                                     : route.protected
@@ -286,7 +287,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps) =>
+                                                render={ (renderProps: RouteComponentProps) =>
                                                     route.component
                                                         ? <route.component { ...renderProps } />
                                                         : null

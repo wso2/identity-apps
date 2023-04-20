@@ -60,19 +60,98 @@ interface NxWebpackContextInterface {
     };
 }
 
-module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
+/**
+ * Represents a set of absolute paths used in the application.
+ */
+interface AbsolutePathsInterface {
+    /**
+     * The absolute path to the 'node_modules' directory for the application.
+     */
+    appNodeModules: string;
+    /**
+     * The absolute path to the application source directory.
+     */
+    appSrc: string;
+    /**
+     * The absolute path to the distribution directory for the application.
+     */
+    distribution: string;
+    /**
+     * An array of absolute paths to the entry point files for the application.
+     */
+    entryPoints: string[];
+    /**
+     * The absolute path to the cache directory used by the 'eslint' utility.
+     */
+    eslintCache: string;
+    /**
+     * The absolute path to the '.eslintrc' configuration file for the application.
+     */
+    eslintrc: string;
+    /**
+     * The absolute path to the home page template file in the distribution directory.
+     */
+    homeTemplateInDistribution: string;
+    /**
+     * The absolute path to the home page template file in the source directory.
+     */
+    homeTemplateInSource: string;
+    /**
+     * The absolute path to the index page template file in the distribution directory.
+     */
+    indexTemplateInDistribution: string;
+    /**
+     * The absolute path to the index page template file in the source directory.
+     */
+    indexTemplateInSource: string;
+}
+  
+/**
+ * Represents a set of relative paths used in the application.
+ */
+interface RelativePathsInterface {
+    /**
+     * The relative path to the distribution directory for the application.
+     */
+    distribution: string;
+    /**
+     * The relative path to the home page template file.
+     */
+    homeTemplate: string;
+    /**
+     * The relative path to the index page template file.
+     */
+    indexTemplate: string;
+    /**
+     * An array of relative paths to the Java EE folders used in the application.
+     */
+    javaEEFolders: string[];
+    /**
+     * The relative path to the application source directory.
+     */
+    source: string;
+    /**
+     * The relative path to the static JavaScript files used in the application.
+     */
+    staticJs: string;
+    /**
+     * The relative path to the static media files used in the application.
+     */
+    staticMedia: string;
+}
 
+module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInterface) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nxReactWebpackConfig(config);
 
     context = rewriteContext(context);
 
-    const ABSOLUTE_PATHS = getAbsolutePaths(config.mode, context);
-    const RELATIVE_PATHS = getRelativePaths(config.mode, context);
+    const ABSOLUTE_PATHS: AbsolutePathsInterface = getAbsolutePaths(config.mode, context);
+    const RELATIVE_PATHS: RelativePathsInterface = getRelativePaths(config.mode, context);
 
-    const isProduction = config.mode === "production";
-    const baseHref = getBaseHref(
+    const isProduction: boolean = config.mode === "production";
+    const baseHref: string = getBaseHref(
         context.buildOptions?.baseHref ?? context.options.baseHref,
         DeploymentConfig.appBaseName
     );
@@ -80,23 +159,23 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // Flag to determine if the app is intended to be deployed on an external tomcat server
     // outside of the Identity Server runtime. If true, references & usage of internally provided
     // jars and libs inside the JSP's will be removed.
-    const isDeployedOnExternalTomcatServer = process.env.SERVER_TYPE === ServerTypes.TOMCAT;
+    const isDeployedOnExternalTomcatServer: boolean = process.env.SERVER_TYPE === ServerTypes.TOMCAT;
     // Flag to determine if the app is deployed on an external static server.
     // With this option, all the `jsp` files and java specific folders will be dropped.
-    const isDeployedOnExternalStaticServer = process.env.SERVER_TYPE === ServerTypes.STATIC;
+    const isDeployedOnExternalStaticServer: boolean = process.env.SERVER_TYPE === ServerTypes.STATIC;
 
     // Build Modes.
-    const isProfilingMode = process.env.ENABLE_BUILD_PROFILER === "true";
-    const isAnalyzeMode = process.env.ENABLE_ANALYZER === "true";
-    const analyzerPort = parseInt(process.env.ANALYZER_PORT, 10) || 8888;
+    const isProfilingMode: boolean = process.env.ENABLE_BUILD_PROFILER === "true";
+    const isAnalyzeMode: boolean = process.env.ENABLE_ANALYZER === "true";
+    const analyzerPort: number = parseInt(process.env.ANALYZER_PORT, 10) || 8888;
 
     // Dev Server Options.
-    const devServerPort = process.env.DEV_SERVER_PORT || config.devServer?.port;
-    const isDevServerHostCheckDisabled = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
-    const isESLintPluginDisabled = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const devServerPort: number = process.env.DEV_SERVER_PORT || config.devServer?.port;
+    const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
+    const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
     // Configurations resolved from deployment.config.json.
-    const theme = DeploymentConfig.ui.theme.name || "default";
+    const theme: string = DeploymentConfig.ui.theme.name || "default";
 
     config.entry = {
         ...config.entry,
@@ -115,7 +194,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     } as WebpackOptionsNormalized["infrastructureLogging"];
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
-    const indexHtmlWebpackPluginIndex = config.plugins.findIndex((plugin) => {
+    const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: webpack.WebpackPluginInstance) => {
         return plugin.constructor.name === "IndexHtmlWebpackPlugin";
     });
 
@@ -308,7 +387,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     );
 
     // Update the existing `DefinePlugin` plugin added by NX.
-    const existingDefinePlugin = config.plugins.find((plugin) => {
+    const existingDefinePlugin: WebpackPluginInstance = config.plugins.find((plugin: WebpackPluginInstance) => {
         return plugin.constructor.name === "DefinePlugin";
     });
 
@@ -328,9 +407,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     }
 
     // Update the existing `CopyPlugin` plugin added by NX.
-    const existingCopyPlugin = config.plugins.find((plugin) => {
-        return plugin.constructor.name === "CopyPlugin";
-    });
+    const existingCopyPlugin: webpack.WebpackPluginInstance = config.plugins.find(
+        (plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "CopyPlugin";
+        }
+    );
 
     if (config.plugins.indexOf(existingCopyPlugin) !== -1) {
         config.plugins.splice(config.plugins.indexOf(existingCopyPlugin), 1);
@@ -339,8 +420,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             new CopyWebpackPlugin({
                 ...existingCopyPlugin,
                 patterns: [
-                    ...existingCopyPlugin[ "patterns" ]
-                        .map((pattern) => {
+                    ...existingCopyPlugin["patterns"]
+                        .map((pattern: { from: string; context: string; globOptions: { ignore: string[] } }) => {
                             if (isDeployedOnExternalStaticServer) {
                                 // For deployments on static servers, we don't require `auth.jsp`
                                 // since we can't use `form_post` response mode.
@@ -424,7 +505,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }
     });
 
-    config.module.rules.push( {
+    config.module.rules.push({
         exclude: /node_modules/,
         test: /.*(i18n).*\.*(portals).*\.json$/i,
         type: "asset/resource"
@@ -445,7 +526,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }
 
         if (rule.test.toString().includes("svg") && rule.test instanceof RegExp) {
-            rule.oneOf.forEach((loader) => {
+            rule.oneOf.forEach((loader: RuleSetRule) => {
                 loader.use instanceof Array && loader.use.forEach((item: RuleSetUseItem) => {
                     if (typeof item !== "string" && (item as any).loader.includes("url-loader")) {
                         (item as any).options.name = isProduction
@@ -501,10 +582,18 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 };
 
 const getThemeConfigs = (theme: string) => {
-    const THEME_DIR = path.resolve(__dirname,
-        "node_modules", "@wso2is", "theme", "dist", "lib", "themes", theme);
-    const files = fs.readdirSync(THEME_DIR);
-    const file = files ? files.filter(file => file.endsWith(".min.css"))[ 0 ] : null;
+    const THEME_DIR: string = path.resolve(
+        __dirname,
+        "node_modules",
+        "@wso2is",
+        "theme",
+        "dist",
+        "lib",
+        "themes",
+        theme
+    );
+    const files: string[] = fs.readdirSync(THEME_DIR);
+    const file: string = files ? files.filter((file: string) => file.endsWith(".min.css"))[0] : null;
 
     return {
         styleSheetHash: file ? file.split(".")[ 1 ] : null
@@ -512,25 +601,24 @@ const getThemeConfigs = (theme: string) => {
 };
 
 const getI18nConfigs = () => {
-    const I18N_DIR = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
+    const I18N_DIR: string = path.resolve(__dirname, "node_modules", "@wso2is", "i18n", "dist", "bundle");
 
-    let metaFiles = null;
+    let metaFiles: string[] = null;
 
     try {
         metaFiles = fs.readdirSync(I18N_DIR);
-    } catch(e) {
+    } catch (e) {
         // Log Infastructure Error.
     }
 
-    const metaFile = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
+    const metaFile: string = metaFiles ? metaFiles.filter((file: string) => file.startsWith("meta"))[ 0 ] : null;
 
     return {
         metaFileHash: metaFile ? metaFile.split(".")[ 1 ] : null
     };
 };
 
-const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
-
+const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextInterface): RelativePathsInterface => {
     // TODO: Remove supression once `isProduction` is actively used.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isProduction: boolean = env === "production";
@@ -547,9 +635,8 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
 };
 
 const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextInterface) => {
-
     const isProduction: boolean = env === "production";
-    const RELATIVE_PATHS = getRelativePaths(env, context);
+    const RELATIVE_PATHS: RelativePathsInterface = getRelativePaths(env, context);
 
     return {
         appNodeModules: path.resolve(__dirname, "node_modules"),
@@ -579,7 +666,6 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
  * @returns A resolved baseHref.
  */
 const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf: string): string => {
-
     // Try to check if they are the same value.
     // CONTEXT: `appBaseName` doesn't have leading or trailing slashes.
     if (baseHrefFromProjectConf.includes(baseHrefFromDeploymentConf)
@@ -599,8 +685,7 @@ const getBaseHref = (baseHrefFromProjectConf: string, baseHrefFromDeploymentConf
  * @param baseHref - Resolved BaseHref.
  * @returns Static file serve path.
  */
-const getStaticFileServePath = (baseHref: string) => {
-
+const getStaticFileServePath = (baseHref: string): string => {
     if (baseHref.length === 1) {
         return baseHref;
     }
@@ -615,7 +700,6 @@ const getStaticFileServePath = (baseHref: string) => {
  * @returns Modified Nx Webpack build context.
  */
 const rewriteContext = (context: NxWebpackContextInterface): NxWebpackContextInterface => {
-
     // For DEV environment.
     if (context.buildOptions?.baseHref) {
         context.buildOptions.baseHref = getBaseHref(context.buildOptions.baseHref, DeploymentConfig.appBaseName);
