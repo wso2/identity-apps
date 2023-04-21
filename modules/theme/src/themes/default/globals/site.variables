@@ -52,9 +52,9 @@
 
 @primaryColor        : @orange;
 @secondaryColor      : #E0E1E2;
-@accentColor1        : #173163;
-@accentColor2        : #f5385b;
-@accentColor3        : #00b7e1;
+@accentColor1        : #3865B5;
+@accentColor2        : #19BECE;
+@accentColor3        : #FFFFFF;
 @accentColor4        : #92278F;
 
 @lightPrimaryColor   : lighten(@primaryColor, 40);

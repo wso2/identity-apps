@@ -73,6 +73,7 @@ export class Config {
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
+            brandingPreference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
             challengeAnswers: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenges`,
             consentManagement: {

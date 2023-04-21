@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { getWidgetIcons } from "../../../configs";
@@ -24,12 +24,17 @@ import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 
+type ConsentManagementWidgetPropsInterface = TestableComponentInterface & IdentifiableComponentInterface;
+
 /**
  * Consent management widget.
  *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Consent Management Widget.
  */
-export const ConsentManagementWidget: FunctionComponent<TestableComponentInterface> = (props): ReactElement => {
+export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetPropsInterface> = (
+    props: ConsentManagementWidgetPropsInterface
+): ReactElement => {
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
@@ -40,7 +45,8 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
 
     return (
         <div className="widget consent-management" data-testid={ testId }>
-            <SettingsSection className="overview"
+            <SettingsSection
+                className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.consentManagement.header") }
                 description={ t("myAccount:components.overview.widgets.consentManagement.description") }
@@ -48,7 +54,7 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().consents }
                 iconMini={ getWidgetIcons().consents }
-                iconSize="tiny"
+                iconSize="x60"
                 iconStyle="twoTone"
             />
         </div>

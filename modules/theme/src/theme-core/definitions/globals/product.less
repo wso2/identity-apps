@@ -58,7 +58,7 @@ body {
                 background-color: @secondaryColor !important;
             }
         }
-        
+
         &.absolute {
             position: absolute;
             top: @productVersionLabelAbsoluteTop;
@@ -622,7 +622,7 @@ body {
             }
         }
     }
-    
+
     &.grid-layout {
         .search-input-wrapper {
             max-width: @advancedSearchWidth;
@@ -1095,6 +1095,60 @@ body {
                     fill: @dullGreen;
                 }
             }
+            .stroke-primary {
+                stroke: @iconWrapperTwoTonePrimaryColor;
+            }
+            .stroke-secondary {
+                stroke: @iconWrapperTwoToneSecondaryColor;
+            }
+            .stroke-white {
+                stroke: @white;
+            }
+            .stroke-tertiary {
+                stroke: @paleGray;
+            }
+            .stroke-blue {
+                stroke: @blue;
+            }
+            .stroke-green {
+                stroke: @dullGreen;
+            }
+            .fill-primary {
+                fill: @iconWrapperTwoTonePrimaryColor;
+            }
+            .fill-secondary {
+                fill: @iconWrapperTwoToneSecondaryColor;
+            }
+            .fill-white {
+                fill: @white;
+            }
+            .fill-tertiary {
+                fill: @paleGray;
+            }
+            .fill-blue {
+                fill: @blue;
+            }
+            .fill-green {
+                fill: @dullGreen;
+            }
+            .lighten-1 {
+                filter: brightness(1.08);
+            }
+            .lighten-2 {
+                filter: brightness(1.16);
+            }
+            .darken-1 {
+                filter: brightness(0.9);
+            }
+            .darken-2 {
+                filter: brightness(0.7);
+            }
+            .opacity-80 {
+                opacity: 0.8;
+            }
+            .opacity-60 {
+                opacity: 0.6;
+            }
         }
     }
     &.colored {
@@ -1240,7 +1294,7 @@ body {
         &:hover {
             background: @iconHoverBgColor;
             cursor: pointer;
-            
+
             &.inverted {
                 background: @defaultInvertedHoverBackground;
             }
@@ -2044,7 +2098,7 @@ code {
                 color: @whiteSmoke;
                 height: 100%;
                 width: 100%;
-                
+
                 &:hover {
                     color: @whiteSmoke;
                 }
@@ -2062,7 +2116,7 @@ code {
             &:hover {
                 .theme-icon {
                     path {
-                        fill: @black; 
+                        fill: @black;
                     }
                 }
             }
@@ -2072,7 +2126,7 @@ code {
             }
         }
     }
-    
+
     &.light {
         .editor-actions {
             .editor-action {
@@ -2111,7 +2165,7 @@ code {
             max-height: @codeEditorFullScreenWrapperHeight;
             min-height: @codeEditorFullScreenWrapperHeight;
             padding: 0;
-            
+
             .CodeMirror {
                 height: @codeEditorFullScreenWrapperHeight;
             }

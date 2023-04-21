@@ -359,7 +359,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         isTOTPError
                             ? (
                                 <Message
-                                    className="totp-error-message"
+                                    error
                                     data-testid={ `${ testId }-code-verification-form-field-error` }>
                                     { t(translateKey + "modals.verify.error") }
                                 </Message>
@@ -884,7 +884,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 dimmer="blurring"
                 size="tiny"
                 open={ isViewTOTPModalOpen }
-                className="totp"
+                className="totp compact"
                 closeOnDimmerClick={ false }
             >
                 <Modal.Header className="wizard-header text-center">

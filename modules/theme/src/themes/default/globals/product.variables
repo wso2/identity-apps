@@ -28,7 +28,7 @@
 @iconWrapperVeryPadding: 10px;
 @iconDefaultBgHoverColor: @black;
 @iconWrapperTwoTonePrimaryColor: @primaryColor;
-@iconWrapperTwoToneSecondaryColor: @nobel;
+@iconWrapperTwoToneSecondaryColor: @secondaryColor;
 @iconWrapperColoredPrimaryColor: @primaryColor;
 @iconWrapperSpacingRight: 8px;
 @iconWrapperSpacingLeft: 8px;
@@ -152,7 +152,7 @@
 @productVersionLabelFontWeight: 600;
 @productVersionLabelAbsoluteTop: -5px;
 @productVersionLabelAbsoluteRight: 15px;
-            
+
 /*-----------------------------
       Empty Placeholder
 ------------------------------*/

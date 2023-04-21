@@ -63,7 +63,9 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     };
 
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string = useSelector((state: AppState) => {
+        return state.authenticationInformation.profileInfo.isReadOnly;
+    });
 
     /**
      * Return the profile completion percentage.
@@ -81,7 +83,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
      */
     const getProfileStatus = (): ProfileCompletionStatus => {
 
-        const percentage = getProfileCompletionPercentage();
+        const percentage: number = getProfileCompletionPercentage();
 
         if (percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) {
             return ProfileCompletionStatus.ERROR;
@@ -157,7 +159,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                 onPrimaryActionClick={ navigate }
                 icon={ getWidgetIcons().profile }
                 iconMini={ getWidgetIcons().profile }
-                iconSize="tiny"
+                iconSize="x60"
                 iconStyle="twoTone"
             />
         </div>

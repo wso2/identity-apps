@@ -83,7 +83,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
             <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
                 {
                     (consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? consentedApps.map((consent: ConsentInterface, index) => {
+                        ? consentedApps.map((consent: ConsentInterface, index: number) => {
                             return (
                                 <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
                                     <Grid padded>
@@ -142,6 +142,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                         icon
                                                                         basic
                                                                         labelPosition="right"
+                                                                        className="show-more-button"
                                                                         size="mini"
                                                                         data-testid={
                                                                             `${ testId }-` +

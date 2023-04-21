@@ -570,6 +570,10 @@
         background: @emphasizedSegmentBackgroundColor;
         border: @emphasizedSegmentBorder;
         border-radius: @emphasizedSegmentBorderRadius;
+
+        &.placeholder-container {
+            border: none;
+        }
     }
 }
 
@@ -727,6 +731,11 @@
         align-items: center;
         border-radius: @imagePreviewBorderRadius;
         justify-content: center;
+
+        &.relaxed {
+            padding-left: 5em;
+            padding-right: 5em;
+        }
     }
 }
 

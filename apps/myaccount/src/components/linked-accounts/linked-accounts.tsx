@@ -17,10 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
 import { LinkedAccountsList } from "./linked-accounts-list";
 import {
@@ -61,7 +64,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -82,17 +85,24 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param values - Form values.
      */
     const handleSubmit = (values: any): void => {
-        const username = values.username;
-        const password = values.password;
-        const usernameSplit = username?.split("@");
-        const superTenant = "carbon.super";
-        let userId = username;
+        const username: string = values.username;
+        const password: string = values.password;
+        const usernameSplit: string[] = username?.split("@");
+        const superTenant: string = "carbon.super";
+        let userId: string = username;
 
         if (usernameSplit?.length >= 1 && tenantDomain !== superTenant && !usernameSplit.includes(tenantDomain)) {
             userId = username + "@" + tenantDomain;
         }
 
-        const data = {
+        const data: {
+            password: string,
+            properties: {
+                key: string;
+                value: string;
+            }[],
+            userId: string;
+        } = {
             password,
             properties: [
                 {
@@ -120,7 +130,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 onAlertFired({
                     description: error?.response?.data?.description ?? t(
                         "myAccount:components.linkedAccounts.notifications.addAssociation.genericError.description"
@@ -192,7 +202,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
             })
-            .catch((error) => {
+            .catch((error: AxiosError & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -227,8 +237,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             header={ t("myAccount:sections.linkedAccounts.heading") }
             icon={ getSettingsSectionIcons().associatedAccounts }
             iconMini={ getSettingsSectionIcons().associatedAccountsMini }
-            iconSize="auto"
-            iconStyle="colored"
+            iconSize="x60"
+            iconStyle="twoTone"
             iconFloated="right"
             onPrimaryActionClick={
                 () => dispatch(setActiveForm(

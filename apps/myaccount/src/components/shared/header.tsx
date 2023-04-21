@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@ import { CommonUtils as ReusableCommonUtils, StringUtils } from "@wso2is/core/ut
 import {
     Announcement,
     AppSwitcher,
+    HeaderLinkInterface,
     Logo,
     ProductBrand,
     Header as ReusableHeader,
@@ -30,19 +31,17 @@ import {
 } from "@wso2is/react-components";
 import compact from "lodash-es/compact";
 import isEmpty from "lodash-es/isEmpty";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { Label, Menu } from "semantic-ui-react";
 import { AppSwitcherIcons } from "../../configs";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
+import { useBrandingPreference } from "../../hooks/use-branding-preference";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
@@ -51,55 +50,52 @@ import { CommonUtils, refreshPage } from "../../utils";
 /**
  * Dashboard layout Prop types.
  */
-type HeaderPropsInterface = Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo">
+type HeaderPropsInterface = Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo">;
 
 /**
  * Implementation of the Reusable Header component.
  *
- * @param {HeaderPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Header component.
  */
-export const Header: FunctionComponent<HeaderPropsInterface> = (
-    props: HeaderPropsInterface
-): ReactElement => {
+export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPropsInterface): ReactElement => {
+    const { fluid, onSidePanelToggleClick, ...rest } = props;
 
-    const {
-        fluid,
-        onSidePanelToggleClick,
-        ...rest
-    } = props;
-
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
 
     const { t } = useTranslation();
+
+    const { theme } = useBrandingPreference();
 
     // TODO: Get this from profile reducer and cast `ProfileInfoInterface`.
     const profileInfo: any = useSelector((state: AppState) => state.authenticationInformation.profileInfo);
     const tenantName: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
     // TODO: Use common loaders reducer.
-    const isProfileInfoLoading: boolean = useSelector(
-        (state: AppState) => state.loaders.isProfileInfoLoading);
+    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const isHeaderAvatarLabelAllowed: boolean = useSelector((state: AppState) =>
-        state.config.ui.isHeaderAvatarLabelAllowed);
+    const isHeaderAvatarLabelAllowed: boolean = useSelector(
+        (state: AppState) => state.config.ui.isHeaderAvatarLabelAllowed
+    );
     const showAppSwitchButtonConfig: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
     const consoleAppURL: string = useSelector((state: AppState) => state.config.deployment.consoleApp.path);
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const [ userStore, setUserstore ] = useState<string> (null);
-    const [ showAppSwitchButton, setShowAppSwitchButton ] = useState<boolean> (true);
+    const [ userStore, setUserstore ] = useState<string>(null);
+    const [ showAppSwitchButton, setShowAppSwitchButton ] = useState<boolean>(true);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string = useSelector((state: AppState) => {
+        return state.authenticationInformation.profileInfo.isReadOnly;
+    });
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
-            dispatch(getProfileInformation());
+            dispatch((getProfileInformation() as unknown) as AnyAction);
         }
 
         if (isEmpty(linkedAccounts)) {
-            dispatch(getProfileLinkedAccounts());
+            dispatch((getProfileLinkedAccounts() as unknown) as AnyAction);
         }
     }, []);
 
@@ -108,9 +104,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      */
     useEffect(() => {
         setShowAppSwitchButton(showAppSwitchButtonConfig);
-       if (!commonConfig?.utils?.isConsoleNavigationAllowed(userStore)) {
-           setShowAppSwitchButton(false);
-       }
+        if (!commonConfig?.utils?.isConsoleNavigationAllowed(userStore)) {
+            setShowAppSwitchButton(false);
+        }
     }, [ showAppSwitchButtonConfig, userStore ]);
 
     /**
@@ -119,32 +115,35 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     useEffect(() => {
         if (profileDetails?.profileInfo?.userName) {
             const userstore: string = resolveUserstore(profileDetails.profileInfo.userName);
+
             setUserstore(userstore);
         }
-    }, [profileDetails?.profileInfo]);
+    }, [ profileDetails?.profileInfo ]);
 
     useEffect(() => {
         if (isEmpty(config)) {
             return;
         }
 
-        if (!config?.ui?.announcements
-            || !(config?.ui?.announcements instanceof Array)
-            || (config?.ui?.announcements.length < 1)) {
-
+        if (
+            !config?.ui?.announcements ||
+            !(config?.ui?.announcements instanceof Array) ||
+            config?.ui?.announcements.length < 1
+        ) {
             return;
         }
 
-        setAnnouncement(ReusableCommonUtils.getValidAnnouncement(config.ui.announcements,
-            CommonUtils.getSeenAnnouncements()));
+        setAnnouncement(
+            ReusableCommonUtils.getValidAnnouncement(config.ui.announcements, CommonUtils.getSeenAnnouncements())
+        );
     }, [ config ]);
 
     /**
      * Handles the account switch click event.
      *
-     * @param { LinkedAccountInterface } account - Target account.
+     * @param account - Target account.
      */
-    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface): void => {
         try {
             dispatch(handleAccountSwitching(account));
             refreshPage();
@@ -157,9 +156,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: t(
-                            "myAccount:components.linkedAccounts.notifications.switchAccount.error.message"
-                        )
+                        message: t("myAccount:components.linkedAccounts.notifications.switchAccount.error.message")
                     })
                 );
 
@@ -172,9 +169,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: t(
-                        "myAccount:components.linkedAccounts.notifications.switchAccount.genericError.message"
-                    )
+                    message: t("myAccount:components.linkedAccounts.notifications.switchAccount.genericError.message")
                 })
             );
         }
@@ -183,14 +178,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Handles announcement dismiss callback.
      */
-    const handleAnnouncementDismiss = () => {
+    const handleAnnouncementDismiss = (): void => {
         CommonUtils.setSeenAnnouncements(announcement.id);
 
-        const validAnnouncement = ReusableCommonUtils.getValidAnnouncement(config.ui.announcements,
-            CommonUtils.getSeenAnnouncements());
+        const validAnnouncement: AnnouncementBannerInterface = ReusableCommonUtils.getValidAnnouncement(
+            config.ui.announcements,
+            CommonUtils.getSeenAnnouncements()
+        );
 
         if (!validAnnouncement) {
             setAnnouncement(null);
+
             return;
         }
 
@@ -202,13 +200,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * decide which navigation links to provide.
      *
      */
-    const getLinks = () => {
-        const links = [];
+    const getLinks = (): HeaderLinkInterface[] => {
+        const links: HeaderLinkInterface[] = [];
 
         commonConfig.utils.isConsoleNavigationAllowed(userStore)
-            ?
-            links.push(
-            {
+            ? links.push({
                 "data-testid": "app-switch-console",
                 icon: AppSwitcherIcons().console,
                 name: t("myAccount:components.header.appSwitch.console.name"),
@@ -224,20 +220,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Renders the app switcher dropdown.
      *
-     * @return {React.ReactElement}
+     * @returns App Switcher
      */
     const renderAppSwitcher = (): ReactElement => (
-
-        <Menu.Item
-            className="app-switch-button-wrapper"
-            key="app-switch-trigger"
-            data-testid="app-switch-trigger"
-        >
+        <Menu.Item className="app-switch-button-wrapper" key="app-switch-trigger" data-testid="app-switch-trigger">
             <AppSwitcher
                 enabled={
-                    showAppSwitchButton
-                    && (AppConstants.getTenant() === AppConstants.getSuperTenant())
-                    && (consoleAppURL && consoleAppURL != "")
+                    showAppSwitchButton &&
+                    AppConstants.getTenant() === AppConstants.getSuperTenant() &&
+                    consoleAppURL && consoleAppURL != ""
                 }
                 tooltip={ t("myAccount:components.header.appSwitch.tooltip") }
                 apps={ [
@@ -248,7 +239,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().console,
                         name: t("myAccount:components.header.appSwitch.console.name"),
                         onClick: () => {
-                            window.open(consoleAppURL,"_blank", "noopener");
+                            window.open(consoleAppURL, "_blank", "noopener");
                         }
                     },
                     {
@@ -258,7 +249,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         icon: AppSwitcherIcons().myAccount,
                         name: t("myAccount:components.header.appSwitch.myAccount.name"),
                         onClick: () => {
-                            window.open(accountAppURL,"_self");
+                            window.open(accountAppURL, "_self");
                         }
                     }
                 ] }
@@ -270,8 +261,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * The following function resolve the organization label in the header.
      */
     const resolveOrganizationLabel = (): ReactElement => {
-
-        const organization = (tenantName == "carbon.super") ? commonConfig.header.organization : tenantName;
+        const organization: string = tenantName == "carbon.super" ? commonConfig.header.organization : tenantName;
 
         return (
             <Label className="organization-label">
@@ -282,33 +272,38 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     return (
         <ReusableHeader
-            announcement={ announcement && (
-                <Announcement
-                    message={ announcement.message }
-                    onDismiss={ handleAnnouncementDismiss }
-                    color={ announcement.color }
-                />
-            ) }
+            announcement={
+                announcement && (
+                    <Announcement
+                        message={ announcement.message }
+                        onDismiss={ handleAnnouncementDismiss }
+                        color={ announcement.color }
+                    />
+                )
+            }
             brand={ (
                 <ProductBrand
-                    appName={ config.ui.appName }
+                    appName={ theme?.images?.myAccountLogo?.title ?? config.ui.appName }
                     style={ { marginTop: 0 } }
                     logo={ (
                         <Logo
                             className="portal-logo"
                             image={
-                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                    `${
-                                        StringUtils.removeSlashesFromPath(
-                                            window[ "AppUtils" ].getConfig().appBase
-                                        ) !== ""
-                                            ? StringUtils.removeSlashesFromPath(
-                                                window[ "AppUtils" ].getConfig().appBase
-                                            ) + "/"
-                                            : ""
-                                    }libs/themes/` +
-                                    config.ui.theme.name)
+                                theme?.images?.myAccountLogo?.imgURL ||
+                                resolveAppLogoFilePath(
+                                    window["AppUtils"].getConfig().ui.appLogoPath,
+                                    `${window["AppUtils"].getConfig().clientOrigin}/` +
+                                        `${
+                                            StringUtils.removeSlashesFromPath(
+                                                window["AppUtils"].getConfig().appBase
+                                            ) !== ""
+                                                ? StringUtils.removeSlashesFromPath(
+                                                    window["AppUtils"].getConfig().appBase
+                                                ) + "/"
+                                                : ""
+                                        }libs/themes/` +
+                                        config.ui.theme.name
+                                )
                             }
                         />
                     ) }
@@ -324,7 +319,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={
                 // Remove false values. Needed for `&&` operator.
                 compact([
-                    showAppSwitchButton && commonConfig?.header?.renderAppSwitcherAsDropdown && {
+                    showAppSwitchButton &&
+                        commonConfig?.header?.renderAppSwitcherAsDropdown && {
                         component: renderAppSwitcher(),
                         floated: "right"
                     }
@@ -339,10 +335,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             userDropdownLinks={
                 // Hide the APPs for readonly users
                 compact([
-                    showAppSwitchButton
-                    && !commonConfig?.header?.renderAppSwitcherAsDropdown
-                    && !(CommonUtils?.isProfileReadOnly(isReadOnlyUser))
-                    && {
+                    showAppSwitchButton &&
+                        !commonConfig?.header?.renderAppSwitcherAsDropdown &&
+                        !CommonUtils?.isProfileReadOnly(isReadOnlyUser) && {
                         category: "APPS",
                         categoryLabel: t("common:apps"),
                         links: getLinks()
@@ -367,9 +362,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             showUserDropdownTriggerLabel={
-                (isHeaderAvatarLabelAllowed === undefined)
-                    ? false
-                    : isHeaderAvatarLabelAllowed
+                isHeaderAvatarLabelAllowed === undefined ? false : isHeaderAvatarLabelAllowed
             }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             showOrganizationLabel={ true }
