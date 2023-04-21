@@ -34,7 +34,6 @@
 <%@ page import="javax.ws.rs.HttpMethod" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -55,10 +54,14 @@
         callback = request.getParameter("redirect_uri");
     }
 
-    Boolean validCallBackURL;
+    boolean passwordExpired = Boolean.parseBoolean(request.getParameter("passwordExpired"));
+
+    Boolean validCallBackURL = false;
     try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        validCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
+        if (StringUtils.isNotBlank(callback)) {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            validCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
+        }
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
@@ -67,8 +70,6 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-
-    boolean passwordExpired = Boolean.parseBoolean(request.getParameter("passwordExpired"));
 
     try {
         if (StringUtils.isNotBlank(callback) && !validCallBackURL) {

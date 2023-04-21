@@ -47,10 +47,12 @@
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
-    Boolean validCallBackURL;
+    Boolean validCallBackURL = false;
     try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        validCallBackURL = preferenceRetrievalClient.checkIfLiteRegCallbackURLValid(tenantDomain,callback);
+        if (StringUtils.isNotBlank(callback)) {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            validCallBackURL = preferenceRetrievalClient.checkIfLiteRegCallbackURLValid(tenantDomain,callback);
+        }
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
