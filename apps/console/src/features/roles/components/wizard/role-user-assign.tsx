@@ -414,7 +414,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
 
         return "Invalid User";
-    }
+    };
 
     const addNewUserModal = () => (
         <Modal
