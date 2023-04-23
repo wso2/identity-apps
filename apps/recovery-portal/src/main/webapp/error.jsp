@@ -47,11 +47,11 @@
             tenantDomain = request.getParameter("tenantDomain").trim();
         }
 
-        Boolean validCallBackURL = false;
+        Boolean isValidCallBackURL = false;
         try {
             if (StringUtils.isNotBlank(callback)) {
                 PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-                validCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain, callback);
+                isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain, callback);
             }
         } catch (PreferenceRetrievalClientException e) {
             request.setAttribute("error", true);
@@ -62,7 +62,7 @@
             return;
         }
 
-        if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
+        if (StringUtils.isNotBlank(callback) && !isValidCallBackURL) {
                     isValidCallback = false;
         }
     }

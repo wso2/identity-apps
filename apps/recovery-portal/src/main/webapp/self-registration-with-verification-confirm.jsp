@@ -65,10 +65,10 @@
         return;
     }
 
-    Boolean validCallBackURL = false;
+    Boolean isValidCallBackURL = false;
     try {
         if (StringUtils.isNotBlank(callback)) {
-            validCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
+            isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
         }
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
@@ -80,7 +80,7 @@
     }
 
     try {
-        if (StringUtils.isNotBlank(callback) && !validCallBackURL) {
+        if (StringUtils.isNotBlank(callback) && !isValidCallBackURL) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Callback.url.format.invalid"));
