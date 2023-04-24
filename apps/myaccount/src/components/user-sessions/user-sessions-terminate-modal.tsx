@@ -130,22 +130,23 @@ export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminati
                 { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.message") }
             </Modal.Content>
             <Modal.Actions data-componentid={ `${ componentId }-actions` }>
-                <LinkButton 
-                    data-componentid={ `${ componentId }-cancel-btn` } 
-                    onClick={ handleModalClose } 
+                <LinkButton
+                    color="red"
+                    data-componentid={ `${ componentId }-cancel-btn` }
+                    onClick={ handleModalClose }
                     floated="left"
                 >
                     { t("common:cancel") }
                 </LinkButton>
-                <Button 
-                    data-componentid={ `${ componentId }-review-sessions-btn` } 
+                <Button
+                    data-componentid={ `${ componentId }-review-sessions-btn` }
                     onClick={ handleNavigatingToSessionList }
                 >
                     { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.secondaryAction") }
                 </Button>
-                <Button 
-                    data-componentid={ `${ componentId }-terminate-all-btn` } 
-                    onClick={ handleTerminateAllUserSessions } 
+                <Button
+                    data-componentid={ `${ componentId }-terminate-all-btn` }
+                    onClick={ handleTerminateAllUserSessions }
                     color="red"
                 >
                     { t("myAccount:components.userSessions.modals.terminateActiveUserSessionModal.primaryAction") }

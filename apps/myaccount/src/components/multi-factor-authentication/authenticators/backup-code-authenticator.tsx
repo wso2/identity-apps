@@ -478,15 +478,15 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                     </Message>
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${componentid}-regenerate-confirm-modal-actions` }>
-                    <Button
-                        className="link-button"
+                    <LinkButton
+                        color="red"
                         onClick={ () => setIsConfirmRegenerationModalOpen(false) }
                         data-testid={ `${componentid}-regenerate-confirm-modal-actions-cancel-button` }
                     >
                         { t("common:cancel") }
-                    </Button>
+                    </LinkButton>
                     <Button
-                        primary={ true }
+                        color="red"
                         onClick={ handleRefreshBackCodes }
                         data-testid={ `${componentid}-regenerate-confirm-modal-actions-confirm-button` }
                     >
