@@ -35,6 +35,10 @@ export interface ImagePreviewPropsInterface extends IdentifiableComponentInterfa
      * Whether to add the style node to the begining of the `head` element or to the end of the `head` element.
      */
     label?: ReactNode;
+    /**
+     * Should there be more padding inside?
+     */
+    relaxed?: boolean;
 }
 
 /**
@@ -51,12 +55,14 @@ export const ImagePreview: FunctionComponent<PropsWithChildren<ImagePreviewProps
         children,
         className,
         label,
+        relaxed,
         ["data-componentid"]: componentId,
         ...rest
     } = props;
 
     const classes = classNames(
         "image-preview",
+        { relaxed },
         className
     );
 

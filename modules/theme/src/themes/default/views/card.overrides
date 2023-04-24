@@ -198,6 +198,7 @@
 
             .action-button {
                 padding: 16px @settingsCardPadding;
+                border-radius: 0;
 
                 .action-button-text {
                     color: @settingsCardActionButtonColor;

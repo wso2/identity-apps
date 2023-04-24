@@ -19,12 +19,15 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { CSSProperties, FunctionComponent, ReactElement } from "react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
  * Logo component Prop types.
  */
-export interface LogoPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
+export interface LogoPropsInterface
+    extends Partial<GenericIconProps>,
+        IdentifiableComponentInterface,
+        TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -60,7 +63,8 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
         size,
         style,
         [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(className, "product-logo");
@@ -74,7 +78,7 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
             data-componentid={ componentId }
             data-testid={ testId }
             transparent
-            inline
+            { ...rest }
         />
     );
 };

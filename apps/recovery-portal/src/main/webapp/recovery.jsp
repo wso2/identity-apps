@@ -37,6 +37,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -68,9 +70,23 @@
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
 
+    Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-            IdentityRecoveryConstants.ConnectorConfig.RECOVERY_CALLBACK_REGEX)) {
+        if (StringUtils.isNotBlank(callback)) {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
+        }
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
+    try {
+        if (StringUtils.isNotBlank(callback) && !isValidCallBackURL) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Callback.url.format.invalid"));
@@ -89,7 +105,7 @@
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
         }
-       
+
         List<Claim> claims;
         UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
         try {
@@ -116,7 +132,7 @@
             if (request.getParameter("g-recaptcha-response") != null) {
                 requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
             }
-    
+
             usernameRecoveryApi.recoverUsernamePost(claimDTOList, tenantDomain, null, requestHeaders);
             request.setAttribute("callback", callback);
             request.setAttribute("tenantDomain", tenantDomain);
@@ -193,7 +209,7 @@
         }
     } else {
         request.setAttribute("sessionDataKey", sessionDataKey);
-        
+
         if (isPasswordRecoveryEmailConfirmation) {
             session.setAttribute("username", username);
             session.setAttribute("confirmationKey", confirmationKey);

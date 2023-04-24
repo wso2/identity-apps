@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,25 +25,16 @@ export class I18nConstants {
 
     /**
      * Namespace for the dev portal. Use these when loading translations.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly PORTAL_NAMESPACE: string = I18nModuleConstants.MY_ACCOUNT_NAMESPACE;
 
     /**
      * Common namespace. Use these when loading translations.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly COMMON_NAMESPACE: string = I18nModuleConstants.COMMON_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
@@ -52,25 +43,21 @@ export class I18nConstants {
 
     /**
      * I18n init options override flag. The default options in the module will be overridden if set to true.
-     * @constant
-     * @type {boolean}
-     * @default
      */
     public static readonly INIT_OPTIONS_OVERRIDE: boolean = false;
 
     /**
      * If the language detector plugin should be enabled or not.
-     * @constant
-     * @type {boolean}
-     * @default
      */
     public static readonly LANG_AUTO_DETECT_ENABLED: boolean = true;
 
     /**
      * If the xhr backend plugin should be enabled or not.
-     * @constant
-     * @type {boolean}
-     * @default
      */
     public static readonly XHR_BACKEND_PLUGIN_ENABLED: boolean = true;
+
+    /**
+     * Default fallback language.
+     */
+    public static readonly DEFAULT_FALLBACK_LANGUAGE: string = I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE;
 }

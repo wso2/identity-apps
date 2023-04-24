@@ -16,18 +16,18 @@
  * under the License.
  *
  */
- 
+
 .ui.items > .item {
     &.application-list-item {
+        background-color: @white;
         margin-bottom: 25px;
         padding: @applicationListItemPadding;
-        border: @dividedBorder;
-        border-color: @borderColor;
+        border: @defaultBorderWidth solid @defaultBorderColor;
         border-radius: @defaultBorderRadius;
+        overflow: hidden;
 
         &:hover {
             cursor: pointer;
-            border-color: @borderColor;
             box-shadow: @defaultCardHoverBoxShadow;
 
             .app-avatar {
@@ -61,7 +61,6 @@
             &.app-text {
                 margin-top: 0;
                 display: flex;
-                min-height: 65px;
                 justify-content: center;
                 flex-direction: column;
                 align-items: flex-start;
