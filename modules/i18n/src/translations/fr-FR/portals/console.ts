@@ -675,13 +675,13 @@ export const console: ConsoleNS = {
                         header: "Vous ajoutez un gestionnaire",
                         message: "C'est un gestionnaire."
                     },
-                    backupCodeAuthenticatorAddition: {
-                        assertionHint: "Cliquez sur Confirmer pour ajouter l'authentificateur de code de " +
-                            "sauvegarde.",
-                        content: "L'authentificateur de code de secours peut être utilisé pour se connecter " +
-                            "lorsque les utilisateurs ne peuvent pas recevoir de codes d'authentification multifacteur.",
-                        header: "Avez-vous besoin d'ajouter l'authentificateur de code de secours à cette étape?",
-                        message: "Vous ajoutez un authentificateur à deux facteurs."
+                    backupCodeAuthenticatorDelete: {
+                        assertionHint: "Cliquez sur Continuer pour supprimer la fonctionnalité de code de secours.",
+                        content: "Si vous continuez, la fonctionnalité de code de secours sera également " +
+                            "supprimée de votre étape d'authentification actuelle. Souhaitez-vous continuer?",
+                        header: "Confirmer la suppression",
+                        message: "Cette action supprimera la fonctionnalité de code de secours de l'étape " +
+                            "d'authentification en cours."
                     },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Continuez avec les valeurs existantes.",
@@ -1133,6 +1133,9 @@ export const console: ConsoleNS = {
                                                         label: "Choisissez l'identifiant de l'utilisateur à partir " +
                                                             "de cette étape",
                                                         placeholder: "Sélectionner une étape"
+                                                    },
+                                                    enableBackupCodes: {
+                                                        label: "Activer les codes de secours"
                                                     }
                                                 }
                                             },

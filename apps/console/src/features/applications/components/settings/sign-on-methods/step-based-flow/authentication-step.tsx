@@ -470,7 +470,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 }
                                 { showBackupCodesEnableCheckBox ? (
                                     <Checkbox
-                                        label="Enable backup codes"
+                                        label={ t(
+                                            "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                            ".stepBased.forms.fields.enableBackupCodes.label"
+                                        ) }
                                         checked={ isBackupCodesEnabled }
                                         onChange={ (): void => onChangeBackupCodesCheckbox() }
                                     /> ) : null

@@ -966,13 +966,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-backupcode-delete-confirmation-modal-header` }
             >
-                Confirm Deletion
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-backupcode-delete-confirmation-modal-content` }
             >
-                If you proceed, the backup code functionality will also be removed from your
-                current authentication step. Do you wish to continue?
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

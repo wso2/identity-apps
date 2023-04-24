@@ -674,12 +674,12 @@ export const console: ConsoleNS = {
                         header: "You are adding a Handler",
                         message: "This is a handler."
                     },
-                    backupCodeAuthenticatorAddition: {
-                        assertionHint: "Click Confirm to add the backup code authenticator.",
-                        content: "Backup code authenticator can be used to login when users cannot " +
-                            "receive multi-factor authentication codes.",
-                        header: "Do you need to add the backup code authenticator to this step?",
-                        message: "You are adding a two factor authenticator."
+                    backupCodeAuthenticatorDelete: {
+                        assertionHint: "Click Continue to remove backup code functionality.",
+                        content: "If you proceed, the backup code functionality will also be removed from your " +
+                            "current authentication step. Do you wish to continue?",
+                        header: "Confirm Deletion",
+                        message: "This action will remove backup code functionality from the current authentication step."
                     },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Click Confirm to continue with your values.",
@@ -1113,6 +1113,9 @@ export const console: ConsoleNS = {
                                                     subjectIdentifierFrom: {
                                                         label: "Pick user identifier from this step",
                                                         placeholder: "Select step"
+                                                    },
+                                                    enableBackupCodes: {
+                                                        label: "Enable backup codes"
                                                     }
                                                 }
                                             },

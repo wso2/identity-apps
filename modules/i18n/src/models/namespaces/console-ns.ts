@@ -405,7 +405,7 @@ export interface ConsoleNS {
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
                     handlerAuthenticatorAddition: Confirmation;
-                    backupCodeAuthenticatorAddition: Confirmation;
+                    backupCodeAuthenticatorDelete: Confirmation;
                     lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
                     reactivateSPA: Confirmation;
@@ -655,6 +655,7 @@ export interface ConsoleNS {
                                                 fields: {
                                                     attributesFrom: FormAttributes;
                                                     subjectIdentifierFrom: FormAttributes;
+                                                    enableBackupCodes: FormAttributes;
                                                 };
                                             };
                                             secondFactorDisabled: string;
