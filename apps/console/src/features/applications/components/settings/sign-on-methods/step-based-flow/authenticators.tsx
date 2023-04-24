@@ -145,14 +145,10 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
             // If there exist 2FAs in the current step backup code authenticator should be enabled.
             // Otherwise, it should be disabled.
-            if (SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(
+            return SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(
                 currentStep,
                 authenticationSteps
-            ) > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            ) > 0;
         }
 
         if ([
