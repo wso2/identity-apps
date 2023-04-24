@@ -100,6 +100,11 @@ interface AuthenticationStepPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Update the authentication step.
+     */
+    updateAuthenticationStep:
+        (stepIndex: number, authenticatorId: string) => void;
 }
 
 /**
@@ -129,6 +134,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         attributeStepId,
         onSubjectCheckboxChange,
         onAttributeCheckboxChange,
+        updateAuthenticationStep,
         [ "data-testid" ]: testId
     } = props;
 
@@ -137,6 +143,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const classes: string = classNames("authentication-step-container timeline-body", className);
 
     const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
+    const [ showBackupCodesEnableCheckBox, setShowBackupCodesEnableCheckBox ] = useState<boolean>(false);
+    const [ backupCodeIndex, setBackupCodeIndex ] = useState<number>(null);
 
     useEffect(() => {
         step.options.map((option: AuthenticatorInterface) => {
@@ -150,6 +158,18 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             } else {
                 setShowSubjectIdentifierCheckbox(true);
             }
+
+            // if the authenticator is TOTP, Email OTP, SMS OTP or Backup Code,
+            // show the backup codes enable checkbox.
+            if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
+                .includes(option.authenticator)) {
+                setShowBackupCodesEnableCheckBox(true);
+            } else {
+                setShowBackupCodesEnableCheckBox(false);
+            }
         });
     }, [ JSON.stringify(step.options) ]);
 
@@ -162,6 +182,38 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         () => (attributeStepId === (stepIndex + 1)),
         [ attributeStepId, stepIndex ]
     );
+
+    /**
+     * Check whether the backup codes is enabled for the step
+     */
+    const isBackupCodesEnabled: boolean = useMemo(
+        () => {
+            let isBackupCodesEnabled: boolean = false;
+
+            step.options.map((option: AuthenticatorInterface, optionIndex: number) => {
+                if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                    isBackupCodesEnabled = true;
+                    setBackupCodeIndex(optionIndex);
+                }
+            });
+
+            return isBackupCodesEnabled;
+        },
+        [ JSON.stringify(step.options) ]
+    );
+
+    /**
+     * Handles the onChange of the backup codes enable checkbox.
+     */
+    const onChangeBackupCodesCheckbox = (): void => {
+        // if the backup codes checkbox is checked, add the backup code authenticator to the step.
+        // else remove the backup code authenticator from the step.
+        if(!isBackupCodesEnabled) {
+            updateAuthenticationStep(stepIndex, IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID);
+        } else {
+            onStepOptionDelete(stepIndex, backupCodeIndex);
+        }
+    };
 
     /**
      * Resolves the authenticator step option.
@@ -207,7 +259,13 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             && authenticator.authenticators.length > 1)
                     }
                     trigger={ (
-                        <div className="authenticator-item-wrapper" data-testid={ `${ testId }-option` }>
+                        <div
+                            className="authenticator-item-wrapper"
+                            data-testid={ `${ testId }-option` }
+                            hidden={
+                                authenticator?.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID
+                            }
+                        >
                             <Card fluid className="basic-card authenticator-card">
                                 <Card.Content >
                                     { !readOnly && (
@@ -383,30 +441,41 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     (!readOnly
                         && showStepMeta
                         && (step.options && step.options instanceof Array && step.options.length > 0))
-                        && showSubjectIdentifierCheckBox && (
-                        <div className="checkboxes-extension">
-                            <Checkbox
-                                label={ t(
-                                    "console:develop.features.applications.edit.sections" +
-                                    ".signOnMethod.sections.authenticationFlow.sections" +
-                                    ".stepBased.forms.fields.subjectIdentifierFrom.label"
-                                ) }
-                                checked={ isSubjectIdentifierChecked }
-                                onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
-                                readOnly={ isSubjectIdentifierChecked }
-                            />
-                            <Checkbox
-                                label={ t(
-                                    "console:develop.features.applications.edit.sections" +
-                                    ".signOnMethod.sections.authenticationFlow.sections" +
-                                    ".stepBased.forms.fields.attributesFrom.label"
-                                ) }
-                                checked={ isAttributeIdentifierChecked }
-                                onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
-                                readOnly={ isAttributeIdentifierChecked }
-                            />
-                        </div>
-                    )
+                        && (
+                            <div className="checkboxes-extension">
+                                { showSubjectIdentifierCheckBox ? (
+                                    <>
+                                        <Checkbox
+                                            label={ t(
+                                                "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                                ".stepBased.forms.fields.subjectIdentifierFrom.label"
+                                            ) }
+                                            checked={ isSubjectIdentifierChecked }
+                                            onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                                            readOnly={ isSubjectIdentifierChecked }
+                                        />
+                                        <Checkbox
+                                            label={ t(
+                                                "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.authenticationFlow.sections" +
+                                                ".stepBased.forms.fields.attributesFrom.label"
+                                            ) }
+                                            checked={ isAttributeIdentifierChecked }
+                                            onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                                            readOnly={ isAttributeIdentifierChecked }
+                                        />
+                                    </> ) : null
+                                }
+                                { showBackupCodesEnableCheckBox ? (
+                                    <Checkbox
+                                        label="Enable backup codes"
+                                        checked={ isBackupCodesEnabled }
+                                        onChange={ (): void => onChangeBackupCodesCheckbox() }
+                                    /> ) : null
+                                }
+                            </div>
+                        )
                 }
             </div>
         </div>

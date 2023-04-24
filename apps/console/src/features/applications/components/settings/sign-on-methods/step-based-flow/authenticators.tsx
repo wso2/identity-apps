@@ -326,46 +326,48 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
-                <Popup
-                    hoverable
-                    hideOnScroll
-                    position="top center"
-                    key={ index }
-                    on="hover"
-                    disabled={ isFactorEnabled(authenticator) }
-                    content={ resolvePopupContent(authenticator) }
-                    trigger={
-                        (<InfoCard
-                            showTooltips
-                            imageSize="micro"
-                            className={ authenticatorCardClasses }
-                            header={
-                                authenticator.displayName ||
-                                defaultName
-                            }
-                            disabled={ !isFactorEnabled(authenticator) }
-                            selected={
-                                isFactorEnabled(authenticator) &&
-                                Array.isArray(selectedAuthenticators) &&
-                                selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
-                                    return evalAuthenticator.id === authenticator.id;
-                                })
-                            }
-                            subHeader={ authenticator.categoryDisplayName }
-                            description={ authenticator.description }
-                            image={ authenticator.image }
-                            tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
-                            onClick={ () => {
-                                isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
-                            } }
-                            imageOptions={ {
-                                floated: false,
-                                inline: true
-                            } }
-                            data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
-                        />)
-                    }
-                />
+                authenticator.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ?
+                    null :
+                    (<Popup
+                        hoverable
+                        hideOnScroll
+                        position="top center"
+                        key={ index }
+                        on="hover"
+                        disabled={ isFactorEnabled(authenticator) }
+                        content={ resolvePopupContent(authenticator) }
+                        trigger={
+                            (<InfoCard
+                                showTooltips
+                                imageSize="micro"
+                                className={ authenticatorCardClasses }
+                                header={
+                                    authenticator.displayName ||
+                                    defaultName
+                                }
+                                disabled={ !isFactorEnabled(authenticator) }
+                                selected={
+                                    isFactorEnabled(authenticator) &&
+                                    Array.isArray(selectedAuthenticators) &&
+                                    selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
+                                        return evalAuthenticator.id === authenticator.id;
+                                    })
+                                }
+                                subHeader={ authenticator.categoryDisplayName }
+                                description={ authenticator.description }
+                                image={ authenticator.image }
+                                tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
+                                onClick={ () => {
+                                    isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
+                                } }
+                                imageOptions={ {
+                                    floated: false,
+                                    inline: true
+                                } }
+                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                            />)
+                        }
+                    />)
             )) }
         </Fragment>
     );

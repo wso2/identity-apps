@@ -1051,6 +1051,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         onAttributeCheckboxChange={ handleAttributeRetrievalStepChange }
                                         onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
                                         data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
+                                        updateAuthenticationStep={ updateAuthenticationStep }
                                     />
                                 </Fragment>
                             ))
