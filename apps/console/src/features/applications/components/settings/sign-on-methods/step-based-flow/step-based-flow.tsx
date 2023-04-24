@@ -140,7 +140,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
-    const [ showBackupCodeAuthAddModal, setShowBackupCodeAuthAddModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
     const [ categorizedTemplates, setCategorizedTemplates ] =
@@ -401,17 +400,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (!isValid) {
             return;
-        }
-
-        // check whether the current step has second factor authenticators
-        if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)) {
-            // check whether the current step has the backup code authenticator
-            // if not, prompt user asking to add the backup code authenticator
-            if(!SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
-            )) {
-                setShowBackupCodeAuthAddModal(true);
-            }
         }
 
         const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator.authenticators.find(
@@ -962,51 +950,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         );
     };
 
-    /**
-     * Renders a confirmation modal to add backup code authenticator
-     * when a 2FA is added.
-     *
-     * @returns backup code authenticator add confirmation modal.
-     */
-    const renderBackupCodeAuthAddModal = (): ReactElement => (
-
-        <ConfirmationModal
-            onClose={ () => setShowBackupCodeAuthAddModal(false) }
-            type="warning"
-            open={ showBackupCodeAuthAddModal }
-            primaryAction={ t("common:confirm") }
-            secondaryAction={ t("common:cancel") }
-            onPrimaryActionClick={ () => {
-                updateAuthenticationStep(
-                    authenticatorAddStep,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID
-                );
-                setShowBackupCodeAuthAddModal(false);
-            } }
-            onSecondaryActionClick={ () => setShowBackupCodeAuthAddModal(false) }
-            data-componentid={ `${ testId }-backup-code-add-confirmation-modal` }
-            closeOnDimmerClick={ false }
-        >
-            <ConfirmationModal.Header
-                data-componentid={ `${ testId }-backup-code-add-confirmation-modal-header` }
-            >
-                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.header") }
-            </ConfirmationModal.Header>
-            <ConfirmationModal.Message
-                attached
-                info
-                data-componentid={ `${ testId }-backup-code-add-confirmation-modal-message` }
-            >
-                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.message") }
-            </ConfirmationModal.Message>
-            <ConfirmationModal.Content
-                data-componentid={ `${ testId }-backup-code-add-confirmation-modal-content` }
-            >
-                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorAddition.content") }
-            </ConfirmationModal.Content>
-        </ConfirmationModal>
-    );
-
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
             <div className="authentication-flow-section timeline">
@@ -1091,7 +1034,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             </div>
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }
             { showHandlerDisclaimerModal && renderHandlerDisclaimerModal() }
-            { showBackupCodeAuthAddModal && renderBackupCodeAuthAddModal() }
         </div>
     );
 };
