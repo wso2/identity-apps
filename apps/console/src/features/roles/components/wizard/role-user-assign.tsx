@@ -408,14 +408,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         return user.userName;
     };
 
-    const validateUserDetails = (detail: string): string => {
-        if (detail) {
-            return detail;
-        }
-
-        return "Invalid User";
-    };
-
     const addNewUserModal = () => (
         <Modal
             data-testid={ `${ testId }-assign-user-wizard-modal` }
@@ -598,33 +590,66 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     <Table.Body>
                                                         {
                                                             assignedUsers?.map((user: RolesMemberInterface) => {
-                                                                return (
-                                                                    <Table.Row key={ user.value }>
-                                                                        <Table.Cell collapsing>
-                                                                            <UserAvatar
-                                                                                data-testid={ `${ testId }-users-list-
-                                                                                ${ validateUserDetails(user.display) }
-                                                                                -avatar` }
-                                                                                name={ 
-                                                                                    validateUserDetails(user.display)
+                                                                if (user.orgId) {
+                                                                    return (
+                                                                        <Table.Row key={ user.value }>
+                                                                            <Table.Cell collapsing>
+                                                                                <UserAvatar
+                                                                                    data-testid={ `${ testId }-users
+                                                                                    -list-${ user.display }-avatar` }
+                                                                                    name={ 
+                                                                                        user.display
+                                                                                    }
+                                                                                    size="mini"
+                                                                                    floated="left"
+                                                                                />
+                                                                            </Table.Cell>
+                                                                            <Table.Cell>
+                                                                                { user.display }
+                                                                            </Table.Cell>
+                                                                            <Table.Cell>
+                                                                                {
+                                                                                    user.orgName
+                                                                                    === "Super" ? "Asgardeo" : 
+                                                                                        user.orgName
                                                                                 }
-                                                                                size="mini"
-                                                                                floated="left"
-                                                                            />
-                                                                        </Table.Cell>
-                                                                        <Table.Cell>
-                                                                            { user.display ? 
-                                                                                user.display : "Invalid user" }
-                                                                        </Table.Cell>
-                                                                        <Table.Cell>
-                                                                            {
-                                                                                validateUserDetails(user.orgName) 
-                                                                                === "Super" ? "Asgardeo" : 
-                                                                                    validateUserDetails(user.orgName)
-                                                                            }
-                                                                        </Table.Cell>
-                                                                    </Table.Row>
-                                                                );
+                                                                            </Table.Cell>
+                                                                        </Table.Row>
+                                                                    );
+                                                                } else {
+                                                                    const selectedUser: UserBasicInterface = 
+                                                                    selectedUsers?.find(
+                                                                        (userObj: UserBasicInterface) => 
+                                                                            userObj.id === user.value
+                                                                    );
+
+                                                                    if (selectedUser) {
+                                                                        return (
+                                                                            <Table.Row key={ selectedUser.id }>
+                                                                                <Table.Cell collapsing>
+                                                                                    <UserAvatar
+                                                                                        data-testid={ `${ testId }-users
+                                                                                        -list-${ selectedUser.userName }
+                                                                                        -avatar` }
+                                                                                        name={ 
+                                                                                            resolveUserDisplayName(
+                                                                                                selectedUser
+                                                                                            )
+                                                                                        }
+                                                                                        size="mini"
+                                                                                        floated="left"
+                                                                                    />
+                                                                                </Table.Cell>
+                                                                                <Table.Cell>
+                                                                                    { selectedUser.userName }
+                                                                                </Table.Cell>
+                                                                                <Table.Cell>
+                                                                                    Not Resolved
+                                                                                </Table.Cell>
+                                                                            </Table.Row>
+                                                                        );
+                                                                    }
+                                                                }
                                                             })
                                                         }
                                                     </Table.Body>
