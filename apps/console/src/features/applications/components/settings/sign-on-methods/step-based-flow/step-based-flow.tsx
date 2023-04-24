@@ -140,11 +140,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
+    const [ showBackupCodeRemoveConfirmModal, setShowBackupCodeRemoveConfirmModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
     const [ categorizedTemplates, setCategorizedTemplates ] =
         useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
     const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
+    const [ authenticatorRemoveStep, setAuthenticatorRemoveStep ] = useState<number>(0);
+    const [ backupCodeRemoveIndex, setBackupCodeRemoveIndex ] = useState<number>(0);
+    const [ authenticatorRemoveIndex, setAuthenticatorRemoveIndex ] = useState<number>(0);
 
     const authenticationStepsDivRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -436,9 +440,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
                 IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
             )) {
-                // if there is only one 2FA in the step, do not allow it to be deleted
+                // if there is only one 2FA in the step, prompt delete confirmation modal
                 if(SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
-                    dispatchTwoFactorAuthDeleteErrorNotification();
+                    currentStep.options.map((option: AuthenticatorInterface, optionIndex: number) => {
+                        if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                            setBackupCodeRemoveIndex(optionIndex);
+                        }
+                    });
+                    setAuthenticatorRemoveIndex(optionIndex);
+                    setAuthenticatorRemoveStep(stepIndex);
+                    setShowBackupCodeRemoveConfirmModal(true);
 
                     return;
                 }
@@ -556,26 +567,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 message: t(
                     "console:develop.features.applications.notifications." +
                     "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
-                )
-            })
-        );
-    };
-
-    /**
-     * This method dispatches a notification when there is an error during validating a
-     * delete action of a 2FA.
-     */
-    const dispatchTwoFactorAuthDeleteErrorNotification = (): void => {
-        dispatch(
-            addAlert({
-                description: t(
-                    "console:develop.features.applications.notifications." +
-                    "deleteOptionErrorDueToSecondFactorsDependency.genericError.description"
-                ),
-                level: AlertLevels.WARNING,
-                message: t(
-                    "console:develop.features.applications.notifications." +
-                    "deleteOptionErrorDueToSecondFactorsDependency.genericError.message"
                 )
             })
         );
@@ -950,6 +941,42 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         );
     };
 
+    /**
+     * Prompts user with a confirmation modal to remove the backup code authenticator,
+     * if the authenticator to be deleted is coupled with the backup code authenticator.
+     *
+     * @returns Delete confirmation modal.
+     */
+    const renderBackupCodeRemoveConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ () => setShowBackupCodeRemoveConfirmModal(false) }
+            type="negative"
+            open={ showBackupCodeRemoveConfirmModal }
+            primaryAction={ t("common:continue") }
+            secondaryAction={ t("common:cancel") }
+            onPrimaryActionClick={ () => {
+                handleStepOptionDelete(authenticatorRemoveStep, backupCodeRemoveIndex);
+                handleStepOptionDelete(authenticatorRemoveStep, authenticatorRemoveIndex);
+                setShowBackupCodeRemoveConfirmModal(false);
+            } }
+            onSecondaryActionClick={ () => setShowBackupCodeRemoveConfirmModal(false) }
+            data-testid={ `${ testId }-backupcode-delete-confirm-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-header` }
+            >
+                Confirm Deletion
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-content` }
+            >
+                If you proceed, the backup code functionality will also be removed from your
+                current authentication step. Do you wish to continue?
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
             <div className="authentication-flow-section timeline">
@@ -1034,6 +1061,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             </div>
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }
             { showHandlerDisclaimerModal && renderHandlerDisclaimerModal() }
+            { showBackupCodeRemoveConfirmModal && renderBackupCodeRemoveConfirmationModal() }
         </div>
     );
 };
