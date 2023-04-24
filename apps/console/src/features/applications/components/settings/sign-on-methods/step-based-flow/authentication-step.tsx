@@ -147,12 +147,14 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const [ backupCodeIndex, setBackupCodeIndex ] = useState<number>(null);
 
     useEffect(() => {
+        let isBackupCodeSupportedAuthenticator: boolean = false;
+
         step.options.map((option: AuthenticatorInterface) => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
+                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {
@@ -166,11 +168,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
-                setShowBackupCodesEnableCheckBox(true);
-            } else {
-                setShowBackupCodesEnableCheckBox(false);
+                isBackupCodeSupportedAuthenticator = true;
             }
         });
+        setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);
     }, [ JSON.stringify(step.options) ]);
 
     const isSubjectIdentifierChecked: boolean = useMemo(
