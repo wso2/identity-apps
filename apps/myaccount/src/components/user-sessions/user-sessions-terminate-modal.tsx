@@ -19,9 +19,11 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton } from "@wso2is/react-components";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Modal } from "semantic-ui-react";
 import { terminateAllUserSessions } from "../../api";
 import { AppConstants, CommonConstants } from "../../constants";
@@ -57,7 +59,7 @@ export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminati
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     /**
      * The following function handles redirecting the user to the active session list.
@@ -84,7 +86,7 @@ export const UserSessionTerminationModal: FunctionComponent<UserSessionTerminati
                     )
                 }));
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
