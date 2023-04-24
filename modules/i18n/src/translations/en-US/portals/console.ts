@@ -2546,21 +2546,6 @@ export const console: ConsoleNS = {
                             message: "Delete successful"
                         }
                     },
-                    deleteOptionErrorDueToSecondFactorsDependency: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Cannot delete this authenticator"
-                        },
-                        genericError: {
-                            description: "Backup code authenticator in this step depends on this " +
-                                "authenticator.",
-                            message: "Cannot delete this authenticator"
-                        },
-                        success: {
-                            description: "Successfully deleted the authenticator from step {{stepNo}}.",
-                            message: "Delete successful"
-                        }
-                    },
                     deleteProtocolConfig: {
                         error: {
                             description: "{{description}}",

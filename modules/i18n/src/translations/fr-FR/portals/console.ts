@@ -2591,21 +2591,6 @@ export const console: ConsoleNS = {
                             message: "Suppression réussie"
                         }
                     },
-                    deleteOptionErrorDueToSecondFactorsDependency: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Impossible de supprimer cet authentificateur"
-                        },
-                        genericError: {
-                            description: "L'authentificateur de code de sauvegarde dans cette étape " +
-                                "dépend de cet authentificateur.",
-                            message: "Impossible de supprimer cet authentificateur"
-                        },
-                        success: {
-                            description: "Suppression réussie de l'authentificateur de l'étape {{stepNo}}.",
-                            message: "Suppression réussie"
-                        }
-                    },
                     deleteProtocolConfig: {
                         error: {
                             description: "{{description}}",

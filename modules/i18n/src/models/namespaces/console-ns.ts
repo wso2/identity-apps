@@ -1119,7 +1119,6 @@ export interface ConsoleNS {
                     authenticationStepDeleteErrorDueToSecondFactors: Notification;
                     deleteApplication: Notification;
                     deleteOptionErrorDueToSecondFactorsOnRight: Notification;
-                    deleteOptionErrorDueToSecondFactorsDependency: Notification;
                     deleteProtocolConfig: Notification;
                     duplicateAuthenticationStep: Notification;
                     emptyAuthenticationStep: Notification;

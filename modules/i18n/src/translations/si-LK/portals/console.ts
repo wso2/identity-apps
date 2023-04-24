@@ -2527,20 +2527,6 @@ export const console: ConsoleNS = {
                             message: "සාර්ථකව මකන්න"
                         }
                     },
-                    deleteOptionErrorDueToSecondFactorsDependency: {
-                        error: {
-                            description: "{{description}}",
-                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
-                        },
-                        genericError: {
-                            description: "මෙම පියවරේදී උපස්ථ කේත සත්‍යාපනය මෙම සත්‍යාපනය මත රඳා පවතී.",
-                            message: "මෙම සත්‍යාපකය මකා දැමිය නොහැක"
-                        },
-                        success: {
-                            description: "{{StepNo}} පියවරෙන් සත්‍යාපකය සාර්ථකව මකා දමන ලදි.",
-                            message: "මකා දැමීම සාර්ථකයි"
-                        }
-                    },
                     deleteProtocolConfig: {
                         error: {
                             description: "{{description}}",
