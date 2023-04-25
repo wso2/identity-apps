@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
+import { OrganizationManagementConstants } from "../../../organizations/constants";
 
 /**
  * Proptypes for the role user list component.
@@ -609,9 +610,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                             </Table.Cell>
                                                                             <Table.Cell>
                                                                                 {
-                                                                                    user.orgName
-                                                                                    === "Super" ? "Asgardeo" : 
-                                                                                        user.orgName
+                                                                                    user.orgId
+                                                                                    === OrganizationManagementConstants
+                                                                                        .ROOT_ORGANIZATION_ID ? 
+                                                                                        "Asgardeo" : user.orgName
                                                                                 }
                                                                             </Table.Cell>
                                                                         </Table.Row>
