@@ -33,23 +33,25 @@ if (process.env.PRE_AUTH_CHECK === "true") {
 const log = console.log;
 
 const tmpDir = path.join(__dirname, "..", "src", "extensions", "i18n", "tmp");
-const metaFiles = fs.readdirSync(tmpDir);
-const metaFileName = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
 const i18nDir = path.join(__dirname, "..", "build", "console", appFolder, "resources", "i18n");
-const i18nFiles = fs.readdirSync(i18nDir);
 
-// Remove tmp directory in the extensions directory
 if (fs.existsSync(tmpDir)) {
+    const metaFiles = fs.readdirSync(tmpDir);
+    const metaFileName = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
+
+    const i18nFiles = fs.readdirSync(i18nDir);
+
+    // Remove the redundant meta.json file from the i18n directory in the build directory.
+    log("Removing the redundant meta.json file from the i18n directory in the build directory.");
+    i18nFiles.forEach(file => {
+        if (file.startsWith("meta") && file !== metaFileName) {
+            fs.removeSync(path.join(i18nDir, file));
+        }
+    });
+    log("Removed redundant meta.json file");
+
+    // Remove tmp directory in the extensions directory
     log("Removing tmp directory in the extensions directory.");
     fs.removeSync(tmpDir);
     log("tmp directory removed.");
 }
-
-// Remove the redundant meta.json file from the i18n directory in the build directory.
-log("Removing the redundant meta.json file from the i18n directory in the build directory.");
-i18nFiles.forEach(file => {
-    if (file.startsWith("meta") && file !== metaFileName) {
-        fs.removeSync(path.join(i18nDir, file));
-    }
-});
-log("Removed redundant meta.json file");
