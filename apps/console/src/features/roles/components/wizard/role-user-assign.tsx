@@ -38,8 +38,8 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
-import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
 import { OrganizationManagementConstants } from "../../../organizations/constants";
+import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
 
 /**
  * Proptypes for the role user list component.
