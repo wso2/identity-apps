@@ -98,6 +98,10 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
      * Allow OTP token to have 0-9 characters only.
      */
     EmailOTP_OtpRegex_UseNumericChars: boolean;
+    /**
+     * Enable recaptcha for email OTP.
+     */
+    EmailOTP_RecaptchaEnable: boolean;
 }
 
 /**
@@ -116,6 +120,10 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
      * Allow OTP token to have 0-9 characters only field.
      */
     EmailOTP_OtpRegex_UseNumericChars: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable recaptcha for email OTP.
+     */
+    EmailOTP_RecaptchaEnable: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -134,6 +142,10 @@ export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
      * Allow OTP token to have 0-9 characters only field.
      */
     EmailOTP_OtpRegex_UseNumericChars: string;
+    /**
+     * Enable recaptcha for email OTP.
+     */
+    EmailOTP_RecaptchaEnable: string;
 }
 
 const FORM_ID: string = "email-otp-authenticator-form";
@@ -165,6 +177,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
+    const [ isRecaptchaEnabled, setIsRecaptchaEnabled ] = useState<boolean>();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -221,6 +234,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         });
 
         setIsOTPNumeric(resolvedInitialValues.EmailOTP_OtpRegex_UseNumericChars);
+        setIsRecaptchaEnabled(resolvedInitialValues.EmailOTP_RecaptchaEnable);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -378,6 +392,28 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     }
                 </Label>
             </Field.Input>
+            <Field.Checkbox
+                ariaLabel="Enable recaptcha for email OTP"
+                name="EmailOTP_RecaptchaEnable"
+                label={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".emailOTP.recaptchaEnable.label")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            ".emailOTP.recaptchaEnable.hint"
+                        }
+                    >
+                        Enable Recaptcha for Email OTP.
+                    </Trans>)
+                }
+                readOnly={ readOnly }
+                width={ 12 }
+                data-testid={ `${ testId }-otp-recaptcha-enable` }
+                listen={ (e:boolean) => {setIsRecaptchaEnabled(e);} }
+            />
             <Field.Checkbox
                 ariaLabel="Use numeric characters for OTP"
                 name="EmailOTP_OtpRegex_UseNumericChars"

@@ -91,7 +91,7 @@ export const console: ConsoleNS = {
             },
             featureAnnouncements: {
                 organizations: {
-                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " + 
+                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " +
                     "partner/customer organizations.",
                     buttons: {
                         tryout: "Try It Out"
@@ -1123,7 +1123,7 @@ export const console: ConsoleNS = {
                                                 " the <1>mobile number</1> to configure <3>SMS OTP</3> with the" +
                                                 " following connections.",
                                                 singleIdp: "Asgardeo requires the user's profile containing the"+
-                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" + 
+                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
                                             }
                                         }
@@ -3219,7 +3219,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             secretValidityPeriod: {
-                                hint: "The validity period of the generated client secret in seconds. A new client secret " + 
+                                hint: "The validity period of the generated client secret in seconds. A new client secret " +
                                     "will be generated after this time.",
                                 label: "Client Secret Validity Period",
                                 placeholder: "Enter the Validity Period for the Client Secret.",
@@ -3291,6 +3291,13 @@ export const console: ConsoleNS = {
                                 label: "Use only numeric characters for OTP",
                                 validations: {
                                     required: "Use only numeric characters for OTP is a required field."
+                                }
+                            },
+                            recaptchaEnable: {
+                                hint: "Please clear this checkbox to enable recaptcha for email OTP.",
+                                label: "Enable Recaptcha",
+                                validations: {
+                                    required: "Enable Recaptcha is a required field."
                                 }
                             }
                         },
@@ -4472,11 +4479,11 @@ export const console: ConsoleNS = {
                                 heading: "Name"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "See Apple's guide on configuring your environment for" + 
+                                configureAppleSignIn: "See Apple's guide on configuring your environment for" +
                                 " Sign in with Apple.",
                                 configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
                                 configureWebDomain: "Use the following as a <1>Web Domain</1>.",
-                                getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" + 
+                                getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" +
                                     " application on <3>Apple Developer Portal</3> with a <5>Services ID</5> and a" +
                                     " <5>Private Key</5>.",
                                 heading: "Prerequisite"

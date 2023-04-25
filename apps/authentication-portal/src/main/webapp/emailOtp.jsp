@@ -66,6 +66,12 @@
 <%
     layoutData.put("containerSize", "medium");
 %>
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
 
 <html lang="en-US">
 <head>
@@ -84,50 +90,34 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
 
-    <script type="text/javascript">
-        function onSubmit(token) {
+    <%
+        if (reCaptchaEnabled) {
 
-            submitOtpForm();
+    %>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <%
         }
-
-        function validate(event) {
-
-            event.preventDefault();
+    %>
+    <script type="text/javascript">
+        function submitForm() {
             var code = document.getElementById("OTPCode").value;
             if (code == "") {
                 document.getElementById('alertDiv').innerHTML
                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
-                        + '<div class="ui divider hidden"></div>';
+                    +'<div class="ui divider hidden"></div>';
             } else {
-                grecaptcha.execute();
+                if ($('#codeForm').data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                } else {
+                    AppInsights.getInstance().trackEvent("authentication-portal-email-otp-click-continue", {
+                        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                    });
+                    $('#codeForm').data("submitted", true);
+                    $('#codeForm').submit();
+                }
             }
         }
-
-        function onload() {
-
-            var element = document.getElementById('authenticate');
-            element.onclick = validate;
-        }
-
-        function submitOtpForm(){
-
-              if ($('#codeForm').data("submitted") === true) {
-                  console.warn("Prevented a possible double submit event");
-              } else {
-                  $('#codeForm').data("submitted", true);
-                  $('#codeForm').submit();
-              }
-        }
     </script>
-
-    <%
-        if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
-    %>
-    <script src='<%=(reCaptchaAPI)%>' async defer></script>
-    <%
-        }
-    %>
 </head>
 
 <body class="login-portal layout email-otp-portal-layout">
@@ -171,18 +161,6 @@
                             if (loginFailed != null && "true".equals(loginFailed)) {
                                 String authFailureMsg = request.getParameter("authFailureMsg");
                                 if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                        %>
-                        <%
-                            if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
-                        %>
-                        <div class="g-recaptcha"
-                            data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-                            data-callback="onSubmit"
-                            data-size="invisible">
-                        </div>
-                        <%
-                            }
                         %>
                         <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%>
                         </div>
@@ -231,8 +209,25 @@
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                     class="ui primary button"/>
                             </div>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                            <div class="field">
+                                <div class="g-recaptcha"
+                                    data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                    data-testid="login-page-g-recaptcha"
+                                    data-bind="authenticate"
+                                    data-callback="submitForm"
+                                    data-theme="light"
+                                    data-tabindex="-1"
+                                >
+                                </div>
+                            </div>
+                        <%
+                            }
+                        %>
                     </form>
-                    <script>onload();</script>
                 </div>
             </div>
         </layout:component>
@@ -260,6 +255,14 @@
     <% } %>
 
     <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#authenticate').click(function () {
+                <% if (!reCaptchaEnabled) { %>
+                    submitForm();
+                <% } %>
+            });
+        });
 
         function resendOtp() {
             document.getElementById("resendCode").value = "true";
