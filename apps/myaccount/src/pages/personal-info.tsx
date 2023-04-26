@@ -63,6 +63,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const [ userSourceIdp, setUserSourceIdp ] = useState<string>("");
 
     /**
      * Dispatches the alert object to the redux store.
@@ -83,9 +84,14 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
         const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
+        // Requires to validate if user is logged in from different IDP other than the source IDP
+        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")]);
+
         if (localCredentialExist && localCredentialExist == "false") {
-            setIsNonLocalCredentialUser(true);
+            setIsNonLocalCredentialUser(false);
         }
+
 
     }, [ profileDetails?.profileInfo ]);
 
@@ -156,6 +162,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <FederatedAssociations
+                                    sourceIdp={ userSourceIdp }
                                     isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                     onAlertFired={ handleAlerts }
                                 />

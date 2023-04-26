@@ -42,6 +42,7 @@ interface FederatedAssociationsPropsInterface extends TestableComponentInterface
     onAlertFired: (alert: AlertInterface) => void;
     disableExternalLoginsOnEmpty?: boolean;
     isNonLocalCredentialUser?: boolean;
+    sourceIdp: string;
 }
 
 /**
@@ -56,6 +57,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
         onAlertFired,
         disableExternalLoginsOnEmpty,
         isNonLocalCredentialUser,
+        sourceIdp,
         ["data-testid"]: testId
     } = props;
 
@@ -259,7 +261,9 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                             </Grid.Column>
                                             { !isNonLocalCredentialUser &&
                                                 !(currentIDP==federatedAssociation.idp.name ||
-                                                currentIDP==federatedAssociation.idp.displayName) ?
+                                                currentIDP==federatedAssociation.idp.displayName) &&
+                                                !(sourceIdp==federatedAssociation.idp.name ||
+                                                    sourceIdp==federatedAssociation.idp.displayName) ?
                                                 (<Grid.Column width={ 5 } className="last-column">
                                                     <List.Content floated="right">
                                                         <Popup
