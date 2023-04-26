@@ -41,7 +41,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import forEach from "lodash-es/forEach";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -57,7 +57,13 @@ import {
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
-import { GroupListInterface, GroupsInterface } from "../../../groups/models";
+import {
+    GroupListInterface,
+    GroupsInterface,
+    PatchGroupAddOpInterface,
+    PatchGroupOpInterface,
+    PatchGroupRemoveOpInterface
+} from "../../../groups/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
@@ -282,7 +288,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         setAddNewRoleModalView(false);
     };
 
-    const handleUnselectedListSearch = (_e: any, { value }: any) => {
+    const handleUnselectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: GroupsInterface[] = [];
 
@@ -301,7 +307,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
     };
 
-    const handleSelectedListSearch = (_e: any, { value }: any) => {
+    const handleSelectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: GroupsInterface[] = [];
 
@@ -339,7 +345,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        const operation: any = {
+        const operation: PatchGroupOpInterface = {
             data: {
                 "Operations": []
             },
@@ -347,8 +353,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             path: "/Roles/" + role.id
         };
 
-        const removeOperations: any = [];
-        const addOperations: any = [];
+        const removeOperations: PatchGroupRemoveOpInterface[] = [];
+        const addOperations: PatchGroupAddOpInterface[] = [];
         let removedIds: string[] = [];
         const addedIds: string[] = [];
 
@@ -368,7 +374,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         if (removedIds && removedIds?.length > 0) {
             removedIds.map((id: string) => {
-                const operation: any = {
+                const operation: PatchGroupRemoveOpInterface = {
                     op: "remove",
                     path: `groups[value eq ${ id }]`
                 };
@@ -601,7 +607,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedGroupListSearch = (_e: any, { value }: any) => {
+    const handleAssignedGroupListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: RoleGroupsInterface[] = [];
 

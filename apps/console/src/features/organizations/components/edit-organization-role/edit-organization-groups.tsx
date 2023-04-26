@@ -41,7 +41,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import forEach from "lodash-es/forEach";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -291,7 +291,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         setAddNewRoleModalView(false);
     };
 
-    const handleUnselectedListSearch = (_e: any, { value }: any) => {
+    const handleUnselectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: GroupsInterface[] = [];
 
@@ -310,7 +310,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }
     };
 
-    const handleSelectedListSearch = (_e: any, { value }: any) => {
+    const handleSelectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: GroupsInterface[] = [];
 
@@ -551,7 +551,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedGroupListSearch = (_e: any, { value }: any) => {
+    const handleAssignedGroupListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
         let isMatch: boolean = false;
         const filteredGroupList: RoleGroupsInterface[] = [];
 

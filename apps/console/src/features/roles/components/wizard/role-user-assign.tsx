@@ -646,7 +646,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                     { selectedUser.userName }
                                                                                 </Table.Cell>
                                                                                 <Table.Cell>
-                                                                                    Not Resolved
                                                                                 </Table.Cell>
                                                                             </Table.Row>
                                                                         );
