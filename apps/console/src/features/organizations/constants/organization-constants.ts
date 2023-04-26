@@ -33,6 +33,13 @@ export class OrganizationManagementConstants {
      * Super organization id as per alpha pack 2
      */
     public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
+    
+    /**
+     * Display name of the root organization.
+     * @typeparam ROOT_ORG_DISPLAY_NAME - string
+     * @defaultValue
+     */
+    public static readonly ROOT_ORG_DISPLAY_NAME: string = "Asgardeo";
 
     /**
      * Super organization object.

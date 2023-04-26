@@ -610,10 +610,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                             </Table.Cell>
                                                                             <Table.Cell>
                                                                                 {
-                                                                                    user.orgId
-                                                                                    === OrganizationManagementConstants
+                                                                                    user.orgId === 
+                                                                                    OrganizationManagementConstants
                                                                                         .ROOT_ORGANIZATION_ID ? 
-                                                                                        "Asgardeo" : user.orgName
+                                                                                        OrganizationManagementConstants
+                                                                                            .ROOT_ORG_DISPLAY_NAME : 
+                                                                                        user.orgName
                                                                                 }
                                                                             </Table.Cell>
                                                                         </Table.Row>
