@@ -30,7 +30,7 @@ import { PopupProps, Popup as SemanticPopup } from "semantic-ui-react";
 export const Popup = (props: PopupProps): ReactElement => {
     return (
         <SemanticPopup
-            popper={ <div style={ { filter: "none" } }></div> }
+            popper={ <div style={ { filter: "none", maxWidth: "40%" } }></div> }
             { ...props }
         />
     );

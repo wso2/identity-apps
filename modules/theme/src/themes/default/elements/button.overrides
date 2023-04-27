@@ -377,3 +377,12 @@
         outline: @focusVisibleOutline;
     }
 }
+
+.advanced-search-delete-attribute-icon {
+    backgroundColor: "transparent", 
+    color: "grey", 
+    display: "flex", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    marginTop: "20px"
+}
