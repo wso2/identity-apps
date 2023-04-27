@@ -137,6 +137,20 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
+        if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            // If there is only one step in the flow, backup code authenticator shouldn't be allowed.
+            if (currentStep === 0) {
+                return false;
+            }
+
+            // If there exist 2FAs in the current step backup code authenticator should be enabled.
+            // Otherwise, it should be disabled.
+            return SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(
+                currentStep,
+                authenticationSteps
+            ) > 0;
+        }
+
         if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
@@ -202,6 +216,34 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     ) }
                 </>
             );
+        } else if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            return (
+                <>
+                    { currentStep === 0 ? (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".backupCodesDisabledInFirstStep"
+                                ) }
+                            </Text>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            { InfoLabel }
+                            <Text>
+                                { t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".backupCodesDisabled"
+                                ) }
+                            </Text>
+                        </Fragment>
+                    ) }
+                </>
+            );
         } else if (authenticator.category === AuthenticatorCategories.SOCIAL) {
             return (
                 <Fragment>
@@ -244,7 +286,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return;
         }
 
-        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) => 
+        if (selectedAuthenticators.some((authenticator: GenericAuthenticatorInterface) =>
             authenticator.id === selectedAuthenticator.id)) {
             const filtered: GenericAuthenticatorInterface[] = selectedAuthenticators
                 .filter((authenticator: GenericAuthenticatorInterface) => {
@@ -280,46 +322,48 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
-                <Popup
-                    hoverable
-                    hideOnScroll
-                    position="top center"
-                    key={ index }
-                    on="hover"
-                    disabled={ isFactorEnabled(authenticator) }
-                    content={ resolvePopupContent(authenticator) }
-                    trigger={
-                        (<InfoCard
-                            showTooltips
-                            imageSize="micro"
-                            className={ authenticatorCardClasses }
-                            header={
-                                authenticator.displayName ||
-                                defaultName
-                            }
-                            disabled={ !isFactorEnabled(authenticator) }
-                            selected={
-                                isFactorEnabled(authenticator) &&
-                                Array.isArray(selectedAuthenticators) &&
-                                selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
-                                    return evalAuthenticator.id === authenticator.id;
-                                })
-                            }
-                            subHeader={ authenticator.categoryDisplayName }
-                            description={ authenticator.description }
-                            image={ authenticator.image }
-                            tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
-                            onClick={ () => {
-                                isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
-                            } }
-                            imageOptions={ {
-                                floated: false,
-                                inline: true
-                            } }
-                            data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
-                        />)
-                    }
-                />
+                authenticator.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ?
+                    null :
+                    (<Popup
+                        hoverable
+                        hideOnScroll
+                        position="top center"
+                        key={ index }
+                        on="hover"
+                        disabled={ isFactorEnabled(authenticator) }
+                        content={ resolvePopupContent(authenticator) }
+                        trigger={
+                            (<InfoCard
+                                showTooltips
+                                imageSize="micro"
+                                className={ authenticatorCardClasses }
+                                header={
+                                    authenticator.displayName ||
+                                    defaultName
+                                }
+                                disabled={ !isFactorEnabled(authenticator) }
+                                selected={
+                                    isFactorEnabled(authenticator) &&
+                                    Array.isArray(selectedAuthenticators) &&
+                                    selectedAuthenticators.some((evalAuthenticator: GenericAuthenticatorInterface) => {
+                                        return evalAuthenticator.id === authenticator.id;
+                                    })
+                                }
+                                subHeader={ authenticator.categoryDisplayName }
+                                description={ authenticator.description }
+                                image={ authenticator.image }
+                                tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
+                                onClick={ () => {
+                                    isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
+                                } }
+                                imageOptions={ {
+                                    floated: false,
+                                    inline: true
+                                } }
+                                data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                            />)
+                        }
+                    />)
             )) }
         </Fragment>
     );

@@ -23,11 +23,11 @@ import {
     ProvisioningInterface
 } from "../../identity-providers";
 import { ApplicationManagementConstants } from "../constants";
-import { 
-    AuthenticationStepInterface, 
-    AuthenticatorInterface, 
-    FederatedConflictWithSMSOTPArgsInterface, 
-    FederatedConflictWithSMSOTPReturnValueInterface 
+import {
+    AuthenticationStepInterface,
+    AuthenticatorInterface,
+    FederatedConflictWithSMSOTPArgsInterface,
+    FederatedConflictWithSMSOTPReturnValueInterface
 } from "../models";
 
 /**
@@ -336,7 +336,7 @@ export class SignInMethodUtils {
          *    authentications configured on subject identifier step.
          *
          * 2) Walk forward and check other steps (step 2 and beyond) for SMS OTP:
-         *    The reason to do this check is that, if SMS OTP is configured with 
+         *    The reason to do this check is that, if SMS OTP is configured with
          *    a federated authenticator, Asgardeo should receive the user's profile
          *    (including the mobile number) configured on the federated IdP.
          */
@@ -356,7 +356,7 @@ export class SignInMethodUtils {
             // Extract all the IdP names.
             const uniqueIdpNames: string[] = [ ...(new Set((allOptions).map(({ idp } : { idp: string }) => idp))) ];
             // Find the authenticator model.
-            const idPsInSubjectIdStep: GenericAuthenticatorInterface[] = 
+            const idPsInSubjectIdStep: GenericAuthenticatorInterface[] =
                 uniqueIdpNames.map((idpName: string) => federatedAuthenticators
                     .find(({ name } : { name: string }) => name === idpName)).filter(Boolean);
 
@@ -383,7 +383,7 @@ export class SignInMethodUtils {
             const SMS_OTP_AUTHENTICATOR_NAME: string = "sms-otp-authenticator";
             const isSMSOTPConfigured: boolean = allOtherOptions.some(
                 (op: AuthenticatorInterface) => op.authenticator === SMS_OTP_AUTHENTICATOR_NAME);
-    
+
             /** Finally compose the outcome **/
             return {
                 conflicting: idPsInSubjectIdStep.length > 0 && isSMSOTPConfigured,
@@ -396,9 +396,51 @@ export class SignInMethodUtils {
                 idpList: []
             };
         }
-
     }
 
+    /**
+     * Returns the count of 2FAs in a certain authentication step.
+     *
+     * @param currentStep - The current step.
+     * @param authenticationSteps - The authentication steps.
+     *
+     * @returns number of 2FAs
+     */
+    public static countTwoFactorAuthenticatorsInCurrentStep(
+        currentStep: number, authenticationSteps: AuthenticationStepInterface[]
+    ): number {
+        const secondFactor: AuthenticatorInterface[] = authenticationSteps[currentStep].options.filter(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
+                authenticator.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+                authenticator.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
+        );
+
+        return secondFactor.length;
+    }
+
+    /**
+     * Checks whether a specified authenticator is there in the current step.
+     *
+     * @param currentStep - The current step.
+     * @param authenticationSteps - The authentication steps.
+     *
+     * @returns boolean
+     */
+    public static hasSpecificAuthenticatorInCurrentStep(
+        authenticator: string, currentStep: number, authenticationSteps: AuthenticationStepInterface[]
+    ): boolean {
+        const hasAuthenticator: AuthenticatorInterface = authenticationSteps[currentStep].options.find(
+            (el: AuthenticatorInterface) =>
+                el.authenticator === authenticator
+        );
+
+        if (hasAuthenticator) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 export type ConnectionsJITUPConflictWithMFAArgs = {

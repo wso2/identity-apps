@@ -100,7 +100,7 @@ export interface ConsoleNS {
                 organizations: {
                     message: string;
                     buttons: {
-                        tryout: string; 
+                        tryout: string;
                     };
                 };
             };
@@ -405,6 +405,7 @@ export interface ConsoleNS {
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
                     handlerAuthenticatorAddition: Confirmation;
+                    backupCodeAuthenticatorDelete: Confirmation;
                     lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
                     reactivateSPA: Confirmation;
@@ -654,11 +655,14 @@ export interface ConsoleNS {
                                                 fields: {
                                                     attributesFrom: FormAttributes;
                                                     subjectIdentifierFrom: FormAttributes;
+                                                    enableBackupCodes: FormAttributes;
                                                 };
                                             };
                                             secondFactorDisabled: string;
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
+                                            backupCodesDisabled: string;
+                                            backupCodesDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             firstFactorDisabled: string;
                                             federatedSMSOTPConflictNote: {

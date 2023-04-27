@@ -135,15 +135,20 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ secondFactorAuthenticators, setSecondFactorAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ recoveryAuthenticators, setRecoveryAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(1);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(1);
     const [ showHandlerDisclaimerModal, setShowHandlerDisclaimerModal ] = useState<boolean>(false);
+    const [ showBackupCodeRemoveConfirmModal, setShowBackupCodeRemoveConfirmModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
     const [ categorizedTemplates, setCategorizedTemplates ] =
         useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
     const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
+    const [ authenticatorRemoveStep, setAuthenticatorRemoveStep ] = useState<number>(0);
+    const [ backupCodeRemoveIndex, setBackupCodeRemoveIndex ] = useState<number>(0);
+    const [ authenticatorRemoveIndex, setAuthenticatorRemoveIndex ] = useState<number>(0);
 
     const authenticationStepsDivRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -165,6 +170,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
         const secondFactorAuth: GenericAuthenticatorInterface[] = [];
+        const recoveryAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
             if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
@@ -173,8 +179,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             }
 
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
-                // Backup code authenticator is not available for customer users at the moment.
-                return;
+                recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
             } else {
@@ -193,6 +198,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
 
         setSecondFactorAuthenticators(secondFactorAuth);
+        setRecoveryAuthenticators(recoveryAuth);
         setLocalAuthenticators(moderatedLocalAuthenticators);
         setEnterpriseAuthenticators(filteredEnterpriseAuthenticators);
         setSocialAuthenticators(filteredSocialAuthenticators);
@@ -339,7 +345,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             ...localAuthenticators,
             ...enterpriseAuthenticators,
             ...socialAuthenticators,
-            ...secondFactorAuthenticators
+            ...secondFactorAuthenticators,
+            ...recoveryAuthenticators
         ];
 
         const authenticator: GenericAuthenticatorInterface = authenticators
@@ -400,7 +407,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator.authenticators.find(
-            (item: FederatedAuthenticatorInterface) => 
+            (item: FederatedAuthenticatorInterface) =>
                 item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
@@ -420,6 +427,34 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const currentStep: AuthenticationStepInterface = steps[stepIndex];
+        const currentAuthenticator: string = currentStep.options[optionIndex].authenticator;
+
+        // check whether the authenticator to be deleted is a 2FA
+        if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
+            currentAuthenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+            currentAuthenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ) {
+
+            // check whether the current step has the backup code authenticator
+            if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
+            )) {
+                // if there is only one 2FA in the step, prompt delete confirmation modal
+                if(SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
+                    currentStep.options.map((option: AuthenticatorInterface, optionIndex: number) => {
+                        if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                            setBackupCodeRemoveIndex(optionIndex);
+                        }
+                    });
+                    setAuthenticatorRemoveIndex(optionIndex);
+                    setAuthenticatorRemoveStep(stepIndex);
+                    setShowBackupCodeRemoveConfirmModal(true);
+
+                    return;
+                }
+            }
+        }
 
         const [
             leftSideSteps,
@@ -890,7 +925,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
                     ...moderateAuthenticators(enterpriseAuthenticators,
                         AuthenticatorCategories.ENTERPRISE,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE)))
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE))),
+                    ...moderateAuthenticators(recoveryAuthenticators,
+                        AuthenticatorCategories.RECOVERY,
+                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
                 ] }
                 showStepSelector={ false }
                 stepCount={ authenticationSteps.length }
@@ -902,6 +940,41 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             />
         );
     };
+
+    /**
+     * Prompts user with a confirmation modal to remove the backup code authenticator,
+     * if the authenticator to be deleted is coupled with the backup code authenticator.
+     *
+     * @returns Delete confirmation modal.
+     */
+    const renderBackupCodeRemoveConfirmationModal = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ () => setShowBackupCodeRemoveConfirmModal(false) }
+            type="negative"
+            open={ showBackupCodeRemoveConfirmModal }
+            primaryAction={ t("common:continue") }
+            secondaryAction={ t("common:cancel") }
+            onPrimaryActionClick={ () => {
+                handleStepOptionDelete(authenticatorRemoveStep, backupCodeRemoveIndex);
+                handleStepOptionDelete(authenticatorRemoveStep, authenticatorRemoveIndex);
+                setShowBackupCodeRemoveConfirmModal(false);
+            } }
+            onSecondaryActionClick={ () => setShowBackupCodeRemoveConfirmModal(false) }
+            data-testid={ `${ testId }-backupcode-delete-confirm-modal` }
+            closeOnDimmerClick={ false }
+        >
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-header` }
+            >
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.header") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-content` }
+            >
+                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.content") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>
@@ -925,7 +998,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             ...localAuthenticators,
                                             ...enterpriseAuthenticators,
                                             ...socialAuthenticators,
-                                            ...secondFactorAuthenticators
+                                            ...secondFactorAuthenticators,
+                                            ...recoveryAuthenticators
                                         ] }
                                         onStepDelete={ handleStepDelete }
                                         onStepOptionAuthenticatorChange={
@@ -946,6 +1020,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         onAttributeCheckboxChange={ handleAttributeRetrievalStepChange }
                                         onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
                                         data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
+                                        updateAuthenticationStep={ updateAuthenticationStep }
                                     />
                                 </Fragment>
                             ))
@@ -985,6 +1060,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             </div>
             { showAuthenticatorAddModal && renderAuthenticatorAddModal() }
             { showHandlerDisclaimerModal && renderHandlerDisclaimerModal() }
+            { showBackupCodeRemoveConfirmModal && renderBackupCodeRemoveConfirmationModal() }
         </div>
     );
 };

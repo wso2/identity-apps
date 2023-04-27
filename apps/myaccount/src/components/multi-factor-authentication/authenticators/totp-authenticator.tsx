@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, Popup } from "@wso2is/react-components";
+import { GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
 import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -958,14 +958,14 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     <p>{ t(translateKey + "modals.delete.message" ) }</p>
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
-                    <Button
-                        className="link-button"
+                    <LinkButton
+                        color="red"
                         onClick={ handleRevokeTOTPModalClose }
                         data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
                         { t("common:cancel") }
-                    </Button>
+                    </LinkButton>
                     <Button
-                        primary={ true }
+                        color="red"
                         onClick={ initDeleteTOTP }
                         data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
                         { t("common:remove") }
