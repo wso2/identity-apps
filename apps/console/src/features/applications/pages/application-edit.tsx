@@ -670,22 +670,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
                             tenantDomain, testId)
                     }
-
-                    {
-                        (isOrganizationManagementEnabled
-                            && applicationConfig.editApplication.showApplicationShare
-                            && !application.advancedConfigurations?.fragment
-                            && application.access === ApplicationAccessTypes.WRITE
-                            && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                            && hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update, allowedScopes)
-                            && orgType !== OrganizationType.SUBORGANIZATION) && (
-                            <PrimaryButton onClick={ () => setShowAppShareModal(true) }>
-                                { t("console:develop.features.applications.edit.sections" +
-                                    ".shareApplication.shareApplication") }
-                            </PrimaryButton>
-                        )
-                    }
                 </>
             ) }
         >
@@ -707,19 +691,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 } }
                 readOnly={ resolveReadOnlyState() }
             />
-
-            { (showAppShareModal && application) && (
-                <ApplicationShareModal
-                    open={ showAppShareModal }
-                    applicationId={ application.id }
-                    clientId={ inboundProtocolConfigs?.oidc?.clientId }
-                    subOrganizationList={ subOrganizationList }
-                    sharedOrganizationList={ sharedOrganizationList }
-                    onClose={ () => setShowAppShareModal(false) }
-                    onApplicationSharingCompleted={ onApplicationSharingCompleted }
-                    isSharedWithAll={ sharedWithAll }
-                />
-            ) }
         </TabPageLayout>
     );
 };

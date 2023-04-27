@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -41,6 +41,7 @@ import {
     AttributeSettings,
     GeneralApplicationSettings,
     ProvisioningSettings,
+    SharedAccess,
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
@@ -71,6 +72,7 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
+import { OrganizationType } from "../../organizations/constants";
 
 /**
  * Proptypes for the applications edit component.
@@ -157,6 +159,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+        state?.organization?.organizationType);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
@@ -445,10 +453,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         eventPublisher.compute(() => {
-            eventPublisher.publish(
-                "application-switch-edit-application-tabs", 
-                { type: data.panes[data.activeIndex].componentId }
-            );
+            eventPublisher.publish("application-switch-edit-application-tabs", {
+                type: data.panes[data.activeIndex].componentId
+            });
         });
 
         handleActiveTabIndexChange(data.activeIndex as number);
@@ -723,6 +730,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             : null
     );
 
+    const SharedAccessTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <SharedAccess
+                application={ application }
+                onUpdate={ handleApplicationUpdate }
+                readOnly={ readOnly }
+                data-testid={ `${ testId }-shared-access` }
+            />
+        </ResourceTab.Pane>
+    );
+
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <Info
@@ -870,6 +888,30 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    && !isFragmentApp
+                    && applicationConfig.editApplication.showApplicationShare
+                    && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                    && hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                    && orgType !== OrganizationType.SUBORGANIZATION) {
+
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId,
+                        ApplicationTabTypes.INFO,
+                        tenantDomain
+                    ) &&
+                 panes.push({
+                     componentId: "shared-access",
+                     menuItem: {
+                         content: "Shared Access",
+                     },
+                     render: SharedAccessTabPane
+                 });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp) {
 
                 applicationConfig.editApplication.
@@ -927,6 +969,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 componentId: "advanced",
                 menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
+            },
+            {
+                componentId: "shared-access",
+                menuItem: "Shared Access",
+                render: SharedAccessTabPane
             },
             {
                 componentId: "info",

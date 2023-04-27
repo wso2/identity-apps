@@ -18,6 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -51,7 +52,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Card, Dimmer, Divider, Grid } from "semantic-ui-react";
+import { Card, Checkbox, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
@@ -60,6 +61,7 @@ import {
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
+    FeatureConfigInterface,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -70,7 +72,7 @@ import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-re
 import { OrganizationUtils } from "../../../organizations/utils";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants, ShareWithOrgStatus } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import SinglePageApplicationTemplate
@@ -86,6 +88,9 @@ import {
     URLFragmentTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationShareModal } from "../modals/application-share-modal";
+import { OrganizationInterface } from "../../../organizations/models";
+import { OrganizationType } from "../../../organizations/constants";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -112,6 +117,16 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
      * Application template loading strategy.
      */
     templateLoadingStrategy: ApplicationTemplateLoadingStrategies;
+    /**
+     * Callback to set the application details.
+     */
+    setApplicationResponse?: (response: AxiosResponse) => void;
+    /**
+     * Callback to enable/disable application sharing.
+     */
+    setIsApplicationSharingEnabled?: () => void;
+    isApplicationSharingEnabled?: boolean;
+    setShareApplicationModal?: () => void;
 }
 
 /**
@@ -131,6 +146,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTemplatesSectionTitle,
         subTitle,
         templateLoadingStrategy,
+        setIsApplicationSharingEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -140,15 +156,23 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
 
-    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
-        state.config.ui.isClientSecretHashEnabled);
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
     });
+    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isClientSecretHashEnabled);
+    const orgType: OrganizationType = useSelector((state: AppState) =>
+    state?.organization?.organizationType);
+
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -164,6 +188,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+    const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
+
+    const [ showAppShareModal, setShowAppShareModal ] = useState(false);
+    const [ applicationId, setApplicationId ] = useState<string>(undefined);
+
     const nameRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const issuerRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const metaUrlRef: MutableRefObject<HTMLDivElement>  = useRef<HTMLDivElement>();
@@ -174,6 +203,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ alert, setAlert, notification ] = useWizardAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+useEffect(() => {
+    if (applicationId) {
+        setShowAppShareModal(true);
+    }
+}, [ applicationId ]);
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
@@ -354,39 +389,18 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     })
                 );
 
-                // The created resource's id is sent as a location header.
-                // If that's available, navigate to the edit page.
-                if (!isEmpty(response.headers.location)) {
-                    const location: string = response.headers.location;
-                    const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
+                const location: string = response.headers.location;
+                const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
 
-                    let searchParams: string = "?";
-                    let defaultTabIndex: number = 0;
-
-                    if (isClientSecretHashEnabled) {
-                        searchParams = `${ searchParams }&${
-                            ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
-                    }
-
-                    if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                        defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
-                    }
-
-                    history.push({
-                        hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`,
-                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
-                        search: searchParams
-                    });
-
-                    return;
+                if (!isAppSharingEnabled) {
+                    handleAppCreationComplete(createdAppID);
+                } else {
+                    setApplicationId(createdAppID);
                 }
-
-                // Fallback to applications page, if the location header is not present.
-                history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
             .catch((error: AxiosError) => {
 
-                if (error.response.status === 403 &&
+                if (error?.response?.status === 403 &&
                     error?.response?.data?.code ===
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     setOpenLimitReachedModal(true);
@@ -459,6 +473,40 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 handleError("all", false);
             });
     }, [ generalFormValues, protocolFormValues ]);
+
+    const handleAppCreationComplete = (createdAppID: string): void => {
+        // The created resource's id is sent as a location header.
+        // If that's available, navigate to the edit page.
+        if (!isEmpty(createdAppID)) {
+            let searchParams: string = "?";
+            let defaultTabIndex: number = 0;
+
+            if (isClientSecretHashEnabled) {
+                searchParams = `${ searchParams }&${
+                    ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
+            }
+
+            if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
+            }
+
+            history.push({
+                hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`,
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
+                search: searchParams
+            });
+
+            return;
+        }
+
+        // Fallback to applications page, if the location header is not present.
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
+    };
+
+    const handleApplicationSharingCompletion = (): void => {
+        setShowAppShareModal(false);
+        handleAppCreationComplete(applicationId);
+    };
 
     /**
      * Close the wizard.
@@ -1003,6 +1051,32 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             </div>
                         )
                     }
+                    {
+                        (isOrganizationManagementEnabled
+                            && applicationConfig.editApplication.showApplicationShare
+                            && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                            && hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update, allowedScopes)
+                            && orgType !== OrganizationType.SUBORGANIZATION) && (
+                                <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                    <div className="pt-0 mt-0">
+                                        <Checkbox 
+                                            onChange={ (e, { checked }) => {
+                                                setIsAppSharingEnabled(checked);
+                                                setIsApplicationSharingEnabled;
+                                            } }
+                                            label="Allow sharing with sub-organizations" 
+                                        />
+                                        <Hint inline popup>
+                                            If enabled, it will allow this application to authenticate customers/partners 
+                                            into this organization or any of it’s sub-organizations.
+                                        </Hint>
+                                    </div>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    }
                 </Grid>
             </Forms>
         );
@@ -1102,7 +1176,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 />
             ) }
             <ModalWithSidePanel
-                open={ !openLimitReachedModal }
+                open={ !openLimitReachedModal && !showAppShareModal }
                 className="wizard minimal-application-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
@@ -1156,6 +1230,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 </ModalWithSidePanel.MainPanel>
                 { renderHelpPanel() }
             </ModalWithSidePanel>
+            { showAppShareModal && (
+                <ApplicationShareModal
+                    open={ showAppShareModal }
+                    applicationId={ applicationId }
+                    onClose={ () => setShowAppShareModal(false) }
+                    onApplicationSharingCompleted={ handleApplicationSharingCompletion }
+                />
+            ) }
         </>
     );
 };

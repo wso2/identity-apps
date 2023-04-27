@@ -23,3 +23,4 @@ export * from "./general-application-settings";
 export * from "./access-configuration";
 export * from "./advanced-settings";
 export * from "./general-application-settings";
+export * from "./shared-access";
