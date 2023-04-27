@@ -285,11 +285,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                         email || email !== "" ?
                                             t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
                                                 { email: email ? maskEmail(email) : "" })
-                                            : 
-                                            (<Hint>
-                                                { t("myAccount:components.accountRecovery.emailRecovery." +
-                                                "descriptions.emptyEmail") }
-                                            </Hint>)
+                                            : (
+                                                <Hint>
+                                                    { t("myAccount:components.accountRecovery.emailRecovery." +
+                                                    "descriptions.emptyEmail") }
+                                                </Hint>
+                                            )
                                     }
                                     {
                                         (email || email !== "") && isEmailPending ? (
