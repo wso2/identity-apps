@@ -35,9 +35,9 @@ export const myAccount: MyAccountNS = {
             "emailRecovery": {
                 "descriptions": {
                     "add": "Agregar o actualizar la dirección de correo electrónico de recuperación",
+                    "emptyEmail": "Debe configurar su dirección de correo electrónico para continuar con la recuperación del correo electrónico.",
                     "update": "Actualizar la dirección de correo electrónico de recuperación ({{email}})",
-                    "view": "Ver la dirección de correo electrónico de recuperación ({{email}})",
-                    emptyEmail: "Debe configurar su dirección de correo electrónico para continuar con la recuperación del correo electrónico."
+                    "view": "Ver la dirección de correo electrónico de recuperación ({{email}})"
                 },
                 "forms": {
                     "emailResetForm": {

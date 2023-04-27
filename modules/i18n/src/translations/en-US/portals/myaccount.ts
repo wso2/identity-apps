@@ -35,9 +35,9 @@ export const myAccount: MyAccountNS = {
             emailRecovery: {
                 descriptions: {
                     add: "Add or update recovery email address",
+                    emptyEmail: "You need to configure your email address to proceed with email recovery.",
                     update: "Update recovery email address ({{email}})",
-                    view: "View recovery email address ({{email}})",
-                    emptyEmail: "You need to configure your email address to proceed with email recovery."
+                    view: "View recovery email address ({{email}})"
                 },
                 forms: {
                     emailResetForm: {
