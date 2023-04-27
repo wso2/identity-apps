@@ -41,5 +41,6 @@ export const organizationConfigs: OrganizationConfigs = {
             </span>
         );
     },
+    superOrganizationName: "WSO2-IS",
     tenantSwitcher: () => null
 };
