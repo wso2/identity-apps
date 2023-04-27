@@ -195,7 +195,6 @@ export class ServerConfigurationsConstants {
 	public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"SelfRegistration.Notification.InternallyManage";
 
-	public static readonly ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
 	public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
 	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
 	public static readonly SMS_OTP_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
