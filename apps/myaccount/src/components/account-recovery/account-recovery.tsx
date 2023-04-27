@@ -50,18 +50,13 @@ interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface>, Te
 /**
  * The AccountRecoveryComponent component in the Settings section
  *
- * @param props - Props for Account Recovery Component.
+ * @param props - Props injected to the component.
  * @returns Account Recovery Component.
  */
 export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> = (
     props: AccountRecoveryProps
 ): ReactElement => {
-
-    const {
-        onAlertFired,
-        featureConfig,
-        ["data-testid"]: testId
-    } = props;
+    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
@@ -97,22 +92,21 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                     const passwordRecoveryOptions: PreferenceConnectorResponse[] = response;
                     const responseProperties: PreferenceProperty[] = passwordRecoveryOptions[0].properties;
 
-                    responseProperties.forEach((prop: PreferenceProperty) =>{
-                        if (prop.name === RECOVERY_PASSWORD_QUESTION){
+                    responseProperties.forEach((prop: PreferenceProperty) => {
+                        if (prop.name === RECOVERY_PASSWORD_QUESTION) {
                             setIsQsRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
                         }
-                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION){
+                        if (prop.name === RECOVERY_PASSWORD_NOTIFICATION) {
                             setIsNotificationRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
                         }
-                        if (prop.name === RECOVERY_USERNAME_NOTIFICATION){
+                        if (prop.name === RECOVERY_USERNAME_NOTIFICATION) {
                             setIsUsernameRecoveryEnabled(prop.value.toLowerCase() == "true" ? true : false);
                         }
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "myAccount:sections.accountRecovery.preference.notifications." +
-                            "genericError.description"
+                            "myAccount:sections.accountRecovery.preference.notifications.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t("myAccount:sections.accountRecovery.preference.notifications.genericError.message")
