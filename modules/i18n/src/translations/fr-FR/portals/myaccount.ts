@@ -35,6 +35,7 @@ export const myAccount: MyAccountNS = {
             emailRecovery: {
                 descriptions: {
                     add: "Ajouter ou mettre à jour l'e-mail de récupération",
+                    emptyEmail: "Vous devez configurer votre adresse e-mail pour procéder à la récupération des e-mails.",
                     update: "Mettre à jour de l'e-mail de récupération ({{email}}}",
                     view: "Afficher l'adresse e-mail de récupération ({{email}}}"
                 },

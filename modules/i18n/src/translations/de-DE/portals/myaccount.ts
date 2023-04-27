@@ -35,6 +35,7 @@ export const myAccount: MyAccountNS = {
             "emailRecovery": {
                 "descriptions": {
                     "add": "E-Mail-Adresse für die Wiederherstellung hinzufügen oder aktualisieren",
+                    "emptyEmail": "Sie müssen Ihre E-Mail-Adresse konfigurieren, um mit der E-Mail-Wiederherstellung fortzufahren.",
                     "update": "Wiederherstellungs-E-Mail-Adresse aktualisieren ({{email}})",
                     "view": "Wiederherstellungs-E-Mail-Adresse anzeigen ({{email}})"
                 },

@@ -88,6 +88,7 @@ export interface MyAccountNS {
                     add: string;
                     update: string;
                     view: string;
+                    emptyEmail: string;
                 };
                 forms: {
                     emailResetForm: {
