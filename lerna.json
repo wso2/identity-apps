@@ -1,7 +1,7 @@
 {
     "packages": [
         "apps/*",
-        "components/theme",
+        "java/*",
         "modules/*",
         "tests"
     ],
