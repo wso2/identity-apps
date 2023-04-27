@@ -54,7 +54,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
@@ -582,7 +582,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
-                                disabled={ !hasMapping }
+                                disabled={ 
+                                    !hasMapping
+                                    || (
+                                        accountVerificationEnabled
+                                        && selfRegistrationEnabled
+                                        && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                                        && usernameConfig?.enableValidator === "true"
+                                    )
+                                }
                                 {
                                     ...( shouldShowOnProfile
                                         ? { checked: true }
@@ -643,16 +651,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         && usernameConfig?.enableValidator === "true"
                                     )
                                 }
-                                message={
-                                    accountVerificationEnabled
-                                    && selfRegistrationEnabled
-                                    && usernameConfig?.enableValidator === "true"
-                                    && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
-                                    && {
-                                        content: t("console:manage.features.claims.local.forms.requiredWarning"),
-                                        type: "info"
-                                    }
-                                }
                                 {
                                     ...( isClaimReadOnly
                                         ? { value: false }
@@ -660,6 +658,18 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     )
                                 }
                             />
+                        )
+                    }
+                    {
+                        accountVerificationEnabled
+                        && selfRegistrationEnabled
+                        && usernameConfig?.enableValidator === "true"
+                        && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                        && (
+                            <Message info>
+                                <Icon name="info circle" />
+                                { t("console:manage.features.claims.local.forms.requiredWarning") }
+                            </Message>
                         )
                     }
                     {

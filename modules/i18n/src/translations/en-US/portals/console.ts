@@ -6775,7 +6775,7 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "If selected, the user is required to specify a value for this " +
                         "attribute on the profile.",
-                        requiredWarning: "To make the email attribute not required on the user's profile, " +
+                        requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
                             "you need to disable account verification for your organization.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
