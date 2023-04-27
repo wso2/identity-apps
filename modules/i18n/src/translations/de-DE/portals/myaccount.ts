@@ -36,7 +36,8 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "add": "E-Mail-Adresse für die Wiederherstellung hinzufügen oder aktualisieren",
                     "update": "Wiederherstellungs-E-Mail-Adresse aktualisieren ({{email}})",
-                    "view": "Wiederherstellungs-E-Mail-Adresse anzeigen ({{email}})"
+                    "view": "Wiederherstellungs-E-Mail-Adresse anzeigen ({{email}})",
+                    "emptyEmail": "Sie müssen Ihre E-Mail-Adresse konfigurieren, um mit der E-Mail-Wiederherstellung fortzufahren."
                 },
                 "forms": {
                     "emailResetForm": {
