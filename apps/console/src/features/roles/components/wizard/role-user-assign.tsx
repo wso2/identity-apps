@@ -31,6 +31,7 @@ import {
     TransferListItem,
     UserAvatar
 } from "@wso2is/react-components";
+import { organizationConfigs } from "apps/console/src/extensions";
 import differenceBy from "lodash-es/differenceBy";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
@@ -613,8 +614,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                     user.orgId === 
                                                                                     OrganizationManagementConstants
                                                                                         .ROOT_ORGANIZATION_ID ? 
-                                                                                        OrganizationManagementConstants
-                                                                                            .ROOT_ORG_DISPLAY_NAME : 
+                                                                                        organizationConfigs
+                                                                                            .superOrganizationName : 
                                                                                         user.orgName
                                                                                 }
                                                                             </Table.Cell>
