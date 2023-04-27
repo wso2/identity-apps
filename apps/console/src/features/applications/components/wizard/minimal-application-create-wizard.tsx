@@ -1068,12 +1068,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 setIsAppSharingEnabled(data.checked);
                                                 setIsApplicationSharingEnabled;
                                             } }
-                                            label="Allow sharing with sub-organizations" 
+                                            label={ t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isSharingEnabled.label") }
                                         />
                                         <Hint inline popup>
-                                            If enabled, it will allow this application to authenticate 
-                                            customers/partners into this organization or any of it’s 
-                                            sub-organizations.
+                                            { t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isSharingEnabled.hint") }
                                         </Hint>
                                     </div>
                                 </Grid.Column>

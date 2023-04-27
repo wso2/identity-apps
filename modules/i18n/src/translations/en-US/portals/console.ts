@@ -942,6 +942,10 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisioning"
                         },
+                        sharedAccess: {
+                            subTitle: "Select the following options to share the application with the sub organizations.",
+                            tabName: "Shared Access"
+                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1489,6 +1493,11 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "This is not a valid image URL"
                                 }
+                            },
+                            isSharingEnabled: {
+                                hint: "If enabled, it will allow this application to authenticate customers/partners " + 
+                                    "into this organization or any of its sub-organizations.",
+                                label: "Allow sharing with sub-organizations"
                             },
                             isManagementApp: {
                                 hint: "Enable to allow the application to access management API of this organization.",
@@ -8645,14 +8654,15 @@ export const console: ConsoleNS = {
                         title: "Add a new Organization"
                     }
                 },
+                shareApplicationSubTitle: "Select one of the following options to share the application.",
                 shareApplicationRadio: "Share with all sub-organizations",
                 shareApplicationInfo: "Select this to share the application with all the existing sub-organizations " +
                     "and all new sub-organizations that you create under your current organization.",
-                unshareApplicationRadio: "Unshare with all sub-organizations",
+                unshareApplicationRadio: "Do not share with any sub-organization",
                 shareWithSelectedOrgsRadio: "Share with only selected sub-organizations",
-                unshareApplicationInfo: "Select this to unshare the application with all the existing " +
-                    "sub-organizations and all new sub-organizations that you create under your current organizations.",
-                subTitle: "Create and manage organizations.",
+                unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +
+                    "existing sub-organizations or new sub-organizations that you create under this organization " + 
+                    "in the future.",
                 switching: {
                     emptyList: "There are no sub-organizations to show.",
                     goBack: "Go back",

@@ -24,7 +24,6 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    ContentLoader,
     Heading,
     Hint,
     LinkButton,
@@ -69,7 +68,6 @@ import {
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "../../../organizations/models";
-import { ShareWithOrgStatus } from "../../constants";
 
 enum ShareType {
     SHARE_ALL,
@@ -92,10 +90,6 @@ export interface ApplicationShareModalPropsInterface
      * Callback when the application sharing completed.
      */
     onApplicationSharingCompleted: () => void;
-    /**
-     * Specifies if the application is shared with all suborganizations.
-     */
-    isSharedWithAll?: ShareWithOrgStatus;
 }
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
@@ -104,10 +98,8 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const {
         applicationId,
         clientId,
-        onClose,
         onApplicationSharingCompleted,
-        isApplicationLoading,
-        isSharedWithAll,
+        onClose,
         [ "data-componentid" ]: componentId,
         ...rest
     } = props;
@@ -133,20 +125,6 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    useEffect(() => {
-        if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
-            setShareType(ShareType.SHARE_ALL);
-        } else if ((sharedOrganizationList && sharedOrganizationList?.length > 0) &&
-            isSharedWithAll === ShareWithOrgStatus.FALSE
-        ) {
-            setShareType(ShareType.SHARE_SELECTED);
-        } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
-            isSharedWithAll === ShareWithOrgStatus.FALSE
-        ) {
-            setShareType(ShareType.UNSHARE);
-        } 
-    }, [ isSharedWithAll, sharedOrganizationList ]);
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
         subOrganizationList
@@ -249,7 +227,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         } else if (shareType === ShareType.SHARE_SELECTED) {
             let addedOrganizations: string[];
 
-            if (isSharedWithAll === ShareWithOrgStatus.TRUE) {
+            if (shareType) {
                 addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
                 await unshareApplication(applicationId, currentOrganization.id);
@@ -530,7 +508,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             </Modal.Header>
             <Modal.Content>
                 <Heading ellipsis as="h6">
-                    Select one of the following options to share the application.
+                    { t("console:manage.features.organizations.shareApplicationSubTitle") }
                 </Heading>
                 <Segment basic>
                     <Radio
@@ -541,7 +519,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareType === ShareType.SHARE_ALL }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Hint>
+                    <Hint popup inline>
                         { t(
                             "console:manage.features.organizations.shareApplicationInfo"
                         ) }
@@ -640,16 +618,11 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 ) }
                             </TransferList>
                         </TransferComponent> 
-                    </Transition> 
-                    {
-                        isApplicationLoading && (
-                            <ContentLoader text="Creating application..." />
-                        )
-                    }
+                    </Transition>
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton onClick={ () => onClose(null, null) }>
+                <LinkButton onClick={ () => onApplicationSharingCompleted() }>
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton

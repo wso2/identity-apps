@@ -903,9 +903,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ) &&
                  panes.push({
                      componentId: "shared-access",
-                     menuItem: {
-                         content: "Shared Access"
-                     },
+                     menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
                      render: SharedAccessTabPane
                  });
             }
@@ -972,7 +970,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             },
             {
                 componentId: "shared-access",
-                menuItem: "Shared Access",
+                menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
                 render: SharedAccessTabPane
             },
             {

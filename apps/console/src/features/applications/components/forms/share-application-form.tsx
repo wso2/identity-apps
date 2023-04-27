@@ -415,7 +415,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     );
                 })
                 .catch((error: AxiosError) => {
-                    if (error.response.data.message) {
+                    if (error?.response?.data?.message) {
                         dispatch(
                             addAlert({
                                 description: error.response.data.message,
@@ -507,7 +507,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     return (
         <>
             <Heading ellipsis as="h6">
-                Select the following options to share the application with the sub organizations.
+                { t("console:develop.features.applications.edit.sections.sharedAccess.subTitle") }
             </Heading>
             <Grid>
                 <Grid.Row>

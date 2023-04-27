@@ -950,6 +950,11 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisionnement"
                         },
+                        sharedAccess: {
+                            subTitle: "Sélectionnez les options suivantes pour partager l'application avec " + 
+                                "les sous-organisations.",
+                            tabName: "Accès partagé"
+                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1527,6 +1532,11 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
                                 }
+                            },
+                            isSharingEnabled: {
+                                hint: "Si elle est activée, elle permettra à cette application d'authentifier les " + 
+                                    "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
+                                label: "Autoriser le partage avec des sous-organisations"
                             },
                             isManagementApp: {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
@@ -6968,15 +6978,16 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationSubTitle: "Sélectionnez l'une des options suivantes pour partager l'application.",
                 shareApplicationRadio: "Partager avec toutes les sous-organisations",
                 shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
                     "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
                     "créez sous votre organisation actuelle.",
-                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
+                unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
                 shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
-                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
-                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
-                    "que vous créez sous vos organisations actuelles.",
+                unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " + 
+                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " + 
+                    "créerez sous cette organisation à l'avenir.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
