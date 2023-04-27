@@ -17,8 +17,8 @@
  */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -52,7 +52,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Card, Checkbox, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
+import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
@@ -69,10 +69,11 @@ import {
     store
 } from "../../../core";
 import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
+import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs";
-import { ApplicationManagementConstants, ShareWithOrgStatus } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import SinglePageApplicationTemplate
@@ -89,8 +90,6 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
-import { OrganizationInterface } from "../../../organizations/models";
-import { OrganizationType } from "../../../organizations/constants";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -168,7 +167,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
-    state?.organization?.organizationType);
+        state?.organization?.organizationType);
 
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
@@ -204,11 +203,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-useEffect(() => {
-    if (applicationId) {
-        setShowAppShareModal(true);
-    }
-}, [ applicationId ]);
+    useEffect(() => {
+        if (applicationId) {
+            setShowAppShareModal(true);
+        }
+    }, [ applicationId ]);
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
@@ -1058,19 +1057,23 @@ useEffect(() => {
                             && hasRequiredScopes(featureConfig?.applications,
                                 featureConfig?.applications?.scopes?.update, allowedScopes)
                             && orgType !== OrganizationType.SUBORGANIZATION) && (
-                                <Grid.Row columns={ 1 }>
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <div className="pt-0 mt-0">
                                         <Checkbox 
-                                            onChange={ (e, { checked }) => {
-                                                setIsAppSharingEnabled(checked);
+                                            onChange={ (
+                                                event: React.FormEvent<HTMLInputElement>, 
+                                                data: CheckboxProps
+                                            ) => {
+                                                setIsAppSharingEnabled(data.checked);
                                                 setIsApplicationSharingEnabled;
                                             } }
                                             label="Allow sharing with sub-organizations" 
                                         />
                                         <Hint inline popup>
-                                            If enabled, it will allow this application to authenticate customers/partners 
-                                            into this organization or any of it’s sub-organizations.
+                                            If enabled, it will allow this application to authenticate 
+                                            customers/partners into this organization or any of it’s 
+                                            sub-organizations.
                                         </Hint>
                                     </div>
                                 </Grid.Column>

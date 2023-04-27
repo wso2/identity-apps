@@ -54,6 +54,7 @@ import {
     getCORSOrigins,
     history
 } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
@@ -72,7 +73,6 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import { OrganizationType } from "../../organizations/constants";
 
 /**
  * Proptypes for the applications edit component.
@@ -904,7 +904,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                  panes.push({
                      componentId: "shared-access",
                      menuItem: {
-                         content: "Shared Access",
+                         content: "Shared Access"
                      },
                      render: SharedAccessTabPane
                  });

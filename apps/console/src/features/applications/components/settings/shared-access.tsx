@@ -16,15 +16,12 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { FeatureConfigInterface } from "../../../core";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface, } from "@wso2is/core/models";
-import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { ApplicationShareForm } from "../forms";
-import { useTranslation } from "react-i18next";
-import { Divider } from "semantic-ui-react";
 import { ApplicationInterface } from "../../models";
-
+import { ApplicationShareForm } from "../forms";
 
 /**
  * Proptypes for the shared access component.
@@ -47,9 +44,9 @@ interface SharedAccessPropsInterface extends SBACInterface<FeatureConfigInterfac
 /**
  *  Shared access component.
  *
- * @param {SharedAccessPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Share access component.
  */
 export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     props: SharedAccessPropsInterface
@@ -57,13 +54,12 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 
     const { application, onUpdate, readOnly } = props;
 
-    const { t } = useTranslation();
-
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
             <ApplicationShareForm 
                 application={ application } 
                 onApplicationSharingCompleted={ () => onUpdate(application?.id) }
+                readOnly={ readOnly }
             />
         </EmphasizedSegment>
     );

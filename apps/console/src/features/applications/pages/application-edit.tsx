@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -26,14 +25,12 @@ import {
     AppAvatar,
     LabelWithPopup,
     Popup,
-    PrimaryButton,
     TabPageLayout
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -51,17 +48,9 @@ import {
     toggleHelpPanelVisibility
 } from "../../core";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
-import { getOrganizations, getSharedOrganizations } from "../../organizations/api";
-import { OrganizationType } from "../../organizations/constants";
-import { 
-    OrganizationInterface, 
-    OrganizationListInterface, 
-    OrganizationResponseInterface 
-} from "../../organizations/models";
 import { getApplicationDetails } from "../api";
 import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
-import { ApplicationShareModal } from "../components/modals/application-share-modal";
-import { ApplicationManagementConstants, ShareWithOrgStatus } from "../constants";
+import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -70,7 +59,6 @@ import {
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
-    additionalSpProperty,
     emptyApplication,
     idpInfoTypeInterface
 } from "../models";
@@ -100,8 +88,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
     const applicationHelpShownStatusKey: string = "isApplicationHelpShown";
-    const orgType: OrganizationType = useSelector((state: AppState) =>
-        state?.organization?.organizationType);
 
     const { t } = useTranslation();
 
@@ -116,8 +102,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
-        state.organization.organization);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -125,14 +109,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
     const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<Record<string, any>>(undefined);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
-    const [ showAppShareModal, setShowAppShareModal ] = useState(false);
-    const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
-    const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
-    const [ sharedWithAll, setSharedWithAll ] = useState<ShareWithOrgStatus>(ShareWithOrgStatus.UNDEFINED);
 
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state.organization.isFirstLevelOrganization
-    );
     const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
@@ -352,87 +329,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     }, [ applicationTemplate, helpPanelDocStructure ]);
 
-    /**
-     * Load the list of sub organizations under the current organization & list of already shared organizations of the
-     * application for application sharing.
-     */
-    useEffect(() => {
-        if (!showAppShareModal || !isOrganizationManagementEnabled) {
-            return;
-        }
-
-        getOrganizations(
-            null,
-            null,
-            null,
-            null,
-            true,
-            false
-        ).then((response: OrganizationListInterface) => {
-            setSubOrganizationList(response.organizations);
-        }).catch((error: IdentityAppsError) => {
-            if (error?.description) {
-                dispatch(
-                    addAlert({
-                        description: error.description,
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizations.notifications." +
-                                "getOrganizationList.error.message"
-                        )
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:manage.features.organizations.notifications.getOrganizationList" +
-                            ".genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.organizations.notifications." +
-                            "getOrganizationList.genericError.message"
-                    )
-                })
-            );
-        });
-
-        getSharedOrganizations(
-            currentOrganization.id,
-            application.id
-        ).then((response: AxiosResponse) => {
-            setSharedOrganizationList(response.data.organizations);
-        }).catch((error: IdentityAppsApiException) => {
-            if (error.response.data.description) {
-                dispatch(
-                    addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
-                                ".getSharedOrganizations.genericError.message")
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.message")
-                })
-            );
-        }
-        );
-    }, [ getOrganizations, showAppShareModal ]);
-
     const determineApplicationTemplate = () => {
 
         let template: ApplicationTemplateListItemInterface = applicationTemplates
@@ -460,21 +356,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
                 setApplication(response);
-
-                const isSharedWithAll: additionalSpProperty[] = response?.advancedConfigurations
-                    ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
-                        property?.name === "shareWithAllChildren"
-                    );
-
-                if (!isSharedWithAll || isSharedWithAll.length === 0) {
-                    setSharedWithAll(ShareWithOrgStatus.UNDEFINED);
-                } else {
-                    setSharedWithAll(
-                        JSON.parse(isSharedWithAll[ 0 ].value)
-                            ? ShareWithOrgStatus.TRUE
-                            : ShareWithOrgStatus.FALSE
-                    );
-                }
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -578,10 +459,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             />
         );
     };
-
-    const onApplicationSharingCompleted: () => void = useCallback(() => {
-        getApplication(application.id);
-    }, [ getApplication, application ]);
 
     /**
      * Returns if the application is readonly or not by evaluating the `readOnly` attribute in

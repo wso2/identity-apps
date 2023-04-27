@@ -31,6 +31,10 @@ import {
     TransferList, 
     TransferListItem 
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import differenceBy from "lodash-es/differenceBy";
+import escapeRegExp from "lodash-es/escapeRegExp";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
@@ -38,25 +42,15 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { 
-    OrganizationInterface, 
-    OrganizationListInterface, 
-    OrganizationResponseInterface, 
-    ShareApplicationRequestInterface 
-} from "../../../organizations/models";
-import differenceBy from "lodash-es/differenceBy";
-import isEmpty from "lodash-es/isEmpty";
-import escapeRegExp from "lodash-es/escapeRegExp";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Divider,
     Grid,
     Radio,
     Transition
 } from "semantic-ui-react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { ShareWithOrgStatus } from "../../constants";
 import { AppState } from "../../../core";
 import { 
     getOrganizations, 
@@ -65,7 +59,12 @@ import {
     stopSharingApplication, 
     unshareApplication 
 } from "../../../organizations/api";
-import { AxiosError, AxiosResponse } from "axios";
+import { 
+    OrganizationInterface, 
+    OrganizationListInterface, 
+    OrganizationResponseInterface, 
+    ShareApplicationRequestInterface 
+} from "../../../organizations/models";
 import { ApplicationInterface, additionalSpProperty } from "../../models";
 
 enum ShareType {
@@ -88,6 +87,10 @@ export interface ApplicationShareFormPropsInterface
      * Callback when the application sharing completed.
      */
     onApplicationSharingCompleted?: () => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -99,6 +102,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         triggerApplicationShare,
         onApplicationSharingCompleted,
         [ "data-componentid" ]: componentId,
+        readOnly
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -509,6 +513,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                 <Grid.Row>
                     <Grid.Column width={ 8 }>
                         <Radio
+                            disabled={ readOnly }
                             label={ t(
                                 "console:manage.features.organizations.unshareApplicationRadio"
                             ) }
@@ -523,6 +528,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         </Hint>
                         <Divider hidden className="mb-0 mt-0" />
                         <Radio
+                            disabled={ readOnly }
                             label={ t(
                                 "console:manage.features.organizations.shareWithSelectedOrgsRadio"
                             ) }
@@ -530,7 +536,11 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             checked={ shareType === ShareType.SHARE_SELECTED }
                             data-componentid={ `${ componentId }-share-with-all-checkbox` }
                         />
-                        <Transition visible={ shareType === ShareType.SHARE_SELECTED } animation="slide down" duration={ 1000 }>
+                        <Transition 
+                            visible={ shareType === ShareType.SHARE_SELECTED } 
+                            animation="slide down" 
+                            duration={ 1000 }
+                        >
                             <TransferComponent
                                 className="pl-2"
                                 disabled={ shareType !== ShareType.SHARE_SELECTED }
@@ -635,7 +645,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             </Grid>
         </>
     );
-}
+};
 
 /**
  * Default props for the component.

@@ -529,9 +529,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 ) }
             </Modal.Header>
             <Modal.Content>
-            <Heading ellipsis as="h6">
-                Select one of the following options to share the application.
-            </Heading>
+                <Heading ellipsis as="h6">
+                    Select one of the following options to share the application.
+                </Heading>
                 <Segment basic>
                     <Radio
                         label={ t(
@@ -555,7 +555,11 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareType === ShareType.SHARE_SELECTED }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Transition visible={ shareType === ShareType.SHARE_SELECTED } animation="slide down" duration={ 1000 }>
+                    <Transition 
+                        visible={ shareType === ShareType.SHARE_SELECTED } 
+                        animation="slide down" 
+                        duration={ 1000 }
+                    >
                         <TransferComponent
                             className="pl-2"
                             disabled={ shareType !== ShareType.SHARE_SELECTED }
