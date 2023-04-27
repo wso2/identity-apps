@@ -26,7 +26,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { getAccountRecoveryIcons } from "../../../configs";
@@ -68,7 +69,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
 
     const profileInfo: BasicProfileInterface = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo
