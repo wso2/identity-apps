@@ -316,14 +316,6 @@ importers:
       worker-loader: 2.0.0_webpack@5.74.0
       write-file-webpack-plugin: 4.5.1
 
-  apps/authentication-portal:
-    specifiers:
-      '@wso2is/theme': ^1.6.306
-      rimraf: ^3.0.2
-    dependencies:
-      '@wso2is/theme': link:../../modules/theme
-      rimraf: 3.0.2
-
   apps/console:
     specifiers:
       '@asgardeo/auth-react': ^1.1.23
@@ -667,22 +659,6 @@ importers:
       ts-jest: 26.5.6_hiruyezz6whlouk4tx2v6ut2z4
       ts-node: 10.9.1_fhvhiprtdmf63izfufvgqbbceq
       typescript: 4.8.2
-
-  apps/recovery-portal:
-    specifiers:
-      '@wso2is/theme': ^1.6.306
-      rimraf: ^3.0.2
-    dependencies:
-      '@wso2is/theme': link:../../modules/theme
-      rimraf: 3.0.2
-
-  apps/x509-certificate-authentication-portal:
-    specifiers:
-      '@wso2is/theme': ^1.6.306
-      rimraf: ^3.0.2
-    dependencies:
-      '@wso2is/theme': link:../../modules/theme
-      rimraf: 3.0.2
 
   modules/access-control:
     specifiers:
@@ -11062,7 +11038,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -11070,7 +11046,7 @@ packages:
   /axios/0.26.1:
     resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -15698,6 +15674,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: true
 
   /follow-redirects/1.15.1_debug@4.3.4:
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
