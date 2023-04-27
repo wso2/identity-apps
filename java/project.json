@@ -1,0 +1,40 @@
+{
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "root": "./java",
+    "sourceRoot": "java/apps",
+    "projectType": "application",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "implicitDependencies": [
+        "theme"
+    ],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm build",
+                        "description": "Distributing Theme to JSP Apps"
+                    }
+                ],
+                "cwd": "java/apps",
+                "parallel": false
+            }
+        },
+        "clean": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm clean",
+                        "description": "Cleaning JSP Apps"
+                    }
+                ],
+                "cwd": "java/apps",
+                "parallel": false
+            }
+        }
+    }
+}
