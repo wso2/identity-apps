@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,6 +81,7 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
     showUserDropdownTriggerBars?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
+    userDropdownFooter?: React.ReactNode;
     userDropdownLinks?: HeaderLinkCategoryInterface[];
     /**
      * User dropdown pointing direction.
@@ -195,6 +196,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
+        userDropdownFooter,
         userDropdownLinks,
         userDropdownPointing,
         onAvatarClick,
@@ -704,6 +706,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 </Item.Group>
                                                 { renderLinkedAccounts(linkedAccounts) }
                                                 { renderUserDropdownLinks() }
+                                                { userDropdownFooter }
                                             </Dropdown.Menu>
                                         }
                                     </Dropdown>
