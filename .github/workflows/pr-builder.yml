@@ -218,6 +218,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java-version }}
+          cache: maven
 
       - name: 🦩 Set up Maven
         uses: stCarolas/setup-maven@v4
