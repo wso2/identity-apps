@@ -2,6 +2,7 @@
     "id": "organization-enterprise-idp",
     "name": "Organization SSO",
     "templateId": "organization-enterprise-idp",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/enterprise-identity-federation/",
     "category": "DEFAULT",
     "description": "Organization SSO login",
     "displayOrder": 5,

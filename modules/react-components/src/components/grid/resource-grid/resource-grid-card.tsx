@@ -103,11 +103,13 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         comingSoonRibbonLabel,
         disabled,
         editButtonLabel,
+        onClick,
         onDelete,
         onEdit,
         isResourceComingSoon,
         resourceCategory,
         resourceDescription,
+        resourceDocumentationLink,
         resourceImage,
         resourceName,
         showActions,
@@ -132,8 +134,10 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
             subHeader={ resourceCategory }
             description={ resourceDescription }
             image={ resourceImage }
+            navigationLink ={ resourceDocumentationLink }
             disabled={ isResourceComingSoon || disabled }
             showTooltips={ !(isResourceComingSoon || disabled) && showTooltips }
+            onClick={ onClick }
             action={
                 showActions && (
                     <div className="actions">
@@ -148,25 +152,11 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                                     data-testid={ `${ testId }-item-edit-button` }
                                 >
                                     { editButtonLabel }
-                                    <Icon name="caret right"/>
+                                    <Icon name="chevron right"/>
                                 </LinkButton>
                             )
                         }
-                        {
-                            showResourceDelete && onDelete && !(isResourceComingSoon || disabled) && (
-                                <GenericIcon
-                                    square
-                                    hoverable
-                                    transparent
-                                    floated="right"
-                                    className="delete-button"
-                                    icon={ <Icon name="trash alternate"/> }
-                                    data-componentid={ `${ componentId }-item-delete-button` }
-                                    data-testid={ `${ testId }-item-delete-button` }
-                                    onClick={ onDelete }
-                                />
-                            )
-                        }
+                        
                     </div>
                 )
             }
@@ -185,11 +175,11 @@ ResourceGridCard.defaultProps = {
     comingSoonRibbonLabel: "Coming Soon",
     "data-componentid": "resource-grid-card",
     "data-testid": "resource-grid-card",
-    editButtonLabel: "Configure",
+    editButtonLabel: "Edit",
     imageOptions: {
         floated: false,
         inline: true
     },
-    imageSize: "micro",
+    imageSize: "mini",
     showTooltips: true
 };

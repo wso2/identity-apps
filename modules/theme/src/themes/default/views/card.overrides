@@ -482,9 +482,34 @@
     &.resource-grid {
         .ui.card {
             &.info-card {
-                width: @resourceCardDefaultWidth;
+                width: 330px;
+                border-radius: 10px;
+                min-height: auto;
+                border-color: #ff7300;
+                padding-top: 0px;
 
+                .header-without-toggle {
+                    margin-left:14px;
+                    margin-right:24px;
+                    display:flex;
+                    flex-direction:row;
+                    align-items:center;
+                    justify-content:space-between;
+                }
+
+                .card-header-section {
+                    display:flex;
+                    flex-direction:row;
+                    align-items:center;
+                    justify-content:space-between;
+                }
+                
                 .content {
+                    display: flex;  
+                    align-items: center;
+                    padding-bottom:5px; 
+                    padding-top: 16px !important;
+
                     &:not(:first-child) {
                         padding-top: 0.4em;
 
@@ -494,7 +519,15 @@
                     }
                 }
                 .action-container {
-                    min-height: 55px !important;
+                    min-height: auto !important;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 100%;
+
+                    span {
+                    padding: 11px 0;
+                    }
 
                     .actions {
                         display: flex;
@@ -798,24 +831,71 @@
         .content {
             border: none;
         }
+        .instances-container {
+            &.conditions-container {
+                padding: 10px 14px !important;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                
+                .instances-conditionOne {
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    font-size: 14px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-left: 8px;
+                
+                    span {
+                        padding: 24px 0px 6px 0px;
+                        color: #444;
+                    }
+                }
+            }
+            .instances-buttons {
+                display:flex; 
+                flex-direction: row; 
+                justify-content: space-between;
+            }
+        }
         .card-image {
-            margin-right: 0.7em;
+            margin-right: 1em;
         }
         .card-header-section {
+            display:flex;
+            flex-direction:row;
+            align-items:center;
+            justify-content:space-between;
+
             .card-header {
-                font-weight: 500;
+                font-weight:500;
+                font-size: 20px;
+                padding-bottom: 10px; 
+                padding-top:10px;
+                color:#444444; 
+                display:flex;
+                align-items:center;
+                white-space:break-spaces;
             }
         }
         .card-subheader {
-            font-size: @infoCardSubHeaderFontSize;
-            color: @lightFontColor;
+            margin-top:10px;
+            margin-left:14px;
+            margin-top:0px;
+            font-size:13px;
+            color:#808080;
         }
         .card-description-container {
-            padding-top: 0.5em;
-            min-height: 45px;
+            padding-top:.5em;
+            min-height:45px;
+
         }
         .card-description {
-            font-size: 0.9em;
+            font-size:13px;
+            color:#444 !important;
             word-break: break-word;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -824,7 +904,6 @@
             max-height: 2.8em;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            color: @lightFontColor;
         }
         &:not(.fluid) {
             .github-meta {
@@ -844,13 +923,17 @@
             }
         }
         .card-tags {
-            padding-top: 0.6em;
-            padding-bottom: 0.6em;
+            padding-top:14px !important;
+            padding-bottom:.6em;
 
             .label {
-                font-weight: 600;
-                color: @white;
-                background: lighten(@nobel, 20);
+                font-weight:400;
+                color:#444;
+                background:#f0f0f0;
+                font-size: 12px; 
+                min-height: 23px; 
+                min-width:auto;
+                border-radius: 3px;
             }
         }
         .github-meta {
@@ -867,14 +950,33 @@
         }
         .action-container {
             .info-card-inner-action {
-                padding-left: 0;
+                padding: 11px 0px !important;
 
                 .icon {
-                    margin-left: 0 !important;
+                    margin-left: 3px !important;
                     text-decoration: auto;
                 }
             }
         }
+    }
+    &.info-card .instances-container.conditions-container {
+        padding: 10px 14px;
+    }
+    
+    &.info-card .instances-container .instances-conditionOne {
+        padding-left: 14px;
+        padding-right: 14px;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 8px;
+    }
+    
+    &.info-card .instances-container .instances-conditionOne span {
+        padding: 16px 0px 6px 0px;
+        color: #444;
     }
 }
 
@@ -1380,4 +1482,111 @@
             background-color: darken(@galleryGray, 8) !important;
         }
     }
+}
+
+/*-----------------------------------------
+            Connection Page
+-------------------------------------------*/
+
+.ui.card {
+    &.card-container {
+        padding:10px 14px;
+        display:flex;
+        flex-direction:column;
+        width:330px;
+        border:1px solid;
+        border-color:#ff7300;
+        box-shadow:none;
+        border-radius:10px;
+
+        .static-card-header {
+            display:flex!important;
+            flex-direction:row!important;
+            align-items:center!important;
+            justify-content:flex-start!important;
+            font-size:20px;
+            color:#444;
+            margin-top:10px;
+            margin-bottom:5px;
+            padding-bottom:0;
+            font-weight:500;
+        }
+
+        .static-card-icon {
+            img {
+                width:35px!important;
+                height:35px!important;
+                margin-right:10px;
+            }
+        }
+
+        .card-static-description {
+            font-size:13px;
+            padding-top:16px;
+            margin-bottom:16px;
+        }
+
+        .card-static-meta {
+            font-size:13px!important;
+            color:grey;
+        }
+
+        .card-static-label {
+            width:fit-content!important;
+            height:auto!important;
+            background-color:#f0f0f0!important;
+            color:#444!important;
+            font-size:12px!important;
+            border:none!important;
+            display:inline-block;
+            padding:7px 10px!important;
+            margin-left:0!important;
+            border-radius:3px!important;
+            margin-bottom:6px!important;
+        }
+    }
+}
+
+.grid-container-section {
+    display: grid;
+    gap: 14px; 
+    margin-bottom: 20px; 
+    width: 330px ;
+} 
+@media (min-width: 320px) {
+    .grid-container-section { 
+        grid-template-columns: repeat(1, 1fr); 
+    }
+} 
+@media (min-width: 768px) {
+    .grid-container-section { 
+        grid-template-columns: repeat(1, 1fr); 
+    }
+} 
+@media (min-width: 992px) {
+    .grid-container-section { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+} 
+@media (min-width: 1200px) {
+    .grid-container-section { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+} 
+@media (min-width: 1920px) {
+    .grid-container-section { 
+        grid-template-columns: repeat(4, 1fr); 
+    }
+}
+
+.static-standard-title {
+    font-size:24px;
+    margin-bottom:25px;
+    margin-top:20px;
+    font-weight:500;
+} 
+.custom-integration-title {
+    font-size:24px;
+    font-weight:500;
+    margin: 25px 0px;
 }

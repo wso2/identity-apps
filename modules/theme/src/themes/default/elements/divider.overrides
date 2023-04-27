@@ -16,3 +16,17 @@
         margin: 0 2rem 0 5rem;
     }
 }
+
+/*----------------------------------------
+            Info-Card divider
+------------------------------------------*/
+.ui.instance.divider{
+    padding: 0px;
+}
+
+.divider.ui.instance.divider{
+    margin-top:0px;
+    margin-bottom:10px;
+    margin-right:14px;
+    margin-left:14px;
+}

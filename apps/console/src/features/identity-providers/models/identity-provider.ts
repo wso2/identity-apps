@@ -29,6 +29,7 @@ export interface IdentityProviderTemplateGroupInterface {
     name?: string;
     subTemplates?: IdentityProviderInterface[];
     subTemplatesSectionTitle?: string;
+    navigationLink?: any;
 }
 
 /**
@@ -65,6 +66,7 @@ export interface IdentityProviderInterface extends StrictIdentityProviderInterfa
     roles?: IdentityProviderRolesInterface;
     certificate?: CertificateConfigInterface;
     provisioning?: ProvisioningInterface;
+    navigationLink?: any;
 }
 
 export interface IdentityProviderRolesInterface {
@@ -204,6 +206,7 @@ export interface IdentityProviderTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: IdentityProviderInterface;
+    navigationLink?: any;
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     /**
@@ -242,6 +245,7 @@ export interface IdentityProviderTemplateInterface extends IdentityProviderTempl
 export interface IdentityProviderTemplateListItemInterface extends IdentityProviderTemplateItemInterface {
     services?: string[];
     content?: TemplateContentInterface;
+    navigationLink?: any
 }
 
 /**

@@ -5,6 +5,7 @@
     "image": "facebook",
     "category": "DEFAULT",
     "displayOrder": 2,
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/facebook/",
     "services": [],
     "tags": [ "Social-Login" ],
     "idp": {

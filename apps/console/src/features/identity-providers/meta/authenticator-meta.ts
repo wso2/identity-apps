@@ -259,4 +259,21 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }
+
+    public static getAuthenticatorDocLink( authenticatorId: string ): any   {
+        return get({
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.APPLE_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.EXPERT_MODE]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.GOOGLE_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.MICROSOFT_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.FACEBOOK_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.GITHUB_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.HYPR_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.OIDC_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.ORGANIZATION_ENTERPRISE_IDP_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.SAML_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.ENTERPRISE_LINK]: "navigationLink"
+            // [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.SWE_LINK]: "navigationLink"
+        }, authenticatorId);
+    }
 }

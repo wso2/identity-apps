@@ -377,3 +377,32 @@
         outline: @focusVisibleOutline;
     }
 }
+
+/*----------------------------------------
+      Connections page button
+------------------------------------------*/
+
+.ui.button.setupGuide-button {
+    background: none;
+    border: none;
+    color: #808080;
+    font-size:14px;
+    height: 36px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: 14px;
+    margin-right: 9px;
+    padding: 0px 14px;
+    float:right;
+}
+
+.ui.button.idpCreate-button {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 54px;
+    color: #ff7300;
+}

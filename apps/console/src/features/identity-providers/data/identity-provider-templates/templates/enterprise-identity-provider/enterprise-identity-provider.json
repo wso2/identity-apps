@@ -1,6 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Enterprise login via standard protocols",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/enterprise-identity-federation/",
     "displayOrder": 5,
     "id": "enterprise-idp",
     "idp": {

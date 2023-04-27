@@ -495,6 +495,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        resourceDocumentationLink={ template.navigationLink }
                                                         resourceImage={
                                                             IdentityProviderManagementUtils
                                                                 .resolveTemplateImage(template.image, getIdPIcons())

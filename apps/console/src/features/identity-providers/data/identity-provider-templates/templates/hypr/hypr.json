@@ -2,6 +2,7 @@
     "id": "hypr-idp",
     "name": "HYPR",
     "description": "Enable login for users with existing HYPR accounts.",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/passwordless/overview/",
     "image": "hypr",
     "category": "DEFAULT",
     "displayOrder": 4,

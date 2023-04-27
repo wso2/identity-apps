@@ -30,10 +30,10 @@ import HYPRIdPTemplate from "../data/identity-provider-templates/templates/hypr/
 import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdPTemplate from
     "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
-// eslint-disable-next-line max-len
 import EnterpriseOrganizationIdPTemplate from "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdPTemplate from
     "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
+//import SWEIdpTemplate from "../extensions/identity-provider-templates/templates/swe/swe.json";
 import { IdentityProviderTemplateLoadingStrategies } from "../models";
 
 /**
@@ -550,4 +550,35 @@ export class IdentityProviderManagementConstants {
      )
 
      public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+    /**
+    * Set of IDP documentation Links.
+    */
+    public static readonly IDP_TEMPLATE_DOC_LINKS: {
+        APPLE_LINK: string;
+        ENTERPRISE_LINK: string;
+        EXPERT_MODE: string;
+        FACEBOOK_LINK: string;
+        GITHUB_LINK: string;
+        GOOGLE_LINK: string;
+        HYPR_LINK: string;
+        MICROSOFT_LINK: string;
+        OIDC_LINK: string;
+        ORGANIZATION_ENTERPRISE_IDP_LINK: string;
+        SAML_LINK: string;
+        //SWE_LINK: string;
+    } = {
+        APPLE_LINK: AppleIdPTemplate.navigationLink,
+        ENTERPRISE_LINK: EnterpriseIdPTemplate.navigationLink,
+        EXPERT_MODE: ExpertModeIdPTemplate.navigationLink,
+        FACEBOOK_LINK: FacebookIdPTemplate.navigationLink,
+        GITHUB_LINK: GitHubIdPTemplate.navigationLink,
+        GOOGLE_LINK: GoogleIdPTemplate.navigationLink,
+        HYPR_LINK: HYPRIdPTemplate.navigationLink,
+        MICROSOFT_LINK: MicrosoftIDPTemplate.navigationLink,
+        OIDC_LINK: EnterpriseOIDCIdPTemplate.navigationLink,
+        ORGANIZATION_ENTERPRISE_IDP_LINK: EnterpriseOrganizationIdPTemplate.navigationLink,
+        SAML_LINK: EnterpriseSAMLIdPTemplate.navigationLink
+        //SWE_LINK: SWEIdpTemplate.navigationLink
+    };
 }

@@ -2,6 +2,7 @@
     "id": "microsoft-idp",
     "name": "Microsoft",
     "description": "Enable login for users with existing Microsoft accounts.",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/social-login/",
     "image": "microsoft",
     "category": "DEFAULT",
     "displayOrder": 1,

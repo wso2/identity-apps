@@ -1,6 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Configure a new enterprise identity provider with OpenID Connect",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/enterprise-identity-federation/",
     "templateGroup": "enterprise-protocols",
     "displayOrder": 5,
     "id": "enterprise-oidc-idp",

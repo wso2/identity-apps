@@ -417,6 +417,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                 ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
                                                 : ""
                                     }
+                                    resourceDocumentationLink = {
+                                        AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
+                                    }
                                     resourceImage={
                                         authenticator.image ?? AuthenticatorMeta.getAuthenticatorIcon(authenticator.id)
                                     }

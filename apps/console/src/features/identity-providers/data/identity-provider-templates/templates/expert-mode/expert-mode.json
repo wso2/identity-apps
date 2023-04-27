@@ -2,6 +2,7 @@
     "id": "expert-mode-idp",
     "name": "Expert Mode",
     "description": "Create a new Identity Provider with minimum configurations.",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/enterprise-identity-federation/",
     "image": "expert",
     "category": "DEFAULT",
     "displayOrder": -1,

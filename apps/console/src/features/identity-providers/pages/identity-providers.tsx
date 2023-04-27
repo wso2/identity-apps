@@ -30,6 +30,7 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import CardSection from "modules/react-components/src/components/card/card-section";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -584,6 +585,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                             loading: t("common:loading")
                         } }
                     >
+                        <CardSection/>
+                        <div className="custom-integration-title">
+                            Custom Integrations
+                        </div>
                         <AuthenticatorGrid
                             isLoading= { isIdPListRequestLoading || isAuthenticatorFetchRequestRequestLoading }
                             authenticators={ showFilteredList ? authenticators : idpList?.identityProviders }

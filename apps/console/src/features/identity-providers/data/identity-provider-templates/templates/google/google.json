@@ -2,6 +2,7 @@
     "id": "google-idp",
     "name": "Google",
     "description": "Enable login for users with existing Google accounts.",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/google/",
     "image": "google",
     "category": "DEFAULT",
     "displayOrder": 1,

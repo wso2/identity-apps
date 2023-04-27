@@ -2,6 +2,7 @@
     "templateGroup": "enterprise-protocols",
     "category": "DEFAULT",
     "description": "Configure a new enterprise identity provider with SAML 2.0",
+    "navigationLink": "https://is.docs.wso2.com/en/latest/guides/identity-federation/enterprise-identity-federation/",
     "displayOrder": 6,
     "id": "enterprise-saml-idp",
     "tags": [ "SAML" ],
