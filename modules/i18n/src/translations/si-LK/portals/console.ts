@@ -947,6 +947,10 @@ export const console: ConsoleNS = {
                             },
                             tabName: "ප්‍රතිපාදන"
                         },
+                        sharedAccess: {
+                            subTitle: "උප-සංවිධාන සමඟ යෙදුම බෙදා ගැනීමට පහත විකල්ප තෝරන්න.",
+                            tabName: "හවුල් ප්රවේශය"
+                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1495,6 +1499,11 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "මෙය වලංගු රූප URL එකක් නොවේ"
                                 }
+                            },
+                            isSharingEnabled: {
+                                hint: "සබල කර ඇත්නම්, එය මෙම සංවිධානයට හෝ එහි ඕනෑම උප-සංවිධානයකට ගනුදෙනුකරුවන්/හවුල්කරුවන් " +
+                                    "සත්‍යාපනය කිරීමට මෙම යෙදුමට ඉඩ දෙයි.",
+                                label: "උප සංවිධාන සමඟ බෙදා ගැනීමට ඉඩ දෙන්න"
                             },
                             isManagementApp: {
                                 hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
@@ -6831,13 +6840,15 @@ export const console: ConsoleNS = {
                         title: "නව සංවිධානයක් එක් කරන්න"
                     }
                 },
+                shareApplicationSubTitle: "යෙදුම බෙදා ගැනීමට පහත විකල්ප වලින් එකක් තෝරන්න.",
                 shareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා ගන්න",
                 shareApplicationInfo: "ඔබගේ වත්මන් සංවිධානය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
                     "සංවිධාන සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
-                unshareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා නොගන්න",
+                unshareApplicationRadio: "කිසිදු උප සංවිධානයක් සමඟ බෙදා නොගන්න",
                 shareWithSelectedOrgsRadio: "තෝරාගත් උප සංවිධාන සමඟ පමණක් බෙදා ගන්න",
-                unshareApplicationInfo: "ඔබගේ වත්මන් සංවිධාන යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප සංවිධාන " +
-                    "සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා නොගැනීමට මෙය තෝරන්න.",
+                unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම සංවිධානය යටතේ නිර්මාණය කරන " + 
+                    "දැනට පවතින උප-සංවිධාන හෝ නව උප-සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " + 
+                    "මෙය ඔබට ඉඩ සලසයි.",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
