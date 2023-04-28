@@ -7259,7 +7259,8 @@ export const console: ConsoleNS = {
                                 subtitles: "මේ මොහොතේ {{type}} to සඳහා පරිශීලකයින් පවරා නොමැත.",
                                 title: "පරිශීලකයින් පවරා නොමැත"
                             },
-                            header: "පරිශීලකයින්"
+                            user: "පරිශීලකයා",
+                            organization: "සංවිධානය"
                         }
                     }
                 },
