@@ -28,6 +28,5 @@ export interface OrganizationConfigs {
         breadcrumbItem: BreadcrumbItem,
         onClick: (breadcrumbItem: BreadcrumbItem) => void
     ) => ReactElement;
-    superOrganizationName: string;
     tenantSwitcher: (dropdownTrigger?: ReactElement, disable?: boolean) => ReactElement;
 }
