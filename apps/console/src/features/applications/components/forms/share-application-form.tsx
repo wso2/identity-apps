@@ -637,7 +637,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             ) }
                         </Hint> 
                         <Divider hidden />
-                        <PrimaryButton onClick={ handleShareApplication }>
+                        <PrimaryButton 
+                            data-componentid={ `${ componentId }-update-button` }
+                            onClick={ handleShareApplication }
+                        >
                             { t("common:update") }
                         </PrimaryButton>
                     </Grid.Column>
@@ -651,5 +654,5 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
  * Default props for the component.
  */
 ApplicationShareForm.defaultProps = {
-    "data-componentid": "application-share-modal"
+    "data-componentid": "application-share-form"
 };

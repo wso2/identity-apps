@@ -622,7 +622,10 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton onClick={ () => onApplicationSharingCompleted() }>
+                <LinkButton 
+                    data-testid={ `${ componentId }-cancel-button` }
+                    onClick={ () => onApplicationSharingCompleted() }
+                >
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
