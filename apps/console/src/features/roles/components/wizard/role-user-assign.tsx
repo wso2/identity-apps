@@ -31,14 +31,14 @@ import {
     TransferListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import { organizationConfigs } from "apps/console/src/extensions";
 import differenceBy from "lodash-es/differenceBy";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { OrganizationManagementConstants } from "../../../organizations/constants";
 import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
 
@@ -80,6 +80,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     } = props;
 
     const { t } = useTranslation();
+
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -614,9 +616,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                     user.orgId === 
                                                                                     OrganizationManagementConstants
                                                                                         .ROOT_ORGANIZATION_ID ? 
-                                                                                        organizationConfigs
-                                                                                            .superOrganizationName : 
-                                                                                        user.orgName
+                                                                                        productName : user.orgName
                                                                                 }
                                                                             </Table.Cell>
                                                                         </Table.Row>
