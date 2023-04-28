@@ -55,9 +55,6 @@
             if (errorMessage.equalsIgnoreCase("token.expired.email.sent")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.token.expired.email.sent");
             }
-            if (errorMessage.equalsIgnoreCase("recaptcha.failed")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.recaptcha.failed");
-            }
         }
     }
 %>
@@ -92,7 +89,6 @@
 
     <%
         if (reCaptchaEnabled) {
-
     %>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <%
