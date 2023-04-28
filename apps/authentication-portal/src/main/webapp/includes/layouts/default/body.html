@@ -1,0 +1,27 @@
+{{^isPolicyPage}}
+<main class="center-segment">
+    <div class="ui container {{containerSize}} center aligned middle aligned">
+        {{{ProductHeader}}}
+        {{{MainSection}}}
+    </div>
+</main>
+{{{ProductFooter}}}
+{{/isPolicyPage}}
+
+{{#isPolicyPage}}
+<main class="policy-page">
+    <div class="ui borderless top fixed app-header menu" id="app-header">
+        <div class="ui container">
+            <div class="header item product-logo">
+                {{{ProductHeader}}}
+            </div>
+        </div>
+    </div>
+    <div class="app-content policy-page-content" style="padding-top: 62px;">
+        <div class="ui container">
+            {{{MainSection}}}
+        </div>
+    </div>
+</main>
+{{{ProductFooter}}}
+{{/isPolicyPage}}

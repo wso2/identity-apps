@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" id="claim-icon" class="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+     viewBox="0 0 14 14" style="enable-background:new 0 0 14 14;" xml:space="preserve">
+  <path class="path fill primary"
+        d="M1,14a1,1,0,0,1-1-1V1A1,1,0,0,1,1,0H13a1,1,0,0,1,1,1V13a1,1,0,0,1-1,1ZM.6,1.3V12.7a.7.7,0,0,0,.7.7H12.7a.7.7,0,0,0,.7-.7V1.3a.7.7,0,0,0-.7-.7H1.3A.7.7,0,0,0,.6,1.3ZM2.05,12.1a.3.3,0,1,1,0-.6h10a.3.3,0,0,1,0,.6Zm0-2a.3.3,0,1,1,0-.6h10a.3.3,0,0,1,0,.6Zm0-2a.3.3,0,1,1,0-.6h10a.3.3,0,0,1,0,.6Zm0-2a.3.3,0,1,1,0-.6h10a.3.3,0,0,1,0,.6ZM4.562,4.649a1.155,1.155,0,1,0-2.31,0,.251.251,0,0,1-.5,0A1.655,1.655,0,0,1,2.836,3.1a1.006,1.006,0,1,1,1.142,0A1.654,1.654,0,0,1,5.064,4.649a.251.251,0,0,1-.5,0ZM2.9,2.268a.5.5,0,1,0,.5-.5A.5.5,0,0,0,2.9,2.268ZM5.8,4.1a.3.3,0,0,1,0-.6H12a.3.3,0,1,1,0,.6Z"/>
+</svg>

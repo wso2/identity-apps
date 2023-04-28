@@ -1,0 +1,23 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14" viewBox="0 0 11.75 13.764">
+    <path id="database-outline" class="path fill primary"
+          d="M0,12.8V.95L.006.959C.1.883,1.235,0,5.886,0s5.771.883,5.859.959L11.75.95V12.8s-1.005.964-5.864.964S0,12.8,0,12.8Zm5.886.4a14.951,14.951,0,0,0,5.264-.626V9.365a15.316,15.316,0,0,1-5.264.649A15.416,15.416,0,0,1,.6,9.363v3.209A15.024,15.024,0,0,0,5.886,13.2Zm0-3.749a14.938,14.938,0,0,0,5.264-.627V5.615a15.316,15.316,0,0,1-5.264.649A15.416,15.416,0,0,1,.6,5.613V8.822A15.012,15.012,0,0,0,5.886,9.452Zm0-3.75a14.938,14.938,0,0,0,5.264-.627V1.865a15.316,15.316,0,0,1-5.264.649A15.416,15.416,0,0,1,.6,1.862V5.071A15.012,15.012,0,0,0,5.886,5.7Zm0-3.75c3.33,0,4.793-.4,5.419-.694C10.679.963,9.216.563,5.886.563s-4.8.4-5.435.695C1.084,1.551,2.555,1.951,5.886,1.951Z"
+          fill="#464646"/>
+</svg>
