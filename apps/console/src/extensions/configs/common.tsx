@@ -17,7 +17,7 @@
  */
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { CommonConfig } from "./models";
 import { HeaderSubPanelItemInterface } from "../../features/core/components";
 
@@ -37,7 +37,7 @@ export const commonConfig: CommonConfig = {
             _associatedTenants: any[]
         ): Promise<HeaderExtension[]> => Promise.resolve([]),
         getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
-        getUserDropdownFooterExtensions: (): ReactElement => <></>,
+        getUserDropdownFooterExtensions: (): ReactElement => null,
         getUserDropdownLinkExtensions: (
             _tenantDomain: string,
             _associatedTenants: any[]): Promise<HeaderLinkCategoryInterface[]> => Promise.resolve([]),
