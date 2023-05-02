@@ -16,19 +16,23 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
     EmphasizedSegment,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
+import { t } from "i18next";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
     useState
 } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
@@ -40,8 +44,10 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../extensions";
+import { getIDPConnectedApps } from "../api";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
+    ConnectedAppsInterface,
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface,
     IdentityProviderTabTypes,
@@ -152,6 +158,31 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             <ContentLoader inline="centered" active/>
         </EmphasizedSegment>
     );
+
+    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
+    const [ connectedAppsCount, setConnectedAppsCount ] = useState<number>(0);
+    const dispatch: Dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchConnectedApps = async () => {
+            try {
+                setIsAppsLoading(true);
+                const response: ConnectedAppsInterface = await getIDPConnectedApps(identityProvider.id);
+
+                setConnectedAppsCount(response.count);
+            } catch (error: any) {
+                dispatch(addAlert({
+                    description: error?.description || t("console:develop.features.idp.connectedApps.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
+                }));
+            } finally {
+                setIsAppsLoading(false);
+            }
+        };
+    
+        fetchConnectedApps();
+    }, [ dispatch, identityProvider.id ]);
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -351,7 +382,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         panes.push({
             "data-tabid": IdentityProviderConstants.CONNECTED_APPS_TAB_ID,
-            menuItem: "Connected Apps",
+            menuItem: "Connected Apps ( " + connectedAppsCount + " )",
             render: ConnectedAppsTabPane
         });
 
