@@ -46,7 +46,6 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { OrganizationType } from "../../organizations/constants";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import { getIdPIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -93,8 +92,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         (state: AppState) => state.identityProvider.meta.authenticators);
     const identityProviderTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates);
-    const orgType: OrganizationType = useSelector((state: AppState) =>
-        state?.organization?.organizationType);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
@@ -311,7 +308,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             return template.tags
                 .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
-        
+
         const templatesClone: IdentityProviderTemplateCategoryInterface[] = cloneDeep(originalCategorizedTemplates);
 
         templatesClone.map((category: IdentityProviderTemplateCategoryInterface) => {
@@ -473,14 +470,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 template: IdentityProviderTemplateInterface,
                                                 templateIndex: number
                                             ) => {
-                                                const isOrgIdp: boolean = template.templateId === "organi" +
-                                                    "zation-enterprise-idp";
-
-                                                if (isOrgIdp && !isOrganizationManagementEnabled) {
-                                                    return null;
-                                                }
-
-                                                if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
+                                                // if the template is "organization-enterprise-idp",
+                                                // then prevent rendering it.
+                                                if (template.id === "organization-enterprise-idp") {
                                                     return null;
                                                 }
 
@@ -488,7 +480,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
                                                         resourceName={
-                                                            template.name === "Enterprise" ? "Standard-Based IdP" 
+                                                            template.name === "Enterprise" ? "Standard-Based IdP"
                                                                 : template.name
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }
