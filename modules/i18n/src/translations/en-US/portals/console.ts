@@ -1495,7 +1495,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             isSharingEnabled: {
-                                hint: "If enabled, it will allow this application to authenticate customers/partners " + 
+                                hint: "If enabled, it will allow this application to authenticate customers/partners " +
                                     "into this organization or any of its sub-organizations.",
                                 label: "Allow sharing with sub-organizations"
                             },
@@ -5715,6 +5715,21 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                buttons: {
+                    addIDVP: "New Identity Verification Provider",
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "There are no identity verification providers available at the moment.",
+                            1: "You can add a new identity verification provider easily by following the",
+                            2: "steps in the identity verification provider creation wizard."
+                        },
+                        title: "Add a new Identity Verification Provider"
+                    },
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server for Developers",
@@ -5924,7 +5939,8 @@ export const console: ConsoleNS = {
                     authenticationProviders: "Identity Providers",
                     general: "General",
                     gettingStarted: "Getting Started",
-                    identityProviders: "Identity Providers"
+                    identityProviders: "Identity Providers",
+                    identityVerificationProviders: "Identity Verification Providers"
                 },
                 customize: "Customize",
                 identityProviderEdit: "Identity Providers Edit",
@@ -6033,6 +6049,11 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "Provisioning"
                 },
                 title: "Select Identity Provider"
+            },
+            idvp: {
+                subTitle: "Manage Identity Verification Providers to allow users to verify their identities " +
+                    "through them.",
+                title: "Identity Verification Providers"
             },
             overview: {
                 subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +
@@ -8661,7 +8682,7 @@ export const console: ConsoleNS = {
                 unshareApplicationRadio: "Do not share with any sub-organization",
                 shareWithSelectedOrgsRadio: "Share with only selected sub-organizations",
                 unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +
-                    "existing sub-organizations or new sub-organizations that you create under this organization " + 
+                    "existing sub-organizations or new sub-organizations that you create under this organization " +
                     "in the future.",
                 switching: {
                     emptyList: "There are no sub-organizations to show.",

@@ -951,7 +951,7 @@ export const console: ConsoleNS = {
                             tabName: "Provisionnement"
                         },
                         sharedAccess: {
-                            subTitle: "Sélectionnez les options suivantes pour partager l'application avec " + 
+                            subTitle: "Sélectionnez les options suivantes pour partager l'application avec " +
                                 "les sous-organisations.",
                             tabName: "Accès partagé"
                         },
@@ -1534,7 +1534,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             isSharingEnabled: {
-                                hint: "Si elle est activée, elle permettra à cette application d'authentifier les " + 
+                                hint: "Si elle est activée, elle permettra à cette application d'authentifier les " +
                                     "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
                                 label: "Autoriser le partage avec des sous-organisations"
                             },
@@ -4197,6 +4197,22 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                buttons: {
+                    addIDVP: "Nouveau fournisseur de vérification d'identité",
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "Il n'y a pas de fournisseurs de vérification d'identité disponibles pour le moment.",
+                            1: "Vous pouvez facilement ajouter un nouveau fournisseur de vérification d'identité en " +
+                                "suivant les",
+                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité.",
+                        },
+                        title: "Ajouter un nouveau fournisseur de vérification d'identité",
+                    }
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server pour les développeurs",
@@ -4401,7 +4417,8 @@ export const console: ConsoleNS = {
                     application: "Applications",
                     general: "Général",
                     gettingStarted: " Pour commencer",
-                    identityProviders: "Fournisseurs d'identité"
+                    identityProviders: "Fournisseurs d'identité",
+                    identityVerificationProviders: "Fournisseurs de vérification d'identité",
                 },
                 customize: "Personnaliser",
                 identityProviderEdit: "Edition des fournisseurs d'identité",
@@ -4495,6 +4512,11 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "Approvisionnement"
                 },
                 title: "Sélectionnez le fournisseur d'identité"
+            },
+            idvp: {
+                subTitle: "Gérez les fournisseurs de vérification d'identité pour permettre aux utilisateurs de " +
+                "vérifier leur identité via eux.",
+                title: "Fournisseurs de vérification d'identité"
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +
@@ -6986,8 +7008,8 @@ export const console: ConsoleNS = {
                     "créez sous votre organisation actuelle.",
                 unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
                 shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
-                unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " + 
-                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " + 
+                unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " +
+                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " +
                     "créerez sous cette organisation à l'avenir.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {

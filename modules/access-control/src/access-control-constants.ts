@@ -82,6 +82,12 @@ export class AccessControlConstants {
     public static readonly IDP_DELETE: string = "identity_provider:delete";
 
     /**
+     * Identity provider write permission
+     */
+    public static readonly IDVP_WRITE: string = "identity_verification_provider:write";
+
+
+    /**
      * Users feature permission
      */
     public static readonly USER: string = "user";
@@ -330,7 +336,7 @@ export class AccessControlConstants {
      * Organization read permission.
      */
     public static readonly ORGANIZATION_ROLES_READ: string = "organization_roles:read";
-    
+
     /**
      * Event configuration read permission
      */
@@ -345,7 +351,7 @@ export class AccessControlConstants {
      * EventConfig edit permission
      */
     public static readonly EVENT_CONFIG_EDIT: string = "internal_event_config_update";
-    
+
     /**
      * EventConfig delete permission
      */

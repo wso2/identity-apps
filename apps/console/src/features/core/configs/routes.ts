@@ -137,6 +137,50 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: true
                     },
                     {
+                        category: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+                        children: [
+                            // {
+                            //     component: lazy(() =>
+                            //         import("../../identity-verification-providers/pages/identity-provider-template")
+                            //     ),
+                            //     exact: true,
+                            //     icon: {
+                            //         icon: getSidePanelIcons().childIcon
+                            //     },
+                            //     id: "identityVerificationProviderTemplate",
+                            //     name: "Identity Verification Provider Templates",
+                            //     path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
+                            //     protected: true,
+                            //     showOnSidePanel: false
+                            // },
+                            // {
+                            //     component: lazy(
+                            //         () => import("../../identity-verification-providers/pages/identity-provider-edit")
+                            //     ),
+                            //     exact: true,
+                            //     icon: {
+                            //         icon: getSidePanelIcons().childIcon
+                            //     },
+                            //     id: "identityVerificationProvidersEdit",
+                            //     name: "Identity Verification Providers Edit",
+                            //     path: AppConstants.getPaths().get("IDVP_EDIT"),
+                            //     protected: true,
+                            //     showOnSidePanel: false
+                            // }
+                        ],
+                        component: lazy(
+                            () => import("../../identity-verification-providers/pages/identity-verification-providers")
+                        ),
+                        exact: true,
+                        icon: { icon: getSidePanelIcons().identityVerificationProviders},
+                        id: "identityVerificationProvider",
+                        name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+                        order: 3,
+                        path: AppConstants.getPaths().get("IDVP"),
+                        protected: true,
+                        showOnSidePanel:!identityProviderConfig?.useNewConnectionsView
+                    },
+                    {
                         category: "console:develop.features.secrets.routes.category",
                         children: [
                             {
@@ -155,7 +199,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
                         name: "console:develop.features.secrets.routes.name",
-                        order: 3,
+                        order: 4,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,
                         showOnSidePanel: true

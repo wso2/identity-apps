@@ -190,7 +190,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         "list-layout",
         className
     );
-
     return (
         <div
             className={ classes }
@@ -207,7 +206,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         >
                             <Grid>
                                 <Grid.Row>
-                                    { 
+                                    {
                                         !disableLeftActionPanel
                                             ? (
                                                 <Grid.Column

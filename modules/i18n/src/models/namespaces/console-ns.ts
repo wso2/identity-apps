@@ -2391,6 +2391,14 @@ export interface ConsoleNS {
                     };
                 };
             };
+            idvp: {
+              buttons: {
+                  addIDVP: string;
+              };
+              placeholders: {
+                    emptyIDVPList: Placeholder;
+              };
+            };
             overview: {
                 banner: {
                     heading: string;
@@ -2428,6 +2436,7 @@ export interface ConsoleNS {
                     identityProviders: string;
                     authenticationProviders?: string;
                     general: string;
+                    identityVerificationProviders: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2602,6 +2611,7 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
+            idvp: Page;
             overview: Page;
         };
         componentExtensions: {
