@@ -29,6 +29,7 @@ import { OrganizationType } from "../../../../organizations/constants";
 import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs";
 import { LoginFlowTypes } from "../../../models";
+import { Show } from "apps/console/src/extensions/components/feature-gate/controller/show-feature";
 
 /**
  * Prop-types for the sign in methods landing component.
@@ -205,6 +206,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                     </Grid.Column>
                     <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
                         <div className="pr-5 pl-5">
+                            <Show ifAllowed="console.connection.passwordLess">
                             <Heading as="h4">
                                 { t(
                                     "console:develop.features.applications.edit." +
@@ -216,6 +218,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 !config.ui?.hiddenAuthenticators.includes(
                                     IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
                                 ) && (
+                                <Show ifAllowed="console.connection.passwordLess.fido2">
                                 <InfoCard
                                     fluid
                                     data-testid="usernameless-flow-card"
@@ -240,11 +243,14 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN);
                                     } }
                                 />
+                                </Show>
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
                                 !config.ui?.hiddenAuthenticators.includes(
                                     IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
                                 ) && (
+                                    <Show ifAllowed="console.connection.passwordLess.magicLink">
+
                                 <InfoCard
                                     fluid
                                     data-testid="magic-link-flow-card"
@@ -268,7 +274,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK);
                                     } }
                                 />
+                                </Show>
                             ) }
+                            </Show>
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||

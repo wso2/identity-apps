@@ -51,6 +51,7 @@ import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import { getIdPIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    AuthenticatorLabels,
     FederatedAuthenticatorListItemInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
@@ -59,6 +60,7 @@ import {
 } from "../models";
 import { setAvailableAuthenticatorsMeta } from "../store";
 import { IdentityProviderManagementUtils, IdentityProviderTemplateManagementUtils } from "../utils";
+import { checkIfEnabled } from "apps/console/src/extensions/components/feature-gate/controller/show-feature";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -449,7 +451,16 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         placeholder={ t("console:develop.pages.authenticationProviderTemplate.search.placeholder") }
                         onSearch={ handleConnectionTypeSearch }
                         onFilter={ handleConnectionTypeFilter }
-                        filterLabels={ filterTags }
+                        filterLabels={
+                            filterTags.filter(tag => {
+                                console.log("tags: ", tag)
+                                if (!checkIfEnabled("console.connection.passwordLess") && tag === AuthenticatorLabels.PASSWORDLESS) {
+                                  return false; 
+                                }
+                                return true;
+                              })
+                            
+                         }
                     />
                 ) }
                 isLoading={ useNewConnectionsView === undefined || isIDPTemplateRequestLoading }
@@ -482,6 +493,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
 
                                                 if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
                                                     return null;
+                                                }
+
+                                                if (template?.templateId === "hypr-idp" && !checkIfEnabled("console.connection.passwordLess")) {
+                                                    return;
                                                 }
 
                                                 return (

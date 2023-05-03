@@ -65,6 +65,7 @@ import {
     StrictIdentityProviderInterface
 } from "../models";
 import { IdentityProviderManagementUtils } from "../utils";
+import { checkIfEnabled } from "apps/console/src/extensions/components/feature-gate/controller/show-feature";
 
 /**
  * Proptypes for the Authenticators Grid component.
@@ -352,6 +353,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
                             .authenticators, authenticator.id);
+                            //  console.log("name of authenticators" + authenticator.name)
+                            if (authenticator.name === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR && !checkIfEnabled("console.connection.passwordLess")) {
+                                return;
+                            }
 
                         const isIdP: boolean = IdentityProviderManagementUtils
                             .isConnectorIdentityProvider(authenticator);

@@ -58,6 +58,7 @@ import {
     IdentityProviderListResponseInterface
 } from "../models";
 import { IdentityProviderManagementUtils } from "../utils";
+import { checkIfEnabled } from "apps/console/src/extensions/components/feature-gate/controller/show-feature";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -571,7 +572,10 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                         data-testid={ `${ testId }-advance-search` }
                                     />
                                 ) }
-                                filterLabels={ filterTags }
+                                filterLabels={ 
+                                    checkIfEnabled("console.connection.passwordLess") ? [...filterTags, AuthenticatorLabels.PASSWORDLESS] 
+                                : filterTags 
+                            }
                                 onFilter={ (_: string, selectedFilters: string[]) => {
                                     handleConnectionGridFilter(searchQuery, selectedFilters);
                                 } }
