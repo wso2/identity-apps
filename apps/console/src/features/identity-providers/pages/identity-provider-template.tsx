@@ -48,7 +48,7 @@ import {
 } from "../../core";
 import { AuthenticatorCreateWizardFactory } from "../components/wizards";
 import { getIdPIcons } from "../configs";
-import { IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderManagementConstants, ORG_ENTERPRISE_IDP_ID } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
     IdentityProviderTemplateCategoryInterface,
@@ -472,7 +472,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                             ) => {
                                                 // if the template is "organization-enterprise-idp",
                                                 // then prevent rendering it.
-                                                if (template.id === "organization-enterprise-idp") {
+                                                if (template.id === ORG_ENTERPRISE_IDP_ID) {
                                                     return null;
                                                 }
 
