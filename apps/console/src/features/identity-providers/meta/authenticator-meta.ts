@@ -270,7 +270,8 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.GITHUB_LINK]: "navigationLink",
             [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.HYPR_LINK]: "navigationLink",
             [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.OIDC_LINK]: "navigationLink",
-            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.ORGANIZATION_ENTERPRISE_IDP_LINK]: "navigationLink",
+            [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.ORGANIZATION_ENTERPRISE_IDP_LINK]: 
+            "navigationLink",
             [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.SAML_LINK]: "navigationLink",
             [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.ENTERPRISE_LINK]: "navigationLink"
             // [ IdentityProviderManagementConstants.IDP_TEMPLATE_DOC_LINKS.SWE_LINK]: "navigationLink"
