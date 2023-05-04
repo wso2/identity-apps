@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Code, CopyInputField, Message } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
+import { Button, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { ConfigReducerStateInterface } from "../../../../../core/models";
 import { AppState } from "../../../../../core/store";
 
@@ -35,7 +33,9 @@ interface FacebookIdentityProviderCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const FacebookIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: FacebookIdentityProviderCreateWizardHelpProps) => {
+const FacebookIdentityProviderCreateWizardHelp = ({ 
+    currentStepInSidePanelGuide
+}: FacebookIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
