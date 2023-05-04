@@ -92,7 +92,7 @@ export const console: ConsoleNS = {
             },
             featureAnnouncements: {
                 organizations: {
-                    message: "Présentation des organisations B2B. Commencez à construire votre plateforme " +
+                    message: "Présentation des organisations B2B. Commencez à construire votre plateforme " + 
                     "B2B en intégrant vos organisations partenaires/clientes.",
                     buttons: {
                         tryout: "Essaye le"
@@ -675,14 +675,6 @@ export const console: ConsoleNS = {
                         header: "Vous ajoutez un gestionnaire",
                         message: "C'est un gestionnaire."
                     },
-                    backupCodeAuthenticatorDelete: {
-                        assertionHint: "Cliquez sur Continuer pour supprimer la fonctionnalité de code de secours.",
-                        content: "Si vous continuez, la fonctionnalité de code de secours sera également " +
-                            "supprimée de votre étape d'authentification actuelle. Souhaitez-vous continuer?",
-                        header: "Confirmer la suppression",
-                        message: "Cette action supprimera la fonctionnalité de code de secours de l'étape " +
-                            "d'authentification en cours."
-                    },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Continuez avec les valeurs existantes.",
                         content: "Vous avez entré une valeur inférieure à 60 secondes pour la ou les " +
@@ -950,11 +942,6 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisionnement"
                         },
-                        sharedAccess: {
-                            subTitle: "Sélectionnez les options suivantes pour partager l'application avec " + 
-                                "les sous-organisations.",
-                            tabName: "Accès partagé"
-                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1099,11 +1086,6 @@ export const console: ConsoleNS = {
                                                             description: "Utiliser les informations de connexion " +
                                                                 "existantes d'un fournisseur de réseau social.",
                                                             heading: "Connexion sociale"
-                                                        },
-                                                        backupCodes: {
-                                                            description: "Option de récupération de l'authentification " +
-                                                                "à deux facteurs.",
-                                                            heading: "Récupération MFA"
                                                         }
                                                     },
                                                     goBackButton: "Revenir à la Sélection",
@@ -1138,9 +1120,6 @@ export const console: ConsoleNS = {
                                                         label: "Choisissez l'identifiant de l'utilisateur à partir " +
                                                             "de cette étape",
                                                         placeholder: "Sélectionner une étape"
-                                                    },
-                                                    enableBackupCodes: {
-                                                        label: "Activer les codes de secours"
                                                     }
                                                 }
                                             },
@@ -1158,10 +1137,6 @@ export const console: ConsoleNS = {
                                                 " fournisseurs d'identité suivants.",
                                             secondFactorDisabledInFirstStep: "Les authentificateurs de deuxième " +
                                                 "facteur ne peuvent pas être utilisés dans la première étape.",
-                                            backupCodesDisabled: "L'authentificateur de code de secours ne peut être utilisé " +
-                                                "que si des authentificateurs multifacteur sont présents dans l'étape en cours.",
-                                            backupCodesDisabledInFirstStep: "L'authentificateur de code de secours ne peut pas " +
-                                                "être utilisé dans la première étape.",
                                             federatedSMSOTPConflictNote:{
                                                 multipleIdps: "Asgardeo nécessite le profil de l'utilisateur" +
                                                 " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
@@ -1532,11 +1507,6 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
                                 }
-                            },
-                            isSharingEnabled: {
-                                hint: "Si elle est activée, elle permettra à cette application d'authentifier les " + 
-                                    "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
-                                label: "Autoriser le partage avec des sous-organisations"
                             },
                             isManagementApp: {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
@@ -3104,7 +3074,7 @@ export const console: ConsoleNS = {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: "Voir les forfaits",
-
+                            
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
                             title: "Vous avez atteint le nombre maximal de sous-organisations autorisé pour cette organisation. "
@@ -3132,12 +3102,12 @@ export const console: ConsoleNS = {
                                 heading: "Nom"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" +
+                                configureAppleSignIn: "Consultez le guide d'Apple sur la configuration de votre" + 
                                     " environnement pour Se connecter avec Apple.",
                                 configureReturnURL: "Ajoutez l'URL suivante en tant qu'<1>URL de retour</1>.",
                                 configureWebDomain: "Utilisez ce qui suit comme <1>domaine Web</1>.",
-                                getCredentials: "Avant de commencer, créez une application compatible" +
-                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" +
+                                getCredentials: "Avant de commencer, créez une application compatible" + 
+                                    " <1>Connexion avec Apple</1> sur le <3>programme pour développeurs Apple</3>" + 
                                     " avec un <5>identifiant de services</5> et une <5>clé privée</5>.",
                                 heading: "Prérequis"
                             },
@@ -3187,7 +3157,8 @@ export const console: ConsoleNS = {
                             name: {
                                 description: "Fournissez un nom unique au fournisseur d'authentification d'entreprise" +
                                     " afin qu'il puisse être facilement identifié.",
-                                heading: "Nom"
+                                heading: "Nom",
+                                example: "Par exemple, MyOrgEnterpriseAuthProvider."
                             },
                             description: {
                                 description: "Fournissez une description du fournisseur d'authentification" +
@@ -5275,9 +5246,8 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
                         "cet attribut sur le profil.",
-                        requiredWarning: "Pour que l'attribut d'e-mail ne s'affiche pas et ne soit pas " +
-                            "requis sur le profil de l'utilisateur, vous devez désactiver la vérification " +
-                            "de compte pour votre organisation",
+                        requiredWarning: "Pour rendre l'attribut e-mail non requis sur le profil de " +
+                            "l'utilisateur, vous devez désactiver la vérification de compte pour votre organisation.",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page " +
                                 "d'enregistrement de l'utilisateur"
@@ -6979,16 +6949,15 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
-                shareApplicationSubTitle: "Sélectionnez l'une des options suivantes pour partager l'application.",
                 shareApplicationRadio: "Partager avec toutes les sous-organisations",
                 shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
                     "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
                     "créez sous votre organisation actuelle.",
-                unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
+                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
                 shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
-                unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " + 
-                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " + 
-                    "créerez sous cette organisation à l'avenir.",
+                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
+                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
+                    "que vous créez sous vos organisations actuelles.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
@@ -7410,8 +7379,7 @@ export const console: ConsoleNS = {
                                 subtitles: "Aucun utilisateur n'est assigné à ce rôle pour le moment.",
                                 title: "Aucun utilisateur assigné"
                             },
-                            user: "Utilisateur",
-                            organization: "Dirigé par"
+                            header: "Utilisateurs"
                         }
                     }
                 },
