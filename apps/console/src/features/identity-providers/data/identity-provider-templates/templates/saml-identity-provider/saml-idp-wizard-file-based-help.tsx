@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,24 +16,21 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     Code,
     CopyInputField,
     DocumentationLink,
-    Heading,
     Message,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Icon, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 
-const SAMLIdPWizardFileBasedHelp = () => {
+const SAMLIdPWizardFileBasedHelp = ():any => {
     const { t } = useTranslation();
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { getLink } = useDocumentation();
 
@@ -50,7 +47,7 @@ const SAMLIdPWizardFileBasedHelp = () => {
                         type="info"
                         header="Prerequisite"
                         content={
-                            <>
+                            (<>
                                 <Trans
                                     i18nKey={
                                         "console:develop.features.authenticationProvider.templates.enterprise.saml." +
@@ -82,7 +79,7 @@ const SAMLIdPWizardFileBasedHelp = () => {
                                     "preRequisites.configureIdp")
                                     }
                                 </DocumentationLink>
-                            </>
+                            </>)
                         }
                     />
                 </>
@@ -94,8 +91,8 @@ const SAMLIdPWizardFileBasedHelp = () => {
                 <>
                     <p>
                 This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                        { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to provide a unique value
-                as the service provider entity ID.
+                        { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to 
+                        provide a unique value as the service provider entity ID.
                     </p>
                 </>      
             ),
@@ -120,10 +117,10 @@ const SAMLIdPWizardFileBasedHelp = () => {
     const [ currentContent, setCurrentContent ] = useState(0);
 
     const handleClickPrevious = () => {
-        setCurrentContent((c) => (c > 0 ? c - 1 : c));
+        setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
     };
     const handleClickNext = () =>{
-        setCurrentContent((c) => (c < quickHelpContent.length - 1 ? c + 1 : c));
+        setCurrentContent((c:number) => (c < quickHelpContent.length - 1 ? c + 1 : c));
     };
     const isPreviousButtonDisabled: boolean = currentContent === 0;
     const isNextButtonDisabled: boolean = currentContent === quickHelpContent.length - 1;
@@ -143,7 +140,7 @@ const SAMLIdPWizardFileBasedHelp = () => {
                 className="idp-sidepanel-sidebar"
             >
                 <div className="idp-sidepanel-content-large">
-                    { quickHelpContent.map(({ id, title, body }) => (
+                    { quickHelpContent.map(({ id, title, body }:Content) => (
                         <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
                             <Segment
                                 className="idp-sidepanel-segment">
