@@ -3118,17 +3118,17 @@ export const console: ConsoleNS = {
                     apple: {
                         wizardHelp: {
                             clientId: {
-                                description: "Fournissez l'<1>ID de services</1> créé chez Apple.",
+                                description: "Fournissez l'<1>ID de services</1> que vous avez créé chez Apple à travers le Portail des développeurs Apple.",
                                 heading: "ID de services"
                             },
                             heading: "Aider",
                             keyId: {
-                                description: "Fournissez l'<1>identifiant de clé</1> de la clé privée générée.",
+                                description: "Fournissez l'<1>identifiant de clé</1> de la clé privée générée que vous avez créée à travers le Portail des développeurs Apple.",
                                 heading: "ID de clé"
                             },
                             name: {
-                                connectionDescription: "Fournissez un nom unique pour la connexion.",
-                                idpDescription: "Fournissez un nom unique pour le fournisseur d'identité.",
+                                connectionDescription: "Fournissez un nom unique pour la connexion afin qu'elle soit facilement identifiable.",
+                                idpDescription: "Fournissez un nom unique pour la connexion afin qu'elle soit facilement identifiable.",
                                 heading: "Nom"
                             },
                             preRequisites: {
@@ -3142,12 +3142,12 @@ export const console: ConsoleNS = {
                                 heading: "Prérequis"
                             },
                             privateKey: {
-                                description: "Fournissez la <1>clé privée</1> générée pour l'application.",
+                                description: "Fournissez la <1>clé privée</1> générée pour l'application à travers le Portail des développeurs Apple.",
                                 heading: "Clé privée"
                             },
                             subHeading: "Utilisez le guide ci-dessous.",
                             teamId: {
-                                description: "Fournissez l'<1>identifiant d'équipe</1> du développeur Apple.",
+                                description: "Fournissez l'<1>identifiant d'équipe</1> du développeur Apple que vous avez obtenu à travers le Portail des développeurs Apple.",
                                 heading: "ID d'équipe"
                             }
                         }
