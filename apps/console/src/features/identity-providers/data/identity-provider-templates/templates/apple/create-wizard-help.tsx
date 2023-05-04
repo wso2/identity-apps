@@ -38,7 +38,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
 }: AppleIdentityProviderCreateWizardHelpProps): any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
@@ -99,7 +99,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
                                     "wizardHelp.preRequisites.configureReturnURL"
                                         }
                                     >
-                            Add the following URL as a <strong>Return URL</strong>.
+                                        Add the following URL as a <strong>Return URL</strong>.
                                     </Trans>
                                     <CopyInputField
                                         className="copy-input-dark spaced"
@@ -151,7 +151,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
                             ".wizardHelp.clientId.description"
                             }
                         >
-                    Provide the <Code>Services ID</Code> created at Apple.
+                            Provide the <Code>Services ID</Code> created at Apple.
                         </Trans>
                     </p>
                 </>
@@ -170,7 +170,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
                             "wizardHelp.teamId.description"
                             }
                         >
-                    Provide the Apple developer <Code>Team ID</Code>.
+                            Provide the Apple developer <Code>Team ID</Code>.
                         </Trans>
                     </p>
                 </>
@@ -189,7 +189,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
                             "wizardHelp.keyId.description"
                             }
                         >
-                    Provide the <Code>Key Identifier</Code> of the private key generated.
+                            Provide the <Code>Key Identifier</Code> of the private key generated.
                         </Trans>
                     </p>
                 </>
@@ -208,7 +208,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
                             "wizardHelp.privateKey.description"
                             }
                         >
-                    Provide the <Code>Private Key</Code> generated for the application.
+                            Provide the <Code>Private Key</Code> generated for the application.
                         </Trans>
                     </p>
                 </>
@@ -244,7 +244,7 @@ const AppleIdentityProviderCreateWizardHelp = ({
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key = { id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
