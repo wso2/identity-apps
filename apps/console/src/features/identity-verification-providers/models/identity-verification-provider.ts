@@ -11,7 +11,8 @@ export interface IDVPListResponseInterface {
  */
 export interface IdentityVerificationProviderInterface {
     id?: string;
-    name?: string;
+    Name?: string;
+    Type?: string;
     description?: string;
     isEnabled?: boolean;
     image?: string;

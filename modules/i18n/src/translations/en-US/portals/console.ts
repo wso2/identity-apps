@@ -5717,7 +5717,7 @@ export const console: ConsoleNS = {
             },
             idvp: {
                 buttons: {
-                    addIDVP: "New Identity Verification Provider",
+                    addIDVP: "New Identity Verification Provider"
                 },
                 placeholders: {
                     emptyIDVPList: {
@@ -5727,7 +5727,17 @@ export const console: ConsoleNS = {
                             2: "steps in the identity verification provider creation wizard."
                         },
                         title: "Add a new Identity Verification Provider"
-                    },
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this identity verification provider, you will not be able to " +
+                            "recover it. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the identity verification " +
+                            "provider."
+                    }
                 }
             },
             overview: {

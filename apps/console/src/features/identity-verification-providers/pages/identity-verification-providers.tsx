@@ -9,6 +9,7 @@ import { IdentityVerificationProviderList } from "../components";
 import { useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderInterface, IDVPListResponseInterface } from "../models";
 import { identityProviderConfig } from "../../../extensions";
+import { mutate } from "swr";
 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
@@ -54,7 +55,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const {
         data: idvpList,
         isLoading: isIDVPListRequestLoading,
-        error: idpListFetchRequestError
+        error: idpListFetchRequestError,
+        mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset);
     console.log("idvpList", idvpList);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -83,9 +85,9 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
 
     };
 
-    const handleIdentityProviderDelete = () => {
-        console.log("handleIdentityProviderDelete");
-
+    const handleIdentityProviderDelete = async () => {
+        console.log("reloading");
+        await idvpListMutator();
     };
 
     const handleSearchQueryClear = () => {
@@ -104,6 +106,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                         value: "name"
                     }
                 ] }
+                // TODO: Make this IDVP instead of Auth provider
                 filterAttributePlaceholder={ t(
                     "console:develop.features.authenticationProvider.advancedSearch." +
                     "form.inputs.filterAttribute" +
@@ -182,7 +185,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     onEmptyListPlaceholderActionClick={ () =>
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                     }
-                    onIdentityVerificationProviderDelete={ handleIdentityProviderDelete }
+                    onIdentityVerificationProviderDelete={handleIdentityProviderDelete}
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }

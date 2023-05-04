@@ -1,63 +1,48 @@
-import { IDVPListResponseInterface } from "../models";
-import { HttpMethods, AcceptHeaderValues } from "@wso2is/core/models";
-import { store } from "../../core";
-import {AsgardeoSPAClient} from "@asgardeo/auth-react";
-import useRequest,{RequestConfigInterface, RequestErrorInterface, RequestResultInterface} from "../../core/hooks/use-request";
-
-
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-export const deleteIDVP = (id: string): Promise<any> => {
-    return Promise.resolve();
-}
-
-const APPLICATION_JSON = "application/json";
 /**
- * Gets the IdP list with limit and offset.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- // * @deprecated Use `useIdentityProviderList` hook instead.
- * @param limit - Maximum Limit of the IdP List.
- * @param offset - Offset for get to start.
- * @param filter - Search filter.
- * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * @returns A promise containing the response.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-export const getIdentityVerificationProviderList = (
-    limit?: number,
-    offset?: number,
-    filter?: string,
-    requiredAttributes?: string
-): Promise<IDVPListResponseInterface> => {
 
-    const requestConfig = {
+import { AsgardeoSPAClient, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
+import { store } from "../../core";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
+import { IDVPListResponseInterface } from "../models";
+
+type HttpClientType = (config: HttpRequestConfig) => Promise<HttpResponse | undefined>;
+
+const httpClient: HttpClientType = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
+
+    const requestConfig: RequestConfigInterface = {
         headers: {
-            "Accept": APPLICATION_JSON,
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": APPLICATION_JSON
+            "Accept": AcceptHeaderValues.APP_JSON,
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
         },
-        method: HttpMethods.GET,
-        params: {
-            filter,
-            limit,
-            offset,
-            requiredAttributes
-        },
-        url: store.getState().config.endpoints.identityVerificationProviders
+        method: HttpMethods.DELETE,
+        url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
     };
 
-    return httpClient(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get IdP list from: "));
-            }
-
-            return Promise.resolve(response.data as IDVPListResponseInterface);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
+    return httpClient(requestConfig);
 };
-
 
 
 /**
@@ -80,7 +65,7 @@ export const useIdentityVerificationProviderList = <Data = IDVPListResponseInter
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": AcceptHeaderValues.APP_JSON,
-            "Content-Type": AcceptHeaderValues.APP_JSON
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
         },
         method: HttpMethods.GET,
         params: {

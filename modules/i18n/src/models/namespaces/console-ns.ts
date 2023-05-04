@@ -2398,6 +2398,9 @@ export interface ConsoleNS {
               placeholders: {
                     emptyIDVPList: Placeholder;
               };
+              confirmations: {
+                 deleteIDVP: Confirmation;
+              };
             };
             overview: {
                 banner: {

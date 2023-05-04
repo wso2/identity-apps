@@ -4087,7 +4087,7 @@ export const console: ConsoleNS = {
             },
             idvp: {
                 buttons: {
-                    addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න",
+                    addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
                 },
                 placeholders: {
                     emptyIDVPList: {
@@ -4097,6 +4097,15 @@ export const console: ConsoleNS = {
                             2: "පහසුවෙන් අනන්‍යතා තහවුරු කරන්නෙක් එක් කර ගත හැක."
                         },
                         title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න",
+                        content: "ඔබ මෙම අනන්‍යතා තහවුරු කරන්නා මකා දැමුවහොත්, ඔබට එය නැවත ආපසු හැරවීමට නොහැකි වනු ඇත. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර අනන්‍යතා තහවුරු කරන්නා ස්ථිරවම මකා දැමෙනු ඇත."
                     }
                 }
             },
@@ -4304,7 +4313,7 @@ export const console: ConsoleNS = {
                     general: "ජනරාල්",
                     gettingStarted: "ඇරඹේ",
                     identityProviders: "හැඳුනුම්පත් සපයන්නන්",
-                    identityVerificationProviders: "අනන්‍යතා තහවුරු කරන්නන්",
+                    identityVerificationProviders: "අනන්‍යතා තහවුරු කරන්නන්"
                 },
                 customize: "අභිරුචිකරණය කරන්න",
                 identityProviderEdit: "හැඳුනුම්පත් සපයන්නන් සංස්කරණය කරන්න",

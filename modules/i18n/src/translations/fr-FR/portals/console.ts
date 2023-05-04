@@ -4199,7 +4199,7 @@ export const console: ConsoleNS = {
             },
             idvp: {
                 buttons: {
-                    addIDVP: "Nouveau fournisseur de vérification d'identité",
+                    addIDVP: "Nouveau fournisseur de vérification d'identité"
                 },
                 placeholders: {
                     emptyIDVPList: {
@@ -4207,9 +4207,19 @@ export const console: ConsoleNS = {
                             0: "Il n'y a pas de fournisseurs de vérification d'identité disponibles pour le moment.",
                             1: "Vous pouvez facilement ajouter un nouveau fournisseur de vérification d'identité en " +
                                 "suivant les",
-                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité.",
+                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité."
                         },
-                        title: "Ajouter un nouveau fournisseur de vérification d'identité",
+                        title: "Ajouter un nouveau fournisseur de vérification d'identité"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Veuillez confirmer votre action",
+                        content: "Si vous supprimez ce fournisseur de vérification d'identité, vous ne pourrez pas " +
+                            "le récupérer. Veuillez procéder avec prudence.",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le fournisseur de " +
+                            "vérification d'identité."
                     }
                 }
             },
