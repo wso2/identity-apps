@@ -16,14 +16,10 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Code, Message } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Divider, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../../extensions/configs";
-import { ConfigReducerStateInterface, AppState } from "apps/console/src/features/core";
-import { useSelector } from "react-redux";
+import { Button, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
  * Props for the Apple authentication provider create wizard help component.
@@ -34,11 +30,10 @@ interface HyprIDPCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateWizardHelpProps) => {
+const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const hyprControlCentreDocUrl: string = 
         "https://docs.hypr.com/installinghypr/docs/getting-started-with-fido-control-center";
 
@@ -69,8 +64,8 @@ const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateW
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.hypr.wizardHelp." +
-                                    "preRequisites.rpDescription"
+                                            "console:develop.features.authenticationProvider.templates.hypr." +
+                                    "wizardHelp.preRequisites.rpDescription"
                                         }
                                     >
                                 Before you begin, create a RP application in <a
@@ -83,8 +78,8 @@ const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateW
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.hypr.wizardHelp." +
-                                    "preRequisites.tokenDescription"
+                                            "console:develop.features.authenticationProvider.templates.hypr." +
+                                    "wizardHelp.preRequisites.tokenDescription"
                                         }
                                     >
                                 You also have to obtain an <a
