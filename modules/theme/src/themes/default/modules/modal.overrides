@@ -528,10 +528,10 @@
 
                         .modal-content {
                             padding: 0px;
-                           position: absolute;
-                           bottom: 0;
-                           height: auto !important;
-                           top: @sidePanelModalHeaderHeight;
+                            position: absolute;
+                            bottom: 0;
+                            height: auto !important;
+                            top: @sidePanelModalHeaderHeight;
                         }
                     }
 
