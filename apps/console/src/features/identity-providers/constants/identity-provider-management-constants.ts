@@ -30,6 +30,7 @@ import HYPRIdPTemplate from "../data/identity-provider-templates/templates/hypr/
 import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdPTemplate from
     "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
+// eslint-disable-next-line max-len
 import EnterpriseOrganizationIdPTemplate from "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
 import EnterpriseSAMLIdPTemplate from
     "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
