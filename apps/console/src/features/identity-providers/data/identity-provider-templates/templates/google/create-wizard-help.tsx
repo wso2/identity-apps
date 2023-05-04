@@ -35,13 +35,12 @@ interface GoogleIDPCreateWizardHelpProps {
 const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -66,7 +65,7 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                                     "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
-                                Before you begin, create an <strong>OAuth credential</strong> on the <a
+                                        Before you begin, create an <strong>OAuth credential</strong> on the <a
                                             href="https://console.developers.google.com"
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -75,21 +74,18 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                                     </Trans>
                                 </p>
                                 <p>
-
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.authenticationProvider.templates.google." +
                                     "wizardHelp.preRequisites.configureRedirectURL"
                                         }
                                     >
-                                Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                                        Use the following URL as the <strong>Authorized Redirect URI</strong>.
                                     </Trans>
-
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost + "/commonauth" }
                                     />
-
                                     <a
                                         href="https://support.google.com/googleapi/answer/6158849"
                                         target="_blank"
@@ -133,7 +129,7 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                         ".wizardHelp.clientId.description"
                             }
                         >
-                    Provide the <Code>Client ID</Code> obtained from Google.
+                            Provide the <Code>Client ID</Code> obtained from Google.
                         </Trans>
                     </p>
                 </>
@@ -151,7 +147,7 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                         ".wizardHelp.clientSecret.description"
                             }
                         >
-                    Provide the <Code>Client Secret</Code> obtained from Google.
+                            Provide the <Code>Client Secret</Code> obtained from Google.
                         </Trans>
                     </p>
                 </>
@@ -187,7 +183,7 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
