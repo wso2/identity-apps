@@ -121,7 +121,7 @@
 @cookieConsentBannerPadding: 2em;
 @cookieConsentBannerImageMargin: 0 0 1.5em 0;
 @cookieConsentBannerContentMargin: 0 0 1em 0;
-@cookieConsentBannerBorder: none;
+@cookieConsentBannerBorder: @defaultBorderWidth solid transparent;
 @cookieConsentBannerIconColor: @darkGray;
 @cookieConsentBannerZIndex: 999;
 
@@ -133,7 +133,7 @@
 @cookieConsentBannerInvertedColor: @invertedTextColor;
 @cookieConsentBannerInvertedBackground: @invertedBackground;
 @cookieConsentBannerInvertedIconColor: @white;
-@cookieConsentBannerInvertedBorder: none;
+@cookieConsentBannerInvertedBorder: @defaultBorderWidth solid transparent;
 
 /*-------------------------------
         Image Preview

@@ -63,7 +63,7 @@ export class IdentityProviderConstants {
 
     /**
      * data-tabIds of the panes in the IdP settings
-     * 
+     *
      */
     public static readonly ADVANCED_TAB_ID: string  = "advanced";
     public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
@@ -80,3 +80,4 @@ export const GOOGLE_IDP_NAME: string  = "Google";
 export const GOOGLE_IDP_ID: string  = "8ea23303-49c0-4253-b81f-82c0fe6fb4a0";
 export const OIDC_IDP_ID: string  = "oidc-idp";
 export const ENTERPRISE_IDP_ID: string  = "enterprise-idp";
+export const ORG_ENTERPRISE_IDP_ID: string  = "organization-enterprise-idp";

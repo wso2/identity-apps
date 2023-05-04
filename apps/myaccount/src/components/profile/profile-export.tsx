@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../api";
@@ -35,8 +36,8 @@ interface ProfileExportProps extends TestableComponentInterface {
 /**
  * Profile export component.
  *
- * @param {ProfileExportProps} props - Props injected to the profile export component.
- * @return {JSX.Element}
+ * @param props - Props injected to the component.
+ * @returns Profile Export component.
  */
 export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     props: ProfileExportProps
@@ -50,14 +51,15 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
      */
     const downloadUserProfile = (): void => {
         getUserInfo()
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 if (response.data) {
-                    const blob = new Blob(
-                        [JSON.stringify(response.data, null, 2)],
+                    const blob: Blob = new Blob(
+                        [ JSON.stringify(response.data, null, 2) ],
                         { type: "application/json" }
                     );
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
+                    const url: string = window.URL.createObjectURL(blob);
+                    const a: HTMLAnchorElement = document.createElement("a");
+
                     a.style.display = "none";
                     a.href = url;
                     a.download = "user-profile.json";
@@ -88,7 +90,7 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     });
                 }
             })
-            .catch((error) => {
+            .catch((error: AxiosError & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(
@@ -124,8 +126,8 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
             header={ t("myAccount:sections.profileExport.heading") }
             icon={ getSettingsSectionIcons().profileExport }
             iconMini={ getSettingsSectionIcons().profileExportMini }
-            iconSize="auto"
-            iconStyle="colored"
+            iconSize="x60"
+            iconStyle="twoTone"
             iconFloated="right"
             onPrimaryActionClick={ downloadUserProfile }
             primaryAction={ t("myAccount:sections.profileExport.actionTitles.export") }

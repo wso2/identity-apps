@@ -100,7 +100,7 @@ export interface ConsoleNS {
                 organizations: {
                     message: string;
                     buttons: {
-                        tryout: string; 
+                        tryout: string;
                     };
                 };
             };
@@ -405,6 +405,7 @@ export interface ConsoleNS {
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
                     handlerAuthenticatorAddition: Confirmation;
+                    backupCodeAuthenticatorDelete: Confirmation;
                     lowOIDCExpiryTimes: Confirmation;
                     regenerateSecret: Confirmation;
                     reactivateSPA: Confirmation;
@@ -654,11 +655,14 @@ export interface ConsoleNS {
                                                 fields: {
                                                     attributesFrom: FormAttributes;
                                                     subjectIdentifierFrom: FormAttributes;
+                                                    enableBackupCodes: FormAttributes;
                                                 };
                                             };
                                             secondFactorDisabled: string;
                                             secondFactorDisabledDueToProxyMode: string;
                                             secondFactorDisabledInFirstStep: string;
+                                            backupCodesDisabled: string;
+                                            backupCodesDisabledInFirstStep: string;
                                             authenticatorDisabled: string;
                                             firstFactorDisabled: string;
                                             federatedSMSOTPConflictNote: {
@@ -762,13 +766,17 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        sharedAccess: {
+                            subTitle: string;
+                            tabName: string;
+                        };
                         shareApplication: {
                             heading: string;
                             shareApplication: string;
                             addSharingNotification: Notification;
                             stopSharingNotification: Notification
                             getSharedOrganizations: Notification;
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -826,6 +834,7 @@ export interface ConsoleNS {
                             imageUrl: FormAttributes;
                             discoverable: FormAttributes;
                             accessUrl: FormAttributes;
+                            isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
                         };
                         managementAppBanner: string;
@@ -2652,7 +2661,7 @@ export interface ConsoleNS {
                     };
                 };
                 title: string;
-                subTitle: string;
+                subTitle?: string;
                 notifications: {
                     fetchOrganization: Notification;
                     deleteOrganization: Notification;
@@ -2730,6 +2739,7 @@ export interface ConsoleNS {
                     name: string;
                     description: string;
                 };
+                shareApplicationSubTitle: string;
                 shareApplicationRadio: string;
                 shareApplicationInfo: string;
                 unshareApplicationRadio: string;
@@ -4491,8 +4501,9 @@ export interface ConsoleNS {
                     };
                     users: {
                         list: {
-                            header: string;
                             emptyPlaceholder: Placeholder;
+                            user: string;
+                            organization: string;
                         };
                     };
                 };

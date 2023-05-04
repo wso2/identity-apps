@@ -22,6 +22,7 @@ import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
+import BackupCodesAuthenticatorLogo from "../../../themes/default/assets/images/icons/backup-code-icon.svg";
 import CertificateColoredIcon from "../../../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import ClockColoredIcon from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
 import ConnectionIcon from "../../../themes/default/assets/images/icons/connection.svg";
@@ -84,6 +85,7 @@ export const getAuthenticatorIcons = (): any => {
 
     return {
         apple: AppleLogo,
+        backupCode: BackupCodesAuthenticatorLogo,
         basic: BasicAuthIcon,
         default: ConnectionIcon,
         emailOTP: EmailOTPIcon,

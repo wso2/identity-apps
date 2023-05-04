@@ -356,12 +356,8 @@
                 overflow: hidden;
             }
         }
-        .actions {
-            padding: 0;
-        }
         .content {
             min-height: inherit;
-            padding: 0;
 
             .step-text {
                 .segment {
@@ -373,6 +369,17 @@
                         }
                     }
                 }
+            }
+        }
+
+        /* Move unintentional style changes done for TOTP code regenerate. https://github.com/wso2/identity-apps/pull/1888 */
+        &.compact {
+            .content {
+                padding: 0;
+            }
+
+            .actions {
+                padding: 0;
             }
         }
 

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,13 +17,17 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
 import sortBy from "lodash-es/sortBy";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Modal, Placeholder } from "semantic-ui-react";
+import { Button, ButtonProps, Container, Modal, Placeholder } from "semantic-ui-react";
 import { UserSessionsList } from "./user-sessions-list";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
+import { AppConstants } from "../../constants";
+import { history } from "../../helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -33,9 +37,6 @@ import {
     emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
-import { EmphasizedSegment } from "@wso2is/react-components";
 
 /**
  * Proptypes for the user sessions component.
@@ -48,19 +49,22 @@ interface UserSessionsComponentProps extends TestableComponentInterface {
 /**
  * User sessions component.
  *
- * @return {JSX.Element}
+ * @param props - Props injected to the component.
+ * @returns User sessions component.
  */
 export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps> = (
     props: UserSessionsComponentProps
-): JSX.Element => {
+): ReactElement => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
+
+    const { t } = useTranslation();
 
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
     const [ editingUserSession, setEditingUserSession ] = useState<UserSession>(emptyUserSession);
     const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
     const [ isRevokeUserSessionModalVisible, setRevokeUserSessionModalVisibility ] = useState(false);
     const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
-    const { onAlertFired, ["data-testid"]: testId } = props;
-    const { t } = useTranslation();
     const [ isSessionDetailsLoading, setIsSessionDetailsLoading ] = useState<boolean>(false);
 
     /**
@@ -70,12 +74,12 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
         setIsSessionDetailsLoading(true);
         fetchUserSessions()
-            .then((response) => {
+            .then((response: UserSessions) => {
                 if (response && response.sessions && response.sessions.length && response.sessions.length > 0) {
-                    let sessions = [...response.sessions];
+                    let sessions: UserSession[] = [ ...response.sessions ];
 
                     // Sort the array by last access time
-                    sessions = reverse(sortBy(sessions, (session) => session.lastAccessTime));
+                    sessions = reverse(sortBy(sessions, (session: UserSession) => session.lastAccessTime));
 
                     setUserSessions({
                         ...response,
@@ -87,7 +91,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
                 setUserSessions(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -115,7 +119,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             })
             .finally(() => {
                 setIsSessionDetailsLoading(false);
-            })
+            });
     };
 
     /**
@@ -129,15 +133,16 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * Handler for the session detail button click.
      *
      * @param e - Click event.
-     * @param {any} id - Session id.
+     * @param id - Session id.
      */
-    const handleSessionDetailClick = (e, { id }) => {
-        const indexes = [ ...sessionsListActiveIndexes ];
+    const handleSessionDetailClick = (e: MouseEvent<HTMLButtonElement>, { id }: ButtonProps): void => {
+        const indexes: number[] = [ ...sessionsListActiveIndexes ];
 
         if (!sessionsListActiveIndexes.includes(id)) {
             indexes.push(id);
         } else if (sessionsListActiveIndexes.includes(id)) {
-            const removingIndex = sessionsListActiveIndexes.indexOf(id);
+            const removingIndex: number = sessionsListActiveIndexes.indexOf(id);
+
             if (removingIndex !== -1) {
                 indexes.splice(removingIndex, 1);
             }
@@ -148,7 +153,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     /**
      * Terminate a single user session.
      */
-    const handleTerminateUserSession = () => {
+    const handleTerminateUserSession = (): void => {
         terminateUserSession(editingUserSession.id)
             .then(() => {
                 onAlertFired({
@@ -161,7 +166,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     )
                 });
             })
-            .catch((error) => {
+            .catch((error: AxiosError & { response: { detail: string; } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -195,7 +200,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     /**
      * Terminates all the user sessions.
      */
-    const handleTerminateAllUserSessions = () => {
+    const handleTerminateAllUserSessions = (): void => {
         terminateAllUserSessions()
             .then(() => {
                 history.push(AppConstants.getPaths().get("LOGOUT"));
@@ -209,7 +214,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     )
                 });
             })
-            .catch((error) => {
+            .catch((error: AxiosError & { response: { detail: string; } }) => {
                 getUserSessions();
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
@@ -253,7 +258,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     /**
      * Handles the terminate user sessions click event.
      *
-     * @param {UserSession} session - Session which needs to be edited.
+     * @param session - Session which needs to be edited.
      */
     const handleTerminateUserSessionClick = (session: UserSession): void => {
         setEditingUserSession(session);
@@ -263,18 +268,18 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     /**
      * Handle the terminate all user sessions modal close event.
      */
-    const handleTerminateAllUserSessionsModalClose = () => {
+    const handleTerminateAllUserSessionsModalClose = (): void => {
         setRevokeAllUserSessionsModalVisibility(false);
     };
 
     /**
      * Handle the terminate user session modal close event.
      */
-    const handleTerminateUserSessionModalClose = () => {
+    const handleTerminateUserSessionModalClose = (): void => {
         setRevokeUserSessionModalVisibility(false);
     };
 
-    const terminateAllUserSessionsModal = (
+    const terminateAllUserSessionsModal: ReactElement = (
         <Modal
             data-testid={ `${testId}-terminate-all-modal` }
             size="mini"
@@ -300,7 +305,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         </Modal>
     );
 
-    const terminateUserSessionModal = (
+    const terminateUserSessionModal: ReactElement = (
         <Modal
             data-testid={ `${testId}-termination-modal` }
             size="mini"
@@ -316,12 +321,16 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 <p>{ t("myAccount:components.userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
-                <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }
-                 data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
+                <Button
+                    className="link-button"
+                    onClick={ handleTerminateUserSessionModalClose }
+                    data-testid={ `${testId}-termination-modal-actions-cancel-button` }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary={ true } onClick={ handleTerminateUserSession }
-                 data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
+                <Button
+                    primary={ true }
+                    onClick={ handleTerminateUserSession }
+                    data-testid={ `${testId}-termination-modal-actions-terminate-button` }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -355,22 +364,22 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     : null
             }
         >
-            {!isSessionDetailsLoading ?
-                <UserSessionsList
-                    data-testid={`${testId}-list`}
-                    onTerminateUserSessionClick={handleTerminateUserSessionClick}
-                    onUserSessionDetailClick={handleSessionDetailClick}
-                    userSessions={userSessions && userSessions.sessions ? userSessions.sessions : null}
-                    userSessionsListActiveIndexes={sessionsListActiveIndexes}
-                />
-            : <EmphasizedSegment>
-                <Placeholder fluid>
-                    <Placeholder.Header image>
-                        <Placeholder.Line/>
-                        <Placeholder.Line/>
-                    </Placeholder.Header>
-                </Placeholder>
-             </EmphasizedSegment>
+            { !isSessionDetailsLoading ?
+                (<UserSessionsList
+                    data-testid={ `${testId}-list` }
+                    onTerminateUserSessionClick={ handleTerminateUserSessionClick }
+                    onUserSessionDetailClick={ handleSessionDetailClick }
+                    userSessions={ userSessions && userSessions.sessions ? userSessions.sessions : null }
+                    userSessionsListActiveIndexes={ sessionsListActiveIndexes }
+                />)
+                : (<EmphasizedSegment className="placeholder-container">
+                    <Placeholder fluid>
+                        <Placeholder.Header image>
+                            <Placeholder.Line/>
+                            <Placeholder.Line/>
+                        </Placeholder.Header>
+                    </Placeholder>
+                </EmphasizedSegment>)
             }
             { terminateAllUserSessionsModal }
             { terminateUserSessionModal }
