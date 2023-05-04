@@ -33,7 +33,7 @@ interface HyprIDPCreateWizardHelpProps {
 const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const hyprControlCentreDocUrl: string = 
         "https://docs.hypr.com/installinghypr/docs/getting-started-with-fido-control-center";
 
@@ -43,7 +43,6 @@ const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateW
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -196,7 +195,7 @@ const HyprIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: HyprIDPCreateW
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
