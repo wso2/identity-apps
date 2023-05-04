@@ -18,7 +18,7 @@
 
 import { CopyInputField, Message } from "@wso2is/react-components";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Icon, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
@@ -40,20 +40,31 @@ const CustomIdentityProviderCreateWizardHelp = ():any => {
                         type="info"
                         header="Prerequisite"
                         content={
-                            (<p>Before you begin, register an application in the Identity Provider, and obtain a
-                                <strong> client ID & secret</strong>. Use the following URL as the <strong>
-                                Authorized Redirect URL</strong>.
-                                <br />
-                                <br />
-                                <CopyInputField
-                                    className="copy-input-dark"
-                                    value={ config?.deployment?.customServerHost + "/commonauth" }
-                                />
-                                <br />
-                                <Icon name="info circle" />
-                                The URL to which the authorization code is sent upon authentication and where the
-                                user is redirected to upon logout.
-                            </p>)
+                            (<>
+                                <p>
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.authenticationProvider.templates." +
+                                        "enterprise.oidc.preRequisites.description"
+                                        }
+                                    >
+                                    Before you begin, register an application in the Identity Provider, and obtain a
+                                        <strong> client ID & secret</strong>. Use the following URL as the <strong>
+                                        Authorized Redirect URL</strong>.
+                                    </Trans>
+                                    <br />
+                                    <br />
+                                    <CopyInputField
+                                        className="copy-input-dark"
+                                        value={ config?.deployment?.customServerHost + "/commonauth" } />
+                                    <br />
+                                    <Icon name="info circle" />
+                                    {
+                                        t("console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                        "preRequisites.hint")
+                                    }
+                                </p>
+                            </>)
                         }
                     />
                 </>
@@ -62,39 +73,99 @@ const CustomIdentityProviderCreateWizardHelp = ():any => {
         },
         {
             body:(    
-                <><p>Provide the client ID obtained from the identity provider.</p>
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "clientId.description"
+                            }
+                        >
+                            Provide the client ID obtained from the identity provider.
+                        </Trans>
+                    </p>
                 </>      
             ),
             id: 1,
-            title:  t("Client ID")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+            "clientId.heading")
         },
         {
             body:(    
-                <><p>Provide the client secret obtained from the identity provider.</p>
+                <>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "clientSecret.description"
+                            }
+                        >
+                            Provide the client secret obtained from the identity provider.
+                        </Trans>
+                    </p>
                 </>      
             ),
             id: 2,
-            title:  t("Client secret")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                "clientSecret.heading")
         },
         {
             body:(    
                 <>
-                    <p>Provide the standard authorization endpoint URL of the identity provider.</p>
-                    <p>E.g., https://enterprise_domain/authorize</p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "authorizeEndpoint.description"
+                            }
+                        >
+                            Provide the standard authorization endpoint URL of the identity provider.
+                        </Trans>
+                    </p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "authorizeEndpoint.example"
+                            }
+                        >
+                            E.g., https://enterprise_domain/authorize
+                        </Trans>
+                    </p>
                 </>      
             ),
             id: 3,
-            title:  t("Authorization endpoint URL")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+            "authorizeEndpoint.heading")
         },
         {
             body:(    
                 <>
-                    <p>Provide the standard token endpoint URL of the identity provider.</p>
-                    <p>E.g., https://enterprise_domain/token</p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "tokenEndpoint.description"
+                            }
+                        >
+                            Provide the standard token endpoint URL of the identity provider.
+                        </Trans>
+                    </p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+                                "tokenEndpoint.example"
+                            }
+                        >
+                            E.g., https://enterprise_domain/token
+                        </Trans>
+                    </p>
                 </>      
             ),
             id: 4,
-            title:  t("Token endpoint URL")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.oidc." +
+            "tokenEndpoint.heading")
         }
     ];
 
@@ -125,7 +196,7 @@ const CustomIdentityProviderCreateWizardHelp = ():any => {
             >
                 <div className="idp-sidepanel-content-large">
                     { quickHelpContent.map(({ id, title, body }:Content) => (
-                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentContent === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
