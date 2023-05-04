@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface } from "apps/console/src/features/core";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Button, Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 /**
@@ -31,11 +29,10 @@ interface OrganizationEnterpriseIdentityProviderCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: OrganizationEnterpriseIdentityProviderCreateWizardHelpProps) => {
+const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ 
+    currentStepInSidePanelGuide }: OrganizationEnterpriseIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
-    const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
