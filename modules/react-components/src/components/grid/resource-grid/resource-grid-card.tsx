@@ -22,7 +22,6 @@ import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, 
 import { ButtonProps, Icon } from "semantic-ui-react";
 import { LinkButton } from "../../button";
 import { InfoCard, InfoCardPropsInterface } from "../../card";
-import { GenericIcon } from "../../icon";
 
 /**
  * Interface for the Resource Grid Card component.
@@ -104,7 +103,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         disabled,
         editButtonLabel,
         onClick,
-        onDelete,
+        // onDelete,
         onEdit,
         isResourceComingSoon,
         resourceCategory,
@@ -114,7 +113,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         resourceName,
         showActions,
         showResourceEdit,
-        showResourceDelete,
+        // showResourceDelete,
         showTooltips,
         testId,
         [ "data-componentid" ]: componentId,
