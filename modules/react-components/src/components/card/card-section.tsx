@@ -146,7 +146,7 @@ export const CardData : DataType[] = [
     }    
 ];
 
-const CardSection = () => {
+const CardSection = (): any => {
     return (
         <div className="card-grid">
             <div className="static-standard-title">
