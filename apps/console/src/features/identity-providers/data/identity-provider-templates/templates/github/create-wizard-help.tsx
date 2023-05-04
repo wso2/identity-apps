@@ -33,7 +33,9 @@ interface GithubIdentityProviderCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const GithubIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: GithubIdentityProviderCreateWizardHelpProps) => {
+const GithubIdentityProviderCreateWizardHelp = ({ 
+    currentStepInSidePanelGuide
+}: GithubIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
@@ -63,8 +65,8 @@ const GithubIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }:
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
-                                        "preRequisites.getCredentials"
+                                            "console:develop.features.authenticationProvider.templates.github." +
+                                        "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
                                     Before you begin, create an <strong>OAuth application</strong> <a
@@ -79,8 +81,8 @@ const GithubIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }:
 
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                        ".preRequisites.configureHomePageURL"
+                                            "console:develop.features.authenticationProvider.templates.github." +
+                                        "wizardHelp.preRequisites.configureHomePageURL"
                                         }
                                     >
                                     Use the following URL as the <strong>Homepage URL</strong>.
@@ -94,8 +96,8 @@ const GithubIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }:
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
-                                        ".preRequisites.configureRedirectURL"
+                                            "console:develop.features.authenticationProvider.templates.github." +
+                                        "wizardHelp.preRequisites.configureRedirectURL"
                                         }
                                     >
                                     Add the following URL as the <strong>Authorization callback URL</strong>.
