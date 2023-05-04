@@ -33,7 +33,9 @@ interface AppleIdentityProviderCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const AppleIdentityProviderCreateWizardHelp = ({ currentStepInSidePanelGuide }: AppleIdentityProviderCreateWizardHelpProps) => {
+const AppleIdentityProviderCreateWizardHelp = ({
+    currentStepInSidePanelGuide
+}: AppleIdentityProviderCreateWizardHelpProps): any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
