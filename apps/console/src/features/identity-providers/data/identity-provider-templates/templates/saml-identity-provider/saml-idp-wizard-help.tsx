@@ -34,7 +34,6 @@ const SamlIDPWizardHelp = ():any => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { getLink } = useDocumentation();
 
-
     interface Content {
         id: number;
         title?: string;
@@ -55,7 +54,7 @@ const SamlIDPWizardHelp = ():any => {
                                 "preRequisites.configureRedirectURL"
                                     }
                                 >
-                            Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                                    Use the following URL as the <strong>Authorized Redirect URI</strong>.
                                 </Trans>
                                 <CopyInputField
                                     className="copy-input-dark spaced"
@@ -72,6 +71,8 @@ const SamlIDPWizardHelp = ():any => {
                                     ? null
                                     : <Divider hidden/>
                                 }
+                                <br />
+                                <br />
                                 <DocumentationLink
                                     link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
                                 >
@@ -91,46 +92,80 @@ const SamlIDPWizardHelp = ():any => {
             body:(    
                 <>
                     <p>
-                This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                        { " " }{ config.ui.productName } to external Identity Provider (IdP). 
-                        You need to provide a unique value as the service provider entity ID.
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "serviceProviderEntityId.description"
+                            }
+                        >
+                            This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML 
+                            requests initiated from Asgardeo to external Identity Provider (IdP). You need to 
+                            provide a unique value as the service provider entity ID.
+                        </Trans>
                     </p>
                 </>      
             ),
             id: 1,
-            title:  t("Service provider entity ID")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+            "serviceProviderEntityId.heading")
         },
         {
             body:(    
                 <>
                     <p>
-                Single Sign-On URL of the external IdP. { config.ui.productName } will send SAML authentication
-                requests to this endpoint.
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "identityProviderSingleSignOnUrl.description"
+                            }
+                        >
+                            Single Sign-On URL of the external IdP. Asgardeo will send SAML authentication
+                            requests to this endpoint.
+                        </Trans>
                     </p>
-                    <p>E.g., https://enterprise_domain/samlsso</p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "identityProviderSingleSignOnUrl.example")
+                        }
+                    </p>
                 </>      
             ),
             id: 2,
-            title:  t("Identity provider Single Sign-On URL")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+            "identityProviderSingleSignOnUrl.heading")
         },
         {
             body:(    
                 <>
+                    
                     <p>
-                This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in the SAML responses issued by the
-                external IdP. Also, this needs to be a unique value to identify the external IdP within your
-                organization.
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "identityProviderEntityId.description"
+                            }
+                        >
+                            This is the <Code>&lt;saml2:Issuer&gt;</Code> value specified in the SAML responses 
+                            issued by the external IdP. Also, this needs to be a unique value to identify the external 
+                            IdP within your organization.
+                        </Trans>
                     </p>
-                    <p>E.g., https://enterprise_domain</p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            "identityProviderEntityId.example")
+                        }
+                    </p>
                 </>      
             ),
             id: 3,
-            title:  t("Identity provider entity ID")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+            "identityProviderEntityId.heading")
         }
     ];
 
     const [ currentContent, setCurrentContent ] = useState(0);
-
     const handleClickPrevious = () => {
         setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
     };
@@ -156,7 +191,7 @@ const SamlIDPWizardHelp = ():any => {
             >
                 <div className="idp-sidepanel-content-large">
                     { quickHelpContent.map(({ id, title, body }:Content) => (
-                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentContent === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
