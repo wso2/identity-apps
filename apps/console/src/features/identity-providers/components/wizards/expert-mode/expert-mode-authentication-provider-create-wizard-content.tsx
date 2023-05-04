@@ -119,12 +119,12 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
          * @param value - IDP name.
          * @returns error msg if name is already taken.
          */
-        const idpNameValidation = (value): string => {
+        const idpNameValidation = (value: string): string => {
 
             let nameExist: boolean = false;
 
             if (idpList?.count > 0) {
-                idpList?.identityProviders.map((idp) => {
+                idpList?.identityProviders.map((idp: Record<string, unknown>) => {
                     if (idp?.name === value) {
                         nameExist = true;
 
@@ -177,8 +177,8 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                 onSubmit={
                     (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                 }
-                triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-componentid={ componentId }
@@ -198,7 +198,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
-                        validation={ (value) => idpNameValidation(value) }
+                        validation={ (value: string) => idpNameValidation(value) }
                         maxLength={
                             IdentityProviderManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
