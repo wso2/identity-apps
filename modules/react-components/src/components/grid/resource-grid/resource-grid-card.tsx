@@ -28,7 +28,6 @@ import { InfoCard, InfoCardPropsInterface } from "../../card";
  */
 export interface ResourceGridCardPropsInterface extends InfoCardPropsInterface, IdentifiableComponentInterface,
     TestableComponentInterface {
-
     /**
      * Is resource disabled.
      */
@@ -103,7 +102,6 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         disabled,
         editButtonLabel,
         onClick,
-        // onDelete,
         onEdit,
         isResourceComingSoon,
         resourceCategory,
@@ -113,7 +111,6 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         resourceName,
         showActions,
         showResourceEdit,
-        // showResourceDelete,
         showTooltips,
         testId,
         [ "data-componentid" ]: componentId,
@@ -155,7 +152,6 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                                 </LinkButton>
                             )
                         }
-                        
                     </div>
                 )
             }
