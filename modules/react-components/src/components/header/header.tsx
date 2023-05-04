@@ -81,6 +81,7 @@ export interface HeaderPropsInterface extends IdentifiableComponentInterface, Te
     showUserDropdownTriggerBars?: boolean;
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
+    userDropdownFooter?: React.ReactNode;
     userDropdownLinks?: HeaderLinkCategoryInterface[];
     /**
      * User dropdown pointing direction.
@@ -195,6 +196,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
+        userDropdownFooter,
         userDropdownLinks,
         userDropdownPointing,
         onAvatarClick,
@@ -704,6 +706,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 </Item.Group>
                                                 { renderLinkedAccounts(linkedAccounts) }
                                                 { renderUserDropdownLinks() }
+                                                { userDropdownFooter }
                                             </Dropdown.Menu>
                                         }
                                     </Dropdown>

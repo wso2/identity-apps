@@ -17,6 +17,7 @@
  */
 
 import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
+import { ReactElement } from "react";
 import { HeaderSubPanelItemInterface } from "../../../features/core/components";
 import { FeatureConfigInterface } from "../../../features/core/models";
 
@@ -52,6 +53,12 @@ export interface CommonConfig {
          */
         getUserDropdownLinkExtensions: (tenantDomain: string,
             associatedTenants: any[]) => Promise<HeaderLinkCategoryInterface[]>;
+        /**
+         * Get the user dropdown footer extensions.
+         *
+         * @returns A ReactElement that renders the footer.
+         */
+        getUserDropdownFooterExtensions: () => ReactElement;
         /**
          * Should the app switcher be shown as nine dots dropdown.
          */
