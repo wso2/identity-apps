@@ -159,7 +159,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </EmphasizedSegment>
     );
 
-    const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(true);
+    const [ , setIsAppsLoading ] = useState<boolean>(true);
     const [ connectedAppsCount, setConnectedAppsCount ] = useState<number>(0);
     const dispatch: Dispatch = useDispatch();
 
@@ -172,7 +172,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 setConnectedAppsCount(response.count);
             } catch (error: any) {
                 dispatch(addAlert({
-                    description: error?.description || t("console:develop.features.idp.connectedApps.genericError.description"),
+                    description: error?.description || 
+                        t("console:develop.features.idp.connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
                 }));
