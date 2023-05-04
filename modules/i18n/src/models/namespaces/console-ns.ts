@@ -1776,6 +1776,7 @@ export interface ConsoleNS {
                             name: {
                                 description: string;
                                 heading: string;
+                                example: string;
                             };
                             description: {
                                 description: string;
@@ -1841,12 +1842,60 @@ export interface ConsoleNS {
                             title: string;
                             subtitle: string;
                         };
+                        name?: {
+                            description: string;
+                            example: string;
+                            heading: string;
+                        }
+                        oidc?: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            authorizeEndpoint: {
+                                description: string;
+                                example: string;
+                                heading: string;
+                            };
+                            tokenEndpoint: {
+                                description: string;
+                                example: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                heading: string;
+                                description: string;
+                                hint: string;
+                            };
+                        }
                         saml?: {
                             preRequisites: {
                                 configureIdp: string;
                                 configureRedirectURL: string;
                                 heading: string;
                                 hint: string;
+                            };
+                            serviceProviderEntityId: {
+                                description: string;
+                                heading: string;
+                            };
+                            metaFile: {
+                                description: string;
+                                heading: string;
+                            };
+                            identityProviderSingleSignOnUrl: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                            identityProviderEntityId: {
+                                description: string;
+                                heading: string;
+                                example: string;
                             };
                         };
                         validation: {
