@@ -950,6 +950,11 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisionnement"
                         },
+                        sharedAccess: {
+                            subTitle: "Sélectionnez les options suivantes pour partager l'application avec " + 
+                                "les sous-organisations.",
+                            tabName: "Accès partagé"
+                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1527,6 +1532,11 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "Ceci n'est pas une URL d'image valide"
                                 }
+                            },
+                            isSharingEnabled: {
+                                hint: "Si elle est activée, elle permettra à cette application d'authentifier les " + 
+                                    "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
+                                label: "Autoriser le partage avec des sous-organisations"
                             },
                             isManagementApp: {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
@@ -5265,8 +5275,9 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "S'il est sélectionné, l'utilisateur doit spécifier une valeur pour " +
                         "cet attribut sur le profil.",
-                        requiredWarning: "Pour rendre l'attribut e-mail non requis sur le profil de " +
-                            "l'utilisateur, vous devez désactiver la vérification de compte pour votre organisation.",
+                        requiredWarning: "Pour que l'attribut d'e-mail ne s'affiche pas et ne soit pas " +
+                            "requis sur le profil de l'utilisateur, vous devez désactiver la vérification " +
+                            "de compte pour votre organisation",
                         supportedByDefault: {
                             label: "Afficher cet attribut sur le profil de l'utilisateur et la page " +
                                 "d'enregistrement de l'utilisateur"
@@ -6968,15 +6979,16 @@ export const console: ConsoleNS = {
                         title: "Ajouter une nouvelle organisation"
                     }
                 },
+                shareApplicationSubTitle: "Sélectionnez l'une des options suivantes pour partager l'application.",
                 shareApplicationRadio: "Partager avec toutes les sous-organisations",
                 shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
                     "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
                     "créez sous votre organisation actuelle.",
-                unshareApplicationRadio: "Annuler le partage avec toutes les sous-organisations",
+                unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
                 shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
-                unshareApplicationInfo: "Sélectionnez cette option pour annuler le partage de l'application " +
-                    "avec toutes les sous-organisations existantes et toutes les nouvelles sous-organisations " +
-                    "que vous créez sous vos organisations actuelles.",
+                unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " + 
+                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " + 
+                    "créerez sous cette organisation à l'avenir.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
                     emptyList: "Il n'y a aucune organisation à afficher.",
@@ -7398,7 +7410,8 @@ export const console: ConsoleNS = {
                                 subtitles: "Aucun utilisateur n'est assigné à ce rôle pour le moment.",
                                 title: "Aucun utilisateur assigné"
                             },
-                            header: "Utilisateurs"
+                            user: "Utilisateur",
+                            organization: "Dirigé par"
                         }
                     }
                 },

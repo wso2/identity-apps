@@ -481,6 +481,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
             isPrivilegedUser={ isPrivilegedUser }
+            userDropdownFooter={ commonConfig?.header?.getUserDropdownFooterExtensions() }
             userDropdownLinks={
                 compact([
                     !commonConfig?.header?.renderAppSwitcherAsDropdown && {

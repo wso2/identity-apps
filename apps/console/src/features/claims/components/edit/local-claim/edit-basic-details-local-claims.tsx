@@ -54,7 +54,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
+import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
@@ -122,6 +122,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
+    const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -255,13 +256,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         }
 
         connector.properties.map((property: ConnectorPropertyInterface) => {
-            if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+            if (property.name === ServerConfigurationsConstants.ACCOUNT_CONFIRMATION) {
                 if (property.value === "false") {
                     setAccountVerificationEnabled(false);
                 } else {
                     setAccountVerificationEnabled(true);
                 }
             }
+
+            if (property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) {
+                if (property.value === "false") {
+                    setSelfRegistrationEnabledEnabled(false);
+                } else {
+                    setSelfRegistrationEnabledEnabled(true);
+                }
+            }
+
         });
     }, [ connector ]);
 
@@ -572,7 +582,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
-                                disabled={ !hasMapping }
+                                disabled={ 
+                                    !hasMapping
+                                    || (
+                                        accountVerificationEnabled
+                                        && selfRegistrationEnabled
+                                        && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                                        && usernameConfig?.enableValidator === "true"
+                                    )
+                                }
                                 {
                                     ...( shouldShowOnProfile
                                         ? { checked: true }
@@ -628,18 +646,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     || !hasMapping
                                     || (
                                         accountVerificationEnabled
+                                        && selfRegistrationEnabled
                                         && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
                                         && usernameConfig?.enableValidator === "true"
                                     )
-                                }
-                                message={ 
-                                    accountVerificationEnabled
-                                    && usernameConfig?.enableValidator === "true"
-                                    && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
-                                    && {
-                                        content: t("console:manage.features.claims.local.forms.requiredWarning"),
-                                        type: "info"
-                                    }
                                 }
                                 {
                                     ...( isClaimReadOnly
@@ -648,6 +658,18 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     )
                                 }
                             />
+                        )
+                    }
+                    {
+                        accountVerificationEnabled
+                        && selfRegistrationEnabled
+                        && usernameConfig?.enableValidator === "true"
+                        && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                        && (
+                            <Message info>
+                                <Icon name="info circle" />
+                                { t("console:manage.features.claims.local.forms.requiredWarning") }
+                            </Message>
                         )
                     }
                     {

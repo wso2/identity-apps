@@ -36,8 +36,10 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
+import { OrganizationManagementConstants } from "../../../organizations/constants";
 import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
 
 /**
@@ -78,6 +80,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     } = props;
 
     const { t } = useTranslation();
+
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -546,7 +550,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         <Grid.Row>
                             <Grid.Column computer={ 16 }>
                                 {
-                                    selectedUsers?.length > 0 ? (
+                                    assignedUsers?.length > 0 ? (
                                         <EmphasizedSegment className="user-role-edit-header-segment">
                                             <Grid.Row>
                                                 <Grid.Column>
@@ -579,30 +583,77 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                             <Table.HeaderCell/>
                                                             <Table.HeaderCell>
                                                                 { t("console:manage.features.roles.edit.users.list." +
-                                                                "header") }
+                                                                "user") }
+                                                            </Table.HeaderCell>
+                                                            <Table.HeaderCell>
+                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                "organization") }
                                                             </Table.HeaderCell>
                                                         </Table.Row>
                                                     </Table.Header>
                                                     <Table.Body>
                                                         {
-                                                            selectedUsers?.map((user: UserBasicInterface) => {
-                                                                return (
-                                                                    <Table.Row key={ user.id }>
-                                                                        <Table.Cell collapsing>
-                                                                            <UserAvatar
-                                                                                data-testid={ `${ testId }-users-list-
-                                                                                ${ user.userName }-avatar` }
-                                                                                name={ resolveUserDisplayName(user) }
-                                                                                size="mini"
-                                                                                floated="left"
-                                                                                image={ user.profileUrl }
-                                                                            />
-                                                                        </Table.Cell>
-                                                                        <Table.Cell>
-                                                                            { user.userName }
-                                                                        </Table.Cell>
-                                                                    </Table.Row>
-                                                                );
+                                                            assignedUsers?.map((user: RolesMemberInterface) => {
+                                                                if (user.orgId) {
+                                                                    return (
+                                                                        <Table.Row key={ user.value }>
+                                                                            <Table.Cell collapsing>
+                                                                                <UserAvatar
+                                                                                    data-testid={ `${ testId }-users
+                                                                                    -list-${ user.display }-avatar` }
+                                                                                    name={ 
+                                                                                        user.display
+                                                                                    }
+                                                                                    size="mini"
+                                                                                    floated="left"
+                                                                                />
+                                                                            </Table.Cell>
+                                                                            <Table.Cell>
+                                                                                { user.display }
+                                                                            </Table.Cell>
+                                                                            <Table.Cell>
+                                                                                {
+                                                                                    user.orgId === 
+                                                                                    OrganizationManagementConstants
+                                                                                        .ROOT_ORGANIZATION_ID ? 
+                                                                                        productName : user.orgName
+                                                                                }
+                                                                            </Table.Cell>
+                                                                        </Table.Row>
+                                                                    );
+                                                                } else {
+                                                                    const selectedUser: UserBasicInterface = 
+                                                                    selectedUsers?.find(
+                                                                        (userObj: UserBasicInterface) => 
+                                                                            userObj.id === user.value
+                                                                    );
+
+                                                                    if (selectedUser) {
+                                                                        return (
+                                                                            <Table.Row key={ selectedUser.id }>
+                                                                                <Table.Cell collapsing>
+                                                                                    <UserAvatar
+                                                                                        data-testid={ `${ testId }-users
+                                                                                        -list-${ selectedUser.userName }
+                                                                                        -avatar` }
+                                                                                        name={ 
+                                                                                            resolveUserDisplayName(
+                                                                                                selectedUser
+                                                                                            )
+                                                                                        }
+                                                                                        size="mini"
+                                                                                        floated="left"
+                                                                                    />
+                                                                                </Table.Cell>
+                                                                                <Table.Cell>
+                                                                                    { selectedUser.userName }
+                                                                                </Table.Cell>
+                                                                                <Table.Cell>
+                                                                                </Table.Cell>
+                                                                            </Table.Row>
+                                                                        );
+                                                                    }
+                                                                }
                                                             })
                                                         }
                                                     </Table.Body>
