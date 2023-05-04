@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -84,9 +84,9 @@ export interface ExpertModeAuthenticationProviderCreateWizardFormErrorValidation
 /**
  * Expert Mode Authentication Provider Create Wizard Component.
  *
- * @param {ExpertModeAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns `{React.ReactElement}`
  */
 export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
     ExpertModeAuthenticationProviderCreateWizardPropsInterface
@@ -104,7 +104,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
             [ "data-componentid" ]: componentId
         } = props;
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch<any> = useDispatch();
 
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
@@ -132,14 +132,14 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Creates a new identity provider.
         *
-        * @param identityProvider Identity provider object.
+        * @param identityProvider - Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
-                .then((response) => {
+                .then((response:any) => {
                     eventPublisher.publish("connections-finish-adding-connection", {
                         type: componentId
                     });
@@ -155,8 +155,8 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     // The created resource's id is sent as a location header.
                     // If that's available, navigate to the edit page.
                     if (!isEmpty(response.headers.location)) {
-                        const location = response.headers.location;
-                        const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                        const location:string = response.headers.location;
+                        const createdIdpID:string = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
 
@@ -166,7 +166,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     // Since the location header is not present, trigger callback without the id.
                     onIDPCreate();
                 })
-                .catch((error) => {
+                .catch((error:any) => {
 
                     const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
@@ -226,7 +226,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Callback triggered when the form is submitted.
         *
-        * @param {ExpertModeAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+        * @param values - Form values.
         */
         const onSubmitWizard = (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface): void => {
 
@@ -255,7 +255,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Resolve the step wizard actions.
         *
-        * @return {React.ReactElement}
+        * @returns `{React.ReactElement}`
         */
         const resolveStepActions = (): ReactElement => {
 
@@ -324,7 +324,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Renders the help panel containing wizard help.
         *
-        * @return {React.ReactElement}
+        * @returns `{React.ReactElement}`
         */
         const renderHelpPanel = (): ReactElement => {
 
