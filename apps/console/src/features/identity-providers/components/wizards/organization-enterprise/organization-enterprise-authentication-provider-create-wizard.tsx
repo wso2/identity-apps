@@ -23,7 +23,7 @@ import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from 
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -104,7 +104,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         ["data-componentid"]: componentId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
 
@@ -136,7 +136,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
-            .then((response) => {
+            .then((response:any) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId
                 });
@@ -152,8 +152,8 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    const location:string = response.headers.location;
+                    const createdIdpID:string = location.substring(location.lastIndexOf("/") + 1);
 
                     onIDPCreate(createdIdpID);
 
@@ -163,7 +163,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error) => {
+            .catch((error:any) => {
                 const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                     ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
                     : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
