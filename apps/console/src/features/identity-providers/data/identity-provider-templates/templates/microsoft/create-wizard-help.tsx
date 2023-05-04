@@ -35,13 +35,12 @@ interface MicrosoftIDPCreateWizardHelpProps {
 const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: MicrosoftIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -74,7 +73,6 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                                     </Trans>
                                 </p>
                                 <p>
-
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.authenticationProvider.templates.microsoft." +
@@ -83,12 +81,10 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                                     >
                                 Use the following URL as the <strong>Authorized Redirect URI</strong>.
                                     </Trans>
-
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost + "/commonauth" }
                                     />
-
                                     <a
                                         href={ "https://learn.microsoft.com/en-us/azure/active-directory/saas-apps"
                                 +"/openidoauth-tutorial?source=recommendations" }
@@ -133,7 +129,7 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                         ".wizardHelp.clientId.description"
                             }
                         >
-                    Provide the <Code>Client ID</Code> obtained from Microsoft.
+                            Provide the <Code>Client ID</Code> obtained from Microsoft.
                         </Trans>
                     </p>
                 </>
@@ -151,7 +147,7 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                         ".wizardHelp.clientSecret.description"
                             }
                         >
-                    Provide the <Code>Client Secret</Code> obtained from Microsoft.
+                            Provide the <Code>Client Secret</Code> obtained from Microsoft.
                         </Trans>
                     </p>
                 </>
@@ -187,7 +183,7 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
