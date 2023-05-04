@@ -32,7 +32,7 @@ interface GoogleIDPCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCreateWizardHelpProps) => {
+const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
@@ -62,23 +62,24 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                    "preRequisites.getCredentials"
+                                            "console:develop.features.authenticationProvider.templates.google." +
+                                    "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
                                             href="https://console.developers.google.com"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                        > Google developer console</a>, and obtain a <strong>Client ID & secret</strong>.
+                                        > Google developer console</a>, and obtain 
+                                        a <strong>Client ID & secret</strong>.
                                     </Trans>
                                 </p>
                                 <p>
 
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
-                                    ".preRequisites.configureRedirectURL"
+                                            "console:develop.features.authenticationProvider.templates.google." +
+                                    "wizardHelp.preRequisites.configureRedirectURL"
                                         }
                                     >
                                 Use the following URL as the <strong>Authorized Redirect URI</strong>.
@@ -94,8 +95,8 @@ const GoogleIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: GoogleIDPCre
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         {
-                                            t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
-                                        "preRequisites.configureOAuthApps")
+                                            t("console:develop.features.authenticationProvider.templates.google." +
+                                        "wizardHelp.preRequisites.configureOAuthApps")
                                         }
                                     </a>
                                 </p>
