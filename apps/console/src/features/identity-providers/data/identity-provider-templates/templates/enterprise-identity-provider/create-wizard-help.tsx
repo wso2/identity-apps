@@ -18,7 +18,7 @@
 
 import { Button } from "@wso2is/react-components";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Progress, Segment, SemanticCOLORS, Sidebar } from "semantic-ui-react";
 
 const CustomIdentityProviderCreateWizardHelp = ():any => {
@@ -33,18 +33,35 @@ const CustomIdentityProviderCreateWizardHelp = ():any => {
         {
             body:(    
                 <>
-                    <p>Provide a unique name for the enterprise authentication 
-                        provider so that it can be easily identified.</p>
-                    <p>E.g., MyEnterpriseAuthProvider.</p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.name." +
+                                    "description"
+                            }
+                        >
+                            Provide a unique name for the enterprise authentication 
+                            provider so that it can be easily identified.
+                        </Trans>
+                    </p>
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.name." +
+                                    "example"
+                            }
+                        >
+                            E.g., MyEnterpriseAuthProvider.
+                        </Trans>
+                    </p>
                 </>      
             ),
             id: 0,
-            title:  t("Name")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.name.heading")
         }
     ];
 
     const [ currentContent, setCurrentContent ] = useState(0);
-
     const handleClickPrevious = () => {
         setCurrentContent((c:number) => (c > 0 ? c - 1 : c));
     };
@@ -70,7 +87,7 @@ const CustomIdentityProviderCreateWizardHelp = ():any => {
             >
                 <div className="idp-sidepanel-content-large">
                     { quickHelpContent.map(({ id, title, body }:Content) => (
-                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentContent === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
