@@ -32,12 +32,11 @@ interface OrganizationEnterpriseIdentityProviderCreateWizardHelpProps {
 const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({ 
     currentStepInSidePanelGuide }: OrganizationEnterpriseIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -53,7 +52,12 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({
                                 ".wizardHelp.name.description")
                         }
                     </p>
-                    <p>E.g., MyOrgEnterpriseAuthProvider.</p>
+                    <p>
+                        {
+                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                                ".wizardHelp.name.example")
+                        }
+                    </p>
                 </>
             ),
             id: 0,
@@ -104,7 +108,7 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp = ({
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
