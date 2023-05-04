@@ -19,9 +19,9 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, MouseEvent, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownItemProps, DropdownProps, Icon } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
@@ -62,8 +62,10 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    // const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(1);
     const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listItemFilter, setListItemFilter ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS[0]
     );
@@ -72,13 +74,17 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         isLoading: isIDVPListRequestLoading,
         error: idpListFetchRequestError,
         mutate: idvpListMutator
-    } = useIdentityVerificationProviderList(listItemLimit, listOffset);
+    } = useIdentityVerificationProviderList(listItemLimit, listOffset, listItemFilter);
 
-    console.log("idvpList", idvpList);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const handleIdentityProviderListFilter = () => {
-        console.log("handleIdentityProviderListFilter");
+    /**
+     * Handles the `onFilter` callback action from the search component of identity verification provider.
+     * @param query - Search query.
+     */
+    const handleIdentityVerificationProviderListFilter = (query: string) => {
+        setSearchQuery(query);
+        setListItemFilter(query);
     };
 
     /**
@@ -91,18 +97,34 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         setListItemLimit(data.value as number);
     };
 
-    const handlePaginationChange = () => {
-        console.log("handlePaginationChange");
-
+    /**
+     * Handles the pagination change.
+     *
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
+     */
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+        setListOffset(((data.activePage as number) - 1) * listItemLimit);
     };
 
-    const handleListSortingStrategyOnChange = () => {
-        console.log("handleListSortingStrategyOnChange");
-
+    /**
+     * Sets the sorting strategy for identity verification provider list.
+     *
+     * @param event - The event.
+     * @param data - Dropdown data.
+     */
+    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        setListSortingStrategy(
+            IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS.find((option: DropdownItemProps) => {
+                return data.value === option.value;
+            })
+        );
     };
 
-    const handleIdentityProviderDelete = async () => {
-        console.log("reloading");
+    /**
+     * Triggers a re-fetch for the identity verification provider list after deleting an identity verification provider.
+     */
+    const onIdentityVerificationProviderDelete = async () => {
         await idvpListMutator();
     };
 
@@ -114,7 +136,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
 
         return (
             <AdvancedSearchWithBasicFilters
-                onFilter={ handleIdentityProviderListFilter }
+                onFilter={ handleIdentityVerificationProviderListFilter }
                 filterAttributeOptions={ [
                     {
                         key: 0,
@@ -201,7 +223,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     onEmptyListPlaceholderActionClick={ () =>
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                     }
-                    onIdentityVerificationProviderDelete={ handleIdentityProviderDelete }
+                    onIdentityVerificationProviderDelete={ onIdentityVerificationProviderDelete }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }
