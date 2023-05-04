@@ -5716,6 +5716,16 @@ export const console: ConsoleNS = {
                 }
             },
             idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Enter the value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by name"
+                },
                 buttons: {
                     addIDVP: "New Identity Verification Provider"
                 },

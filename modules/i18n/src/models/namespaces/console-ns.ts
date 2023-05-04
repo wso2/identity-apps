@@ -2392,16 +2392,26 @@ export interface ConsoleNS {
                 };
             };
             idvp: {
-              buttons: {
-                  addIDVP: string;
-              };
-              placeholders: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                buttons: {
+                    addIDVP: string;
+                };
+                placeholders: {
                     emptyIDVPList: Placeholder;
-              };
-              confirmations: {
-                 deleteIDVP: Confirmation;
-              };
-              notifications: {
+                };
+                confirmations: {
+                    deleteIDVP: Confirmation;
+                };
+                notifications: {
                   getIDVPList: Notification;
               };
             };

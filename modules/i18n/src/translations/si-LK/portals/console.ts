@@ -4086,6 +4086,16 @@ export const console: ConsoleNS = {
                 }
             },
             idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "සෙවීමට අගය ඇතුලත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "නම මගින් සොයන්න"
+                },
                 buttons: {
                     addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
                 },

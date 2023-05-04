@@ -4198,6 +4198,16 @@ export const console: ConsoleNS = {
                 }
             },
             idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Saisissez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom"
+                },
                 buttons: {
                     addIDVP: "Nouveau fournisseur de vérification d'identité"
                 },

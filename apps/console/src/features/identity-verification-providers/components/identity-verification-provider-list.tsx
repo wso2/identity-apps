@@ -35,6 +35,7 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
@@ -125,7 +126,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         ["data-componentid"]: componentId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ selectedIdvpToBeDeleted, setSelectedIdvpToBeDeleted ] =

@@ -23,6 +23,7 @@ import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components"
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
@@ -63,8 +64,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    // const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(1);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemFilter, setListItemFilter ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -76,8 +76,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         error: idvpListFetchRequestError,
         mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset, listItemFilter);
-    const dispatch = useDispatch();
-
+    const dispatch: Dispatch = useDispatch();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -186,26 +185,10 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                         value: "name"
                     }
                 ] }
-                // TODO: Make this IDVP instead of Auth provider
-                filterAttributePlaceholder={ t(
-                    "console:develop.features.authenticationProvider.advancedSearch." +
-                    "form.inputs.filterAttribute" +
-                    ".placeholder"
-                ) }
-                filterConditionsPlaceholder={ t(
-                    "console:develop.features.authenticationProvider.advancedSearch." +
-                    "form.inputs.filterCondition" +
-                    ".placeholder"
-                ) }
                 filterValuePlaceholder={ t(
-                    "console:develop.features.authenticationProvider.advancedSearch." +
-                    "form.inputs.filterValue" +
-                    ".placeholder"
+                    "console:develop.features.idvp.advancedSearch.form.inputs.filterValue.placeholder"
                 ) }
-                placeholder={ t(
-                    "console:develop.features.authenticationProvider." +
-                    "advancedSearch.placeholder"
-                ) }
+                placeholder={ t( "console:develop.features.idvp.advancedSearch.placeholder") }
                 defaultSearchAttribute="name"
                 defaultSearchOperator="co"
                 triggerClearQuery={ triggerClearQuery }
