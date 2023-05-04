@@ -38,13 +38,12 @@ const GithubIdentityProviderCreateWizardHelp = ({
 }: GithubIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -87,7 +86,6 @@ const GithubIdentityProviderCreateWizardHelp = ({
                                     >
                                     Use the following URL as the <strong>Homepage URL</strong>.
                                     </Trans>
-
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost }
@@ -102,12 +100,10 @@ const GithubIdentityProviderCreateWizardHelp = ({
                                     >
                                     Add the following URL as the <strong>Authorization callback URL</strong>.
                                     </Trans>
-
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost + "/commonauth" }
                                     />
-
                                     <a
                                         href={ "https://docs.github.com/en/developers/" 
                                     +"apps/building-oauth-apps/creating-an-oauth-app" }
@@ -207,7 +203,7 @@ const GithubIdentityProviderCreateWizardHelp = ({
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
