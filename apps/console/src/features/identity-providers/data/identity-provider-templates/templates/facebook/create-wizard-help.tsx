@@ -38,13 +38,12 @@ const FacebookIdentityProviderCreateWizardHelp = ({
 }: FacebookIdentityProviderCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
-    const [ currentState, setCurrentState ] = useState <any>();
+    const [ currentState, setCurrentState ] = useState<any>();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     useEffect(() => {
         setCurrentState(currentStepInSidePanelGuide);
     }, [ currentStepInSidePanelGuide ]);
-
     interface Content {
         id: number;
         title?: string;
@@ -69,16 +68,15 @@ const FacebookIdentityProviderCreateWizardHelp = ({
                                         "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
-                                Before you begin, create an <strong>application</strong> <a
+                                        Before you begin, create an <strong>application</strong> <a
                                             href="https://developers.facebook.com/"
                                             target="_blank"
                                             rel="noopener noreferrer">
-                                on Facebook Developer Console
+                                            on Facebook Developer Console
                                         </a>, and obtain a <strong>App ID & secret</strong>.
                                     </Trans>
                                 </p>
                                 <p>
-    
                                     <Trans
                                         i18nKey={
                                             "console:develop.features.authenticationProvider.templates.facebook." +
@@ -87,7 +85,6 @@ const FacebookIdentityProviderCreateWizardHelp = ({
                                     >
                                 Use the following as the <strong>Site URL</strong>.
                                     </Trans>
-    
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost }
@@ -102,12 +99,10 @@ const FacebookIdentityProviderCreateWizardHelp = ({
                                     >
                                 Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
                                     </Trans>
-    
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ config?.deployment?.customServerHost + "/commonauth" }
                                     />
-    
                                     <a
                                         href="https://developers.facebook.com/docs/development/create-an-app"
                                         target="_blank"
@@ -206,7 +201,7 @@ const FacebookIdentityProviderCreateWizardHelp = ({
             >
                 <div className="idp-sidepanel-content">
                     { quickHelpContent.map(({ id, title, body }: Content) => (
-                        <div key={ id } style={ { display: currentState === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentState === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
