@@ -32,7 +32,7 @@ interface MicrosoftIDPCreateWizardHelpProps {
      */
     currentStepInSidePanelGuide: number;
 }
-const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: MicrosoftIDPCreateWizardHelpProps) => {
+const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: MicrosoftIDPCreateWizardHelpProps):any => {
     const { t } = useTranslation();
     const [ useNewConnectionsView ] = useState<boolean>(undefined);
     const [ currentState, setCurrentState ] = useState <any>();
@@ -62,8 +62,8 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                                 <p>
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
-                                    "preRequisites.getCredentials"
+                                            "console:develop.features.authenticationProvider.templates.microsoft." +
+                                    "wizardHelp.preRequisites.getCredentials"
                                         }
                                     >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <a
@@ -77,8 +77,8 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
 
                                     <Trans
                                         i18nKey={
-                                            "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
-                                    ".preRequisites.configureRedirectURL"
+                                            "console:develop.features.authenticationProvider.templates.microsoft." +
+                                    "wizardHelp.preRequisites.configureRedirectURL"
                                         }
                                     >
                                 Use the following URL as the <strong>Authorized Redirect URI</strong>.
@@ -95,8 +95,8 @@ const MicrosoftIDPCreateWizardHelp = ({ currentStepInSidePanelGuide }: Microsoft
                                         target="_blank"
                                         rel="noopener noreferrer">
                                         {
-                                            t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
-                                        ".preRequisites.configureOAuthApps")
+                                            t("console:develop.features.authenticationProvider.templates.microsoft." +
+                                        "wizardHelp.preRequisites.configureOAuthApps")
                                         }
                                     </a>
                                 </p>
