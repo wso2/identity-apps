@@ -351,9 +351,8 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (idvp: IdentityVerificationProviderInterface): boolean =>
-                    !hasRequiredScopes(featureConfig?.identityProviders,
-                        featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
+                hidden: (): boolean => !hasRequiredScopes(featureConfig?.identityProviders,
+                    featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void =>
                     showIDVPDeleteConfirmationModal(idvp.id),

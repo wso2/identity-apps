@@ -1,15 +1,30 @@
-import React, { FunctionComponent, SyntheticEvent, useEffect, useState } from "react";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { useTranslation } from "react-i18next";
-import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, history, UIConstants } from "../../core";
-import { DropdownItemProps, DropdownProps, Icon } from "semantic-ui-react";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { IdentityVerificationProviderList } from "../components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { DropdownItemProps, DropdownProps, Icon } from "semantic-ui-react";
+import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
-import { IdentityVerificationProviderInterface, IDVPListResponseInterface } from "../models";
-import { identityProviderConfig } from "../../../extensions";
-import { mutate } from "swr";
+import { IdentityVerificationProviderList } from "../components";
 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
@@ -44,12 +59,12 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
 
     const { t } = useTranslation();
 
-    const [hasNextPage, setHasNextPage] = useState<boolean>(undefined);
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [triggerClearQuery, setTriggerClearQuery] = useState<boolean>(false);
-    const [listItemLimit, setListItemLimit] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [listOffset, setListOffset] = useState<number>(0);
-    const [listSortingStrategy, setListSortingStrategy] = useState<DropdownItemProps>(
+    const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS[0]
     );
     const {
@@ -58,6 +73,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         error: idpListFetchRequestError,
         mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset);
+
     console.log("idvpList", idvpList);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -131,8 +147,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                 triggerClearQuery={ triggerClearQuery }
                 data-componentid={ `${ componentId }-advance-search` }
             />
-        )
-    }
+        );
+    };
 
     return (
         <PageLayout
@@ -185,13 +201,13 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     onEmptyListPlaceholderActionClick={ () =>
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                     }
-                    onIdentityVerificationProviderDelete={handleIdentityProviderDelete}
+                    onIdentityVerificationProviderDelete={ handleIdentityProviderDelete }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>
         </PageLayout>);
-}
+};
 
 export default IdentityVerificationProvidersPage;
