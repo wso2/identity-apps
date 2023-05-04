@@ -132,10 +132,10 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
         setIdPListRequestLoading(true);
 
         getIdentityProviderList(null, null, null)
-            .then((response) => {
+            .then((response: IdentityProviderListResponseInterface) => {
                 setIdPList(response);
             })
-            .catch((error) => {
+            .catch((error:any) => {
                 handleGetIDPListCallError(error);
             })
             .finally(() => {
@@ -151,10 +151,10 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
      */
     const idpNameValidation = (value: string): string => {
 
-        let nameExist = false;
+        let nameExist: boolean = false;
 
         if (idpList?.count > 0) {
-            idpList?.identityProviders.map((idp) => {
+            idpList?.identityProviders.map((idp: Record<string, unknown>) => {
                 if (idp?.name === value) {
                     nameExist = true;
                 }
@@ -176,14 +176,14 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                     onSubmit={
                         (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                     }
-                    triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                    triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
+                    triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                    triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                     changePage={ (step: number) => changePageNumber(step) }
                     setTotalPage={ (step: number) => setTotalPage(step) }
                     data-testid={ testId }
                 >
                     <WizardPage
-                        validate={ (values): any => {
+                        validate={ (values: any): any => {
                             const errors: any = {};
 
                             if (!values.name) {
