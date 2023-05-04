@@ -91,7 +91,7 @@ export const console: ConsoleNS = {
             },
             featureAnnouncements: {
                 organizations: {
-                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " +
+                    message: "Introducing B2B organizations. Start building your B2B platform by onboarding your " + 
                     "partner/customer organizations.",
                     buttons: {
                         tryout: "Try It Out"
@@ -674,13 +674,6 @@ export const console: ConsoleNS = {
                         header: "You are adding a Handler",
                         message: "This is a handler."
                     },
-                    backupCodeAuthenticatorDelete: {
-                        assertionHint: "Click Continue to remove backup code functionality.",
-                        content: "If you proceed, the backup code functionality will also be removed from your " +
-                            "current authentication step. Do you wish to continue?",
-                        header: "Confirm Deletion",
-                        message: "This action will remove backup code functionality from the current authentication step."
-                    },
                     lowOIDCExpiryTimes: {
                         assertionHint: "Click Confirm to continue with your values.",
                         content: "This means that your tokens may expire too soon. Please recheck your values " +
@@ -942,10 +935,6 @@ export const console: ConsoleNS = {
                             },
                             tabName: "Provisioning"
                         },
-                        sharedAccess: {
-                            subTitle: "Select the following options to share the application with the sub organizations.",
-                            tabName: "Shared Access"
-                        },
                         shareApplication: {
                             addSharingNotification: {
                                 genericError: {
@@ -1083,10 +1072,6 @@ export const console: ConsoleNS = {
                                                         social: {
                                                             description: "Use existing social login account.",
                                                             heading: "Social login"
-                                                        },
-                                                        backupCodes: {
-                                                            description: "Two-factor authentication recovery option.",
-                                                            heading: "MFA Recovery"
                                                         }
                                                     },
                                                     goBackButton: "Go back to selection",
@@ -1117,9 +1102,6 @@ export const console: ConsoleNS = {
                                                     subjectIdentifierFrom: {
                                                         label: "Pick user identifier from this step",
                                                         placeholder: "Select step"
-                                                    },
-                                                    enableBackupCodes: {
-                                                        label: "Enable backup codes"
                                                     }
                                                 }
                                             },
@@ -1136,16 +1118,12 @@ export const console: ConsoleNS = {
                                                 " setting from the following Identity Providers.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
                                                 "not be used in the first step.",
-                                            backupCodesDisabled: "Backup code authenticator can only be used if multi factor " +
-                                                "authenticators are present in the current step.",
-                                            backupCodesDisabledInFirstStep: "Backup code authenticator cannot be used " +
-                                                "in the first step.",
                                             federatedSMSOTPConflictNote: {
                                                 multipleIdps: "Asgardeo requires the user's profile containing" +
                                                 " the <1>mobile number</1> to configure <3>SMS OTP</3> with the" +
                                                 " following connections.",
                                                 singleIdp: "Asgardeo requires the user's profile containing the"+
-                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
+                                                " <1>mobile number</1> to configure <3>SMS OTP</3> with" + 
                                                 " <5>{{idpName}}</5> connection."
                                             }
                                         }
@@ -1493,11 +1471,6 @@ export const console: ConsoleNS = {
                                 validations: {
                                     invalid: "This is not a valid image URL"
                                 }
-                            },
-                            isSharingEnabled: {
-                                hint: "If enabled, it will allow this application to authenticate customers/partners " + 
-                                    "into this organization or any of its sub-organizations.",
-                                label: "Allow sharing with sub-organizations"
                             },
                             isManagementApp: {
                                 hint: "Enable to allow the application to access management API of this organization.",
@@ -3246,7 +3219,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             secretValidityPeriod: {
-                                hint: "The validity period of the generated client secret in seconds. A new client secret " +
+                                hint: "The validity period of the generated client secret in seconds. A new client secret " + 
                                     "will be generated after this time.",
                                 label: "Client Secret Validity Period",
                                 placeholder: "Enter the Validity Period for the Client Secret.",
@@ -4499,11 +4472,11 @@ export const console: ConsoleNS = {
                                 heading: "Name"
                             },
                             preRequisites: {
-                                configureAppleSignIn: "See Apple's guide on configuring your environment for" +
+                                configureAppleSignIn: "See Apple's guide on configuring your environment for" + 
                                 " Sign in with Apple.",
                                 configureReturnURL: "Add the following URL as a <1>Return URL</1>.",
                                 configureWebDomain: "Use the following as a <1>Web Domain</1>.",
-                                getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" +
+                                getCredentials: "Before you begin, create a <1>Sign in With Apple</1> enabled" + 
                                     " application on <3>Apple Developer Portal</3> with a <5>Services ID</5> and a" +
                                     " <5>Private Key</5>.",
                                 heading: "Prerequisite"
@@ -4524,6 +4497,37 @@ export const console: ConsoleNS = {
                             subtitle: "Configure an IDP to connect with standard authentication protocols.",
                             title: "Standard based Identity Providers"
                         },
+                        name: {
+                            description: "Provide a unique name for the enterprise authentication provider so that it can be easily identified.",
+                            example: "E.g., MyEnterpriseAuthProvider.",
+                            heading: "Name"
+                        },
+                        oidc: {
+                            clientId: {
+                                description: "Provide the client ID obtained from the identity provider.",
+                                heading: "Client ID"
+                            },
+                            clientSecret: {
+                                description: "Provide the client secret obtained from the identity provider.",
+                                heading: "Client secret"
+                            },
+                            authorizeEndpoint: {
+                                description: "Provide the authorize endpoint URL obtained from the identity provider.",
+                                example: "E.g., https://enterprise_domain/authorize",
+                                heading: "Authorize Endpoint URL"
+                            },
+                            tokenEndpoint: {
+                                description: "Provide the token endpoint URL obtained from the identity provider.",
+                                example: "E.g., https://enterprise_domain/token",
+                                heading: "Token Endpoint URL"
+                            },
+                            preRequisites: {
+                                heading: "Prerequisite",
+                                hint: "The URL to which the authorization code is sent upon authentication and where the user is redirected to upon logout.",
+                                description: "Before you begin, register an application in the Identity Provider, and obtain a " +
+                                    "<1>client ID & secret.</1>" + "Use the following URL as the " + "<3>Authorized Redirect URL.</3>"
+                            }
+                        },
                         saml: {
                             preRequisites: {
                                 configureIdp: "See guide on configuring SAML IdP",
@@ -4533,6 +4537,29 @@ export const console: ConsoleNS = {
                                 hint: "The Assertion Consumer Service (ACS) URL determines" +
                                     " where {{productName}} expects the external identity" +
                                     " provider to send the SAML response."
+                            },
+                            serviceProviderEntityId: {
+                                description: "This value will be used as the " + "<1>saml2:Issue</1>" + 
+                                " in the SAML requests initiated from Asgardeo to external Identity Provider (IdP). You need to " +
+                                "provide a unique value as the service provider entity ID.",
+                                heading: "Service Provider Entity ID"
+                            },
+                            metaFile: {
+                                description: "Asgardeo allows you to upload SAML configuration data using a metadata " + 
+                                "<1>XML</1>" + " file that contains all the required configurations to exchange authentication" +
+                                "information between entities in a standard way.",
+                                heading: "Metadata file"
+                            },
+                            identityProviderSingleSignOnUrl: {
+                                description: "Single Sign-On URL of the external IdP. Asgardeo will send SAML authentication requests to this endpoint.",
+                                heading: "Identity Provider Single Sign-On URL",
+                                example: "E.g., https://enterprise_domain/samlsso"
+                            },
+                            identityProviderEntityId: {
+                                description: "This is the " + "<1>saml2:Issuer</1>" + " value specified in the SAML responses issued by the" +
+                                "external IdP. Also, this needs to be a unique value to identify the external IdP within your organization.",
+                                heading: "Identity Provider Entity ID",
+                                example: "E.g., https://enterprise_domain/"
                             }
                         },
                         validation: {
@@ -4648,7 +4675,8 @@ export const console: ConsoleNS = {
                             name: {
                                 description: "Provide a unique name for the enterprise authentication provider so" +
                                     " that it can be easily identified.",
-                                heading: "Name"
+                                heading: "Name",
+                                example: "E.g., MyOrgEnterpriseAuthProvider."
                             },
                             description: {
                                 description: "Provide a description for the enterprise authentication provider to" +
@@ -6802,7 +6830,7 @@ export const console: ConsoleNS = {
                         },
                         requiredHint: "If selected, the user is required to specify a value for this " +
                         "attribute on the profile.",
-                        requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
+                        requiredWarning: "To make the email attribute not required on the user's profile, " +
                             "you need to disable account verification for your organization.",
                         supportedByDefault: {
                             label: "Display this attribute on the user's profile"
@@ -8654,15 +8682,14 @@ export const console: ConsoleNS = {
                         title: "Add a new Organization"
                     }
                 },
-                shareApplicationSubTitle: "Select one of the following options to share the application.",
                 shareApplicationRadio: "Share with all sub-organizations",
                 shareApplicationInfo: "Select this to share the application with all the existing sub-organizations " +
                     "and all new sub-organizations that you create under your current organization.",
-                unshareApplicationRadio: "Do not share with any sub-organization",
+                unshareApplicationRadio: "Unshare with all sub-organizations",
                 shareWithSelectedOrgsRadio: "Share with only selected sub-organizations",
-                unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +
-                    "existing sub-organizations or new sub-organizations that you create under this organization " + 
-                    "in the future.",
+                unshareApplicationInfo: "Select this to unshare the application with all the existing " +
+                    "sub-organizations and all new sub-organizations that you create under your current organizations.",
+                subTitle: "Create and manage organizations.",
                 switching: {
                     emptyList: "There are no sub-organizations to show.",
                     goBack: "Go back",
@@ -9069,8 +9096,7 @@ export const console: ConsoleNS = {
                                 subtitles: "There are no users assigned to the {{type}} at the moment.",
                                 title: "No Users Assigned"
                             },
-                            user: "User",
-                            organization: "Managed By"
+                            header: "Users"
                         }
                     }
                 },
