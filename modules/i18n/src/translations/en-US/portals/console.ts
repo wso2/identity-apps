@@ -5738,6 +5738,18 @@ export const console: ConsoleNS = {
                         message: "This action is irreversible and will permanently delete the identity verification " +
                             "provider."
                     }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification providers.",
+                            message: "Retrieval Error"
+                        }
+                    }
                 }
             },
             overview: {

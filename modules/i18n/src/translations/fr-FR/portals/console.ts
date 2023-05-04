@@ -4221,6 +4221,19 @@ export const console: ConsoleNS = {
                         message: "Cette action est irréversible et supprimera définitivement le fournisseur de " +
                             "vérification d'identité."
                     }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des fournisseurs de " +
+                                "vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    }
                 }
             },
             overview: {
@@ -4428,7 +4441,7 @@ export const console: ConsoleNS = {
                     general: "Général",
                     gettingStarted: " Pour commencer",
                     identityProviders: "Fournisseurs d'identité",
-                    identityVerificationProviders: "Fournisseurs de vérification d'identité",
+                    identityVerificationProviders: "Fournisseurs de vérification d'identité"
                 },
                 customize: "Personnaliser",
                 identityProviderEdit: "Edition des fournisseurs d'identité",

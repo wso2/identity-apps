@@ -4107,6 +4107,18 @@ export const console: ConsoleNS = {
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර අනන්‍යතා තහවුරු කරන්නා ස්ථිරවම මකා දැමෙනු ඇත."
                     }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නන් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        }
+                    }
                 }
             },
             overview: {

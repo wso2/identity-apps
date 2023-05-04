@@ -2401,6 +2401,9 @@ export interface ConsoleNS {
               confirmations: {
                  deleteIDVP: Confirmation;
               };
+              notifications: {
+                  getIDVPList: Notification;
+              };
             };
             overview: {
                 banner: {

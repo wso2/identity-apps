@@ -17,10 +17,12 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
@@ -58,7 +60,6 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const { ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
-
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -72,11 +73,52 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const {
         data: idvpList,
         isLoading: isIDVPListRequestLoading,
-        error: idpListFetchRequestError,
+        error: idvpListFetchRequestError,
         mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset, listItemFilter);
+    const dispatch = useDispatch();
+
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Displays an error alert when there is a failure in the identity verification provider list fetch request.
+     */
+    const handleIdvpFetchRequestError = () => {
+        if (!idvpListFetchRequestError) {
+            return;
+        }
+        if (idvpListFetchRequestError?.response?.data?.description) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.idvp.notifications.getIDVPList.error.description",
+                        { description: idvpListFetchRequestError.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.idvp.notifications.getIDVPList.error.message")
+                })
+            );
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t(
+                    "console:develop.features.idvp.notifications.getIDVPList.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "console:develop.features.idvp.notifications.getIDVPList.genericError.message"
+                )
+            })
+        );
+
+        return;
+    };
+
+    useEffect( handleIdvpFetchRequestError , [ idvpListFetchRequestError ]);
 
     /**
      * Handles the `onFilter` callback action from the search component of identity verification provider.
