@@ -54,7 +54,7 @@ const SAMLIdPWizardFileBasedHelp = ():any => {
                                 "preRequisites.configureRedirectURL"
                                     }
                                 >
-                            Use the following URL as the <strong>Authorized Redirect URI</strong>.
+                                    Use the following URL as the <strong>Authorized Redirect URI</strong>.
                                 </Trans>
                                 <CopyInputField
                                     className="copy-input-dark spaced"
@@ -67,6 +67,8 @@ const SAMLIdPWizardFileBasedHelp = ():any => {
                                         productName: config.ui.productName
                                     })
                                 }
+                                <br />
+                                <br />
                                 { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
                                     ? null
                                     : <Divider hidden/>
@@ -90,27 +92,43 @@ const SAMLIdPWizardFileBasedHelp = ():any => {
             body:(    
                 <>
                     <p>
-                This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML requests initiated from
-                        { " " }{ config.ui.productName } to external Identity Provider (IdP). You need to 
-                        provide a unique value as the service provider entity ID.
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "serviceProviderEntityId.description"
+                            }
+                        >
+                            This value will be used as the <Code>&lt;saml2:Issuer&gt;</Code> in the SAML 
+                            requests initiated from Asgardeo to external Identity Provider (IdP). You need to 
+                            provide a unique value as the service provider entity ID.
+                        </Trans>
                     </p>
                 </>      
             ),
             id: 1,
-            title:  t("Service provider entity ID")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+            "serviceProviderEntityId.heading")
         },
         {
             body:(    
                 <>
                     <p>
-                        { config.ui.productName } allows you to upload SAML configuration data using a
-                metadata <Code>XML</Code> file that contains all the required configurations to exchange authentication
-                information between entities in a standard way.
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "metaFile.description"
+                            }
+                        >
+                            Asgardeo allows you to upload SAML configuration data using a
+                            metadata <Code>XML</Code> file that contains all the required configurations to 
+                            exchange authentication information between entities in a standard way.
+                        </Trans>                       
                     </p>
                 </>      
             ),
             id: 2,
-            title:  t("Metadata file")
+            title: t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+            "metaFile.heading")
         }
     ];
 
@@ -141,7 +159,7 @@ const SAMLIdPWizardFileBasedHelp = ():any => {
             >
                 <div className="idp-sidepanel-content-large">
                     { quickHelpContent.map(({ id, title, body }:Content) => (
-                        <div key={ id } style={ { display: currentContent === id ? "block" : "none" } }>
+                        <div key={ id } className = { currentContent === id ? "visible" : "hidden" }>
                             <Segment
                                 className="idp-sidepanel-segment">
                                 <h2>{ title }</h2>
