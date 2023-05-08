@@ -274,7 +274,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             return;
         }
-    }, [ isOIDCScopeListLoading ]);
+    }, [ isOIDCScopeListLoading, OIDCScopeList ]);
 
     useEffect(() => {
         getExternalClaimsGroupedByScopes();
