@@ -5120,7 +5120,7 @@ export const console: ConsoleNS = {
                         },
                         name: {
                             label: "නම",
-                            placeholder: "ගුණාංගය සඳහා නමක් ඇතුළත් කරන්න",
+                            placeholder: "ප්රදර්ශන නාමය ඇතුළත් කරන්න",
                             requiredErrorMessage: "නම අවශ්‍යයි",
                             validationErrorMessages: {
                                 invalidName: "ඔබ ඇතුළත් කළ නමට අවසර නැති අක්ෂර අඩංගු වේ. එහි අඩංගු විය හැක්කේ අක්ෂර" +
