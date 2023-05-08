@@ -50,10 +50,10 @@ import {
     IDVPListResponseInterface,
     IdentityVerificationProviderInterface
 } from "../models";
-import { handleIDPDeleteError } from "../utils";
+import { handleIDVPDeleteError } from "../utils";
 
 /**
- * Proptypes for the identity provider list component.
+ * Proptypes for the identity verification provider list component.
  */
 interface IdentityVerificationProviderListPropsInterface extends LoadableComponentInterface,
     IdentifiableComponentInterface {
@@ -80,9 +80,9 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
     /**
      * On list item select callback.
      * @param event - Click event.
-     * @param idp - Selected IDP
+     * @param idvp - Selected IDVP
      */
-    onListItemClick?: (event: SyntheticEvent, idp: IdentityVerificationProviderInterface) => void;
+    onListItemClick?: (event: SyntheticEvent, idvp: IdentityVerificationProviderInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -105,7 +105,7 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
  * Identity verification provider list component.
  *
  * @param props - Props injected to the component.
- * @returns Identity Provider List component.
+ * @returns Identity Verification Provider List component.
  */
 export const IdentityVerificationProviderList: FunctionComponent<IdentityVerificationProviderListPropsInterface> = (
     props: IdentityVerificationProviderListPropsInterface
@@ -142,17 +142,17 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
     /**
      * Redirects to the identity verification provider edit page when the edit button is clicked.
      *
-     * @param idpId - Identity verification provider id.
+     * @param idvpId - Identity verification provider id.
      */
     // TODO: Handle IDVP edit
-    const handleIdentityVerificationProviderEdit = (idpId: string): void => {
-        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
+    const handleIdentityVerificationProviderEdit = (idvpId: string): void => {
+        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idvpId));
     };
 
     /**
-     * Deletes an identity provider when the delete identity provider button is clicked.
+     * Deletes an identity verification provider when the delete identity verification provider button is clicked.
      *
-     * @param idvpId - Identity provider id.
+     * @param idvpId - Identity verification provider id.
      */
     const showIDVPDeleteConfirmationModal = (idvpId: string): void => {
         const selectedIDVP: IdentityVerificationProviderInterface = list.identityVerificationProviders
@@ -165,12 +165,12 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
     /**
      * Deletes an identity verification provider when the confirmation button clicked on the delete confirmation modal.
      *
-     * @param idpId - Identity provider id.
+     * @param idvpId - Identity verification provider id.
      */
-    const handleIdvpDeletion = (idpId: string): void => {
+    const handleIdvpDeletion = (idvpId: string): void => {
 
         setLoading(true);
-        deleteIDVP(idpId)
+        deleteIDVP(idvpId)
             .then(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
@@ -179,7 +179,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 }));
             })
             .catch((error: AxiosError) => {
-                handleIDPDeleteError(error);
+                handleIDVPDeleteError(error);
             })
             .finally(() => {
                 setLoading(false);
@@ -256,9 +256,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 id: "name",
                 key: "name",
                 render: (idvp: IdentityVerificationProviderInterface): ReactNode => {
-                    // const isOrgIdp: boolean = (idp.federatedAuthenticators.defaultAuthenticatorId ===
-                    //     IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
-                    const isOrgIdp: boolean = false;
 
                     return (
                         <Header
@@ -295,15 +292,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                             }
                             <Header.Content>
                                 { idvp.Name }
-                                {
-                                    isOrgIdp && (
-                                        <Label
-                                            size="mini"
-                                            color="teal">
-                                            Organization IDP
-                                        </Label>
-                                    )
-                                }
                                 <Header.Subheader data-testid={ `${componentId}-item-sub-heading` }>
                                     { idvp.description }
                                 </Header.Subheader>
