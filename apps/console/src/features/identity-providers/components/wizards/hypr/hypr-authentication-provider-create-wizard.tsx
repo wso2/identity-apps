@@ -173,11 +173,11 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
             if (AppConstants.getClientOrigin()) {
                 if (AppConstants.getAppBasename()) {
                     identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/hypr.svg";
+                        "/" + AppConstants.getAppBasename() +
+                        "/libs/themes/default/assets/images/identity-providers/hypr.svg";
                 } else {
                     identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/hypr.svg";
+                        "/libs/themes/default/assets/images/identity-providers/hypr.svg";
                 }
             }
 
@@ -200,10 +200,10 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
 
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                        "success.description"),
+                            "success.description"),
                         level: AlertLevels.SUCCESS,
                         message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                        "success.message")
+                            "success.message")
                     }));
 
                     // The created resource's id is sent as a location header.
@@ -213,7 +213,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                         const createdIdpID: any = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
-
+                        
                         return;
                     }
 
@@ -225,9 +225,8 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
                         : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
-                    if (error.response.status === 403 &&
-                    error?.response?.data?.code ===
-                    identityAppsError.getErrorCode()) {
+                    if (error.response.status === 403 && 
+                        error?.response?.data?.code === identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
         
                         return;
@@ -236,11 +235,11 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
                             description: t("console:develop.features.authenticationProvider.notifications." +
-                            "addIDP.error.description",
+                                "addIDP.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
                             message: t("console:develop.features.authenticationProvider.notifications." +
-                            "addIDP.error.message")
+                                "addIDP.error.message")
                         });
 
                         return;
@@ -248,10 +247,10 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
 
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                        "genericError.description"),
+                            "genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                        "genericError.message")
+                            "genericError.message")
                     });
                 })
                 .finally(() => {
@@ -458,10 +457,10 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
     };
 
 /**
- * Default props for the Microsoft Authentication Provider Create Wizard.
+ * Default props for the HYPR Authentication Provider Create Wizard.
  */
 HyprAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
-    "data-componentid": "microsoft-idp",
-    "data-testid": "microsoft-idp-create-wizard"
+    "data-componentid": "hypr-idp",
+    "data-testid": "hypr-idp-create-wizard"
 };

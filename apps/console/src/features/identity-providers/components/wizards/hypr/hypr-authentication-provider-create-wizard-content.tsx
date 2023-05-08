@@ -125,21 +125,16 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
      * @param value - IDP name.
      * @returns error msg if name is already taken.
      */
-    const idpNameValidation = (value: string): string => {
-
-        let nameExist: boolean = false;
+    const idpNameValidation = (value: string): string| void => {
 
         if (idpList?.count > 0) {
             idpList?.identityProviders.map((idp: IdentityProviderTemplateInterface) => {
                 if (idp?.name === value) {
-                    nameExist = true;
+                    return t("console:develop.features." +
+                        "authenticationProvider.forms.generalDetails.name." +
+                        "validations.duplicate");
                 }
             });
-        }
-        if (nameExist) {
-            return t("console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
-                "validations.duplicate");
         }
     };
 
