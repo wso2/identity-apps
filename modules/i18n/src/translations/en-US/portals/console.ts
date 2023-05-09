@@ -5773,6 +5773,20 @@ export const console: ConsoleNS = {
                             description: "Successfully deleted the identity verification provider.",
                             message: "Delete successful"
                         }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the identity verification provider.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the identity verification provider.",
+                            message: "Update successful"
+                        }
                     }
                 },
                 forms: {

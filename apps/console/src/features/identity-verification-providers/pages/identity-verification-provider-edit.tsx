@@ -204,13 +204,10 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     };
 
     /**
-     * Called when an idp updates.
-     *
-     * @param id - IDP id.
+     * Called when an identity verification provider updates.
      */
-    const handleIdentityProviderUpdate = (id: string): void => {
-
-        // getIdentityVerificationProvider(id);
+    const onIdentityVerificationProviderUpdate = async () => {
+        await refetchIDVP();
     };
 
     /**
@@ -281,7 +278,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     identityVerificationProvider={ idvp }
                     isLoading={ isIDVPFetchInProgress }
                     onDelete={ onIdentityVerificationProviderDelete }
-                    onUpdate={ handleIdentityProviderUpdate }
+                    onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
                     template={ identityProviderTemplate }
                     type={ identityProviderTemplate?.id }

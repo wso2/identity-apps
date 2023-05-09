@@ -26,9 +26,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteIDVP } from "../../api";
+import { deleteIDVP, updateIdentityVerificationProvider } from "../../api";
 import { IdentityVerificationProviderInterface } from "../../models";
-import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../../utils";
+import {
+    handleIDVPDeleteError,
+    handleIDVPDeleteSuccess,
+    handleIDVPUpdateError,
+    handleIDVPUpdateSuccess
+} from "../../utils";
 import { GeneralDetailsForm } from "../forms";
 
 /**
@@ -39,26 +44,11 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
      * IDVP that is being edited.
      */
     idvp: IdentityVerificationProviderInterface;
-    /**
-     * IDVP description.
-     */
-    description?: string;
-    /**
-     * Is the IDVP enabled.
-     */
-    isEnabled?: boolean;
-    /**
-     * IDVP image URL.
-     */
-    imageUrl?: string;
+
     /**
      * Is the IDVP info request loading.
      */
     isLoading?: boolean;
-    /**
-     * Name of the IDVP.
-     */
-    name: string;
     /**
      * Callback to be triggered after deleting the IDVP.
      */
@@ -66,7 +56,7 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
     /**
      * Callback to update the IDVP details.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: () => void;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -89,10 +79,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const {
         idvp,
-        name,
-        description,
-        isEnabled,
-        imageUrl,
         isLoading,
         onDelete,
         onUpdate,
@@ -101,7 +87,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         [ "data-componentid" ]: componentId
     } = props;
 
-    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -139,56 +124,28 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityVerificationProviderInterface): void => {
-        setIsSubmitting(true);
 
-        // updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
-        //     .then(() => {
-        //         dispatch(addAlert({
-        //             description: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
-        //                 "success.description"),
-        //             level: AlertLevels.SUCCESS,
-        //             message: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
-        //                 "success.message")
-        //         }));
-        //         onUpdate(editingIDP.id);
-        //     })
-        //     .catch((error) => {
-        //         handleIDPUpdateError(error);
-        //     })
-        //     .finally(() => {
-        //         setIsSubmitting(false);
-        //     });
+        for (const key in updatedDetails) {
+            if (updatedDetails[key] !== undefined) {
+                idvp[key] = updatedDetails[key];
+            }
+        }
+
+        setIsSubmitting(true);
+        updateIdentityVerificationProvider(idvp)
+            .then(handleIDVPUpdateSuccess)
+            .catch((error: AxiosError) => {
+                handleIDVPUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                onUpdate();
+            });
     };
 
     const handleIdentityVerificationProviderDisable = (event: any, data: CheckboxProps) => {
-        // getIDPConnectedApps(editingIDP.id)
-        //     .then(async (response: ConnectedAppsInterface) => {
-        //         if (response.count === 0) {
-        //             handleFormSubmit(
-        //                 {
-        //                     isEnabled: data.checked
-        //                 }
-        //             );
-        //         } else {
-        //             dispatch(addAlert({
-        //                 description: "There are applications using this identity provider.",
-        //                 level: AlertLevels.WARNING,
-        //                 message: "Cannot Disable."
-        //             }));
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         dispatch(addAlert({
-        //             description: error?.description || "Error occurred while trying to retrieve connected " +
-        //                 "applications.",
-        //             level: AlertLevels.ERROR,
-        //             message: error?.message || "Error Occurred."
-        //         }));
-        //     })
-        //     .finally(() => {
-        //         setIsAppsLoading(false);
-        //     });
 
+        handleFormSubmit({ isEnabled: data.checked });
     };
 
     return (
@@ -196,12 +153,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             ? (
                 <>
                     <GeneralDetailsForm
-                        name={ name }
-                        editingIDP={ idvp }
-                        description={ description }
+                        identityVerificationProvider={ idvp }
                         onSubmit={ handleFormSubmit }
                         onUpdate={ onUpdate }
-                        imageUrl={ imageUrl }
                         data-componentid={ `${ componentId }-form` }
                         isReadOnly={ isReadOnly }
                         isSubmitting={ isSubmitting }
@@ -214,20 +168,20 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 <DangerZone
                                     actionTitle={
                                         t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.actionTitle",
-                                            { state: isEnabled ? t("common:disable") : t("common:enable") })
+                                            { state: idvp.isEnabled ? t("common:disable") : t("common:enable") })
                                     }
                                     header={
                                         t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.header",
-                                            { state: isEnabled ? t("common:disable") : t("common:enable") } )
+                                            { state: idvp.isEnabled ? t("common:disable") : t("common:enable") } )
                                     }
                                     subheader={
-                                        isEnabled ?
+                                        idvp.isEnabled ?
                                             t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.subheader") :
                                             t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.subheader2")
                                     }
                                     onActionClick={ undefined }
                                     toggle={ {
-                                        checked: isEnabled,
+                                        checked: idvp.isEnabled,
                                         onChange: handleIdentityVerificationProviderDisable
                                     } }
                                     data-componentid={ `${ componentId }-disable-idvp-danger-zone` }

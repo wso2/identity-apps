@@ -4258,6 +4258,21 @@ export const console: ConsoleNS = {
                             description: "Le fournisseur de vérification d'identité a bien été supprimé.",
                             message: "Suppression réussie"
                         }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Erreur de mise à jour"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été mis à jour.",
+                            message: "Mise à jour réussie"
+                        }
                     }
                 },
                 forms: {

@@ -47,6 +47,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      * Editing idvp.
      */
     identityVerificationProvider: IdentityVerificationProviderInterface;
+
     /**
      * Is the data still loading.
      */
@@ -58,7 +59,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
     /**
      * Callback to update the identity verification provider details.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: () => void;
     /**
      * Identity verification provider template.
      */
@@ -102,7 +103,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
         tabIdentifier,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
     } = props;
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
 
@@ -116,14 +117,10 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
                 idvp={ identityVerificationProvider }
-                description={ identityVerificationProvider.description }
-                isEnabled={ identityVerificationProvider.isEnabled }
-                imageUrl={ identityVerificationProvider.image }
-                name={ identityVerificationProvider.Name }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                data-testid={ `${ testId }-general-settings` }
+                data-testid={ `${ componentId }-general-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
@@ -140,7 +137,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 onUpdate={ onUpdate }
                 hideIdentityClaimAttributes={ true }
                 isRoleMappingsEnabled={ true }
-                data-testid={ `${ testId }-attribute-settings` }
+                data-testid={ `${ componentId }-attribute-settings` }
                 provisioningAttributesEnabled={ true }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
@@ -158,11 +155,11 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
             render: GeneralIdentityProviderSettingsTabPane
         });
 
-        // panes.push({
-        //     "data-tabid": IdentityVerificationProviderConstants.ATTRIBUTES_TAB_ID,
-        //     menuItem: "Attributes",
-        //     render: AttributeSettingsTabPane
-        // });
+        panes.push({
+            "data-tabid": IdentityVerificationProviderConstants.ATTRIBUTES_TAB_ID,
+            menuItem: "Attributes",
+            render: AttributeSettingsTabPane
+        });
 
         return panes;
     };
@@ -174,7 +171,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
     return (
         <ResourceTab
             isLoading={ isLoading }
-            data-testid={ `${ testId }-resource-tabs` }
+            data-testid={ `${ componentId }-resource-tabs` }
             panes={ getPanes() }
             defaultActiveIndex={ defaultActiveIndex }
             onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps) => {

@@ -44,6 +44,22 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
     return httpClient(requestConfig);
 };
 
+export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
+    Promise<HttpResponse | undefined> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: rest,
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON,
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
+        },
+        method: HttpMethods.PUT,
+        url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
+    };
+
+    return httpClient(requestConfig);
+};
+
 export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
     Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
 

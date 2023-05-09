@@ -33,23 +33,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * Currently editing IDVP.
      */
-    editingIDP?: IdentityVerificationProviderInterface;
-    /**
-     * Identity provider description.
-     */
-    description?: string;
-    /**
-     * Identity provider logo URL.
-     */
-    imageUrl?: string;
-    /**
-     * Name of the identity provider.
-     */
-    name: string;
-    /**
-     * Mark identity provider as primary.
-     */
-    isPrimary?: boolean;
+    identityVerificationProvider: IdentityVerificationProviderInterface;
     /**
      * On submit callback.
      */
@@ -91,11 +75,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     props: GeneralDetailsFormPopsInterface): ReactElement => {
 
     const {
-        name,
-        description,
         onSubmit,
         onUpdate,
-        editingIDP,
+        identityVerificationProvider,
         isReadOnly,
         isSubmitting,
         ["data-testid"]: testId
@@ -119,7 +101,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
         if (idvpList?.count > 0) {
             idvpList.identityVerificationProviders.map((idvp: IdentityVerificationProviderInterface) => {
-                if (idvp.Name === value && name !== value) {
+                if (idvp.Name === value && identityVerificationProvider.Name !== value) {
                     nameExist = true;
                 }
             });
@@ -137,10 +119,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const updateConfigurations = (values): void => {
         onSubmit({
-            description: values.description?.toString(),
-            image: values.image?.toString(),
-            isPrimary: !!values.isPrimary,
-            name: values.name?.toString()
+            Name: values.name?.toString(),
+            description: values.description?.toString()
         });
     };
 
@@ -163,9 +143,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
                         required={ true }
                         message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
-                        placeholder={ name }
+                        placeholder={ identityVerificationProvider.Name }
                         validation={ (value: string) => idpNameValidation(value) }
-                        value={ name }
+                        value={ identityVerificationProvider.Name }
                         maxLength={ IDVP_NAME_MAX_LENGTH }
                         minLength={ 3 }
                         data-testid={ `${ testId }-idp-name` }
@@ -178,7 +158,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         label={ t("console:develop.features.idvp.forms.generalDetails.description.label") }
                         required={ false }
                         placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
-                        value={ description }
+                        value={ identityVerificationProvider.description }
                         data-testid={ `${ testId }-idp-description` }
                         maxLength={ IDVP_DESCRIPTION_MAX_LENGTH }
                         minLength={ 3 }

@@ -4142,6 +4142,20 @@ export const console: ConsoleNS = {
                             description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීම සාර්ථකයි",
                             message: "මකා දැමීම සාර්ථකයි"
                         }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
                     }
                 },
                 forms: {

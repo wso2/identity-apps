@@ -34,8 +34,8 @@ export interface IdentityVerificationProviderInterface {
     isEnabled?: boolean;
     image?: string;
     templateId?: string;
-    claims: IDVPClaimMappingInterface[];
-    configProperties: IDVPConfigPropertiesInterface[];
+    claims?: IDVPClaimMappingInterface[];
+    configProperties?: IDVPConfigPropertiesInterface[];
 }
 
 export interface IDVPResourceEndpointsInterface {

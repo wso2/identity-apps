@@ -63,4 +63,44 @@ export const handleIDVPDeleteSuccess = (): void => {
     );
 };
 
+export const handleIDVPUpdateSuccess = (): void => {
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.success.description"),
+            level: AlertLevels.SUCCESS,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.success.message")
+        })
+    );
+};
+
+export const handleIDVPUpdateError = (error: AxiosError): void => {
+    if (error?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.updateIDVP.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.updateIDVP.error.message"
+                )
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.updateIDVP.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.genericError.message")
+        })
+    );
+
+};
+
 
