@@ -18,8 +18,7 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -34,9 +33,8 @@ import {
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -50,7 +48,7 @@ import {
     IDVPListResponseInterface,
     IdentityVerificationProviderInterface
 } from "../models";
-import { handleIDVPDeleteError } from "../utils";
+import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 
 /**
  * Proptypes for the identity verification provider list component.
@@ -126,8 +124,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         ["data-componentid"]: componentId
     } = props;
 
-    const dispatch: Dispatch = useDispatch();
-
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ selectedIdvpToBeDeleted, setSelectedIdvpToBeDeleted ] =
         useState<IdentityVerificationProviderInterface>(undefined);
@@ -170,13 +166,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
         setLoading(true);
         deleteIDVP(idvpId)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idvp.notifications.deleteIDVP.success.message")
-                }));
-            })
+            .then(handleIDVPDeleteSuccess)
             .catch((error: AxiosError) => {
                 handleIDVPDeleteError(error);
             })

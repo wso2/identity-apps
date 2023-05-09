@@ -4247,12 +4247,12 @@ export const console: ConsoleNS = {
                     deleteIDVP: {
                         error: {
                             description: "{{ description }}",
-                            message: "Erreur de suppression du fournisseur de vérification d'identité"
+                            message: "Supprimer l'erreur"
                         },
                         genericError: {
                             description: "Une erreur s'est produite lors de la suppression du fournisseur de " +
                                 "vérification d'identité.",
-                            message: "Erreur de suppression du fournisseur de vérification d'identité"
+                            message: "Supprimer l'erreur"
                         },
                         success: {
                             description: "Le fournisseur de vérification d'identité a bien été supprimé.",

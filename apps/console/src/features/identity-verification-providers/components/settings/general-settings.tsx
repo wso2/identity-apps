@@ -28,7 +28,7 @@ import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
 import { deleteIDVP } from "../../api";
 import { IdentityVerificationProviderInterface } from "../../models";
-import { handleIDVPDeleteError } from "../../utils";
+import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../../utils";
 import { GeneralDetailsForm } from "../forms";
 
 /**
@@ -122,15 +122,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         setLoading(true);
 
         deleteIDVP(idvp.id)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idvp.notifications.deleteIDVP.success.message")
-                }));
-            })
+            .then(handleIDVPDeleteSuccess)
             .catch((error: AxiosError) => {
-                // TODO: Handle error properly
                 handleIDVPDeleteError(error);
             })
             .finally(() => {

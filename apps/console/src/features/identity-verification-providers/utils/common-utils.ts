@@ -16,8 +16,51 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
+import { store } from "../../core";
 
-export const handleIDVPDeleteError = (error: AxiosError) : void => {
-    console.log(error);
+
+export const handleIDVPDeleteError = (error: AxiosError): void => {
+
+    if (error?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.deleteIDVP.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.deleteIDVP.error.message"
+                )
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.deleteIDVP.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.genericError.message")
+        })
+    );
 };
+
+export const handleIDVPDeleteSuccess = (): void => {
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
+            level: AlertLevels.SUCCESS,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.success.message")
+        })
+    );
+};
+
+

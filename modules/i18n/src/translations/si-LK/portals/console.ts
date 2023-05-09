@@ -4132,11 +4132,11 @@ export const console: ConsoleNS = {
                     deleteIDVP: {
                         error: {
                             description: "{{ description }}",
-                            message: "අනන්‍යතා තහවරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය"
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
                         },
                         genericError: {
                             description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය",
-                            message: "අනන්‍යතා තහවරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය"
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
                         },
                         success: {
                             description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීම සාර්ථකයි",

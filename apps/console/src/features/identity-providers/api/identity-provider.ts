@@ -73,7 +73,7 @@ export const createIdentityProvider = <T = Record<string, unknown>> (identityPro
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    
+
     return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 201)) {
@@ -314,7 +314,6 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + id));
             }
-
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
@@ -1222,7 +1221,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList - 
+ * @param authenticatorList -
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */

@@ -5763,11 +5763,11 @@ export const console: ConsoleNS = {
                     deleteIDVP: {
                         error: {
                             description: "{{ description }}",
-                            message: "Identity Verification Provider Delete Error"
+                            message: "Delete Error"
                         },
                         genericError: {
                             description: "An error occurred while deleting the identity verification provider.",
-                            message: "Identity Verification Provider Delete Error"
+                            message: "Delete Error"
                         },
                         success: {
                             description: "Successfully deleted the identity verification provider.",
