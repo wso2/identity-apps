@@ -144,13 +144,12 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      *
      * @param idvpId - Identity verification provider id.
      */
-    // TODO: Handle IDVP edit
     const handleIdentityVerificationProviderEdit = (idvpId: string): void => {
-        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idvpId));
+        history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", idvpId));
     };
 
     /**
-     * Deletes an identity verification provider when the delete identity verification provider button is clicked.
+     * Shows a confirmation modal when the delete identity verification provider button is clicked.
      *
      * @param idvpId - Identity verification provider id.
      */
@@ -173,9 +172,9 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         deleteIDVP(idvpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
+                    description: t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.deleteIDP.success.message")
+                    message: t("console:develop.features.idvp.notifications.deleteIDVP.success.message")
                 }));
             })
             .catch((error: AxiosError) => {

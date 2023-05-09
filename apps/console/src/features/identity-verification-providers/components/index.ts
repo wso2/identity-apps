@@ -17,3 +17,4 @@
  */
 
 export * from "./identity-verification-provider-list";
+export * from "./identity-verification-provider-edit";

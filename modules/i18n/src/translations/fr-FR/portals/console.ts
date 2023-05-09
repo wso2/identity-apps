@@ -4243,8 +4243,46 @@ export const console: ConsoleNS = {
                                 "vérification d'identité.",
                             message: "Erreur de récupération"
                         }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de suppression du fournisseur de vérification d'identité"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Erreur de suppression du fournisseur de vérification d'identité"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été supprimé.",
+                            message: "Suppression réussie"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "Une description textuelle du fournisseur de vérification d'identité.",
+                            label: "Description",
+                            placeholder: "Entrez une description du fournisseur de vérification d'identité."
+                        },
+                        name: {
+                            hint: "Entrez Un nom unique pour ce fournisseur de vérification d'identité.",
+                            label: "Nom",
+                            placeholder: "Entrez un nom pour le fournisseur de vérification d'identité.",
+                            validations: {
+                                duplicate: "Un fournisseur de vérification d'identité existe déjà avec ce nom",
+                                empty: "Le nom du fournisseur de vérification d'identité est requis",
+                                maxLengthReached: "Le nom du fournisseur de vérification d'identité ne peut pas " +
+                                    "dépasser {{ maxLength }} caractères.",
+                                required: "Le nom du fournisseur de vérification d'identité est requis",
+                                invalid: "Le nom du fournisseur de vérification d'identité n'est pas valide"
+                            }
+                        }
                     }
                 }
+                //TODO: Add translation for danger zone.
             },
             overview: {
                 banner: {
@@ -4550,6 +4588,11 @@ export const console: ConsoleNS = {
                 subTitle: "Gérez les fournisseurs de vérification d'identité pour permettre aux utilisateurs de " +
                 "vérifier leur identité via eux.",
                 title: "Fournisseurs de vérification d'identité"
+            },
+            idvpTemplate: {
+                backButton: "Retourner aux fournisseurs de vérification d'identité",
+                subTitle: "Choisissez l'un des fournisseurs de vérification d'identité suivants.",
+                title: "Sélectionnez le fournisseur de vérification d'identité"
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +

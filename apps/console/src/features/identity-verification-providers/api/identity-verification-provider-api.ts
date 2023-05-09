@@ -24,7 +24,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { IDVPListResponseInterface } from "../models";
+import { IDVPListResponseInterface, IdentityVerificationProviderInterface } from "../models";
 
 type HttpClientType = (config: HttpRequestConfig) => Promise<HttpResponse | undefined>;
 
@@ -44,6 +44,26 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
     return httpClient(requestConfig);
 };
 
+export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
+    Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
+    };
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
 
 /**
  * Hook to get the identity verification provider list with limit and offset.

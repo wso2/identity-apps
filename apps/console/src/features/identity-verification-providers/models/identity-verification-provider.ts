@@ -34,8 +34,58 @@ export interface IdentityVerificationProviderInterface {
     isEnabled?: boolean;
     image?: string;
     templateId?: string;
+    claims: IDVPClaimMappingInterface[];
+    configProperties: IDVPConfigPropertiesInterface[];
 }
 
 export interface IDVPResourceEndpointsInterface {
     identityVerificationProviders: string;
+}
+
+
+export interface IDVPClaimInterface {
+    id?: string;
+    uri: string;
+    displayName?: string;
+}
+
+// export interface IDVPClaimMappingInterface {
+//     localClaim: string;
+//     idvpClaim: string;
+// }
+//
+export interface IDVPClaimMappingInterface {
+    localClaim: IDVPClaimInterface;
+    idvpClaim: string;
+}
+
+interface IDVPConfigPropertiesInterface {
+    key: string;
+    value: string;
+    isSecret: boolean;
+}
+
+export interface IDVPTemplateItemInterface {
+    id?: string;
+    name?: string;
+    description?: string;
+    image?: any;
+    category?: string;
+    displayOrder?: number;
+    idvp?: IdentityVerificationProviderInterface;
+    disabled?: boolean;
+    type?: string;
+    templateGroup?: string;
+    /**
+     * Template identifier.
+     */
+    templateId?: string;
+}
+
+/**
+ * Enum for Identity Verification Provider Tab types
+ */
+export enum IdentityVerificationProviderTabTypes {
+    SETTINGS ="settings",
+    USER_ATTRIBUTES = "user-attributes",
 }

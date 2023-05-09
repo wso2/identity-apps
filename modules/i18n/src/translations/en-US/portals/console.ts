@@ -4538,7 +4538,7 @@ export const console: ConsoleNS = {
                         validation: {
                             invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
                                 " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
-                            name: "Please enter a valid name"
+                            name: "Identity verification provider name is not valid"
                         }
                     },
                     expert: {
@@ -5759,7 +5759,59 @@ export const console: ConsoleNS = {
                             description: "An error occurred while retrieving identity verification providers.",
                             message: "Retrieval Error"
                         }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Identity Verification Provider Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the identity verification provider.",
+                            message: "Identity Verification Provider Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the identity verification provider.",
+                            message: "Delete successful"
+                        }
                     }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "A text description of the identity verification provider.",
+                            label: "Description",
+                            placeholder: "Enter a description of the identity verification provider."
+                        },
+                        name: {
+                            hint: "Enter a unique name for this identity verification provider.",
+                            label: "Name",
+                            placeholder: "Enter a name for the identity verification provider.",
+                            validations: {
+                                duplicate: "An identity verification provider already exists with this name",
+                                empty: "Identity Verification Provider name is required",
+                                maxLengthReached: "Identity verification provider name cannot exceed {{ maxLength }} " +
+                                    "characters.",
+                                required: "Identity Verification Provider name is required",
+                                invalid: "Please enter a valid name"
+                            }
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Delete",
+                        header: "Delete identity verification provider",
+                        subheader: "Once you delete an identity verification provider, it cannot be recovered. " +
+                            "Please be certain."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Identity Verification Provider",
+                        header: "{{ state }} identity verification provider",
+                        subheader: "Once you disable an identity verification provider, it can no longer be used " +
+                            "until you enable it again.",
+                        subheader2: "Enable the identity verification provider to use it with your applications."
+                    },
+                    header: "Danger Zone"
                 }
             },
             overview: {
@@ -6086,6 +6138,11 @@ export const console: ConsoleNS = {
                 subTitle: "Manage Identity Verification Providers to allow users to verify their identities " +
                     "through them.",
                 title: "Identity Verification Providers"
+            },
+            idvpTemplate: {
+                backButton: "Go back to Identity Verification Providers",
+                subTitle: "Choose one of the following identity verification providers.",
+                title: "Select Identity Verification Provider"
             },
             overview: {
                 subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +

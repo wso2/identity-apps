@@ -18,6 +18,6 @@
 
 import { AxiosError } from "axios";
 
-export const handleIDPDeleteError = (error: AxiosError) : void => {
+export const handleIDVPDeleteError = (error: AxiosError) : void => {
     console.log(error);
 };

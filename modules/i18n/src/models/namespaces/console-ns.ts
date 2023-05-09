@@ -2413,7 +2413,55 @@ export interface ConsoleNS {
                 };
                 notifications: {
                   getIDVPList: Notification;
-              };
+                  deleteIDVP: Notification;
+                };
+                forms: {
+                    // attributeSettings: {
+                    //     attributeMapping: {
+                    //         attributeColumnHeader: string;
+                    //         attributeMapColumnHeader: string;
+                    //         attributeMapInputPlaceholderPrefix: string;
+                    //         componentHeading: string;
+                    //         hint: string;
+                    //     };
+                    //     attributeProvisioning: {
+                    //         attributeColumnHeader: {
+                    //             0: string;
+                    //             1: string;
+                    //         };
+                    //         attributeMapColumnHeader: string;
+                    //         attributeMapInputPlaceholderPrefix: string;
+                    //         componentHeading: string;
+                    //         hint: string;
+                    //     };
+                    //     attributeListItem: {
+                    //         validation: {
+                    //             empty: string;
+                    //         };
+                    //     };
+                    //     attributeSelection: {
+                    //         searchAttributes: {
+                    //             placeHolder: string;
+                    //         };
+                    //     };
+                    // };
+                    // common: {
+                    //     requiredErrorMessage: string;
+                    //     invalidURLErrorMessage: string;
+                    //     invalidQueryParamErrorMessage: string;
+                    //     invalidScopesErrorMessage: string;
+                    //     customProperties: string;
+                    // };
+                    generalDetails: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                    };
+                };
+                dangerZoneGroup?: {
+                    header: string;
+                    disableIDVP: DangerZone;
+                    deleteIDVP: DangerZone;
+                };
             };
             overview: {
                 banner: {
@@ -2628,6 +2676,11 @@ export interface ConsoleNS {
                 };
             };
             idvp: Page;
+            idvpTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
             overview: Page;
         };
         componentExtensions: {

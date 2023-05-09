@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,4 @@
  * under the License.
  */
 
-export class IdentityVerificationProviderConstants {
-
-    /**
-     * data-tabIds of the panes in the IDVP settings
-     */
-    public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
-    // public static readonly GENERAL_TAB_ID: string  = "general";
-    public static readonly SETTINGS_TAB_ID: string  = "settings";
-}
+export * from "./common-authenticator-form";
