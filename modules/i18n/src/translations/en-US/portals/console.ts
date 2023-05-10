@@ -5787,6 +5787,22 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the identity verification provider.",
                             message: "Update successful"
                         }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Need to configure all the mandatory properties.",
+                            message: "Cannot perform update"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving attributes.",
+                            message: "Retrieval Error"
+                        }
                     }
                 },
                 forms: {

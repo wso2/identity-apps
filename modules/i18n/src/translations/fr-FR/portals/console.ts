@@ -4273,7 +4273,24 @@ export const console: ConsoleNS = {
                             description: "Le fournisseur de vérification d'identité a bien été mis à jour.",
                             message: "Mise à jour réussie"
                         }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Nécessité de configurer toutes les propriétés obligatoires.",
+                            message: "Impossible d'effectuer la mise à jour"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des claims localaux.",
+                            message: "Erreur de récupération"
+                        }
                     }
+
                 },
                 forms: {
                     generalDetails: {

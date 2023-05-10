@@ -25,7 +25,7 @@ import {
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    ReactElement,
+    ReactElement, useEffect,
     useState
 } from "react";
 import { TabProps } from "semantic-ui-react";
@@ -35,8 +35,7 @@ import {
 } from "./settings";
 import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
 import {
-    IDVPTemplateItemInterface,
-    IdentityVerificationProviderInterface
+    IDVPClaimMappingInterface, IDVPClaimsInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface
 } from "../models";
 
 /**
@@ -105,7 +104,22 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         tabIdentifier,
         ["data-componentid"]: componentId
     } = props;
+
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
+    const [ initialClaims, setInitialClaims ] = useState<IDVPClaimMappingInterface[]>();
+
+    useEffect(() => {
+        const temp: IDVPClaimMappingInterface[] = identityVerificationProvider.claims.map(
+            (claim: IDVPClaimsInterface) => {
+                return {
+                    idvpClaim: claim.idvpClaim,
+                    localClaim: { uri: claim.localClaim }
+                };
+            }
+        );
+
+        setInitialClaims(temp);
+    }, [ identityVerificationProvider ]);
 
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
@@ -120,7 +134,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                data-testid={ `${ componentId }-general-settings` }
+                data-componentid={ `${ componentId }-general-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />
@@ -130,15 +144,12 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
     const AttributeSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
-                idpId={ identityVerificationProvider.id }
-                initialClaims={ identityVerificationProvider.claims }
-                // initialRoleMappings={ identityVerificationProvider.roles.mappings }
+                idvp={ identityVerificationProvider }
+                initialClaims={ initialClaims }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 hideIdentityClaimAttributes={ true }
-                isRoleMappingsEnabled={ true }
-                data-testid={ `${ componentId }-attribute-settings` }
-                provisioningAttributesEnabled={ true }
+                data-componentid={ `${ componentId }-attribute-settings` }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
             />

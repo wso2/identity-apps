@@ -34,7 +34,7 @@ export interface IdentityVerificationProviderInterface {
     isEnabled?: boolean;
     image?: string;
     templateId?: string;
-    claims?: IDVPClaimMappingInterface[];
+    claims?: IDVPClaimsInterface[];
     configProperties?: IDVPConfigPropertiesInterface[];
 }
 
@@ -43,19 +43,19 @@ export interface IDVPResourceEndpointsInterface {
 }
 
 
-export interface IDVPClaimInterface {
+export interface IDVPLocalClaimInterface {
     id?: string;
     uri: string;
     displayName?: string;
 }
 
-// export interface IDVPClaimMappingInterface {
-//     localClaim: string;
-//     idvpClaim: string;
-// }
-//
+export interface IDVPClaimsInterface {
+    localClaim: string;
+    idvpClaim: string;
+}
+
 export interface IDVPClaimMappingInterface {
-    localClaim: IDVPClaimInterface;
+    localClaim: IDVPLocalClaimInterface;
     idvpClaim: string;
 }
 

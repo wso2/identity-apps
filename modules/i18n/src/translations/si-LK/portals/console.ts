@@ -4156,6 +4156,22 @@ export const console: ConsoleNS = {
                             description: "අනන්‍යතා තහවුරු කරන්නා සාර්ථකව යාවත්කාලීන කරන ලදී.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "සියලුම අනිවාර්ය ගුණාංග වින්‍යාස කිරීමට අවශ්‍යය.",
+                            message: "යාවත්කාලීන කිරීම කළ නොහැක"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "දේශීය හිමිකම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
                     }
                 },
                 forms: {
