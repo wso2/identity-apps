@@ -183,7 +183,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
         onAttributesSelected([
             ...mappedAttributesList?.filter(
-                (attribute: IDVPClaimMappingInterface ) => attribute.localClaim?.id !== deletedMapping.localClaim?.id
+                (attribute: IDVPClaimMappingInterface ) => (attribute.localClaim?.id !== deletedMapping.localClaim?.id)
             )
         ]);
     };

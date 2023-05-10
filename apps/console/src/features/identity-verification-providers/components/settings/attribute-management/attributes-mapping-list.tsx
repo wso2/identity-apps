@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -25,13 +25,12 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../identity-providers/models";
-import { IDVPClaimMappingInterface } from "../../../models";
+import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
-export interface AttributeMappingListProps extends TestableComponentInterface {
+export interface AttributeMappingListProps extends IdentifiableComponentInterface {
     /**
      * This contains the mapped attributes list.
      */
@@ -40,14 +39,11 @@ export interface AttributeMappingListProps extends TestableComponentInterface {
      * A list of claims that is available for selecting. This list
      * mostly read only, used for dropdowns and such.
      */
-    availableAttributesList: Array<IdentityProviderClaimInterface>;
+    availableAttributesList: Array<IDVPLocalClaimInterface>;
     alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
     noDataPlaceholder?: ReactNode;
     onMappingDeleted: (mapping: IDVPClaimMappingInterface) => void;
-    onMappingEdited: (
-        oldMapping: IDVPClaimMappingInterface,
-        mapping: IDVPClaimMappingInterface
-    ) => void;
+    onMappingEdited: ( oldMapping: IDVPClaimMappingInterface, mapping: IDVPClaimMappingInterface) => void;
     readOnly?: boolean;
 }
 
@@ -67,29 +63,59 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     const [ editingMappings, setEditingMappings ] = useState<string[]>([]);
 
+    const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
+        return editingMappings.includes(localClaim.id) || readOnly;
+    };
+
     const createTableActions = (): TableActionsInterface[] => {
-        return [ {
-            hidden: ({ localClaim }: IDVPClaimMappingInterface) =>
-                editingMappings.includes(localClaim.id) || readOnly,
-            icon: (): SemanticICONS => "pencil alternate",
-            onClick(e, mapping: IDVPClaimMappingInterface) {
-                setEditingMappings([ ...editingMappings, mapping.localClaim.id ]);
+        return [
+            {
+                hidden: shouldHideAction,
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, mapping: IDVPClaimMappingInterface) => {
+                    setEditingMappings([ ...editingMappings, mapping.localClaim.id ]);
+                },
+                popupText: (): string => "Edit",
+                renderer: "semantic-icon"
             },
-            popupText: (): string => "Edit",
-            renderer: "semantic-icon"
-        }, {
-            hidden: ({ localClaim }: IDVPClaimMappingInterface) =>
-                editingMappings.includes(localClaim.id) || readOnly,
-            icon: (): SemanticICONS => "trash alternate",
-            onClick: (e, mapping: IDVPClaimMappingInterface) => {
+            {
+                hidden: shouldHideAction,
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, mapping: IDVPClaimMappingInterface) => {
                 // In our interface, once user enter into editing mode they
                 // cannot delete it unless its updated. So, no need to remove
                 // or check for `editingMappings` in this function.
-                onMappingDeleted(mapping);
-            },
-            popupText: (): string => "Delete",
-            renderer: "semantic-icon"
-        } ];
+                    onMappingDeleted(mapping);
+                },
+                popupText: (): string => "Delete",
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
+    const getAttributeMappingListItemInViewMode = (mapping: IDVPClaimMappingInterface) => {
+        return (
+            <Header image as="h6" className="header-with-icon">
+                <AppAvatar
+                    image={ (
+                        <AnimatedAvatar
+                            name={ mapping.idvpClaim }
+                            size="mini"
+                        />
+                    ) }
+                    size="mini"
+                    spaced="right"
+                />
+                <Header.Content>
+                    { mapping.idvpClaim }
+                    <Header.Subheader>
+                        <Code compact withBackground={ false }>
+                            { mapping.localClaim.uri }
+                        </Code>
+                    </Header.Subheader>
+                </Header.Content>
+            </Header>
+        );
     };
 
     const createTableColumns = (): TableColumnInterface[] => {
@@ -105,39 +131,19 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                             mapping={ mapping }
                             availableAttributeList={ availableAttributesList }
                             alreadyMappedAttributesList={ alreadyMappedAttributesList }
-                            onSubmit={ (editedMapping) => {
+                            onSubmit={ (editedMapping: IDVPClaimMappingInterface) => {
                                 // Remove it from currently editing mappings.
                                 setEditingMappings([
                                     ...editingMappings
-                                        .filter(id => id !== mapping.localClaim.id)
-                                        .filter(id => id !== editedMapping.localClaim.id)
+                                        .filter((id: string) => id !== mapping.localClaim.id)
+                                        .filter((id: string) => id !== editedMapping.localClaim.id)
                                 ]);
                                 // Once done, notify the parent that a mapping has been
                                 // changed with the edited instance itself.
                                 onMappingEdited(mapping, editedMapping);
                             } }
                         />
-                    ) : (
-                        <Header image as="h6" className="header-with-icon">
-                            <AppAvatar
-                                image={
-                                    <AnimatedAvatar
-                                        name={ mapping.idvpClaim }
-                                        size="mini"/>
-                                }
-                                size="mini"
-                                spaced="right"
-                            />
-                            <Header.Content>
-                                { mapping.idvpClaim }
-                                <Header.Subheader>
-                                    <Code compact withBackground={ false }>
-                                        { mapping.localClaim.uri }
-                                    </Code>
-                                </Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    );
+                    ) : getAttributeMappingListItemInViewMode(mapping);
             },
             title: "Mapped Claim"
         };
@@ -157,7 +163,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
     };
 
     return (
-        <DataTable<IdentityProviderCommonClaimMappingInterface[]>
+        <DataTable<IDVPClaimMappingInterface[]>
             className="attributes-mapping-list"
             actions={ createTableActions() }
             columns={ createTableColumns() }

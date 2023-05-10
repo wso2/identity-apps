@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Divider, Grid, Modal } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
-import { IDVPLocalClaimInterface, IDVPClaimMappingInterface } from "../../../models";
+import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
-interface AddAttributeSelectionModalProps extends TestableComponentInterface {
+interface AddAttributeSelectionModalProps extends IdentifiableComponentInterface {
     attributeList: Array<IDVPLocalClaimInterface>;
     alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
     onClose: () => void;
@@ -38,8 +38,7 @@ interface AddAttributeSelectionModalProps extends TestableComponentInterface {
  * which aren't already selected. Then It will render a list inside modal
  * once keeps adding.
  *
- * @param props {AddAttributeSelectionModalProps}
- * @constructor
+ * @param props - Props injected to the component.
  */
 export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelectionModalProps> = (
     props: AddAttributeSelectionModalProps
@@ -59,7 +58,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      */
     const [ claimsToBeAdded, setClaimsToBeAdded ] = useState<IDVPClaimMappingInterface[]>([]);
     /**
-     * Since this modal is a intermediate step in adding attributes
+     * Since this modal is an intermediate step in adding attributes
      * we can't read the records always from {@link attributeList}
      * we need to internally remove selected ones from the dropdown.
      */
@@ -87,12 +86,15 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
 
     const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
         const newClaimsToBeAdded: IDVPClaimMappingInterface[] = [ ...claimsToBeAdded, mapping ];
-        const idsToHide = newClaimsToBeAdded.reduce((acc, value) => acc.add(value.localClaim.id), new Set<string>());
+        const idsToHide: Set<string> = newClaimsToBeAdded.reduce(
+            (acc: Set<string>, value: IDVPClaimMappingInterface) => acc.add(value.localClaim.id),
+            new Set<string>()
+        );
 
         // Records to be added.
         setClaimsToBeAdded(newClaimsToBeAdded);
         // Remove the added attribute from the attribute list.
-        setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }) => !idsToHide.has(id)) ]);
+        setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }: IDVPLocalClaimInterface) => !idsToHide.has(id)) ]);
         // Now reinitialize the already mapped attributes list.
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes,
@@ -101,14 +103,15 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
     };
 
     const onMappingDeleted = (mapping: IDVPClaimMappingInterface): void => {
-        const filtered = claimsToBeAdded.filter((m) => (
+        const filtered: IDVPClaimMappingInterface[] = claimsToBeAdded.filter((m: IDVPClaimMappingInterface) => (
             m.localClaim.id !== mapping.localClaim.id
         ));
+
         setClaimsToBeAdded([ ...filtered ]);
         setCopyOfAttributes([ ...copyOfAttributes, mapping.localClaim ]);
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes
-                .filter(e => e?.localClaim?.id === mapping?.localClaim.id)
+                .filter((e: IDVPClaimMappingInterface) => (e?.localClaim?.id === mapping?.localClaim.id))
         ]);
     };
 
@@ -120,12 +123,12 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         // go and remove it from {@link claimsToBeAdded} array.
         setClaimsToBeAdded([
             ...claimsToBeAdded
-                .filter(({ localClaim }) => (localClaim.id !== oldMapping.localClaim.id)),
+                .filter(({ localClaim }: IDVPClaimMappingInterface) => (localClaim.id !== oldMapping.localClaim.id)),
             newMapping
         ]);
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes
-                .filter(e => e?.localClaim?.id === oldMapping?.localClaim.id),
+                .filter((e: IDVPClaimMappingInterface) => e?.localClaim?.id === oldMapping?.localClaim.id),
             newMapping
         ]);
     };
@@ -203,5 +206,5 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
  * Default properties.
  */
 AddAttributeSelectionModal.defaultProps = {
-    "data-testid": "add-attribute-modal"
+    "data-componentid": "add-attribute-modal"
 };

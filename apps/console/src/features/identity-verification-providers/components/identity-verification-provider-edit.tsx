@@ -77,7 +77,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      */
     isAutomaticTabRedirectionEnabled?: boolean;
     /**
-     * Specifies, to which tab(tabid) it need to redirect.
+     * Specifies, to which tab(tab id) it need to redirect.
      */
     tabIdentifier?: string;
 }

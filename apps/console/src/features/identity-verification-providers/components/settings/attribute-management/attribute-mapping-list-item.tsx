@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,8 +21,7 @@ import { FormValidation } from "@wso2is/validation";
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Header } from "semantic-ui-react";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../identity-providers/models";
-import { IDVPClaimMappingInterface } from "../../../models";
+import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
 /**
  * Props interface of {@link AttributeMappingListItem}
@@ -32,7 +31,7 @@ export interface AttributeMappingListItemProps {
      * This is the list of attributes that the user can pick from.
      * It only contains the non-mapped/selected ones.
      */
-    availableAttributeList: Array<IdentityProviderClaimInterface>;
+    availableAttributeList: Array<IDVPLocalClaimInterface>;
     /**
      * Attributes which are already persisted (in model) or mapped locally.
      * What we mean by locally is that, user can open the modal multiple
@@ -46,7 +45,7 @@ export interface AttributeMappingListItemProps {
 
 const toBits = (bool: boolean): number => bool ? 1 : 0;
 
-const FORM_ID: string = "idp-attributes-mapping-list-item-form";
+const FORM_ID: string = "idvp-attributes-mapping-list-item-form";
 
 /**
  * This is a common interface that allows the user to map one attribute
@@ -81,7 +80,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         editingMode
     } = props;
 
-    const [ copyOfAttrs, setCopyOfAttrs ] = useState<Array<IdentityProviderClaimInterface>>([]);
+    const [ copyOfAttrs, setCopyOfAttrs ] = useState<Array<IDVPLocalClaimInterface>>([]);
     const [ mappedInputValue, setMappedInputValue ] = useState<string>();
     const [ selectedLocalAttributeInputValue, setSelectedLocalAttributeInputValue ] = useState<string>();
     const [ mappingHasError, setMappingHasError ] = useState<boolean>();
@@ -95,12 +94,12 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     useEffect(() => {
         if (availableAttributeList) {
-            const copy = [ ...availableAttributeList ];
+            const copy: IDVPLocalClaimInterface[]  = [ ...availableAttributeList ];
 
             // When you enter into editing mode the available attribute list
             // will not contain the mapping itself. We need to manually append
             // it to the attrs to make it work.
-            if (editingMode && mapping && mapping.idvpClaim && mapping.localClaim) {
+            if (editingMode && mapping?.idvpClaim && mapping?.localClaim) {
                 copy.push(mapping.localClaim);
             }
             setCopyOfAttrs(copy);
@@ -108,7 +107,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
     }, [ availableAttributeList ]);
 
     const getListOfAvailableAttributes = () => {
-        return copyOfAttrs.map((claim, index) => ({
+        return copyOfAttrs.map((claim: IDVPLocalClaimInterface, index: number) => ({
             content: (
                 <Header as="h6" key={ `attribute-option-${ index }` }>
                     <Header.Content>
@@ -133,20 +132,20 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
      * @param form - Form.
      */
     const onFormSub = (values: Record<string, any>, form: FormApi<Record<string, any>>) => {
-        // Find the claim by id and create a instance of
+        // Find the claim by id and create an instance of
         // IdentityProviderCommonClaimMappingInterface
         // with the mapping value.
-        const newMapping = {
+        const newAttributeMapping: IDVPClaimMappingInterface = {
+            idvpClaim: values.mappedValue,
             localClaim: copyOfAttrs.find(
-                (claim) => claim.id === values.localClaimId
-            ),
-            idvpClaim: values.mappedValue
+                (claim: IDVPLocalClaimInterface) => claim.id === values.localClaimId
+            )
         } as IDVPClaimMappingInterface;
 
-        onSubmit(newMapping);
+        onSubmit(newAttributeMapping);
 
         if (!editingMode) {
-            // Resets the form field values and its fields states.
+            // Resets the form field values and the states of its fields.
             form.change("mappedValue", "");
             form.change("localClaimId", "");
             form.resetFieldState("mappedValue");
@@ -178,7 +177,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             label={ !editingMode && "External IdP Attribute" }
                             placeholder="Enter external IdP attribute"
                             ariaLabel="External IdP Attribute Mapping Value"
-                            validation={ (value) => {
+                            validation={ (value: any) => {
                                 if (!value || !value.trim()) {
                                     setMappingHasError(true);
 
@@ -201,8 +200,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     return FieldConstants.INVALID_RESOURCE_ERROR;
                                 }
                                 // Check whether this attribute external name is already mapped.
-                                const mappedValues = new Set(
-                                    alreadyMappedAttributesList.map((a) => a.idvpClaim)
+                                const mappedValues: any = new Set(
+                                    alreadyMappedAttributesList.map((a: IDVPClaimMappingInterface) => a.idvpClaim)
                                 );
 
                                 if (mappedValues.has(value)) {
@@ -243,7 +242,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             noResultsMessage="Try another attribute search."
                         />
                     </Grid.Column>
-                    { /*When in editing mode, submit button is a icon button.*/ }
+                    { /*When in editing mode, submit button is an icon button.*/ }
                     { editingMode && (
                         <React.Fragment>
                             <Grid.Column width={ 1 }>
