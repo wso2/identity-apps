@@ -73,7 +73,6 @@
             <p>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle,
                         "magic.link.content")%>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.info" )%>
             </p>
         </div>
     </div>
