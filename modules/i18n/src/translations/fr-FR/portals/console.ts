@@ -4289,8 +4289,18 @@ export const console: ConsoleNS = {
                             description: "Une erreur s'est produite lors de la récupération des claims localaux.",
                             message: "Erreur de récupération"
                         }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des données du " +
+                                "fournisseur de vérification d'identité",
+                            message: "Erreur de récupération"
+                        }
                     }
-
                 },
                 forms: {
                     generalDetails: {

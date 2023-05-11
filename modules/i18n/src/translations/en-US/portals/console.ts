@@ -5803,7 +5803,18 @@ export const console: ConsoleNS = {
                             description: "An error occurred while retrieving attributes.",
                             message: "Retrieval Error"
                         }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider details.",
+                            message: "Retrieval Error"
+                        }
                     }
+
                 },
                 forms: {
                     generalDetails: {

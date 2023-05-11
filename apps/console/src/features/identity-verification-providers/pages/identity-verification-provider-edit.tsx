@@ -48,7 +48,7 @@ import { EditIdentityVerificationProvider } from "../components";
 import { IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 
 /**
- * Proptypes for the IDP edit page component.
+ * Proptypes for the IDVP edit page component.
  */
 type IDVPEditPagePropsInterface = IdentifiableComponentInterface;
 
@@ -76,8 +76,8 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         (state: AppState) => state.identityProvider.templates);
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const [
-        identityProviderTemplate,
-        setIdentityProviderTemplate
+        identityVerificationProviderTemplate,
+        setIdentityVerificationProviderTemplate
     ] = useState<IDVPTemplateItemInterface>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -91,7 +91,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
 
         return path[ path.length - 1 ];
     };
-    // TODO: handle fetch error
+
     const {
         data: idvp,
         error: idvpFetchError,
@@ -103,6 +103,50 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
+
+    /**
+     * Checks if the user needs to go to a specific tab index.
+     */
+    useEffect(() => {
+        const tabName: string =  location.state as string;
+
+        if (!tabName) {
+            return;
+        } else {
+            setIsAutomaticTabRedirectionEnabled(true);
+            setTabIdentifier(tabName);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!idvpFetchError) {
+            return;
+        }
+
+        if (idvpFetchError?.response?.data?.description) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.idvp.notifications.getIDVP.error.description",
+                        { description: idvpFetchError.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.idvp.notifications.getIDVP.error.message")
+                })
+            );
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t("console:develop.features.idvp.notifications.getIDVP.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.idvp.notifications.getIDVP.genericError.message")
+            })
+        );
+
+    }, [ idvpFetchError ]);
 
     useEffect(() => {
         /**
@@ -122,21 +166,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     }, [ idpDescElement, isIDVPFetchInProgress ]);
 
     /**
-     * Checks if the user needs to go to a specific tab index.
-     */
-    useEffect(() => {
-        const tabName: string =  location.state as string;
-
-        if (!tabName) {
-            return;
-        } else {
-            setIsAutomaticTabRedirectionEnabled(true);
-            setTabIdentifier(tabName);
-        }
-    }, []);
-
-    /**
-     *  Get IDP templates.
+     *  Get IDVP templates.
      */
     useEffect(() => {
 
@@ -154,7 +184,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     }, [ idvpTemplates ]);
 
     /**
-     * Load the template that the IDP is built on.
+     * Load the template that the IDVP is built on.
      */
     useEffect(() => {
 
@@ -171,7 +201,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             return;
         }
 
-        // TODO: Creating internal mapping to resolve the IDP template.
+        // TODO: Creating internal mapping to resolve the IDVP template.
         // TODO: First phase of the issue is fixed, keeping this for backward compatibility.
         // Tracked Here - https://github.com/wso2/product-is/issues/11023
         const resolveTemplateId = (authenticatorId: string) => {
@@ -280,8 +310,8 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     onDelete={ onIdentityVerificationProviderDelete }
                     onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
-                    template={ identityProviderTemplate }
-                    type={ identityProviderTemplate?.id }
+                    template={ identityVerificationProviderTemplate }
+                    type={ identityVerificationProviderTemplate?.id }
                     isReadOnly={ isReadOnly }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
@@ -292,7 +322,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
 };
 
 /**
- * Default proptypes for the IDP edit page component.
+ * Default proptypes for the IDVP edit page component.
  */
 IdentityVerificationProviderEditPage.defaultProps = {
     "data-componentid": "idvp-edit-page"

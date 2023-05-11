@@ -4172,7 +4172,21 @@ export const console: ConsoleNS = {
                             description: "දේශීය හිමිකම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
                             message: "ලබා ගැනීමේ දෝෂයකි"
                         }
-                    }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාගේ තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
                 },
                 forms: {
                     generalDetails: {
