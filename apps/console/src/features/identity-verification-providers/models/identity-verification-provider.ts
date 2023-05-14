@@ -40,6 +40,7 @@ export interface IdentityVerificationProviderInterface {
 
 export interface IDVPResourceEndpointsInterface {
     identityVerificationProviders: string;
+    IDVPExtensionEndpoint: string;
 }
 
 
@@ -59,7 +60,7 @@ export interface IDVPClaimMappingInterface {
     idvpClaim: string;
 }
 
-interface IDVPConfigPropertiesInterface {
+export interface IDVPConfigPropertiesInterface {
     key: string;
     value: string;
     isSecret: boolean;

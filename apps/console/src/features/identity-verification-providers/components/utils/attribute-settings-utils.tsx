@@ -16,12 +16,11 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { AxiosError } from "axios";
 import { store } from "../../../core";
-import { IdentityAppsApiException } from "@wso2is/core/dist/types/exceptions";
 
 /**
  * Given a local claim it will test whether it

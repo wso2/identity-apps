@@ -16,13 +16,10 @@
  * under the License.
  */
 
-export class IdentityVerificationProviderConstants {
-
-    /**
-     * data-tabIds of the panes in the IDVP settings
-     */
-    public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
-    public static readonly GENERAL_TAB_ID: string  = "general";
-    public static readonly SETTINGS_TAB_ID: string  = "settings";
-
+export enum MetaDataInputTypes {
+    TEXT_AREA  = "text_area",
+    CHECKBOX = "checkbox",
+    TOGGLE = "toggle",
+    DROPDOWN = "dropdown",
 }
+

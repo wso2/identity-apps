@@ -5771,7 +5771,7 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Successfully deleted the identity verification provider.",
-                            message: "Delete successful"
+                            message: "Delete Successful"
                         }
                     },
                     updateIDVP: {
@@ -5811,6 +5811,17 @@ export const console: ConsoleNS = {
                         },
                         genericError: {
                             description: "An error occurred while retrieving identity verification provider details.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving metadata for identity verification " +
+                                "provider.",
                             message: "Retrieval Error"
                         }
                     }

@@ -33,10 +33,12 @@ import {
     AttributeSettings,
     GeneralSettings
 } from "./settings";
+import { ConfigurationSettings } from "./settings/configuration-settings";
 import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
 import {
-    IDVPClaimMappingInterface, IDVPClaimsInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface
+    IDVPClaimMappingInterface, IDVPClaimsInterface, IdentityVerificationProviderInterface
 } from "../models";
+import { UIMetaDataForIDVP } from "../models/ui-metadata";
 
 /**
  * Prop types for the identity verification provider edit component.
@@ -60,26 +62,21 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      */
     onUpdate: () => void;
     /**
-     * Identity verification provider template.
-     */
-    template: IDVPTemplateItemInterface;
-    /**
-     * Type of Identity verification provider.
-     // * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
-     */
-    type: string;
-    /**
      * Specifies if the component should only be read-only.
      */
     isReadOnly: boolean;
     /**
      * Specifies if it is needed to redirect to a specific tabindex
      */
+
+    uiMetaData: UIMetaDataForIDVP;
+
     isAutomaticTabRedirectionEnabled?: boolean;
     /**
      * Specifies, to which tab(tab id) it need to redirect.
      */
     tabIdentifier?: string;
+
 }
 
 /**
@@ -97,11 +94,10 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         isLoading,
         onDelete,
         onUpdate,
-        template,
-        type,
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
         tabIdentifier,
+        uiMetaData,
         ["data-componentid"]: componentId
     } = props;
 
@@ -127,7 +123,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         </EmphasizedSegment>
     );
 
-    const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
+    const GeneralIDVPSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
                 idvp={ identityVerificationProvider }
@@ -140,6 +136,21 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
             />
         </ResourceTab.Pane>
     );
+
+    const IDVPConfigurationSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <ConfigurationSettings
+                idvp={ identityVerificationProvider }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+                data-componentid={ `${ componentId }-configuration-settings` }
+                uiMetaData={ uiMetaData.pages.edit.settings }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+            />
+        </ResourceTab.Pane>
+    );
+
 
     const AttributeSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -161,9 +172,15 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         const panes: ResourceTabPaneInterface[] = [];
 
         panes.push({
-            "data-tabid": IdentityVerificationProviderConstants.SETTINGS_TAB_ID,
+            "data-tabid": IdentityVerificationProviderConstants.GENERAL_TAB_ID,
             menuItem: "General",
-            render: GeneralIdentityProviderSettingsTabPane
+            render: GeneralIDVPSettingsTabPane
+        });
+
+        panes.push({
+            "data-tabid": IdentityVerificationProviderConstants.SETTINGS_TAB_ID,
+            menuItem: "Settings",
+            render: IDVPConfigurationSettingsTabPane
         });
 
         panes.push({

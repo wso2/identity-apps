@@ -44,6 +44,7 @@ import {
     history
 } from "../../core";
 import { useIdentityVerificationProvider } from "../api";
+import { useUIMetadata } from "../api/ui-metadata";
 import { EditIdentityVerificationProvider } from "../components";
 import { IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 
@@ -75,10 +76,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     const idvpTemplates: IDVPTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider.templates);
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const [
-        identityVerificationProviderTemplate,
-        setIdentityVerificationProviderTemplate
-    ] = useState<IDVPTemplateItemInterface>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
@@ -98,6 +95,12 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         isLoading: isIDVPFetchInProgress,
         mutate: refetchIDVP
     } = useIdentityVerificationProvider(getIDVPId(location.pathname));
+
+    const {
+        data: uiMetaData,
+        error: uiMetaDataLoadError,
+        isLoading: isUIMetadataLoading
+    } = useUIMetadata(idvp?.Type);
 
     const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
@@ -149,6 +152,37 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     }, [ idvpFetchError ]);
 
     useEffect(() => {
+
+        if (!uiMetaDataLoadError) {
+            return;
+        }
+
+        if (uiMetaDataLoadError?.response?.data?.description) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.idvp.notifications.getUIMetadata.error.description",
+                        { description: uiMetaDataLoadError.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.idvp.notifications.getUIMetadata.error.message")
+                })
+            );
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t("console:develop.features.idvp.notifications.getUIMetadata.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.idvp.notifications.getUIMetadata.genericError.message")
+            })
+        );
+
+    }, [ uiMetaDataLoadError ]);
+
+    useEffect(() => {
         /**
          * What's the goal of this effect?
          * To figure out the application's description is truncated or not.
@@ -165,57 +199,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         }
     }, [ idpDescElement, isIDVPFetchInProgress ]);
 
-    /**
-     *  Get IDVP templates.
-     */
-    useEffect(() => {
-
-        if (idvpTemplates !== undefined) {
-            return;
-        }
-
-        // setIsIDVPDetailFetchRequestLoading(true);
-
-        const useAPI: boolean = true;
-        // IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
-        //     .finally(() => {
-        //         // setIsIDVPDetailFetchRequestLoading(false);
-        //     });
-    }, [ idvpTemplates ]);
-
-    /**
-     * Load the template that the IDVP is built on.
-     */
-    useEffect(() => {
-
-        // Return if connector is not defined.
-        if (!idvp) {
-            return;
-        }
-
-
-        if (!(idvpTemplates
-            && idvpTemplates instanceof Array
-            && idvpTemplates.length > 0)) {
-
-            return;
-        }
-
-        // TODO: Creating internal mapping to resolve the IDVP template.
-        // TODO: First phase of the issue is fixed, keeping this for backward compatibility.
-        // Tracked Here - https://github.com/wso2/product-is/issues/11023
-        const resolveTemplateId = (authenticatorId: string) => {
-            return "";
-        };
-
-        // const template: IdentityProviderTemplateItemInterface = idvpTemplates
-        //     .find((template: IdentityProviderTemplateItemInterface) => {
-        //         return template.id === (connector.templateId
-        //             ?? resolveTemplateId(connector.federatedAuthenticators?.defaultAuthenticatorId));
-        //     });
-        //
-        // setIdentityProviderTemplate(template);
-    }, [ idvpTemplates, idvp ]);
 
     /**
      * Handles the back button click event.
@@ -306,15 +289,14 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             {
                 <EditIdentityVerificationProvider
                     identityVerificationProvider={ idvp }
-                    isLoading={ isIDVPFetchInProgress }
+                    isLoading={ isIDVPFetchInProgress || isUIMetadataLoading }
                     onDelete={ onIdentityVerificationProviderDelete }
                     onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
-                    template={ identityVerificationProviderTemplate }
-                    type={ identityVerificationProviderTemplate?.id }
                     isReadOnly={ isReadOnly }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
+                    uiMetaData={ uiMetaData }
                 />
             }
         </TabPageLayout>

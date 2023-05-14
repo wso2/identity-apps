@@ -2418,6 +2418,7 @@ export interface ConsoleNS {
                   submitAttributeSettings: Notification;
                   getAllLocalClaims: Notification;
                   getIDVP: Notification;
+                  getUIMetadata: Notification;
                 };
                 forms: {
                     // attributeSettings: {

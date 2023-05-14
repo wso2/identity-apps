@@ -4181,12 +4181,18 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "අනන්‍යතා තහවුරු කරන්නාගේ තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
                             message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
                         }
                     },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ පාරදත්ත ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    }
                 },
                 forms: {
                     generalDetails: {

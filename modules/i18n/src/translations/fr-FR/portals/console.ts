@@ -4300,6 +4300,17 @@ export const console: ConsoleNS = {
                                 "fournisseur de vérification d'identité",
                             message: "Erreur de récupération"
                         }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées de " +
+                                 "l'interface utilisateur.",
+                            message: "Erreur de récupération"
+                        }
                     }
                 },
                 forms: {

@@ -26,6 +26,7 @@ import { IDVPResourceEndpointsInterface } from "../models";
  */
 export const getIDVPResourceEndpoints = (serverHost: string): IDVPResourceEndpointsInterface => {
     return {
+        IDVPExtensionEndpoint: `${ serverHost }/api/server/v1/extensions/identity-verification-providers`,
         identityVerificationProviders: `${ serverHost }/api/idv/v1/providers`
     };
 };

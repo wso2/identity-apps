@@ -21,6 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { store } from "../../core";
+import { updateIdentityVerificationProvider } from "../api";
+import { IdentityVerificationProviderInterface } from "../models";
 
 
 export const handleIDVPDeleteError = (error: AxiosError): void => {
@@ -101,6 +103,24 @@ export const handleIDVPUpdateError = (error: AxiosError): void => {
         })
     );
 
+};
+
+export const updateIDVP = (
+    idvp: IdentityVerificationProviderInterface,
+    setIsSubmitting: (boolean) => void,
+    onUpdate: () => void
+) : void => {
+
+    setIsSubmitting(true);
+    updateIdentityVerificationProvider(idvp)
+        .then(handleIDVPUpdateSuccess)
+        .catch((error: AxiosError) => {
+            handleIDVPUpdateError(error);
+        })
+        .finally(() => {
+            setIsSubmitting(false);
+            onUpdate();
+        });
 };
 
 
