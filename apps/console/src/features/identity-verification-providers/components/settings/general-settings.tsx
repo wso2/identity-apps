@@ -17,22 +17,18 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteIDVP, updateIdentityVerificationProvider } from "../../api";
+import { deleteIDVP } from "../../api";
 import { IdentityVerificationProviderInterface } from "../../models";
 import {
     handleIDVPDeleteError,
     handleIDVPDeleteSuccess,
-    handleIDVPUpdateError,
-    handleIDVPUpdateSuccess
+    updateIDVP
 } from "../../utils";
 import { GeneralDetailsForm } from "../forms";
 
@@ -130,17 +126,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 idvp[key] = updatedDetails[key];
             }
         }
-
-        setIsSubmitting(true);
-        updateIdentityVerificationProvider(idvp)
-            .then(handleIDVPUpdateSuccess)
-            .catch((error: AxiosError) => {
-                handleIDVPUpdateError(error);
-            })
-            .finally(() => {
-                setIsSubmitting(false);
-                onUpdate();
-            });
+        updateIDVP(idvp, setIsSubmitting, onUpdate);
     };
 
     const handleIdentityVerificationProviderDisable = (event: any, data: CheckboxProps) => {

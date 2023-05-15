@@ -21,7 +21,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,14 +29,13 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import { getAllLocalClaims } from "../../../claims";
-import { updateIdentityVerificationProvider } from "../../api";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
     IDVPLocalClaimInterface,
     IdentityVerificationProviderInterface
 } from "../../models";
-import { handleIDVPUpdateError, handleIDVPUpdateSuccess } from "../../utils";
+import { updateIDVP } from "../../utils";
 import { handleGetAllLocalClaimsError, isLocalIdentityClaim } from "../utils";
 
 interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface {
@@ -183,15 +181,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         });
 
         if (canSubmitAttributeUpdate()) {
-            setIsSubmissionLoading(true);
-            updateIdentityVerificationProvider(idvp)
-                .then(handleIDVPUpdateSuccess)
-                .catch((error: AxiosError) => {
-                    handleIDVPUpdateError(error);
-                }).finally(() => {
-                    setIsSubmissionLoading(false);
-                    onUpdate();
-                });
+            updateIDVP(idvp, setIsSubmissionLoading, onUpdate);
         } else {
             dispatch(addAlert(
                 {
