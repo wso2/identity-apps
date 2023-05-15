@@ -56,6 +56,10 @@ import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 interface IdentityVerificationProviderListPropsInterface extends LoadableComponentInterface,
     IdentifiableComponentInterface {
     /**
+     * Identity verification providers list.
+     */
+    idvpList: IDVPListResponseInterface;
+    /**
      * Advanced Search component.
      */
     advancedSearch?: ReactNode;
@@ -63,10 +67,6 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * Default list item limit.
      */
     defaultListItemLimit?: number;
-    /**
-     * Identity verification providers list.
-     */
-    list: IDVPListResponseInterface;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
@@ -110,10 +110,9 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 ): ReactElement => {
 
     const {
-        advancedSearch,
         defaultListItemLimit,
         isLoading,
-        list,
+        idvpList,
         onEmptyListPlaceholderActionClick,
         onIdentityVerificationProviderDelete,
         onListItemClick,
@@ -150,7 +149,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * @param idvpId - Identity verification provider id.
      */
     const showIDVPDeleteConfirmationModal = (idvpId: string): void => {
-        const selectedIDVP: IdentityVerificationProviderInterface = list.identityVerificationProviders
+        const selectedIDVP: IdentityVerificationProviderInterface = idvpList.identityVerificationProviders
             .find((idvp: IdentityVerificationProviderInterface) => idvp.id === idvpId);
 
         setSelectedIdvpToBeDeleted(selectedIDVP);
@@ -204,7 +203,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (idvpList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     className="list-placeholder"
@@ -379,7 +378,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         <>
             <DataTable<IdentityVerificationProviderInterface>
                 className="identity-providers-table"
-                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
@@ -387,7 +385,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ list?.identityVerificationProviders }
+                data={ idvpList?.identityVerificationProviders }
                 onRowClick={ (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
                     handleIdentityVerificationProviderEdit(idvp.id);
                     onListItemClick && onListItemClick(e, idvp);

@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
+import { AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
 
@@ -62,11 +62,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
 
     const { t } = useTranslation();
     const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemFilter, setListItemFilter ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS[0]
     );
@@ -75,7 +72,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         isLoading: isIDVPListRequestLoading,
         error: idvpListFetchRequestError,
         mutate: idvpListMutator
-    } = useIdentityVerificationProviderList(listItemLimit, listOffset, listItemFilter);
+    } = useIdentityVerificationProviderList(listItemLimit, listOffset);
     const dispatch: Dispatch = useDispatch();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -120,15 +117,6 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     useEffect( handleIdvpFetchRequestError , [ idvpListFetchRequestError ]);
 
     /**
-     * Handles the `onFilter` callback action from the search component of identity verification provider.
-     * @param query - Search query.
-     */
-    const handleIdentityVerificationProviderListFilter = (query: string) => {
-        setSearchQuery(query);
-        setListItemFilter(query);
-    };
-
-    /**
      * Handles item per page dropdown page.
      *
      * @param event - Mouse event.
@@ -169,39 +157,11 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         await idvpListMutator();
     };
 
-    const handleSearchQueryClear = () => {
-        console.log("handleSearchQueryClear");
-    };
-
-    const getAdvancedSearchWithBasicFilters = () => {
-
-        return (
-            <AdvancedSearchWithBasicFilters
-                onFilter={ handleIdentityVerificationProviderListFilter }
-                filterAttributeOptions={ [
-                    {
-                        key: 0,
-                        text: t("common:name"),
-                        value: "name"
-                    }
-                ] }
-                filterValuePlaceholder={ t(
-                    "console:develop.features.idvp.advancedSearch.form.inputs.filterValue.placeholder"
-                ) }
-                placeholder={ t( "console:develop.features.idvp.advancedSearch.placeholder") }
-                defaultSearchAttribute="name"
-                defaultSearchOperator="co"
-                triggerClearQuery={ triggerClearQuery }
-                data-componentid={ `${ componentId }-advance-search` }
-            />
-        );
-    };
-
     return (
         <PageLayout
             pageTitle="Identity Verification Providers"
             action={
-                (!isIDVPListRequestLoading && (searchQuery || idvpList?.identityVerificationProviders?.length > 0)) &&
+                (!isIDVPListRequestLoading && (idvpList?.identityVerificationProviders?.length > 0)) &&
                 (
                     // TODO: Make this IDVP instead of IDP
                     <Show when={ AccessControlConstants.IDP_WRITE }>
@@ -225,14 +185,13 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         >
             <ListLayout
                 isLoading={ isIDVPListRequestLoading }
-                advancedSearch={ getAdvancedSearchWithBasicFilters() }
                 currentListSize={ idvpList?.count ?? 0 }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 showPagination={ true }
-                showTopActionPanel={ isIDVPListRequestLoading || !(!searchQuery && idvpList?.totalResults <= 0) }
+                showTopActionPanel={ false }
                 sortOptions={ IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={
@@ -242,15 +201,14 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                 data-componentid={ `${ componentId }-list-layout` }
             >
                 <IdentityVerificationProviderList
-                    advancedSearch={ getAdvancedSearchWithBasicFilters() }
                     isLoading={ isIDVPListRequestLoading }
-                    list={ idvpList }
+                    idvpList={ idvpList }
                     onEmptyListPlaceholderActionClick={ () =>
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                     }
                     onIdentityVerificationProviderDelete={ onIdentityVerificationProviderDelete }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
+                    // onSearchQueryClear={ handleSearchQueryClear }
+                    // searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>
