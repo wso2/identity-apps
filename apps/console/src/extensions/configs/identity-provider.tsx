@@ -26,6 +26,7 @@ import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTabTypes
 } from "../../features/identity-providers/models";
+import { FeatureConfigInterface } from "../../features/core";
 
 export const identityProviderConfig: IdentityProviderConfig = {
     authenticatorResponseExtension: [],
@@ -50,7 +51,10 @@ export const identityProviderConfig: IdentityProviderConfig = {
         ): ReactElement | null => {
             return null;
         },
-        getTabExtensions: (_props: Record<string, unknown>): ResourceTabPaneInterface[] => [],
+        getTabExtensions: (
+            _props: Record<string, unknown>,
+            _features: FeatureConfigInterface
+        ): ResourceTabPaneInterface[] => [],
         isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
 
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([

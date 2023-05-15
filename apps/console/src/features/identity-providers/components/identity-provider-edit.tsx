@@ -47,6 +47,8 @@ import {
     IdentityProviderTabTypes,
     IdentityProviderTemplateInterface
 } from "../models";
+import { AppState, FeatureConfigInterface } from "../../core";
+import { useSelector } from "react-redux";
 
 /**
  * Proptypes for the idp edit component.
@@ -134,6 +136,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
@@ -289,11 +293,17 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         }
 
         const extensions: ResourceTabPaneInterface[] = identityProviderConfig
-            .editIdentityProvider.getTabExtensions({
-                content: template.content.quickStart,
-                identityProvider: identityProvider,
-                template: template
-            });
+            .editIdentityProvider.getTabExtensions(
+                {
+                    content: template?.content?.quickStart,
+                    identityProvider: identityProvider,
+                    template: template,
+                    onIDPUpdate: () => {
+                        onUpdate(identityProvider?.id);
+                    }
+                },
+                featureConfig
+            );
 
         if (Array.isArray(extensions) && extensions.length > 0) {
             isTabExtensionsAvailable(true);
@@ -311,9 +321,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
+        const extensionPanes: ResourceTabPaneInterface[] = [];
 
         if (tabPaneExtensions && tabPaneExtensions.length > 0) {
-            panes.push(...tabPaneExtensions);
+            extensionPanes.push(...tabPaneExtensions);
         }
 
         panes.push({
@@ -381,6 +392,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 render: AdvancedSettingsTabPane
             });
         }
+
+        extensionPanes.forEach(
+            (extensionPane: ResourceTabPaneInterface) => {
+                panes.splice(extensionPane.index, 0, extensionPane);
+            }
+        );
 
         return panes;
     };

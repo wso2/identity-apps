@@ -24,6 +24,7 @@ import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderTabTypes
 } from "../../../features/identity-providers/models";
+import { FeatureConfigInterface } from "../../../features/core";
 
 export interface IdentityProviderConfig {
     /**
@@ -62,7 +63,10 @@ export interface IdentityProviderConfig {
          * @param props - Props for the component.
          * @returns Array of tab extensions.
          */
-        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
+        getTabExtensions: (
+            props: Record<string, unknown>,
+            features: FeatureConfigInterface
+        ) => ResourceTabPaneInterface[];
         /**
          * Used enable/disable certain tabs for certain IDP template type.
          * @param templateId - The IDP Template Type.
