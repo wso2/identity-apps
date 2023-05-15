@@ -85,9 +85,20 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsInter
         // Replace only the relevant existing config properties with the updated values.
         for (const key in updatedDetails) {
             if (updatedDetails[key] !== undefined) {
-                idvp.configProperties.map((property: IDVPConfigPropertiesInterface) => {
-                    property.value = property.key === key ? updatedDetails[key] : property.value;
-                } );
+                const updatedProperty: IDVPConfigPropertiesInterface = idvp.configProperties.find(
+                    (property: IDVPConfigPropertiesInterface) => (property.key === key)
+                );
+
+                if(updatedProperty){
+                    updatedProperty.value = updatedDetails[key];
+                } else {
+                    // If the updated config property is not found on the IDVP object, add it as a fallback measure.
+                    idvp.configProperties.push({
+                        isSecret: false,
+                        key: key,
+                        value: updatedDetails[key]
+                    });
+                }
             }
         }
 

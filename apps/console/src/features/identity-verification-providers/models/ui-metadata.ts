@@ -26,9 +26,8 @@ export interface InputFieldMetaData {
     required: boolean;
     isSecret: boolean;
     dataComponentId: string;
-    defaultValue?: string | boolean | number;
-    defaultOption?: { label: string; value: string };
-    options?: { label: string; value: string }[];
+    defaultValue?: string | boolean | number | DropdownOptionsInterface;
+    options?: DropdownOptionsInterface[];
     placeholder?: string;
     message?: FormFieldMessage;
     maxLength?: number;
@@ -44,4 +43,9 @@ export interface UIMetaDataForIDVP {
             attributes?: InputFieldMetaData[];
         };
     }
+}
+
+export interface DropdownOptionsInterface {
+     label: string;
+     value: string
 }

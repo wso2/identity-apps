@@ -18,10 +18,10 @@
 
 import { Field, FieldInputTypes } from "@wso2is/form";
 import React, { ReactElement } from "react";
-import { Divider } from "semantic-ui-react";
+import { Divider, Header } from "semantic-ui-react";
 import { MetaDataInputTypes } from "../../../constants/metadata-constants";
 import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../../models";
-import { InputFieldMetaData } from "../../../models/ui-metadata";
+import { DropdownOptionsInterface, InputFieldMetaData } from "../../../models/ui-metadata";
 
 export const renderUIFromMetadata = (
     uiMetaData: InputFieldMetaData[],
@@ -33,8 +33,8 @@ export const renderUIFromMetadata = (
         // exclude rendering the divider for the first input element.
         const includeDivider: boolean = elementMetaData.displayOrder !== 1;
         // If there is an already existing IDVP, get the current value of the element from the IDVP.
-        const currentValueOfElement: string = idvp?.configProperties.find(
-            (property: IDVPConfigPropertiesInterface ) => { return property.key === elementMetaData.name; })?.value;
+        const currentElementValue: string = idvp?.configProperties.find(
+            (property: IDVPConfigPropertiesInterface ) => (property.key === elementMetaData.name))?.value;
 
         switch(elementMetaData?.type) {
             case FieldInputTypes.INPUT_DEFAULT:
@@ -59,12 +59,14 @@ export const renderUIFromMetadata = (
                             placeholder={ elementMetaData.placeholder }
                             // TODO: evaluate the support for custom validation functions through metadata.
                             // validation={ (value: string) => idpNameValidation(value) }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
                             minLength={ elementMetaData.minLength }
                             data-componentid={ elementMetaData.dataComponentId }
                             hint={ elementMetaData.hint }
-                            readOnly={ isReadOnly }/>
+                            readOnly={ isReadOnly }
+                        />
                     </>
                 );
             case FieldInputTypes.INPUT_PASSWORD:
@@ -82,7 +84,8 @@ export const renderUIFromMetadata = (
                             placeholder={ elementMetaData.placeholder }
                             // TODO: evaluate the support for custom validation functions through metadata.
                             // validation={ (value: string) => idpNameValidation(value) }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
                             minLength={ elementMetaData.minLength }
                             data-componentid={ elementMetaData.dataComponentId }
@@ -102,10 +105,12 @@ export const renderUIFromMetadata = (
                             hint={ elementMetaData.hint }
                             data-componentid={ elementMetaData.dataComponentId }
                             required={ elementMetaData.required }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
                             minLength={ elementMetaData.minLength }
-                            placeholder={ elementMetaData.placeholder }/>
+                            placeholder={ elementMetaData.placeholder }
+                        />
                     </>
                 );
             case MetaDataInputTypes.CHECKBOX:
@@ -119,7 +124,9 @@ export const renderUIFromMetadata = (
                             label={ elementMetaData.label }
                             data-componentid={ elementMetaData.dataComponentId }
                             required={ elementMetaData.required }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }/>
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
+                        />
                     </>
                 );
             case MetaDataInputTypes.TOGGLE:
@@ -134,28 +141,35 @@ export const renderUIFromMetadata = (
                             label={ elementMetaData.label }
                             data-componentid={ elementMetaData.dataComponentId }
                             required={ elementMetaData.required }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }/>
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
+                        />
                     </>
                 );
-                //TODO: Add support for drop down
-            // case MetaDataInputTypes.DROPDOWN:
-            //     return (
-            //         <Field
-            //             component="select"
-            //             ariaLabel={ elementMetaData.name }
-            //             name={ elementMetaData.name }
-            //             hint={ elementMetaData.hint }
-            //             label={ elementMetaData.label }
-            //             data-componentid={ elementMetaData.dataComponentId }
-            //             placeholder={ elementMetaData.placeholder }
-            //             required={ elementMetaData.required }
-            //             // defaultValue={ elementMetaData.defaultOption }
-            //             // options={ elementMetaData.options }
-            //         >
-            //
-            //             <option value={"1"}>Opt 1</option>
-            //         </Field>
-            //     );
+            case MetaDataInputTypes.DROPDOWN:
+                return (
+                    <>
+                        { includeDivider && <Divider hidden={ true }/> }
+                        <Field.Dropdown
+                            search
+                            fluid
+                            type="dropdown"
+                            ariaLabel={ elementMetaData.name }
+                            name={ elementMetaData.name }
+                            hint={ elementMetaData.hint }
+                            label={ elementMetaData.label }
+                            data-componentid={ elementMetaData.dataComponentId }
+                            required={ elementMetaData.required }
+                            options={ getDropdownOptions(elementMetaData.options) }
+                            value={
+                                currentElementValue ?? (elementMetaData.defaultValue as DropdownOptionsInterface).value
+                            }
+                            initialValue={
+                                currentElementValue ?? (elementMetaData.defaultValue as DropdownOptionsInterface).value
+                            }
+                        />
+                    </>
+                );
             default:
                 return(
                     <>
@@ -170,12 +184,14 @@ export const renderUIFromMetadata = (
                             placeholder={ elementMetaData.placeholder }
                             // TODO: evaluate the support for custom validation functions through metadata.
                             // validation={ (value: string) => idpNameValidation(value) }
-                            value={ currentValueOfElement ?? elementMetaData.defaultValue }
+                            value={ currentElementValue ?? elementMetaData.defaultValue }
+                            initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
                             minLength={ elementMetaData.minLength }
                             data-componentid={ elementMetaData.dataComponentId }
                             hint={ elementMetaData.hint }
-                            readOnly={ isReadOnly }/>
+                            readOnly={ isReadOnly }
+                        />
                     </>
                 );
 
@@ -197,3 +213,17 @@ export const renderUIFromMetadata = (
     );
 };
 
+const getDropdownOptions = (options: DropdownOptionsInterface[]) => {
+    return options.map((option: DropdownOptionsInterface, index: number) => ({
+        content: (
+            <Header as="h6" key={ `dropdown-option-${ index }` }>
+                <Header.Content>
+                    { option.label }
+                </Header.Content>
+            </Header>
+        ),
+        key: option.value,
+        text: option.label,
+        value: option.value
+    }));
+};
