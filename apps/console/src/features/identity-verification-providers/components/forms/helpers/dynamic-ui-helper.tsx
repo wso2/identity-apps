@@ -16,12 +16,15 @@
  * under the License.
  */
 
-import { Field, FieldInputTypes } from "@wso2is/form";
+import { Field, FieldInputTypes, getDefaultValidation } from "@wso2is/form";
 import React, { ReactElement } from "react";
 import { Divider, Header } from "semantic-ui-react";
 import { MetaDataInputTypes } from "../../../constants/metadata-constants";
 import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../../models";
 import { DropdownOptionsInterface, InputFieldMetaData } from "../../../models/ui-metadata";
+
+const ERROR_MSG_REQUIRED_FIELD: string = "This field cannot be empty";
+const ERROR_MSG_REGEX_FAILED: string = "Pattern validation failed";
 
 export const renderUIFromMetadata = (
     uiMetaData: InputFieldMetaData[],
@@ -29,6 +32,7 @@ export const renderUIFromMetadata = (
     idvp?: IdentityVerificationProviderInterface
 ): ReactElement => {
 
+    // TODO: Refactor MetaData -> Metadata
     const createElement = (elementMetaData: InputFieldMetaData): ReactElement => {
         // exclude rendering the divider for the first input element.
         const includeDivider: boolean = elementMetaData.displayOrder !== 1;
@@ -57,8 +61,9 @@ export const renderUIFromMetadata = (
                             required={ elementMetaData.required }
                             message={ elementMetaData.message }
                             placeholder={ elementMetaData.placeholder }
-                            // TODO: evaluate the support for custom validation functions through metadata.
-                            // validation={ (value: string) => idpNameValidation(value) }
+                            validate={ (value: string ) => {
+                                return performValidations(value, elementMetaData);
+                            } }
                             value={ currentElementValue ?? elementMetaData.defaultValue }
                             initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
@@ -82,15 +87,17 @@ export const renderUIFromMetadata = (
                             required={ elementMetaData.required }
                             message={ elementMetaData.message }
                             placeholder={ elementMetaData.placeholder }
-                            // TODO: evaluate the support for custom validation functions through metadata.
-                            // validation={ (value: string) => idpNameValidation(value) }
+                            validate={ (value: string ) => {
+                                return performValidations(value, elementMetaData);
+                            } }
                             value={ currentElementValue ?? elementMetaData.defaultValue }
                             initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
                             minLength={ elementMetaData.minLength }
                             data-componentid={ elementMetaData.dataComponentId }
                             hint={ elementMetaData.hint }
-                            readOnly={ isReadOnly }/>
+                            readOnly={ isReadOnly }
+                        />
                     </>
                 );
 
@@ -105,6 +112,9 @@ export const renderUIFromMetadata = (
                             hint={ elementMetaData.hint }
                             data-componentid={ elementMetaData.dataComponentId }
                             required={ elementMetaData.required }
+                            validate={ (value: string ) => {
+                                return performValidations(value, elementMetaData);
+                            } }
                             value={ currentElementValue ?? elementMetaData.defaultValue }
                             initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
@@ -182,8 +192,9 @@ export const renderUIFromMetadata = (
                             required={ elementMetaData.required }
                             message={ elementMetaData.message }
                             placeholder={ elementMetaData.placeholder }
-                            // TODO: evaluate the support for custom validation functions through metadata.
-                            // validation={ (value: string) => idpNameValidation(value) }
+                            validate={ (value: string ) => {
+                                return performValidations(value, elementMetaData);
+                            } }
                             value={ currentElementValue ?? elementMetaData.defaultValue }
                             initialValue={ currentElementValue ?? elementMetaData.defaultValue }
                             maxLength={ elementMetaData.maxLength }
@@ -226,4 +237,30 @@ const getDropdownOptions = (options: DropdownOptionsInterface[]) => {
         text: option.label,
         value: option.value
     }));
+};
+
+const performValidations = (value: string, elementMetaData: InputFieldMetaData) => {
+
+    // perform required validation
+    if(elementMetaData.required && !value){
+        return ERROR_MSG_REQUIRED_FIELD;
+    }
+
+    // skip the rest of the validations if the value is empty
+    if(!value){
+        return;
+    }
+
+    // perform regex validation
+    if(elementMetaData.validationRegex){
+        const regexp: RegExp = new RegExp(elementMetaData.validationRegex);
+
+        if(!regexp.test(value)){
+            return elementMetaData.regexValidationError ?? ERROR_MSG_REGEX_FAILED;
+        }
+    }
+
+    const field: string = elementMetaData.type === FieldInputTypes.INPUT_PASSWORD ? "password" : "text";
+
+    return getDefaultValidation(field, elementMetaData.type, value);
 };

@@ -32,6 +32,8 @@ export interface InputFieldMetaData {
     message?: FormFieldMessage;
     maxLength?: number;
     minLength?: number;
+    validationRegex?: string;
+    regexValidationError?: string;
 }
 
 export interface UIMetaDataForIDVP {
