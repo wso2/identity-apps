@@ -5737,6 +5737,13 @@ export const console: ConsoleNS = {
                             2: "steps in the identity verification provider creation wizard."
                         },
                         title: "Add a new Identity Verification Provider"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "There are currently no identity verification provider types ",
+                            1: "available for configuration."
+                        },
+                        title: "No identity verification provider types found"
                     }
                 },
                 confirmations: {
@@ -5822,6 +5829,16 @@ export const console: ConsoleNS = {
                         genericError: {
                             description: "An error occurred while retrieving metadata for identity verification " +
                                 "provider.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider templates.",
                             message: "Retrieval Error"
                         }
                     }
@@ -6194,7 +6211,10 @@ export const console: ConsoleNS = {
             idvpTemplate: {
                 backButton: "Go back to Identity Verification Providers",
                 subTitle: "Choose one of the following identity verification providers.",
-                title: "Select Identity Verification Provider"
+                title: "Select Identity Verification Provider",
+                search: {
+                    placeholder: "Search by name"
+                }
             },
             overview: {
                 subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +

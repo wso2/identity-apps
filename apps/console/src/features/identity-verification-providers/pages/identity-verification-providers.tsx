@@ -28,6 +28,7 @@ import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semanti
 import { AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
+import { handleIdvpListFetchRequestError } from "../utils";
 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
@@ -73,48 +74,12 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         error: idvpListFetchRequestError,
         mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset);
-    const dispatch: Dispatch = useDispatch();
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    /**
-     * Displays an error alert when there is a failure in the identity verification provider list fetch request.
-     */
-    const handleIdvpFetchRequestError = () => {
-        if (!idvpListFetchRequestError) {
-            return;
-        }
-        if (idvpListFetchRequestError?.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:develop.features.idvp.notifications.getIDVPList.error.description",
-                        { description: idvpListFetchRequestError.response.data.description }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idvp.notifications.getIDVPList.error.message")
-                })
-            );
+    useEffect( () => {
+        handleIdvpListFetchRequestError(idvpListFetchRequestError);
 
-            return;
-        }
-
-        dispatch(
-            addAlert({
-                description: t(
-                    "console:develop.features.idvp.notifications.getIDVPList.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "console:develop.features.idvp.notifications.getIDVPList.genericError.message"
-                )
-            })
-        );
-
-        return;
-    };
-
-    useEffect( handleIdvpFetchRequestError , [ idvpListFetchRequestError ]);
+    } , [ idvpListFetchRequestError ]);
 
     /**
      * Handles item per page dropdown page.
@@ -167,7 +132,6 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     <Show when={ AccessControlConstants.IDP_WRITE }>
                         <PrimaryButton
                             onClick={ (): void => {
-                                eventPublisher.publish("connections-click-new-connection-button");
                                 history.push(AppConstants.getPaths().get("IDVP_TEMPLATES"));
                             } }
                             data-componentid={ `${ componentId }-add-button` }

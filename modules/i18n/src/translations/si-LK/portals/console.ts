@@ -4107,6 +4107,13 @@ export const console: ConsoleNS = {
                             2: "පහසුවෙන් අනන්‍යතා තහවුරු කරන්නෙක් එක් කර ගත හැක."
                         },
                         title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "වින්‍යාස කිරීම සඳහා මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන්",
+                            1: "වර්ග නොමැත."
+                        },
+                        title: "අනන්‍යතා තහවුරු කරන්නන් වර්ග කිසිවක් හමු නොවිණි"
                     }
                 },
                 confirmations: {
@@ -4190,6 +4197,16 @@ export const console: ConsoleNS = {
                         },
                         genericError: {
                             description:"අනන්‍යතා තහවුරු කරන්නාගේ පාරදත්ත ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
                             message: "ලබා ගැනීමේ දෝෂයකි"
                         }
                     }
@@ -4535,7 +4552,10 @@ export const console: ConsoleNS = {
             idvpTemplate: {
                 backButton: "අනන්‍යතා තහවුරු කරන්නන් වෙත ආපසු යන්න",
                 subTitle: "පහත අනන්‍යතා තහවුරු කරන්නන්ගෙන් එකක් තෝරන්න.",
-                title: "අනන්‍යතා තහවුරු කරන්නන් තෝරන්න"
+                title: "අනන්‍යතා තහවුරු කරන්නන් තෝරන්න",
+                "search": {
+                    "placeholder": "නමින් සොයන්න"
+                }
             },
             overview: {
                 subTitle: "යෙදුම්, අනන්‍යතා සපයන්නන්, පරිශීලකයින් සහ භූමිකාවන් වින්‍යාස කිරීම සහ කළමනාකරණය " +

@@ -56,6 +56,7 @@ export const handleIDVPDeleteError = (error: AxiosError): void => {
 };
 
 export const handleIDVPDeleteSuccess = (): void => {
+
     store.dispatch(
         addAlert({
             description: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
@@ -66,6 +67,7 @@ export const handleIDVPDeleteSuccess = (): void => {
 };
 
 export const handleIDVPUpdateSuccess = (): void => {
+
     store.dispatch(
         addAlert({
             description: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.success.description"),
@@ -76,6 +78,7 @@ export const handleIDVPUpdateSuccess = (): void => {
 };
 
 export const handleIDVPUpdateError = (error: AxiosError): void => {
+
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -103,6 +106,76 @@ export const handleIDVPUpdateError = (error: AxiosError): void => {
         })
     );
 
+};
+
+export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
+
+    if (error?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getIDVPTemplateTypes.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getIDVPTemplateTypes.error.message"
+                )
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.message"
+            )
+        })
+    );
+
+};
+
+/**
+ * Displays an error alert when there is a failure in the identity verification provider list fetch request.
+ */
+export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: AxiosError) => {
+    if (!idvpListFetchRequestError) {
+        return;
+    }
+    if (idvpListFetchRequestError?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getIDVPList.error.description",
+                    { description: idvpListFetchRequestError.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPList.error.message")
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVPList.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVPList.genericError.message"
+            )
+        })
+    );
+
+    return;
 };
 
 export const updateIDVP = (

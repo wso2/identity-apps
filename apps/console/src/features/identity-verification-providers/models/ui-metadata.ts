@@ -51,3 +51,16 @@ export interface DropdownOptionsInterface {
      label: string;
      value: string
 }
+
+export interface IDVPTypeMetadataInterface {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+    displayOrder: number;
+    tags: string[];
+    category: string;
+    type: string;
+    self: string;
+}
+

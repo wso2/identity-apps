@@ -23,7 +23,8 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { UIMetaDataForIDVP } from "../models/ui-metadata";
+import { IdentityVerificationProviderInterface } from "../models";
+import { IDVPTypeMetadataInterface, UIMetaDataForIDVP } from "../models/ui-metadata";
 
 /**
  * Hook to get the identity verification provider (IDVP) list with limit and offset.
@@ -44,6 +45,63 @@ export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInte
     };
     // IF the idvpType is not set, passing null to the useRequest hook will abort the request.
     const { data, error, isValidating, mutate } = useRequest<Data, Error>( idvpType? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+/**
+ * Hook to get the identity verification provider (IDVP) list with limit and offset.
+ *
+ *
+ * @returns UI Metadata object for the IDVP
+ */
+export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface[], Error = RequestErrorInterface>(
+
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.IDVPExtensionEndpoint
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>( requestConfig );
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+/**
+ * Hook to get the identity verification provider (IDVP) list with limit and offset.
+ *
+ *
+ * @returns UI Metadata object for the IDVP
+ */
+export const useIDVPTemplate = <Data = IdentityVerificationProviderInterface, Error = RequestErrorInterface>(
+    idvpType: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.IDVPExtensionEndpoint }/${ idvpType }/template`
+    };
+
+    // IF the idvpType is not set, passing null to the useRequest hook will abort the request.
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>( idvpType ? requestConfig : null );
 
     return {
         data,

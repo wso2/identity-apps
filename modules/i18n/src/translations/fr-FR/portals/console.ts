@@ -4220,6 +4220,13 @@ export const console: ConsoleNS = {
                             2: "étapes de l'assistant de création du fournisseur de vérification d'identité."
                         },
                         title: "Ajouter un nouveau fournisseur de vérification d'identité"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "Il n'y a actuellement aucun type de fournisseur de vérification ",
+                            1: "d'identité disponible pour la configuration."
+                        },
+                        title: "Aucun type de fournisseur de vérification d'identité trouvé"
                     }
                 },
                 confirmations: {
@@ -4308,7 +4315,18 @@ export const console: ConsoleNS = {
                         },
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération des métadonnées de " +
-                                 "l'interface utilisateur.",
+                                "l'interface utilisateur.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des modèles de " +
+                                "fournisseur de vérification d'identité.",
                             message: "Erreur de récupération"
                         }
                     }
@@ -4645,7 +4663,10 @@ export const console: ConsoleNS = {
             idvpTemplate: {
                 backButton: "Retourner aux fournisseurs de vérification d'identité",
                 subTitle: "Choisissez l'un des fournisseurs de vérification d'identité suivants.",
-                title: "Sélectionnez le fournisseur de vérification d'identité"
+                title: "Sélectionnez le fournisseur de vérification d'identité",
+                "search": {
+                    "placeholder": "Recherche par nom"
+                }
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +

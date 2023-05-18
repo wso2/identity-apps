@@ -2407,6 +2407,7 @@ export interface ConsoleNS {
                 };
                 placeholders: {
                     emptyIDVPList: Placeholder;
+                    emptyIDVPTypeList: Placeholder;
                 };
                 confirmations: {
                     deleteIDVP: Confirmation;
@@ -2419,6 +2420,7 @@ export interface ConsoleNS {
                   getAllLocalClaims: Notification;
                   getIDVP: Notification;
                   getUIMetadata: Notification;
+                  getIDVPTemplateTypes: Notification;
                 };
                 forms: {
                     // attributeSettings: {
@@ -2685,6 +2687,9 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
                 backButton: string;
+                search: {
+                    placeholder: string;
+                };
             };
             overview: Page;
         };
