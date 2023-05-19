@@ -19,7 +19,8 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, SVGProps, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { OrganizationRoleBasics } from "./add-organization-role/organization-role-basics";
@@ -63,6 +64,33 @@ enum WizardStepsFormTypes {
  */
 interface WizardStateInterface {
     [key: string]: any;
+}
+
+/**
+ * Interface to capture current wizard step
+ */
+interface WizardStepInterface {
+    content: ReactElement;
+    icon: FunctionComponent<SVGProps<SVGSVGElement>> | ReactElement;
+    title: string;
+}
+
+/**
+ * Interface to capture wizard's permissions list
+ */
+interface WizardPermissionInterface {
+    key: string;
+    name: string;
+    title: string;
+    children?: WizardPermissionInterface[];
+}
+
+/**
+ * Interface to capture wizard's basic details
+ */
+interface WizardBasicDetailsInterface {
+    roleName: string;
+    domain?: string;
 }
 
 /**
@@ -118,15 +146,10 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
     }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
-        if (groupList.length < 1) {
-            getGroupList(null)
-                .then((response) => {
-                    const groups: GroupsInterface[] = response?.data?.Resources?.filter(
-                        (group) => group.displayName.split("/").length === 1);
-
-                    setGroupList(groups);
-                });
-        }
+        getGroupList(null)
+            .then((response: AxiosResponse) => {
+                setGroupList(response.data.Resources as GroupsInterface[]);
+            });
     }, []);
 
     useEffect(() => {
@@ -151,7 +174,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         const permissions: string[] = [];
 
         if (basicData?.UserList?.length > 0) {
-            basicData?.UserList?.forEach(user => {
+            basicData?.UserList?.forEach((user: UserBasicInterface) => {
                 users?.push({
                     display: user?.userName,
                     value: user?.id
@@ -160,7 +183,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         }
 
         if (basicData?.GroupList?.length > 0) {
-            basicData?.GroupList?.forEach(group => {
+            basicData?.GroupList?.forEach((group: GroupsInterface) => {
                 groups?.push({
                     display: group.displayName,
                     value: group.id
@@ -218,10 +241,13 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
      * @param values - Forms values to be stored in state.
      * @param formType - Type of the form.
      */
-    const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
-        if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
-            setSelectedUserStrore(values.domain);
-        }
+    const handleWizardBasicDetailsSubmit = (values: WizardBasicDetailsInterface, formType: WizardStepsFormTypes) => {
+        setSelectedUserStrore(values.domain);
+        setCurrentWizardStep(currentStep + 1);
+        setWizardState({ ...wizardState, [formType]: values });
+    };
+
+    const handleWizardPermissionSubmit = (values: WizardPermissionInterface[], formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentStep + 1);
         setWizardState({ ...wizardState, [formType]: values });
     };
@@ -233,31 +259,34 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
         setWizardState({ ...wizardState, ...value });
     };
 
-    const handleGroupListChange = (groupList) => {
+    const handleGroupListChange = (groupList: GroupsInterface[]) => {
         setGroupList(groupList);
     };
 
-    const handleInitialGroupListChange = (groupList) => {
+    const handleInitialGroupListChange = (groupList: GroupsInterface[]) => {
         setInitialGroupList(groupList);
     };
 
-    const handleAddedGroupListChange = (newGroupList) => {
+    const handleAddedGroupListChange = (newGroupList: GroupsInterface[]) => {
         setTempGroupList(newGroupList);
     };
 
-    const handleAddedGroupInitialListChange = (newGroupList) => {
+    const handleAddedGroupInitialListChange = (newGroupList: GroupsInterface[]) => {
         setInitialTempGroupList(newGroupList);
     };
 
     // Create role wizard steps
-    const WIZARD_STEPS = [ {
+    const WIZARD_STEPS:  WizardStepInterface[] = [ {
         content: (
             <OrganizationRoleBasics
                 data-testid="add-role-form"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.BASIC_DETAILS] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                onSubmit={
+                    (values: WizardBasicDetailsInterface) => 
+                        handleWizardBasicDetailsSubmit(values, WizardStepsFormTypes.BASIC_DETAILS)
+                }
             />
         ),
         icon: getRolesWizardStepIcons().general,
@@ -269,7 +298,10 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 isEdit={ false }
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PERM_LIST] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
+                onSubmit={
+                    (values: WizardPermissionInterface[]) => 
+                        handleWizardPermissionSubmit(values, WizardStepsFormTypes.PERM_LIST)
+                }
                 isSubmitting={ isSubmitting }
             />
         ),
@@ -290,10 +322,12 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 }
                 onRoleUpdate={ updateList }
                 selectedUserStore={ selectedUserStore }
-                handleAddedGroupInitialListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                handleAddedGroupListChange={ (groups) => handleAddedGroupListChange(groups) }
-                handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                handleAddedGroupInitialListChange={
+                    (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
+                }
+                handleAddedGroupListChange={ (groups: GroupsInterface[]) => handleAddedGroupListChange(groups) }
+                handleGroupListChange={ (groups: GroupsInterface[]) => handleGroupListChange(groups) }
+                handleInitialGroupListChange={ (groups: GroupsInterface[]) => handleInitialGroupListChange(groups) }
                 handleTempUsersListChange={ (list: UserBasicInterface[]) => {
                     setTempUsersList(list);
                 } }
@@ -380,7 +414,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 <Steps.Group
                     current={ currentStep }
                 >
-                    { WIZARD_STEPS.map((step, index) => (
+                    { WIZARD_STEPS.map((step: WizardStepInterface, index: number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
