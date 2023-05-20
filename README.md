@@ -19,12 +19,10 @@ End-user apps in WSO2 Identity Server
 ### Setup Development Environment
 
 1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Install [pnpm](https://pnpm.io/).
-
-    > Note: Due to lockfile compatibility issue, **pnpm v8.0.0 and above are currently not supported.**
+2. Install [pnpm](https://pnpm.io/) v8.0.0 or above.
 
     ```shell
-    corepack prepare pnpm@7.x.x --activate
+    corepack prepare pnpm --activate
     ```
 
     Or, follow the other [recommended installation options](https://pnpm.io/installation).
