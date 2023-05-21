@@ -16,25 +16,31 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
+import { getAllLocalClaims } from "../../../../claims";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import { handleGetAllLocalClaimsError, isLocalIdentityClaim } from "../../utils";
 
 /**
  * Properties of {@link AttributesSelectionV2}
  */
 export interface AttributesSelectionV2Props extends IdentifiableComponentInterface {
-    attributeList: Array<IDVPLocalClaimInterface>;
+    initialClaims?: IDVPClaimMappingInterface[];
     mappedAttributesList: Array<IDVPClaimMappingInterface>;
-    onAttributesSelected: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    setSelectedClaimsWithMapping: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
     isReadOnly: boolean;
+    hideIdentityClaimAttributes?: boolean;
+    setIsClaimsLoading?: (status: boolean) => void;
 }
 
 const FORM_ID: string = "idvp-attribute-selection-v2-form";
@@ -54,18 +60,38 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 ): ReactElement => {
 
     const {
-        attributeList,
+        initialClaims,
         mappedAttributesList,
-        onAttributesSelected,
+        setSelectedClaimsWithMapping,
+        hideIdentityClaimAttributes,
         isReadOnly,
         [ "data-componentid" ]: componentId
     } = props;
 
+    // Manage available local claims.
+    const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IDVPLocalClaimInterface[]>([]);
+    const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ showAddModal, setShowAddModal ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string | undefined>(undefined);
     const [ mappedAttrIds, setMappedAttrIds ] = useState<string[]>([]);
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setIsLocalClaimsLoading(true);
+        getAllLocalClaims(null)
+            .then((response: Claim[]) => {
+                const extractedLocalClaims: IDVPLocalClaimInterface[] = extractLocalClaimsFromResponse(response);
+
+                setAvailableLocalClaims(extractedLocalClaims);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                handleGetAllLocalClaimsError(error);
+            })
+            .finally(() => {
+                setIsLocalClaimsLoading(false);
+            });
+    }, []);
 
     useEffect(() => {
         const ids: string[] = [];
@@ -75,7 +101,47 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         }
 
         setMappedAttrIds(ids);
-    }, [ attributeList ]);
+    }, [ availableLocalClaims ]);
+
+    /**
+     * Set initial value for claim mapping.
+     */
+    useEffect(() => {
+        if (isEmpty(availableLocalClaims)) {
+            return;
+        }
+        setInitialValues();
+    }, [ availableLocalClaims ]);
+
+    const extractLocalClaimsFromResponse = (response: Claim[]) => {
+        return response
+            ?.filter((claim: Claim) => {
+                return hideIdentityClaimAttributes ? !isLocalIdentityClaim(claim.claimURI) : true;
+            })
+            ?.map((claim: Claim) => {
+                return {
+                    displayName: claim.displayName,
+                    id: claim.id,
+                    uri: claim.claimURI
+                } as IDVPLocalClaimInterface;
+            });
+    };
+
+    const setInitialValues = () => {
+
+        if (!initialClaims) {
+            return;
+        }
+
+        initialClaims.forEach((claim: IDVPClaimMappingInterface) => {
+            claim.localClaim = availableLocalClaims.find((localClaim: IDVPLocalClaimInterface) => {
+                return localClaim.uri === claim.localClaim.uri;
+            });
+        });
+
+        setSelectedClaimsWithMapping(initialClaims);
+
+    };
 
     /**
      * Check if there are mapped attributes.
@@ -157,7 +223,8 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
      * @param mappingsToBeAdded - Set of mappings.
      */
     const onSave = (mappingsToBeAdded: IDVPClaimMappingInterface[]) => {
-        onAttributesSelected([ ...mappedAttributesList, ...mappingsToBeAdded ]);
+
+        setSelectedClaimsWithMapping([ ...mappedAttributesList, ...mappingsToBeAdded ]);
         setShowAddModal(false);
     };
 
@@ -175,13 +242,15 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
     const getRemainingUnmappedAttributes = () => {
         return [
-            ...attributeList.filter((attribute: IDVPLocalClaimInterface) => !mappedAttrIds.includes(attribute.id))
+            ...availableLocalClaims.filter(
+                (attribute: IDVPLocalClaimInterface) => !mappedAttrIds.includes(attribute.id)
+            )
         ];
     };
 
     const handleAttributeMappingDeletion = (deletedMapping: IDVPClaimMappingInterface) => {
 
-        onAttributesSelected([
+        setSelectedClaimsWithMapping([
             ...mappedAttributesList?.filter(
                 (attribute: IDVPClaimMappingInterface ) => (attribute.localClaim?.id !== deletedMapping.localClaim?.id)
             )
@@ -190,7 +259,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
     const handleEditAttributeMapping = (previous: IDVPClaimMappingInterface, current:IDVPClaimMappingInterface) => {
 
-        onAttributesSelected([
+        setSelectedClaimsWithMapping([
             ...mappedAttributesList.filter(
                 (attribute: IDVPClaimMappingInterface) => ( attribute?.localClaim?.id !== previous.localClaim?.id)
             ),
@@ -213,70 +282,72 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
     };
 
     return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
-                    <Heading as="h4">
+        isLocalClaimsLoading ? <ContentLoader/> : (
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
+                        <Heading as="h4">
                         Identity Verification Provider Attribute Mappings
-                    </Heading>
-                    <Hint compact>
+                        </Heading>
+                        <Hint compact>
                         Add and map the supported attributes from external Identity Verification Provider.
-                    </Hint>
-                    <Divider hidden/>
-                    { hasMappedAttributes() ? (
-                        <Segment>
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 7 }>
-                                        <Form
-                                            id={ FORM_ID }
-                                            onSubmit={ () => ({ /*Noop*/ }) }
-                                            uncontrolledForm={ false }
-                                        >
-                                            <Field.Input
-                                                icon="search"
-                                                iconPosition="left"
-                                                inputType="default"
-                                                maxLength={ 120 }
-                                                minLength={ 1 }
-                                                width={ 16 }
-                                                placeholder="Search mapped attribute"
-                                                listen={ (query: string) => setSearchQuery(query) }
-                                                ariaLabel={ "Search Field" }
-                                                name={ "searchQuery" }/>
-                                        </Form>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 9 } textAlign="right">
-                                        { !isReadOnly && (
-                                            <PrimaryButton
-                                                onClick={ () => setShowAddModal(true) }
-                                                data-componentid={ `${ componentId }-list-layout-add-button` }>
-                                                <Icon name="add"/>
+                        </Hint>
+                        <Divider hidden/>
+                        { hasMappedAttributes() ? (
+                            <Segment>
+                                <Grid>
+                                    <Grid.Row columns={ 2 }>
+                                        <Grid.Column width={ 7 }>
+                                            <Form
+                                                id={ FORM_ID }
+                                                onSubmit={ () => ({ /*Noop*/ }) }
+                                                uncontrolledForm={ false }
+                                            >
+                                                <Field.Input
+                                                    icon="search"
+                                                    iconPosition="left"
+                                                    inputType="default"
+                                                    maxLength={ 120 }
+                                                    minLength={ 1 }
+                                                    width={ 16 }
+                                                    placeholder="Search mapped attribute"
+                                                    listen={ (query: string) => setSearchQuery(query) }
+                                                    ariaLabel={ "Search Field" }
+                                                    name={ "searchQuery" }/>
+                                            </Form>
+                                        </Grid.Column>
+                                        <Grid.Column width={ 9 } textAlign="right">
+                                            { !isReadOnly && (
+                                                <PrimaryButton
+                                                    onClick={ () => setShowAddModal(true) }
+                                                    data-componentid={ `${ componentId }-list-layout-add-button` }>
+                                                    <Icon name="add"/>
                                                 Add Attribute Mapping
-                                            </PrimaryButton>
-                                        ) }
-                                    </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column width={ 16 }>
-                                        { getAttributeMappingListComponent() }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Segment>
-                    ) : _noAttributesSelectedModalPlaceholder() }
-                </Grid.Column>
-            </Grid.Row>
-            { showAddModal && (
-                <AddAttributeSelectionModal
-                    attributeList={ getRemainingUnmappedAttributes() }
-                    alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
-                    show={ showAddModal }
-                    onClose={ onCancel }
-                    onSave={ onSave }
-                />
-            ) }
-        </Grid>
+                                                </PrimaryButton>
+                                            ) }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column width={ 16 }>
+                                            { getAttributeMappingListComponent() }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Segment>
+                        ) : _noAttributesSelectedModalPlaceholder() }
+                    </Grid.Column>
+                </Grid.Row>
+                { showAddModal && (
+                    <AddAttributeSelectionModal
+                        attributeList={ getRemainingUnmappedAttributes() }
+                        alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
+                        show={ showAddModal }
+                        onClose={ onCancel }
+                        onSave={ onSave }
+                    />
+                ) }
+            </Grid>
+        )
     );
 
 };

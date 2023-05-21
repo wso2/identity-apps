@@ -17,8 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -28,15 +27,12 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
-import { getAllLocalClaims } from "../../../claims";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
-    IDVPLocalClaimInterface,
     IdentityVerificationProviderInterface
 } from "../../models";
 import { updateIDVP } from "../../utils";
-import { handleGetAllLocalClaimsError, isLocalIdentityClaim } from "../utils";
 
 interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -97,73 +93,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    // Manage available local claims.
-    const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IDVPLocalClaimInterface[]>([]);
-
     // Selected local claims in claim mapping.
-    const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ]
-        = useState<IDVPClaimMappingInterface[]>([]);
+    const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IDVPClaimMappingInterface[]>([]);
 
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
-
-    /**
-     * When IdP loads, this component is responsible for fetching the
-     * available claims. So, to indicate a network call is happening
-     * we need this to hide the form. if `!isLocalClaimsLoading`
-     * and `!isLoading` will load the form.
-     */
-    const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
-
-    useEffect(() => {
-        setIsLocalClaimsLoading(true);
-        getAllLocalClaims(null)
-            .then((response: Claim[]) => {
-                setAvailableLocalClaims(response?.map((claim: Claim) => {
-                    return {
-                        displayName: claim.displayName,
-                        id: claim.id,
-                        uri: claim.claimURI
-                    } as IDVPLocalClaimInterface;
-                }));
-            })
-            .catch((error: IdentityAppsApiException) => {
-                handleGetAllLocalClaimsError(error);
-            })
-            .finally(() => {
-                setIsLocalClaimsLoading(false);
-            });
-    }, []);
-
-
-    /**
-     * Set initial value for claim mapping.
-     */
-    useEffect(() => {
-        if (isEmpty(availableLocalClaims)) {
-            return;
-        }
-        setInitialValues();
-    }, [ availableLocalClaims ]);
-
-    const setInitialValues = () => {
-
-        if (!initialClaims) {
-            return;
-        }
-
-        initialClaims.forEach((claim: IDVPClaimMappingInterface) => {
-            claim.localClaim = availableLocalClaims.find((localClaim: IDVPLocalClaimInterface) => {
-                return localClaim.uri === claim.localClaim.uri;
-            });
-        });
-
-        setSelectedClaimsWithMapping(initialClaims);
-
-    };
-
-    const onAttributesSelected = (mappingsToBeAdded: IDVPClaimMappingInterface[]): void => {
-        setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
-    };
 
     const canSubmitAttributeUpdate = (): boolean => {
         return isEmpty(selectedClaimsWithMapping?.filter(
@@ -195,7 +128,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     };
 
 
-    if (isLoading || isLocalClaimsLoading) {
+    if (isLoading) {
         return <Loader/>;
     }
 
@@ -206,13 +139,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <AttributesSelectionV2
-                                onAttributesSelected={ onAttributesSelected }
-                                attributeList={
-                                    hideIdentityClaimAttributes
-                                        ? availableLocalClaims.filter(
-                                            ({ uri }: IDVPLocalClaimInterface) => !isLocalIdentityClaim(uri)
-                                        ) : availableLocalClaims
-                                }
+                                initialClaims={ initialClaims }
+                                setSelectedClaimsWithMapping={ setSelectedClaimsWithMapping }
+                                hideIdentityClaimAttributes={ hideIdentityClaimAttributes }
                                 mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                 isReadOnly={ isReadOnly }
                             />
