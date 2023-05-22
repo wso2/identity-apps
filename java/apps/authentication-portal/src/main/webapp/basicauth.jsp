@@ -201,8 +201,10 @@
 
         ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
         UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
-        int atIndex = resendUsername.lastIndexOf('@');
-        if (atIndex == -1) {
+        int firstIndex = resendUsername.indexOf('@');
+        int lastIndex = resendUsername.lastIndexOf('@');
+        // Username doesn't have a tenant domain OR username is an email which doesn't have tenant domain.
+        if ((lastIndex == -1) || (firstIndex == lastIndex)) {
             userDTO.setTenantDomain(request.getParameter("tenantDomain"));
         }
         selfRegistrationRequest.setUser(userDTO);
