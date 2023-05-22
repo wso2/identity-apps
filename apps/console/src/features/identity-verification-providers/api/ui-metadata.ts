@@ -61,7 +61,7 @@ export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInte
  *
  * @returns UI Metadata object for the IDVP
  */
-export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface[], Error = RequestErrorInterface>(
+export const useIDVPTemplateTypeMetadataList = <Data = IDVPTypeMetadataInterface[], Error = RequestErrorInterface>(
 
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -73,6 +73,28 @@ export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface[], 
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>( requestConfig );
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Error = RequestErrorInterface>(
+    idvpType: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.IDVPExtensionEndpoint + "/"+ idvpType
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>( idvpType ? requestConfig : null );
 
     return {
         data,

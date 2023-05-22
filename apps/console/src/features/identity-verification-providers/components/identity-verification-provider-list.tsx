@@ -46,7 +46,7 @@ import {
 import { deleteIDVP } from "../api";
 import {
     IDVPListResponseInterface,
-    IdentityVerificationProviderInterface
+    IdentityVerificationProviderInterface, IDVPTemplateItemInterface
 } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 
@@ -59,6 +59,7 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * Identity verification providers list.
      */
     idvpList: IDVPListResponseInterface;
+    idvpTemplateTypeList: IDVPTemplateItemInterface[];
     /**
      * Advanced Search component.
      */
@@ -113,6 +114,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         defaultListItemLimit,
         isLoading,
         idvpList,
+        idvpTemplateTypeList,
         onEmptyListPlaceholderActionClick,
         onIdentityVerificationProviderDelete,
         onListItemClick,
@@ -244,6 +246,9 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 id: "name",
                 key: "name",
                 render: (idvp: IdentityVerificationProviderInterface): ReactNode => {
+                    const templateType: IDVPTemplateItemInterface= idvpTemplateTypeList?.find(
+                        (template:IDVPTemplateItemInterface) => template.id === idvp.Type
+                    );
 
                     return (
                         <Header
@@ -253,12 +258,12 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                             data-testid={ `${ componentId }-item-heading` }
                         >
                             {
-                                idvp.image
+                                templateType?.image
                                     ? (
                                         <AppAvatar
                                             size="mini"
                                             name={ idvp.Name }
-                                            image={ idvp.image }
+                                            image={ templateType.image }
                                             spaced="right"
                                             data-testid={ `${ componentId }-item-image` }
                                         />

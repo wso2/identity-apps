@@ -44,9 +44,10 @@ import {
     history
 } from "../../core";
 import { useIdentityVerificationProvider } from "../api";
-import { useUIMetadata } from "../api/ui-metadata";
+import {useIDVPTemplateTypeMetadata, useUIMetadata} from "../api/ui-metadata";
 import { EditIdentityVerificationProvider } from "../components";
 import { IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
+import {handleIDVPTemplateTypesLoadError} from "../utils";
 
 /**
  * Proptypes for the IDVP edit page component.
@@ -101,6 +102,12 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         error: uiMetaDataLoadError,
         isLoading: isUIMetadataLoading
     } = useUIMetadata(idvp?.Type);
+
+    const {
+        data: idvpTemplateTypeMetadata,
+        error: idvpTemplateTypeMetadataLoadError,
+        isLoading: isIDVPTemplateTypeMetadataLoading
+    } = useIDVPTemplateTypeMetadata(idvp?.Type);
 
     const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
@@ -183,6 +190,10 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     }, [ uiMetaDataLoadError ]);
 
     useEffect(() => {
+        handleIDVPTemplateTypesLoadError(idvpTemplateTypeMetadataLoadError);
+    }, [ idvpTemplateTypeMetadataLoadError ]);
+
+    useEffect(() => {
         /**
          * What's the goal of this effect?
          * To figure out the application's description is truncated or not.
@@ -226,13 +237,13 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     /**
      * Resolves the identity verification provider image.
      *
-     * @param idvp - Evaluating idvp.
+     * @param idvpTemplateType - Evaluating idvpTemplateType.
      *
      * @returns React element.
      */
-    const resolveConnectorImage = (idvp: IdentityVerificationProviderInterface): ReactElement => {
+    const resolveConnectorImage = (idvpTemplateType: IDVPTemplateItemInterface): ReactElement => {
 
-        if (!idvp) {
+        if (!idvpTemplateType) {
             return (
                 <AppAvatar
                     hoverable={ false }
@@ -242,12 +253,12 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             );
         }
 
-        if (idvp.image) {
+        if (idvpTemplateType.image) {
             return (
                 <AppAvatar
                     hoverable={ false }
-                    name={ idvp.Name }
-                    image={ idvp.image }
+                    name={ idvpTemplateType.name }
+                    image={ idvpTemplateType.image }
                     size="tiny"
                 />
             );
@@ -256,7 +267,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         return (
             <AnimatedAvatar
                 hoverable={ false }
-                name={ idvp.Name }
+                name={ idvpTemplateType.name }
                 size="tiny"
                 floated="left"
             />
@@ -268,7 +279,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     return (
         <TabPageLayout
             pageTitle="Edit Identity Verification Provider"
-            isLoading={ isIDVPFetchInProgress }
+            isLoading={ isIDVPFetchInProgress || isIDVPTemplateTypeMetadataLoading }
             loadingStateOptions={ {
                 count: 5,
                 imageType: "square"
@@ -276,7 +287,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             title={ idvp?.Name }
             contentTopMargin={ true }
             description={ idvp?.description }
-            image={ resolveConnectorImage(idvp) }
+            image={ resolveConnectorImage(idvpTemplateTypeMetadata) }
             backButton={ {
                 "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,

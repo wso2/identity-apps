@@ -25,10 +25,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AppConstants, EventPublisher, UIConstants, history } from "../../core";
+import { AppConstants, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
+import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
 import { IdentityVerificationProviderList } from "../components";
-import { handleIdvpListFetchRequestError } from "../utils";
+import {handleIdvpListFetchRequestError, handleIDVPTemplateRequestError} from "../utils";
 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
@@ -75,11 +76,22 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         mutate: idvpListMutator
     } = useIdentityVerificationProviderList(listItemLimit, listOffset);
 
+    const {
+        data: idvpTemplateTypes,
+        isLoading: isIDVPTemplateTypeRequestLoading,
+        error: idvpTemplateTypeRequestError
+    } = useIDVPTemplateTypeMetadataList();
 
     useEffect( () => {
         handleIdvpListFetchRequestError(idvpListFetchRequestError);
 
     } , [ idvpListFetchRequestError ]);
+
+    useEffect(() => {
+        if(idvpTemplateTypeRequestError){
+            handleIDVPTemplateRequestError(idvpTemplateTypeRequestError);
+        }
+    }, [ idvpTemplateTypeRequestError ]);
 
     /**
      * Handles item per page dropdown page.
@@ -148,7 +160,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
             headingColumnWidth={ 10 }
         >
             <ListLayout
-                isLoading={ isIDVPListRequestLoading }
+                isLoading={ isIDVPListRequestLoading || isIDVPTemplateTypeRequestLoading }
                 currentListSize={ idvpList?.count ?? 0 }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -165,14 +177,13 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                 data-componentid={ `${ componentId }-list-layout` }
             >
                 <IdentityVerificationProviderList
-                    isLoading={ isIDVPListRequestLoading }
+                    isLoading={ isIDVPListRequestLoading || isIDVPTemplateTypeRequestLoading }
                     idvpList={ idvpList }
+                    idvpTemplateTypeList={ idvpTemplateTypes }
                     onEmptyListPlaceholderActionClick={ () =>
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                     }
                     onIdentityVerificationProviderDelete={ onIdentityVerificationProviderDelete }
-                    // onSearchQueryClear={ handleSearchQueryClear }
-                    // searchQuery={ searchQuery }
                     data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>
