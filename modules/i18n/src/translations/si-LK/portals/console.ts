@@ -4209,6 +4209,16 @@ export const console: ConsoleNS = {
                             description:"අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
                             message: "ලබා ගැනීමේ දෝෂයකි"
                         }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිල්ල ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
                     }
                 },
                 forms: {

@@ -18,8 +18,6 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    ContentLoader,
-    EmphasizedSegment,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
@@ -34,6 +32,7 @@ import {
     GeneralSettings
 } from "./settings";
 import { ConfigurationSettings } from "./settings/configuration-settings";
+import { getContentLoader } from "./utils";
 import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
 import {
     IDVPClaimMappingInterface, IDVPClaimsInterface, IdentityVerificationProviderInterface
@@ -117,11 +116,6 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         setInitialClaims(temp);
     }, [ identityVerificationProvider ]);
 
-    const Loader = (): ReactElement => (
-        <EmphasizedSegment padded>
-            <ContentLoader inline="centered" active/>
-        </EmphasizedSegment>
-    );
 
     const GeneralIDVPSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -132,7 +126,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 onUpdate={ onUpdate }
                 data-componentid={ `${ componentId }-general-settings` }
                 isReadOnly={ isReadOnly }
-                loader={ Loader }
+                loader={ getContentLoader }
             />
         </ResourceTab.Pane>
     );
@@ -146,7 +140,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 data-componentid={ `${ componentId }-configuration-settings` }
                 uiMetaData={ uiMetaData.pages.edit.settings }
                 isReadOnly={ isReadOnly }
-                loader={ Loader }
+                loader={ getContentLoader }
             />
         </ResourceTab.Pane>
     );
@@ -162,7 +156,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 hideIdentityClaimAttributes={ true }
                 data-componentid={ `${ componentId }-attribute-settings` }
                 isReadOnly={ isReadOnly }
-                loader={ Loader }
+                loader={ getContentLoader }
             />
         </ResourceTab.Pane>
     );
@@ -193,7 +187,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
     };
 
     if (!identityVerificationProvider || isLoading) {
-        return <Loader/>;
+        return getContentLoader();
     }
 
     return (

@@ -4329,6 +4329,16 @@ export const console: ConsoleNS = {
                                 "fournisseur de vérification d'identité.",
                             message: "Erreur de récupération"
                         }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
                     }
                 },
                 forms: {

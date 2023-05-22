@@ -5841,6 +5841,16 @@ export const console: ConsoleNS = {
                             description: "An error occurred while retrieving identity verification provider templates.",
                             message: "Retrieval Error"
                         }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider template.",
+                            message: "Retrieval Error"
+                        }
                     }
 
                 },

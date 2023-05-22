@@ -2421,6 +2421,7 @@ export interface ConsoleNS {
                   getIDVP: Notification;
                   getUIMetadata: Notification;
                   getIDVPTemplateTypes: Notification;
+                  getIDVPTemplateType: Notification;
                 };
                 forms: {
                     // attributeSettings: {
