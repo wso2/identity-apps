@@ -278,7 +278,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                             };
                                         }) : [] }
                                         listen={ (values: Map<string, FormValue>) => {
-                                            setLocale(values.get("locale").toString());
+                                            setLocale(values.get("locale").toString().replace("-", "_"));
                                         } }
                                         search
                                         value={ locale }
