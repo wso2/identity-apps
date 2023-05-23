@@ -46,7 +46,7 @@ import {
 import { deleteIDVP } from "../api";
 import {
     IDVPListResponseInterface,
-    IdentityVerificationProviderInterface, IDVPTemplateItemInterface
+    IDVPTemplateItemInterface, IdentityVerificationProviderInterface
 } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 

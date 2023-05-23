@@ -44,10 +44,10 @@ import {
     history
 } from "../../core";
 import { useIdentityVerificationProvider } from "../api";
-import {useIDVPTemplateTypeMetadata, useUIMetadata} from "../api/ui-metadata";
+import { useIDVPTemplateTypeMetadata, useUIMetadata } from "../api/ui-metadata";
 import { EditIdentityVerificationProvider } from "../components";
-import { IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
-import {handleIDVPTemplateTypesLoadError} from "../utils";
+import { IDVPTemplateItemInterface } from "../models";
+import { handleIDVPTemplateTypesLoadError } from "../utils";
 
 /**
  * Proptypes for the IDVP edit page component.

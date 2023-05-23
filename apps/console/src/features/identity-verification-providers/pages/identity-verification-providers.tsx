@@ -17,19 +17,16 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
 import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
 import { IdentityVerificationProviderList } from "../components";
-import {handleIdvpListFetchRequestError, handleIDVPTemplateRequestError} from "../utils";
+import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
@@ -63,7 +60,6 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     const { ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
-    const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(

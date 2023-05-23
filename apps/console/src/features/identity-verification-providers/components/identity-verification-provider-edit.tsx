@@ -32,12 +32,12 @@ import {
     GeneralSettings
 } from "./settings";
 import { ConfigurationSettings } from "./settings/configuration-settings";
-import { getContentLoader } from "./utils";
 import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
 import {
     IDVPClaimMappingInterface, IDVPClaimsInterface, IdentityVerificationProviderInterface
 } from "../models";
 import { UIMetaDataForIDVP } from "../models/ui-metadata";
+import { getContentLoader } from "../utils";
 
 /**
  * Prop types for the identity verification provider edit component.

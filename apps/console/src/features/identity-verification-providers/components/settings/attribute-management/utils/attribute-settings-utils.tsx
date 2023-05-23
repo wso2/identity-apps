@@ -20,7 +20,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { ContentLoader, EmphasizedSegment, EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { getEmptyPlaceholderIllustrations, store } from "../../../../../core";
 
@@ -45,13 +45,6 @@ export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): v
     }));
 };
 
-export const getContentLoader = (): ReactElement => {
-    return (
-        <EmphasizedSegment padded>
-            <ContentLoader inline="centered" active/>
-        </EmphasizedSegment>
-    );
-};
 
 export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
     return (
