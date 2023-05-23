@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,10 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Message } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
-import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
@@ -65,7 +66,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -206,7 +207,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     }));
                 }
             })
-            .catch((error: any) => {
+            .catch((error: AxiosError) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
