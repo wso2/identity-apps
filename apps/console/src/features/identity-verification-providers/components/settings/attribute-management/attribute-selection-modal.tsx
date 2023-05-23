@@ -24,6 +24,7 @@ import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import {getEmptyAttributeMappingPlaceholder} from "./utils";
 
 interface AddAttributeSelectionModalProps extends IdentifiableComponentInterface {
     attributeList: Array<IDVPLocalClaimInterface>;
@@ -133,23 +134,6 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         ]);
     };
 
-    const _placeholder = (): ReactElement => {
-        return (
-            <EmptyPlaceholder
-                title={ "You haven't selected any attributes" }
-                subtitle={
-                    [
-                        <p key={ "empty-attributes-mapping" }>
-                            Map attributes and click <strong>Add Attribute Mapping</strong> to get started.
-                        </p>
-                    ]
-                }
-                image={ getEmptyPlaceholderIllustrations().emptyList }
-                imageSize="tiny"
-            />
-        );
-    };
-
     return (
         <Modal
             open={ show }
@@ -183,7 +167,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                         availableAttributesList={ copyOfAttributes }
                                     />
                                 </React.Fragment>
-                            ) : _placeholder() }
+                            ) : getEmptyAttributeMappingPlaceholder() }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

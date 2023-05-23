@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Field, FieldConstants, Form } from "@wso2is/form";
+import { FieldConstants } from "@wso2is/form";
+import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, Header } from "semantic-ui-react";
+import { DropdownProps, Form, Grid, Header, InputOnChangeData } from "semantic-ui-react";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
 /**
@@ -61,7 +61,7 @@ const FORM_ID: string = "idvp-attributes-mapping-list-item-form";
  *
  * This component is a <Form> internally. And the fields value submissions
  * are handled by onSubmit so, it is mandatory to have a submission
- * button. If you pass editingMode=`true` it will render plus icon button
+ * button. If you pass editingMode=`true` it will render checkmark icon button
  * inline and hide button with text "Add Mapping Button" below it
  * and input labels.
  *
@@ -84,6 +84,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
     const [ mappedInputValue, setMappedInputValue ] = useState<string>();
     const [ selectedLocalAttributeInputValue, setSelectedLocalAttributeInputValue ] = useState<string>();
     const [ mappingHasError, setMappingHasError ] = useState<boolean>();
+    const [ mappedInputValueError, setMappedInputValueError ] = useState<string>();
+    // This is to prevent the error message from showing up when the mapped value input field has not been touched.
+    const [ canMappedValueBeEmpty, setCanMappedValueBeEmpty ] = useState<boolean>(true);
 
     useEffect(() => {
         if (editingMode) {
@@ -91,6 +94,14 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             setSelectedLocalAttributeInputValue(mapping?.localClaim.id);
         }
     }, []);
+
+    useEffect(() => {
+        setMappedInputValueError(validateMappedValue());
+        //
+        if(canMappedValueBeEmpty) {
+            setCanMappedValueBeEmpty(false);
+        }
+    }, [ mappedInputValue ]);
 
     useEffect(() => {
         if (availableAttributeList) {
@@ -128,160 +139,159 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     /**
      * Form submission handler.
-     * @param values - Form values.
-     * @param form - Form.
+     * @param event - Form event that triggerred the submission.
      */
-    const onFormSub = (values: Record<string, any>, form: FormApi<Record<string, any>>) => {
+    const onFormSub = (event: React.FormEvent ) => {
+
+        event.preventDefault();
+
         // Find the claim by id and create an instance of
         // IdentityProviderCommonClaimMappingInterface
         // with the mapping value.
         const newAttributeMapping: IDVPClaimMappingInterface = {
-            idvpClaim: values.mappedValue,
+            idvpClaim: mappedInputValue,
             localClaim: copyOfAttrs.find(
-                (claim: IDVPLocalClaimInterface) => claim.id === values.localClaimId
+                (claim: IDVPLocalClaimInterface) => claim.id === selectedLocalAttributeInputValue
             )
         } as IDVPClaimMappingInterface;
 
         onSubmit(newAttributeMapping);
-
         if (!editingMode) {
-            // Resets the form field values and the states of its fields.
-            form.change("mappedValue", "");
-            form.change("localClaimId", "");
-            form.resetFieldState("mappedValue");
-            form.resetFieldState("localClaimId");
             setMappedInputValue("");
             setSelectedLocalAttributeInputValue("");
+            setCanMappedValueBeEmpty(true);
         }
     };
 
-    return (
-        <Form
-            id={ FORM_ID }
-            onSubmit={ onFormSub }
-            uncontrolledForm={ true }
-            initialValues={ mapping && {
-                localClaimId: mapping?.localClaim?.id,
-                mappedValue: mapping?.idvpClaim
-            } }>
+    const validateMappedValue = () => {
+        if ((!mappedInputValue || !mappedInputValue?.trim())) {
+            if(canMappedValueBeEmpty){
+                return;
+            }
+            setMappingHasError(true);
 
+            return FieldConstants.FIELD_REQUIRED_ERROR;
+        }
+        /**
+         * Entity category support attribute values MUST be URIs. Such values
+         * are also referred to as "category support URIs" but at the same time
+         * our server allows simple strings as well.
+         *
+         * In the following if condition we do a bitwise AND SC operation
+         * to either allow one of them.
+         *
+         * @see {@link https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
+         */
+        if (toBits(!FormValidation.url(mappedInputValue)) &
+            toBits(!FormValidation.isValidResourceName(mappedInputValue))) {
+            setMappingHasError(true);
+
+            return FieldConstants.INVALID_RESOURCE_ERROR;
+        }
+        // Check whether this attribute external name is already mapped.
+        const mappedValues: any = new Set(
+            alreadyMappedAttributesList.map((a: IDVPClaimMappingInterface) => a.idvpClaim)
+        );
+
+        if (mappedValues.has(mappedInputValue)) {
+            // This means we have a mapping value like this...
+            // But we need to make sure that if the current value
+            // actually differs from the model value if user is in
+            // editing mode...
+            if (editingMode && mapping?.idvpClaim === mappedInputValue) {
+                setMappingHasError(false);
+
+                return undefined;
+            }
+            setMappingHasError(true);
+
+            return "There's already a attribute mapped with this name.";
+        }
+        // If there's no errors.
+        setMappingHasError(false);
+
+        return undefined;
+    };
+
+    return (
+        <form
+            id={ FORM_ID }
+            noValidate={ true }
+        >
             <Grid>
                 <Grid.Row columns={ editingMode ? 3 : 2 }>
                     <Grid.Column width={ editingMode ? 7 : 8 }>
-                        <Field.Input
+                        <Form.Input
                             required
                             name="mappedValue"
                             inputType="identifier"
                             maxLength={ 120 }
                             minLength={ 1 }
-                            label={ !editingMode && "External IdP Attribute" }
-                            placeholder="Enter external IdP attribute"
-                            ariaLabel="External IdP Attribute Mapping Value"
-                            validation={ (value: any) => {
-                                if (!value || !value.trim()) {
-                                    setMappingHasError(true);
-
-                                    return FieldConstants.FIELD_REQUIRED_ERROR;
-                                }
-                                /**
-                                 * Entity category support attribute values MUST be URIs. Such values
-                                 * are also referred to as "category support URIs" but at the same time
-                                 * our server allows simple strings as well.
-                                 *
-                                 * In the following if condition we do a bitwise AND SC operation
-                                 * to either allow one of them.
-                                 *
-                                 * @see {@link https://datatracker.ietf.org/doc/html/rfc8409#section-4.1}
-                                 */
-                                if (toBits(!FormValidation.url(value)) &
-                                    toBits(!FormValidation.isValidResourceName(value))) {
-                                    setMappingHasError(true);
-
-                                    return FieldConstants.INVALID_RESOURCE_ERROR;
-                                }
-                                // Check whether this attribute external name is already mapped.
-                                const mappedValues: any = new Set(
-                                    alreadyMappedAttributesList.map((a: IDVPClaimMappingInterface) => a.idvpClaim)
-                                );
-
-                                if (mappedValues.has(value)) {
-                                    // This means we have a mapping value like this...
-                                    // But we need to make sure that if the current value
-                                    // actually differs from the model value if user is in
-                                    // editing mode...
-                                    if (editingMode && mapping?.idvpClaim === value) {
-                                        setMappingHasError(false);
-
-                                        return undefined;
-                                    }
-                                    setMappingHasError(true);
-
-                                    return "There's already a attribute mapped with this name.";
-                                }
-                                // If there's no errors.
-                                setMappingHasError(false);
-
-                                return undefined;
+                            label={ !editingMode && "External IDVP Attribute" }
+                            placeholder="Enter external IDVP attribute"
+                            aria-label="External IDVP Attribute Mapping Value"
+                            value={ mappedInputValue }
+                            initialValue={ mappedInputValue }
+                            error={ mappedInputValueError }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+                                setMappedInputValue(data.value as string);
                             } }
-                            listen={ (value: string) => setMappedInputValue(value) }
-                            width={ 16 }/>
-                    </Grid.Column>
-                    <Grid.Column width={ editingMode ? 7 : 8 }>
-                        <Field.Dropdown
-                            required
-                            search
-                            clearable
                             width={ 16 }
-                            value={ editingMode && mapping?.localClaim?.id }
-                            options={ getListOfAvailableAttributes() }
-                            label={ !editingMode && "Maps to" }
-                            ariaLabel="Local Claim Attribute"
-                            name="localClaimId"
-                            placeholder="Select mapping attribute"
-                            listen={ (value: string) => setSelectedLocalAttributeInputValue(value) }
-                            noResultsMessage="Try another attribute search."
                         />
                     </Grid.Column>
+                    <Grid.Column width={ editingMode ? 7 : 8 }>
+                        <Form.Dropdown
+                            required
+                            search
+                            selection
+                            clearable
+                            width={ 16 }
+                            value={ selectedLocalAttributeInputValue }
+                            initialValue={ selectedLocalAttributeInputValue }
+                            options={ getListOfAvailableAttributes() }
+                            label={ !editingMode && "Maps to" }
+                            aria-Label="Local Claim Attribute"
+                            name="localClaimId"
+                            placeholder="Select mapping attribute"
+                            onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
+                                setSelectedLocalAttributeInputValue(data.value as string);
+                            } }
+                            noResultsMessage="Try another attribute search."/>
+                    </Grid.Column>
                     { /*When in editing mode, submit button is an icon button.*/ }
-                    { editingMode && (
-                        <React.Fragment>
-                            <Grid.Column width={ 1 }>
-                                <Field.Button
-                                    form={ FORM_ID }
-                                    disabled={
-                                        mappingHasError ||
-                                        !mappedInputValue ||
-                                        !selectedLocalAttributeInputValue
-                                    }
-                                    icon="checkmark"
-                                    type="submit"
-                                    name="submit-button"
-                                    ariaLabel="Attribute Selection Form Submit Button"
-                                    buttonType="secondary_btn"/>
-                            </Grid.Column>
-                        </React.Fragment>
-                    ) }
+                    { editingMode && (<React.Fragment>
+                        <Grid.Column width={ 1 }>
+                            <Form.Button
+                                form={ FORM_ID }
+                                disabled={ mappingHasError || !mappedInputValue || !selectedLocalAttributeInputValue }
+                                icon="checkmark"
+                                type="button"
+                                onClick={ onFormSub }
+                                name="edit-button"
+                                ariaLabel="Attribute Selection Form Submit Button"
+                                buttonType="secondary_btn"/>
+                        </Grid.Column>
+                    </React.Fragment>) }
                 </Grid.Row>
                 { /*Shows only when the component is not in editing mode.*/ }
                 { !editingMode && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 } textAlign="right">
-                            <Field.Button
+                            <PrimaryButton
                                 form={ FORM_ID }
-                                disabled={
-                                    mappingHasError ||
-                                    !mappedInputValue ||
-                                    !selectedLocalAttributeInputValue
-                                }
+                                disabled={ mappingHasError || !mappedInputValue || !selectedLocalAttributeInputValue }
+                                onClick={ onFormSub }
                                 buttonType="primary_btn"
-                                type="submit"
+                                type="button"
                                 name="submit-button"
-                                label="Add Attribute Mapping"
-                                ariaLabel="Attribute Selection Form Submit Button"/>
+                                ariaLabel="Attribute Selection Form Submit Button"
+                            >
+                                Add Attribute Mapping
+                            </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
                 ) }
             </Grid>
-        </Form>
+        </form>
     );
 };

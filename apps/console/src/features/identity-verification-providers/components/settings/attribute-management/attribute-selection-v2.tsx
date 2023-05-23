@@ -29,7 +29,7 @@ import { AttributeMappingList } from "./attributes-mapping-list";
 import { getAllLocalClaims } from "../../../../claims";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
-import { handleGetAllLocalClaimsError, isLocalIdentityClaim } from "../../utils";
+import {fetchAllLocalClaims, handleGetAllLocalClaimsError, isLocalIdentityClaim} from "./utils";
 
 /**
  * Properties of {@link AttributesSelectionV2}
@@ -78,19 +78,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
     const { t } = useTranslation();
 
     useEffect(() => {
-        setIsLocalClaimsLoading(true);
-        getAllLocalClaims(null)
-            .then((response: Claim[]) => {
-                const extractedLocalClaims: IDVPLocalClaimInterface[] = extractLocalClaimsFromResponse(response);
-
-                setAvailableLocalClaims(extractedLocalClaims);
-            })
-            .catch((error: IdentityAppsApiException) => {
-                handleGetAllLocalClaimsError(error);
-            })
-            .finally(() => {
-                setIsLocalClaimsLoading(false);
-            });
+        fetchAllLocalClaims(hideIdentityClaimAttributes, setAvailableLocalClaims, setIsLocalClaimsLoading);
     }, []);
 
     useEffect(() => {
@@ -113,19 +101,6 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         setInitialValues();
     }, [ availableLocalClaims ]);
 
-    const extractLocalClaimsFromResponse = (response: Claim[]) => {
-        return response
-            ?.filter((claim: Claim) => {
-                return hideIdentityClaimAttributes ? !isLocalIdentityClaim(claim.claimURI) : true;
-            })
-            ?.map((claim: Claim) => {
-                return {
-                    displayName: claim.displayName,
-                    id: claim.id,
-                    uri: claim.claimURI
-                } as IDVPLocalClaimInterface;
-            });
-    };
 
     const setInitialValues = () => {
 
@@ -169,7 +144,11 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                         </p>
                     ] }
                     action={ !isReadOnly && (
-                        <PrimaryButton onClick={ () => setShowAddModal(true) }>
+                        <PrimaryButton
+                            onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
+                                e.preventDefault();
+                                setShowAddModal(true);
+                            } }>
                             <Icon name="add"/>
                             Add IDVP Attributes
                         </PrimaryButton>
@@ -319,7 +298,10 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                         <Grid.Column width={ 9 } textAlign="right">
                                             { !isReadOnly && (
                                                 <PrimaryButton
-                                                    onClick={ () => setShowAddModal(true) }
+                                                    onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
+                                                        e.preventDefault();
+                                                        setShowAddModal(true);
+                                                    } }
                                                     data-componentid={ `${ componentId }-list-layout-add-button` }>
                                                     <Icon name="add"/>
                                                 Add Attribute Mapping

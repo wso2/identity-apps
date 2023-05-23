@@ -17,3 +17,4 @@
  */
 
 export * from "./attribute-settings-utils";
+export * from "./claim-utils";

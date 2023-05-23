@@ -66,7 +66,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
     const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
         return editingMappings.includes(localClaim.id) || readOnly;
     };
-
+    
     const createTableActions = (): TableActionsInterface[] => {
         return [
             {
@@ -132,6 +132,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                             availableAttributeList={ availableAttributesList }
                             alreadyMappedAttributesList={ alreadyMappedAttributesList }
                             onSubmit={ (editedMapping: IDVPClaimMappingInterface) => {
+                                console.log("mapping when editing attribute mapping ", mapping);
                                 // Remove it from currently editing mappings.
                                 setEditingMappings([
                                     ...editingMappings
