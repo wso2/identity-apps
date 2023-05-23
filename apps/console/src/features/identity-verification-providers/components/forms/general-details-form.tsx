@@ -19,12 +19,12 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
 import { useIdentityVerificationProviderList } from "../../api";
+import { IdentityVerificationProviderConstants } from "../../constants/identity-verification-provider-constants";
 import { IdentityVerificationProviderInterface } from "../../models";
+import { validateIDVPName } from "../../utils/validation-utils";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -60,8 +60,6 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     isSubmitting?: boolean;
 }
 
-const IDVP_NAME_MAX_LENGTH: number = 50;
-const IDVP_DESCRIPTION_MAX_LENGTH: number = 300;
 
 const FORM_ID: string = "idvp-general-settings-form";
 
@@ -76,40 +74,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const {
         onSubmit,
-        onUpdate,
         identityVerificationProvider,
         isReadOnly,
         isSubmitting,
         ["data-testid"]: testId
     } = props;
 
-    // const [ modifiedName, setModifiedName ] = useState<string>(name);
 
     const { t } = useTranslation();
     const { data: idvpList } = useIdentityVerificationProviderList();
-
-    /**
-     * Performs validations on Identity verification provider name.
-     * @param value - IDP name
-     * @returns error msg if name is already taken.
-     */
-    const idpNameValidation = (value: string): string => {
-        if (!FormValidation.isValidResourceName(value)) {
-            return t("console:develop.features.idvp.forms.generalDetails.name.validations.invalid");
-        }
-        let nameExist: boolean = false;
-
-        if (idvpList?.count > 0) {
-            idvpList.identityVerificationProviders.map((idvp: IdentityVerificationProviderInterface) => {
-                if (idvp.Name === value && identityVerificationProvider.Name !== value) {
-                    nameExist = true;
-                }
-            });
-        }
-        if (nameExist) {
-            return t("console:develop.features.idvp.forms.generalDetails.name.validations.duplicate");
-        }
-    };
 
     /**
      * Prepare form values for submitting.
@@ -117,7 +90,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const updateConfigurations = (values): void => {
+    const updateConfigurations = (values: Record<string, any>): void => {
         onSubmit({
             Name: values.name?.toString(),
             description: values.description?.toString()
@@ -131,7 +104,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 <Form
                     id={ FORM_ID }
                     uncontrolledForm={ false }
-                    onSubmit={ (values): void => {
+                    onSubmit={ (values: Record<string, any>): void => {
                         updateConfigurations(values);
                     } }
                     data-testid={ testId }
@@ -144,10 +117,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         required={ true }
                         message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
                         placeholder={ identityVerificationProvider.Name }
-                        validation={ (value: string) => idpNameValidation(value) }
+                        validation={ (value: string) => {
+                            return validateIDVPName(
+                                value,
+                                idvpList.identityVerificationProviders,
+                                identityVerificationProvider
+                            );
+                        } }
                         value={ identityVerificationProvider.Name }
-                        maxLength={ IDVP_NAME_MAX_LENGTH }
-                        minLength={ 3 }
+                        maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
+                        minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
                         data-testid={ `${ testId }-idp-name` }
                         hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
                         readOnly={ isReadOnly }
@@ -160,8 +139,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
                         value={ identityVerificationProvider.description }
                         data-testid={ `${ testId }-idp-description` }
-                        maxLength={ IDVP_DESCRIPTION_MAX_LENGTH }
-                        minLength={ 3 }
+                        maxLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MAX_LENGTH }
+                        minLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MIN_LENGTH }
                         hint={ t("console:develop.features.idvp.forms.generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />

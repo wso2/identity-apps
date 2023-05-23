@@ -25,4 +25,11 @@ export class IdentityVerificationProviderConstants {
     public static readonly GENERAL_TAB_ID: string  = "general";
     public static readonly SETTINGS_TAB_ID: string  = "settings";
 
+
+
+    public static readonly  IDVP_NAME_MIN_LENGTH: number = 3;
+    public static readonly  IDVP_NAME_MAX_LENGTH: number = 50;
+    public static readonly  IDVP_DESCRIPTION_MIN_LENGTH: number = 3;
+    public static readonly  IDVP_DESCRIPTION_MAX_LENGTH: number = 300;
+
 }

@@ -21,7 +21,7 @@ import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { renderUIFromMetadata } from "./helpers";
+import { renderFormUIWithMetadata } from "./helpers";
 import { IdentityVerificationProviderInterface } from "../../models";
 import { InputFieldMetaData } from "../../models/ui-metadata";
 
@@ -98,7 +98,7 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
                     } }
                     data-testid={ componentId }
                 >
-                    { renderUIFromMetadata(uiMetaData, isReadOnly, identityVerificationProvider) }
+                    { renderFormUIWithMetadata(uiMetaData, identityVerificationProvider, isReadOnly, true) }
 
                     { !isReadOnly && (
                         <Field.Button
