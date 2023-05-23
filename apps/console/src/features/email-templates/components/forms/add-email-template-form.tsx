@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
@@ -52,8 +53,7 @@ interface AddEmailTemplateFormPropsInterface extends TestableComponentInterface 
 /**
  * Form to handle ADD/EDIT of a locale based email template.
  *
- * @param {AddEmailTemplateFormPropsInterface} props - props required for component.
- * @return {React.ReactElement}
+ * @param props - props required for component.
  */
 export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsInterface> = (
     props: AddEmailTemplateFormPropsInterface
@@ -66,7 +66,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -87,12 +87,12 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         const locales: string[] = CountryLanguage.getLocales(true);
         const localeDropDown: DropdownItemProps[] = [];
 
-        locales.forEach((locale, index) => {
-            const countryCode = locale.split("-")[ 1 ];
-            const languageCode = locale.split("-")[ 0 ];
+        locales.forEach((locale: string, index: number) => {
+            const countryCode: string = locale.split("-")[ 1 ];
+            const languageCode: string = locale.split("-")[ 0 ];
 
-            const language = CountryLanguage.getLanguage(languageCode).name;
-            const country = CountryLanguage.getCountry(countryCode).name;
+            const language: string = CountryLanguage.getLanguage(languageCode).name;
+            const country: string = CountryLanguage.getCountry(countryCode).name;
 
             localeDropDown.push({
                 flag: countryCode.toLowerCase(),
@@ -116,7 +116,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         getTemplateDetails(templateTypeId, templateId)
             .then((response: AxiosResponse<EmailTemplate>) => {
                 if (response.status === 200) {
-                    const templateDetails = response.data;
+                    const templateDetails: EmailTemplate = response.data;
 
                     setLocale(templateDetails.id);
                     setSubject(templateDetails.subject);
@@ -207,7 +207,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     }));
                 }
             })
-            .catch(error => {
+            .catch((error: AxiosError) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
@@ -269,7 +269,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                                 ".validations.empty")
                                         }
                                         required={ true }
-                                        children={ localeList ? localeList.map(list => {
+                                        children={ localeList ? localeList.map((list: DropdownItemProps) => {
                                             return {
                                                 "data-testid": list.value as string,
                                                 key: list.key as string,
@@ -278,7 +278,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                             };
                                         }) : [] }
                                         listen={ (values: Map<string, FormValue>) => {
-                                            setLocale(values.get("locale").toString());
+                                            setLocale(values.get("locale").toString().replace("-", "_"));
                                         } }
                                         search
                                         value={ locale }
