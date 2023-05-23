@@ -233,6 +233,9 @@
                     ]
                 }
             },
+            "identityVerificationProviders": {
+                "enabled": true
+            },
             "organizations": {
                 "enabled": true,
                 "disabledFeatures": [],

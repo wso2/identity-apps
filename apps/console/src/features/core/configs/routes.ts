@@ -26,6 +26,7 @@ import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
+import { store } from "../store";
 
 /**
  * Get Developer View Routes.
@@ -46,7 +47,6 @@ import { AppConstants } from "../constants";
  *  \}
  */
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
-
     const routes: RouteInterface[] = values(
         merge(
             keyBy(
@@ -139,20 +139,21 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                     {
                         category: "console:develop.features.sidePanel.categories.identityVerificationProviders",
                         children: [
-                            // {
-                            //     component: lazy(() =>
-                            //         import("../../identity-verification-providers/pages/identity-provider-template")
-                            //     ),
-                            //     exact: true,
-                            //     icon: {
-                            //         icon: getSidePanelIcons().childIcon
-                            //     },
-                            //     id: "identityVerificationProviderTemplate",
-                            //     name: "Identity Verification Provider Templates",
-                            //     path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
-                            //     protected: true,
-                            //     showOnSidePanel: false
-                            // },
+                            {
+                                component: lazy(() =>
+                                    import("../../identity-verification-providers/pages/" +
+                                    "identity-verification-provider-template")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "identityVerificationProviderTemplate",
+                                name: "Identity Verification Provider Templates",
+                                path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
                             {
                                 component: lazy(() => import(
                                     "../../identity-verification-providers/pages/identity-verification-provider-edit")
@@ -172,13 +173,13 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                             () => import("../../identity-verification-providers/pages/identity-verification-providers")
                         ),
                         exact: true,
-                        icon: { icon: getSidePanelIcons().identityVerificationProviders},
+                        icon: { icon: getSidePanelIcons().identityVerificationProviders },
                         id: "identityVerificationProvider",
                         name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
                         order: 3,
                         path: AppConstants.getPaths().get("IDVP"),
                         protected: true,
-                        showOnSidePanel:!identityProviderConfig?.useNewConnectionsView
+                        showOnSidePanel: store.getState().config.ui?.features?.identityVerificationProviders?.enabled
                     },
                     {
                         category: "console:develop.features.secrets.routes.category",
