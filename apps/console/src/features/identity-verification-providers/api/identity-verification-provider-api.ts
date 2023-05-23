@@ -60,6 +60,23 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
     return httpClient(requestConfig);
 };
 
+export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
+    Promise<HttpResponse | undefined> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: rest,
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON,
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.identityVerificationProviders }`
+    };
+
+    return httpClient(requestConfig);
+};
+
+
 export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
     Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
 

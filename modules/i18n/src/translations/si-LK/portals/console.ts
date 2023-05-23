@@ -4164,6 +4164,20 @@ export const console: ConsoleNS = {
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
                     },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා නිර්මාණය කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාව සාර්ථකව නිර්මාණය කරන ලදී.",
+                            message: "නිර්මාණය සාර්ථකයි"
+                        }
+                    },
                     submitAttributeSettings: {
                         error: {
                             description: "සියලුම අනිවාර්ය ගුණාංග වින්‍යාස කිරීමට අවශ්‍යය.",

@@ -4281,6 +4281,21 @@ export const console: ConsoleNS = {
                             message: "Mise à jour réussie"
                         }
                     },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Créer une erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la création du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Créer une erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été créé.",
+                            message: "Créez avec succès"
+                        }
+                    },
                     submitAttributeSettings: {
                         error: {
                             description: "Nécessité de configurer toutes les propriétés obligatoires.",

@@ -2416,6 +2416,7 @@ export interface ConsoleNS {
                   getIDVPList: Notification;
                   deleteIDVP: Notification;
                   updateIDVP: Notification;
+                  addIDVP: Notification;
                   submitAttributeSettings: Notification;
                   getAllLocalClaims: Notification;
                   getIDVP: Notification;

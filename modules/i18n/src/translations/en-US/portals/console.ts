@@ -5795,6 +5795,20 @@ export const console: ConsoleNS = {
                             message: "Update successful"
                         }
                     },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Create error"
+                        },
+                        genericError: {
+                            description: "An error occurred while creating the identity verification provider.",
+                            message: "Create error"
+                        },
+                        success: {
+                            description: "Successfully created the identity verification provider.",
+                            message: "Create successful"
+                        }
+                    },
                     submitAttributeSettings: {
                         error: {
                             description: "Need to configure all the mandatory properties.",

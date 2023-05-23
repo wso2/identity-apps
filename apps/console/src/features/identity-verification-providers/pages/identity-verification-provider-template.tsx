@@ -30,17 +30,16 @@ import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import {
     AppConstants,
-    EventPublisher,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { getIdPIcons } from "../../identity-providers/configs";
-import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { IdentityProviderManagementUtils } from "../../identity-providers/utils";
-import { useIDVPTemplateTypeMetadata } from "../api/ui-metadata";
-import { IdvpCreateWizardFactory } from "../components/wizards/idvp-create-wizard-factory"
+import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
+import { IdvpCreateWizard } from "../components/wizards/idvp-create-wizard";
 import { IDVPTypeMetadataInterface } from "../models/ui-metadata";
 import { handleIDVPTemplateRequestError } from "../utils";
+import {resolveIDVPImage} from "../utils/image-utils";
 
 /**
  * Proptypes for the IDVP template selection page component.
@@ -77,12 +76,12 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
     const [ selectedTemplate, setSelectedTemplate ] = useState<IDVPTypeMetadataInterface>(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const {
         data: idvpTemplateTypes,
         isLoading: isIDVPTemplateTypeRequestLoading,
         error: idvpTemplateTypeRequestError
-    } = useIDVPTemplateTypeMetadata();
+    } = useIDVPTemplateTypeMetadataList();
+
 
 
     /**
@@ -155,25 +154,26 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
          * Find the matching template for the selected card.
          * if found then set the template to state.
          */
-        if (selectedTemplate) {
-            setSelectedTemplate(selectedTemplate);
+        if (!selectedTemplate) {
+            return;
         }
 
+        setSelectedTemplate(selectedTemplate);
         setTemplateType(selectedTemplate.id);
+        setShowWizard(true);
     };
 
     /**
-     * On successful IDP creation, navigates to the IDP views.
+     * On successful IDVP creation, navigates to the IDVP edit page.
      *
-     * @param id - ID of the created IDP.
+     * @param id - ID of the created IDVP.
      */
     const handleSuccessfulIDPCreation = (id: string): void => {
 
-        // If ID is present, navigate to the edit page of the created IDP.
+        // If ID is present, navigate to the edit page of the created IDVP.
         if (id) {
             history.push({
                 pathname: AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id),
-                search: IdentityProviderManagementConstants.NEW_IDP_URL_SEARCH_PARAM
             });
 
             return;
@@ -335,8 +335,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                                                 comingSoonRibbonLabel={ t("common:comingSoon") }
                                                 resourceDescription={ template.description }
                                                 resourceImage={
-                                                    IdentityProviderManagementUtils
-                                                        .resolveTemplateImage(template.image, getIdPIcons())
+                                                    resolveIDVPImage(template.image)
                                                 }
                                                 tags={ template.tags }
                                                 onClick={ (e: SyntheticEvent) => {
@@ -353,11 +352,11 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                         : <ContentLoader dimmer/>
                 }
             </GridLayout>
-            <IdvpCreateWizardFactory
+            <IdvpCreateWizard
                 showWizard={ showWizard }
                 type={ templateType }
                 selectedTemplateType={ selectedTemplate }
-                onIDPCreate={ handleSuccessfulIDPCreation }
+                onIDVPCreate={ handleSuccessfulIDPCreation }
                 onWizardClose={ () => {
                     setTemplateType(undefined);
                     setShowWizard(false);
