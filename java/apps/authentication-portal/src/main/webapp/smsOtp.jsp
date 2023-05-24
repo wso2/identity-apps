@@ -150,7 +150,7 @@
                                     </div>
                                 <% } } %>
                                 <input
-                                    type="button" name="authenticate" id="authenticate"
+                                    type="submit" name="authenticate" id="authenticate"
                                     value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "authenticate.button")%>" class="ui primary button"/>
                             </div>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
@@ -183,20 +183,25 @@
 
         <script type="text/javascript">
         $(document).ready(function() {
-            $('#authenticate').click(function() {
-                if ($('#pin_form').data("submitted") === true) {
-                    console.warn("Prevented a possible double submit event");
-                } else {
-                    var OTPcode = document.getElementById("OTPcode").value;
-                    if (OTPcode == "") {
-                        document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
+            $.fn.preventDoubleSubmission = function() {
+                $('#pin_form').on('submit', function(e) {
+                    if ($('#pin_form').data('submitted') === true) {
+                        // Previously submitted - don't submit again.
+                        e.preventDefault();
+                        console.warn("Prevented a possible double submit event");
                     } else {
-                        $('#pin_form').data("submitted", true);
-                        $('#pin_form').submit();
+                        var OTPcode = document.getElementById("OTPcode").value;
+                        if (OTPcode == "") {
+                            e.preventDefault();
+                            document.getElementById('alertDiv').innerHTML 
+                                = '<div id="error-msg" class="ui negative message">Please enter the code!</div><div class="ui divider hidden"></div>';
+                        } else {
+                            $('#pin_form').data("submitted", true);
+                        }
                     }
-                }
-            });
+                });
+            };
+            $('#pin_form').preventDoubleSubmission();
         });
 
         function resendOtp() {
