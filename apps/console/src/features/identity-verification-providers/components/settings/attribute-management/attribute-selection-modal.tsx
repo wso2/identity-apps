@@ -145,7 +145,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                 Add Attribute Mappings
             </Modal.Header>
             <Modal.Content scrolling className="edit-attribute-mapping">
-                <Grid>
+                <Grid className={ "ui form" }>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
                             <AttributeMappingListItem

@@ -191,13 +191,6 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
                         <Divider hidden/>
                     </Grid.Column>
                 </Grid.Row>
-                {
-                    // <AddAttributeSelection
-                    //     availableAttributeList={ getRemainingUnmappedAttributes() }
-                    //     alreadyMappedAttributesList={ [ ...mappedAttributesList ] }
-                    //     onSave={ onAttributeMappingChanged }
-                    // />
-                }
 
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
