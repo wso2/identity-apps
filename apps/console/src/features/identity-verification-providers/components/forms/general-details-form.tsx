@@ -116,7 +116,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
                         required={ true }
                         message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
-                        placeholder={ identityVerificationProvider.Name }
+                        placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder")  }
                         validation={ (value: string) => {
                             return validateIDVPName(
                                 value,

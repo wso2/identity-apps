@@ -5883,9 +5883,9 @@ export const console: ConsoleNS = {
                 forms: {
                     generalDetails: {
                         description: {
-                            hint: "A text description of the identity verification provider.",
+                            hint: "A text description for the identity verification provider.",
                             label: "Description",
-                            placeholder: "Enter a description of the identity verification provider."
+                            placeholder: "Enter a description for the identity verification provider."
                         },
                         name: {
                             hint: "Enter a unique name for this identity verification provider.",
@@ -5906,14 +5906,13 @@ export const console: ConsoleNS = {
                     deleteIDVP: {
                         actionTitle: "Delete",
                         header: "Delete identity verification provider",
-                        subheader: "Once you delete an identity verification provider, it cannot be recovered. " +
-                            "Please be certain."
+                        subheader: "This is an irreversible action, proceed with caution."
                     },
                     disableIDVP: {
                         actionTitle: "{{ state }} Identity Verification Provider",
                         header: "{{ state }} identity verification provider",
                         subheader: "Once you disable an identity verification provider, it can no longer be used " +
-                            "until you enable it again.",
+                            "until re-enabled.",
                         subheader2: "Enable the identity verification provider to use it with your applications."
                     },
                     header: "Danger Zone"

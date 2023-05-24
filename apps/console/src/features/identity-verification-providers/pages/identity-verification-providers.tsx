@@ -150,7 +150,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                 )
             }
             title={ t("console:develop.pages.idvp.title") }
-            description={ t("console:develop.pages.idp.subTitle") }
+            description={ t("console:develop.pages.idvp.subTitle") }
             data-componentid={ `${ componentId }-page-layout` }
             actionColumnWidth={ 6 }
             headingColumnWidth={ 10 }
@@ -177,7 +177,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     idvpList={ idvpList }
                     idvpTemplateTypeList={ idvpTemplateTypes }
                     onEmptyListPlaceholderActionClick={ () =>
-                        history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
+                        history.push(AppConstants.getPaths().get("IDVP_TEMPLATES"))
                     }
                     onIdentityVerificationProviderDelete={ onIdentityVerificationProviderDelete }
                     data-componentid={ `${ componentId }-list` }

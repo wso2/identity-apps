@@ -4389,8 +4389,23 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Supprimer",
+                        header: "Supprimer le fournisseur de vérification d'identité",
+                        subheader: "Il s'agit d'une action irréversible, procédez avec prudence."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Fournisseur de vérification d'identité",
+                        header: "Fournisseur de vérification d'identité {{ state }}",
+                        subheader: "Une fois que vous avez désactivé un fournisseur de vérification d'identité, " +
+                            "il ne peut plus être utilisé tant qu'il n'est pas réactivé.",
+                        subheader2: "Activez le fournisseur de vérification d'identité pour l'utiliser avec vos " +
+                            "applications."
+                    },
+                    header: "Zone de Danger"
                 }
-                //TODO: Add translation for danger zone.
             },
             overview: {
                 banner: {
