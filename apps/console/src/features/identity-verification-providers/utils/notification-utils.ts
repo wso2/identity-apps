@@ -205,3 +205,78 @@ export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: Axios
 
     return;
 };
+
+/**
+ * Displays an error alert when there is a failure in the identity verification provider UI metadata load request.
+ *
+ * @param uiMetaDataLoadError - Error response from API request.
+ */
+export const handleUIMetadataLoadError = (uiMetaDataLoadError: AxiosError): void=> {
+
+    if (!uiMetaDataLoadError) {
+        return;
+    }
+
+    if (uiMetaDataLoadError?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getUIMetadata.error.description",
+                    { description: uiMetaDataLoadError.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("console:develop.features.idvp.notifications.getUIMetadata.error.message")
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getUIMetadata.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.getUIMetadata.genericError.message")
+        })
+    );
+};
+
+/**
+ * Displays an error alert when there is a failure in the identity verification provider template load request.
+ *
+ * @param idvpTemplateFetchRequestError - Error response from API request.
+ */
+export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestError: AxiosError): void=> {
+
+    if (!idvpTemplateFetchRequestError) {
+        return;
+    }
+
+    if (idvpTemplateFetchRequestError?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getIDVPTemplate.error.description",
+                    { description: idvpTemplateFetchRequestError.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.error.message")
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVPTemplate.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.genericError.message")
+        })
+    );
+
+};

@@ -2423,6 +2423,7 @@ export interface ConsoleNS {
                   getUIMetadata: Notification;
                   getIDVPTemplateTypes: Notification;
                   getIDVPTemplateType: Notification;
+                  getIDVPTemplate: Notification;
                 };
                 forms: {
                     // attributeSettings: {

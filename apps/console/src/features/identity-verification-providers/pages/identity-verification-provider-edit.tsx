@@ -47,7 +47,7 @@ import { useIdentityVerificationProvider } from "../api";
 import { useIDVPTemplateTypeMetadata, useUIMetadata } from "../api/ui-metadata";
 import { EditIdentityVerificationProvider } from "../components";
 import { IDVPTemplateItemInterface } from "../models";
-import { handleIDVPTemplateTypesLoadError } from "../utils";
+import { handleIDVPTemplateTypesLoadError, handleUIMetadataLoadError } from "../utils";
 
 /**
  * Proptypes for the IDVP edit page component.
@@ -159,34 +159,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     }, [ idvpFetchError ]);
 
     useEffect(() => {
-
-        if (!uiMetaDataLoadError) {
-            return;
-        }
-
-        if (uiMetaDataLoadError?.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:develop.features.idvp.notifications.getUIMetadata.error.description",
-                        { description: uiMetaDataLoadError.response.data.description }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idvp.notifications.getUIMetadata.error.message")
-                })
-            );
-
-            return;
-        }
-
-        dispatch(
-            addAlert({
-                description: t("console:develop.features.idvp.notifications.getUIMetadata.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:develop.features.idvp.notifications.getUIMetadata.genericError.message")
-            })
-        );
-
+        handleUIMetadataLoadError(uiMetaDataLoadError);
     }, [ uiMetaDataLoadError ]);
 
     useEffect(() => {

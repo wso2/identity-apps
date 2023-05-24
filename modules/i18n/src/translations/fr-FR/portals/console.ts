@@ -4340,8 +4340,8 @@ export const console: ConsoleNS = {
                             message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des modèles de " +
-                                "fournisseur de vérification d'identité.",
+                            description: "Une erreur s'est produite lors de la récupération des types de modèles " +
+                                "auprès du fournisseur de vérification d'identité.",
                             message: "Erreur de récupération"
                         }
                     },
@@ -4351,7 +4351,19 @@ export const console: ConsoleNS = {
                             message: "Erreur de Récupération"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur de vérification d'identité.",
+                            description: "Une erreur s'est produite lors de la récupération du type de modèle auprès" +
+                                " du fournisseur de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur " +
+                                "de vérification d'identité.",
                             message: "Erreur de Récupération"
                         }
                     }

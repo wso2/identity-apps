@@ -43,7 +43,9 @@ import { IDVPClaimMappingInterface, IdentityVerificationProviderInterface } from
 import { IDVPTypeMetadataInterface } from "../../models/ui-metadata";
 import {
     getInitialClaimFromTemplate,
+    handleIDVPTemplateFetchRequestError,
     handleIdvpListFetchRequestError,
+    handleUIMetadataLoadError,
     resolveIDVPImage,
     validateIDVPName
 } from "../../utils";
@@ -166,11 +168,15 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
 
     useEffect(() => {
         handleIdvpListFetchRequestError(idvpListFetchRequestError);
-
     }, [ idvpListFetchRequestError ]);
 
-    //TODO: Handle IDVP template and UI metadata fetch error
+    useEffect(() => {
+        handleUIMetadataLoadError(uiMetaDataLoadError);
+    }, [ uiMetaDataLoadError ]);
 
+    useEffect(() => {
+        handleIDVPTemplateFetchRequestError(idvpTemplateFetchRequestError);
+    }, [ idvpTemplateFetchRequestError ]);
 
 
     /**
