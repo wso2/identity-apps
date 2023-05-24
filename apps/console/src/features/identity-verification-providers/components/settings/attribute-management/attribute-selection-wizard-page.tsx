@@ -58,6 +58,7 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
     const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IDVPLocalClaimInterface[]>([]);
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ mappedAttrIds, setMappedAttrIds ] = useState<Set<string>>();
+    const [ wereInitialValuesSet, setWereInitialValuesSet ] = useState<boolean>(true);
 
     /**
      * Fetch all the local claims and set them to availableLocalClaims.
@@ -82,15 +83,16 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
      * Set initial value for attribute mapping.
      */
     useEffect(() => {
-        if (!isEmpty(mappedAttributesList) || isEmpty(availableLocalClaims) || isEmpty(mappedAttrIds)) {
+        if (!isEmpty(mappedAttributesList) || isEmpty(availableLocalClaims) || !wereInitialValuesSet) {
             return;
         }
         setInitialValues();
+        setWereInitialValuesSet(false);
     }, [ availableLocalClaims, initialClaims ]);
 
     /**
      * Populate the optional attributes in initial claims (attributes other than the URI) and
-     * populate the mapped attributes initially.
+     * initially populate the mapped attributes.
      */
     const setInitialValues = () => {
 
@@ -104,7 +106,6 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
             });
         });
         setMappedAttributeList(initialClaims);
-
     };
 
 
@@ -175,7 +176,6 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
     };
 
-    // End of pasted stuff
 
     return (
         isLocalClaimsLoading ? <ContentLoader/> : (
