@@ -40,7 +40,6 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
      * IDVP that is being edited.
      */
     idvp: IdentityVerificationProviderInterface;
-
     /**
      * Is the IDVP info request loading.
      */
@@ -82,7 +81,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         loader: Loader,
         [ "data-componentid" ]: componentId
     } = props;
-
 
     const { t } = useTranslation();
 

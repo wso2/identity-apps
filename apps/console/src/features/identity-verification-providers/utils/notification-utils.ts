@@ -22,6 +22,7 @@ import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { store } from "../../core";
 
+// TODO: move if falsy check outside of the function
 export const handleIDVPDeleteError = (error: AxiosError): void => {
 
     if (error?.response?.data?.description) {
@@ -51,6 +52,7 @@ export const handleIDVPDeleteError = (error: AxiosError): void => {
         })
     );
 };
+
 export const handleIDVPDeleteSuccess = (): void => {
 
     store.dispatch(
@@ -61,6 +63,7 @@ export const handleIDVPDeleteSuccess = (): void => {
         })
     );
 };
+
 export const handleIDVPUpdateSuccess = (): void => {
 
     store.dispatch(
@@ -71,6 +74,7 @@ export const handleIDVPUpdateSuccess = (): void => {
         })
     );
 };
+
 export const handleIDVPUpdateError = (error: AxiosError): void => {
 
     if (error?.response?.data?.description) {
@@ -99,8 +103,8 @@ export const handleIDVPUpdateError = (error: AxiosError): void => {
             message: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.genericError.message")
         })
     );
-
 };
+
 export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
 
     if (error?.response?.data?.description) {
@@ -131,8 +135,12 @@ export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
             )
         })
     );
-
 };
+
+/**
+ * Handle load error on IDVP template types.
+ * @param error - Error response.
+ */
 export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
 
     if (!error) {
@@ -167,8 +175,8 @@ export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
             )
         })
     );
-
 };
+
 /**
  * Displays an error alert when there is a failure in the identity verification provider list fetch request.
  */
@@ -278,5 +286,4 @@ export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestErro
             message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.genericError.message")
         })
     );
-
 };

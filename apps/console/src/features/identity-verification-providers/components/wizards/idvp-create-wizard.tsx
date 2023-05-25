@@ -18,7 +18,7 @@
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {Field, FormValue, Wizard2, WizardPage} from "@wso2is/form";
+import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     ContentLoader,
     GenericIcon,
@@ -35,10 +35,13 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../../../core";
-import { createIdentityVerificationProvider, useIdentityVerificationProviderList } from "../../api";
-import { useIDVPTemplate, useUIMetadata } from "../../api/ui-metadata";
+import { createIdentityVerificationProvider,
+    useIDVPTemplate,
+    useIdentityVerificationProviderList,
+    useUIMetadata
+} from "../../api";
 import { getIdentityVerificationProviderWizardStepIcons } from "../../configs/ui";
-import { IdentityVerificationProviderConstants } from "../../constants/identity-verification-provider-constants";
+import { IdentityVerificationProviderConstants } from "../../constants";
 import { IDVPClaimMappingInterface, IdentityVerificationProviderInterface } from "../../models";
 import { IDVPTypeMetadataInterface } from "../../models/ui-metadata";
 import {
@@ -70,7 +73,6 @@ interface WizardFormValuesInterface {
     description: string;
     [ key: string ]: any;
 }
-
 
 const WIZARD_ID: string = "idvp-create-wizard-content";
 const wizardSteps: WizardStepInterface[] = [
@@ -149,13 +151,13 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
     const {
         data: idvpList,
         isLoading: isIDVPListRequestLoading,
-        error: idvpListFetchRequestError,
+        error: idvpListFetchRequestError
     } = useIdentityVerificationProviderList();
 
     const {
         data: idvpTemplate,
         isLoading: isIDVPTemplateRequestLoading,
-        error: idvpTemplateFetchRequestError,
+        error: idvpTemplateFetchRequestError
     } = useIDVPTemplate(selectedTemplateType?.id);
 
     const {

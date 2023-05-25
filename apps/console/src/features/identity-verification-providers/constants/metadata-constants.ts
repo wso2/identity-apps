@@ -22,4 +22,3 @@ export enum MetaDataInputTypes {
     TOGGLE = "toggle",
     DROPDOWN = "dropdown",
 }
-

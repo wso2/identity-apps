@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/auth-react";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import useRequest, {
@@ -26,14 +26,16 @@ import useRequest, {
 } from "../../core/hooks/use-request";
 import { IDVPListResponseInterface, IdentityVerificationProviderInterface } from "../models";
 
-type HttpClientType = (config: HttpRequestConfig) => Promise<HttpResponse | undefined>;
-
-const httpClient: HttpClientType = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient
+    .getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Delete an identity verification provider.
  * @param id - ID of the identity verification provider.
+ * @returns - A promise containing the response from the API call.
  */
+//TODO: handle error here as well
 export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -52,6 +54,7 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
  * Updates an identity verification provider.
  * @param id - ID of the identity verification provider.
  * @param rest - Rest of the data.
+ * @returns - A promise containing the response from the API call.
  */
 export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
@@ -73,6 +76,7 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
  * Creates an identity verification provider.
  * @param id - ID of the identity verification provider (can be undefined).
  * @param rest - Rest of the data.
+ * @returns - A promise containing the response from the API call.
  */
 export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
@@ -93,6 +97,7 @@ export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
 /**
  * Hook to get an identity verification provider.
  * @param id - ID of the identity verification provider.
+ * @returns - Requested IDVP
  */
 export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
     Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
@@ -123,7 +128,7 @@ export const useIdentityVerificationProvider = <Data = IdentityVerificationProvi
  * @param filter - Search filter.
  * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
  *
- * @returns Requested IDPs
+ * @returns - Requested IDVP list.
  */
 export const useIdentityVerificationProviderList = <Data = IDVPListResponseInterface, Error = RequestErrorInterface>(
     limit?: number,
@@ -155,4 +160,6 @@ export const useIdentityVerificationProviderList = <Data = IDVPListResponseInter
         isValidating,
         mutate
     };
+
+//TODO: check the returns doc type in every method
 };

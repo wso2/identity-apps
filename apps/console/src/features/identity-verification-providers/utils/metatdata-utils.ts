@@ -27,5 +27,4 @@ export const getInitialClaimFromTemplate  = (claims: IDVPClaimsInterface[]): IDV
             }
         };
     }) as IDVPClaimMappingInterface[];
-
 };

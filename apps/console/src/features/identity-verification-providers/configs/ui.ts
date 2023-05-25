@@ -19,7 +19,6 @@
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
-import { ReactComponent as ConnectionIcon} from "../../../themes/default/assets/images/icons/connection.svg";
 import {
     ReactComponent as DefaultIDPIcon
 } from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
@@ -41,7 +40,6 @@ export const getHelpPanelIcons = (): any => {
     };
 };
 
-export const getDefaultImageForIDVP = (): any => {
-    // return ConnectionIcon;
+export const getDefaultImageForIDVP = (): any  => {
     return DefaultIDPIcon;
 };

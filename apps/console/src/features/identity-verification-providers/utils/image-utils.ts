@@ -24,8 +24,9 @@ import { getDefaultImageForIDVP } from "../configs/ui";
  * @param image - Input image.
  * @returns Predefined image if available. If not, return input parameter.
  */
-export const resolveIDVPImage = (image: string | any): string | any => {
+export const resolveIDVPImage = (image: string): string | any => {
 
+    // TODO: see if any can be removed
     if (image) {
         if (typeof image !== "string") {
             return image;

@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useIdentityVerificationProviderList } from "../../api";
-import { IdentityVerificationProviderConstants } from "../../constants/identity-verification-provider-constants";
+import { IdentityVerificationProviderConstants } from "../../constants";
 import { IdentityVerificationProviderInterface } from "../../models";
-import { validateIDVPName } from "../../utils/validation-utils";
+import { validateIDVPName } from "../../utils";
 
 /**
  * Proptypes for the identity provider general details form component.
  */
-interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
+interface GeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
     /**
      * Currently editing IDVP.
      */
@@ -77,7 +77,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         identityVerificationProvider,
         isReadOnly,
         isSubmitting,
-        ["data-testid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
 
@@ -107,7 +107,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     onSubmit={ (values: Record<string, any>): void => {
                         updateConfigurations(values);
                     } }
-                    data-testid={ testId }
+                    data-componentid={ componentId }
                 >
                     <Field.Input
                         ariaLabel="name"
@@ -117,17 +117,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         required={ true }
                         message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
                         placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder")  }
-                        validation={ (value: string) => {
-                            return validateIDVPName(
-                                value,
-                                idvpList.identityVerificationProviders,
-                                identityVerificationProvider
-                            );
-                        } }
+                        validation={ (value: string) => validateIDVPName(value,
+                            idvpList.identityVerificationProviders,
+                            identityVerificationProvider
+                        ) }
                         value={ identityVerificationProvider.Name }
                         maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
                         minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
-                        data-testid={ `${ testId }-idp-name` }
+                        data-componentid={ `${ componentId }-idp-name` }
                         hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
                         readOnly={ isReadOnly }
                     />
@@ -138,7 +135,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         required={ false }
                         placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
                         value={ identityVerificationProvider.description }
-                        data-testid={ `${ testId }-idp-description` }
+                        data-componentid={ `${ componentId }-idp-description` }
                         maxLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MAX_LENGTH }
                         minLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MIN_LENGTH }
                         hint={ t("console:develop.features.idvp.forms.generalDetails.description.hint") }
@@ -163,7 +160,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 };
 
 GeneralDetailsForm.defaultProps = {
-    "data-testid": "idp-edit-general-settings-form",
+    "data-componentid": "idvp-edit-general-settings-form",
     enableWizardMode: false,
     triggerSubmit: false
 };

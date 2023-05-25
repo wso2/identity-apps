@@ -311,7 +311,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             return template.tags
                 .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
-        
+
         const templatesClone: IdentityProviderTemplateCategoryInterface[] = cloneDeep(originalCategorizedTemplates);
 
         templatesClone.map((category: IdentityProviderTemplateCategoryInterface) => {
@@ -488,7 +488,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
                                                         resourceName={
-                                                            template.name === "Enterprise" ? "Standard-Based IdP" 
+                                                            template.name === "Enterprise" ? "Standard-Based IdP"
                                                                 : template.name
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }

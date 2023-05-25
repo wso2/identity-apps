@@ -36,7 +36,7 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
     /**
      * On submit callback.
      */
-    onSubmit: (values: any) => void;
+    onSubmit: (values: FormData) => void;
     /**
      * Callback to update the idp details.
      */
@@ -93,9 +93,7 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
                 <Form
                     id={ FORM_ID }
                     uncontrolledForm={ true }
-                    onSubmit={ (values: FormData): void => {
-                        onSubmit(values);
-                    } }
+                    onSubmit={ (values: FormData): void => onSubmit(values) }
                     data-testid={ componentId }
                 >
                     { renderFormUIWithMetadata(uiMetaData, identityVerificationProvider, isReadOnly, true) }

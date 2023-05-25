@@ -62,9 +62,7 @@ export const renderFormUIWithMetadata = (
                             required={ elementMetadata.required }
                             message={ elementMetadata.message }
                             placeholder={ elementMetadata.placeholder }
-                            validate={ (value: string ) => {
-                                return performValidations(value, elementMetadata);
-                            } }
+                            validate={ (value: string ) =>  performValidations(value, elementMetadata) }
                             value={ currentElementValue ?? elementMetadata.defaultValue }
                             initialValue={ currentElementValue ?? elementMetadata.defaultValue }
                             maxLength={ elementMetadata.maxLength }
@@ -88,9 +86,7 @@ export const renderFormUIWithMetadata = (
                             required={ elementMetadata.required }
                             message={ elementMetadata.message }
                             placeholder={ elementMetadata.placeholder }
-                            validate={ (value: string ) => {
-                                return performValidations(value, elementMetadata);
-                            } }
+                            validate={ (value: string ) => performValidations(value, elementMetadata) }
                             value={ currentElementValue ?? elementMetadata.defaultValue }
                             initialValue={ currentElementValue ?? elementMetadata.defaultValue }
                             maxLength={ elementMetadata.maxLength }
@@ -113,9 +109,7 @@ export const renderFormUIWithMetadata = (
                             hint={ elementMetadata.hint }
                             data-componentid={ elementMetadata.dataComponentId }
                             required={ elementMetadata.required }
-                            validate={ (value: string ) => {
-                                return performValidations(value, elementMetadata);
-                            } }
+                            validate={ (value: string ) => performValidations(value, elementMetadata) }
                             value={ currentElementValue ?? elementMetadata.defaultValue }
                             initialValue={ currentElementValue ?? elementMetadata.defaultValue }
                             maxLength={ elementMetadata.maxLength }
@@ -196,9 +190,7 @@ export const renderFormUIWithMetadata = (
                             required={ elementMetadata.required }
                             message={ elementMetadata.message }
                             placeholder={ elementMetadata.placeholder }
-                            validate={ (value: string ) => {
-                                return performValidations(value, elementMetadata);
-                            } }
+                            validate={ (value: string ) => performValidations(value, elementMetadata) }
                             value={ currentElementValue ?? elementMetadata.defaultValue }
                             initialValue={ currentElementValue ?? elementMetadata.defaultValue }
                             maxLength={ elementMetadata.maxLength }

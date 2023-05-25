@@ -27,8 +27,9 @@ import { IdentityVerificationProviderInterface } from "../models";
 import { IDVPTypeMetadataInterface, UIMetaDataForIDVP } from "../models/ui-metadata";
 
 /**
- * Hook to get UI metadata for a identity verification provider type
+ * Hook to get UI metadata for an identity verification provider type
  * @param idvpType - Identity verification provider type
+ * @returns - UI metadata for the IDVP type
  */
 export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInterface>(
     idvpType: string
@@ -40,7 +41,7 @@ export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInte
         method: HttpMethods.GET,
         url: `${ store.getState().config.endpoints.IDVPExtensionEndpoint }/${ idvpType }/metadata`
     };
-    // IF the idvpType is not set, passing null to the useRequest hook will abort the request.
+    // If the idvpType is not set, passing null to the useRequest hook will abort the request.
     const { data, error, isValidating, mutate } = useRequest<Data, Error>( idvpType? requestConfig : null);
 
     return {
@@ -54,6 +55,7 @@ export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInte
 
 /**
  * A hook to get the list of IDVP template types
+ * @returns - List of IDVP template types
  */
 export const useIDVPTemplateTypeMetadataList = <Data = IDVPTypeMetadataInterface[], Error = RequestErrorInterface>(
 
@@ -80,6 +82,7 @@ export const useIDVPTemplateTypeMetadataList = <Data = IDVPTypeMetadataInterface
 /**
  * A hook to get the metadata about an IDVP type.
  * @param idvpType - Type of the IDVP
+ * @returns - Metadata about the IDVP type
  */
 export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Error = RequestErrorInterface>(
     idvpType: string
@@ -107,6 +110,7 @@ export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Er
 /**
  * A hook to get the template of an IDVP.
  * @param idvpType - Type of the IDVP
+ * @returns - Template of the IDVP
  */
 export const useIDVPTemplate = <Data = IdentityVerificationProviderInterface, Error = RequestErrorInterface>(
     idvpType: string

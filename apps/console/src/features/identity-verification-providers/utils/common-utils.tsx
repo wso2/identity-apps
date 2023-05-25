@@ -23,7 +23,6 @@ import { handleIDVPUpdateError, handleIDVPUpdateSuccess } from "./notification-u
 import { updateIdentityVerificationProvider } from "../api";
 import { IdentityVerificationProviderInterface } from "../models";
 
-
 export const updateIDVP = (
     idvp: IdentityVerificationProviderInterface,
     setIsSubmitting: (boolean) => void,

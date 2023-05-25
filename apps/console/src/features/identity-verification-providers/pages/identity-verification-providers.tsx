@@ -55,8 +55,6 @@ const IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] =
 ];
 
 const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> = (props: IDVPPropsInterface) => {
-
-
     const { ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
@@ -79,12 +77,13 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     } = useIDVPTemplateTypeMetadataList();
 
     useEffect( () => {
-        handleIdvpListFetchRequestError(idvpListFetchRequestError);
-
+        if (idvpListFetchRequestError) {
+            handleIdvpListFetchRequestError(idvpListFetchRequestError);
+        }
     } , [ idvpListFetchRequestError ]);
 
     useEffect(() => {
-        if(idvpTemplateTypeRequestError){
+        if (idvpTemplateTypeRequestError){
             handleIDVPTemplateRequestError(idvpTemplateTypeRequestError);
         }
     }, [ idvpTemplateTypeRequestError ]);
@@ -126,7 +125,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     /**
      * Triggers a re-fetch for the identity verification provider list after deleting an identity verification provider.
      */
-    const onIdentityVerificationProviderDelete = async () => {
+    const onIdentityVerificationProviderDelete = async (): Promise<void> => {
         await idvpListMutator();
     };
 

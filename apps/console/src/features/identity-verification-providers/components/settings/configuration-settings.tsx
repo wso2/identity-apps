@@ -53,7 +53,6 @@ interface ConfigurationSettingsInterface extends IdentifiableComponentInterface 
     uiMetaData: InputFieldMetaData[];
 }
 
-
 /**
  * Component to edit the general settings of the identity verification provider.
  *
@@ -75,9 +74,9 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsInter
     } = props;
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
     /**
      * Handles form submit action.
-     *
      * @param updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: FormData): void => {
