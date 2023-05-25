@@ -67,15 +67,15 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
     /**
      * Specifies if it is needed to redirect to a specific tabindex
      */
-
     uiMetaData: UIMetaDataForIDVP;
-
+    /**
+     * Specifies if it is needed to redirect to a specific tabindex
+     */
     isAutomaticTabRedirectionEnabled?: boolean;
     /**
      * Specifies, to which tab(tab id) it need to redirect.
      */
     tabIdentifier?: string;
-
 }
 
 /**
@@ -116,7 +116,6 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         setInitialClaims(temp);
     }, [ identityVerificationProvider ]);
 
-
     const GeneralIDVPSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
@@ -145,7 +144,6 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         </ResourceTab.Pane>
     );
 
-
     const AttributeSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
@@ -160,7 +158,6 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
             />
         </ResourceTab.Pane>
     );
-
 
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];

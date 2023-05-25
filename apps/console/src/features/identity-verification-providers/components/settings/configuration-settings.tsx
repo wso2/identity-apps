@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Divider } from "semantic-ui-react";
 import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../models";
-import { InputFieldMetaData } from "../../models/ui-metadata";
+import { InputFieldMetadata } from "../../models/ui-metadata";
 import { updateIDVP } from "../../utils";
 import { ConfigurationSettingsForm } from "../forms/config-settings-form";
 
@@ -50,7 +50,7 @@ interface ConfigurationSettingsInterface extends IdentifiableComponentInterface 
      */
     loader: () => ReactElement;
 
-    uiMetaData: InputFieldMetaData[];
+    uiMetaData: InputFieldMetadata[];
 }
 
 /**

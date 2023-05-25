@@ -256,7 +256,7 @@ export const handleUIMetadataLoadError = (uiMetaDataLoadError: AxiosError): void
  *
  * @param idvpTemplateFetchRequestError - Error response from API request.
  */
-export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestError: AxiosError): void=> {
+export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestError: AxiosError): void => {
 
     if (!idvpTemplateFetchRequestError) {
         return;

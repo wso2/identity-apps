@@ -21,20 +21,19 @@ import React, { ReactElement } from "react";
 import { Divider, Header } from "semantic-ui-react";
 import { MetaDataInputTypes } from "../../../constants/metadata-constants";
 import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../../models";
-import { DropdownOptionsInterface, InputFieldMetaData } from "../../../models/ui-metadata";
+import { DropdownOptionsInterface, InputFieldMetadata } from "../../../models/ui-metadata";
 
 const ERROR_MSG_REQUIRED_FIELD: string = "This field cannot be empty";
 const ERROR_MSG_REGEX_FAILED: string = "Pattern validation failed";
 
 export const renderFormUIWithMetadata = (
-    uiMetaData: InputFieldMetaData[],
+    uiMetaData: InputFieldMetadata[],
     idvp?: IdentityVerificationProviderInterface,
     isReadOnly: boolean = false,
     padBetweenElements: boolean = false
 ): React.ReactElement => {
 
-    // TODO: Refactor MetaData -> Metadata
-    const createElement = (elementMetadata: InputFieldMetaData): ReactElement => {
+    const createElement = (elementMetadata: InputFieldMetadata): ReactElement => {
         // exclude rendering the divider for the first input element.
         const includeDivider: boolean= padBetweenElements ? elementMetadata.displayOrder !== 1 : false;
         // If there is an already existing IDVP, get the current value of the element from the IDVP.
@@ -201,18 +200,15 @@ export const renderFormUIWithMetadata = (
                         />
                     </>
                 );
-
-
         }
     };
-
 
     return (
         <>
             {
                 uiMetaData
-                    ?.sort((a: InputFieldMetaData, b: InputFieldMetaData) => a.displayOrder - b.displayOrder)
-                    ?.map((element: InputFieldMetaData) => {
+                    ?.sort((a: InputFieldMetadata, b: InputFieldMetadata) => a.displayOrder - b.displayOrder)
+                    ?.map((element: InputFieldMetadata) => {
                         return createElement(element);
                     })
             }
@@ -236,7 +232,7 @@ const getDropdownOptions = (options: DropdownOptionsInterface[]) => {
 };
 
 export const performValidations: (string, InputFieldMetaData) => string = (
-    value: string, elementMetaData: InputFieldMetaData
+    value: string, elementMetaData: InputFieldMetadata
 ) => {
 
     // perform required validation

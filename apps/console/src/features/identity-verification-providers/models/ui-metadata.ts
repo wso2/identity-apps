@@ -17,7 +17,7 @@
  */
 import { FormFieldMessage } from "@wso2is/form";
 
-export interface InputFieldMetaData {
+export interface InputFieldMetadata {
     name: string;
     displayOrder: number;
     hint: string;
@@ -40,9 +40,9 @@ export interface UIMetaDataForIDVP {
     image: string;
     pages: {
         edit: {
-            settings: InputFieldMetaData[];
-            general?: InputFieldMetaData[];
-            attributes?: InputFieldMetaData[];
+            settings: InputFieldMetadata[];
+            general?: InputFieldMetadata[];
+            attributes?: InputFieldMetadata[];
         };
     }
 }

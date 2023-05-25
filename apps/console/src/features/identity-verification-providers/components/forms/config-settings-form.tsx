@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { renderFormUIWithMetadata } from "./helpers";
 import { IdentityVerificationProviderInterface } from "../../models";
-import { InputFieldMetaData } from "../../models/ui-metadata";
+import { InputFieldMetadata } from "../../models/ui-metadata";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -61,7 +61,7 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
     /**
      * UI Metadata for the form fields.
      */
-    uiMetaData?: InputFieldMetaData[];
+    uiMetaData?: InputFieldMetadata[];
 }
 
 const FORM_ID: string = "idvp-config-settings-form";

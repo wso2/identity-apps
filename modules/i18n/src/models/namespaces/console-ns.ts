@@ -2445,12 +2445,7 @@ export interface ConsoleNS {
                         };
                         attributeSelectionModal: {
                             header: string;
-                        }
-                        // attributeSelection: {
-                        //     searchAttributes: {
-                        //         placeHolder: string;
-                        //     };
-                        // };
+                        };
                     };
                     generalDetails: {
                         name: FormAttributes;
