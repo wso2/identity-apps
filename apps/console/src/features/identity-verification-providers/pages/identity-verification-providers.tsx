@@ -20,10 +20,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
-import { useIdentityVerificationProviderList } from "../api";
-import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
+import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
 import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
@@ -31,38 +30,12 @@ import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from 
 
 type IDVPPropsInterface = IdentifiableComponentInterface;
 
-const IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 1,
-        text: "Name",
-        value: "name"
-    },
-    {
-        key: 2,
-        text: "Type",
-        value: "type"
-    },
-    {
-        key: 3,
-        text: "Created date",
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: "Last updated",
-        value: "lastUpdated"
-    }
-];
-
 const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> = (props: IDVPPropsInterface) => {
     const { ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS[0]
-    );
     const {
         data: idvpList,
         isLoading: isIDVPListRequestLoading,
@@ -109,20 +82,6 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
     };
 
     /**
-     * Sets the sorting strategy for identity verification provider list.
-     *
-     * @param event - The event.
-     * @param data - Dropdown data.
-     */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(
-            IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS.find((option: DropdownItemProps) => {
-                return data.value === option.value;
-            })
-        );
-    };
-
-    /**
      * Triggers a re-fetch for the identity verification provider list after deleting an identity verification provider.
      */
     const onIdentityVerificationProviderDelete = async (): Promise<void> => {
@@ -159,11 +118,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
                 showPagination={ true }
                 showTopActionPanel={ false }
-                sortOptions={ IDENTITY_VERIFICATION_PROVIDER_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
                 totalPages={
                     Math.ceil((idvpList?.totalResults ?? 1) / listItemLimit)
                 }
