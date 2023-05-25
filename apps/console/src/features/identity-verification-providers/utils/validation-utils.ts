@@ -20,7 +20,14 @@ import { I18n } from "@wso2is/i18n";
 import { FormValidation } from "@wso2is/validation";
 import { IdentityVerificationProviderInterface } from "../models";
 
-//TODO: Add TsDoc comments
+/**
+ * Performs required, invalid and duplicate validations for IDVP name.
+ *
+ * @param value - IDVP name.
+ * @param idvpList - List of already available IDVPs.
+ * @param currentIDVP - The current IDVP
+ * @returns Validation error message.
+ */
 export const validateIDVPName = (
     value: string,
     idvpList: IdentityVerificationProviderInterface[],
@@ -42,11 +49,20 @@ export const validateIDVPName = (
     return;
 };
 
+/**
+ * Checks if the given IDVP name is already taken.
+ *
+ * @param value - IDVP name.
+ * @param idvpList - List of already existing IDVPs.
+ * @param currentIDVP - The current IDVP
+ * @returns Whether the IDVP name is already taken.
+ */
 const isIDVPNameAlreadyTaken = (
     value: string,
     idvpList: IdentityVerificationProviderInterface[],
     currentIDVP?: IdentityVerificationProviderInterface
-) => {
+):boolean => {
+
     if (!idvpList) {
         return false;
     }
@@ -54,6 +70,8 @@ const isIDVPNameAlreadyTaken = (
     const existingIDVP: IdentityVerificationProviderInterface = idvpList.find(
         (idvp: IdentityVerificationProviderInterface) => {
             if (currentIDVP) {
+                // Current IDVP is available on edit IDVP scenario. In that case, we need to skip the
+                // current IDVP name when validating the name
                 return idvp.Name === value && currentIDVP.Name !== value;
             }
 

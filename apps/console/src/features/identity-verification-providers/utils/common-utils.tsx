@@ -23,6 +23,15 @@ import { handleIDVPUpdateError, handleIDVPUpdateSuccess } from "./notification-u
 import { updateIdentityVerificationProvider } from "../api";
 import { IdentityVerificationProviderInterface } from "../models";
 
+/**
+ * Updates an Identity Verification Provider with given data and displays the
+ * appropriate success of error notification depending on the response.
+ *
+ * @param idvp - Identity Verification Provider to be updated.
+ * @param setIsSubmitting - Function to set the submitting state.
+ * @param onUpdate - Callback to be called after the update.
+ * @returns void.
+ */
 export const updateIDVP = (
     idvp: IdentityVerificationProviderInterface,
     setIsSubmitting: (boolean) => void,
@@ -41,6 +50,11 @@ export const updateIDVP = (
         });
 };
 
+/**
+ * An utility method to get a content loader.
+ *
+ * @returns A content loader element.
+ */
 export const getContentLoader = (): ReactElement => {
     return (
         <EmphasizedSegment padded>

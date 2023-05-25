@@ -21,12 +21,12 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AttributesSelection } from "./attribute-management/attribute-selection";
+import { AttributesSelection } from "./attribute-management";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
@@ -34,24 +34,24 @@ import {
 } from "../../models";
 import { updateIDVP } from "../../utils";
 
+/**
+ * Proptypes for the identity verification provider attribute settings component.
+ */
 interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Identity verification provider that is being edited.
      */
     idvp: IdentityVerificationProviderInterface;
-
     /**
-     * Initial claims of IDVP.
+     * Initial claims of the IDVP.
      */
     initialClaims?: IDVPClaimMappingInterface[];
-
     /**
      * Is the IDVP info request loading.
      */
     isLoading?: boolean;
-
     /**
-     * Callback to call when updating the IDVP details.
+     * Callback to call on updating the IDVP details.
      */
     onUpdate: () => void;
     /**
@@ -75,6 +75,12 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     loader: () => ReactElement;
 }
 
+/**
+ * Component to edit the IDVP attribute settings.
+ *
+ * @param props - Props injected to the component.
+ * @returns Attribute settings component.
+ */
 export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterface> = (
     props: AttributeSettingsPropsInterface
 ): ReactElement => {
@@ -95,15 +101,24 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     // Selected local claims in claim mapping.
     const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IDVPClaimMappingInterface[]>([]);
-
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
+    /**
+     * Evaluates whether the attribute update can be submitted or not.
+     *
+     * @returns true if the attribute update can be submitted.
+     */
     const canSubmitAttributeUpdate = (): boolean => {
         return isEmpty(selectedClaimsWithMapping?.filter(
             (element: IDVPClaimMappingInterface) => isEmpty(element.idvpClaim)
         ));
     };
 
+    /**
+     * Handles updating the IDVP attribute.
+     *
+     * @returns void
+     */
     const handleAttributesUpdate = (): void => {
 
         idvp.claims = selectedClaimsWithMapping.map((element: IDVPClaimMappingInterface) => {
@@ -172,9 +187,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 };
 
 /**
- * Default proptypes for the IDP attribute settings component.
+ * Default proptypes for the IDVP attribute settings component.
  */
 AttributeSettings.defaultProps = {
-    "data-componentid": "idp-edit-attribute-settings",
-    hideIdentityClaimAttributes: false
+    "data-componentid": "idvp-edit-attribute-settings",
+    hideIdentityClaimAttributes: true
 };

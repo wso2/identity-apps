@@ -5937,6 +5937,10 @@ export const console: ConsoleNS = {
                         subheader2: "Enable the identity verification provider to use it with your applications."
                     },
                     header: "Danger Zone"
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Name"
                 }
             },
             overview: {

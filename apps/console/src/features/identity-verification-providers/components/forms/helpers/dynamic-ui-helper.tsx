@@ -19,13 +19,26 @@
 import { Field, FieldInputTypes, getDefaultValidation } from "@wso2is/form";
 import React, { ReactElement } from "react";
 import { Divider, Header } from "semantic-ui-react";
-import { MetaDataInputTypes } from "../../../constants/metadata-constants";
-import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../../models";
-import { DropdownOptionsInterface, InputFieldMetadata } from "../../../models/ui-metadata";
+import { MetaDataInputTypes } from "../../../constants";
+import {
+    DropdownOptionsInterface,
+    IDVPConfigPropertiesInterface,
+    IdentityVerificationProviderInterface,
+    InputFieldMetadata
+} from "../../../models";
 
 const ERROR_MSG_REQUIRED_FIELD: string = "This field cannot be empty";
 const ERROR_MSG_REGEX_FAILED: string = "Pattern validation failed";
 
+/**
+ * Renders the IDVP configuration property form fields with the given metadata.
+ *
+ * @param uiMetaData - Metadata to be used to render the form.
+ * @param idvp - Identity verification provider.
+ * @param isReadOnly - Is the form read only.
+ * @param padBetweenElements - Should there be a padding between the form elements.
+ * @returns The rendered configuration property fields.
+ */
 export const renderFormUIWithMetadata = (
     uiMetaData: InputFieldMetadata[],
     idvp?: IdentityVerificationProviderInterface,
@@ -33,6 +46,12 @@ export const renderFormUIWithMetadata = (
     padBetweenElements: boolean = false
 ): React.ReactElement => {
 
+    /**
+     * Creates a form field with the given input field metadata.
+     *
+     * @param elementMetadata - Metadata of the input field.
+     * @returns The rendered form field.
+     */
     const createElement = (elementMetadata: InputFieldMetadata): ReactElement => {
         // exclude rendering the divider for the first input element.
         const includeDivider: boolean= padBetweenElements ? elementMetadata.displayOrder !== 1 : false;
@@ -96,7 +115,6 @@ export const renderFormUIWithMetadata = (
                         />
                     </>
                 );
-
             case MetaDataInputTypes.TEXT_AREA:
                 return(
                     <>
@@ -216,6 +234,12 @@ export const renderFormUIWithMetadata = (
     );
 };
 
+/**
+ * Renders the dropdown options for the dropdown field.
+ *
+ * @param options -Dropdown options.
+ * @returns An array of rendered dropdown options.
+ */
 const getDropdownOptions = (options: DropdownOptionsInterface[]) => {
     return options.map((option: DropdownOptionsInterface, index: number) => ({
         content: (
@@ -231,9 +255,14 @@ const getDropdownOptions = (options: DropdownOptionsInterface[]) => {
     }));
 };
 
-export const performValidations: (string, InputFieldMetaData) => string = (
-    value: string, elementMetaData: InputFieldMetadata
-) => {
+/**
+ * Performs the validations specified in the metadata on the field value.
+ *
+ * @param value - Field value.
+ * @param elementMetaData - Metadata of the field.
+ * @returns An error message if the validation fails.
+ */
+export const performValidations = ( value: string, elementMetaData: InputFieldMetadata): string => {
 
     // perform required validation
     if (elementMetaData.required && !value) {

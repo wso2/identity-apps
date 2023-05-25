@@ -18,12 +18,16 @@
 
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
 import {
     ReactComponent as DefaultIDPIcon
 } from "../../../themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
 
-export const getIdentityVerificationProviderWizardStepIcons = (): any => {
+/**
+ * Get the Identity Verification Provider create wizard steps icons.
+ *
+ * @returns IDVP create wizard step icons.
+ */
+export const getIDVPCreateWizardStepIcons = (): any => {
 
     return {
         general: DocumentIcon,
@@ -31,15 +35,11 @@ export const getIdentityVerificationProviderWizardStepIcons = (): any => {
     };
 };
 
-export const getHelpPanelIcons = (): any => {
-
-    return {
-        tabs: {
-            docs: OpenBookIcon
-        }
-    };
-};
-
+/**
+ * Get the default image for the Identity Verification Provider.
+ *
+ * @returns Default image for the Identity Verification Provider.
+ */
 export const getDefaultImageForIDVP = (): any  => {
     return DefaultIDPIcon;
 };

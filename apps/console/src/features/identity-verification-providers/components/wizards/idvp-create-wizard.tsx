@@ -40,12 +40,15 @@ import { createIdentityVerificationProvider,
     useIdentityVerificationProviderList,
     useUIMetadata
 } from "../../api";
-import { getIdentityVerificationProviderWizardStepIcons } from "../../configs/ui";
+import { getIDVPCreateWizardStepIcons } from "../../configs/ui";
 import { IdentityVerificationProviderConstants } from "../../constants";
-import { IDVPClaimMappingInterface, IdentityVerificationProviderInterface } from "../../models";
-import { IDVPTypeMetadataInterface } from "../../models/ui-metadata";
 import {
-    getInitialClaimFromTemplate,
+    IDVPClaimMappingInterface,
+    IDVPTypeMetadataInterface,
+    IdentityVerificationProviderInterface
+} from "../../models";
+import {
+    getInitialClaimMappingsFromTemplate,
     handleIDVPTemplateFetchRequestError,
     handleIdvpListFetchRequestError,
     handleUIMetadataLoadError,
@@ -55,12 +58,18 @@ import {
 import { performValidations, renderFormUIWithMetadata } from "../forms/helpers";
 import { AttributesSelectionWizardPage } from "../settings/attribute-management";
 
+/**
+ * Enum for representing the wizard steps.
+ */
 enum WizardSteps {
     GENERAL_DETAILS = "GeneralDetails",
     IDVP_SETTINGS = "Identity Verification Provider Settings",
     ATTRIBUTES = "Attributes"
 }
 
+/**
+ * Interface that represents wizard steps
+ */
 interface WizardStepInterface {
     icon: any;
     title: string;
@@ -68,6 +77,9 @@ interface WizardStepInterface {
     name: WizardSteps;
 }
 
+/**
+ * Interface that represents IDVP template form values.
+ */
 interface WizardFormValuesInterface {
     name: string;
     description: string;
@@ -77,27 +89,26 @@ interface WizardFormValuesInterface {
 const WIZARD_ID: string = "idvp-create-wizard-content";
 const wizardSteps: WizardStepInterface[] = [
     {
-        icon: getIdentityVerificationProviderWizardStepIcons().general,
+        icon: getIDVPCreateWizardStepIcons().general,
         name: WizardSteps.GENERAL_DETAILS,
         title: "General"
     },
     {
-        icon: getIdentityVerificationProviderWizardStepIcons().idvpSettings,
+        icon: getIDVPCreateWizardStepIcons().idvpSettings,
         name: WizardSteps.IDVP_SETTINGS,
         title: "Settings"
     },
     {
-        icon: getIdentityVerificationProviderWizardStepIcons().general,
+        icon: getIDVPCreateWizardStepIcons().general,
         name: WizardSteps.ATTRIBUTES,
         title: "Attributes"
     }
 ] as WizardStepInterface[];
 
 /**
- * Proptypes for the Authenticator Create Wizard factory.
+ * Proptypes for the IDVP create wizard component.
  */
 interface IDVPCreateWizardInterface extends IdentifiableComponentInterface {
-
     /**
      * Show/Hide the wizard
      */
@@ -107,21 +118,23 @@ interface IDVPCreateWizardInterface extends IdentifiableComponentInterface {
      */
     onWizardClose: () => void;
     /**
-     * Callback to be triggered on successful IDP create.
+     * Callback to be triggered on successful IDVP create.
      */
     onIDVPCreate: (id?: string) => void;
     /**
      * Type of the wizard.
      */
     type: string;
+    /**
+     * Type of the selected template.
+     */
     selectedTemplateType: IDVPTypeMetadataInterface;
 }
 
 /**
- * Authenticator Create Wizard factory.
+ * IDVP create wizard component.
  *
  * @param props - Props injected to the component.
- *
  * @returns ReactElement
  */
 export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
@@ -135,9 +148,8 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         onIDVPCreate
     } = props;
 
-
     const wizardRef: React.MutableRefObject<any> = useRef(null);
-    const componentId: string = "idp-create-wizard-factory";
+    const componentId: string = "idvp-create-wizard-factory";
 
     const { t } = useTranslation();
 
@@ -168,23 +180,42 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
 
     const [ isNextDisabled, setIsNextDisabled ] = useState<boolean>(false);
 
+    /**
+     * Called when idvpListFetchRequestError changes to handle IDVP list fetch request error.
+     */
     useEffect(() => {
+        if(!idvpListFetchRequestError) {
+            return;
+        }
         handleIdvpListFetchRequestError(idvpListFetchRequestError);
     }, [ idvpListFetchRequestError ]);
 
+    /**
+     * Called when uiMetaDataLoadError changes to handle UI metadata load error.
+     */
     useEffect(() => {
+        if(!uiMetaDataLoadError) {
+            return;
+        }
         handleUIMetadataLoadError(uiMetaDataLoadError);
     }, [ uiMetaDataLoadError ]);
 
+    /**
+     * Called when idvpTemplateFetchRequestError changes to handle IDVP template fetch request error.
+     */
     useEffect(() => {
+        if (!idvpTemplateFetchRequestError) {
+            return;
+        }
         handleIDVPTemplateFetchRequestError(idvpTemplateFetchRequestError);
     }, [ idvpTemplateFetchRequestError ]);
 
 
     /**
-     * Creates a new identity provider.
+     * Creates a new identity verification provider.
      *
-     * @param modifiedIDVPTemplate - Identity provider object.
+     * @param modifiedIDVPTemplate - IDVP template with user modifications.
+     * @returns void
      */
     const createNewIDVP = (modifiedIDVPTemplate: IdentityVerificationProviderInterface): void => {
 
@@ -235,6 +266,10 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         ;
     };
 
+    /**
+     * Handles closing the IDVP create wizard.
+     * @returns void
+     */
     const handleWizardClose = (): void => {
         onWizardClose();
     };
@@ -306,6 +341,9 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         );
     };
 
+    /**
+     * Resolves the content of wizard pages.
+     */
     const resolveWizardPages = (): Array<ReactElement> => {
         return [
             wizardCommonFirstPage(),
@@ -314,7 +352,12 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         ];
     };
 
-    const wizardCommonFirstPage = () => (
+    /**
+     * Renders the general settings wizard page.
+     *
+     * @returns General Settings wizard page.
+     */
+    const wizardCommonFirstPage = (): ReactElement => (
         <WizardPage>
             <Field.Input
                 ariaLabel="name"
@@ -335,11 +378,8 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                     return validationError;
                 } }
                 maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
-                minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH
-                }
-                format={ (values: any) => {
-                    return values.toString().trimStart();
-                } }
+                minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
+                format={ (values: any) => values.toString().trimStart() }
                 data-testid={ `${ componentId }-form-wizard-idvp-name` }
                 hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
             />
@@ -349,7 +389,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                 label={ t("console:develop.features.idvp.forms.generalDetails.description.label") }
                 required={ false }
                 placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
-                data-testid={ `${ componentId }-idp-description` }
+                data-testid={ `${ componentId }-idvp-description` }
                 maxLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MAX_LENGTH }
                 minLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MIN_LENGTH }
                 hint={ t("console:develop.features.idvp.forms.generalDetails.description.hint") }
@@ -357,9 +397,19 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         </WizardPage>
     );
 
-    const wizardConfigurationPage = () => {
+    /**
+     * Renders the configuration settings wizard page.
+     *
+     * @returns Configuration Settings wizard page.
+     */
+    const wizardConfigurationPage = (): ReactElement => {
 
-        const validateConfigurationData = (values: any) => {
+        /**
+         * Validates the configuration data.
+         *
+         * @param values - If validation is failed, an error message will be displayed.
+         */
+        const validateConfigurationData = (values: any): string => {
             for(const setting of uiMetaData?.pages?.edit?.settings) {
                 const validationError: string = performValidations( values[setting.name], setting);
 
@@ -379,14 +429,16 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
             </WizardPage>);
     };
 
-    const wizardAttributesPage = () => (
-
-
+    /**
+     * Renders the attribute settings wizard page.
+     *
+     * @returns Attribute Settings wizard page.
+     */
+    const wizardAttributesPage = (): ReactElement => (
         <WizardPage>
-
             <AttributesSelectionWizardPage
                 mappedAttributesList={ selectedClaimsWithMapping }
-                initialClaims={ getInitialClaimFromTemplate(idvpTemplate.claims) }
+                initialClaims={ getInitialClaimMappingsFromTemplate(idvpTemplate.claims) }
                 hideIdentityClaimAttributes={ true }
                 data-componentid={ `${ componentId }-attribute-settings` }
                 setMappedAttributeList={ setSelectedClaimsWithMapping }
@@ -395,10 +447,12 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
     );
 
     /**
-     * - @param form - form instance
-     * - @param callback - callback to update the form values
+     * Handles the form submit action.
+     *
+     * @param values - Form values.
+     * @returns void
      */
-    const handleFormSubmit = (values: WizardFormValuesInterface) => {
+    const handleFormSubmit = (values: WizardFormValuesInterface): void => {
 
         idvpTemplate.Name = values?.name ?? idvpTemplate.Name;
         idvpTemplate.description = values?.description ?? idvpTemplate.description;
@@ -416,10 +470,14 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
             };
         });
         createNewIDVP(idvpTemplate);
-
     };
 
-    const renderWizardHeader = () => (
+    /**
+     * Render the wizard header.
+     *
+     * @returns Wizard header.
+     */
+    const renderWizardHeader = (): ReactElement => (
         <div className={ "display-flex" }>
             <GenericIcon
                 icon={ resolveIDVPImage(selectedTemplateType.image) }
@@ -438,7 +496,12 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         </div>
     );
 
-    const renderStepsGroup = () => (
+    /**
+     * Renders the wizard steps group.
+     *
+     * @returns rendered step
+     */
+    const renderStepsGroup = (): ReactElement => (
         <Steps.Group
             current={ currentWizardStep }>
             { wizardSteps.map((step: WizardStepInterface, index: number) => (
@@ -451,6 +514,11 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         </Steps.Group>
     );
 
+    /**
+     * Renders the wizard pages and alerts onto the modal.
+     *
+     * @returns Wizard content.
+     */
     const renderWizardContent = () => (
         <>
             { alert && alertComponent }

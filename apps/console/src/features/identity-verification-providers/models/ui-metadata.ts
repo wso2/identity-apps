@@ -17,6 +17,10 @@
  */
 import { FormFieldMessage } from "@wso2is/form";
 
+/**
+ * Model that represent an input field in the UI metadata for an IDVP. It contains the
+ * information required to render the input field in the UI.
+ */
 export interface InputFieldMetadata {
     name: string;
     displayOrder: number;
@@ -24,7 +28,6 @@ export interface InputFieldMetadata {
     label: string;
     type: string;
     required: boolean;
-    isSecret: boolean;
     dataComponentId: string;
     defaultValue?: string | boolean | number | DropdownOptionsInterface;
     options?: DropdownOptionsInterface[];
@@ -36,8 +39,11 @@ export interface InputFieldMetadata {
     regexValidationError?: string;
 }
 
+/**
+ * Model that represent the UI metadata for an IDP. It contains the information required
+ * to render the configuration settings section when creating and editing an IDVP.
+ */
 export interface UIMetaDataForIDVP {
-    image: string;
     pages: {
         edit: {
             settings: InputFieldMetadata[];
@@ -47,11 +53,18 @@ export interface UIMetaDataForIDVP {
     }
 }
 
+/**
+ * Model that represents a dropdown option
+ */
 export interface DropdownOptionsInterface {
      label: string;
      value: string
 }
 
+/**
+ * Model that represents the metadata of an IDVP type. It contains the information
+ * required to render the IDVP templates section, resolve IDVP image, etc.
+ */
 export interface IDVPTypeMetadataInterface {
     id: string;
     name: string;

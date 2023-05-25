@@ -18,3 +18,4 @@
 
 export * from "./general-settings";
 export * from "./attribute-settings";
+export * from "./attribute-settings";

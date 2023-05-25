@@ -22,15 +22,14 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { renderFormUIWithMetadata } from "./helpers";
-import { IdentityVerificationProviderInterface } from "../../models";
-import { InputFieldMetadata } from "../../models/ui-metadata";
+import { IdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
 
 /**
- * Proptypes for the identity provider general details form component.
+ * Proptypes for the identity verification provider configuration settings form component.
  */
 interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface {
     /**
-     * Currently editing IDVP.
+     * IDVP that is being currently edited.
      */
     identityVerificationProvider: IdentityVerificationProviderInterface;
     /**
@@ -38,17 +37,9 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
      */
     onSubmit: (values: FormData) => void;
     /**
-     * Callback to update the idp details.
+     * Callback to be called when idvp details were updated.
      */
     onUpdate?: (id: string) => void;
-    /**
-     * Externally trigger form submission.
-     */
-    triggerSubmit?: boolean;
-    /**
-     * Optimize for the creation wizard.
-     */
-    enableWizardMode?: boolean;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -57,7 +48,6 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
-
     /**
      * UI Metadata for the form fields.
      */
@@ -67,7 +57,7 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
 const FORM_ID: string = "idvp-config-settings-form";
 
 /**
- * Form to edit general details of the identity verification provider.
+ * Form to edit configuration settings of the identity verification provider.
  *
  * @param props - Props injected to the component.
  * @returns Functional component.
@@ -97,7 +87,6 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
                     data-testid={ componentId }
                 >
                     { renderFormUIWithMetadata(uiMetaData, identityVerificationProvider, isReadOnly, true) }
-
                     { !isReadOnly && (
                         <Field.Button
                             form={ FORM_ID }
@@ -117,7 +106,5 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
 };
 
 ConfigurationSettingsForm.defaultProps = {
-    "data-componentid": "idp-edit-config-settings-form",
-    enableWizardMode: false,
-    triggerSubmit: false
+    "data-componentid": "idvp-edit-config-settings-form"
 };

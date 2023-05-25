@@ -121,8 +121,10 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
     /**
      * Populate the optional attributes in initial claims (attributes other than the URI) and
      * initially populate the mapped attributes.
+     *
+     * @returns void
      */
-    const setInitialValues = () => {
+    const setInitialValues = (): void => {
 
         if (!initialClaims) {
             return;
@@ -138,7 +140,9 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
     /**
      * This function will be called when a new attribute mapping is added.
+     *
      * @param mapping - New attribute mapping.
+     * @returns void
      */
     const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
 
@@ -146,14 +150,15 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
         // Add the id of newly added attribute to the mapped id list.
         setMappedAttrIds(new Set<string>([ ...mappedAttrIds, mapping.localClaim.id ]) );
-
     };
 
 
     /**
      * Return the remaining unmapped attributes.
+     *
+     * @returns A list of remaining unmapped attributes.
      */
-    const getRemainingUnmappedAttributes = () => {
+    const getRemainingUnmappedAttributes = (): IDVPLocalClaimInterface[]  => {
         return [
             ...availableLocalClaims.filter(
                 (attribute: IDVPLocalClaimInterface) => !mappedAttrIds.has(attribute.id)
@@ -163,7 +168,9 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
     /**
      * This function handles the deletion of attribute mappings.
+     *
      * @param mapping - Deleted attribute mapping.
+     * @returns void
      */
     const onMappingDeleted = (mapping: IDVPClaimMappingInterface): void => {
         // filter out the deleted mapping from mappedAttributesList
@@ -180,10 +187,12 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
     /**
      * This function handles the editing of attribute mappings.
+     *
      * @param oldMapping - Old attribute mapping.
      * @param newMapping - New attribute mapping.
+     * @returns void
      */
-    const onMappingEdited = ( oldMapping: IDVPClaimMappingInterface, newMapping: IDVPClaimMappingInterface) => {
+    const onMappingEdited = ( oldMapping: IDVPClaimMappingInterface, newMapping: IDVPClaimMappingInterface): void => {
         // Remove the old mapping from the list and add the new mapping.
         const newMappedAttributeList: IDVPClaimMappingInterface[] = [
             ...mappedAttributesList.filter(

@@ -160,6 +160,4 @@ export const useIdentityVerificationProviderList = <Data = IDVPListResponseInter
         isValidating,
         mutate
     };
-
-//TODO: check the returns doc type in every method
 };

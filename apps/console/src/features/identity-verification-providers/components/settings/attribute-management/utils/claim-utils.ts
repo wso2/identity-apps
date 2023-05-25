@@ -23,8 +23,10 @@ import { getAllLocalClaims } from "../../../../../claims";
 import { IDVPLocalClaimInterface } from "../../../../models";
 
 /**
- * Given a local claim it will test whether it
- * contains `identity` in the claim attribute.
+ * Given a local claim it will test whether it contains `identity` in the claim attribute.
+ *
+ * @param claim - Local claim.
+ * @returns Whether the claim is an identity claim.
  */
 export const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
@@ -35,6 +37,7 @@ export const isLocalIdentityClaim = (claim: string): boolean => {
  *
  * @param response - Response from the get all local claims call.
  * @param hideIdentityClaimAttributes - Whether to hide identity claim attributes.
+ * @returns Array of extracted local claims
  */
 export const extractLocalClaimsFromResponse = (
     response: Claim[],
@@ -59,6 +62,7 @@ export const extractLocalClaimsFromResponse = (
  * @param hideIdentityClaimAttributes - Whether to hide identity claim attributes.
  * @param setAvailableLocalClaims - Setter for the available local claims.
  * @param setIsLocalClaimsLoading - Setter for the local claims loading state.
+ * @returns void
  */
 export const fetchAllLocalClaims = (
     hideIdentityClaimAttributes: boolean,

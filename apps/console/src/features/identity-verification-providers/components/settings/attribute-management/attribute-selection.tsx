@@ -216,8 +216,9 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Modal cancel / dismiss event.
+     * @returns void
      */
-    const onCancel = () => {
+    const onCancel = (): void => {
         setShowAddModal(false);
     };
 
@@ -227,8 +228,9 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      * with the newly added mappings + existing mappings.
      *
      * @param mappingsToBeAdded - Set of mappings.
+     * @returns void
      */
-    const onSave = (mappingsToBeAdded: IDVPClaimMappingInterface[]) => {
+    const onSave = (mappingsToBeAdded: IDVPClaimMappingInterface[]): void => {
 
         setMappedAttributes([ ...mappedAttributesList, ...mappingsToBeAdded ]);
         setShowAddModal(false);
@@ -236,8 +238,10 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Filter the mapped attributes list based on the search query.
+     *
+     * @returns Filtered mapped attributes list by the search query.
      */
-    const getFilteredAttributeMappings = () => {
+    const getFilteredAttributeMappings = (): IDVPClaimMappingInterface[] => {
 
         return mappedAttributesList.filter((mapping: IDVPClaimMappingInterface) => {
             if (searchQuery) {
@@ -251,8 +255,10 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Get the list of attributes which does not have their Ids in mapped attribute id list.
+     *
+     * @returns List of the remaining unmapped attributes.
      */
-    const getRemainingUnmappedAttributes = () => {
+    const getRemainingUnmappedAttributes = (): IDVPLocalClaimInterface[] => {
         return [
             ...availableLocalClaims.filter(
                 (attribute: IDVPLocalClaimInterface) => !mappedAttrIds.includes(attribute.id)
@@ -262,9 +268,11 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Handles the deletion of an attribute mapping.
+     *
      * @param deletedMapping - The mapping that is to be deleted.
+     * @returns void
      */
-    const handleAttributeMappingDeletion = (deletedMapping: IDVPClaimMappingInterface) => {
+    const handleAttributeMappingDeletion = (deletedMapping: IDVPClaimMappingInterface): void => {
 
         setMappedAttributes([
             ...mappedAttributesList?.filter(
@@ -275,10 +283,15 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Handles the editing of an attribute mapping.
+     *
      * @param previous - The previous mapping.
      * @param current - The current mapping.
+     * @returns void
      */
-    const handleEditAttributeMapping = (previous: IDVPClaimMappingInterface, current:IDVPClaimMappingInterface) => {
+    const handleEditAttributeMapping = (
+        previous: IDVPClaimMappingInterface,
+        current:IDVPClaimMappingInterface
+    ): void => {
 
         setMappedAttributes([
             ...mappedAttributesList.filter(
@@ -290,6 +303,8 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
 
     /**
      * Get the attribute mapping list component.
+     *
+     * @returns Attribute mapping list component.
      */
     const getAttributeMappingListComponent = () => {
         return (
@@ -337,7 +352,8 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                                                     placeholder="Search mapped attribute"
                                                     listen={ (query: string) => setSearchQuery(query) }
                                                     ariaLabel={ "Search Field" }
-                                                    name={ "searchQuery" }/>
+                                                    name={ "searchQuery" }
+                                                />
                                             </Form>
                                         </Grid.Column>
                                         <Grid.Column width={ 9 } textAlign="right">
@@ -354,7 +370,6 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                                                         t("console:develop.features.idvp.forms.attributeSettings" +
                                                         ".attributeMapping.addButton")
                                                     }
-
                                                 </PrimaryButton>
                                             ) }
                                         </Grid.Column>

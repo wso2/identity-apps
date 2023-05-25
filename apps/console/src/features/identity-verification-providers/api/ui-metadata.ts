@@ -23,8 +23,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { IdentityVerificationProviderInterface } from "../models";
-import { IDVPTypeMetadataInterface, UIMetaDataForIDVP } from "../models/ui-metadata";
+import { IDVPTypeMetadataInterface, IdentityVerificationProviderInterface, UIMetaDataForIDVP } from "../models";
 
 /**
  * Hook to get UI metadata for an identity verification provider type

@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -30,15 +29,17 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Dispatch } from "redux";
 import { AppConstants, history } from "../../core";
-import { useIdentityVerificationProvider } from "../api";
-import { useIDVPTemplateTypeMetadata, useUIMetadata } from "../api/ui-metadata";
+import {
+    useIDVPTemplateTypeMetadata,
+    useIdentityVerificationProvider,
+    useUIMetadata
+} from "../api";
 import { EditIdentityVerificationProvider } from "../components";
+import { IdentityVerificationProviderConstants } from "../constants";
 import { IDVPTemplateItemInterface } from "../models";
-import { handleIDVPTemplateTypesLoadError, handleUIMetadataLoadError } from "../utils";
+import { handleIDVPFetchRequestError, handleIDVPTemplateTypesLoadError, handleUIMetadataLoadError } from "../utils";
 
 /**
  * Proptypes for the IDVP edit page component.
@@ -49,7 +50,6 @@ type IDVPEditPagePropsInterface = IdentifiableComponentInterface;
  * Identity Verification Provider Edit page.
  *
  * @param props - Props injected to the component.
- *
  * @returns React element.
  */
 const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsInterface> = (
@@ -60,8 +60,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         location,
         [ "data-componentid" ]: componentId
     } = props;
-
-    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
@@ -108,62 +106,60 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         }
     }, []);
 
+    /**
+     * Show error notification if the API encounters an error while fetching the IDVP.
+     */
     useEffect(() => {
         if (!idvpFetchError) {
             return;
         }
-
-        if (idvpFetchError?.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: t(
-                        "console:develop.features.idvp.notifications.getIDVP.error.description",
-                        { description: idvpFetchError.response.data.description }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idvp.notifications.getIDVP.error.message")
-                })
-            );
-
-            return;
-        }
-
-        dispatch(
-            addAlert({
-                description: t("console:develop.features.idvp.notifications.getIDVP.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:develop.features.idvp.notifications.getIDVP.genericError.message")
-            })
-        );
-
+        handleIDVPFetchRequestError(idvpFetchError);
     }, [ idvpFetchError ]);
 
+    /**
+     * Show error notification if the API encounters an error while fetching the UI metadata for IDVP.
+     */
     useEffect(() => {
+        if(!uiMetaDataLoadError){
+            return;
+        }
         handleUIMetadataLoadError(uiMetaDataLoadError);
     }, [ uiMetaDataLoadError ]);
 
+    /**
+     * Show error notification if the API encounters an error while fetching the IDVP template types.
+     */
     useEffect(() => {
+        if(!idvpTemplateTypeMetadataLoadError){
+            return;
+        }
         handleIDVPTemplateTypesLoadError(idvpTemplateTypeMetadataLoadError);
     }, [ idvpTemplateTypeMetadataLoadError ]);
 
     /**
      * Handles the back button click event.
+     *
+     * @returns void
      */
     const handleBackButtonClick = (): void => {
 
-        history.push(AppConstants.getPaths().get("IDVP"));
+        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
     };
 
     /**
      * Called when an identity verification provider is deleted.
+     *
+     * @returns void
      */
     const onIdentityVerificationProviderDelete = (): void => {
 
-        history.push(AppConstants.getPaths().get("IDVP"));
+        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
     };
 
     /**
      * Called when an identity verification provider updates.
+     *
+     * @returns void
      */
     const onIdentityVerificationProviderUpdate = async () => {
         await refetchIDVP();
@@ -173,8 +169,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
      * Resolves the identity verification provider image.
      *
      * @param idvpTemplateType - Evaluating idvpTemplateType.
-     *
-     * @returns React element.
+     * @returns React element containing IDVP image.
      */
     const resolveIDVPImage = (idvpTemplateType: IDVPTemplateItemInterface): ReactElement => {
 

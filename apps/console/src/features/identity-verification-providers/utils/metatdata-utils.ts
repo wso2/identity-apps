@@ -18,7 +18,13 @@
 
 import { IDVPClaimMappingInterface, IDVPClaimsInterface } from "../models";
 
-export const getInitialClaimFromTemplate  = (claims: IDVPClaimsInterface[]): IDVPClaimMappingInterface[] => {
+/**
+ * Build the initial claim mappings from the IDVP template.
+ *
+ * @param claims - Claims from the IDVP template.
+ * @returns The claim mappings for the IDVP.
+ */
+export const getInitialClaimMappingsFromTemplate  = (claims: IDVPClaimsInterface[]): IDVPClaimMappingInterface[] => {
     return claims.map((claim: IDVPClaimsInterface) => {
         return {
             idvpClaim: claim.idvpClaim,

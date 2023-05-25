@@ -22,7 +22,7 @@ import { IDVPResourceEndpointsInterface } from "../models";
  * Get the resource endpoints for managing the Identity Verification Providers
  *
  * @param serverHost - Server Host.
- * @returns IDVPResourceEndpointsInterface
+ * @returns The endpoints related to the Identity Verification Providers.
  */
 export const getIDVPResourceEndpoints = (serverHost: string): IDVPResourceEndpointsInterface => {
     return {

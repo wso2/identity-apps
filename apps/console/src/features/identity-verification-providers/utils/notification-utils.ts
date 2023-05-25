@@ -22,8 +22,11 @@ import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { store } from "../../core";
 
-// TODO: move if falsy check outside of the function
 export const handleIDVPDeleteError = (error: AxiosError): void => {
+
+    if(!error){
+        return;
+    }
 
     if (error?.response?.data?.description) {
         store.dispatch(
@@ -77,6 +80,10 @@ export const handleIDVPUpdateSuccess = (): void => {
 
 export const handleIDVPUpdateError = (error: AxiosError): void => {
 
+    if(!error){
+        return;
+    }
+
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -106,6 +113,10 @@ export const handleIDVPUpdateError = (error: AxiosError): void => {
 };
 
 export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
+
+    if(!error){
+        return;
+    }
 
     if (error?.response?.data?.description) {
         store.dispatch(
@@ -139,7 +150,9 @@ export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
 
 /**
  * Handle load error on IDVP template types.
+ *
  * @param error - Error response.
+ * @returns void
  */
 export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
 
@@ -179,8 +192,12 @@ export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
 
 /**
  * Displays an error alert when there is a failure in the identity verification provider list fetch request.
+ *
+ * @param idvpListFetchRequestError - Error response.
+ * @returns void
  */
 export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: AxiosError): void => {
+
     if (!idvpListFetchRequestError) {
         return;
     }
@@ -210,14 +227,13 @@ export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: Axios
             )
         })
     );
-
-    return;
 };
 
 /**
  * Displays an error alert when there is a failure in the identity verification provider UI metadata load request.
  *
  * @param uiMetaDataLoadError - Error response from API request.
+ * @returns void
  */
 export const handleUIMetadataLoadError = (uiMetaDataLoadError: AxiosError): void=> {
 
@@ -284,6 +300,44 @@ export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestErro
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.genericError.message")
+        })
+    );
+};
+
+/**
+ * Displays an error alert when there is a failure in the identity verification provider fetch request.
+ *
+ * @param idvpFetchError - Error response from API request.
+ * @returns void
+ */
+export const handleIDVPFetchRequestError = (idvpFetchError: AxiosError): void => {
+
+    if (!idvpFetchError) {
+        return;
+    }
+
+    if (idvpFetchError?.response?.data?.description) {
+        store.dispatch(
+            addAlert({
+                description: I18n.instance.t(
+                    "console:develop.features.idvp.notifications.getIDVP.error.description",
+                    { description: idvpFetchError.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVP.error.message")
+            })
+        );
+
+        return;
+    }
+
+    store.dispatch(
+        addAlert({
+            description: I18n.instance.t(
+                "console:develop.features.idvp.notifications.getIDVP.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVP.genericError.message")
         })
     );
 };

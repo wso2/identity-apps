@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/**
+ * Interface that represent the response returned by the list IDVPs GET request.
+ */
 export interface IDVPListResponseInterface {
     totalResults?: number;
     startIndex?: number;
@@ -38,28 +41,45 @@ export interface IdentityVerificationProviderInterface {
     configProperties?: IDVPConfigPropertiesInterface[];
 }
 
+/**
+ * Interface for representing the resource endpoints of an identity verification provider.
+ */
 export interface IDVPResourceEndpointsInterface {
     identityVerificationProviders: string;
     IDVPExtensionEndpoint: string;
 }
 
-
+/**
+ * Interface that represent a local claim in the IDVP context.
+ */
 export interface IDVPLocalClaimInterface {
     id?: string;
     uri: string;
     displayName?: string;
 }
 
+/**
+ * Interface that represent a claim (attribute) mapping in the IDVP context. This is
+ * the claims mapping format expected by the IDVP backend APIs.This is mostly used
+ * outside the attribute management components
+ */
 export interface IDVPClaimsInterface {
     localClaim: string;
     idvpClaim: string;
 }
 
+/**
+ * Like the {@link IDVPClaimsInterface} this represents a claim mapping, but this model
+ * contains a bit more information about the local claim and used in attribute management components.
+ */
 export interface IDVPClaimMappingInterface {
     localClaim: IDVPLocalClaimInterface;
     idvpClaim: string;
 }
 
+/**
+ * Interface that represent a config property in the IDVP.
+ */
 export interface IDVPConfigPropertiesInterface {
     key: string;
     value: string;

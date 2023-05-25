@@ -16,6 +16,10 @@
  * under the License.
  */
 
+/**
+ * Represent the input types supported when generating the IDVP configuration UI using
+ * metadata.
+ */
 export enum MetaDataInputTypes {
     TEXT_AREA  = "text_area",
     CHECKBOX = "checkbox",

@@ -55,7 +55,9 @@ export interface AttributeMappingListItemProps {
 
 /**
  * Converts a boolean to a bit.
+ *
  * @param bool - Boolean to be converted.
+ * @returns 1 if true, 0 if false.
  */
 const toBits = (bool: boolean): number => bool ? 1 : 0;
 
@@ -143,6 +145,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     /**
      * Renders the available attributes as dropdown options.
+     *
+     * @returns Array of dropdown options.
      */
     const getListOfAvailableAttributes = () => {
         return copyOfAttrs.map((claim: IDVPLocalClaimInterface, index: number) => ({
@@ -166,9 +170,11 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     /**
      * Form submission handler.
+     *
      * @param event - Form event that triggerred the submission.
+     * @returns void
      */
-    const onFormSubmit = (event: React.FormEvent ) => {
+    const onFormSubmit = (event: React.FormEvent ): void => {
 
         // Prevent the submission of outer forms.
         event.preventDefault();
@@ -193,8 +199,10 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
 
     /**
      * The method that handles the validation of mapped value input field.
+     *
+     * @returns Error message if the validation fails.
      */
-    const validateMappedValue = () => {
+    const validateMappedValue = (): string => {
 
         if ((!mappedInputValue || !mappedInputValue?.trim())) {
             if(canMappedValueBeEmpty){
@@ -294,7 +302,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
                                 setSelectedLocalAttributeInputValue(data.value as string);
                             } }
-                            noResultsMessage="Try another attribute search."/>
+                            noResultsMessage="Try another attribute search."
+                        />
                     </Grid.Column>
                     { /*When in editing mode, submit button is an icon button.*/ }
                     { editingMode && (<React.Fragment>
@@ -307,7 +316,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                 onClick={ onFormSubmit }
                                 name="edit-button"
                                 ariaLabel="Attribute Selection Form Submit Button"
-                                buttonType="secondary_btn"/>
+                                buttonType="secondary_btn"
+                            />
                         </Grid.Column>
                     </React.Fragment>) }
                 </Grid.Row>

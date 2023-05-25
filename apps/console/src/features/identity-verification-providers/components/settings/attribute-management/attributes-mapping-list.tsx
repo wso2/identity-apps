@@ -30,6 +30,9 @@ import { Header, SemanticICONS } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
+/**
+ * Proptypes for the attribute mapping list component.
+ */
 export interface AttributeMappingListProps extends IdentifiableComponentInterface {
     /**
      * This contains the mapped attributes list.
@@ -67,6 +70,7 @@ export interface AttributeMappingListProps extends IdentifiableComponentInterfac
 
 /**
  * This component renders the attribute mappings as a list.
+ *
  * @param props - Props injected to the component.
  * @returns - The attribute mapping list component.
  */
@@ -88,7 +92,9 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     /**
      * This function is used to check whether actions for the component should be hidden or not.
+     *
      * @param localClaim - The local claim that is being checked.
+     * @returns Should action be hidden or not.
      */
     const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
         return editingMappings.includes(localClaim.id) || readOnly;
@@ -96,6 +102,8 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     /**
      * Renders the edit and delete actions for the attribute mapping list.
+     *
+     * @returns An array of table actions.
      */
     const createTableActions = (): TableActionsInterface[] => {
         return [
@@ -125,7 +133,9 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     /**
      * Renders the attribute mapping list item in view mode.
+     *
      * @param mapping - The mapping to be rendered.
+     * @returns The attribute list item in view mode.
      */
     const getAttributeMappingListItemInViewMode = (mapping: IDVPClaimMappingInterface) => {
         return (
@@ -154,6 +164,8 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     /**
      * Renders the content as table columns.
+     *
+     * @returns An array of table columns.
      */
     const createTableColumns = (): TableColumnInterface[] => {
 
@@ -196,7 +208,6 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                 title: "Actions"
             }
         ] as TableColumnInterface[];
-
     };
 
     return (

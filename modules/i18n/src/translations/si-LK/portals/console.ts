@@ -4299,7 +4299,11 @@ export const console: ConsoleNS = {
                         subheader: "ඔබ අනන්‍යතා සත්‍යාපන සැපයුම්කරුවෙකු අක්‍රිය කළ පසු, එය නැවත සක්‍රිය කරන තෙක් එය තවදුරටත් භාවිත කළ නොහැක."
                     },
                     header: "ආන්තරා කලාපය"
-                }
+                },
+                list: {
+                    actions: "ක්‍රියා",
+                    name: "නම"
+                },
             },
             overview: {
                 banner: {

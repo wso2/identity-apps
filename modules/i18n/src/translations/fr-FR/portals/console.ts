@@ -4428,7 +4428,11 @@ export const console: ConsoleNS = {
                             "applications."
                     },
                     header: "Zone de Danger"
-                }
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Nom"
+                },
             },
             overview: {
                 banner: {

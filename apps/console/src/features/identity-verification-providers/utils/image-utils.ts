@@ -20,6 +20,7 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { getDefaultImageForIDVP } from "../configs/ui";
 
 /**
+ * Resolves the image of the IDVP.
  *
  * @param image - Input image.
  * @returns Predefined image if available. If not, return input parameter.

@@ -17,26 +17,18 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import {
-    ResourceTab,
-    ResourceTabPaneInterface
-} from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement, useEffect,
-    useState
-} from "react";
+import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { TabProps } from "semantic-ui-react";
-import {
-    AttributeSettings,
-    GeneralSettings
-} from "./settings";
+import { AttributeSettings, GeneralSettings } from "./settings";
 import { ConfigurationSettings } from "./settings/configuration-settings";
-import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
+import { IdentityVerificationProviderConstants } from "../constants";
 import {
-    IDVPClaimMappingInterface, IDVPClaimsInterface, IdentityVerificationProviderInterface
+    IDVPClaimMappingInterface,
+    IDVPClaimsInterface,
+    IdentityVerificationProviderInterface,
+    UIMetaDataForIDVP
 } from "../models";
-import { UIMetaDataForIDVP } from "../models/ui-metadata";
 import { getContentLoader } from "../utils";
 
 /**
@@ -44,10 +36,9 @@ import { getContentLoader } from "../utils";
  */
 interface EditIdentityVerificationProviderPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Editing idvp.
+     * IDVP that is being edited.
      */
     identityVerificationProvider: IdentityVerificationProviderInterface;
-
     /**
      * Is the data still loading.
      */
@@ -57,7 +48,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      */
     onDelete: () => void;
     /**
-     * Callback to update the identity verification provider details.
+     * Callback to be triggered on updating the identity verification provider details.
      */
     onUpdate: () => void;
     /**
@@ -65,7 +56,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      */
     isReadOnly: boolean;
     /**
-     * Specifies if it is needed to redirect to a specific tabindex
+     * Specifies the UI metadata for the IDVP.
      */
     uiMetaData: UIMetaDataForIDVP;
     /**
@@ -103,6 +94,9 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
     const [ initialClaims, setInitialClaims ] = useState<IDVPClaimMappingInterface[]>();
 
+    /**
+     * Sets the initial claims (attributes).
+     */
     useEffect(() => {
         const temp: IDVPClaimMappingInterface[] = identityVerificationProvider.claims.map(
             (claim: IDVPClaimsInterface) => {
@@ -116,6 +110,11 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         setInitialClaims(temp);
     }, [ identityVerificationProvider ]);
 
+    /**
+     * Renders the general IDVP settings tab pane.
+     *
+     * @returns General settings tab pane for IDVP
+     */
     const GeneralIDVPSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
@@ -130,6 +129,11 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         </ResourceTab.Pane>
     );
 
+    /**
+     * Renders the configuration settings tab pane.
+     *
+     * @returns Configuration settings tab pane
+     */
     const IDVPConfigurationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <ConfigurationSettings
@@ -144,6 +148,11 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         </ResourceTab.Pane>
     );
 
+    /**
+     * Renders attribute settings tab pane.
+     *
+     * @returns Attribute settings tab pane
+     */
     const AttributeSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
@@ -159,6 +168,11 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         </ResourceTab.Pane>
     );
 
+    /**
+     * Method for getting a collection of tab panes.
+     *
+     * @returns An array of tab panes.
+     */
     const getPanes = () => {
         const panes: ResourceTabPaneInterface[] = [];
 

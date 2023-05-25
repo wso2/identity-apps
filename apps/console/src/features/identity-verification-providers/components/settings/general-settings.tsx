@@ -49,7 +49,7 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
      */
     onDelete: () => void;
     /**
-     * Callback to update the IDVP details.
+     * Callback to be triggerred on updating the IDVP details.
      */
     onUpdate: () => void;
     /**
@@ -95,11 +95,12 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     /**
      * Deletes an identity verification provider.
+     *
+     * @returns void
      */
     const handleIdentityVerificationProviderDelete = (): void => {
 
         setLoading(true);
-
         deleteIDVP(idvp.id)
             .then(handleIDVPDeleteSuccess)
             .catch((error: AxiosError) => {
@@ -116,6 +117,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * Handles form submit action.
      *
      * @param updatedDetails - Form values.
+     * @returns void
      */
     const handleFormSubmit = (updatedDetails: IdentityVerificationProviderInterface): void => {
 
@@ -127,11 +129,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         updateIDVP(idvp, setIsSubmitting, onUpdate);
     };
 
+    /**
+     * Handles disabling of the identity verification provider.
+     *
+     * @param event - IDVP enable/disable event.
+     * @param data - data of the checkbox.
+     */
     const handleIdentityVerificationProviderDisable = (event: any, data: CheckboxProps) => {
 
         handleFormSubmit({ isEnabled: data.checked });
     };
 
+    //TODO: Check Access control here
     return (
         !isLoading
             ? (
@@ -184,7 +193,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             </Show>
                         </DangerZoneGroup>
                     </Show>
-
                     {
                         showDeleteConfirmationModal && (
                             <ConfirmationModal
@@ -220,14 +228,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         )
                     }
                 </>
-
             )
             : <Loader />
     );
 };
 
 /**
- * Default proptypes for the IDP general settings component.
+ * Default proptypes for the IDVP general settings component.
  */
 GeneralSettings.defaultProps = {
     "data-componentid": "idvp-edit-general-settings"

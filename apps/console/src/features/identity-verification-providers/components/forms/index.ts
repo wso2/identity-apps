@@ -17,3 +17,4 @@
  */
 
 export * from "./general-details-form";
+export * from "./config-settings-form";

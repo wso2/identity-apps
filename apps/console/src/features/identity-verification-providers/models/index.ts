@@ -17,3 +17,4 @@
  */
 
 export * from "./identity-verification-provider";
+export  * from "./ui-metadata";

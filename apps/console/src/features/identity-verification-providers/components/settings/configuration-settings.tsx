@@ -19,26 +19,24 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Divider } from "semantic-ui-react";
-import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../models";
-import { InputFieldMetadata } from "../../models/ui-metadata";
+import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
 import { updateIDVP } from "../../utils";
-import { ConfigurationSettingsForm } from "../forms/config-settings-form";
+import { ConfigurationSettingsForm } from "../forms";
 
 /**
- * Proptypes for the identity verification provider general settings component.
+ * Proptypes for the identity verification provider configuration settings component.
  */
 interface ConfigurationSettingsInterface extends IdentifiableComponentInterface {
     /**
      * IDVP that is being edited.
      */
     idvp: IdentityVerificationProviderInterface;
-
     /**
      * Is the IDVP info request loading.
      */
     isLoading?: boolean;
     /**
-     * Callback to update the IDVP details.
+     * Callback to call on updating the IDVP details.
      */
     onUpdate: () => void;
     /**
@@ -49,15 +47,17 @@ interface ConfigurationSettingsInterface extends IdentifiableComponentInterface 
      * Loading Component.
      */
     loader: () => ReactElement;
-
+    /**
+     * Metadata for the input fields.
+     */
     uiMetaData: InputFieldMetadata[];
 }
 
 /**
- * Component to edit the general settings of the identity verification provider.
+ * Component to edit the configuration settings of the identity verification provider.
  *
  * @param props - Props injected to the component.
- * @returns General Settings component.
+ * @returns Configuration Settings component.
  */
 export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsInterface> = (
     props: ConfigurationSettingsInterface
@@ -77,7 +77,9 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsInter
 
     /**
      * Handles form submit action.
+     *
      * @param updatedDetails - Form values.
+     * @returns void
      */
     const handleFormSubmit = (updatedDetails: FormData): void => {
 
@@ -119,14 +121,13 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsInter
                     />
                     <Divider hidden />
                 </>
-
             )
             : <Loader />
     );
 };
 
 /**
- * Default proptypes for the IDP general settings component.
+ * Default proptypes for the IDVP configuration settings component.
  */
 ConfigurationSettings.defaultProps = {
     "data-componentid": "idvp-edit-general-settings"

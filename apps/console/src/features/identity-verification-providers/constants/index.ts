@@ -17,3 +17,4 @@
  */
 
 export * from "./identity-verification-provider-constants";
+export * from "./metadata-constants";

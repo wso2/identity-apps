@@ -59,6 +59,7 @@ interface AddAttributeSelectionModalProps extends IdentifiableComponentInterface
  * once keeps adding.
  *
  * @param props - Props injected to the component.
+ * @returns Function Component
  */
 export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelectionModalProps> = (
     props: AddAttributeSelectionModalProps
@@ -114,7 +115,9 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
 
     /**
      * This function will be called when a new attribute mapping is added.
+     *
      * @param mapping - New attribute mapping.
+     * @returns void
      */
     const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
         const newClaimsToBeAdded: IDVPClaimMappingInterface[] = [ ...claimsToBeAdded, mapping ];
@@ -136,7 +139,9 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
 
     /**
      * This function handles the deletion of attribute mappings.
+     *
      * @param mapping - Deleted attribute mapping.
+     * @returns void
      */
     const onMappingDeleted = (mapping: IDVPClaimMappingInterface): void => {
         const filtered: IDVPClaimMappingInterface[] = claimsToBeAdded.filter((m: IDVPClaimMappingInterface) => (
@@ -153,13 +158,15 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
 
     /**
      * This function handles the editing of attribute mappings.
+     *
      * @param oldMapping - Old attribute mapping.
      * @param newMapping - New attribute mapping.
+     * returns void
      */
     const onMappingEdited = (
         oldMapping: IDVPClaimMappingInterface,
         newMapping: IDVPClaimMappingInterface
-    ) => {
+    ): void => {
         // If user changed the local mapping of this. Then first
         // go and remove it from {@link claimsToBeAdded} array.
         setClaimsToBeAdded([

@@ -33,10 +33,10 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
+import { useIDVPTemplateTypeMetadataList } from "../api";
 import { IdvpCreateWizard } from "../components/wizards";
 import { IdentityVerificationProviderConstants } from "../constants";
-import { IDVPTypeMetadataInterface } from "../models/ui-metadata";
+import { IDVPTypeMetadataInterface } from "../models";
 import { handleIDVPTemplateRequestError, resolveIDVPImage } from "../utils";
 
 /**
@@ -48,8 +48,7 @@ type IDVPTemplateSelectPagePropsInterface = IdentifiableComponentInterface & Rou
  * Choose the identity verification provider template from this page.
  *
  * @param props - Props injected to the component.
- *
- * @returns React.Element
+ * @returns IDVP template selection page.
  */
 const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemplateSelectPagePropsInterface> = (
     props: IDVPTemplateSelectPagePropsInterface
@@ -110,10 +109,12 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
 
     /**
      * Handles back button click.
+     *
+     * @returns void
      */
     const handleBackButtonClick = (): void => {
 
-        history.push(AppConstants.getPaths().get("IDVP"));
+        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
     };
 
     /**
@@ -121,6 +122,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      *
      * @param e - Click event of type React.SyntheticEvent.
      * @param selectedTemplate - Id of the template.
+     * @returns void
      */
     const handleTemplateSelection = (e: SyntheticEvent, selectedTemplate: IDVPTypeMetadataInterface): void => {
 
@@ -141,6 +143,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      * On successful IDVP creation, navigates to the IDVP edit page.
      *
      * @param id - ID of the created IDVP.
+     * @returns void
      */
     const handleSuccessfulIDVPCreation = (id: string): void => {
 
@@ -164,7 +167,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      *
      * @param query - Search query.
      * @param selectedFilters - Selected filters.
-     * @returns IDVPTypesMetadataInterface[]
+     * @returns IDVP template types that matches the search query and selected filters.
      */
     const getSearchResults = (query: string, selectedFilters: string[]): IDVPTypeMetadataInterface[] => {
 
@@ -192,6 +195,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      *
      * @param query - Search query.
      * @param selectedFilters - Selected filters.
+     * @returns void
      */
     const handleIDVPTypeSearch = (query: string, selectedFilters: string[]): void => {
 
@@ -206,6 +210,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      *
      * @param query - Search query.
      * @param selectedFilters - Selected filters.
+     * @returns void
      */
     const handleIDVPTypeFilter = (query: string, selectedFilters: string[]): void => {
 
@@ -218,7 +223,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
     /**
      * Resolve the relevant placeholder.
      *
-     * @returns React.ReactElement
+     * @returns Placeholder element
      */
     const showPlaceholders = (list: any[]): ReactElement => {
 

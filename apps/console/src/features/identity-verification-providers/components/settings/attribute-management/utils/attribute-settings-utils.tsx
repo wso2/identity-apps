@@ -24,7 +24,12 @@ import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { getEmptyPlaceholderIllustrations, store } from "../../../../../core";
 
-
+/**
+ * Handle error scenarios of getting all local claims.
+ *
+ * @param error - Exception message from the request
+ * @returns void
+ */
 export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
     if (error?.response?.data?.description) {
         store.dispatch(addAlert({
@@ -45,7 +50,11 @@ export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): v
     }));
 };
 
-
+/**
+ * Get a placeholder element when there are no attribute mappings.
+ *
+ * @returns Placeholder element.
+ */
 export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
     return (
         <EmptyPlaceholder

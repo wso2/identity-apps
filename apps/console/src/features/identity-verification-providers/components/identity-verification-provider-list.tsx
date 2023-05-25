@@ -31,17 +31,9 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../core";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { deleteIDVP } from "../api";
-import {
-    IDVPListResponseInterface,
-    IDVPTemplateItemInterface, IdentityVerificationProviderInterface
-} from "../models";
+import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 
 /**
@@ -58,10 +50,6 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      */
     idvpTemplateTypeList: IDVPTemplateItemInterface[];
     /**
-     * Advanced Search component.
-     */
-    advancedSearch?: ReactNode;
-    /**
      * Default list item limit.
      */
     defaultListItemLimit?: number;
@@ -77,6 +65,7 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * On list item select callback.
      * @param event - Click event.
      * @param idvp - Selected IDVP
+     * @returns void
      */
     onListItemClick?: (event: SyntheticEvent, idvp: IdentityVerificationProviderInterface) => void;
     /**
@@ -123,6 +112,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * Redirects to the identity verification provider edit page when the edit button is clicked.
      *
      * @param idvpId - Identity verification provider id.
+     * @returns void
      */
     const handleIdentityVerificationProviderEdit = (idvpId: string): void => {
         history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", idvpId));
@@ -132,6 +122,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * Shows a confirmation modal when the delete identity verification provider button is clicked.
      *
      * @param idvpId - Identity verification provider id.
+     * @returns void
      */
     const showIDVPDeleteConfirmationModal = (idvpId: string): void => {
         const selectedIDVP: IdentityVerificationProviderInterface = idvpList.identityVerificationProviders
@@ -145,6 +136,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * Deletes an identity verification provider when the confirmation button clicked on the delete confirmation modal.
      *
      * @param idvpId - Identity verification provider id.
+     * @returns void
      */
     const handleIdvpDeletion = (idvpId: string): void => {
 
@@ -196,6 +188,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     /**
      * Resolves data table columns.
+     *
      * @returns Data Table Columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
@@ -252,7 +245,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                         </Header>
                     );
                 },
-                title: t("console:develop.features.idp.list.name")
+                title: t("console:develop.features.idvp.list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -260,7 +253,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.idp.list.actions")
+                title: t("console:develop.features.idvp.list.actions")
             }
         ];
     };
@@ -301,8 +294,10 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     /**
      * Renders the delete confirmation modal for IDVP deletion.
+     *
+     * @returns Delete confirmation modal.
      */
-    const getIdvpDeleteConfirmationModal = () => {
+    const getIdvpDeleteConfirmationModal = (): ReactElement => {
         return (
             <ConfirmationModal
                 primaryActionLoading={ loading }

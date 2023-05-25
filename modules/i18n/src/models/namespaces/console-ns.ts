@@ -2457,6 +2457,10 @@ export interface ConsoleNS {
                     disableIDVP: DangerZone;
                     deleteIDVP: DangerZone;
                 };
+                list: {
+                    actions: string;
+                    name: string;
+                };
             };
             overview: {
                 banner: {

@@ -37,7 +37,7 @@
         "clockTolerance": 300,
         "responseMode": "query",
         "scope": [ "SYSTEM", "profile", "openid" ],
-        "serverOrigin": "https://localhost:9443",
+        "serverOrigin": "https://localhost:9444",
         "storage": "webWorker",
         "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
@@ -48,7 +48,7 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://localhost:9444",
     "routePaths": {
         "home": "/develop/applications",
         "login": "",

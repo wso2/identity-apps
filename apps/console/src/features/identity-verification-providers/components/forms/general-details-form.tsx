@@ -27,11 +27,11 @@ import { IdentityVerificationProviderInterface } from "../../models";
 import { validateIDVPName } from "../../utils";
 
 /**
- * Proptypes for the identity provider general details form component.
+ * Proptypes for the identity verification provider general details form component.
  */
 interface GeneralDetailsFormPopsInterface extends IdentifiableComponentInterface {
     /**
-     * Currently editing IDVP.
+     * IDVP that is being currently edited.
      */
     identityVerificationProvider: IdentityVerificationProviderInterface;
     /**
@@ -39,17 +39,9 @@ interface GeneralDetailsFormPopsInterface extends IdentifiableComponentInterface
      */
     onSubmit: (values: any) => void;
     /**
-     * Callback to update the idp details.
+     * Callback to be called when idvp details were updated.
      */
     onUpdate?: (id: string) => void;
-    /**
-     * Externally trigger form submission.
-     */
-    triggerSubmit?: boolean;
-    /**
-     * Optimize for the creation wizard.
-     */
-    enableWizardMode?: boolean;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -59,7 +51,6 @@ interface GeneralDetailsFormPopsInterface extends IdentifiableComponentInterface
      */
     isSubmitting?: boolean;
 }
-
 
 const FORM_ID: string = "idvp-general-settings-form";
 
@@ -160,7 +151,5 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 };
 
 GeneralDetailsForm.defaultProps = {
-    "data-componentid": "idvp-edit-general-settings-form",
-    enableWizardMode: false,
-    triggerSubmit: false
+    "data-componentid": "idvp-edit-general-settings-form"
 };

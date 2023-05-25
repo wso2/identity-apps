@@ -27,9 +27,13 @@ import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
 import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
 
-
 type IDVPPropsInterface = IdentifiableComponentInterface;
-
+/**
+ * Identity Verification Providers list page.
+ *
+ * @param props - Props injected to the component.
+ * @returns IDVP list page.
+ */
 const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> = (props: IDVPPropsInterface) => {
     const { ["data-componentid"]: componentId } = props;
 
@@ -49,16 +53,24 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         error: idvpTemplateTypeRequestError
     } = useIDVPTemplateTypeMetadataList();
 
+    /**
+     * Displays error notification if the API fetch request for IDVP list failed.
+     */
     useEffect( () => {
-        if (idvpListFetchRequestError) {
-            handleIdvpListFetchRequestError(idvpListFetchRequestError);
+        if (!idvpListFetchRequestError) {
+            return;
         }
+        handleIdvpListFetchRequestError(idvpListFetchRequestError);
     } , [ idvpListFetchRequestError ]);
 
+    /**
+     * Displays error notification if the API fetch request for IDVP template type list failed.
+     */
     useEffect(() => {
-        if (idvpTemplateTypeRequestError){
-            handleIDVPTemplateRequestError(idvpTemplateTypeRequestError);
+        if (!idvpTemplateTypeRequestError){
+            return;
         }
+        handleIDVPTemplateRequestError(idvpTemplateTypeRequestError);
     }, [ idvpTemplateTypeRequestError ]);
 
     /**
@@ -66,6 +78,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
      *
      * @param event - Mouse event.
      * @param data - Dropdown data.
+     * @returns void
      */
     const handleItemsPerPageDropdownChange = (event: SyntheticEvent, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
@@ -76,6 +89,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
      *
      * @param event - Mouse event.
      * @param data - Pagination component data.
+     * @returns void
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset(((data.activePage as number) - 1) * listItemLimit);
@@ -83,6 +97,8 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
 
     /**
      * Triggers a re-fetch for the identity verification provider list after deleting an identity verification provider.
+     *
+     * @returns void
      */
     const onIdentityVerificationProviderDelete = async (): Promise<void> => {
         await idvpListMutator();
