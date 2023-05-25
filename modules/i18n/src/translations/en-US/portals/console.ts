@@ -5900,6 +5900,27 @@ export const console: ConsoleNS = {
                                 invalid: "Please enter a valid name"
                             }
                         }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Identity Verification Provider Attribute Mappings",
+                            hint: "Add and map the supported attributes from external Identity Verification Provider.",
+                            addButton: "Add Attribute Mapping",
+                            emptyPlaceholder: {
+                                subtitle: "There are no attributes added for this Identity Verification Provider.",
+                                title: "No attributes added"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "There's already an attribute mapped with this name.",
+                                required: "This field cannot be empty",
+                                invalid: "Please enter a valid input"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Add Attribute Mappings"
+                        }
                     }
                 },
                 dangerZoneGroup: {

@@ -40,13 +40,36 @@ export interface AttributeMappingListProps extends IdentifiableComponentInterfac
      * mostly read only, used for dropdowns and such.
      */
     availableAttributesList: Array<IDVPLocalClaimInterface>;
+    /**
+     * This contains the already mapped attributes list.
+     */
     alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
-    noDataPlaceholder?: ReactNode;
+    /**
+     * Callback to be called when a mapping is deleted.
+     * @param mapping - The mapping that is deleted.
+     */
     onMappingDeleted: (mapping: IDVPClaimMappingInterface) => void;
+    /**
+     * Callback to be called when a mapping is edited.
+     * @param oldMapping - The mapping before editing.
+     * @param mapping - The mapping after editing.
+     */
     onMappingEdited: ( oldMapping: IDVPClaimMappingInterface, mapping: IDVPClaimMappingInterface) => void;
+    /**
+     * Placeholder to show when there is no data.
+     */
+    noDataPlaceholder?: ReactNode;
+    /**
+     * If the list is read only or not.
+     */
     readOnly?: boolean;
 }
 
+/**
+ * This component renders the attribute mappings as a list.
+ * @param props - Props injected to the component.
+ * @returns - The attribute mapping list component.
+ */
 export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> = (
     props: AttributeMappingListProps
 ): ReactElement => {
@@ -63,10 +86,17 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
 
     const [ editingMappings, setEditingMappings ] = useState<string[]>([]);
 
+    /**
+     * This function is used to check whether actions for the component should be hidden or not.
+     * @param localClaim - The local claim that is being checked.
+     */
     const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
         return editingMappings.includes(localClaim.id) || readOnly;
     };
-    
+
+    /**
+     * Renders the edit and delete actions for the attribute mapping list.
+     */
     const createTableActions = (): TableActionsInterface[] => {
         return [
             {
@@ -93,6 +123,10 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         ];
     };
 
+    /**
+     * Renders the attribute mapping list item in view mode.
+     * @param mapping - The mapping to be rendered.
+     */
     const getAttributeMappingListItemInViewMode = (mapping: IDVPClaimMappingInterface) => {
         return (
             <Header image as="h6" className="header-with-icon">
@@ -118,6 +152,9 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         );
     };
 
+    /**
+     * Renders the content as table columns.
+     */
     const createTableColumns = (): TableColumnInterface[] => {
 
         const attributePreviewTableColumn: TableColumnInterface = {
@@ -132,7 +169,6 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                             availableAttributeList={ availableAttributesList }
                             alreadyMappedAttributesList={ alreadyMappedAttributesList }
                             onSubmit={ (editedMapping: IDVPClaimMappingInterface) => {
-                                console.log("mapping when editing attribute mapping ", mapping);
                                 // Remove it from currently editing mappings.
                                 setEditingMappings([
                                     ...editingMappings

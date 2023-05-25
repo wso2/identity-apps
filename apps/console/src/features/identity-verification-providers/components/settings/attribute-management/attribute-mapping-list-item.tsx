@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { FieldConstants } from "@wso2is/form";
 import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DropdownProps, Form, Grid, Header, InputOnChangeData } from "semantic-ui-react";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
 
@@ -38,11 +38,25 @@ export interface AttributeMappingListItemProps {
      * times and map attributes before saving.
      */
     alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
+    /**
+     * In the editing mode, the attribute mapping can be edited inplace.
+     */
     editingMode?: boolean;
+    /**
+     * Stores the current IDVP attribute mapping.
+     */
     mapping?: IDVPClaimMappingInterface;
+    /**
+     * This is the callback that is triggered when the user clicks the button to submits the form.
+     * @param mapping - The current attribute mapping.
+     */
     onSubmit: (mapping: IDVPClaimMappingInterface) => void;
 }
 
+/**
+ * Converts a boolean to a bit.
+ * @param bool - Boolean to be converted.
+ */
 const toBits = (bool: boolean): number => bool ? 1 : 0;
 
 const FORM_ID: string = "idvp-attributes-mapping-list-item-form";
@@ -88,6 +102,11 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
     // This is to prevent the error message from showing up when the mapped value input field has not been touched.
     const [ canMappedValueBeEmpty, setCanMappedValueBeEmpty ] = useState<boolean>(true);
 
+    const { t } = useTranslation();
+
+    /**
+     * If the component is in editing mode, sets the mapping to the input fields at the initial render.
+     */
     useEffect(() => {
         if (editingMode) {
             setMappedInputValue(mapping?.idvpClaim);
@@ -95,14 +114,19 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }
     }, []);
 
+    /**
+     * Validate the mapped value input field when it's value changes.
+     */
     useEffect(() => {
         setMappedInputValueError(validateMappedValue());
-        //
         if(canMappedValueBeEmpty) {
             setCanMappedValueBeEmpty(false);
         }
     }, [ mappedInputValue ]);
 
+    /**
+     * Updates the local copy of available attributes list when the available attributes list changes.
+     */
     useEffect(() => {
         if (availableAttributeList) {
             const copy: IDVPLocalClaimInterface[]  = [ ...availableAttributeList ];
@@ -117,6 +141,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }
     }, [ availableAttributeList ]);
 
+    /**
+     * Renders the available attributes as dropdown options.
+     */
     const getListOfAvailableAttributes = () => {
         return copyOfAttrs.map((claim: IDVPLocalClaimInterface, index: number) => ({
             content: (
@@ -141,13 +168,12 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
      * Form submission handler.
      * @param event - Form event that triggerred the submission.
      */
-    const onFormSub = (event: React.FormEvent ) => {
+    const onFormSubmit = (event: React.FormEvent ) => {
 
+        // Prevent the submission of outer forms.
         event.preventDefault();
 
-        // Find the claim by id and create an instance of
-        // IdentityProviderCommonClaimMappingInterface
-        // with the mapping value.
+        // Find the claim by id and create an instance of IDVPClaimMappingInterface with the mapping value.
         const newAttributeMapping: IDVPClaimMappingInterface = {
             idvpClaim: mappedInputValue,
             localClaim: copyOfAttrs.find(
@@ -156,21 +182,29 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         } as IDVPClaimMappingInterface;
 
         onSubmit(newAttributeMapping);
+
         if (!editingMode) {
+            // reset input fields.
             setMappedInputValue("");
             setSelectedLocalAttributeInputValue("");
             setCanMappedValueBeEmpty(true);
         }
     };
 
+    /**
+     * The method that handles the validation of mapped value input field.
+     */
     const validateMappedValue = () => {
+
         if ((!mappedInputValue || !mappedInputValue?.trim())) {
             if(canMappedValueBeEmpty){
                 return;
             }
             setMappingHasError(true);
 
-            return FieldConstants.FIELD_REQUIRED_ERROR;
+            return  t(
+                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.required"
+            );
         }
         /**
          * Entity category support attribute values MUST be URIs. Such values
@@ -186,7 +220,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             toBits(!FormValidation.isValidResourceName(mappedInputValue))) {
             setMappingHasError(true);
 
-            return FieldConstants.INVALID_RESOURCE_ERROR;
+            return  t(
+                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.invalid"
+            );
         }
         // Check whether this attribute external name is already mapped.
         const mappedValues: any = new Set(
@@ -205,7 +241,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             }
             setMappingHasError(true);
 
-            return "There's already a attribute mapped with this name.";
+            return  t(
+                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.duplicate"
+            );
         }
         // If there's no errors.
         setMappingHasError(false);
@@ -266,7 +304,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                 disabled={ mappingHasError || !mappedInputValue || !selectedLocalAttributeInputValue }
                                 icon="checkmark"
                                 type="button"
-                                onClick={ onFormSub }
+                                onClick={ onFormSubmit }
                                 name="edit-button"
                                 ariaLabel="Attribute Selection Form Submit Button"
                                 buttonType="secondary_btn"/>
@@ -280,7 +318,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             <PrimaryButton
                                 form={ FORM_ID }
                                 disabled={ mappingHasError || !mappedInputValue || !selectedLocalAttributeInputValue }
-                                onClick={ onFormSub }
+                                onClick={ onFormSubmit }
                                 buttonType="primary_btn"
                                 type="button"
                                 name="submit-button"

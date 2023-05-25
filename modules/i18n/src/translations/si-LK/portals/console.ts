@@ -4264,6 +4264,27 @@ export const console: ConsoleNS = {
                                 invalid: "අන්‍යතා තහවුරු කරන්නාගේ නම වලංගු නොවේ"
                             }
                         }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "අනන්‍යතා තහවුරු කරන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
+                            hint: "බාහිර අනන්‍යතා තහවුරු කරන්නාගේ සහය දක්වන ගුණාංග එකතු කර සිතියම්ගත කරන්න.",
+                            addButton: "ගුණාංගයක් සිතියම්ගත කරන්න",
+                            emptyPlaceholder: {
+                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා එක් කළ ගුණාංග නොමැත.",
+                                title: "ගුණාංග එකතු කර නැත"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "මෙම නම සමඟ සිතියම් ගත කළ ගුණාංගයක් දැනටමත් ඇත.",
+                                required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
+                                invalid: "කරුණාකර වලංගු ආදානයක් ඇතුළත් කරන්න"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "ගුණාංග සිතියම්ගත කරන්න"
+                        }
                     }
                 },
                 dangerZoneGroup: {

@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./identity-verification-provider-api";
+export * from "./identity-verification-provider";
+export * from "./ui-metadata";

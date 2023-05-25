@@ -30,6 +30,10 @@ type HttpClientType = (config: HttpRequestConfig) => Promise<HttpResponse | unde
 
 const httpClient: HttpClientType = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
+/**
+ * Delete an identity verification provider.
+ * @param id - ID of the identity verification provider.
+ */
 export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -44,6 +48,11 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
     return httpClient(requestConfig);
 };
 
+/**
+ * Updates an identity verification provider.
+ * @param id - ID of the identity verification provider.
+ * @param rest - Rest of the data.
+ */
 export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
 
@@ -60,6 +69,11 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
     return httpClient(requestConfig);
 };
 
+/**
+ * Creates an identity verification provider.
+ * @param id - ID of the identity verification provider (can be undefined).
+ * @param rest - Rest of the data.
+ */
 export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
 
@@ -76,7 +90,10 @@ export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
     return httpClient(requestConfig);
 };
 
-
+/**
+ * Hook to get an identity verification provider.
+ * @param id - ID of the identity verification provider.
+ */
 export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
     Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
 

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
@@ -26,6 +25,7 @@ import { AppConstants, UIConstants, history } from "../../core";
 import { useIdentityVerificationProviderList } from "../api";
 import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
 import { IdentityVerificationProviderList } from "../components";
+import { IdentityVerificationProviderConstants } from "../constants";
 import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
 
 
@@ -136,17 +136,16 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
             action={
                 (!isIDVPListRequestLoading && (idvpList?.identityVerificationProviders?.length > 0)) &&
                 (
-                    // TODO: Make this IDVP instead of IDP
-                    <Show when={ AccessControlConstants.IDP_WRITE }>
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(AppConstants.getPaths().get("IDVP_TEMPLATES"));
-                            } }
-                            data-componentid={ `${ componentId }-add-button` }
-                        >
-                            <Icon name="add"/> { t("console:develop.features.idvp.buttons.addIDVP") }
-                        </PrimaryButton>
-                    </Show>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            history.push(
+                                AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_TEMPLATE_PATH)
+                            );
+                        } }
+                        data-componentid={ `${ componentId }-add-button` }
+                    >
+                        <Icon name="add"/> { t("console:develop.features.idvp.buttons.addIDVP") }
+                    </PrimaryButton>
                 )
             }
             title={ t("console:develop.pages.idvp.title") }
@@ -177,7 +176,9 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
                     idvpList={ idvpList }
                     idvpTemplateTypeList={ idvpTemplateTypes }
                     onEmptyListPlaceholderActionClick={ () =>
-                        history.push(AppConstants.getPaths().get("IDVP_TEMPLATES"))
+                        history.push(
+                            AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_TEMPLATE_PATH)
+                        )
                     }
                     onIdentityVerificationProviderDelete={ onIdentityVerificationProviderDelete }
                     data-componentid={ `${ componentId }-list` }

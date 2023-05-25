@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -28,21 +27,13 @@ import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
-    useMemo,
-    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    history
-} from "../../core";
+import { AppConstants, history } from "../../core";
 import { useIdentityVerificationProvider } from "../api";
 import { useIDVPTemplateTypeMetadata, useUIMetadata } from "../api/ui-metadata";
 import { EditIdentityVerificationProvider } from "../components";
@@ -73,13 +64,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const idvpTemplates: IDVPTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider.templates);
-    const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
 
@@ -109,10 +93,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         isLoading: isIDVPTemplateTypeMetadataLoading
     } = useIDVPTemplateTypeMetadata(idvp?.Type);
 
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
 
     /**
      * Checks if the user needs to go to a specific tab index.
@@ -166,24 +146,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         handleIDVPTemplateTypesLoadError(idvpTemplateTypeMetadataLoadError);
     }, [ idvpTemplateTypeMetadataLoadError ]);
 
-    useEffect(() => {
-        /**
-         * What's the goal of this effect?
-         * To figure out the application's description is truncated or not.
-         *
-         * A comprehensive explanation is added in {@link ApplicationEditPage}
-         * in a similar {@link useEffect}.
-         */
-        if (idpDescElement || isIDVPFetchInProgress) {
-            const nativeElement: HTMLDivElement = idpDescElement.current;
-
-            if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
-                setIsDescTruncated(true);
-            }
-        }
-    }, [ idpDescElement, isIDVPFetchInProgress ]);
-
-
     /**
      * Handles the back button click event.
      */
@@ -214,7 +176,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
      *
      * @returns React element.
      */
-    const resolveConnectorImage = (idvpTemplateType: IDVPTemplateItemInterface): ReactElement => {
+    const resolveIDVPImage = (idvpTemplateType: IDVPTemplateItemInterface): ReactElement => {
 
         if (!idvpTemplateType) {
             return (
@@ -260,7 +222,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             title={ idvp?.Name }
             contentTopMargin={ true }
             description={ idvp?.description }
-            image={ resolveConnectorImage(idvpTemplateTypeMetadata) }
+            image={ resolveIDVPImage(idvpTemplateTypeMetadata) }
             backButton={ {
                 "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -277,7 +239,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     onDelete={ onIdentityVerificationProviderDelete }
                     onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
-                    isReadOnly={ isReadOnly }
+                    isReadOnly={ false }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
                     uiMetaData={ uiMetaData }

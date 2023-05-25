@@ -190,6 +190,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         "list-layout",
         className
     );
+
     return (
         <div
             className={ classes }

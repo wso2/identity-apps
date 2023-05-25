@@ -2426,42 +2426,32 @@ export interface ConsoleNS {
                   getIDVPTemplate: Notification;
                 };
                 forms: {
-                    // attributeSettings: {
-                    //     attributeMapping: {
-                    //         attributeColumnHeader: string;
-                    //         attributeMapColumnHeader: string;
-                    //         attributeMapInputPlaceholderPrefix: string;
-                    //         componentHeading: string;
-                    //         hint: string;
-                    //     };
-                    //     attributeProvisioning: {
-                    //         attributeColumnHeader: {
-                    //             0: string;
-                    //             1: string;
-                    //         };
-                    //         attributeMapColumnHeader: string;
-                    //         attributeMapInputPlaceholderPrefix: string;
-                    //         componentHeading: string;
-                    //         hint: string;
-                    //     };
-                    //     attributeListItem: {
-                    //         validation: {
-                    //             empty: string;
-                    //         };
-                    //     };
-                    //     attributeSelection: {
-                    //         searchAttributes: {
-                    //             placeHolder: string;
-                    //         };
-                    //     };
-                    // };
-                    // common: {
-                    //     requiredErrorMessage: string;
-                    //     invalidURLErrorMessage: string;
-                    //     invalidQueryParamErrorMessage: string;
-                    //     invalidScopesErrorMessage: string;
-                    //     customProperties: string;
-                    // };
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: string;
+                            hint: string;
+                            addButton: string;
+                            emptyPlaceholder: {
+                                title: string;
+                                subtitle: string;
+                            };
+                        };
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: string;
+                                required: string;
+                                invalid: string;
+                            };
+                        };
+                        attributeSelectionModal: {
+                            header: string;
+                        }
+                        // attributeSelection: {
+                        //     searchAttributes: {
+                        //         placeHolder: string;
+                        //     };
+                        // };
+                    };
                     generalDetails: {
                         name: FormAttributes;
                         description: FormAttributes;

@@ -4388,6 +4388,29 @@ export const console: ConsoleNS = {
                                 invalid: "Le nom du fournisseur de vérification d'identité n'est pas valide"
                             }
                         }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Mapping des attributs du fournisseur de vérification d'identité",
+                            hint: "Ajoutez et mappez les attributs pris en charge par le fournisseur externe " +
+                                "de vérification d'identité.",
+                            addButton: "Ajouter un mappage d'attributs",
+                            emptyPlaceholder: {
+                                subtitle: "Aucun attribut n'a été ajouté pour ce fournisseur de vérification " +
+                                    "d'identité",
+                                title: "Aucun attribut ajouté"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "Il existe déjà un attribut mapé avec ce nom.",
+                                required: "Ce champ ne peut pas être vide",
+                                invalid: "Veuillez entrer une valeur valide"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Ajouter des mappages d'attributs"
+                        }
                     }
                 },
                 dangerZoneGroup: {

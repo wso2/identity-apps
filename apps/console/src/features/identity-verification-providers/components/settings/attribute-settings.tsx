@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
+import { AttributesSelection } from "./attribute-management/attribute-selection";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
@@ -138,9 +138,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 <div className="form-container with-max-width">
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
-                            <AttributesSelectionV2
+                            <AttributesSelection
                                 initialClaims={ initialClaims }
-                                setSelectedClaimsWithMapping={ setSelectedClaimsWithMapping }
+                                setMappedAttributes={ setSelectedClaimsWithMapping }
                                 hideIdentityClaimAttributes={ hideIdentityClaimAttributes }
                                 mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                 isReadOnly={ isReadOnly }

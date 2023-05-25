@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, Heading, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
@@ -30,10 +31,27 @@ import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../mod
  * Properties of {@link AttributesSelectionWizardPage}
  */
 export interface AttributesSelectionWizardPageProps extends IdentifiableComponentInterface {
-    initialClaims?: IDVPClaimMappingInterface[];
+    /**
+     * List of mapped attributes.
+     */
     mappedAttributesList: Array<IDVPClaimMappingInterface>;
+    /**
+     * Callback to set the mapped attributes.
+     * @param mappingsToBeAdded - List of mapped attributes.
+     */
     setMappedAttributeList: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    /**
+     * Initial claims that needs to be displayed.
+     */
+    initialClaims?: IDVPClaimMappingInterface[];
+    /**
+     * Flag to determine if the identity claim attributes should be hidden.
+     */
     hideIdentityClaimAttributes?: boolean;
+    /**
+     * Callback to set the loading status of the local claims.
+     * @param status - Loading status.
+     */
     setIsClaimsLoading?: (status: boolean) => void;
 }
 
@@ -51,14 +69,17 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
         initialClaims,
         mappedAttributesList,
         setMappedAttributeList,
-        hideIdentityClaimAttributes,
-        [ "data-componentid" ]: componentId
+        hideIdentityClaimAttributes
     } = props;
+
     // Manage available local claims.
     const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IDVPLocalClaimInterface[]>([]);
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ mappedAttrIds, setMappedAttrIds ] = useState<Set<string>>();
     const [ wereInitialValuesSet, setWereInitialValuesSet ] = useState<boolean>(true);
+    const [ showPlaceholder, setShowPlaceholder ] = useState<boolean>(false);
+
+    const { t } = useTranslation();
 
     /**
      * Fetch all the local claims and set them to availableLocalClaims.
@@ -78,6 +99,13 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
         }
         setMappedAttrIds(ids);
     }, [ availableLocalClaims, mappedAttributesList ]);
+
+    /**
+     * Set the show placeholder state.
+     */
+    useEffect(() => {
+        setShowPlaceholder(mappedAttributesList.length === 0);
+    }, [ mappedAttributesList ]);
 
     /**
      * Set initial value for attribute mapping.
@@ -108,6 +136,19 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
         setMappedAttributeList(initialClaims);
     };
 
+    /**
+     * This function will be called when a new attribute mapping is added.
+     * @param mapping - New attribute mapping.
+     */
+    const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
+
+        setMappedAttributeList([ ...mappedAttributesList, mapping ]);
+
+        // Add the id of newly added attribute to the mapped id list.
+        setMappedAttrIds(new Set<string>([ ...mappedAttrIds, mapping.localClaim.id ]) );
+
+    };
+
 
     /**
      * Return the remaining unmapped attributes.
@@ -120,27 +161,10 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
         ];
     };
 
-    // Pasted Stuff
-
     /**
-     * This has the state to tell whether {@link mappedAttributesList} is empty
-     * or not. We need this to control the {@link Transition} state.
+     * This function handles the deletion of attribute mappings.
+     * @param mapping - Deleted attribute mapping.
      */
-    const [ showPlaceholder, setShowPlaceholder ] = useState<boolean>(false);
-
-    useEffect(() => {
-        setShowPlaceholder(mappedAttributesList.length === 0);
-    }, [ mappedAttributesList ]);
-
-    const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
-
-        setMappedAttributeList([ ...mappedAttributesList, mapping ]);
-
-        // Add the id of newly added attribute to the mapped id list.
-        setMappedAttrIds(new Set<string>([ ...mappedAttrIds, mapping.localClaim.id ]) );
-
-    };
-
     const onMappingDeleted = (mapping: IDVPClaimMappingInterface): void => {
         // filter out the deleted mapping from mappedAttributesList
         const filtered: IDVPClaimMappingInterface[] = mappedAttributesList.filter(
@@ -154,9 +178,13 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
         setMappedAttrIds(mappedAttrIdsCopy);
     };
 
+    /**
+     * This function handles the editing of attribute mappings.
+     * @param oldMapping - Old attribute mapping.
+     * @param newMapping - New attribute mapping.
+     */
     const onMappingEdited = ( oldMapping: IDVPClaimMappingInterface, newMapping: IDVPClaimMappingInterface) => {
-        // If user changed the local mapping of this. Then first
-        // go and remove it from {@link claimsToBeAdded} array.
+        // Remove the old mapping from the list and add the new mapping.
         const newMappedAttributeList: IDVPClaimMappingInterface[] = [
             ...mappedAttributesList.filter(
                 ({ localClaim }: IDVPClaimMappingInterface) => (localClaim.id !== oldMapping.localClaim.id)
@@ -176,23 +204,18 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
 
     };
 
-
     return (
         isLocalClaimsLoading ? <ContentLoader/> : (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                         <Heading as="h4">
-                        Identity Verification Provider Attribute Mappings
+                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.heading") }
                         </Heading>
                         <Hint compact>
-                        Add and map the supported attributes from external Identity Verification Provider.
+                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.hint") }
                         </Hint>
-                        <Divider hidden/>
                     </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <AttributeMappingListItem
                             availableAttributeList={ getRemainingUnmappedAttributes() }
@@ -226,5 +249,5 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
  * Default properties.
  */
 AttributesSelectionWizardPage.defaultProps = {
-    "data-componentid": "attributes-selection-v2"
+    "data-componentid": "attributes-selection-wizard-page"
 };

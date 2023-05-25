@@ -47,6 +47,7 @@ import { store } from "../store";
  *  \}
  */
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
+
     const routes: RouteInterface[] = values(
         merge(
             keyBy(

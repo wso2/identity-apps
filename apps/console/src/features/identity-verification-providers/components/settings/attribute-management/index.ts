@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./attribute-selection-v2";
+export * from "./attribute-selection";
 export * from "./attribute-selection-wizard-page";

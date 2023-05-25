@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -25,7 +23,6 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
@@ -33,12 +30,9 @@ import {
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
-    AppState,
-    FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
@@ -59,6 +53,9 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * Identity verification providers list.
      */
     idvpList: IDVPListResponseInterface;
+    /**
+     * IDVP template type list. This is used for resolving the image of the IDVP.
+     */
     idvpTemplateTypeList: IDVPTemplateItemInterface[];
     /**
      * Advanced Search component.
@@ -82,14 +79,6 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * @param idvp - Selected IDVP
      */
     onListItemClick?: (event: SyntheticEvent, idvp: IdentityVerificationProviderInterface) => void;
-    /**
-     * Callback for the search query clear action.
-     */
-    onSearchQueryClear?: () => void;
-    /**
-     * Search query for the list.
-     */
-    searchQuery?: string;
     /**
      * Enable selection styles.
      */
@@ -118,8 +107,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         onEmptyListPlaceholderActionClick,
         onIdentityVerificationProviderDelete,
         onListItemClick,
-        onSearchQueryClear,
-        searchQuery,
         selection,
         showListItemActions,
         ["data-componentid"]: componentId
@@ -129,12 +116,8 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
     const [ selectedIdvpToBeDeleted, setSelectedIdvpToBeDeleted ] =
         useState<IdentityVerificationProviderInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
-    // const [ isAppsLoading, setIsAppsLoading ] = useState(true);
 
     const { t } = useTranslation();
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Redirects to the identity verification provider edit page when the edit button is clicked.
@@ -185,40 +168,18 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * @returns Placeholder.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    imageSize="tiny"
-                    title={ t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.title") }
-                    subtitle={ [
-                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.0",
-                            { searchQuery: searchQuery }),
-                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
-                    ] }
-                    data-testid={ `${ componentId }-empty-search-placeholder` }
-                />
-            );
-        }
 
         if (idvpList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
-                        // TODO: Change this to IDVP Write
-                        <Show when={ AccessControlConstants.IDP_WRITE }>
-                            <PrimaryButton
-                                onClick={ onEmptyListPlaceholderActionClick }
-                            >
-                                <Icon name="add"/>
-                                { t("console:develop.features.idvp.buttons.addIDVP") }
-                            </PrimaryButton>
-                        </Show>
+                        <PrimaryButton
+                            onClick={ onEmptyListPlaceholderActionClick }
+                        >
+                            <Icon name="add"/>
+                            { t("console:develop.features.idvp.buttons.addIDVP") }
+                        </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -235,7 +196,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     /**
      * Resolves data table columns.
-     *
      * @returns Data Table Columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
@@ -319,31 +279,29 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
             {
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => false,
-                icon: (): SemanticICONS =>
-                    hasRequiredScopes(featureConfig?.identityProviders,
-                        featureConfig?.identityProviders?.scopes?.update, allowedScopes) ? "pencil alternate" : "eye",
-                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void =>
-                    handleIdentityVerificationProviderEdit(idvp.id),
-                popupText: (): string =>
-                    hasRequiredScopes(featureConfig?.identityProviders,
-                        featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-                        ? t("common:edit")
-                        : t("common:view"),
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
+                    handleIdentityVerificationProviderEdit(idvp.id);
+                },
+                popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (): boolean => !hasRequiredScopes(featureConfig?.identityProviders,
-                    featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
+                hidden: (): boolean => false,
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void =>
-                    showIDVPDeleteConfirmationModal(idvp.id),
+                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
+                    showIDVPDeleteConfirmationModal(idvp.id);
+                },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
             }
         ];
     };
 
+    /**
+     * Renders the delete confirmation modal for IDVP deletion.
+     */
     const getIdvpDeleteConfirmationModal = () => {
         return (
             <ConfirmationModal
@@ -377,7 +335,6 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
             </ConfirmationModal>
         );
     };
-
 
     return (
         <>

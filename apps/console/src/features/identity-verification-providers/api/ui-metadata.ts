@@ -27,11 +27,8 @@ import { IdentityVerificationProviderInterface } from "../models";
 import { IDVPTypeMetadataInterface, UIMetaDataForIDVP } from "../models/ui-metadata";
 
 /**
- * Hook to get the identity verification provider (IDVP) list with limit and offset.
- *
- *
- * @returns UI Metadata object for the IDVP
- * @param idvpType - Type of the IDVP
+ * Hook to get UI metadata for a identity verification provider type
+ * @param idvpType - Identity verification provider type
  */
 export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInterface>(
     idvpType: string
@@ -56,10 +53,7 @@ export const useUIMetadata = <Data = UIMetaDataForIDVP, Error = RequestErrorInte
 };
 
 /**
- * Hook to get the identity verification provider (IDVP) list with limit and offset.
- *
- *
- * @returns UI Metadata object for the IDVP
+ * A hook to get the list of IDVP template types
  */
 export const useIDVPTemplateTypeMetadataList = <Data = IDVPTypeMetadataInterface[], Error = RequestErrorInterface>(
 
@@ -83,6 +77,10 @@ export const useIDVPTemplateTypeMetadataList = <Data = IDVPTypeMetadataInterface
     };
 };
 
+/**
+ * A hook to get the metadata about an IDVP type.
+ * @param idvpType - Type of the IDVP
+ */
 export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Error = RequestErrorInterface>(
     idvpType: string
 ): RequestResultInterface<Data, Error> => {
@@ -94,6 +92,7 @@ export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Er
         url: store.getState().config.endpoints.IDVPExtensionEndpoint + "/"+ idvpType
     };
 
+    // IF the idvpType is not set, passing null to the useRequest hook will abort the request.
     const { data, error, isValidating, mutate } = useRequest<Data, Error>( idvpType ? requestConfig : null );
 
     return {
@@ -106,10 +105,8 @@ export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Er
 };
 
 /**
- * Hook to get the identity verification provider (IDVP) list with limit and offset.
- *
- *
- * @returns UI Metadata object for the IDVP
+ * A hook to get the template of an IDVP.
+ * @param idvpType - Type of the IDVP
  */
 export const useIDVPTemplate = <Data = IdentityVerificationProviderInterface, Error = RequestErrorInterface>(
     idvpType: string

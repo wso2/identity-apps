@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -26,43 +25,58 @@ import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
-import { getAllLocalClaims } from "../../../../claims";
+import { fetchAllLocalClaims } from "./utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
-import {fetchAllLocalClaims, handleGetAllLocalClaimsError, isLocalIdentityClaim} from "./utils";
 
 /**
- * Properties of {@link AttributesSelectionV2}
+ * Properties of {@link AttributesSelection}
  */
-export interface AttributesSelectionV2Props extends IdentifiableComponentInterface {
-    initialClaims?: IDVPClaimMappingInterface[];
+export interface AttributesSelectionProps extends IdentifiableComponentInterface {
+    /**
+     * List of mapped attributes.
+     */
     mappedAttributesList: Array<IDVPClaimMappingInterface>;
-    setSelectedClaimsWithMapping: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    /**
+     * Callback to set the mapped attributes.
+     * @param mappingsToBeAdded - List of mapped attributes.
+     */
+    setMappedAttributes: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    /**
+     * Flag to determine if the component is read only.
+     */
     isReadOnly: boolean;
+    /**
+     * Initial claims that needs to be displayed.
+     */
+    initialClaims?: IDVPClaimMappingInterface[];
+    /**
+     * Flag to determine if the identity claim attributes should be hidden.
+     */
     hideIdentityClaimAttributes?: boolean;
+    /**
+     * Callback to set the loading status of the local claims.
+     * @param status - Loading status.
+     */
     setIsClaimsLoading?: (status: boolean) => void;
 }
 
-const FORM_ID: string = "idvp-attribute-selection-v2-form";
+const FORM_ID: string = "idvp-attribute-selection-form";
 
 /**
- * New implementation of attributes selection for IDVPs. It has a similar
- * look and feel of Claims components.
- *
- * TODO: Validate the necessity of this component. If this is the way forward, remove the
- * v1 component and remove the v2 suffix from this component.
+ * Attributes selection UI for IDVPs.
  *
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props> = (
-    props: AttributesSelectionV2Props
+export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = (
+    props: AttributesSelectionProps
 ): ReactElement => {
 
     const {
         initialClaims,
         mappedAttributesList,
-        setSelectedClaimsWithMapping,
+        setMappedAttributes,
         hideIdentityClaimAttributes,
         isReadOnly,
         [ "data-componentid" ]: componentId
@@ -77,10 +91,16 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
     const { t } = useTranslation();
 
+    /**
+     * Fetch available local claims when the component render.
+     */
     useEffect(() => {
         fetchAllLocalClaims(hideIdentityClaimAttributes, setAvailableLocalClaims, setIsLocalClaimsLoading);
     }, []);
 
+    /**
+     * Populate the mapped attribute ids list.
+     */
     useEffect(() => {
         const ids: string[] = [];
 
@@ -101,7 +121,9 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         setInitialValues();
     }, [ availableLocalClaims ]);
 
-
+    /**
+     *  Process and set initial claims values to mapped attributes.
+     */
     const setInitialValues = () => {
 
         if (!initialClaims) {
@@ -114,8 +136,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
             });
         });
 
-        setSelectedClaimsWithMapping(initialClaims);
-
+        setMappedAttributes(initialClaims);
     };
 
     /**
@@ -134,13 +155,18 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
      */
     const _noAttributesSelectedModalPlaceholder = (): ReactElement => {
         return (
-            // TODO: Add i18n
             <Segment data-componentid={ componentId }>
                 <EmptyPlaceholder
-                    title={ "No attributes added" }
+                    title={
+                        t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                            "emptyPlaceholder.title")
+                    }
                     subtitle={ [
                         <p key={ "no-attributes-configured" }>
-                            There are no attributes added for this <strong>Identity Verification Provider</strong>.
+                            {
+                                t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                                    "emptyPlaceholder.subtitle")
+                            }
                         </p>
                     ] }
                     action={ !isReadOnly && (
@@ -148,9 +174,10 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                             onClick={ (e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.preventDefault();
                                 setShowAddModal(true);
-                            } }>
+                            } }
+                        >
                             <Icon name="add"/>
-                            Add IDVP Attributes
+                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.addButton") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -203,10 +230,13 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
      */
     const onSave = (mappingsToBeAdded: IDVPClaimMappingInterface[]) => {
 
-        setSelectedClaimsWithMapping([ ...mappedAttributesList, ...mappingsToBeAdded ]);
+        setMappedAttributes([ ...mappedAttributesList, ...mappingsToBeAdded ]);
         setShowAddModal(false);
     };
 
+    /**
+     * Filter the mapped attributes list based on the search query.
+     */
     const getFilteredAttributeMappings = () => {
 
         return mappedAttributesList.filter((mapping: IDVPClaimMappingInterface) => {
@@ -219,6 +249,9 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 
     };
 
+    /**
+     * Get the list of attributes which does not have their Ids in mapped attribute id list.
+     */
     const getRemainingUnmappedAttributes = () => {
         return [
             ...availableLocalClaims.filter(
@@ -227,18 +260,27 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         ];
     };
 
+    /**
+     * Handles the deletion of an attribute mapping.
+     * @param deletedMapping - The mapping that is to be deleted.
+     */
     const handleAttributeMappingDeletion = (deletedMapping: IDVPClaimMappingInterface) => {
 
-        setSelectedClaimsWithMapping([
+        setMappedAttributes([
             ...mappedAttributesList?.filter(
                 (attribute: IDVPClaimMappingInterface ) => (attribute.localClaim?.id !== deletedMapping.localClaim?.id)
             )
         ]);
     };
 
+    /**
+     * Handles the editing of an attribute mapping.
+     * @param previous - The previous mapping.
+     * @param current - The current mapping.
+     */
     const handleEditAttributeMapping = (previous: IDVPClaimMappingInterface, current:IDVPClaimMappingInterface) => {
 
-        setSelectedClaimsWithMapping([
+        setMappedAttributes([
             ...mappedAttributesList.filter(
                 (attribute: IDVPClaimMappingInterface) => ( attribute?.localClaim?.id !== previous.localClaim?.id)
             ),
@@ -246,6 +288,9 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
         ]);
     };
 
+    /**
+     * Get the attribute mapping list component.
+     */
     const getAttributeMappingListComponent = () => {
         return (
             <AttributeMappingList
@@ -266,10 +311,10 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                 <Grid.Row columns={ 1 }>
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                         <Heading as="h4">
-                        Identity Verification Provider Attribute Mappings
+                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.heading") }
                         </Heading>
                         <Hint compact>
-                        Add and map the supported attributes from external Identity Verification Provider.
+                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.hint") }
                         </Hint>
                         <Divider hidden/>
                         { hasMappedAttributes() ? (
@@ -302,9 +347,14 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                         e.preventDefault();
                                                         setShowAddModal(true);
                                                     } }
-                                                    data-componentid={ `${ componentId }-list-layout-add-button` }>
+                                                    data-componentid={ `${ componentId }-list-layout-add-button` }
+                                                >
                                                     <Icon name="add"/>
-                                                Add Attribute Mapping
+                                                    {
+                                                        t("console:develop.features.idvp.forms.attributeSettings" +
+                                                        ".attributeMapping.addButton")
+                                                    }
+
                                                 </PrimaryButton>
                                             ) }
                                         </Grid.Column>
@@ -337,6 +387,6 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
 /**
  * Default properties.
  */
-AttributesSelectionV2.defaultProps = {
-    "data-componentid": "attributes-selection-v2"
+AttributesSelection.defaultProps = {
+    "data-componentid": "idvp-attributes-selection"
 };

@@ -33,13 +33,11 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { getIdPIcons } from "../../identity-providers/configs";
-import { IdentityProviderManagementUtils } from "../../identity-providers/utils";
 import { useIDVPTemplateTypeMetadataList } from "../api/ui-metadata";
-import { IdvpCreateWizard } from "../components/wizards/idvp-create-wizard";
+import { IdvpCreateWizard } from "../components/wizards";
+import { IdentityVerificationProviderConstants } from "../constants";
 import { IDVPTypeMetadataInterface } from "../models/ui-metadata";
-import { handleIDVPTemplateRequestError } from "../utils";
-import {resolveIDVPImage} from "../utils/image-utils";
+import { handleIDVPTemplateRequestError, resolveIDVPImage } from "../utils";
 
 /**
  * Proptypes for the IDVP template selection page component.
@@ -58,11 +56,8 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
 ): ReactElement => {
 
     const {
-        location,
         [ "data-componentid" ]: componentID
     } = props;
-
-    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const { t } = useTranslation();
 
@@ -82,10 +77,8 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
         error: idvpTemplateTypeRequestError
     } = useIDVPTemplateTypeMetadataList();
 
-
-
     /**
-     * Set initial metadata for identity provider types.
+     * Set initial metadata for identity verification provider types.
      */
     useEffect(() => {
 
@@ -105,7 +98,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
     }, [ idvpTemplateTypes ]);
 
     /**
-     * Handles errors with IDP template type request.
+     * Handles errors with IDVP template type request.
      */
     useEffect(() => {
         if(!idvpTemplateTypeRequestError){
@@ -114,25 +107,6 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
         handleIDVPTemplateRequestError(idvpTemplateTypeRequestError);
     }, [ idvpTemplateTypeRequestError ]);
 
-    // /**
-    //  * Subscribe to the URS search params to check for IDP create wizard triggers.
-    //  * ex: If the URL contains a search param `?open=8ea23303-49c0-4253-b81f-82c0fe6fb4a0`,
-    //  * it'll open up the IDP create template with ID `8ea23303-49c0-4253-b81f-82c0fe6fb4a0`.
-    //  */
-    // useEffect(() => {
-    //
-    //     if (!urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
-    //         return;
-    //     }
-    //
-    //     if (urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
-    //         === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
-    //
-    //         handleTemplateSelection(null, IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
-    //
-    //         return;
-    //     }
-    // }, [ urlSearchParams.get(IdentityProviderManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Handles back button click.
@@ -168,19 +142,21 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
      *
      * @param id - ID of the created IDVP.
      */
-    const handleSuccessfulIDPCreation = (id: string): void => {
+    const handleSuccessfulIDVPCreation = (id: string): void => {
 
         // If ID is present, navigate to the edit page of the created IDVP.
         if (id) {
             history.push({
-                pathname: AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id),
+                pathname: AppConstants.getPaths()
+                    .get(IdentityVerificationProviderConstants.IDVP_EDIT_PATH)
+                    .replace(":id", id)
             });
 
             return;
         }
 
-        // Fallback to identity providers page, if id is not present.
-        history.push(AppConstants.getPaths().get("IDVP"));
+        // Fallback to identity verification providers page, if id is not present.
+        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
     };
 
     /**
@@ -328,10 +304,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                                         return (
                                             <ResourceGrid.Card
                                                 key={ templateIndex }
-                                                resourceName={
-                                                    template.name === "Enterprise" ? "Standard-Based IdP"
-                                                        : template.name
-                                                }
+                                                resourceName={ template.name }
                                                 comingSoonRibbonLabel={ t("common:comingSoon") }
                                                 resourceDescription={ template.description }
                                                 resourceImage={
@@ -356,7 +329,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                 showWizard={ showWizard }
                 type={ templateType }
                 selectedTemplateType={ selectedTemplate }
-                onIDVPCreate={ handleSuccessfulIDPCreation }
+                onIDVPCreate={ handleSuccessfulIDVPCreation }
                 onWizardClose={ () => {
                     setTemplateType(undefined);
                     setShowWizard(false);
@@ -373,9 +346,4 @@ IdentityVerificationProviderTemplateSelectPage.defaultProps = {
     "data-componentid": "idvp-templates"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default IdentityVerificationProviderTemplateSelectPage;

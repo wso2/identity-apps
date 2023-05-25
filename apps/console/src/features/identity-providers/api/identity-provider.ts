@@ -314,6 +314,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + id));
             }
+
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);

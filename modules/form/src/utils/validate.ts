@@ -103,6 +103,7 @@ export const getValidation = (
     if (!meta.modified) {
         return;
     }
+
     if (meta.modified && required && !value) {
         return FieldConstants.FIELD_REQUIRED_ERROR;
     }
