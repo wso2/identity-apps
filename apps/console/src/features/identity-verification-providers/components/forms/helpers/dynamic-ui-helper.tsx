@@ -30,6 +30,8 @@ import {
 const ERROR_MSG_REQUIRED_FIELD: string = "This field cannot be empty";
 const ERROR_MSG_REGEX_FAILED: string = "Pattern validation failed";
 
+type InputFieldValue = string | boolean | number | DropdownOptionsInterface ;
+
 /**
  * Renders the IDVP configuration property form fields with the given metadata.
  *
@@ -56,8 +58,9 @@ export const renderFormUIWithMetadata = (
         // exclude rendering the divider for the first input element.
         const includeDivider: boolean= padBetweenElements ? elementMetadata.displayOrder !== 1 : false;
         // If there is an already existing IDVP, get the current value of the element from the IDVP.
-        let currentElementValue: string | DropdownOptionsInterface = idvp?.configProperties?.find(
-            (property: IDVPConfigPropertiesInterface ) => (property.key === elementMetadata.name))?.value;
+        let currentElementValue: InputFieldValue = idvp?.configProperties?.find(
+            (property: IDVPConfigPropertiesInterface ) => (property.key === elementMetadata.name)
+        )?.value;
 
         switch(elementMetadata?.type) {
             case FieldInputTypes.INPUT_DEFAULT:
@@ -147,9 +150,10 @@ export const renderFormUIWithMetadata = (
                             label={ elementMetadata.label }
                             data-componentid={ elementMetadata.dataComponentId }
                             required={ elementMetadata.required }
-                            value={ currentElementValue ?? elementMetadata.defaultValue }
-                            initialValue={ currentElementValue ?? elementMetadata.defaultValue }
+                            initialValue={ toBoolean(currentElementValue, elementMetadata.defaultValue) }
                             isReadOnly={ isReadOnly }
+                            format={ (v: boolean) => (v) }
+                            parse={ (v:boolean) => (v) }
                         />
                     </>
                 );
@@ -165,9 +169,10 @@ export const renderFormUIWithMetadata = (
                             label={ elementMetadata.label }
                             data-componentid={ elementMetadata.dataComponentId }
                             required={ elementMetadata.required }
-                            value={ currentElementValue ?? elementMetadata.defaultValue }
-                            initialValue={ currentElementValue ?? elementMetadata.defaultValue }
+                            initialValue={ toBoolean(currentElementValue, elementMetadata.defaultValue) }
                             isReadOnly={ isReadOnly }
+                            format={ (v: boolean) => (v) }
+                            parse={ (v:boolean) => (v) }
                         />
                     </>
                 );
@@ -286,4 +291,21 @@ export const performValidations = ( value: string, elementMetaData: InputFieldMe
     const field: string = elementMetaData.type === FieldInputTypes.INPUT_PASSWORD ? "password" : "text";
 
     return getDefaultValidation(field, elementMetaData.type, value);
+};
+
+/**
+ * A method to convert input field values to boolean.
+ *      1. This method will only use the default value if the current element value is undefined.
+ *      2. If the value is not in boolean type or the value is not "true", then it will be considered as false.
+ *
+ * @param currentElementValue - Current element value
+ * @param defaultValue - Default value
+ */
+const toBoolean = (currentElementValue: InputFieldValue , defaultValue: InputFieldValue): boolean => {
+
+    if(currentElementValue) {
+        return typeof currentElementValue === "boolean"? currentElementValue : currentElementValue === "true";
+    }
+
+    return typeof defaultValue === "boolean"? defaultValue : defaultValue === "true";
 };

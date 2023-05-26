@@ -82,7 +82,7 @@ export interface IDVPClaimMappingInterface {
  */
 export interface IDVPConfigPropertiesInterface {
     key: string;
-    value: string;
+    value: string | boolean;
     isSecret: boolean;
 }
 

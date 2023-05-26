@@ -454,15 +454,18 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
      */
     const handleFormSubmit = (values: WizardFormValuesInterface): void => {
 
+        // Update the name and description on the template with the values from the form.
         idvpTemplate.Name = values?.name ?? idvpTemplate.Name;
         idvpTemplate.description = values?.description ?? idvpTemplate.description;
 
+        // Update the config properties on the template with the values from the form.
         for(const configs of idvpTemplate?.configProperties) {
             if(values[configs?.key]){
                 configs.value = values[configs?.key];
             }
         }
 
+        // Update the claims on the template with the claim mappings selected by the user.
         idvpTemplate.claims = selectedClaimsWithMapping.map((claim: IDVPClaimMappingInterface) => {
             return {
                 idvpClaim: claim.idvpClaim,
