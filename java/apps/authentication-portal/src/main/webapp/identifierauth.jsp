@@ -72,12 +72,13 @@
 
 
 <script>
+
      function onCompleted() {
         $('#identifierForm').submit();
     }
 
     $(document).ready(function(){
-        $.fn.preventDoubleSubmission = function() {
+        $.fn.preventDoubleSubmission = function() {git
             $(this).on('submit',function(e){
                 var $form = $(this);
                 e.preventDefault();
@@ -87,6 +88,7 @@
                 if (genericReCaptchaEnabled === "true") {
                     if (!grecaptcha.getResponse()) {
                         grecaptcha.execute();
+
                         return;
                     }
                 }
