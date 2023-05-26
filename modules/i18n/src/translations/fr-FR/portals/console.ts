@@ -4432,7 +4432,7 @@ export const console: ConsoleNS = {
                 list: {
                     actions: "Actions",
                     name: "Nom"
-                },
+                }
             },
             overview: {
                 banner: {

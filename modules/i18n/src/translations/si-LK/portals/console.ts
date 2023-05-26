@@ -4303,7 +4303,7 @@ export const console: ConsoleNS = {
                 list: {
                     actions: "ක්‍රියා",
                     name: "නම"
-                },
+                }
             },
             overview: {
                 banner: {
