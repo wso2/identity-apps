@@ -128,7 +128,8 @@
         reCaptchaResendEnabled = true;
     }
 
-    if (reCaptchaEnabled || reCaptchaResendEnabled) {
+    boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
+    if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
         reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
         reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
@@ -206,7 +207,7 @@
     <% } %>
 
     <%
-        if (reCaptchaEnabled || reCaptchaResendEnabled) {
+        if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
     %>
     <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
     <%
