@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PrimaryButton } from "@wso2is/react-components";
+import { Button } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -325,17 +325,18 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                 { !editingMode && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 } textAlign="right">
-                            <PrimaryButton
+                            <Button
                                 form={ FORM_ID }
                                 disabled={ mappingHasError || !mappedInputValue || !selectedLocalAttributeInputValue }
                                 onClick={ onFormSubmit }
-                                buttonType="primary_btn"
+                                buttonType="secondary_btn"
                                 type="button"
                                 name="submit-button"
                                 ariaLabel="Attribute Selection Form Submit Button"
                             >
-                                Add Attribute Mapping
-                            </PrimaryButton>
+                                { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping" +
+                                    ".addButton") }
+                            </Button>
                         </Grid.Column>
                     </Grid.Row>
                 ) }

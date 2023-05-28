@@ -35,7 +35,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../../../core";
-import { createIdentityVerificationProvider,
+import {
+    createIdentityVerificationProvider,
     useIDVPTemplate,
     useIdentityVerificationProviderList,
     useUIMetadata
@@ -62,6 +63,7 @@ import { AttributesSelectionWizardPage } from "../settings/attribute-management"
  * Enum for representing the wizard steps.
  */
 enum WizardSteps {
+    CONFIGURATION = "Configuration",
     GENERAL_DETAILS = "GeneralDetails",
     IDVP_SETTINGS = "Identity Verification Provider Settings",
     ATTRIBUTES = "Attributes"
@@ -89,14 +91,9 @@ interface WizardFormValuesInterface {
 const WIZARD_ID: string = "idvp-create-wizard-content";
 const wizardSteps: WizardStepInterface[] = [
     {
-        icon: getIDVPCreateWizardStepIcons().general,
-        name: WizardSteps.GENERAL_DETAILS,
-        title: "General"
-    },
-    {
         icon: getIDVPCreateWizardStepIcons().idvpSettings,
-        name: WizardSteps.IDVP_SETTINGS,
-        title: "Settings"
+        name: WizardSteps.CONFIGURATION,
+        title: "Configuration"
     },
     {
         icon: getIDVPCreateWizardStepIcons().general,
@@ -346,77 +343,41 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
      */
     const resolveWizardPages = (): Array<ReactElement> => {
         return [
-            wizardCommonFirstPage(),
             wizardConfigurationPage(),
             wizardAttributesPage()
         ];
     };
 
     /**
-     * Renders the general settings wizard page.
+     * Renders the configurations wizard page.
      *
-     * @returns General Settings wizard page.
-     */
-    const wizardCommonFirstPage = (): ReactElement => (
-        <WizardPage>
-            <Field.Input
-                ariaLabel="name"
-                inputType="resource_name"
-                name="name"
-                label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
-                required={ true }
-                message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
-                placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder") }
-                validate={ (value: string) => {
-                    setIsNextDisabled(true);
-                    const validationError: string = validateIDVPName(value, idvpList.identityVerificationProviders);
-
-                    if (!validationError) {
-                        setIsNextDisabled(false);
-                    }
-
-                    return validationError;
-                } }
-                maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
-                minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
-                format={ (values: any) => values.toString().trimStart() }
-                data-testid={ `${ componentId }-form-wizard-idvp-name` }
-                hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
-            />
-            <Field.Textarea
-                name="description"
-                ariaLabel="description"
-                label={ t("console:develop.features.idvp.forms.generalDetails.description.label") }
-                required={ false }
-                placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
-                data-testid={ `${ componentId }-idvp-description` }
-                maxLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MAX_LENGTH }
-                minLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MIN_LENGTH }
-                hint={ t("console:develop.features.idvp.forms.generalDetails.description.hint") }
-            />
-        </WizardPage>
-    );
-
-    /**
-     * Renders the configuration settings wizard page.
-     *
-     * @returns Configuration Settings wizard page.
+     * @returns Configurations wizard page.
      */
     const wizardConfigurationPage = (): ReactElement => {
 
         /**
-         * Validates the configuration data.
+         * Validates the configuration page data.
          *
-         * @param values - If validation is failed, an error message will be displayed.
+         * @param values - values of the configuration form.
+         * @returns error message to be displayed if there is a validation error.
          */
-        const validateConfigurationData = (values: any): string => {
-            for(const setting of uiMetaData?.pages?.edit?.settings) {
-                const validationError: string = performValidations( values[setting.name], setting);
+        const validateConfigurationPage = (values: any): string => {
 
-                if(validationError) {
+            const nameValidationError: string = validateIDVPName(values?.name, idvpList.identityVerificationProviders);
+
+            if(nameValidationError) {
+                setIsNextDisabled(true);
+
+                return nameValidationError;
+            }
+
+            for(const setting of uiMetaData?.pages?.edit?.settings) {
+                const configurationValidationError: string = performValidations( values[setting.name], setting);
+
+                if(configurationValidationError) {
                     setIsNextDisabled(true);
 
-                    return validationError;
+                    return configurationValidationError;
                 }
             }
             setIsNextDisabled(false);
@@ -424,7 +385,23 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
 
         return (
             <WizardPage
-                validate={ validateConfigurationData }>
+                validate={ validateConfigurationPage }
+            >
+                <Field.Input
+                    ariaLabel="name"
+                    inputType="resource_name"
+                    name="name"
+                    label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
+                    required={ true }
+                    message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
+                    placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder") }
+                    validate={ (value: string) => validateIDVPName(value, idvpList.identityVerificationProviders) }
+                    maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
+                    minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
+                    format={ (values: any) => values.toString().trimStart() }
+                    data-testid={ `${ componentId }-form-wizard-idvp-name` }
+                    hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
+                />
                 { renderFormUIWithMetadata(uiMetaData?.pages?.edit?.settings, idvpTemplate) }
             </WizardPage>);
     };
