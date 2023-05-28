@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
@@ -28,7 +29,7 @@ import {
     Steps,
     useWizardAlert
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -238,7 +239,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                 // Since the id is not present in the response body, trigger callback without the id.
                 onIDVPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
                     setAlert({
                         description: t("console:develop.features.idvp.notifications.addIDVP.error.description",
@@ -268,6 +269,10 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
      * @returns void
      */
     const handleWizardClose = (): void => {
+        // Clear alerts if any.
+        if(alert){
+            setAlert(undefined);
+        }
         onWizardClose();
     };
 

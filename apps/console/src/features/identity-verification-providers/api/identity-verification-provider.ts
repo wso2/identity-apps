@@ -17,7 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import { store } from "../../core";
 import useRequest, {
     RequestConfigInterface,
@@ -35,7 +37,6 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient
  * @param id - ID of the identity verification provider.
  * @returns - A promise containing the response from the API call.
  */
-//TODO: handle error here as well
 export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -47,7 +48,18 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
         url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
     };
 
-    return httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) =>  response)
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
 };
 
 /**
@@ -69,7 +81,18 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
         url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
     };
 
-    return httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) =>  response)
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
 };
 
 /**
@@ -91,7 +114,18 @@ export const createIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
         url: `${ store.getState().config.endpoints.identityVerificationProviders }`
     };
 
-    return httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) =>  response)
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
 };
 
 /**

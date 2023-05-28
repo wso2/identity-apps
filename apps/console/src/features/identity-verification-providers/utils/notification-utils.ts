@@ -16,13 +16,20 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { store } from "../../core";
 
-export const handleIDVPDeleteError = (error: AxiosError): void => {
+/**
+ * Show an alert with an error message if the IDVP delete API call fails.
+ *
+ * @param error - Error response object
+ * @returns void
+ */
+export const handleIDVPDeleteError = (error: IdentityAppsApiException): void => {
 
     if(!error){
         return;
@@ -56,6 +63,11 @@ export const handleIDVPDeleteError = (error: AxiosError): void => {
     );
 };
 
+/**
+ * Show an alert with a success message if the IDVP delete API call succeeds.
+ *
+ * @returns void
+ */
 export const handleIDVPDeleteSuccess = (): void => {
 
     store.dispatch(
@@ -67,6 +79,11 @@ export const handleIDVPDeleteSuccess = (): void => {
     );
 };
 
+/**
+ * Show an alert with a success message if the IDVP update API call succeeds.
+ *
+ * @returns void
+ */
 export const handleIDVPUpdateSuccess = (): void => {
 
     store.dispatch(
@@ -78,7 +95,13 @@ export const handleIDVPUpdateSuccess = (): void => {
     );
 };
 
-export const handleIDVPUpdateError = (error: AxiosError): void => {
+/**
+ * Show an alert with an error message if the IDVP update API call fails.
+ *
+ * @param error - Error response object
+ * @returns void
+ */
+export const handleIDVPUpdateError = (error: IdentityAppsApiException): void => {
 
     if(!error){
         return;
@@ -112,6 +135,12 @@ export const handleIDVPUpdateError = (error: AxiosError): void => {
     );
 };
 
+/**
+ * Show an alert with an error message if the IDVP template API call fails.
+ *
+ * @param error - Error response object
+ * @returns void
+ */
 export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
 
     if(!error){

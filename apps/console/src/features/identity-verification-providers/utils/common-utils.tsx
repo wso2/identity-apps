@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { ReactElement } from "react";
 import { handleIDVPUpdateError, handleIDVPUpdateSuccess } from "./notification-utils";
 import { updateIdentityVerificationProvider } from "../api";
@@ -41,7 +41,7 @@ export const updateIDVP = (
     setIsSubmitting(true);
     updateIdentityVerificationProvider(idvp)
         .then(handleIDVPUpdateSuccess)
-        .catch((error: AxiosError) => {
+        .catch((error: IdentityAppsApiException) => {
             handleIDVPUpdateError(error);
         })
         .finally(() => {

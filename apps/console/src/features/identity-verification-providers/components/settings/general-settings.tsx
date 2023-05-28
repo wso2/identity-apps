@@ -17,9 +17,9 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CheckboxProps, Divider } from "semantic-ui-react";
@@ -108,7 +108,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         setLoading(true);
         deleteIDVP(idvp.id)
             .then(handleIDVPDeleteSuccess)
-            .catch((error: AxiosError) => {
+            .catch((error: IdentityAppsApiException) => {
                 handleIDVPDeleteError(error);
             })
             .finally(() => {

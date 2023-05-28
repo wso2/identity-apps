@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants,Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -28,7 +29,6 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import { hasRequiredScopes } from "modules/core/helpers";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -156,7 +156,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
         setLoading(true);
         deleteIDVP(idvpId)
             .then(handleIDVPDeleteSuccess)
-            .catch((error: AxiosError) => {
+            .catch((error: IdentityAppsApiException) => {
                 handleIDVPDeleteError(error);
             })
             .finally(() => {
