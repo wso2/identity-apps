@@ -57,6 +57,10 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
      */
     isReadOnly: boolean;
     /**
+     * Specifies if the IDVP can be deleted.
+     */
+    isDeletePermitted: boolean;
+    /**
      * Loading Component.
      */
     loader: () => ReactElement;
@@ -78,6 +82,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         onDelete,
         onUpdate,
         isReadOnly,
+        isDeletePermitted,
         loader: Loader,
         [ "data-componentid" ]: componentId
     } = props;
@@ -140,7 +145,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         handleFormSubmit({ isEnabled: data.checked });
     };
 
-    //TODO: Check Access control here
     return (
         !isLoading
             ? (
@@ -154,10 +158,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         isSubmitting={ isSubmitting }
                     />
                     <Divider hidden />
-                    <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
+                    { (isDeletePermitted || !isReadOnly) &&(
                         <DangerZoneGroup
                             sectionHeader={ t("console:develop.features.idvp.dangerZoneGroup.header") }>
-                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Show when={ AccessControlConstants.IDVP_EDIT }>
                                 <DangerZone
                                     actionTitle={
                                         t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.actionTitle",
@@ -180,7 +184,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     data-componentid={ `${ componentId }-disable-idvp-danger-zone` }
                                 />
                             </Show>
-                            <Show when={ AccessControlConstants.IDP_DELETE }>
+                            <Show when={ AccessControlConstants.IDVP_DELETE }>
                                 <DangerZone
                                     actionTitle={ t("console:develop.features.idvp.dangerZoneGroup" +
                                         ".deleteIDVP.actionTitle") }
@@ -192,7 +196,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 />
                             </Show>
                         </DangerZoneGroup>
-                    </Show>
+                    ) }
                     {
                         showDeleteConfirmationModal && (
                             <ConfirmationModal

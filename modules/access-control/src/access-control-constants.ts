@@ -82,6 +82,26 @@ export class AccessControlConstants {
     public static readonly IDP_DELETE: string = "identity_provider:delete";
 
     /**
+     * Identity verification provider read permission
+     */
+    public static readonly IDVP_READ: string = "identity_verification_provider:read";
+
+    /**
+     * Identity verification provider write permission
+     */
+    public static readonly IDVP_WRITE: string = "identity_verification_provider:write";
+
+    /**
+     * Identity verification provider edit permission
+     */
+    public static readonly IDVP_EDIT: string = "identity_verification_provider:edit";
+
+    /**
+     * Identity verification provider delete permission
+     */
+    public static readonly IDVP_DELETE: string = "identity_verification_provider:delete";
+
+    /**
      * Users feature permission
      */
     public static readonly USER: string = "user";

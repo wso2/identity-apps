@@ -22,15 +22,18 @@ import {
     AppAvatar,
     TabPageLayout
 } from "@wso2is/react-components";
+import { hasRequiredScopes } from "modules/core/helpers";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import {
     useIDVPTemplateTypeMetadata,
     useIdentityVerificationProvider,
@@ -91,6 +94,23 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         isLoading: isIDVPTemplateTypeMetadataLoading
     } = useIDVPTemplateTypeMetadata(idvp?.Type);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isReadOnly: boolean = useMemo(() => {
+        return !hasRequiredScopes(
+            featureConfig?.identityVerificationProviders,
+            featureConfig?.identityVerificationProviders?.scopes?.update,
+            allowedScopes
+        );
+    }, [ featureConfig, allowedScopes ]);
+
+    const isDeletePermitted: boolean = useMemo(() => {
+        return hasRequiredScopes(
+            featureConfig?.identityVerificationProviders,
+            featureConfig?.identityVerificationProviders?.scopes?.delete,
+            allowedScopes
+        );
+    }, [ featureConfig, allowedScopes ]);
 
     /**
      * Checks if the user needs to go to a specific tab index.
@@ -234,7 +254,8 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     onDelete={ onIdentityVerificationProviderDelete }
                     onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
-                    isReadOnly={ false }
+                    isReadOnly={ isReadOnly }
+                    isDeletePermitted={ isDeletePermitted }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
                     uiMetaData={ uiMetaData }

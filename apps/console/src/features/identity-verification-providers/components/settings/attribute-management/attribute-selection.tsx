@@ -336,7 +336,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                             <Segment>
                                 <Grid>
                                     <Grid.Row columns={ 2 }>
-                                        <Grid.Column width={ 7 }>
+                                        <Grid.Column width={ isReadOnly ? 16 : 7 }>
                                             <Form
                                                 id={ FORM_ID }
                                                 onSubmit={ () => ({ /*Noop*/ }) }

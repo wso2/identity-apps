@@ -234,7 +234,27 @@
                 }
             },
             "identityVerificationProviders": {
-                "enabled": true
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_idvp_create",
+                        "internal_idv_claim_add",
+                        "internal_idv_claim_update"
+                    ],
+                    "read": [
+                        "internal_idvp_view",
+                        "internal_idv_claim_view",
+                        "internal_idv_claim_verify"
+                    ],
+                    "update": [
+                        "internal_idvp_update",
+                        "internal_idv_claim_add",
+                        "internal_idv_claim_update"
+                    ],
+                    "delete": [
+                        "internal_idvp_delete"
+                    ]
+                }
             },
             "organizations": {
                 "enabled": true,

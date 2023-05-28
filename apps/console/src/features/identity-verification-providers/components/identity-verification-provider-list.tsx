@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants,Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -28,10 +29,19 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import { hasRequiredScopes } from "modules/core/helpers";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { deleteIDVP } from "../api";
 import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
@@ -108,6 +118,9 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
     /**
      * Redirects to the identity verification provider edit page when the edit button is clicked.
      *
@@ -166,12 +179,14 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 <EmptyPlaceholder
                     className="list-placeholder"
                     action={ onEmptyListPlaceholderActionClick && (
-                        <PrimaryButton
-                            onClick={ onEmptyListPlaceholderActionClick }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.idvp.buttons.addIDVP") }
-                        </PrimaryButton>
+                        <Show when={ AccessControlConstants.IDVP_WRITE }>
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                { t("console:develop.features.idvp.buttons.addIDVP") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -272,16 +287,38 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
             {
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => false,
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS => {
+                    const hasUpdateScopes: boolean = hasRequiredScopes(
+                        featureConfig?.identityVerificationProviders,
+                        featureConfig?.identityVerificationProviders?.scopes?.update,
+                        allowedScopes
+                    );
+
+                    return hasUpdateScopes ? "pencil alternate" : "eye";
+                },
                 onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
                     handleIdentityVerificationProviderEdit(idvp.id);
                 },
-                popupText: (): string => t("common:edit"),
+                popupText: (): string => {
+                    const hasUpdateScopes: boolean = hasRequiredScopes(
+                        featureConfig?.identityVerificationProviders,
+                        featureConfig?.identityVerificationProviders?.scopes?.update,
+                        allowedScopes
+                    );
+
+                    return hasUpdateScopes ? t("common:edit") : t("common:view");
+                },
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (): boolean => false,
+                hidden: (): boolean => {
+                    return !hasRequiredScopes(
+                        featureConfig?.identityVerificationProviders,
+                        featureConfig?.identityVerificationProviders?.scopes?.delete,
+                        allowedScopes
+                    );
+                },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
                     showIDVPDeleteConfirmationModal(idvp.id);

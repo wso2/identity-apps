@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
@@ -110,16 +111,18 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
             action={
                 (!isIDVPListRequestLoading && (idvpList?.identityVerificationProviders?.length > 0)) &&
                 (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(
-                                AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_TEMPLATE_PATH)
-                            );
-                        } }
-                        data-componentid={ `${ componentId }-add-button` }
-                    >
-                        <Icon name="add"/> { t("console:develop.features.idvp.buttons.addIDVP") }
-                    </PrimaryButton>
+                    <Show when={ AccessControlConstants.IDVP_WRITE }>
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(AppConstants.getPaths().get(
+                                    IdentityVerificationProviderConstants.IDVP_TEMPLATE_PATH
+                                ));
+                            } }
+                            data-componentid={ `${ componentId }-add-button` }
+                        >
+                            <Icon name="add"/> { t("console:develop.features.idvp.buttons.addIDVP") }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("console:develop.pages.idvp.title") }

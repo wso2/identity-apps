@@ -163,10 +163,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         </Grid.Column>
                     </Grid.Row>
                     <Divider hidden/>
-
                     <Grid.Row>
                         <Grid.Column>
-                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                            <Show when={ AccessControlConstants.IDVP_EDIT }>
                                 <Button
                                     primary
                                     size="small"

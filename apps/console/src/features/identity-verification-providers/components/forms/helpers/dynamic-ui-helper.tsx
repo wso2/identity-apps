@@ -135,7 +135,7 @@ export const renderFormUIWithMetadata = (
                             maxLength={ elementMetadata.maxLength }
                             minLength={ elementMetadata.minLength }
                             placeholder={ elementMetadata.placeholder }
-                            isReadOnly={ isReadOnly }
+                            readOnly={ isReadOnly }
                         />
                     </>
                 );
@@ -151,7 +151,7 @@ export const renderFormUIWithMetadata = (
                             data-componentid={ elementMetadata.dataComponentId }
                             required={ elementMetadata.required }
                             initialValue={ toBoolean(currentElementValue, elementMetadata.defaultValue) }
-                            isReadOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             format={ (v: boolean) => (v) }
                             parse={ (v:boolean) => (v) }
                         />
@@ -170,7 +170,7 @@ export const renderFormUIWithMetadata = (
                             data-componentid={ elementMetadata.dataComponentId }
                             required={ elementMetadata.required }
                             initialValue={ toBoolean(currentElementValue, elementMetadata.defaultValue) }
-                            isReadOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             format={ (v: boolean) => (v) }
                             parse={ (v:boolean) => (v) }
                         />
@@ -197,6 +197,7 @@ export const renderFormUIWithMetadata = (
                             value={ currentElementValue }
                             initialValue={ currentElementValue }
                             isReadOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                         />
                     </>
                 );

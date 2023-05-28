@@ -56,6 +56,10 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
      */
     isReadOnly: boolean;
     /**
+     * Specifies if the IDVP can be deleted.
+     */
+    isDeletePermitted: boolean;
+    /**
      * Specifies the UI metadata for the IDVP.
      */
     uiMetaData: UIMetaDataForIDVP;
@@ -85,6 +89,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         onDelete,
         onUpdate,
         isReadOnly,
+        isDeletePermitted,
         isAutomaticTabRedirectionEnabled,
         tabIdentifier,
         uiMetaData,
@@ -124,6 +129,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 onUpdate={ onUpdate }
                 data-componentid={ `${ componentId }-general-settings` }
                 isReadOnly={ isReadOnly }
+                isDeletePermitted={ isDeletePermitted }
                 loader={ getContentLoader }
             />
         </ResourceTab.Pane>
