@@ -78,7 +78,7 @@
     }
 
     $(document).ready(function(){
-        $.fn.preventDoubleSubmission = function() {git
+        $.fn.preventDoubleSubmission = function() {
             $(this).on('submit',function(e){
                 var $form = $(this);
                 e.preventDefault();
@@ -88,7 +88,6 @@
                 if (genericReCaptchaEnabled === "true") {
                     if (!grecaptcha.getResponse()) {
                         grecaptcha.execute();
-
                         return;
                     }
                 }
