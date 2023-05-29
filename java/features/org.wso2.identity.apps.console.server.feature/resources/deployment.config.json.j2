@@ -458,6 +458,29 @@
                     {% endif %}
                 }
             },
+            {% for item in extension_mgt.extension_types|split(",") %}
+            {% if item == 'identity-verification-providers' %}
+            "identityVerificationProviders": {
+                "enabled": {{ console.identity_verification_providers.enabled }},
+                "scopes": {
+                    {% if console.identity_verification_providers.scopes is defined %}
+                    {% for operation, scopes in console.identity_verification_providers.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% endfor %}
             "oidcScopes": {
                 "disabledFeatures": [
                     {% if console.oidc_scopes.disabled_features is defined %}
