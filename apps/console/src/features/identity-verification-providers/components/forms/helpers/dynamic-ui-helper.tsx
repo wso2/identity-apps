@@ -46,7 +46,7 @@ export const renderFormUIWithMetadata = (
     idvp?: IdentityVerificationProviderInterface,
     isReadOnly: boolean = false,
     padBetweenElements: boolean = false
-): React.ReactElement => {
+): ReactElement => {
 
     /**
      * Creates a form field with the given input field metadata.

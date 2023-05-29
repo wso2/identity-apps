@@ -84,7 +84,7 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
                     id={ FORM_ID }
                     uncontrolledForm={ true }
                     onSubmit={ (values: FormData): void => onSubmit(values) }
-                    data-testid={ componentId }
+                    data-componentid={ componentId }
                 >
                     { renderFormUIWithMetadata(uiMetaData, identityVerificationProvider, isReadOnly, true) }
                     { !isReadOnly && (

@@ -71,7 +71,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         ["data-componentid"]: componentId
     } = props;
 
-
     const { t } = useTranslation();
     const { data: idvpList } = useIdentityVerificationProviderList();
 
@@ -87,7 +86,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             description: values.description?.toString()
         });
     };
-
 
     return (
         <React.Fragment>

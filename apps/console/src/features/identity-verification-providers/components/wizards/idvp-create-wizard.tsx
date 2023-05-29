@@ -65,7 +65,6 @@ import { AttributesSelectionWizardPage } from "../settings/attribute-management"
  */
 enum WizardSteps {
     CONFIGURATION = "Configuration",
-    GENERAL_DETAILS = "GeneralDetails",
     IDVP_SETTINGS = "Identity Verification Provider Settings",
     ATTRIBUTES = "Attributes"
 }
@@ -290,7 +289,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                         <LinkButton
                             floated="left"
                             onClick={ handleWizardClose }
-                            data-testid={ `${ componentId }-modal-cancel-button` }>
+                            data-componentid={ `${ componentId }-modal-cancel-button` }>
                             { t("common:cancel") }
                         </LinkButton>
                     </Grid.Column>
@@ -303,7 +302,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                 onClick={ () => {
                                     wizardRef.current.gotoNextPage();
                                 } }
-                                data-testid={ `${ componentId }-modal-next-button` }>
+                                data-componentid={ `${ componentId }-modal-next-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 <Icon name="arrow right"/>
                             </PrimaryButton>
@@ -320,7 +319,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                 onClick={ () => {
                                     wizardRef.current.gotoNextPage();
                                 } }
-                                data-testid={ `${ componentId }-modal-finish-button` }
+                                data-componentid={ `${ componentId }-modal-finish-button` }
                                 loading={ isSubmitting }
                             >
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
@@ -331,7 +330,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                 type="submit"
                                 floated="right"
                                 onClick={ () => wizardRef.current.gotoPreviousPage() }
-                                data-testid={ `${ componentId }-modal-previous-button` }>
+                                data-componentid={ `${ componentId }-modal-previous-button` }>
                                 <Icon name="arrow left"/>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons." +
                                     "previous") }
@@ -404,7 +403,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                     maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
                     minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
                     format={ (values: any) => values.toString().trimStart() }
-                    data-testid={ `${ componentId }-form-wizard-idvp-name` }
+                    data-componentid={ `${ componentId }-form-wizard-idvp-name` }
                     hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
                 />
                 { renderFormUIWithMetadata(uiMetaData?.pages?.edit?.settings, idvpTemplate) }
@@ -463,13 +462,13 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
      * @returns Wizard header.
      */
     const renderWizardHeader = (): ReactElement => (
-        <div className={ "display-flex" }>
+        <div className="display-flex">
             <GenericIcon
                 icon={ resolveIDVPImage(selectedTemplateType.image) }
                 size="x30"
                 transparent
                 spaced={ "right" }
-                data-testid={ `${ componentId }-image` }/>
+                data-componentid={ `${ componentId }-image` }/>
             <div>
                 { selectedTemplateType.name }
                 { selectedTemplateType.description && (
@@ -514,7 +513,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                     onSubmit={ handleFormSubmit }
                     uncontrolledForm={ true }
                     pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                    data-testid={ componentId }>
+                    data-componentid={ componentId }>
                     { resolveWizardPages() }
                 </Wizard2>
             ) }
@@ -530,27 +529,27 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                 onClose={ onWizardClose }
                 closeOnDimmerClick={ false }
                 closeOnEscape
-                data-testid={ `${ componentId }-modal` }>
+                data-componentid={ `${ componentId }-modal` }>
                 <ModalWithSidePanel.MainPanel>
                     <ModalWithSidePanel.Header
                         className="wizard-header"
-                        data-testid={ `${ componentId }-modal-header` }>
+                        data-componentid={ `${ componentId }-modal-header` }>
                         { renderWizardHeader() }
                     </ModalWithSidePanel.Header>
                     <React.Fragment>
                         <ModalWithSidePanel.Content
                             className="steps-container"
-                            data-testid={ `${ componentId }-modal-content-1` }>
+                            data-componentid={ `${ componentId }-modal-content-1` }>
                             { renderStepsGroup() }
                         </ModalWithSidePanel.Content>
                         <ModalWithSidePanel.Content
                             className="content-container"
-                            data-testid={ `${ componentId }-modal-content-2` }>
+                            data-componentid={ `${ componentId }-modal-content-2` }>
                             { renderWizardContent() }
                         </ModalWithSidePanel.Content>
                     </React.Fragment>
                     <ModalWithSidePanel.Actions
-                        data-testid={ `${ componentId }-modal-actions` }>
+                        data-componentid={ `${ componentId }-modal-actions` }>
                         { resolveStepActions() }
                     </ModalWithSidePanel.Actions>
                 </ModalWithSidePanel.MainPanel>

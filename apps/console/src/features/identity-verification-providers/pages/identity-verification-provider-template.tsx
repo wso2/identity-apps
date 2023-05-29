@@ -228,7 +228,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
     const showPlaceholders = (list: any[]): ReactElement => {
 
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && list.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
