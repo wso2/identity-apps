@@ -671,7 +671,7 @@
         <identity.org.mgt.core.version.range>[1.0.0, 2.0.0]</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0]</carbon.identity.oauth.imp.pkg.version.range>
-        <identity.governance.version>1.5.48</identity.governance.version>
+        <identity.governance.version>1.8.41</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>
         <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>
 

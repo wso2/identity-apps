@@ -28,8 +28,12 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
@@ -68,27 +72,47 @@
 
 
 <script>
-    function submitIdentifier (e) {
-        e.preventDefault();
-        var userName = document.getElementById("username");
-        userName.value = userName.value.trim();
 
-        if (username.value) {
-            $.ajax({
-                type: "GET",
-                url: "<%=loginContextRequestUrl%>",
-                xhrFields: { withCredentials: true },
-                success: function (data) {
-                    if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
-                        window.location.href = data.redirectUrl;
-                    } else {
-                        document.getElementById("identifierForm").submit();
-                    }
-                },
-                cache: false
-            });
-        }
+     function onCompleted() {
+        $('#identifierForm').submit();
     }
+
+    $(document).ready(function(){
+        $.fn.preventDoubleSubmission = function() {
+            $(this).on('submit',function(e){
+                var $form = $(this);
+                e.preventDefault();
+                var userName = document.getElementById("username");
+                userName.value = userName.value.trim();
+                var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";
+                if (genericReCaptchaEnabled === "true") {
+                    if (!grecaptcha.getResponse()) {
+                        grecaptcha.execute();
+                        return;
+                    }
+                }
+
+                if (username.value) {
+                    $.ajax({
+                        type: "GET",
+                        url: "<%=loginContextRequestUrl%>",
+                        xhrFields: { withCredentials: true },
+                        success: function (data) {
+                            if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
+                                window.location.href = data.redirectUrl;
+                            } else {
+                                document.getElementById("identifierForm").submit();
+                            }
+                        },
+                        cache: false
+                    });
+                }            
+            });
+                        
+            return this;
+        };
+        $('#identifierForm').preventDoubleSubmission();
+    });
 </script>
 
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="identifierForm" onsubmit="event.preventDefault()">
@@ -126,18 +150,6 @@
         </div>
         <input id="authType" name="authType" type="hidden" value="idf">
     </div>
-    <%
-        if (reCaptchaEnabled) {
-    %>
-    <div class="field">
-        <div class="g-recaptcha"
-             data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
-         >
-        </div>
-    </div>
-    <%
-        }
-    %>
 
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
         (request.getParameter("sessionDataKey"))%>'/>
@@ -195,6 +207,17 @@
         }
     %>
 
+    <% if (genericReCaptchaEnabled) { %>
+        <div class="field">
+            <div class="g-recaptcha"
+                data-size="invisible"
+                data-callback="onCompleted"
+                data-action="login"
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+            </div>
+        </div>
+    <% } %>
+
     <% if (isUsernameRecoveryEnabledInTenant) { %>
         <div class="field">
             <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
@@ -217,13 +240,14 @@
             <% } %>
         </div>
         <div class="column align-right buttons">
-            <input
+            <button
                 type="submit"
-                onclick="submitIdentifier(event)"
-                class="ui primary large button"
+                class="ui primary fluid large button"
                 role="button"
                 data-testid="identifier-auth-continue-button"
-                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" />
+            >
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
+            </button>
         </div>
     </div>
 </form>
