@@ -141,7 +141,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param data - data of the checkbox.
      */
     const handleIdentityVerificationProviderDisable = (event: any, data: CheckboxProps) => {
-
         handleFormSubmit({ isEnabled: data.checked });
     };
 

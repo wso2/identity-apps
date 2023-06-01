@@ -273,8 +273,10 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             inputType="identifier"
                             maxLength={ 120 }
                             minLength={ 1 }
-                            label={ !editingMode && "External IDVP Attribute" }
-                            placeholder="Enter external IDVP attribute"
+                            label={ !editingMode && t("console:develop.features.idvp.forms.attributeSettings" +
+                                ".attributeMappingListItem.labels.mappedValue") }
+                            placeholder= { t("console:develop.features.idvp.forms.attributeSettings" +
+                                ".attributeMappingListItem.placeholders.mappedValue") }
                             aria-label="External IDVP Attribute Mapping Value"
                             value={ mappedInputValue }
                             initialValue={ mappedInputValue }
@@ -295,10 +297,12 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             value={ selectedLocalAttributeInputValue }
                             initialValue={ selectedLocalAttributeInputValue }
                             options={ getListOfAvailableAttributes() }
-                            label={ !editingMode && "Maps to" }
+                            label={ !editingMode && t("console:develop.features.idvp.forms.attributeSettings" +
+                                ".attributeMappingListItem.labels.localClaim") }
                             aria-Label="Local Claim Attribute"
                             name="localClaimId"
-                            placeholder="Select mapping attribute"
+                            placeholder= { t("console:develop.features.idvp.forms.attributeSettings" +
+                                ".attributeMappingListItem.placeholders.localClaim") }
                             onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
                                 setSelectedLocalAttributeInputValue(data.value as string);
                             } }

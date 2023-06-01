@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { Trans } from "react-i18next";
 import { getEmptyPlaceholderIllustrations, store } from "../../../../../core";
 
 /**
@@ -58,12 +59,21 @@ export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): v
 export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
     return (
         <EmptyPlaceholder
-            title={ "You haven't selected any attributes" }
+            title={
+                I18n.instance.t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
+                    "emptyPlaceholderCreate.title")
+            }
             subtitle={
                 [
-                    <p key={ "empty-attributes-mapping" }>
-                        Map attributes and click <strong>Add Attribute Mapping</strong> to get started.
-                    </p>
+                    <Trans
+                        key={ "no-attributes-configured" }
+                        i18nKey={
+                            "console:develop.features.idvp.forms.attributeSettings.attributeMapping" +
+                            ".emptyPlaceholderCreate.subtitle"
+                        }
+                    >
+                       Map attributes and click <strong>Add Attribute Mapping</strong> to get started.
+                    </Trans>
                 ]
             }
             image={ getEmptyPlaceholderIllustrations().emptyList }

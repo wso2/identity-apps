@@ -159,13 +159,13 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                 <EmptyPlaceholder
                     title={
                         t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
-                            "emptyPlaceholder.title")
+                            "emptyPlaceholderEdit.title")
                     }
                     subtitle={ [
                         <p key={ "no-attributes-configured" }>
                             {
                                 t("console:develop.features.idvp.forms.attributeSettings.attributeMapping." +
-                                    "emptyPlaceholder.subtitle")
+                                    "emptyPlaceholderEdit.subtitle")
                             }
                         </p>
                     ] }

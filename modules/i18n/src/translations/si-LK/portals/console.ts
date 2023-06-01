@@ -4270,9 +4270,13 @@ export const console: ConsoleNS = {
                             heading: "අනන්‍යතා තහවුරු කරන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
                             hint: "බාහිර අනන්‍යතා තහවුරු කරන්නාගේ සහය දක්වන ගුණාංග එකතු කර සිතියම්ගත කරන්න.",
                             addButton: "ගුණාංගයක් සිතියම්ගත කරන්න",
-                            emptyPlaceholder: {
-                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා එක් කළ ගුණාංග නොමැත.",
-                                title: "ගුණාංග එකතු කර නැත"
+                            emptyPlaceholderEdit: {
+                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා සිතියම් ගතකල ගුණාංග නොමැත.",
+                                title: "ගුණාංග සිතියම් ගතකර නැත"
+                            },
+                            emptyPlaceholderCreate:{
+                                subtitle:"ගුණාංග සිතියම්ගත කර <1>ගුණාංගයක් සිතියම්ගත කරන්න</1> බොත්තම ඔබන්න.",
+                                title: "ඔබ ගුණාංග සිතියම් ගතකර නැත"
                             }
                         },
                         attributeMappingListItem: {
@@ -4280,6 +4284,14 @@ export const console: ConsoleNS = {
                                 duplicate: "මෙම නම සමඟ සිතියම් ගත කළ ගුණාංගයක් දැනටමත් ඇත.",
                                 required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
                                 invalid: "කරුණාකර වලංගු ආදානයක් ඇතුළත් කරන්න"
+                            },
+                            placeholders: {
+                                mappedValue: "බාහිර ගුණාංගය ඇතුලත් කරන්න",
+                                localClaim: "සිතියම් ගතකරන ගුණාංගය තෝරාගන්න"
+                            },
+                            labels: {
+                                mappedValue: "බාහිර ගුණාංගය",
+                                localClaim: "සිතියම් ගතවන්නේ"
                             }
                         },
                         attributeSelectionModal: {

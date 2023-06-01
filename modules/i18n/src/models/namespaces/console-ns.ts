@@ -2431,7 +2431,11 @@ export interface ConsoleNS {
                             heading: string;
                             hint: string;
                             addButton: string;
-                            emptyPlaceholder: {
+                            emptyPlaceholderEdit: {
+                                title: string;
+                                subtitle: string;
+                            };
+                            emptyPlaceholderCreate: {
                                 title: string;
                                 subtitle: string;
                             };
@@ -2442,6 +2446,14 @@ export interface ConsoleNS {
                                 required: string;
                                 invalid: string;
                             };
+                            placeholders: {
+                                mappedValue: string;
+                                localClaim: string;
+                            };
+                            labels: {
+                                mappedValue: string;
+                                localClaim: string;
+                            }
                         };
                         attributeSelectionModal: {
                             header: string;

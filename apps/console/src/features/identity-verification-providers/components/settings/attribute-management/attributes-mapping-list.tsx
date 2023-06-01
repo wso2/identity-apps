@@ -220,7 +220,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
             placeholders={ noDataPlaceholder }
             selectable={ () => false }
             isRowSelectable={ () => false }
-            onRowClick={ () => ({ /*Noop*/ }) }
+            onRowClick={ () => null }
         />
     );
 

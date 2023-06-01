@@ -5906,9 +5906,13 @@ export const console: ConsoleNS = {
                             heading: "Identity Verification Provider Attribute Mappings",
                             hint: "Add and map the supported attributes from external Identity Verification Provider.",
                             addButton: "Add Attribute Mapping",
-                            emptyPlaceholder: {
-                                subtitle: "There are no attributes added for this Identity Verification Provider.",
-                                title: "No attributes added"
+                            emptyPlaceholderEdit: {
+                                subtitle: "There are no attributes mapped for this Identity Verification Provider.",
+                                title: "No attributes mapped"
+                            },
+                            emptyPlaceholderCreate:{
+                                subtitle: "Map attributes and click <1>Add Attribute Mapping</1> to get started.",
+                                title: "You haven't mapped any attributes"
                             }
                         },
                         attributeMappingListItem: {
@@ -5916,6 +5920,14 @@ export const console: ConsoleNS = {
                                 duplicate: "There's already an attribute mapped with this name.",
                                 required: "This field cannot be empty",
                                 invalid: "Please enter a valid input"
+                            },
+                            placeholders: {
+                                mappedValue: "Enter external IDVP attribute",
+                                localClaim: "Select mapping attribute"
+                            },
+                            labels: {
+                                mappedValue: "External IDVP Attribute",
+                                localClaim: "Maps to"
                             }
                         },
                         attributeSelectionModal: {

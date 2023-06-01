@@ -114,7 +114,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ selectedIdvpToBeDeleted, setSelectedIdvpToBeDeleted ] =
         useState<IdentityVerificationProviderInterface>(undefined);
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 

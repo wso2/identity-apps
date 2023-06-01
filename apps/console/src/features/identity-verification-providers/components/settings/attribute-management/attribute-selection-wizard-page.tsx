@@ -147,11 +147,9 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
     const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
 
         setMappedAttributeList([ ...mappedAttributesList, mapping ]);
-
         // Add the id of newly added attribute to the mapped id list.
         setMappedAttrIds(new Set<string>([ ...mappedAttrIds, mapping.localClaim.id ]) );
     };
-
 
     /**
      * Return the remaining unmapped attributes.

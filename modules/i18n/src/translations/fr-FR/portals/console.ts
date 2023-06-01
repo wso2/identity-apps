@@ -4395,10 +4395,14 @@ export const console: ConsoleNS = {
                             hint: "Ajoutez et mappez les attributs pris en charge par le fournisseur externe " +
                                 "de vérification d'identité.",
                             addButton: "Ajouter un mappage d'attributs",
-                            emptyPlaceholder: {
-                                subtitle: "Aucun attribut n'a été ajouté pour ce fournisseur de vérification " +
-                                    "d'identité",
-                                title: "Aucun attribut ajouté"
+                            emptyPlaceholderEdit: {
+                                subtitle: "Aucun attribut n'est associé à ce fournisseur de vérification d'identité.",
+                                title: "Aucun attribut associé"
+                            },
+                            emptyPlaceholderCreate: {
+                                subtitle: "Associez les attributs sur la carte et cliquez sur <1>Ajouter un mappage " +
+                                    "d'attributs</1> pour commencer.",
+                                title: "Vous n'avez associé aucun attribut"
                             }
                         },
                         attributeMappingListItem: {
@@ -4406,6 +4410,14 @@ export const console: ConsoleNS = {
                                 duplicate: "Il existe déjà un attribut mapé avec ce nom.",
                                 required: "Ce champ ne peut pas être vide",
                                 invalid: "Veuillez entrer une valeur valide"
+                            },
+                            placeholders: {
+                                mappedValue: "Saisissez l'attribut IDVP externe",
+                                localClaim: "Sélectionnez l'attribut de mappage"
+                            },
+                            labels: {
+                                mappedValue: "Attribut IDVP externe",
+                                localClaim: "Mappe à"
                             }
                         },
                         attributeSelectionModal: {
