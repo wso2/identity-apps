@@ -237,19 +237,13 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_idvp_create",
-                        "internal_idv_claim_add",
-                        "internal_idv_claim_update"
+                        "internal_idvp_create"
                     ],
                     "read": [
-                        "internal_idvp_view",
-                        "internal_idv_claim_view",
-                        "internal_idv_claim_verify"
+                        "internal_idvp_view"
                     ],
                     "update": [
-                        "internal_idvp_update",
-                        "internal_idv_claim_add",
-                        "internal_idv_claim_update"
+                        "internal_idvp_update"
                     ],
                     "delete": [
                         "internal_idvp_delete"
