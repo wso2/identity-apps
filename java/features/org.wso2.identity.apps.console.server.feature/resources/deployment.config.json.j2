@@ -458,8 +458,6 @@
                     {% endif %}
                 }
             },
-            {% for item in extension_mgt.extension_types|split(",") %}
-            {% if item == 'identity-verification-providers' %}
             "identityVerificationProviders": {
                 "enabled": {{ console.identity_verification_providers.enabled }},
                 "scopes": {
@@ -479,8 +477,6 @@
                     {% endif %}
                 }
             },
-            {% endif %}
-            {% endfor %}
             "oidcScopes": {
                 "disabledFeatures": [
                     {% if console.oidc_scopes.disabled_features is defined %}

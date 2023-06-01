@@ -26,7 +26,6 @@ import { EXTENSION_ROUTES, identityProviderConfig } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView, FullScreenView } from "../../../views";
 import { AppConstants } from "../constants";
-import { store } from "../store";
 
 /**
  * Get Developer View Routes.
@@ -175,12 +174,12 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
                         ),
                         exact: true,
                         icon: { icon: getSidePanelIcons().identityVerificationProviders },
-                        id: "identityVerificationProvider",
+                        id: "identityVerificationProviders",
                         name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
                         order: 3,
                         path: AppConstants.getPaths().get("IDVP"),
                         protected: true,
-                        showOnSidePanel: store.getState().config.ui?.features?.identityVerificationProviders?.enabled
+                        showOnSidePanel: true
                     },
                     {
                         category: "console:develop.features.secrets.routes.category",
