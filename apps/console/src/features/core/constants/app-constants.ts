@@ -286,6 +286,11 @@ export class AppConstants {
                     ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
                     :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
             )
+            .set("IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers`)
+            .set("IDVP_TEMPLATES",
+                `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
+            )
+            .set("IDVP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/:id`)
             .set("EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit`)
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)

@@ -90,6 +90,10 @@ export interface FeatureConfigInterface {
      */
     identityProviders?: FeatureAccessConfigInterface;
     /**
+     * Identity verification provider management feature.
+     */
+    identityVerificationProviders?: FeatureAccessConfigInterface;
+    /**
      * OIDC Scope management feature.
      */
     oidcScopes?: FeatureAccessConfigInterface;

@@ -207,7 +207,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         >
                             <Grid>
                                 <Grid.Row>
-                                    { 
+                                    {
                                         !disableLeftActionPanel
                                             ? (
                                                 <Grid.Column

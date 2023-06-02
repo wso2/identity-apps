@@ -4085,6 +4085,238 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "සෙවීමට අගය ඇතුලත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "නම මගින් සොයන්න"
+                },
+                buttons: {
+                    addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන් නොමැත.",
+                            1: "ඔබට අනන්‍යතා තහවුරු කරන්නන් නිර්මාණය කිරීමේ විසාඩය මගින්",
+                            2: "පහසුවෙන් අනන්‍යතා තහවුරු කරන්නෙක් එක් කර ගත හැක."
+                        },
+                        title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "වින්‍යාස කිරීම සඳහා මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන්",
+                            1: "වර්ග නොමැත."
+                        },
+                        title: "අනන්‍යතා තහවුරු කරන්නන් වර්ග කිසිවක් හමු නොවිණි"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න",
+                        content: "ඔබ මෙම අනන්‍යතා තහවුරු කරන්නා මකා දැමුවහොත්, ඔබට එය නැවත ආපසු හැරවීමට නොහැකි වනු ඇත. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර අනන්‍යතා තහවුරු කරන්නා ස්ථිරවම මකා දැමෙනු ඇත."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නන් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය",
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීම සාර්ථකයි",
+                            message: "මකා දැමීම සාර්ථකයි"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා නිර්මාණය කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාව සාර්ථකව නිර්මාණය කරන ලදී.",
+                            message: "නිර්මාණය සාර්ථකයි"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "සියලුම අනිවාර්ය ගුණාංග වින්‍යාස කිරීමට අවශ්‍යය.",
+                            message: "යාවත්කාලීන කිරීම කළ නොහැක"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "දේශීය හිමිකම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාගේ තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ පාරදත්ත ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි වර්ග ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිලි වර්ගය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිල්ල ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය",
+                            label: "විස්තරය",
+                            placeholder: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය ඇතුළත් කරන්න."
+                        },
+                        name: {
+                            hint: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක්",
+                            label: "නම",
+                            placeholder: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක් ඇතුළත් කරන්න.",
+                            validations: {
+                                duplicate: "මෙම නම සහිත තවත් අනන්‍යතා තහවුරු කරන්නෙක් සිටී",
+                                empty: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
+                                maxLengthReached: "අනන්‍යතා තහවුරු කරන්නාගේ නමෙහි අකුරු ගණන {{ maxLength }} ට වඩා වැඩි විය නොහැක",
+                                required: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
+                                invalid: "අන්‍යතා තහවුරු කරන්නාගේ නම වලංගු නොවේ"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "අනන්‍යතා තහවුරු කරන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
+                            hint: "බාහිර අනන්‍යතා තහවුරු කරන්නාගේ සහය දක්වන ගුණාංග එකතු කර සිතියම්ගත කරන්න.",
+                            addButton: "ගුණාංගයක් සිතියම්ගත කරන්න",
+                            emptyPlaceholderEdit: {
+                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා සිතියම් ගතකල ගුණාංග නොමැත.",
+                                title: "ගුණාංග සිතියම් ගතකර නැත"
+                            },
+                            emptyPlaceholderCreate:{
+                                subtitle:"ගුණාංග සිතියම්ගත කර <1>ගුණාංගයක් සිතියම්ගත කරන්න</1> බොත්තම ඔබන්න.",
+                                title: "ඔබ ගුණාංග සිතියම් ගතකර නැත"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "මෙම නම සමඟ සිතියම් ගත කළ ගුණාංගයක් දැනටමත් ඇත.",
+                                required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
+                                invalid: "කරුණාකර වලංගු ආදානයක් ඇතුළත් කරන්න"
+                            },
+                            placeholders: {
+                                mappedValue: "බාහිර ගුණාංගය ඇතුලත් කරන්න",
+                                localClaim: "සිතියම් ගතකරන ගුණාංගය තෝරාගන්න"
+                            },
+                            labels: {
+                                mappedValue: "බාහිර ගුණාංගය",
+                                localClaim: "සිතියම් ගතවන්නේ"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "ගුණාංග සිතියම්ගත කරන්න"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
+                        header: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
+                        subheader: "මෙය ආපසු හැරවිය නොහැකි ක්‍රියාවකි, ප්‍රවේශමෙන් කටයුතු කරන්න."
+                    },
+                    disableIDVP: {
+                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
+                        header: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
+                        subheader: "ඔබ අනන්‍යතා සත්‍යාපන සැපයුම්කරුවෙකු අක්‍රිය කළ පසු, එය නැවත සක්‍රිය කරන තෙක් එය තවදුරටත් භාවිත කළ නොහැක."
+                    },
+                    header: "ආන්තරා කලාපය"
+                },
+                list: {
+                    actions: "ක්‍රියා",
+                    name: "නම"
+                }
+            },
             overview: {
                 banner: {
                     heading: "සංවර්ධකයින් සඳහා WSO2 හැඳුනුම් සේවාදායකය",
@@ -4288,7 +4520,8 @@ export const console: ConsoleNS = {
                     application: "අයදුම්පත්",
                     general: "ජනරාල්",
                     gettingStarted: "ඇරඹේ",
-                    identityProviders: "හැඳුනුම්පත් සපයන්නන්"
+                    identityProviders: "හැඳුනුම්පත් සපයන්නන්",
+                    identityVerificationProviders: "අනන්‍යතා තහවුරු කරන්නන්"
                 },
                 customize: "අභිරුචිකරණය කරන්න",
                 identityProviderEdit: "හැඳුනුම්පත් සපයන්නන් සංස්කරණය කරන්න",
@@ -4382,6 +4615,18 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "ප්‍රතිපාදන"
                 },
                 title: "අනන්‍යතා සැපයුම්කරු තෝරන්න"
+            },
+            idvp: {
+                subTitle: "පරිශීලකයින්ට ඔවුන්ගේ අනන්‍යතා තහවුරු කිරීමට ඉඩ දීම සඳහා අනන්‍යතා තහවුරු කරන්නන් කළමනාකරණය කරන්න",
+                title: "අනන්‍යතා තහවුරු කරන්නන්"
+            },
+            idvpTemplate: {
+                backButton: "අනන්‍යතා තහවුරු කරන්නන් වෙත ආපසු යන්න",
+                subTitle: "පහත අනන්‍යතා තහවුරු කරන්නන්ගෙන් එකක් තෝරන්න.",
+                title: "අනන්‍යතා තහවුරු කරන්නන් තෝරන්න",
+                "search": {
+                    "placeholder": "නමින් සොයන්න"
+                }
             },
             overview: {
                 subTitle: "යෙදුම්, අනන්‍යතා සපයන්නන්, පරිශීලකයින් සහ භූමිකාවන් වින්‍යාස කිරීම සහ කළමනාකරණය " +
@@ -6846,8 +7091,8 @@ export const console: ConsoleNS = {
                     "සංවිධාන සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
                 unshareApplicationRadio: "කිසිදු උප සංවිධානයක් සමඟ බෙදා නොගන්න",
                 shareWithSelectedOrgsRadio: "තෝරාගත් උප සංවිධාන සමඟ පමණක් බෙදා ගන්න",
-                unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම සංවිධානය යටතේ නිර්මාණය කරන " + 
-                    "දැනට පවතින උප-සංවිධාන හෝ නව උප-සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " + 
+                unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම සංවිධානය යටතේ නිර්මාණය කරන " +
+                    "දැනට පවතින උප-සංවිධාන හෝ නව උප-සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
                     "මෙය ඔබට ඉඩ සලසයි.",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {

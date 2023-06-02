@@ -2391,6 +2391,89 @@ export interface ConsoleNS {
                     };
                 };
             };
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                buttons: {
+                    addIDVP: string;
+                };
+                placeholders: {
+                    emptyIDVPList: Placeholder;
+                    emptyIDVPTypeList: Placeholder;
+                };
+                confirmations: {
+                    deleteIDVP: Confirmation;
+                };
+                notifications: {
+                  getIDVPList: Notification;
+                  deleteIDVP: Notification;
+                  updateIDVP: Notification;
+                  addIDVP: Notification;
+                  submitAttributeSettings: Notification;
+                  getAllLocalClaims: Notification;
+                  getIDVP: Notification;
+                  getUIMetadata: Notification;
+                  getIDVPTemplateTypes: Notification;
+                  getIDVPTemplateType: Notification;
+                  getIDVPTemplate: Notification;
+                };
+                forms: {
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: string;
+                            hint: string;
+                            addButton: string;
+                            emptyPlaceholderEdit: {
+                                title: string;
+                                subtitle: string;
+                            };
+                            emptyPlaceholderCreate: {
+                                title: string;
+                                subtitle: string;
+                            };
+                        };
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: string;
+                                required: string;
+                                invalid: string;
+                            };
+                            placeholders: {
+                                mappedValue: string;
+                                localClaim: string;
+                            };
+                            labels: {
+                                mappedValue: string;
+                                localClaim: string;
+                            }
+                        };
+                        attributeSelectionModal: {
+                            header: string;
+                        };
+                    };
+                    generalDetails: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                    };
+                };
+                dangerZoneGroup?: {
+                    header: string;
+                    disableIDVP: DangerZone;
+                    deleteIDVP: DangerZone;
+                };
+                list: {
+                    actions: string;
+                    name: string;
+                };
+            };
             overview: {
                 banner: {
                     heading: string;
@@ -2428,6 +2511,7 @@ export interface ConsoleNS {
                     identityProviders: string;
                     authenticationProviders?: string;
                     general: string;
+                    identityVerificationProviders: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2600,6 +2684,15 @@ export interface ConsoleNS {
                 supportServices: {
                     authenticationDisplayName: string;
                     provisioningDisplayName: string;
+                };
+            };
+            idvp: Page;
+            idvpTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+                search: {
+                    placeholder: string;
                 };
             };
             overview: Page;

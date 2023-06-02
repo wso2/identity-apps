@@ -73,7 +73,7 @@ export const createIdentityProvider = <T = Record<string, unknown>> (identityPro
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    
+
     return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 201)) {
@@ -1222,7 +1222,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList - 
+ * @param authenticatorList -
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
