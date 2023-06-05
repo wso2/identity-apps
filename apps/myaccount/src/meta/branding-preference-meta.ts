@@ -994,6 +994,13 @@ export class BrandingPreferenceMeta {
         background: var(--asg-colors-background-surface-inverted);
     }
 
+    .ui.menu.app-footer .footer-dropdown .dropdown-trigger.link, .ui.menu.app-footer .footer-link {
+        color: var(--asg-colors-text-primary);
+    }
+    .ui.menu.app-footer .footer-dropdown .dropdown.icon {
+        color: var(--asg-colors-text-primary);
+    }
+
     /* ------  My Account Applications ------ */
 
     .ui.items>.item.application-list-item {
