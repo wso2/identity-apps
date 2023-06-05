@@ -29,6 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants } from "../../constants";
+import { useBrandingPreference } from "../../hooks";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -57,6 +58,8 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
     } = props;
 
     const { t } = useTranslation();
+
+    const { organizationDetails } = useBrandingPreference();
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
@@ -144,11 +147,7 @@ export const Footer: FunctionComponent<FooterProps> = (props: FooterProps): Reac
             currentLanguage={ I18n.instance?.language }
             supportedLanguages={ supportedI18nLanguages }
             onLanguageChange={ handleLanguageSwitch }
-            copyright={
-                config.ui.copyrightText
-                    ? config.ui.copyrightText
-                    : null
-            }
+            copyright={ organizationDetails?.copyrightText ?? config.ui.copyrightText }
             fixed="bottom"
             links={ generateFooterLinks() }
             { ...rest }
