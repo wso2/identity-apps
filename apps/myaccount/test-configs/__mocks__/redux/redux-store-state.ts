@@ -223,6 +223,23 @@ const ReduxStoreStateMock: any = {
         alertSystem: null,
         isGlobalLoaderVisible: false,
         supportedI18nLanguages: {
+            "tr-TR": {
+                code: "tr-TR",
+                flag: "tr",
+                name: "Türkçe (Turkey)",
+                namespaces: [
+                    "common",
+                    "console",
+                    "myAccount",
+                    "extensions"
+                ],
+                paths: {
+                    common: "tr-TR/portals/common.json",
+                    console: "tr-TR/portals/console.json",
+                    myAccount: "tr-TR/portals/myAccount.json",
+                    extensions: "tr-TR/portals/extensions.json"
+                }
+            },
             "en-US": {
                 code: "en-US",
                 flag: "us",

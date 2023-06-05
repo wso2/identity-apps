@@ -22,3 +22,4 @@ export * from "./pt-BR";
 export * from "./si-LK";
 export * from "./es-ES";
 export * from "./de-DE";
+export * from "./tr-TR";

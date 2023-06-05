@@ -30,8 +30,8 @@
             <stop offset="1" stop-color="#dbdddf"/>
         </linearGradient>
         <linearGradient id="linear-gradient-5" y1="0.036" x2="0.567" y2="1.707" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#fe851f"/>
-            <stop offset="0.553" stop-color="#ff5e05"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
             <stop offset="1" stop-color="#805029"/>
         </linearGradient>
         <filter id="Path_1950" x="118.559" y="11.496" width="86.44" height="104.294" filterUnits="userSpaceOnUse">
@@ -43,14 +43,14 @@
         </filter>
         <linearGradient id="linear-gradient-6" x1="0.707" y1="0.813" x2="0.352" y2="0.283"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#d35911" stop-opacity="0"/>
-            <stop offset="1" stop-color="#d75a10"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-7" x1="-0.128" y1="0.28" x2="1.484" y2="1.743"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#f9bc8a"/>
-            <stop offset="0.445" stop-color="#ff770e"/>
-            <stop offset="1" stop-color="#ff5c04"/>
+            <stop offset="0" stop-color="#5d89e7"/>
+            <stop offset="0.445" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-8" x1="0.5" y1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
             <stop offset="0" stop-color="#fff"/>
