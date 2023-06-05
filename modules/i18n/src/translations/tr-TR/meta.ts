@@ -16,10 +16,17 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./es-ES";
-export * from "./de-DE";
-export * from "./tr-TR";
+import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
+
+export const meta: LocaleMeta = {
+    code: "tr-TR",
+    flag: "tr",
+    name: "Türkçe",
+    namespaces: [
+        I18nModuleConstants.COMMON_NAMESPACE,
+        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
+        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
+        I18nModuleConstants.EXTENSIONS_NAMESPACE
+    ]
+};
