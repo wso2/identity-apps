@@ -135,7 +135,7 @@
                             </label>
                             <div class="ui fluid icon input addon-wrapper">
                                 <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
-                                <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                <i id="password-eye" class="eye icon right-align password-toggle link" onclick="showOTPCode()"></i>
                             </div>
                                 <% } else { %>
                             <div class="field">
@@ -143,7 +143,7 @@
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
                                     <input type="password" id='OTPCode' name="OTPCode" size='30'/>
-                                    <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                    <i id="password-eye" class="eye icon right-align password-toggle link" onclick="showOTPCode()"></i>
                                 </div>
                                 <% } %>
                             </div>
