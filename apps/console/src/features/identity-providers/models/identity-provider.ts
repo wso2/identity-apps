@@ -747,6 +747,32 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
 }
 
 /**
+ * Interface for Identity Provider Initial Values.
+ */
+export interface IdentityProviderInitialValuesInterface {
+    NameIDType: string;
+    RequestMethod: string;
+    name: string;
+}
+
+/**
+ * Interface for Identity Provider Form Values.
+ */
+export interface IdentityProviderFormValuesInterface {
+    name?: string;
+    NameIDType?: string;
+    RequestMethod?: string;
+    clientId?: string;
+    clientSecret?: string;
+    authorizationEndpointUrl?: string;
+    tokenEndpointUrl?: string;
+    jwks_endpoint?: string;
+    IdPEntityId?: string;
+    SPEntityId?: string;
+    SSOUrl?: string;
+}
+
+/**
  * Authenticator Labels.
  * @readonly
  */
