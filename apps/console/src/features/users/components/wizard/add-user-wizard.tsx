@@ -478,7 +478,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 }
 
                 closeWizard();
-                history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
+                history.push(AppConstants.getPaths().get("USERS"));
             })
             .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
