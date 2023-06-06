@@ -71,9 +71,29 @@ interface WizardStateInterface {
  * Interface for the wizard step.
  */
 interface WizardStepInterface {
-    content: JSX.Element;
+    content: ReactElement;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     title: string;
+}
+
+/**
+ * Interface for the role and group data.
+ */
+interface PayloadInterface {
+    Operations: {
+        op: string;
+        value: {
+          users?: {
+            display: string;
+            value: string;
+          }[];
+          members?: {
+            display: string;
+            value: string;
+          }[];
+        };
+      }[];
+      schemas: string[];
 }
 
 /**
@@ -228,35 +248,35 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setRoleSelection(true);
     };
 
-    const handleRoleListChange = (roleList) => {
+    const handleRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
         setRoleList(roleList);
     };
 
-    const handleInitialRoleListChange = (roleList) => {
+    const handleInitialRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
         setInitialRoleList(roleList);
     };
 
-    const handleAddedListChange = (newRoleList) => {
+    const handleAddedListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
         setTempRoleList(newRoleList);
     };
 
-    const handleAddedRoleInitialListChange = (newRoleList) => {
+    const handleAddedRoleInitialListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
         setInitialTempRoleList(newRoleList);
     };
 
-    const handleGroupListChange = (groupList) => {
+    const handleGroupListChange = (groupList: RolesInterface[]) => {
         setGroupsList(groupList);
     };
 
-    const handleInitialGroupListChange = (groupList) => {
+    const handleInitialGroupListChange = (groupList: RolesInterface[]) => {
         setInitialGroupList(groupList);
     };
 
-    const handleAddedGroupListChange = (newGroupList) => {
+    const handleAddedGroupListChange = (newGroupList: RolesInterface[]) => {
         setTempGroupList(newGroupList);
     };
 
-    const handleAddedGroupInitialListChange = (newGroupList) => {
+    const handleAddedGroupInitialListChange = (newGroupList: RolesInterface[]) => {
         setInitialTempGroupList(newGroupList);
     };
 
@@ -293,7 +313,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         const groupIds: string[] = [];
 
         // Payload for the update role request.
-        const roleData = {
+        const roleData: PayloadInterface = {
             Operations: [
                 {
                     op: "add",
@@ -311,7 +331,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         };
 
         // Payload for the update group request.
-        const groupData = {
+        const groupData: PayloadInterface = {
             Operations: [
                 {
                     op: "add",
@@ -329,7 +349,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         };
 
         if (roles.length > 0) {
-            roles.map((role) => {
+            roles.map((role: RolesInterface | OrganizationRoleListItemInterface) => {
                 roleIds.push(role.id);
             });
 
@@ -375,7 +395,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
 
         if (groups.length > 0) {
-            groups.map((group) => {
+            groups.map((group: RolesInterface) => {
                 groupIds.push(group.id);
             });
 
@@ -601,7 +621,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                    onSubmit={ (values: AddUserWizardStateInterface) =>
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
             icon: getUserWizardStepIcons().general,
@@ -611,7 +632,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 <AddUserGroup
                     triggerSubmit={ submitGroupList }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    onSubmit={ (values: AddUserWizardStateInterface) =>
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
                     initialValues={
                         {
                             groupList: groupList,
@@ -620,10 +642,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             tempGroupList: tempGroupList
                         }
                     }
-                    handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                    handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
-                    handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                    handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                    handleGroupListChange={ (groups: RolesInterface[]) => handleGroupListChange(groups) }
+                    handleTempListChange={ (groups: RolesInterface[]) => handleAddedGroupListChange(groups) }
+                    handleInitialTempListChange={ (groups: RolesInterface[]) =>
+                        handleAddedGroupInitialListChange(groups) }
+                    handleInitialGroupListChange={ (groups: RolesInterface[]) => handleInitialGroupListChange(groups) }
                     handleSetGroupId={ null }
                 />
             ),
@@ -641,7 +664,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     />)
                     : (<AddUserRole
                         triggerSubmit={ submitRoleList }
-                        onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                        onSubmit={ (values: AddUserWizardStateInterface) =>
+                            handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
                         initialValues={
                             {
                                 initialRoleList: initialRoleList,
@@ -650,10 +674,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 tempRoleList: tempRoleList
                             }
                         }
-                        handleRoleListChange={ (roles) => handleRoleListChange(roles) }
-                        handleTempListChange={ (roles) => handleAddedListChange(roles) }
-                        handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
-                        handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
+                        handleRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleRoleListChange(roles) }
+                        handleTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedListChange(roles) }
+                        handleInitialTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedRoleInitialListChange(roles) }
+                        handleInitialRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleInitialRoleListChange(roles) }
                         handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
                     />)
             ),
