@@ -356,16 +356,11 @@ export class AppConstants {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
-        for (let i: number = governanceConnectorCategories.length-1; i >=0 ; i--) {
+        const filteredGovernaceConnector: GovernanceConnectorCategoryInterface[] = 
+            governanceConnectorCategories.filter((connector: GovernanceConnectorCategoryInterface) =>
+                showGovernanceConnectorsIdOfSuborgs.includes(connector.id));
 
-            const connector: GovernanceConnectorCategoryInterface = governanceConnectorCategories[i];
-
-            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
-                governanceConnectorCategories.splice(i,1);
-            }
-        }
-
-        return governanceConnectorCategories;
+        return filteredGovernaceConnector;
     }
 
     /**
