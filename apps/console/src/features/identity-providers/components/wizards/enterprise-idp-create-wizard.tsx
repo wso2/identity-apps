@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -30,21 +30,25 @@ import {
     Heading,
     Hint,
     LinkButton,
+    PickerResult,
     PrimaryButton,
     SelectionCard,
     Steps,
     Switcher,
+    SwitcherOptionProps,
     XMLFileStrategy,
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 
 import React, {
     FC,
+    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     ReactNode,
@@ -56,6 +60,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
 import { commonConfig, identityProviderConfig } from "../../../../extensions";
 import {
@@ -73,6 +79,10 @@ import { AuthenticatorMeta } from "../../meta";
 import {
     AuthProtocolTypes,
     GenericIdentityProviderCreateWizardPropsInterface,
+    IdentityProviderFormValuesInterface,
+    IdentityProviderInitialValuesInterface,
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
     StrictIdentityProviderInterface
@@ -128,7 +138,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         [ "data-componentid" ]: componentId
     } = props;
 
-    const wizardRef = useRef(null);
+    const wizardRef: MutableRefObject<any> = useRef(null);
 
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
@@ -152,7 +162,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -161,10 +171,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     useEffect(() => {
         setIsIDPListLoading(true);
         getIdentityProviderList(null, null, null)
-            .then((response) => {
+            .then((response: IdentityProviderListResponseInterface) => {
                 setIdPList(response.identityProviders);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleGetIDPListCallError(error);
             })
             .finally(() => {
@@ -183,7 +193,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
     }, [ selectedProtocol ]);
 
-    const initialValues = useMemo(() => ({
+    const initialValues: IdentityProviderInitialValuesInterface = useMemo(() => ({
         NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
         RequestMethod: "post",
         name: EMPTY_STRING // This must be filled by the user.
@@ -214,7 +224,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
         if (idpList?.length > 0) {
             return idpList
-                .reduce((set, { name }) => set.add(name), new Set<string>())
+                .reduce((set: Set<string>, { name }: StrictIdentityProviderInterface) => set
+                    .add(name), new Set<string>())
                 .has(userInput);
         }
 
@@ -231,22 +242,21 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     /**
      * Check whether loop back call is allowed or not.
-     * @param value URL to check.
+     * @param value - URL to check.
      */
-    const isLoopBackCall = (value) => {
+    const isLoopBackCall = (value: string) => {
         return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ?
             undefined : t("console:develop.features.idp.forms.common." +
                 "internetResolvableErrorMessage");
     };
 
     /**
-     * @param values {object} form values
-     * - @param form {Form} form instance
-     * - @param callback
+     * @param values - Form values
+     * @param form - Form instance
+     * @param callback - Callback to update the form values
      */
-    const handleFormSubmit = (values) => {
-
-        const FIRST_ENTRY = 0;
+    const handleFormSubmit = (values: IdentityProviderFormValuesInterface) => {
+        const FIRST_ENTRY: number = 0;
 
         /**
          * We use a grouped template to keep the sub templates of enterprise
@@ -254,7 +264,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
          * template first we need to find the correct sub template and deep
          * clone that object to avoid mutation on file level configuration.
          */
-        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }) => {
+        const { idp: identityProvider } = cloneDeep(template.subTemplates.find(({ id }: IdentityProviderInterface) => {
             return id === (selectedProtocol === "saml"
                 ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML
                 : IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
@@ -300,8 +310,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     { key: "SelectMode", value: "Manual Configuration" },
                     { key: "IsUserIdInClaims", value: "false" },
                     { key: "IsSLORequestAccepted", value: "false" },
-                    { key: "SignatureAlgorithm", value: "RSA with SHA1" },
-                    { key: "DigestAlgorithm", value: "SHA1" }
+                    { key: "SignatureAlgorithm", value: "RSA with SHA256" },
+                    { key: "DigestAlgorithm", value: "SHA256" }
                 ];
             } else {
                 identityProvider.federatedAuthenticators.authenticators[ FIRST_ENTRY ].properties = [
@@ -336,7 +346,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId + "-" + kebabCase(selectedProtocol)
                 });
@@ -350,8 +360,8 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     onIDPCreate(createdIdpID);
 
@@ -359,7 +369,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 }
                 onIDPCreate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                     ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
                     : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
@@ -536,7 +546,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const samlConfigurationPage = () => (
         <WizardPage
-            validate={ (values) => {
+            validate={ (values: IdentityProviderFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
@@ -573,7 +583,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
                             className={ "mt-1" }
                             selectedValue={ selectedSamlConfigMode }
-                            onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
+                            onChange={ ({ value }: SwitcherOptionProps) => setSelectedSamlConfigMode(value as any) }
                             options={ [ {
                                 label: "Manual Configuration",
                                 value: "manual"
@@ -620,7 +630,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                     file={ selectedMetadataFile }
                     pastedContent={ pastedMetadataContent }
-                    onChange={ (result) => {
+                    onChange={ (result: PickerResult<File>) => {
                         setSelectedMetadataFile(result.file);
                         setPastedMetadataContent(result.pastedContent);
                         setXmlBase64String(result.serialized as string);
@@ -640,7 +650,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
     const oidcConfigurationPage = () => {
         return (
             <WizardPage
-                validate={ (values) => {
+                validate={ (values: IdentityProviderFormValuesInterface) => {
                     const errors: FormErrors = {};
 
                     errors.clientId = composeValidators(
@@ -725,7 +735,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const certificatesPage = () => (
         <WizardPage
-            validate={ (values) => {
+            validate={ (values: IdentityProviderFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
@@ -752,7 +762,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                 className={ "mt-1" }
                                 defaultOptionValue={ "jwks" }
                                 selectedValue={ selectedCertInputType }
-                                onChange={ ({ value }) => setSelectedCertInputType(value as any) }
+                                onChange={ ({ value }: SwitcherOptionProps) => setSelectedCertInputType(value as any) }
                                 options={ [ {
                                     label: "JWKS endpoint",
                                     value: "jwks"
@@ -795,14 +805,14 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         pastedContent={ pastedPEMContent }
                         fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                         normalizeStateOnRemoveOperations={ true }
-                        onChange={ (result) => {
+                        onChange={ (result: PickerResult<string | File>) => {
                             setPastedPEMContent(result.pastedContent);
                             setSelectedCertificateFile(result.file);
                             setPemString(result.serialized?.pem);
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
-                             * implies => that when the input is optional but the user tries to enter
+                             * implies =\> that when the input is optional but the user tries to enter
                              * invalid content to the picker we can't enable next because it's invalid.
                              */
                             setNextShouldBeDisabled(
@@ -854,12 +864,13 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml"
-                ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML
-                : IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
-            );
-        }));
+        const subTemplate: IdentityProviderTemplateInterface = cloneDeep(template.subTemplates
+            .find(({ id }: IdentityProviderTemplateInterface) => {
+                return id === (selectedProtocol === "saml"
+                    ? IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML
+                    : IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC
+                );
+            }));
 
         if (!subTemplate?.content?.wizardHelp) return null;
 
@@ -890,7 +901,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     /**
      * Resolves the documentation link when a protocol is selected.
-     * @return {React.ReactElement}
+     * @returns Documentation link.
      */
     const resolveDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
@@ -953,7 +964,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                         data-testid={ `${ testId }-modal-content-1` }>
                         <Steps.Group
                             current={ currentWizardStep }>
-                            { wizardSteps.map((step, index) => (
+                            { wizardSteps.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step
                                     active
                                     key={ index }
@@ -1071,17 +1082,17 @@ const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
 const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
 
 // General constants
-const EMPTY_STRING = "";
-const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
-const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+const EMPTY_STRING: string = "";
+const CERT_FILE_PROCESSING_STRATEGY: CertFileStrategy = new CertFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
 // Validation Functions.
 // FIXME: These will be removed in the future when
 //        form module validation gets to a stable state.
 
-const composeValidators = (...validators) => (value) => {
+const composeValidators = (...validators: any[]) => (value: string) => {
     return validators.reduce(
-        (error, validator) => error || validator(value),
+        (error: string, validator: (criteria: unknown) => string) => error || validator(value),
         undefined
     );
 };
@@ -1089,14 +1100,14 @@ const composeValidators = (...validators) => (value) => {
 /**
  * Given a {@link FormErrors} object, it will check whether
  * every key has a assigned truthy value. {@link Array.every}
- * will return {@code true} if one of the object member has
+ * will return `true` if one of the object member has
  * a truthy value. In other words, it will check a field has
  * a error message attached to it or not.
  *
- * @param errors {FormErrors}
+ * @param errors - Form errors object.
  */
 const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[ k ]);
+    return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
 const required = (value: any) => {
@@ -1107,7 +1118,7 @@ const required = (value: any) => {
     return undefined;
 };
 
-const length = (minMax: MinMax) => (value) => {
+const length = (minMax: MinMax) => (value: string) => {
     if (!value && minMax.min > 0) {
         return "You cannot leave this blank";
     }
@@ -1121,6 +1132,6 @@ const length = (minMax: MinMax) => (value) => {
     return undefined;
 };
 
-const isUrl = (value) => {
+const isUrl = (value: string) => {
     return FormValidation.url(value) ? undefined : "This value is invalid.";
 };
