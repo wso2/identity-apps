@@ -45,7 +45,8 @@ import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
-import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetails } from "../../models";
+import { AddUserWizardStateInterface, PayloadInterface, UserDetailsInterface,
+    WizardStepInterface, createEmptyUserDetails } from "../../models";
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
@@ -65,35 +66,6 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
  */
 interface WizardStateInterface {
     [ key: string ]: any;
-}
-
-/**
- * Interface for the wizard step.
- */
-interface WizardStepInterface {
-    content: ReactElement;
-    icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    title: string;
-}
-
-/**
- * Interface for the role and group data.
- */
-interface PayloadInterface {
-    Operations: {
-        op: string;
-        value: {
-          users?: {
-            display: string;
-            value: string;
-          }[];
-          members?: {
-            display: string;
-            value: string;
-          }[];
-        };
-      }[];
-      schemas: string[];
 }
 
 /**
