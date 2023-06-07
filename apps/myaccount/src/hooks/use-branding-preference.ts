@@ -18,12 +18,16 @@
 
 import { useContext } from "react";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
-import { BrandingPreferenceAPIResponseInterface } from "../models";
+import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceOrganizationDetailsInterface } from "../models";
 
 /**
  * Interface for the return type of the useBrandingPreference hook.
  */
 export type UseBrandingPreferenceInterface = {
+    /**
+     * Organization's basic details.
+     */
+    organizationDetails: BrandingPreferenceOrganizationDetailsInterface;
     /**
      * The current theme object from the branding preference.
      */
@@ -42,6 +46,7 @@ export const useBrandingPreference = (): UseBrandingPreferenceInterface => {
     const { brandingPreference }: BrandingPreferenceContextProps = useContext(BrandingPreferenceContext);
 
     return {
+        organizationDetails: brandingPreference?.preference?.organizationDetails,
         raw: brandingPreference,
         theme: brandingPreference?.preference?.theme[brandingPreference?.preference?.theme?.activeTheme]
     };

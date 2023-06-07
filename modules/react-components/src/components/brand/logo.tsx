@@ -78,6 +78,7 @@ export const Logo: FunctionComponent<LogoPropsInterface> = (
             data-componentid={ componentId }
             data-testid={ testId }
             transparent
+            inline
             { ...rest }
         />
     );

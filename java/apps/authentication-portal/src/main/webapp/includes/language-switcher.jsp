@@ -44,6 +44,8 @@
 
         selectedLanguageText.removeClass("default");
         selectedLanguageText.html(dataOption.html());
+
+        document.documentElement.lang = computedLocale;
     });
 
     /**
