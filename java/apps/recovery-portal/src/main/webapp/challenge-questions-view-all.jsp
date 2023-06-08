@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
-  ~  WSO2 LLC. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -26,7 +26,15 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
-<jsp:include page="includes/localize.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="includes/localize.jsp"/>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     InitiateAllQuestionResponse initiateAllQuestionResponse = (InitiateAllQuestionResponse)
