@@ -154,14 +154,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const username: string = "userName";
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas(
             [ ...profileDetails.profileSchemas ]
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
             if (!a.displayOrder) {  
-                if (a.name === username){
+                if (a.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
                     return -1;
                 }
 
