@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,8 +45,9 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
 
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
+    const brandingStoreURL: string = useSelector((state: AppState) => state?.config?.ui?.brandingStoreURL);
 
-    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain);
+    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain, brandingStoreURL);
 
     const contextValues: BrandingPreferenceContextProps = useMemo(() => {
         if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
@@ -91,6 +92,13 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
                 { <title>{ appTitle }</title> }
                 { injectBaseTheme() }
                 { injectBrandingCSSSkeleton() }
+                { brandingPreference?.preference?.stylesheets?.selfcareApp && (
+                    <link
+                        href={ brandingPreference?.preference?.stylesheets?.selfcareApp }
+                        rel="stylesheet"
+                        type="text/css"
+                    />
+                ) }
             </Helmet>
             { children }
         </BrandingPreferenceContext.Provider>

@@ -37,6 +37,7 @@
         "appName": "My Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
+        "brandingStoreURL": "${host}/extensions/branding/${tenantDomain}/${locale}",
         "disableMFAforSuperTenantUser": false,
         "enableMFAUserWise": false,
         "disableMFAForFederatedUsers": false,

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -43,9 +43,14 @@
 <%@ page import="java.util.Map" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
+<%-- Localization --%>
 <%@ include file="includes/localize.jsp" %>
+
+<%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
@@ -128,8 +133,7 @@
         reCaptchaResendEnabled = true;
     }
 
-    boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
-    if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
+    if (reCaptchaEnabled || reCaptchaResendEnabled) {
         reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
         reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     }
@@ -207,7 +211,7 @@
     <% } %>
 
     <%
-        if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
+        if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
     <script src="<%=Encode.forHtmlContent(reCaptchaAPI)%>"></script>
     <%

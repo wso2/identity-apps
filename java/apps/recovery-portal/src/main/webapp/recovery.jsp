@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -14,7 +14,8 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
@@ -40,7 +41,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
+<%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
+
+<%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
@@ -55,16 +59,16 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
-    String userTenant = request.getParameter("t");
+    String userTenantHint = request.getParameter("t");
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
-    if (StringUtils.isNotBlank(userTenant)) {
+    if (StringUtils.isNotBlank(userTenantHint)) {
         username = MultitenantUtils.getTenantAwareUsername(username);
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+        username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
     }
 
     // Password recovery parameters

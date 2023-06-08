@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -16,8 +16,16 @@
   ~ under the License.
 --%>
 
-<jsp:directive.include file="localize.jsp" />
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
-<%-- title --%>
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Updates the site tile with the text resolved in branding-preferences --%>
+<title>
+<% if (StringUtils.isNotBlank(siteTitle)) { %>
+    <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
+<% } else { %>
+    <title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
+<% } %>
+</title>

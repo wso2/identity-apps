@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
-  ~  WSO2 LLC. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -34,6 +34,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+
+<%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%

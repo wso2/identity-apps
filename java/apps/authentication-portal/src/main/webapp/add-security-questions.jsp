@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -35,7 +35,11 @@
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";

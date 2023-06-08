@@ -33,10 +33,16 @@
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
             var userAccessedPath = window.location.href;
+
+            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
+            userTenant = userTenant ?  userTenant.split("?")[0] : null;
+
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            if(isSignOutSuccess) {
-                window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"
+            if (isSignOutSuccess && userTenant) {
+                window.location.href = applicationDomain + "/t/" + userTenant + "/" + "<%= htmlWebpackPlugin.options.basename %>";
+            } else if (isSignOutSuccess) {
+                window.location.href = applicationDomain + "/" + "<%= htmlWebpackPlugin.options.basename %>";
             }
         </script>
         <script src="/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js"></script>
@@ -72,12 +78,15 @@
                     responseMode: "form_post",
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
-                    enablePKCE: true
+                    enablePKCE: true,
+                    endpoints: {
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut=" + userTenant.replace(/\/+$/, '') : "/t/carbon.super/oauth2/authorize")
+                    }
                 }
 
                 if(isOrganizationManagementEnabled) {
                     authConfig.endpoints = {
-                        authorizationEndpoint: getApiPath("/t/carbon.super/oauth2/authorize?ut=")
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut=" + userTenant.replace(/\/+$/, '') : "/t/carbon.super/oauth2/authorize?ut=")
                     }
                 }
 

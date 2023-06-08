@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { I18nConstants } from "../constants";
+import { AppConstants, I18nConstants } from "../constants";
 import {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -25,37 +25,39 @@ import {
     useRequest
 } from "../hooks/use-request";
 import { getMigratedBrandingPreference } from "../migrations/branding-preference";
-import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceTypes } from "../models";
-import { store } from "../store";
+import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 /**
- * Hook to get the branding preference via Branding Preferences API.
+ * Hook to get the branding preference files.
  *
- * @param name - Resource Name.
- * @param type - Resource Type.
+ * @param tenantDomain - Tenant's name.
+ * @param brandingStoreURL - Branding Store URL.
  * @param locale - Resource Locale.
  * @returns Branding Preference GET hook.
  */
 export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
-    name: string,
-    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
+    tenantDomain: string,
+    brandingStoreURL: string = "${host}/extensions/branding/${tenantDomain}/${locale}",
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
+    const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
+    const moderatedBrandingStoreURL: string = brandingStoreURL
+        .replace("${host}", `https://${window.location.host}${basename}`)
+        .replace("${tenantDomain}", tenantDomain)
+        .replace("${locale}", locale)
+        .concat("/branding-preference.json");
+    const url: string = moderatedBrandingStoreURL;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            locale,
-            name,
-            type
-        },
-        url: store.getState().config.endpoints.brandingPreference
+        url
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, { attachToken: false });
 
     return {
         data: getMigratedBrandingPreference(data as BrandingPreferenceAPIResponseInterface) as Data,
