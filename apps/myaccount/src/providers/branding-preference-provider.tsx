@@ -92,6 +92,13 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
                 { <title>{ appTitle }</title> }
                 { injectBaseTheme() }
                 { injectBrandingCSSSkeleton() }
+                { brandingPreference?.preference?.stylesheets?.selfcareApp && (
+                    <link
+                        href={ brandingPreference?.preference?.stylesheets?.selfcareApp }
+                        rel="stylesheet"
+                        type="text/css"
+                    />
+                ) }
             </Helmet>
             { children }
         </BrandingPreferenceContext.Provider>

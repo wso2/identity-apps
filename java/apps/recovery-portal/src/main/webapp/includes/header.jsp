@@ -58,7 +58,7 @@
 <jsp:include page="theme-skeleton.jsp"/>
 
 <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null && !StringUtils.equals(layout, "custom-" + tenantForTheming)) { %>
+<% if (overrideStylesheet != null) { %>
 <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 

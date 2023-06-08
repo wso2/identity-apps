@@ -162,7 +162,11 @@ export interface BrandingPreferenceStylesheetsInterface {
     /**
      * Login portal stylesheet.
      */
-    accountApp: PredefinedThemes;
+    accountApp: string;
+    /**
+     * Selfcare app stylesheet.
+     */
+    selfcareApp: string;
 }
 
 export type BrandingPreferenceThemeInterface = StrictBrandingPreferenceThemeInterface
@@ -197,7 +201,7 @@ export interface ThemeConfigInterface {
     loginPage?: BrandingPreferencePageInterface;
     /**
      * Page Preferences.
-     * @deprecated Renamed to `loginPage` to keep it specific for login page. 
+     * @deprecated Renamed to `loginPage` to keep it specific for login page.
      */
     page?: BrandingPreferencePageInterface;
     /**

@@ -25,22 +25,19 @@ import {
     useRequest
 } from "../hooks/use-request";
 import { getMigratedBrandingPreference } from "../migrations/branding-preference";
-import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceTypes } from "../models";
-import { store } from "../store";
+import { BrandingPreferenceAPIResponseInterface } from "../models";
 
 /**
- * Hook to get the branding preference via Branding Preferences API.
+ * Hook to get the branding preference files.
  *
  * @param tenantDomain - Tenant's name.
  * @param brandingStoreURL - Branding Store URL.
- * @param type - Resource Type.
  * @param locale - Resource Locale.
  * @returns Branding Preference GET hook.
  */
 export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
     tenantDomain: string,
     brandingStoreURL: string,
-    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
@@ -54,17 +51,11 @@ export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInt
     const url: string = moderatedBrandingStoreURL;
 
     const requestConfig: RequestConfigInterface = {
-
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            locale,
-            name: tenantDomain,
-            type
-        },
         url
     };
 

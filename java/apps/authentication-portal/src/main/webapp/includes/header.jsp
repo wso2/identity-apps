@@ -55,30 +55,20 @@
 <link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
 
 <%-- Load Default Theme Skeleton --%>
-<jsp:include page="./theme-skeleton.jsp"/>
+<jsp:include page="theme-skeleton.jsp"/>
 
 <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null && !StringUtils.equals(layout, "custom-" + tenantForTheming)) { %>
+<% if (overrideStylesheet != null) { %>
 <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 
-<%-- Layout specific styleSheet --%>
+<%-- Layout specific style sheet --%>
 <%
-    String styleFilePath;
-    if (StringUtils.equals(layout, "custom-" + tenantForTheming)) {
-        styleFilePath = application.getInitParameter("LayoutStoreURL").replace("${tenantDomain}", tenantForTheming) + "/styles.css";
+    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
+    if (config.getServletContext().getResource(styleFilePath) != null) {
 %>
     <link rel="stylesheet" href="<%= styleFilePath %>">
-<%
-    } else {
-        styleFilePath = "extensions/layouts/" + layout + "/styles.css";
-        if (config.getServletContext().getResource(styleFilePath) != null) {
-%>
-    <link rel="stylesheet" href="<%= styleFilePath %>">
-<%
-        }
-    }
-%>
+<% } %>
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
 <title>
