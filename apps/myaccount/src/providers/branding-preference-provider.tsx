@@ -45,8 +45,9 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
 
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
+    const brandingStoreURL: string = useSelector((state: AppState) => state?.config?.ui?.brandingStoreURL);
 
-    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain);
+    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain, brandingStoreURL);
 
     const contextValues: BrandingPreferenceContextProps = useMemo(() => {
         if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {

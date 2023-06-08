@@ -66,7 +66,6 @@ export interface ServiceResourceEndpointsInterface {
     associations: string;
     authorize: string;
     backupCode: string;
-    brandingPreference: string;
     challenges: string;
     challengeAnswers: string;
     federatedAssociations: string;
@@ -136,6 +135,10 @@ export interface AuthenticatorAppInterface {
  * Dev portal UI config interface.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface {
+    /**
+     * Branding store URL.
+     */
+    brandingStoreURL: string;
     /**
      * Copyright text for the footer.
      */

@@ -73,7 +73,6 @@ export class Config {
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
-            brandingPreference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
             challengeAnswers: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenges`,
             consentManagement: {
@@ -139,6 +138,7 @@ export class Config {
             appName: window["AppUtils"]?.getConfig()?.ui?.appName,
             appTitle: window["AppUtils"]?.getConfig()?.ui?.appTitle,
             authenticatorApp: window["AppUtils"]?.getConfig()?.ui?.authenticatorApp,
+            brandingStoreURL: window["AppUtils"]?.getConfig()?.ui?.brandingStoreURL,
             copyrightText: window["AppUtils"]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),

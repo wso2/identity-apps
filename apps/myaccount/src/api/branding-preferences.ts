@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { I18nConstants } from "../constants";
+import { AppConstants, I18nConstants } from "../constants";
 import {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -31,17 +31,30 @@ import { store } from "../store";
 /**
  * Hook to get the branding preference via Branding Preferences API.
  *
- * @param name - Resource Name.
+ * @param tenantDomain - Tenant's name.
+ * @param brandingStoreURL - Branding Store URL.
  * @param type - Resource Type.
  * @param locale - Resource Locale.
  * @returns Branding Preference GET hook.
  */
 export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
-    name: string,
+    tenantDomain: string,
+    brandingStoreURL: string,
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
+    const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
+    const moderatedBrandingStoreURL: string = brandingStoreURL
+        ? brandingStoreURL
+            .replace("${host}", `https://${window.location.host}${basename}`)
+            .replace("${tenantDomain}", tenantDomain)
+            .replace("${locale}", locale)
+            .concat("/branding-preference.json")
+        : undefined;
+    const url: string = moderatedBrandingStoreURL;
+
     const requestConfig: RequestConfigInterface = {
+
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -49,13 +62,13 @@ export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInt
         method: HttpMethods.GET,
         params: {
             locale,
-            name,
+            name: tenantDomain,
             type
         },
-        url: store.getState().config.endpoints.brandingPreference
+        url
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, { attachToken: false });
 
     return {
         data: getMigratedBrandingPreference(data as BrandingPreferenceAPIResponseInterface) as Data,
