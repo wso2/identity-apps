@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -159,10 +159,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            if (!a.displayOrder) {
-                return -1;
-            } else if (!b.displayOrder) {
+            if (!a.displayOrder) {  
+                if (a.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+                    return -1;
+                }
+
                 return 1;
+            } else if (!b.displayOrder) {
+                return -1;
             } else {
                 return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
             }
