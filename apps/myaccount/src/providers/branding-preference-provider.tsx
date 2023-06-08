@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { AppState } from "apps/myaccount/src/store";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
 import { useGetBrandingPreference } from "../api";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
 import { BrandingPreferenceMeta } from "../meta";
+import { AppState } from "../store";
 
 /**
  * Props interface for the BrandingPreferenceProvider.
