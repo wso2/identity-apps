@@ -604,6 +604,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === "userName") {
             schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
         }
+        // Check if schemaFormValue is an array
+        if (Array.isArray(schemaFormValue)) {
+            schemaFormValue = schemaFormValue.join(", ");
+        }
 
         return schemaFormValue;
 
