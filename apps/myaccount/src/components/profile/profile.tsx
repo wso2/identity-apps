@@ -159,10 +159,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            if (!a.displayOrder) {
-                return -1;
-            } else if (!b.displayOrder) {
+            if (!a.displayOrder) {  
+                if (a.displayName === "Username"){
+                    return -1;
+                }
+                             
                 return 1;
+            } else if (!b.displayOrder) {
+                return -1;
             } else {
                 return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
             }
