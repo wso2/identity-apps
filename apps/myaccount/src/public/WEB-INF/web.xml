@@ -17,11 +17,11 @@
  ~ limitations under the License.
  -->
 
-<web-app 
-    xmlns="http://java.sun.com/xml/ns/j2ee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<web-app
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4"
 >
 
@@ -46,10 +46,15 @@
         <servlet-name>home</servlet-name>
         <jsp-file>/home.jsp</jsp-file>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/libs/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/extensions/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
