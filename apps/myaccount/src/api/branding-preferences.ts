@@ -37,17 +37,15 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
  */
 export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
     tenantDomain: string,
-    brandingStoreURL: string,
+    brandingStoreURL: string = "${host}/extensions/branding/${tenantDomain}/${locale}",
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
     const moderatedBrandingStoreURL: string = brandingStoreURL
-        ? brandingStoreURL
-            .replace("${host}", `https://${window.location.host}${basename}`)
-            .replace("${tenantDomain}", tenantDomain)
-            .replace("${locale}", locale)
-            .concat("/branding-preference.json")
-        : undefined;
+        .replace("${host}", `https://${window.location.host}${basename}`)
+        .replace("${tenantDomain}", tenantDomain)
+        .replace("${locale}", locale)
+        .concat("/branding-preference.json");
     const url: string = moderatedBrandingStoreURL;
 
     const requestConfig: RequestConfigInterface = {
