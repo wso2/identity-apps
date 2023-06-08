@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\d{4}, WSO2 LLC. \\(https://www.wso2.com\\).((?! All Rights Reserved).)*$",
+            pattern: " Copyright \\(c\\) \\d{4}, WSO2 LLC. \\(https://www.wso2.com\\).((?! *).)*$",
             template: ` * Copyright (c) ${
                 new Date().getFullYear()
             }, WSO2 LLC. (https://www.wso2.com).`
