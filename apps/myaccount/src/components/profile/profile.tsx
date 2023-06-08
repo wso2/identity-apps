@@ -107,7 +107,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
-    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
+    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string | string[]>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
@@ -530,7 +530,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const attrKey: string = "userName";
 
         if (attrKey in value) {
-            const oldValue: string = profileInfo?.get(schema?.name);
+            const oldValue: string = profileInfo?.get(schema?.name) as string;
 
             if (oldValue?.indexOf("/") > -1) {
                 const fragments: string[] = oldValue.split("/");
@@ -592,7 +592,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const resolveProfileInfoSchemaValue = (schema: ProfileSchema): string => {
 
-        let schemaFormValue: string = profileInfo.get(schema.name);
+        let schemaFormValue: string | string[] = profileInfo.get(schema.name);
 
         /**
          * Remove the user-store-name prefix from the userName
@@ -602,7 +602,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * USER-STORE/userNameString to userNameString
          */
         if (schema.name === "userName") {
-            schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
+            schemaFormValue = getUserNameWithoutDomain(schemaFormValue as string);
+        }
+        // Check if schemaFormValue is an array
+        if (Array.isArray(schemaFormValue)) {
+            schemaFormValue = schemaFormValue.join(", ");
         }
 
         return schemaFormValue;
