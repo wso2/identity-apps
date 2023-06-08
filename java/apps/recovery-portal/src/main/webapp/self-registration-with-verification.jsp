@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@
 <%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.apache.commons.lang.ArrayUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
@@ -612,13 +613,14 @@
                                     }
                                 %>
                                 <div class="ui divider hidden"></div>
+                                 <% if (StringUtils.isNotBlank(cookiePolicyURL)) { %>
                                 <div>
                                     <%--Cookie Policy--%>
                                     <div class="ui message info compact" role="alert">
                                         <div>
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "After.signin.we.use.a.cookie.in.browser")%>
-                                            <a href="/authenticationendpoint/cookie_policy.do" target="policy-pane">
+                                            <a href="<%=StringEscapeUtils.escapeHtml4(cookiePolicyURL)%>" target="policy-pane">
                                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                         "Cookie.policy")%>
                                             </a>
@@ -627,6 +629,7 @@
                                     </div>
                                     <%--End Cookie Policy--%>
                                 </div>
+                                <% } %>
                                 <div class="ui divider hidden"></div>
                                 <div>
                                     <%--Terms/Privacy Policy--%>
@@ -635,7 +638,7 @@
                                             <input id="termsCheckbox" type="checkbox"/>
                                             <label for="termsCheckbox" ><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "I.confirm.that.read.and.understood")%>
-                                                <a href="/authenticationendpoint/privacy_policy.do" target="policy-pane">
+                                                <a href="<%=StringEscapeUtils.escapeHtml4(privacyPolicyURL)%>" target="policy-pane">
                                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
                                                 </a></label>
                                         </div>

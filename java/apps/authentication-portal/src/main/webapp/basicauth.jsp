@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
@@ -145,7 +145,7 @@
     Boolean isAdminBannerAllowedInSP = CONSOLE.equals(request.getParameter("sp"));
     Boolean isAdminAdvisoryBannerEnabledInTenant = false;
     String adminAdvisoryBannerContentOfTenant = "";
-    
+
     try {
         if (isAdminBannerAllowedInSP) {
             AdminAdvisoryDataRetrievalClient adminBannerPreferenceRetrievalClient =
@@ -158,7 +158,7 @@
     } catch (Exception e) {
         log.error("Error in displaying admin advisory banner", e);
     }
-    
+
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
@@ -519,19 +519,27 @@
 
     <div class="ui divider hidden"></div>
 
+    <% if (StringUtils.isNotBlank(cookiePolicyURL) || StringUtils.isNotBlank(privacyPolicyURL)) { %>
     <div class="cookie-policy-message" data-testid="login-page-policy-messages">
+    <% if (StringUtils.isNotBlank(cookiePolicyURL)) { %>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
-        <a href="cookie_policy.do" target="policy-pane" data-testid="login-page-cookie-policy-link">
+        <a href="<%=StringEscapeUtils.escapeHtml4(cookiePolicyURL)%>" target="policy-pane" data-testid="login-page-cookie-policy-link">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
         </a>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
-        <br><br>
+    <% } %>
+    <% if (StringUtils.isNotBlank(privacyPolicyURL)) { %>
+        <% if (StringUtils.isNotBlank(cookiePolicyURL)) { %>
+            <br><br>
+        <% } %>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
-        <a href="privacy_policy.do" target="policy-pane" data-testid="login-page-privacy-policy-link">
+        <a href="<%=StringEscapeUtils.escapeHtml4(privacyPolicyURL)%>" target="policy-pane" data-testid="login-page-privacy-policy-link">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
         </a>
+    <% } %>
     </div>
     <div class="ui divider hidden"></div>
+    <% } %>
 
     <div class="mt-0">
         <div class="column buttons">

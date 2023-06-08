@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -35,9 +35,6 @@
     boolean isBrandingEnabledInTenantPreferences = true;
     boolean isSelfSignUpEnabledInTenantPreferences = true;
     boolean isPasswordRecoveryEnabledInTenantPreferences = true;
-    // This should be decided based on the subscription tier.
-    // TODO: Properly resolve once subscription API is integrated in to the console.
-    // Tracked Here: https://github.com/wso2-enterprise/asgardeo-product/issues/8625
     boolean shouldRemoveDefaultBranding = true;
     @Deprecated
     JSONObject colors = null;
@@ -50,9 +47,9 @@
     String logoURL = "";
     String logoAlt = "";
     String faviconURL = "";
-    String privacyPolicyURL = "";
+    String privacyPolicyURL = "privacy_policy.do";
     String termsOfUseURL = "";
-    String cookiePolicyURL = "";
+    String cookiePolicyURL = "cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
     String layout = "default";
@@ -134,7 +131,7 @@
             String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
             String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
             String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
-            String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeAsgardeoBranding";
+            String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
 
             if (brandingPreferenceResponse != null && brandingPreferenceResponse.has(PREFERENCE_KEY)) {
                 brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
