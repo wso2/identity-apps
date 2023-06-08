@@ -39,8 +39,10 @@
 
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            if(isSignOutSuccess) {
-                window.location.href = applicationDomain+'/'+"<%= htmlWebpackPlugin.options.basename %>"
+            if (isSignOutSuccess && userTenant) {
+                window.location.href = applicationDomain + "/t/" + userTenant + "/" + "<%= htmlWebpackPlugin.options.basename %>";
+            } else if (isSignOutSuccess) {
+                window.location.href = applicationDomain + "/" + "<%= htmlWebpackPlugin.options.basename %>";
             }
         </script>
         <script src="/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js"></script>
@@ -78,13 +80,13 @@
                     storage: "webWorker",
                     enablePKCE: true,
                     endpoints: {
-                        authorizationEndpoint: getApiPath("/t/carbon.super/oauth2/authorize?ut=" + userTenant.replace(/\/+$/, ''))
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut=" + userTenant.replace(/\/+$/, '') : "/t/carbon.super/oauth2/authorize")
                     }
                 }
 
                 if(isOrganizationManagementEnabled) {
                     authConfig.endpoints = {
-                        authorizationEndpoint: getApiPath("/t/carbon.super/oauth2/authorize?ut=")
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut=" + userTenant.replace(/\/+$/, '') : "/t/carbon.super/oauth2/authorize?ut=")
                     }
                 }
 
