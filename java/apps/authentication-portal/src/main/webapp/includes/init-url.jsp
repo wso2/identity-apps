@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -18,6 +18,9 @@
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+
 <%
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
@@ -27,7 +30,91 @@
     String openidServerURL = "../openidserver";
     String logincontextURL = "../logincontext";
     String longwaitstatusURL = "/longwaitstatus";
+
+    String tenantDomain;
+    String userTenantDomain;
+    String tenantForTheming;
+    String userTenant;
+    String spAppName;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+        tenantForTheming = tenantDomain;
+        userTenant = tenantDomain;
+        spAppName = request.getParameter("sp");
+        String tenantDomainFromURL = request.getParameter("t");
+        String tenantDomainOfUser = request.getParameter("ut");
+        userTenantDomain = tenantDomainOfUser;
+
+        if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)
+            && StringUtils.equals(spAppName, "Console")) {
+            tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
+        } else {
+            if (StringUtils.isBlank(userTenantDomain)) {
+                userTenantDomain = tenantDomainFromURL;
+            }
+            if (StringUtils.isBlank(userTenantDomain)) {
+                userTenantDomain = tenantDomain;
+            }
+            if (StringUtils.isNotBlank(tenantDomainOfUser)) {
+                tenantForTheming = tenantDomainOfUser;
+            }
+            if (StringUtils.equals(spAppName, "My Account")
+                && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+                tenantForTheming = userTenantDomain;
+                userTenant = userTenantDomain;
+            }
+        }
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+        String tenantDomainFromURL = request.getParameter("t");
+        String tenantDomainOfUser = request.getParameter("ut");
+        spAppName = request.getParameter("sp");
+
+        if (StringUtils.isBlank(tenantDomain)) {
+            tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+        }
+
+        if (!StringUtils.isBlank(tenantDomainFromURL)) {
+            tenantDomain = tenantDomainFromURL;
+        }
+
+        tenantForTheming = tenantDomain;
+        userTenant = tenantDomain;
+        userTenantDomain = tenantDomainOfUser;
+
+        if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)
+            && StringUtils.equals(spAppName, "Console")) {
+            tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
+        } else {
+            if (StringUtils.isBlank(userTenantDomain)) {
+                userTenantDomain = tenantDomainFromURL;
+            }
+            if (StringUtils.isBlank(userTenantDomain)) {
+                userTenantDomain = tenantDomain;
+            }
+            if (StringUtils.isNotBlank(tenantDomainOfUser)) {
+                tenantForTheming = tenantDomainOfUser;
+            }
+            if (StringUtils.equals(spAppName, "My Account")
+                && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+                tenantForTheming = userTenantDomain;
+                userTenant = userTenantDomain;
+            }
+        }
+    }
+
+    if (!StringUtils.equals(tenantDomain, "carbon.super")) {
+        identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build()
+                .getAbsolutePublicURL();
+    }
+
+    // If `tenantForTheming` is null, fallback to super tenant.
+    if (StringUtils.isBlank(tenantForTheming)) {
+        tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
+
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
+
         samlssoURL = identityServerEndpointContextParam + "/samlsso";
         commonauthURL = identityServerEndpointContextParam + "/commonauth";
         oauth2AuthorizeURL = identityServerEndpointContextParam + "/oauth2/authorize";
@@ -35,26 +122,5 @@
         openidServerURL = identityServerEndpointContextParam + "/oidc/logout";
         logincontextURL = identityServerEndpointContextParam + "/logincontext";
         longwaitstatusURL = identityServerEndpointContextParam + "/longwaitstatus";
-    }
-    
-    String tenantDomain;
-    String userTenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-        userTenantDomain = request.getParameter("ut");
-        if (StringUtils.isBlank(userTenantDomain)) {
-            userTenantDomain = request.getParameter("t");
-        }
-        if (StringUtils.isBlank(userTenantDomain)) {
-            userTenantDomain = tenantDomain;
-        }
-    } else {
-        tenantDomain = request.getParameter("tenantDomain");
-        String tenantDomainFromURL = request.getParameter("t");
-
-        if (!StringUtils.isBlank(tenantDomainFromURL)) {
-            tenantDomain = tenantDomainFromURL;
-        }
-        userTenantDomain = tenantDomain;
     }
 %>

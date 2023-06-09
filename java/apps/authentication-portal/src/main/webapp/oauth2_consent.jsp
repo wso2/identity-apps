@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -39,9 +39,14 @@
 <%@ page import="java.util.StringTokenizer" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
+<%-- Localization --%>
 <%@ include file="includes/localize.jsp" %>
+
+<%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String app = request.getParameter("application");
@@ -81,7 +86,7 @@
     if (queryParamMap.containsKey("requested_oidc_scopes")) {
         requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scopes"), "UTF-8");
     }
-    
+
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
         if (StringUtils.isNotBlank(requestedOIDCScopeString)) {
             // Remove oidc scopes from the scope list to display.

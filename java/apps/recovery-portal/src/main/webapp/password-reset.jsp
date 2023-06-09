@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -14,7 +14,8 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -24,8 +25,14 @@
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
+<%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -34,9 +41,9 @@
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
-    String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
-    if (tenantDomain == null) {
-        tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    if (tenantDomainFromQuery == null) {
+        tenantDomainFromQuery = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
     if (username == null) {
         username = (String) request.getAttribute("username");
@@ -143,10 +150,10 @@
                             %>
 
                             <%
-                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() && tenantDomain != null) {
+                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() && tenantDomainFromQuery != null) {
                             %>
                             <div>
-                                <input type="hidden" name="tenantdomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
+                                <input type="hidden" name="tenantDomainFromQuery" value="<%=Encode.forHtmlAttribute(tenantDomainFromQuery) %>"/>
                             </div>
                             <%
                                 }

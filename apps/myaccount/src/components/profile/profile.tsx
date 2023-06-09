@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -107,7 +107,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
-    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
+    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string | string[]>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
@@ -159,10 +159,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            if (!a.displayOrder) {
-                return -1;
-            } else if (!b.displayOrder) {
+            if (!a.displayOrder) {  
+                if (a.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+                    return -1;
+                }
+
                 return 1;
+            } else if (!b.displayOrder) {
+                return -1;
             } else {
                 return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
             }
@@ -530,7 +534,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const attrKey: string = "userName";
 
         if (attrKey in value) {
-            const oldValue: string = profileInfo?.get(schema?.name);
+            const oldValue: string = profileInfo?.get(schema?.name) as string;
 
             if (oldValue?.indexOf("/") > -1) {
                 const fragments: string[] = oldValue.split("/");
@@ -592,7 +596,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const resolveProfileInfoSchemaValue = (schema: ProfileSchema): string => {
 
-        let schemaFormValue: string = profileInfo.get(schema.name);
+        let schemaFormValue: string | string[] = profileInfo.get(schema.name);
 
         /**
          * Remove the user-store-name prefix from the userName
@@ -602,7 +606,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * USER-STORE/userNameString to userNameString
          */
         if (schema.name === "userName") {
-            schemaFormValue = getUserNameWithoutDomain(schemaFormValue);
+            schemaFormValue = getUserNameWithoutDomain(schemaFormValue as string);
+        }
+        // Check if schemaFormValue is an array
+        if (Array.isArray(schemaFormValue)) {
+            schemaFormValue = schemaFormValue.join(", ");
         }
 
         return schemaFormValue;

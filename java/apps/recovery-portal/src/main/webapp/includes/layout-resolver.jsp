@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -21,7 +21,7 @@
 
 <%-- Change the layout name to activate another layout --%>
 <%
-    String layout = "default";
+    layout = "default";
 %>
 
 <%-- Activate the "custom" layout if exists --%>
@@ -33,9 +33,6 @@
 
 <%-- Layout Resolving Part --%>
 <%
-    String layoutFileRelativePath;
-    Map<String, Object> layoutData = new HashMap<String, Object>();
-
     if (!layout.equals("custom")) {
         if (layout.equals("default")) {
             layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
