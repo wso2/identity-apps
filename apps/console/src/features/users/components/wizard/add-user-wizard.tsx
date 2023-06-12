@@ -479,7 +479,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             "console:manage.features.users.notifications.addUserPendingApproval.success.message"
                         )
                     }));
-                    history.push(AppConstants.getPaths().get("USERS"));
                 } else { 
                     dispatch(addAlert({
                         description: t(
