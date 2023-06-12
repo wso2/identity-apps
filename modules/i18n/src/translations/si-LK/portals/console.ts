@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -8516,6 +8516,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "නව පරිශීලකයා සාර්ථකව එකතු කරන ලදි.",
                             message: "පරිශීලකයා සාර්ථකව එකතු කරන ලදි"
+                        }
+                    },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නව පරිශීලකයා එකතු කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "නව පරිශීලකයා එක් කිරීමට නොහැකි විය",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "නව පරිශීලකයා පිළිගෙන ඇති අතර අනුමැතිය බලාපොරොත්තු වේ.",
+                            message: "පරිශීලකයා එකතු කිරීම සඳහා පිළිගෙන ඇත"
                         }
                     },
                     deleteUser: {

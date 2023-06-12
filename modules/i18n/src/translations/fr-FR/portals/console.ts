@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -8722,6 +8722,20 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'utilisateur a été ajouté avec succès.",
                             message: "Ajout d'utilisateur réussi"
+                        }
+                    },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur d'ajout de l'utilisateur"
+                        },
+                        genericError: {
+                            description: "Impossible d'ajouter l'utilisateur",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le nouvel utilisateur a été accepté et est en attente d'approbation.",
+                            message: "Utilisateur accepté pour création"
                         }
                     },
                     deleteUser: {

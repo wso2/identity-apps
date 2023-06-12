@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -469,22 +469,35 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         addUser(userDetails)
             .then((response: AxiosResponse) => {
-                dispatch(addAlert({
-                    description: t(
-                        "console:manage.features.users.notifications.addUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "console:manage.features.users.notifications.addUser.success.message"
-                    )
-                }));
+                if (response.status === 202) {
+                    dispatch(addAlert({
+                        description: t(
+                            "console:manage.features.users.notifications.addUserPendingApproval.success.description"
+                        ),
+                        level: AlertLevels.WARNING,
+                        message: t(
+                            "console:manage.features.users.notifications.addUserPendingApproval.success.message"
+                        )
+                    }));
+                    history.push(AppConstants.getPaths().get("USERS"));
+                } else { 
+                    dispatch(addAlert({
+                        description: t(
+                            "console:manage.features.users.notifications.addUser.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.users.notifications.addUser.success.message"
+                        )
+                    }));
 
-                if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
-                    assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
+                    if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
+                        assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
+                    }
+                    history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
                 }
 
                 closeWizard();
-                history.push(AppConstants.getPaths().get("USERS"));
             })
             .catch((error: AxiosError) => {
                 // Axios throws a generic `Network Error` for 401 status.
