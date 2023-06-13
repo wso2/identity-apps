@@ -2971,6 +2971,7 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    addUserPendingApproval: Notification;
                     deleteUser: Notification;
                     fetchUsers: Notification;
                     getAdminRole: Notification;

@@ -8724,6 +8724,20 @@ export const console: ConsoleNS = {
                             message: "Ajout d'utilisateur réussi"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur d'ajout de l'utilisateur"
+                        },
+                        genericError: {
+                            description: "Impossible d'ajouter l'utilisateur",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le nouvel utilisateur a été accepté et est en attente d'approbation.",
+                            message: "Utilisateur accepté pour création"
+                        }
+                    },
                     deleteUser: {
                         error: {
                             description: "{{description}}",
