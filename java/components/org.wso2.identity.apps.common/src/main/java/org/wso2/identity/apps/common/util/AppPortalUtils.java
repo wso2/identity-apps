@@ -227,6 +227,7 @@ public class AppPortalUtils {
                 "};";
             AuthenticationScriptConfig authenticationScriptConfig = new AuthenticationScriptConfig();
             authenticationScriptConfig.setContent(authenticationScript);
+            authenticationScriptConfig.setEnabled(true);
             localAndOutboundAuthenticationConfig.setAuthenticationScriptConfig(authenticationScriptConfig);
         }
 
