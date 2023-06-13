@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,15 +37,15 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
  */
 export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
     tenantDomain: string,
-    brandingStoreURL: string = "${host}/extensions/branding/${tenantDomain}/${locale}",
+    brandingStoreURL: string = "${host}/extensions/branding/${tenantDomain}/branding-preference_${locale}.json",
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
     const moderatedBrandingStoreURL: string = brandingStoreURL
         .replace("${host}", `https://${window.location.host}${basename}`)
         .replace("${tenantDomain}", tenantDomain)
-        .replace("${locale}", locale)
-        .concat("/branding-preference.json");
+        .replace("${locale}", locale.replace("-", "_"));
+        
     const url: string = moderatedBrandingStoreURL;
 
     const requestConfig: RequestConfigInterface = {

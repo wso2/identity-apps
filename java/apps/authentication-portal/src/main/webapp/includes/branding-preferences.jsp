@@ -69,7 +69,7 @@
 
         // If the `sp` param is defined, set the resource type as app.
         if (StringUtils.isNotBlank(applicationRequestingPreferences)) {
-            String appWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/"+ APP_PREFERENCE_RESOURCE_TYPE +"/" + applicationRequestingPreferences + "/en-US/branding-preference.json");
+            String appWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/branding-preference_en_US.json");
 
             File appWiseBrandingPreferenceFile = new File(appWiseBrandingPreferenceFilePath);
 
@@ -84,7 +84,7 @@
             JSONObject brandingPreferenceResponse = null;
 
             if (StringUtils.isBlank(brandingPreferenceFilePath)) {
-                String tenantWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/"+ ORG_PREFERENCE_RESOURCE_TYPE +"/" + tenantRequestingPreferences + "/en-US/branding-preference.json");
+                String tenantWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/branding-preference_en_US.json");
                 File tenantWiseBrandingPreferenceFile = new File(tenantWiseBrandingPreferenceFilePath);
 
                 if (tenantWiseBrandingPreferenceFile.exists()) {
