@@ -31,6 +31,7 @@ import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRe
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAuthenticatorConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.common.model.script.AuthenticationScriptConfig;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
@@ -209,6 +210,25 @@ public class AppPortalUtils {
             localAndOutboundAuthenticationConfig.setAuthenticationType("flow");
             localAndOutboundAuthenticationConfig
                     .setAuthenticationSteps(new AuthenticationStep[]{authenticationStep1, authenticationStep2});
+
+            // Need to enable username validation by passing the adaptive parameter.
+            String authenticationScript = "var onLoginRequest = function(context) {\n" +
+                "    executeStep(1, {\n" +
+                "        authenticatorParams: {\n" +
+                "            common: {\n" +
+                "                \"ValidateUsername\": \"true\"\n" +
+                "            }\n" +
+                "        }\n" +
+                "    }, {\n" +
+                "        onSuccess: function(context) {\n" +
+                "            executeStep(2);\n" +
+                "        }\n" +
+                "    });\n" +
+                "};";
+            AuthenticationScriptConfig authenticationScriptConfig = new AuthenticationScriptConfig();
+            authenticationScriptConfig.setContent(authenticationScript);
+            authenticationScriptConfig.setEnabled(true);
+            localAndOutboundAuthenticationConfig.setAuthenticationScriptConfig(authenticationScriptConfig);
         }
 
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
