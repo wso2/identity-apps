@@ -64,7 +64,8 @@
         String brandingPreferenceFilePath = "";
 
         // If the `sp` param is defined, the resource is an app.
-        if (StringUtils.isNotBlank(applicationRequestingPreferences)) {
+        if (StringUtils.isNotBlank(applicationRequestingPreferences) && StringUtils.isNotBlank(tenantRequestingPreferences)) {
+            // TODO: Get the selected locale and check for the localization file.
             String appWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/branding-preference_en_US.json");
 
             File appWiseBrandingPreferenceFile = new File(appWiseBrandingPreferenceFilePath);
@@ -79,7 +80,6 @@
             JSONObject brandingPreferenceResponse = null;
 
             if (StringUtils.isBlank(brandingPreferenceFilePath)) {
-                // TODO: Get the selected locale and check for the localization file.
                 String tenantWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/branding-preference_en_US.json");
                 File tenantWiseBrandingPreferenceFile = new File(tenantWiseBrandingPreferenceFilePath);
 
