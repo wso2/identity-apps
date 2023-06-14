@@ -58,16 +58,12 @@
     String productName = "WSO2 Identity Server";
 
     try {
-        String DEFAULT_RESOURCE_LOCALE = "en-US";
-        String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
-        String APP_PREFERENCE_RESOURCE_TYPE = "APP";
 
         String tenantRequestingPreferences = tenantForTheming;
         String applicationRequestingPreferences = spAppName;
-        String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
         String brandingPreferenceFilePath = "";
 
-        // If the `sp` param is defined, set the resource type as app.
+        // If the `sp` param is defined, the resource is an app.
         if (StringUtils.isNotBlank(applicationRequestingPreferences)) {
             String appWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/branding-preference_en_US.json");
 
@@ -75,7 +71,6 @@
 
             if (appWiseBrandingPreferenceFile.exists()) {
                 brandingPreferenceFilePath = appWiseBrandingPreferenceFilePath;
-                preferenceResourceType = APP_PREFERENCE_RESOURCE_TYPE;
             }
         }
 
@@ -89,7 +84,6 @@
 
                 if (tenantWiseBrandingPreferenceFile.exists()) {
                     brandingPreferenceFilePath = tenantWiseBrandingPreferenceFilePath;
-                    preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
                 }
             }
 
