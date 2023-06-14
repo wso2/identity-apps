@@ -79,6 +79,7 @@
             JSONObject brandingPreferenceResponse = null;
 
             if (StringUtils.isBlank(brandingPreferenceFilePath)) {
+                // TODO: Get the selected locale and check for the localization file.
                 String tenantWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/branding-preference_en_US.json");
                 File tenantWiseBrandingPreferenceFile = new File(tenantWiseBrandingPreferenceFilePath);
 
