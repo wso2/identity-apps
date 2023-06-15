@@ -19,31 +19,46 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 
-<%-- Change the layout name to activate another layout --%>
+<%-- Layout Resolver --%>
 <%
-    layout = "default";
-%>
 
-<%-- Activate the "custom" layout if exists --%>
-<%
-    if (config.getServletContext().getResource("extensions/layouts/custom/body.ser") != null) {
-        layout = "custom";
-    }
-%>
-
-<%-- Layout Resolving Part --%>
-<%
-    if (!layout.equals("custom")) {
-        if (layout.equals("default")) {
-            layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
-        } else {
-            layoutFileRelativePath = "extensions/layouts/" + layout + "/body.ser";
-            if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
-                layout = "default";
-                layoutFileRelativePath = "includes/layouts/default/body.ser";
+    if (brandingPreference != null) {
+        // First, check if Branding is enabled.
+        if (brandingPreference.has(CONFIGS_KEY)) {
+            if (brandingPreference.getJSONObject(CONFIGS_KEY).has(IS_BRANDING_ENABLED_KEY)) {
+                isBrandingEnabledInTenantPreferences = brandingPreference.getJSONObject(CONFIGS_KEY).getBoolean(IS_BRANDING_ENABLED_KEY);
             }
         }
-    } else {
-        layoutFileRelativePath = "extensions/layouts/custom/body.ser";
+
+        // Proceed only if the branding is enabled.
+        if (isBrandingEnabledInTenantPreferences) {
+            // Keys.
+            String LAYOUT_KEY = "layout";
+            String ACTIVE_LAYOUT_KEY = "activeLayout";
+
+            // Layout resolving logic.
+            if (brandingPreference.has(LAYOUT_KEY)) {
+                if (brandingPreference.getJSONObject(LAYOUT_KEY).has(ACTIVE_LAYOUT_KEY)) {
+                    if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))) {
+                        String tempLayout = brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY);
+                        String tempLayoutFileRelativePath = customLayoutFileRelativeBasePath + "/" + tempLayout + "/body.ser";
+                        if (config.getServletContext().getResource(tempLayoutFileRelativePath) != null) {
+                            layout = tempLayout;
+                            layoutFileRelativePath = tempLayoutFileRelativePath;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (StringUtils.isBlank(layoutFileRelativePath)) {
+        // This is maintained for backward compatibility.
+        if (config.getServletContext().getResource("extensions/layouts/custom/body.ser") != null) {
+            layout = "custom";
+            layoutFileRelativePath = "extensions/layouts/custom/body.ser";
+        } else {
+            layoutFileRelativePath = "includes/layouts/default/body.ser";
+        }
     }
 %>

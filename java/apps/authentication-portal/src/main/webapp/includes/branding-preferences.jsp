@@ -53,7 +53,8 @@
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
     String layout = "default";
-    String layoutFileRelativePath = "includes/layouts/default/body.ser";
+    String layoutFileRelativePath = "";
+    String customLayoutFileRelativeBasePath = "";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
 
@@ -72,6 +73,7 @@
 
             if (appWiseBrandingPreferenceFile.exists()) {
                 brandingPreferenceFilePath = appWiseBrandingPreferenceFilePath;
+                customLayoutFileRelativeBasePath = "extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/layouts";
             }
         }
 
@@ -85,6 +87,7 @@
 
                 if (tenantWiseBrandingPreferenceFile.exists()) {
                     brandingPreferenceFilePath = tenantWiseBrandingPreferenceFilePath;
+                    customLayoutFileRelativeBasePath = "extensions/branding/" + tenantRequestingPreferences + "/layouts";
                 }
             }
 
