@@ -19,7 +19,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 
-<%-- Layout Resolving Part --%>
+<%-- Layout Resolver --%>
 <%
 
     if (brandingPreference != null) {
@@ -36,7 +36,7 @@
             String LAYOUT_KEY = "layout";
             String ACTIVE_LAYOUT_KEY = "activeLayout";
 
-            // layout resolving logic.
+            // Layout resolving logic.
             if (brandingPreference.has(LAYOUT_KEY)) {
                 if (brandingPreference.getJSONObject(LAYOUT_KEY).has(ACTIVE_LAYOUT_KEY)) {
                     if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))) {
