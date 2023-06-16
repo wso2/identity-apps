@@ -44,12 +44,8 @@ export interface InputFieldMetadata {
  * to render the configuration settings section when creating and editing an IDVP.
  */
 export interface UIMetaDataForIDVP {
-    pages: {
-        edit: {
-            settings: InputFieldMetadata[];
-            general?: InputFieldMetadata[];
-            attributes?: InputFieldMetadata[];
-        };
+    common: {
+        configProperties: InputFieldMetadata[];
     }
 }
 
