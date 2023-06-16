@@ -35,6 +35,8 @@ export interface InputFieldMetadata {
     message?: FormFieldMessage;
     maxLength?: number;
     minLength?: number;
+    maxValue?: number;
+    minValue?: number;
     validationRegex?: string;
     regexValidationError?: string;
 }

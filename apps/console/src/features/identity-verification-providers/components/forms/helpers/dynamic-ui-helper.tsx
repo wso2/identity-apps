@@ -17,6 +17,7 @@
  */
 
 import { Field, FieldInputTypes, getDefaultValidation } from "@wso2is/form";
+import { I18n } from "@wso2is/i18n";
 import React, { ReactElement } from "react";
 import { Divider, Header } from "semantic-ui-react";
 import { MetaDataInputTypes } from "../../../constants";
@@ -26,9 +27,6 @@ import {
     IdentityVerificationProviderInterface,
     InputFieldMetadata
 } from "../../../models";
-
-const ERROR_MSG_REQUIRED_FIELD: string = "This field cannot be empty";
-const ERROR_MSG_REGEX_FAILED: string = "Pattern validation failed";
 
 type InputFieldValue = string | boolean | number | DropdownOptionsInterface ;
 
@@ -272,7 +270,7 @@ export const performValidations = ( value: string, elementMetaData: InputFieldMe
 
     // perform required validation
     if (elementMetaData.required && !value) {
-        return ERROR_MSG_REQUIRED_FIELD;
+        return I18n.instance.t("console:develop.features.idvp.forms.dynamicUI.validations.required");
     }
 
     // skip the rest of the validations if the value is empty
@@ -280,12 +278,25 @@ export const performValidations = ( value: string, elementMetaData: InputFieldMe
         return;
     }
 
+    // perform range validation if the field is numeric
+    if (elementMetaData.type === FieldInputTypes.INPUT_NUMBER) {
+        const numericalValue: number = Number(value);
+
+        if (numericalValue < elementMetaData.minValue || numericalValue > elementMetaData.maxValue) {
+            return I18n.instance.t(
+                "console:develop.features.idvp.forms.dynamicUI.validations.range",
+                { max: elementMetaData.maxValue, min: elementMetaData.minValue }
+            );
+        }
+    }
+
     // perform regex validation
     if (elementMetaData.validationRegex) {
         const regexp: RegExp = new RegExp(elementMetaData.validationRegex);
 
         if (!regexp.test(value)) {
-            return  elementMetaData.regexValidationError ?? ERROR_MSG_REGEX_FAILED;
+            return  elementMetaData.regexValidationError ??
+                I18n.instance.t("console:develop.features.idvp.forms.dynamicUI.validations.regex");
         }
     }
 
