@@ -237,7 +237,7 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_idvp_create"
+                        "internal_idvp_add"
                     ],
                     "read": [
                         "internal_idvp_view"
