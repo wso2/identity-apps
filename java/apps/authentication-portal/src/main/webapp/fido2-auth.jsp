@@ -174,8 +174,8 @@
         $(document).ready(function () {
             var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
 
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
+            if ("<%=Encode.forJavaScriptBlock(tenantDomain)%>" !== "" || "<%=Encode.forJavaScriptBlock(tenantDomain)%>" !== "null") {
+                myaccountUrl = myaccountUrl + "/t/" + "<%=Encode.forJavaScriptBlock(tenantDomain)%>";
             }
 
             $("#my-account-link").attr("href", myaccountUrl +"/myaccount");
