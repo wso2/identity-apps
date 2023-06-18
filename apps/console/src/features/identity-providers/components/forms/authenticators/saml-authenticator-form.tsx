@@ -27,6 +27,7 @@ import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface,
+    FederatedAuthenticatorInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../../models";
 import {
@@ -53,7 +54,7 @@ import {
  * Optionally you can pass this key to {@link useTranslation}
  * to avoid concatenate strings.
  */
-const I18N_TARGET_KEY = "console:develop.features.authenticationProvider.forms.authenticatorSettings.saml";
+const I18N_TARGET_KEY: string = "console:develop.features.authenticationProvider.forms.authenticatorSettings.saml";
 
 /**
  * SamlSettingsForm Properties interface. The data-testid is added in
@@ -141,13 +142,13 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
      */
     const [ isAlgorithmsEnabled, setIsAlgorithmsEnabled ] = useState<boolean>(false);
 
-    const initialFormValues = useMemo<SamlPropertiesInterface>(() => {
+    const initialFormValues: SamlPropertiesInterface = useMemo<SamlPropertiesInterface>(() => {
 
         const [ findPropVal, findMeta ] = fastSearch(authenticator);
 
         return {
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
-            DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" }),
+            DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
@@ -172,7 +173,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
-            SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA1", key: "SignatureAlgorithm" }),
+            SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
             commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" })
         } as SamlPropertiesInterface;
 
@@ -189,13 +190,13 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     }, [ initialFormValues ]);
 
     useEffect(() => {
-        const ifEitherOneOfThemIsChecked = isLogoutReqSigned || isAuthnReqSigned;
+        const ifEitherOneOfThemIsChecked: boolean = isLogoutReqSigned || isAuthnReqSigned;
 
         setIsAlgorithmsEnabled(ifEitherOneOfThemIsChecked);
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
     const onFormSubmit = (values: { [ key: string ]: any }): void => {
-        const manualOverride = {
+        const manualOverride: { [key: string]: boolean } = {
             "ISAuthnReqSigned": isAuthnReqSigned,
             "IncludeProtocolBinding": includeProtocolBinding,
             "IsLogoutEnabled": isLogoutEnabled,
@@ -203,15 +204,15 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             "IsSLORequestAccepted": isSLORequestAccepted,
             "IsUserIdInClaims": isUserIdInClaims
         };
-        const manualOverrideKeys = new Set<string>(Object.keys(manualOverride));
-        const authn = ({
+        const manualOverrideKeys: Set<string> = new Set<string>(Object.keys(manualOverride));
+        const authn: FederatedAuthenticatorInterface = ({
             ...authenticator.data,
             properties: [
                 ...Object.keys(values)
-                    .filter((key) => !manualOverrideKeys.has(key))
-                    .map((key) => ({ key, value: values[key] })),
+                    .filter((key: string) => !manualOverrideKeys.has(key))
+                    .map((key: string) => ({ key, value: values[key] })),
                 ...Object.keys(manualOverride)
-                    .map((key) => ({ key, value: manualOverride[key] })) as any
+                    .map((key: string) => ({ key, value: manualOverride[key] })) as any
             ]
         });
 

@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -14,13 +14,20 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
-<%@ include file="localize.jsp" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
-<jsp:directive.include file="layout-resolver.jsp"/>
+<%-- Include tenant context --%>
+<jsp:directive.include file="init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
 
 <%-- Extract the name of the stylesheet--%>
 <%
@@ -41,8 +48,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" href="libs/themes/default/assets/images/branding/favicon.ico" type="image/x-icon"/>
+<%-- Updates the favicon with the URL resolved in branding-preferences --%>
+<link rel="icon" href="<%= StringEscapeUtils.escapeHtml4(faviconURL) %>" type="image/x-icon"/>
+
+<%-- Load the base theme --%>
 <link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
+
+<%-- Load Default Theme Skeleton --%>
+<jsp:include page="theme-skeleton.jsp"/>
+
+<%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
+<% if (overrideStylesheet != null) { %>
+<link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
+<% } %>
 
 <%-- Layout specific style sheet --%>
 <%
@@ -52,6 +70,13 @@
     <link rel="stylesheet" href="<%= styleFilePath %>">
 <% } %>
 
-<title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
+<%-- Updates the site tile with the text resolved in branding-preferences --%>
+<title>
+<% if (StringUtils.isNotBlank(siteTitle)) { %>
+    <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
+<% } else { %>
+    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>
+<% } %>
+</title>
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>

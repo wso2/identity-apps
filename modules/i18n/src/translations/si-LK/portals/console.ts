@@ -8518,6 +8518,20 @@ export const console: ConsoleNS = {
                             message: "පරිශීලකයා සාර්ථකව එකතු කරන ලදි"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නව පරිශීලකයා එකතු කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "නව පරිශීලකයා එක් කිරීමට නොහැකි විය",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "නව පරිශීලකයා පිළිගෙන ඇති අතර අනුමැතිය බලාපොරොත්තු වේ.",
+                            message: "පරිශීලකයා එකතු කිරීම සඳහා පිළිගෙන ඇත"
+                        }
+                    },
                     deleteUser: {
                         error: {
                             description: "{{description}}",

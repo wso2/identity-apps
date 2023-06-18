@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -16,14 +16,34 @@
   ~ under the License.
 --%>
 
-<%@ include file="localize.jsp" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
 
 <%-- footer --%>
 <footer class="footer" style="text-align: center">
     <div class="container-fluid">
-        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> &copy;
-            <script>document.write(new Date().getFullYear());</script>
-        </p>
+        <%
+            if (!StringUtils.isBlank(copyrightText)) {
+        %>
+            <span></span>
+            <p><%= StringEscapeUtils.escapeHtml4(copyrightText) %></p>
+        <%
+            } else {
+        %>
+            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> &copy;
+                <script>document.write(new Date().getFullYear());</script>
+            </p>
+        <%
+            }
+        %>
     </div>
 </footer>

@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -23,10 +23,16 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="includes/localize.jsp" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Localization --%>
+<%@ include file="includes/localize.jsp" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
@@ -140,17 +146,17 @@
                                         String reSendCode = request.getParameter("resendCode");
                                         if ("true".equals(reSendCode)) {
                                 %>
-                                    <div 
-                                        id="resendCodeLinkDiv" 
+                                    <div
+                                        id="resendCodeLinkDiv"
                                         class="ui button secondary"
-                                        tabindex="0" 
+                                        tabindex="0"
                                         onclick="resendOtp()"
                                         onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()">
                                         <a id="resend"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "resend.code")%></a>
                                     </div>
                                 <% } } %>
                                 <input
-                                    type="button" name="authenticate" id="authenticate"
+                                    type="submit" name="authenticate" id="authenticate"
                                     value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "authenticate.button")%>" class="ui primary button"/>
                             </div>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
@@ -183,20 +189,25 @@
 
         <script type="text/javascript">
         $(document).ready(function() {
-            $('#authenticate').click(function() {
-                if ($('#pin_form').data("submitted") === true) {
-                    console.warn("Prevented a possible double submit event");
-                } else {
-                    var OTPcode = document.getElementById("OTPcode").value;
-                    if (OTPcode == "") {
-                        document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
+            $.fn.preventDoubleSubmission = function() {
+                $('#pin_form').on('submit', function(e) {
+                    if ($('#pin_form').data('submitted') === true) {
+                        // Previously submitted - don't submit again.
+                        e.preventDefault();
+                        console.warn("Prevented a possible double submit event");
                     } else {
-                        $('#pin_form').data("submitted", true);
-                        $('#pin_form').submit();
+                        var OTPcode = document.getElementById("OTPcode").value;
+                        if (OTPcode == "") {
+                            e.preventDefault();
+                            document.getElementById('alertDiv').innerHTML
+                                = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
+                        } else {
+                            $('#pin_form').data("submitted", true);
+                        }
                     }
-                }
-            });
+                });
+            };
+            $('#pin_form').preventDoubleSubmission();
         });
 
         function resendOtp() {

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Localization --%>
+<%@ include file="includes/localize.jsp" %>
 
-<%@include file="includes/localize.jsp" %>
+<%-- Include tenant context --%>
 <%@include file="includes/init-url.jsp" %>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String[] requestedClaimList = new String[0];

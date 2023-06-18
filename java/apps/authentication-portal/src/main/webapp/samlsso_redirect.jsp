@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -17,15 +17,20 @@
 --%>
 
 <%@page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.net.URLDecoder" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%@include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Localization --%>
+<%@ include file="includes/localize.jsp" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String assertionConsumerURL = (String) request.getAttribute(Constants.SAML2SSO.ASSERTION_CONSUMER_URL);
