@@ -324,7 +324,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     useEffect(() => {
-        if (sharedOrganizationsList || isFirstLevelOrg) {
+        if (sharedOrganizationsList || !isFirstLevelOrg) {
             return;
         }
 
