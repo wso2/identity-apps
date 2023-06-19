@@ -5739,11 +5739,9 @@ export const console: ConsoleNS = {
                         title: "Add a new Identity Verification Provider"
                     },
                     emptyIDVPTypeList: {
-                        subtitles: {
-                            0: "There are currently no identity verification provider types ",
-                            1: "available for configuration."
-                        },
-                        title: "No identity verification provider types found"
+                        subtitles: "You can onboard new identity verification provider templates from the" +
+                            "<1> WSO2 Connector Store </1>.",
+                        title: "No identity verification provider templates found"
                     }
                 },
                 confirmations: {
@@ -5932,6 +5930,13 @@ export const console: ConsoleNS = {
                         },
                         attributeSelectionModal: {
                             header: "Add Attribute Mappings"
+                        }
+                    },
+                    dynamicUI: {
+                        validations: {
+                            required: "This field cannot be empty",
+                            regex: "Input does not match the expected format",
+                            range: "Value should be between {{ min }} and {{ max }}"
                         }
                     }
                 },

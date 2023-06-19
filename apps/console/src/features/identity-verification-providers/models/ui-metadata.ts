@@ -35,6 +35,8 @@ export interface InputFieldMetadata {
     message?: FormFieldMessage;
     maxLength?: number;
     minLength?: number;
+    maxValue?: number;
+    minValue?: number;
     validationRegex?: string;
     regexValidationError?: string;
 }
@@ -44,12 +46,8 @@ export interface InputFieldMetadata {
  * to render the configuration settings section when creating and editing an IDVP.
  */
 export interface UIMetaDataForIDVP {
-    pages: {
-        edit: {
-            settings: InputFieldMetadata[];
-            general?: InputFieldMetadata[];
-            attributes?: InputFieldMetadata[];
-        };
+    common: {
+        configProperties: InputFieldMetadata[];
     }
 }
 

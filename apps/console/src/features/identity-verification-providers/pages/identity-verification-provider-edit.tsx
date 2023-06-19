@@ -222,8 +222,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                 floated="left"
             />
         );
-
-
     };
 
     return (
