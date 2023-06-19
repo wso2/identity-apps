@@ -4109,11 +4109,8 @@ export const console: ConsoleNS = {
                         title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
                     },
                     emptyIDVPTypeList: {
-                        subtitles: {
-                            0: "වින්‍යාස කිරීම සඳහා මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන්",
-                            1: "වර්ග නොමැත."
-                        },
-                        title: "අනන්‍යතා තහවුරු කරන්නන් වර්ග කිසිවක් හමු නොවිණි"
+                        subtitles: "ඔබට <1>WSO2 Connector Store</1> වෙතින් නව අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි ඇතුල් කළ හැක.",
+                        title: "අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි කිසිවක් හමු නොවිණි"
                     }
                 },
                 confirmations: {
@@ -4296,6 +4293,13 @@ export const console: ConsoleNS = {
                         },
                         attributeSelectionModal: {
                             header: "ගුණාංග සිතියම්ගත කරන්න"
+                        }
+                    },
+                    dynamicUI: {
+                        validations: {
+                            required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
+                            regex: "ආදානය බලාපොරොත්තු වන ආකාරයට නොගැලපේ",
+                            range: "අගය {{min}} සිට {{max}} අතර විය යුතුය"
                         }
                     }
                 },
