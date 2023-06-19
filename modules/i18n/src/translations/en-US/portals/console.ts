@@ -5933,6 +5933,13 @@ export const console: ConsoleNS = {
                         attributeSelectionModal: {
                             header: "Add Attribute Mappings"
                         }
+                    },
+                    dynamicUI: {
+                        validations: {
+                            required: "This field cannot be empty",
+                            regex: "Input does not match the expected format",
+                            range: "Value should be between {{ min }} and {{ max }}"
+                        }
                     }
                 },
                 dangerZoneGroup: {

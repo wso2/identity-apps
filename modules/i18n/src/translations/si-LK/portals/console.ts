@@ -4297,6 +4297,13 @@ export const console: ConsoleNS = {
                         attributeSelectionModal: {
                             header: "ගුණාංග සිතියම්ගත කරන්න"
                         }
+                    },
+                    dynamicUI: {
+                        validations: {
+                            required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
+                            regex: "ආදානය බලාපොරොත්තු වන ආකාරයට නොගැලපේ",
+                            range: "අගය {{min}} සිට {{max}} අතර විය යුතුය"
+                        }
                     }
                 },
                 dangerZoneGroup: {

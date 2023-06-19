@@ -4423,6 +4423,13 @@ export const console: ConsoleNS = {
                         attributeSelectionModal: {
                             header: "Ajouter des mappages d'attributs"
                         }
+                    },
+                    dynamicUI: {
+                        validations: {
+                            required: "Ce champ ne peut pas être vide",
+                            regex: "L'entrée ne correspond pas au format attendu",
+                            range: "La valeur doit être comprise entre {{ min }} et {{ max }}"
+                        }
                     }
                 },
                 dangerZoneGroup: {
