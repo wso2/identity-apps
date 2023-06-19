@@ -4222,11 +4222,9 @@ export const console: ConsoleNS = {
                         title: "Ajouter un nouveau fournisseur de vérification d'identité"
                     },
                     emptyIDVPTypeList: {
-                        subtitles: {
-                            0: "Il n'y a actuellement aucun type de fournisseur de vérification ",
-                            1: "d'identité disponible pour la configuration."
-                        },
-                        title: "Aucun type de fournisseur de vérification d'identité trouvé"
+                        subtitles: "Vous pouvez intégrer de nouveaux modèles de fournisseurs de vérification " +
+                            "d'identité depuis le <1>WSO2 Connector Store</1>.",
+                        title: "Aucun modèle de fournisseur de vérification d'identité trouvé"
                     }
                 },
                 confirmations: {

@@ -5739,11 +5739,9 @@ export const console: ConsoleNS = {
                         title: "Add a new Identity Verification Provider"
                     },
                     emptyIDVPTypeList: {
-                        subtitles: {
-                            0: "There are currently no identity verification provider types ",
-                            1: "available for configuration."
-                        },
-                        title: "No identity verification provider types found"
+                        subtitles: "You can onboard new identity verification provider templates from the" +
+                            "<1> WSO2 Connector Store </1>.",
+                        title: "No identity verification provider templates found"
                     }
                 },
                 confirmations: {
