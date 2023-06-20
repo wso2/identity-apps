@@ -1830,8 +1830,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended
                                             for. By default, the issuer value of the WSO2 Identity Server is added as an audience.
                                         </Trans>
-                                    ) }
-                                    readOnly={ readOnly }
+                                    ) } 
+                                    readOnly={ readOnly } 
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
