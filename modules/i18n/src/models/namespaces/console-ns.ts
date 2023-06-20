@@ -865,6 +865,7 @@ export interface ConsoleNS {
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;
+                                    audience: FormAttributes;
                                 };
                             };
                             idToken: {

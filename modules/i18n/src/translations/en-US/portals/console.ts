@@ -1684,6 +1684,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the issuer value of the WSO2 Identity Server is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Access Token Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",

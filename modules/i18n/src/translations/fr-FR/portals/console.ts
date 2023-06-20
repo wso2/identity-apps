@@ -1723,6 +1723,17 @@ export const console: ConsoleNS = {
                                             " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
+                                    },
+                                    audience: {
+                                        hint: "Spécifiez le ou les destinataires auxquels ce <1>jeton_d'accès</1> est destiné." +
+                                        " Par défaut, la valeur de l'émetteur du serveur d'identité WSO2 est ajoutée en tant qu'audience.",
+                                        label: "Audience",
+                                        placeholder: "Entrez l'audience du jeton d'accès",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez ajouter une audience valide."
+                                        }
                                     }
                                 },
                                 heading: "Jeton d'accès",

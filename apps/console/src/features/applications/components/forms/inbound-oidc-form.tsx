@@ -182,6 +182,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
+    const [ accessTokenAudienceUrls, setAccessTokenAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ showAudienceError, setShowAudienceError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
@@ -225,6 +226,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const refreshToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const expiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const audience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const accessTokenAudience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const method: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -912,6 +914,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
+                accessTokenAudience: accessTokenAudienceUrls !== "" ? accessTokenAudienceUrls.split(",") : [],
                 applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                     ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
                     : Number(metadata.defaultApplicationAccessTokenExpiryTime),
@@ -1038,6 +1041,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfigurationForSPA = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
+                accessTokenAudience: accessTokenAudienceUrls !== "" ? accessTokenAudienceUrls.split(",") : [],
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
@@ -1208,6 +1212,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "audience":
                 audience.current.scrollIntoView(options);
 
+                break;
+            case "accessTokenAudience":
+                accessTokenAudience.current.scrollIntoView(options);
+    
                 break;
             case "encryption":
                 encryption.current.scrollIntoView(options);
@@ -1766,6 +1774,90 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
+
+                        { /* Access Token Audience */ }
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
+                                <URLInput
+                                    isAllowEnabled={ false }
+                                    tenantDomain={ tenantDomain }
+                                    onlyOrigin={ false }
+                                    labelEnabled={ false }
+                                    urlState={ accessTokenAudienceUrls }
+                                    setURLState={ (url: string) => {
+                                        setAccessTokenAudienceUrls(url);
+
+                                        // TODO: Replace idToken with accessToken
+                                        const initialUrl: string = initialValues?.idToken?.audience.toString()
+                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                                initialValues?.idToken?.audience.toString())
+                                            : "";
+
+                                        if (initialUrl !== url) {
+                                            setIsFormStale(true);
+                                        }
+                                    } }
+                                    labelName={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.audience.label")
+                                    }
+                                    required={ false }
+                                    value={
+                                        // TODO: Replace idToken with accessToken
+                                        initialValues?.idToken?.audience.toString()
+                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                                initialValues?.idToken?.audience.toString())
+                                            : ""
+                                    }
+                                    validation={ (value: string) => !value?.includes(",") }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC." + 
+                                        "sections.accessToken.fields.audience.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("console:develop.features.applications.forms.inboundOIDC." + 
+                                        "sections.accessToken.fields.audience.validations.invalid")
+                                    }
+                                    showError={ showAudienceError }
+                                    setShowError={ setShowAudienceError }
+                                    hint={ (
+                                        <Trans
+                                            i18nKey={
+                                                "console:develop.features.applications.forms.inboundOIDC." + 
+                                                "sections.accessToken.fields.audience.hint"
+                                            }
+                                        >
+                                            Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended
+                                            for. By default, the issuer value of the WSO2 Identity Server is added as an audience.
+                                        </Trans>
+                                    ) }
+                                    readOnly={ readOnly }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                        submitUrl = submitFunction;
+                                    } }
+                                    showPredictions={ false }
+                                    skipInternalValidation={ true }
+                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.header") }
+                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.header") }
+                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        + "positive.content", { productName: config.ui.productName }) }
+                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        + "negative.content", { productName: config.ui.productName }) }
+                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        + "withLabel.positive.detailedContent.0") }
+                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        + "withLabel.negative.detailedContent.0") }
+                                    insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                    showLessContent={ t("common:showLess") }
+                                    showMoreContent={ t("common:showMore") }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
