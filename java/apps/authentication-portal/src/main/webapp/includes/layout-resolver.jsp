@@ -19,6 +19,31 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 
+<%-- This part is maintained for backward compatibility --%>
+<%
+    // Change the layout name to activate another layout
+    layout = "default";
+
+    // Activate the "custom" layout if exists
+    if (config.getServletContext().getResource("extensions/layouts/custom/body.ser") != null) {
+        layout = "custom";
+    }
+    
+    if (!layout.equals("custom")) {
+        if (layout.equals("default")) {
+            layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
+        } else {
+            layoutFileRelativePath = "extensions/layouts/" + layout + "/body.ser";
+            if (config.getServletContext().getResource(layoutFileRelativePath) == null) {
+                layout = "default";
+                layoutFileRelativePath = "includes/layouts/default/body.ser";
+            }
+        }
+    } else {
+        layoutFileRelativePath = "extensions/layouts/custom/body.ser";
+    }
+%>
+
 <%-- Layout Resolver --%>
 <%
 
@@ -49,16 +74,6 @@
                     }
                 }
             }
-        }
-    }
-
-    if (StringUtils.isBlank(layoutFileRelativePath)) {
-        // This is maintained for backward compatibility.
-        if (config.getServletContext().getResource("extensions/layouts/custom/body.ser") != null) {
-            layout = "custom";
-            layoutFileRelativePath = "extensions/layouts/custom/body.ser";
-        } else {
-            layoutFileRelativePath = "includes/layouts/default/body.ser";
         }
     }
 %>
