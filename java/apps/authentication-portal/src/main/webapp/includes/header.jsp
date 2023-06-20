@@ -64,7 +64,7 @@
 
 <%-- Layout specific style sheet --%>
 <%
-    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
+    String styleFilePath = customLayoutFileRelativeBasePath + "/" + layout + "/styles.css";
     if (config.getServletContext().getResource(styleFilePath) != null) {
 %>
     <link rel="stylesheet" href="<%= styleFilePath %>">
