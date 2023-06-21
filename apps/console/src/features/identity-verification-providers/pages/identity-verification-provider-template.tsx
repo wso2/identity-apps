@@ -19,14 +19,14 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader, EmptyPlaceholder,
-    GridLayout,
+    GridLayout, Link,
     PageLayout,
     ResourceGrid,
     SearchWithFilterLabels
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import {
     AppConstants,
@@ -243,20 +243,25 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
             );
         }
 
-        // Edge case, templates will never be empty.
         if (list.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.title")
+                    title={ t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.title") }
+                    subtitle={
+                        (
+                            <Trans
+                                i18nKey={ "console:develop.features.idvp.placeholders.emptyIDVPTypeList.subtitles" }
+                            >
+                                You can onboard new identity verification provider templates from the
+                                <Link link="https://store.wso2.com/store/assets/isconnector/list">
+                                    WSO2 Connector Store
+                                </Link>.
+                            </Trans>
+                        )
                     }
-                    subtitle={ [
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.subtitles.0"),
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.subtitles.1")
-                    ] }
-                    data-componentid={ `${ componentID }-empty-placeholder` }
+                    data-componentid={ `${componentID}-empty-placeholder` }
                 />
             );
         }

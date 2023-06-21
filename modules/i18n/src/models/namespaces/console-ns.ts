@@ -2463,6 +2463,13 @@ export interface ConsoleNS {
                         name: FormAttributes;
                         description: FormAttributes;
                     };
+                    dynamicUI: {
+                        validations: {
+                            required: string;
+                            regex: string;
+                            range: string;
+                        }
+                    }
                 };
                 dangerZoneGroup?: {
                     header: string;

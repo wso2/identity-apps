@@ -53,7 +53,7 @@
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
     String layout = "default";
-    String layoutFileRelativePath = "";
+    String layoutFileRelativePath = "includes/layouts/default/body.ser";
     String customLayoutFileRelativeBasePath = "";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";

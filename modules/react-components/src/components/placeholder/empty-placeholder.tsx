@@ -77,6 +77,35 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
         className
     );
 
+    const renderSubtitle = () => {
+        if (!subtitle) {
+            return;
+        }
+
+        if (Array.isArray(subtitle) && (subtitle.length > 0)) {
+            return subtitle.map((line, index) => (
+                <div
+                    key={ index }
+                    className="subtitle"
+                    data-componentid={ `${componentId}-sub-header-line-${index}` }
+                    data-testid={ `${testId}-sub-header-line-${index}` }
+                >
+                    { line }
+                </div>
+            ));
+        }
+
+        return (
+            <div
+                className="subtitle"
+                data-componentid={ `${componentId}-sub-header` }
+                data-testid={ `${testId}-sub-header` }
+            >
+                { subtitle }
+            </div>
+        );
+    };
+
     return (
         <div
             className={ classes }
@@ -109,28 +138,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                     { title }
                 </Header>
             ) }
-            {
-                subtitle
-                    ? Array.isArray(subtitle) && (subtitle.length > 0) && subtitle.map((line, index) => (
-                        <div
-                            key={ index }
-                            className="subtitle"
-                            data-componentid={ `${ componentId }-sub-header-line-${ index }` }
-                            data-testid={ `${ testId }-sub-header-line-${ index }` }
-                        >
-                            { line }
-                        </div>
-                    ))
-                    : (
-                        <div
-                            className="subtitle"
-                            data-componentid={ `${ componentId }-sub-header` }
-                            data-testid={ `${ testId }-sub-header` }
-                        >
-                            { subtitle }
-                        </div>
-                    )
-            }
+            { renderSubtitle() }
             {
                 action
                     ? (

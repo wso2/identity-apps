@@ -375,7 +375,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                 return nameValidationError;
             }
 
-            for(const setting of uiMetaData?.pages?.edit?.settings) {
+            for(const setting of uiMetaData?.common?.configProperties) {
                 const configurationValidationError: string = performValidations( values[setting.name], setting);
 
                 if(configurationValidationError) {
@@ -406,7 +406,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                     data-componentid={ `${ componentId }-form-wizard-idvp-name` }
                     hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
                 />
-                { renderFormUIWithMetadata(uiMetaData?.pages?.edit?.settings, idvpTemplate) }
+                { renderFormUIWithMetadata(uiMetaData?.common?.configProperties, idvpTemplate) }
             </WizardPage>);
     };
 
