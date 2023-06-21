@@ -16,7 +16,15 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
