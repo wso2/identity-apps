@@ -54,7 +54,8 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account") && StringUtils.equals(tenantDomain, "carbon.super")) {
+            if (StringUtils.equals(spAppName, "My Account") 
+                && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;
             }
@@ -89,10 +90,20 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account") && StringUtils.equals(tenantDomain, "carbon.super")) {
+            if (StringUtils.equals(spAppName, "My Account") 
+                && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;
             }
         }
+    }
+
+    // If `tenantDomain` is null, fallback to super tenant.
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
+    // If `tenantForTheming` is null, fallback to super tenant.
+    if (StringUtils.isBlank(tenantForTheming)) {
+        tenantForTheming = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
 %>
