@@ -111,16 +111,28 @@
 
     <body class="login-portal layout sms-otp-portal-layout">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader" >
+            <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                File productTitleFile = new File("");
+                String productTitleFilePath;
+                
+                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
+                    productTitleFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
+                }
+
+                if (productTitleFile.exists()) {
+                    productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
+                } else {
+                    productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                     if (productTitleFile.exists()) {
+                        productTitleFilePath = "extensions/product-title.jsp";
+                    } else {
+                        productTitleFilePath = "includes/product-title.jsp";
+                    }
+                }
                 %>
-                <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                <jsp:include page="includes/product-title.jsp"/>
-                <% } %>
+                <jsp:include page="<%= productTitleFilePath %>" />
             </layout:component>
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
@@ -143,7 +155,7 @@
                 <%-- product-footer --%>
                 <%
                 File productFooterFile = new File("");
-                String productFooterFilePath = null;
+                String productFooterFilePath;
                 
                 if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
                     productFooterFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
