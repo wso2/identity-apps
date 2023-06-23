@@ -237,16 +237,28 @@
                         <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>
                     <% } %>
             </layout:component>
-            <layout:component componentName="ProductFooter" >
+            <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
                 <%
-                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                File productFooterFile = new File("");
+                String productFooterFilePath = null;
+                
+                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
+                    productFooterFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
+                }
+
+                if (productFooterFile.exists()) {
+                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
+                } else {
+                    productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                     if (productFooterFile.exists()) {
+                        productFooterFilePath = "extensions/product-footer.jsp";
+                    } else {
+                        productFooterFilePath = "includes/product-footer.jsp";
+                    }
+                }
                 %>
-                <jsp:include page="extensions/product-footer.jsp"/>
-                <% } else { %>
-                <jsp:include page="includes/product-footer.jsp"/>
-                <% } %>
+                <jsp:include page="<%= productFooterFilePath %>" />
             </layout:component>
         </layout:main>
 

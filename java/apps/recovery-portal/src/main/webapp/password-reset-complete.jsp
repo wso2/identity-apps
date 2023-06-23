@@ -239,14 +239,26 @@
         <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) {
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                File productFooterFile = new File("");
+                String productFooterFilePath = null;
+                
+                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
+                    productFooterFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
+                }
+
                 if (productFooterFile.exists()) {
+                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
+                } else {
+                    productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
+                        productFooterFilePath = "extensions/product-footer.jsp";
+                    } else {
+                        productFooterFilePath = "includes/product-footer.jsp";
+                    }
+                }
                 %>
-                <jsp:include page="extensions/product-footer.jsp"/>
-                <% } else { %>
-                <jsp:include page="includes/product-footer.jsp"/>
-                <% }
-            } %>
+                <jsp:include page="<%= productFooterFilePath %>" />
+            <% } %>
         </layout:component>
     </layout:main>
 
