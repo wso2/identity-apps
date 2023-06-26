@@ -85,14 +85,14 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            File productTitleFile = new File("");
+            File productTitleFile = null;
             String productTitleFilePath;
             
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
                 productTitleFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
             }
 
-            if (productTitleFile.exists()) {
+            if (productTitleFile != null && productTitleFile.exists()) {
                 productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
             } else {
                 productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -121,14 +121,14 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            File productFooterFile = new File("");
+            File productFooterFile = null;
             String productFooterFilePath;
             
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
                 productFooterFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
             }
 
-            if (productFooterFile.exists()) {
+            if (productFooterFile != null && productFooterFile.exists()) {
                 productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
             } else {
                 productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
