@@ -201,7 +201,7 @@
             String productTitleFilePath;
             
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
+                productTitleFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-title.jsp"));
             }
 
             if (productTitleFile != null && productTitleFile.exists()) {
