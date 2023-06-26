@@ -130,22 +130,12 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            File productTitleFile = null;
-            String productTitleFilePath;
-            
+            String productTitleFilePath = "extensions/product-title.jsp";
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-title.jsp"));
-            }
-
-            if (productTitleFile != null && productTitleFile.exists()) {
                 productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            } else {
-                productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
-                    productTitleFilePath = "extensions/product-title.jsp";
-                } else {
-                    productTitleFilePath = "includes/product-title.jsp";
-                }
+            }
+            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
+                productTitleFilePath = "includes/product-title.jsp";
             }
             %>
             <jsp:include page="<%= productTitleFilePath %>" />
@@ -166,22 +156,12 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            File productFooterFile = null;
-            String productFooterFilePath;
-            
+            String productFooterFilePath = "extensions/product-footer.jsp";
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFile = new File(getServletContext().getRealPath(customLayoutFileRelativeBasePath + "/product-footer.jsp"));
-            }
-
-            if (productFooterFile != null && productFooterFile.exists()) {
                 productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            } else {
-                productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-                    productFooterFilePath = "extensions/product-footer.jsp";
-                } else {
-                    productFooterFilePath = "includes/product-footer.jsp";
-                }
+            }
+            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
+                productFooterFilePath = "includes/product-footer.jsp";
             }
             %>
             <jsp:include page="<%= productFooterFilePath %>" />
