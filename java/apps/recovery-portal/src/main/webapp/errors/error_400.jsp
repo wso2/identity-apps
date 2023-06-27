@@ -53,12 +53,12 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
+            String productTitleFilePath = "../extensions/product-title.jsp";
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
+                productTitleFilePath = "../" + customLayoutFileRelativeBasePath + "/product-title.jsp";
             }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
+            if (!new File(getServletContext().getRealPath(productTitleFilePath.substring(3))).exists()) {
+                productTitleFilePath = "../includes/product-title.jsp";
             }
             %>
             <jsp:include page="<%= productTitleFilePath %>" />
@@ -73,12 +73,12 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
+            String productFooterFilePath = "../extensions/product-footer.jsp";
             if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
+                productFooterFilePath = "../" + customLayoutFileRelativeBasePath + "/product-footer.jsp";
             }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
+            if (!new File(getServletContext().getRealPath(productFooterFilePath.substring(3))).exists()) {
+                productFooterFilePath = "../includes/product-footer.jsp";
             }
             %>
             <jsp:include page="<%= productFooterFilePath %>" />
