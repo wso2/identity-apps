@@ -9,9 +9,6 @@
         "resolveJsonModule": true,
         "skipDefaultLibCheck": true,
         "types": [ "node", "webpack-env", "jest", "@testing-library/jest-dom" ],
-        "paths": {
-            "semantic-ui-react": ["node_modules/semantic-ui-react/"]
-        }
     },
     "exclude": [
         "build",
