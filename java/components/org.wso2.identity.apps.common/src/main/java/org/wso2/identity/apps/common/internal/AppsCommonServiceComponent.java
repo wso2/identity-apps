@@ -35,7 +35,6 @@ import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
-import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
@@ -105,27 +104,6 @@ public class AppsCommonServiceComponent {
         } catch (Throwable e) {
             log.error("Failed to activate identity apps common service component.", e);
         }
-    }
-
-    @Reference(name = "registry.service",
-               service = RegistryService.class,
-               cardinality = ReferenceCardinality.MANDATORY,
-               policy = ReferencePolicy.DYNAMIC,
-               unbind = "unsetRegistryService")
-    protected void setRegistryService(RegistryService registryService) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("Setting the Registry Service.");
-        }
-        AppsCommonDataHolder.getInstance().setRegistryService(registryService);
-    }
-
-    protected void unsetRegistryService(RegistryService registryService) {
-
-        if (log.isDebugEnabled()) {
-            log.debug("Un-setting the Registry Service.");
-        }
-        AppsCommonDataHolder.getInstance().setRegistryService(null);
     }
 
     @Reference(name = "application.mgt.service",
