@@ -53,10 +53,6 @@
             <artifactId>org.wso2.carbon.core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.registry.core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.application.common</artifactId>
         </dependency>
@@ -109,8 +105,6 @@
             org.wso2.carbon.user.api; version="${carbon.user.api.imp.pkg.version.range}",
             org.wso2.carbon.user.core.*; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils.multitenancy.*; version="${carbon.kernel.imp.pkg.version.range}",
-            org.wso2.carbon.registry.core.*;
-            version="${carbon.kernel.registry.imp.pkg.version.range}",
             org.wso2.carbon.stratos.common.*; version="${carbon.commons.imp.pkg.version.range}",
 
             org.wso2.carbon.identity.oauth.*; version="${carbon.identity.oauth.imp.pkg.version.range}",

@@ -19,7 +19,6 @@ package org.wso2.identity.apps.common.internal;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
-import org.wso2.carbon.registry.core.service.RegistryService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +33,6 @@ public class AppsCommonDataHolder {
     private ApplicationManagementService applicationManagementService;
 
     private OAuthAdminServiceImpl oAuthAdminService;
-
-    private RegistryService registryService;
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
@@ -60,16 +57,6 @@ public class AppsCommonDataHolder {
     public void setApplicationManagementService(ApplicationManagementService applicationManagementService) {
 
         this.applicationManagementService = applicationManagementService;
-    }
-
-    public RegistryService getRegistryService() {
-
-        return registryService;
-    }
-
-    public void setRegistryService(RegistryService registryService) {
-
-        this.registryService = registryService;
     }
 
     public OAuthAdminServiceImpl getOAuthAdminService() {
