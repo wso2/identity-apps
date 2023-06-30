@@ -51,6 +51,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ include file="./castle-fraud-integration.jsp" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
@@ -516,6 +517,7 @@
     </div>
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
+    <input type="hidden" id="castleRequestToken" name="castleRequestToken" value=""/>
 
     <div class="ui divider hidden"></div>
 
