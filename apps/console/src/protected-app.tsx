@@ -265,16 +265,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     })
                 );
 
-                if (!isPrivilegedUser) {
+                if (!isPrivilegedUser && orgIdIdToken != orgId) {
                     dispatch(setCurrentOrganization(orgName));
-    
+
                     // This is to make sure the endpoints are generated with the organization path.
                     await dispatch(
                         setServiceResourceEndpoints(
                             Config.getServiceResourceEndpoints()
                         )
                     );
-    
+
                     await requestCustomGrant(
                         {
                             attachToken: false,
@@ -297,7 +297,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             response = { ...grantResponse };
                         }
                     );
-    
+
                     dispatch(setCurrentOrganization(response.orgName));
                 }
             }

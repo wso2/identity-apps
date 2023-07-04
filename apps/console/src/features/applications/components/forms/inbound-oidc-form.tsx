@@ -178,6 +178,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
         state.organization.organization);
+    const isFirstLevelOrg: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
@@ -321,7 +324,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     useEffect(() => {
-        if (sharedOrganizationsList) {
+        if (sharedOrganizationsList || !isFirstLevelOrg) {
             return;
         }
 

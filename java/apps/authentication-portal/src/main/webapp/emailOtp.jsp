@@ -18,6 +18,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -68,6 +69,13 @@
     layoutData.put("containerSize", "medium");
 %>
 
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -84,6 +92,31 @@
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
+
+    <%
+        if (reCaptchaEnabled) {
+    %>
+    <script src="https://recaptcha.net/recaptcha/api.js" async defer></script>
+    <%
+        }
+    %>
+    <script type="text/javascript">
+        function submitForm() {
+            var code = document.getElementById("OTPCode").value;
+            if (code == "") {
+                document.getElementById('alertDiv').innerHTML
+                    = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                    +'<div class="ui divider hidden"></div>';
+            } else {
+                if ($('#codeForm').data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                } else {
+                    $('#codeForm').data("submitted", true);
+                    $('#codeForm').submit();
+                }
+            }
+        }
+    </script>
 </head>
 
 <body class="login-portal layout email-otp-portal-layout">
@@ -95,16 +128,18 @@
     <% } %>
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
+        <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
+            String productTitleFilePath = "extensions/product-title.jsp";
+            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
+                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
+            }
+            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
+                productTitleFilePath = "includes/product-title.jsp";
+            }
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
-            <% } %>
+            <jsp:include page="<%= productTitleFilePath %>" />
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
@@ -175,20 +210,40 @@
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                     class="ui primary button"/>
                             </div>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                            <div class="field">
+                                <div class="g-recaptcha"
+                                    data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                    data-testid="login-page-g-recaptcha"
+                                    data-bind="authenticate"
+                                    data-callback="submitForm"
+                                    data-theme="light"
+                                    data-tabindex="-1"
+                                >
+                                </div>
+                            </div>
+                        <%
+                            }
+                        %>
                     </form>
                 </div>
             </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
+        <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
+            String productFooterFilePath = "extensions/product-footer.jsp";
+            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
+                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
+            }
+            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
+                productFooterFilePath = "includes/product-footer.jsp";
+            }
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
+            <jsp:include page="<%= productFooterFilePath %>" />
         </layout:component>
     </layout:main>
 
@@ -205,19 +260,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#authenticate').click(function () {
-                var code = document.getElementById("OTPCode").value;
-                if (code == "") {
-                    document.getElementById('alertDiv').innerHTML
-                        = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
-                            +'<div class="ui divider hidden"></div>';
-                } else {
-                    if ($('#codeForm').data("submitted") === true) {
-                        console.warn("Prevented a possible double submit event");
-                    } else {
-                        $('#codeForm').data("submitted", true);
-                        $('#codeForm').submit();
-                    }
-                }
+                <% if (!reCaptchaEnabled) { %>
+                    submitForm();
+                <% } %>
             });
         });
 

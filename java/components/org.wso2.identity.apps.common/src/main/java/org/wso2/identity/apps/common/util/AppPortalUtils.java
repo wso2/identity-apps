@@ -38,7 +38,6 @@ import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
-import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
@@ -289,17 +288,16 @@ public class AppPortalUtils {
      * @param tenantId     tenant id.
      * @throws IdentityApplicationManagementException in case of failure during application creation.
      * @throws IdentityOAuthAdminException            in case of failure during OAuth2 application creation.
-     * @throws RegistryException                      in case of failure while getting the user realm.
      * @throws UserStoreException
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
-            throws IdentityApplicationManagementException, IdentityOAuthAdminException, RegistryException,
+            throws IdentityApplicationManagementException, IdentityOAuthAdminException,
             UserStoreException {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
                 .getApplicationManagementService();
 
-        UserRealm userRealm = AppsCommonDataHolder.getInstance().getRegistryService().getUserRealm(tenantId);
+        UserRealm userRealm = (UserRealm) PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm();
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
 
         for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
