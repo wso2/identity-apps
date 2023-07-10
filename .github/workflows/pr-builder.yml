@@ -136,7 +136,8 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
-    needs: [ lint, typecheck ]
+#     needs: [ lint, typecheck ]
+    needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -194,7 +195,8 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ lint, typecheck, test ]
+    #     needs: [ lint, typecheck, test ]
+    needs: [ typecheck, test ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
