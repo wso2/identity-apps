@@ -89,7 +89,7 @@ jobs:
         id: build-app
         run: |
           cd apps/myaccount
-           run: pnpm start
+          pnpm start
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -97,7 +97,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-          directory: apps/myaccount/build
+          directory: apps/myaccount/build/myaccount
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Switch what branch you are publishing to.
