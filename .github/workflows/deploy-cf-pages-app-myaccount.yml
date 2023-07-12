@@ -84,6 +84,12 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+            
+      - name: Build App - My Account
+        id: build-app
+        run: |
+          cd apps/myaccount
+           run: pnpm start
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
