@@ -91,7 +91,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          projectName: identity-apps-myaccount
           directory: apps/myaccount/build
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
@@ -111,11 +111,3 @@ jobs:
           # Optional: Switch what branch you are publishing to.
           # By default this will be the branch which triggered this workflow
           branch: main
-                    
-          
-          
-          
-#           # Optional: Change the working directory
-#           workingDirectory: apps/myaccount/
-#           # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
-#           wranglerVersion: '3'
