@@ -86,12 +86,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             
-      - name: Build App - My Account
-        id: build-app
-        run: |
-          cd apps/myaccount
-          pnpm start
-
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
