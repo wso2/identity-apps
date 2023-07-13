@@ -37,28 +37,28 @@
             <stop offset="1" stop-color="#22b7b1"/>
         </linearGradient>
         <linearGradient id="linear-gradient-6" x1="-0.153" x2="1.115" y2="1.149" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8313"/>
-            <stop offset="1" stop-color="#ff5402"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-7" x1="1.124" y1="0.732" x2="-0.68" y2="0.5"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8313" stop-opacity="0"/>
-            <stop offset="1" stop-color="#ff5402"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-8" x1="-0.521" y1="0.355" x2="3.027" y2="0.5"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff7c10"/>
-            <stop offset="1" stop-color="#ff5c04"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-9" x1="5.782" y1="0.689" x2="-5.21" y2="0.3"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff7c10" stop-opacity="0"/>
-            <stop offset="1" stop-color="#ff5c04"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <radialGradient id="radial-gradient" cx="0.131" cy="0.239" r="0.751"
                         gradientTransform="translate(0.091 -0.031) rotate(20.336)" gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff7e11"/>
-            <stop offset="1" stop-color="#ff5c04"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </radialGradient>
     </defs>
     <g id="captcha-for-sso-login-illustration" transform="translate(-141.222 -98.21)">

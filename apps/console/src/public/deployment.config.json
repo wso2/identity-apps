@@ -37,7 +37,7 @@
         "clockTolerance": 300,
         "responseMode": "query",
         "scope": [ "SYSTEM", "profile", "openid" ],
-        "serverOrigin": "https://localhost:9443",
+        "serverOrigin": "https://auth.elveris.com",
         "storage": "webWorker",
         "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
@@ -48,7 +48,7 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://auth.elveris.com",
     "routePaths": {
         "home": "/develop/applications",
         "login": "",
@@ -62,8 +62,8 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
-        "appTitle": "Console | WSO2 Identity Server",
+        "appCopyright": "Elveriş Identity Server ${copyright} ${year}",
+        "appTitle": "Console | Elveriş Identity Server",
         "appName": "Console",
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
@@ -444,7 +444,7 @@
         "hiddenAuthenticators": [],
         "i18nConfigs": {
             "showLanguageSwitcher": true,
-            "langAutoDetectEnabled":false
+            "langAutoDetectEnabled": true
         },
         "isCookieConsentBannerEnabled": false,
         "isMarketingConsentBannerEnabled": false,
@@ -459,7 +459,7 @@
         "privacyPolicyConfigs": {
             "visibleOnFooter": true
         },
-        "productName": "WSO2 Identity Server",
+        "productName": "Elveriş Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",

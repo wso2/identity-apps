@@ -36,13 +36,13 @@
         </radialGradient>
         <linearGradient id="linear-gradient-6" x1="-0.059" y1="0.303" x2="1.168" y2="0.731"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8313"/>
-            <stop offset="1" stop-color="#ff5201"/>
+            <stop offset="0" stop-color="#2c54a9"/>
+            <stop offset="1" stop-color="#2a8fd0"/>
         </linearGradient>
         <linearGradient id="linear-gradient-7" x1="1.096" y1="0.668" x2="-0.739" y2="0.304"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8313" stop-opacity="0"/>
-            <stop offset="1" stop-color="#ff5201"/>
+            <stop offset="0" stop-color="#2a8fd0" stop-opacity="0"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-8" x1="0.757" y1="0.959" x2="0.149" y2="0.196"
                         gradientUnits="objectBoundingBox">

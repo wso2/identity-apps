@@ -4,7 +4,7 @@ name: Oracle Page Deploy - My Account
 
 on:
   push:
-    branches: [ master ]
+    branches: [ tenant-elveris ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
@@ -86,28 +86,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             
-      # - name: Publish to Cloudflare Pages
-      #   uses: cloudflare/pages-action@v1
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     projectName: identity-apps-myaccount
-      #     directory: apps/myaccount/build
-      #     # Optional: Enable this if you want to have GitHub Deployments triggered
-      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-      #     # Optional: Switch what branch you are publishing to.
-      #     # By default this will be the branch which triggered this workflow
-      #     branch: main
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: identity-apps-myaccount
+          directory: apps/myaccount/build
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: main
           
-      # - name: Publish to Cloudflare Pages - Console
-      #   uses: cloudflare/pages-action@v1
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     projectName: identity-apps-console
-      #     directory: apps/console/build
-      #     # Optional: Enable this if you want to have GitHub Deployments triggered
-      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-      #     # Optional: Switch what branch you are publishing to.
-      #     # By default this will be the branch which triggered this workflow
-      #     branch: main
+      - name: Publish to Cloudflare Pages - Console
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: identity-apps-console
+          directory: apps/console/build
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: main
