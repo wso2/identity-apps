@@ -34,7 +34,13 @@
     <description>WSO2 Identity Server Console App</description>
     <url>http://wso2.org</url>
 
-    <dependencies />
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -81,7 +87,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.3.2</version>
                 <configuration>
                     <warName>identity-console-v${project.version}</warName>
                 </configuration>
