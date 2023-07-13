@@ -86,12 +86,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       
-      - name: 🎈 Get pnpm store directory
-        id: get-pnpm-cache-dir
+      - name: 🎈 Copy all apps
+        id: copy-all-apps
         run: |
           mkdir -p apps/all/build
           cp -aR apps/myaccount/build/* apps/all/build/ 
           cp -aR apps/console/build/* apps/all/build/ 
+
+      - name: Publish to Cloudflare Pages - All
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: identity-apps
+          directory: apps/all/build
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: main
 
     
       # - name: Publish to Cloudflare Pages - My Account
@@ -119,16 +132,3 @@ jobs:
       #     # Optional: Switch what branch you are publishing to.
       #     # By default this will be the branch which triggered this workflow
       #     branch: main
-
-      - name: Publish to Cloudflare Pages - All
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: identity-apps
-          directory: apps/all/build
-          # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Optional: Switch what branch you are publishing to.
-          # By default this will be the branch which triggered this workflow
-          branch: main
