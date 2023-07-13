@@ -85,27 +85,48 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-            
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: identity-apps-myaccount
-          directory: apps/myaccount/build
-          # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Optional: Switch what branch you are publishing to.
-          # By default this will be the branch which triggered this workflow
-          branch: main
+      
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          mkdir -p apps/all/build
+          cp -aR apps/myaccount/build/* apps/all/build/ 
+          cp -aR apps/console/build/* apps/all/build/ 
+
+    
+      # - name: Publish to Cloudflare Pages - My Account
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: identity-apps-myaccount
+      #     directory: apps/myaccount/build
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     # Optional: Switch what branch you are publishing to.
+      #     # By default this will be the branch which triggered this workflow
+      #     branch: main
           
-      - name: Publish to Cloudflare Pages - Console
+      # - name: Publish to Cloudflare Pages - Console
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: identity-apps-console
+      #     directory: apps/console/build
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     # Optional: Switch what branch you are publishing to.
+      #     # By default this will be the branch which triggered this workflow
+      #     branch: main
+
+      - name: Publish to Cloudflare Pages - All
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: identity-apps-console
-          directory: apps/console/build
+          projectName: identity-apps
+          directory: apps/all/build
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Switch what branch you are publishing to.
