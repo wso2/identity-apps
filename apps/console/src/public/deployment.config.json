@@ -7,7 +7,7 @@
             "dependencyTrackingEnabled": false
         }
     },
-    "appBaseName": "console",
+    "appBaseName": "yonetim",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
     "debug": false,
