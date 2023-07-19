@@ -91,7 +91,7 @@ jobs:
         run: |
           mkdir -p apps/all/build
           cp -aR apps/myaccount/build/myaccount apps/all/build/hesabim
-          cp -aR apps/console/build/console apps/all/build/yönetim 
+          cp -aR apps/console/build/console apps/all/build/yonetim 
 
       - name: Publish to Cloudflare Pages - All
         uses: cloudflare/pages-action@v1
