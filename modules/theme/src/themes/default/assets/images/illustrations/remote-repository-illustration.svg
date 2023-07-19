@@ -31,13 +31,13 @@
         </linearGradient>
         <linearGradient id="linear-gradient-5" x1="0.466" y1="0.171" x2="0.058" y2="1.337"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8113"/>
-            <stop offset="1" stop-color="#fe6407"/>
+            <stop offset="0" stop-color="#517bd4"/>
+            <stop offset="1" stop-color="#2d5cc0"/>
         </linearGradient>
         <linearGradient id="linear-gradient-6" x1="0.416" y1="1.334" x2="0.664" y2="-0.443"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8113"/>
-            <stop offset="1" stop-color="#fe6206"/>
+            <stop offset="0" stop-color="#517bd4"/>
+            <stop offset="1" stop-color="#2d5cc0"/>
         </linearGradient>
         <linearGradient id="linear-gradient-7" x1="0.308" y1="0.308" x2="0.828" y2="0.828"
                         gradientUnits="objectBoundingBox">
@@ -91,7 +91,7 @@
               transform="translate(1070.688 155.791)" fill="#ffe783"/>
         <path id="padlock"
               d="M70.9,3.681V2.932a2.932,2.932,0,1,0-5.864,0v.749a1.169,1.169,0,0,0-.586,1.01V8.209a1.174,1.174,0,0,0,1.173,1.173h4.691a1.174,1.174,0,0,0,1.173-1.173V4.691a1.169,1.169,0,0,0-.586-1.01ZM67.963,1.173a1.761,1.761,0,0,1,1.759,1.759v.586H66.2V2.932a1.761,1.761,0,0,1,1.759-1.759Zm.586,5.635v.815H67.377V6.808a.88.88,0,1,1,1.173,0Z"
-              transform="translate(1184.555 315)" fill="#ffb18d"/>
+              transform="translate(1184.555 315)" fill="#8d97ff"/>
         <path id="padlock-2" data-name="padlock"
               d="M70.9,3.681V2.932a2.932,2.932,0,1,0-5.864,0v.749a1.169,1.169,0,0,0-.586,1.01V8.209a1.174,1.174,0,0,0,1.173,1.173h4.691a1.174,1.174,0,0,0,1.173-1.173V4.691a1.169,1.169,0,0,0-.586-1.01ZM67.963,1.173a1.761,1.761,0,0,1,1.759,1.759v.586H66.2V2.932a1.761,1.761,0,0,1,1.759-1.759Zm.586,5.635v.815H67.377V6.808a.88.88,0,1,1,1.173,0Z"
               transform="translate(1059.555 255)" fill="#ffb18d"/>
