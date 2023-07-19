@@ -155,6 +155,17 @@
         }
     }
 
+    if (isLoginHintAvailable(inputType)) {
+        if (request.getParameter(Constants.LOGIN_HINT) != null) {
+            username = request.getParameter(Constants.LOGIN_HINT);
+            usernameIdentifier = request.getParameter(Constants.LOGIN_HINT);
+        } else {
+            String redirectURL = "error.do";
+            response.sendRedirect(redirectURL);
+            return;
+        }
+    }
+
     // Login context request url.
     String sessionDataKey = request.getParameter("sessionDataKey");
     String appName = request.getParameter("sp");
@@ -245,7 +256,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header ellipsis">
-                    <% if (isIdentifierFirstLogin(inputType)) { %>
+                    <% if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) { %>
                         <div class="display-inline"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " "%></div>
                         <div id="user-name-label" class="display-inline" data-position="top left" data-variation="inverted" data-content="<%=usernameIdentifier%>"><%=usernameIdentifier%></div>
                     <% } else { %>
@@ -756,6 +767,10 @@
     <%!
         private boolean isIdentifierFirstLogin(String inputType) {
             return "idf".equalsIgnoreCase(inputType);
+        }
+
+        private boolean isLoginHintAvailable(String inputType) {
+            return "login_hint".equalsIgnoreCase(inputType);
         }
     %>
 </body>

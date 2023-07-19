@@ -339,7 +339,7 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Updated.the.password.successfully")%>
         </div>
    <% } %>
-    <% if (!isIdentifierFirstLogin(inputType)) { %>
+    <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
         <div class="field">
             <div class="ui fluid left icon input">
                 <input
@@ -461,7 +461,7 @@
         <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant) { %>
+            <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
@@ -470,7 +470,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
             <% }
-              if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
+              if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% }
               if (isPasswordRecoveryEnabledInTenant) { %>
@@ -551,7 +551,7 @@
             </button>
         </div>
         <div class="column buttons">
-            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
+            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
