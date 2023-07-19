@@ -8,7 +8,7 @@
         "clockTolerance": 300,
         "responseMode": "query",
         "scope": ["SYSTEM"],
-        "serverOrigin": "https://localhost:9443",
+        "serverOrigin": "https://auth-sys.elveris.com",
         "storage": "webWorker",
         "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
@@ -18,7 +18,7 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://localhost:9443",
+    "serverOrigin": "https://auth-sys.elveris.com",
     "routePaths": {
         "home": "/overview",
         "login": "",
@@ -32,8 +32,8 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
-        "appTitle": "My Account | WSO2 Identity Server",
+        "appCopyright": "Elveriş Identity Server ${copyright} ${year}",
+        "appTitle": "My Account | Elveriş Identity Server",
         "appName": "My Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
@@ -93,7 +93,7 @@
         "privacyPolicyConfigs": {
             "visibleOnFooter": true
         },
-        "productName": "WSO2 Identity Server",
+        "productName": "Elveriş Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",

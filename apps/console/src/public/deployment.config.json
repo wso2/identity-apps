@@ -37,7 +37,7 @@
         "clockTolerance": 300,
         "responseMode": "query",
         "scope": [ "SYSTEM", "profile", "openid" ],
-        "serverOrigin": "https://auth.elveris.com",
+        "serverOrigin": "https://auth-sys.elveris.com",
         "storage": "webWorker",
         "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
@@ -48,7 +48,7 @@
     "isSaas": true,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://auth.elveris.com",
+    "serverOrigin": "https://auth-sys.elveris.com",
     "routePaths": {
         "home": "/develop/applications",
         "login": "",
