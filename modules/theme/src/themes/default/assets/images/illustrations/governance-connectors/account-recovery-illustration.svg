@@ -31,13 +31,13 @@
         </linearGradient>
         <linearGradient id="linear-gradient-5" x1="0.308" y1="0.308" x2="0.828" y2="0.828"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#ff8313"/>
-            <stop offset="1" stop-color="#ff5402"/>
+            <stop offset="0" stop-color="#2c54a9"/>
+            <stop offset="1" stop-color="#2a8fd0"/>
         </linearGradient>
         <linearGradient id="linear-gradient-6" x1="0.821" y1="0.821" x2="0.126" y2="0.126"
                         gradientUnits="objectBoundingBox">
-            <stop offset="0" stop-color="#fd700c"/>
-            <stop offset="1" stop-color="#ff5703"/>
+            <stop offset="0" stop-color="#4070d6"/>
+            <stop offset="1" stop-color="#2c54a9"/>
         </linearGradient>
         <linearGradient id="linear-gradient-7" x1="0.5" x2="0.624" y2="1.122" gradientUnits="objectBoundingBox">
             <stop offset="0" stop-color="#fff"/>
