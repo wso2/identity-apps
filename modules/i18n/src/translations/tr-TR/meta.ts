@@ -22,7 +22,7 @@ import { LocaleMeta } from "../../models";
 export const meta: LocaleMeta = {
     code: "tr-TR",
     flag: "tr",
-    name: "Türkçe",
+    name: "Türkçe (Türkiye)",
     namespaces: [
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,

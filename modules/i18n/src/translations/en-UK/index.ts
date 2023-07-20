@@ -16,17 +16,13 @@
  * under the License.
  */
 
-import { I18nModuleConstants } from "../../constants";
-import { LocaleMeta } from "../../models";
+import { meta } from "./meta";
+import * as portals from "./portals";
+import { LocaleBundle } from "../../models";
 
-export const meta: LocaleMeta = {
-    code: "pt-BR",
-    flag: "br",
-    name: "Português (Brazil)",
-    namespaces: [
-        I18nModuleConstants.COMMON_NAMESPACE,
-        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
-        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
-        I18nModuleConstants.EXTENSIONS_NAMESPACE
-    ]
+export const EN_UK: LocaleBundle = {
+    meta,
+    resources: {
+        portals
+    }
 };

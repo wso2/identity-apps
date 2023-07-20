@@ -20,9 +20,9 @@ import { I18nModuleConstants } from "../../constants";
 import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
-    code: "pt-BR",
-    flag: "br",
-    name: "Português (Brazil)",
+    code: "en-UK",
+    flag: "uk",
+    name: "English (United Kingdom)",
     namespaces: [
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
