@@ -16,10 +16,13 @@
  * under the License.
  */
 
+export * from "./tr-TR";
 export * from "./en-US";
+export * from "./en-UK";
+export * from "./de-DE";
+export * from "./es-ES";
 export * from "./fr-FR";
 export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./es-ES";
-export * from "./de-DE";
-export * from "./tr-TR";
+export * from "./ta-IN";
+// export * from "./si-LK";
+
