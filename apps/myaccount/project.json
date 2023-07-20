@@ -91,9 +91,10 @@
                     "index": "index.jsp",
                     "staticIndex": "index.html",
                     "fileReplacements": [],
-                    "optimization": true,
+                    "optimization": false,
                     "outputHashing": "all",
                     "sourceMap": false,
+                    "vendorChunk": false,
                     "extractLicenses": false,
                     "verbose": true
                 }
