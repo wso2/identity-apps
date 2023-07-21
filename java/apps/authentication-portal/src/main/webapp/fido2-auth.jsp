@@ -40,6 +40,10 @@
     layoutData.put("containerSize", "medium");
 %>
 
+<%!
+    private static final String MY_ACCOUNT = "/myaccount";
+%>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -174,11 +178,17 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
+    <%
+        String myaccountUrl = application.getInitParameter("MyAccountURL");
+        if (StringUtils.isEmpty(myaccountUrl)) {
+            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+        }
+    %>
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
+            var myaccountUrl = '<%=myaccountUrl%>';
 
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
+            if ("<%=tenantDomain%>" !== "" && "<%=tenantDomain%>" !== "null") {
                 myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
             }
 
