@@ -50,9 +50,9 @@
     Brand Colors
 --------------------*/
 
-@primaryColor        : @orange;
+@primaryColor        : #3865B5;
 @secondaryColor      : #E0E1E2;
-@accentColor1        : #3865B5;
+@accentColor1        : @orange;
 @accentColor2        : #19BECE;
 @accentColor3        : #FFFFFF;
 @accentColor4        : #92278F;

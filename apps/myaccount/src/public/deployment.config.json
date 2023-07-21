@@ -1,5 +1,5 @@
 {
-    "appBaseName": "myaccount",
+    "appBaseName": "hesabim",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "MY_ACCOUNT",
     "debug": false,
@@ -20,9 +20,9 @@
     "logoutCallbackPath": "",
     "serverOrigin": "https://auth-sys.elveris.com",
     "routePaths": {
-        "home": "/overview",
+        "home": "/gorunum",
         "login": "",
-        "logout": "/logout"
+        "logout": "/cikis"
     },
     "session": {
         "userIdleTimeOut": 600,
@@ -32,9 +32,9 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "Elveriş Identity Server ${copyright} ${year}",
-        "appTitle": "My Account | Elveriş Identity Server",
-        "appName": "My Account",
+        "appCopyright": "Elveriş Kimlik Sunucusu ${copyright} ${year}",
+        "appTitle": "Hesabım | Elveriş Identity Server",
+        "appName": "Hesabım",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "authenticatorApp": [],
         "brandingStoreURL": "${host}/extensions/branding/${tenantDomain}/branding-preference_${locale}.json",
@@ -93,7 +93,7 @@
         "privacyPolicyConfigs": {
             "visibleOnFooter": true
         },
-        "productName": "Elveriş Identity Server",
+        "productName": "Elveriş Kimlik Sunucusu",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",

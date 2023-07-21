@@ -133,7 +133,7 @@
       Product Branding
 ------------------------------*/
 
-@productLogoHeight: 25px;
+@productLogoHeight: 70px;
 @productLogoVerticalAlign: middle;
 @productLogoWidth: 60px;
 @productLogoMargin: -3px 0 0 0;

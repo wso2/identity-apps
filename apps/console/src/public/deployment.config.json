@@ -1,25 +1,25 @@
 {
     "accountApp": {
-        "path": "/myaccount/overview"
+        "path": "/hesabim/gorunum"
     },
     "analytics": {
         "metrics": {
             "dependencyTrackingEnabled": false
         }
     },
-    "appBaseName": "console",
+    "appBaseName": "yonetim",
     "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
     "debug": false,
     "adminApp": {
-        "basePath": "/manage",
-        "displayName": "Manage",
-        "path": "/manage/users"
+        "basePath": "/yonetim",
+        "displayName": "Yönetim",
+        "path": "/yonetim/kullanicilar"
     },
     "developerApp": {
-        "basePath": "/develop",
-        "displayName": "Develop",
-        "path": "/develop/applications"
+        "basePath": "/uretim",
+        "displayName": "Üretim",
+        "path": "/uretim/uygulamalar"
     },
     "documentation": {
         "baseURL": "https://api.github.com",
@@ -50,9 +50,9 @@
     "logoutCallbackPath": "",
     "serverOrigin": "https://auth-sys.elveris.com",
     "routePaths": {
-        "home": "/develop/applications",
+        "home": "/uretim/uygulamalar",
         "login": "",
-        "logout": "/logout"
+        "logout": "/cikis"
     },
     "session": {
         "userIdleTimeOut": 600,
@@ -62,9 +62,9 @@
     },
     "tenantResolutionStrategy": "id_token",
     "ui": {
-        "appCopyright": "Elveriş Identity Server ${copyright} ${year}",
-        "appTitle": "Console | Elveriş Identity Server",
-        "appName": "Console",
+        "appCopyright": "Elveriş Kimlik Sunucusu ${copyright} ${year}",
+        "appTitle": "Yönetim | Elveriş Kimlik Sunucusu",
+        "appName": "Yönetim",
         "applicationTemplateLoadingStrategy": "LOCAL",
         "identityProviderTemplateLoadingStrategy": "LOCAL",
         "appLogoPath": "/assets/images/branding/logo.svg",
@@ -459,14 +459,14 @@
         "privacyPolicyConfigs": {
             "visibleOnFooter": true
         },
-        "productName": "Elveriş Identity Server",
+        "productName": "Elveriş Kimlik Sunucusu",
         "productVersionConfig": {
             "allowSnapshot": true,
             "textCase": "uppercase",
             "labelColor": "primary"
         },
-        "selfAppIdentifier": "Console",
-        "systemAppsIdentifiers": [ "Console", "My Account" ],
+        "selfAppIdentifier": "Yönetim",
+        "systemAppsIdentifiers": [ "Yönetim", "Hesabım" ],
         "theme": {
             "name": "default"
         }

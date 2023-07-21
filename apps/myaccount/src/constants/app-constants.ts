@@ -193,19 +193,19 @@ export class AppConstants {
     public static getPaths(): Map<string, string> {
 
         return new Map<string, string>()
-            .set("ACCESS_DENIED_ERROR", `${ this.getMainViewBasePath() }/access-denied-error`)
-            .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
+            .set("ACCESS_DENIED_ERROR", `${ this.getMainViewBasePath() }/erisim-engellendi`)
+            .set("APPLICATIONS", `${ this.getMainViewBasePath() }/uygulamalar`)
             .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
             .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
-            .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/login-error`)
-            .set("OVERVIEW", `${ this.getMainViewBasePath() }/overview`)
+            .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/giris-hatasi`)
+            .set("OVERVIEW", `${ this.getMainViewBasePath() }/gozetim`)
             .set("PAGE_NOT_FOUND", `${ this.getMainViewBasePath() }/404`)
-            .set("PROFILE_INFO", `${ this.getMainViewBasePath() }/personal-info`)
-            .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/personal-info`)
-            .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
-            .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
+            .set("PROFILE_INFO", `${ this.getMainViewBasePath() }/kimlik`)
+            .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/kimlik`)
+            .set("SECURITY", `${ this.getMainViewBasePath() }/guvenlik`)
+            .set("PRIVACY", `${ this.getMainViewBasePath() }/gizlilik`)
             .set("ROOT", "/")
-            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`)
+            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/yetkisiz`)
             .set("STORING_DATA_DISABLED",`${ this.getMainViewBasePath() }/storing_data_disabled`);
     }
 

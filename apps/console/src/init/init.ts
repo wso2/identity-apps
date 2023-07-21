@@ -24,7 +24,7 @@ import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
-        accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
+        accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://kimlik.elveris.com",
         contextPath: contextPathGlobal,
         isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
         isOrganizationManagementEnabled: isOrganizationManagementEnabled,

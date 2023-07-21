@@ -1,0 +1,134 @@
+# This workflow will build PRs submitted to the master branch.
+
+name: Oracle Page Deploy - My Account 
+
+on:
+  push:
+    branches: [ tenant-elveris-tr ]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    name: 🚧 Build
+    environment: Production
+    #     needs: [ lint, typecheck, test ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ lts/* ]
+        maven-version: [ 3.8.6 ]
+        java-version: [ 1.8 ]
+        pnpm-version: [ 7.30.0 ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ☕ Set up JDK 1.8
+        id: jdk-setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+          cache: maven
+
+      - name: 🦩 Set up Maven
+        uses: stCarolas/setup-maven@v4
+        id: mvn-setup
+        with:
+          maven-version: ${{ matrix.maven-version }}
+
+      - name: 🥡 Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: ${{ matrix.pnpm-version }}
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 🏗️ Maven Build
+        id: build-with-maven
+        run: mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+
+      - name: 💾 Cache local Maven repository
+        id: cache-maven-m2
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      
+      - name: 🎈 Copy all apps
+        id: copy-all-apps
+        run: |
+          mkdir -p apps/all/build
+          cp -aR apps/myaccount/build/myaccount apps/all/build/hesabim
+          cp -aR apps/console/build/console apps/all/build/yonetim 
+          echo "/ /hesabim 301" > apps/all/build/_redirects
+      - name: Publish to Cloudflare Pages - All
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: identity-apps-tr
+          directory: apps/all/build
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: main
+
+    
+      # - name: Publish to Cloudflare Pages - My Account
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: identity-apps-myaccount
+      #     directory: apps/myaccount/build
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     # Optional: Switch what branch you are publishing to.
+      #     # By default this will be the branch which triggered this workflow
+      #     branch: main
+          
+      # - name: Publish to Cloudflare Pages - Console
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: identity-apps-console
+      #     directory: apps/console/build
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     # Optional: Switch what branch you are publishing to.
+      #     # By default this will be the branch which triggered this workflow
+      #     branch: main
