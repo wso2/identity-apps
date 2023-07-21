@@ -94,6 +94,7 @@
                     "optimization": false,
                     "outputHashing": "all",
                     "sourceMap": false,
+                    "vendorChunk": false,
                     "extractLicenses": false,
                     "vendorChunk": false,
                     "verbose": true

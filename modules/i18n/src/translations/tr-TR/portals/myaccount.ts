@@ -931,29 +931,29 @@ export const myAccount: MyAccountNS = {
                 },
                 accountSecurity: {
                     actionTitles: {
-                        update: "Hesap güvenliğini güncelle"
+                        update: "Hesap güvenliğini yönet"
                     },
                     description: "Hesabınızı güvende tutmanıza yardımcı olacak ayarlar ve öneriler",
-                    header: "hesap Güvenliği"
+                    header: "Hesap Güvenliği"
                 },
                 accountStatus: {
-                    complete: "profiliniz tamamlandı",
+                    complete: "Profiliniz tamamlandı",
                     completedFields: "Tamamlanan alanlar",
-                    completionPercentage: "Profilinizin tamamlanma zamanı {{percentage}}%",
-                    inComplete: "profilinizi tamamlayın",
+                    completionPercentage: "Profilinizin tamamlanma oranı {{percentage}}%",
+                    inComplete: "Profilinizi tamamlayın",
                     inCompleteFields: "Eksik alanlar",
-                    mandatoryFieldsCompletion: "{{completed}} dışında {{total}} doldurulması zorunlu alanlar",
-                    optionalFieldsCompletion: "{{completed}} dışında {{total}} isteğe bağlı alanlar tamamlandı"
+                    mandatoryFieldsCompletion: "Zorunlu alanlar {{completed}} / {{total}} ",
+                    optionalFieldsCompletion: "İsteğe bağlı alanlar {{completed}} / {{total}}"
                 },
                 consentManagement: {
                     actionTitles: {
                         manage: "İzinleri yönet"
                     },
                     description: "Uygulamalarla paylaşmak istediğiniz verileri kontrol edin",
-                    header: "Kontrol Onayları"
+                    header: "Veri İzinleri"
                 },
                 profileStatus: {
-                    completionPercentage: "Profilinizin tamamlanma zamanı {{percentage}}%",
+                    completionPercentage: "Profilinizin tamamlanma oranı {{percentage}}%",
                     description: "profilinizi yönetin",
                     header: "Senin {{productName}} Profil",
                     profileText: "Kişisel profilinizin ayrıntıları",
@@ -1078,8 +1078,8 @@ export const myAccount: MyAccountNS = {
                             heading: "Bu içerir:",
                             list: {
                                 "0": "IP adresi",
-                                "1": "tarayıcı parmak izi",
-                                "2": "Kurabiye"
+                                "1": "Tarayıcı Parmak İzi (Browser fingerprinting)",
+                                "2": "Cookie"
                             }
                         },
                         subList2: {
@@ -1514,15 +1514,15 @@ export const myAccount: MyAccountNS = {
         },
         personalInfo: {
             subTitle: "Kişisel profilinizi düzenleyin veya dışa aktarın ve bağlantılı hesapları yönetin",
-            title: "Kişisel bilgi"
+            title: "Kişisel bilgiler"
         },
         personalInfoWithoutExportProfile: {
             subTitle: "Kişisel bilgilerinizi görüntüleyin ve yönetin",
-            title: "Kişisel bilgi"
+            title: "Kişisel bilgiler"
         },
         personalInfoWithoutLinkedAccounts: {
             subTitle: "Kişisel profilinizi düzenleyin veya dışa aktarın",
-            title: "Kişisel bilgi"
+            title: "Kişisel bilgiler"
         },
         privacy: {
             subTitle: "",
