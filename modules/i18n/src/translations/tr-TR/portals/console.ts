@@ -91,7 +91,7 @@ export const console: ConsoleNS = {
           organizations: {
             message: "B2B organizasyonları ile tanışın. ",
             buttons: {
-              tryout: "Denemek"
+              tryout: "Dene"
             }
           }
         },
@@ -147,17 +147,17 @@ export const console: ConsoleNS = {
           },
           description: null,
           heading: "Profil Resmini Güncelle",
-          primaryButton: "Kaydetmek",
-          secondaryButton: "İptal etmek"
+          primaryButton: "Kaydet",
+          secondaryButton: "İptal Et"
         },
-        sessionTimeoutModal: {
-          description: "üzerine tıkladığınızda <1>Geri gitmek</1>, varsa oturumu kurtarmaya çalışacağız. ",
-          heading: "Görünüşe göre uzun süredir aktif değilsin.",
-          loginAgainButton: "Tekrar giriş yap",
-          primaryButton: "Geri gitmek",
-          secondaryButton: "Çıkış Yap",
-          sessionTimedOutDescription: "Kaldığınız yerden devam etmek için lütfen tekrar giriş yapınız.",
-          sessionTimedOutHeading: "Hareketsizlik nedeniyle kullanıcı oturumunun süresi doldu."
+        "sessionTimeoutModal": {
+          "description": " <1>Geri Dön</1>'e  tıkladığınızda, varsa oturumu kurtarmaya çalışacağız. ",
+          "heading": "Uzun süredir aktif değilsin.",
+          "loginAgainButton": "Tekrar giriş yap",
+          "primaryButton": "Geri Dön",
+          "secondaryButton": "Çıkış Yap",
+          "sessionTimedOutDescription": "Kaldığınız yerden devam etmek için lütfen tekrar giriş yapınız.",
+          "sessionTimedOutHeading": "Hareketsizlik nedeniyle kullanıcı oturumunun süresi doldu."
         }
       },
       notifications: {
@@ -243,18 +243,18 @@ export const console: ConsoleNS = {
       },
       privacy: {
         about: {
-          description: "WSO2 Kimlik Sunucusu (bu politikada \"WSO2 IS\" olarak anılacaktır), açık standartlara ve spesifikasyonlara dayalı açık kaynaklı bir Kimlik Yönetimi ve Yetkilendirme Sunucusudur.",
-          heading: "WSO2 Kimlik Sunucusu Hakkında"
+          description: "Elveriş Kimlik Sunucusu (bu politikada \"Elveriş IS\" olarak anılacaktır), açık standartlara ve spesifikasyonlara dayalı açık kaynaklı bir Kimlik Yönetimi ve Yetkilendirme Sunucusudur.",
+          heading: "Elveriş Kimlik Sunucusu Hakkında"
         },
         privacyPolicy: {
           collectionOfPersonalInfo: {
             description: {
               list1: {
-                "0": "WSO2 IS, hesabınıza yapılan herhangi bir şüpheli oturum açma girişimini tespit etmek için IP adresinizi kullanır.",
-                "1": "WSO2 IS, zengin ve kişiselleştirilmiş bir kullanıcı deneyimi sağlamak için adınız, soyadınız vb. gibi öznitelikleri kullanır.",
-                "2": "WSO2 IS, güvenlik sorularınızı ve yanıtlarınızı yalnızca hesap kurtarmaya izin vermek için kullanır."
+                "0": "Elveriş IS, hesabınıza yapılan herhangi bir şüpheli oturum açma girişimini tespit etmek için IP adresinizi kullanır.",
+                "1": "Elveriş IS, zengin ve kişiselleştirilmiş bir kullanıcı deneyimi sağlamak için adınız, soyadınız vb. gibi öznitelikleri kullanır.",
+                "2": "Elveriş IS, güvenlik sorularınızı ve yanıtlarınızı yalnızca hesap kurtarmaya izin vermek için kullanır."
               },
-              para1: "WSO2 IS, bilgilerinizi yalnızca erişim gereksinimlerinizi karşılamak için toplar. "
+              para1: "Elveriş IS, bilgilerinizi yalnızca erişim gereksinimlerinizi karşılamak için toplar. "
             },
             heading: "Kişisel bilgilerin toplanması",
             trackingTechnologies: {
@@ -265,30 +265,30 @@ export const console: ConsoleNS = {
                   "2": "IP adresi ile coğrafi bilgilerinizin takibi.",
                   "3": "Giriş geçmişinizi tarayıcı tanımlama bilgileriyle izleme.  {{cookiePolicyLink}} daha fazla bilgi için."
                 },
-                para1: "WSO2 IS, bilgilerinizi şu şekilde toplar:"
+                para1: "Elveriş IS, bilgilerinizi şu şekilde toplar:"
               },
               heading: "Takip Teknolojileri"
             }
           },
           description: {
-            para1: "Bu politika, WSO2 IS'nin kişisel bilgilerinizi nasıl topladığını, toplama amaçlarını ve kişisel bilgilerinizin saklanmasına ilişkin bilgileri açıklamaktadır.",
+            para1: "Bu politika, Elveriş IS'nin kişisel bilgilerinizi nasıl topladığını, toplama amaçlarını ve kişisel bilgilerinizin saklanmasına ilişkin bilgileri açıklamaktadır.",
             para2: "Lütfen bu politikanın yalnızca referans amaçlı olduğunu ve bir ürün olarak yazılım için geçerli olduğunu unutmayın.  <1>feragatname</1> Daha fazla bilgi için bölüm.",
-            para3: "WSO2 IS'nin kullanımını ve yönetimini kontrol eden kuruluşlar, kuruluşlar veya bireyler, verilerin ilgili varlık, kuruluş veya kişi tarafından kontrol edilme veya işlenme şeklini belirleyen kendi gizlilik politikalarını oluşturmalıdır."
+            para3: "Elveriş IS'nin kullanımını ve yönetimini kontrol eden kuruluşlar, kuruluşlar veya bireyler, verilerin ilgili varlık, kuruluş veya kişi tarafından kontrol edilme veya işlenme şeklini belirleyen kendi gizlilik politikalarını oluşturmalıdır."
           },
           disclaimer: {
             description: {
               list1: {
-                "0": "WSO2, çalışanları, ortakları ve bağlı kuruluşları, WSO2 IS'de yer alan kişisel veriler de dahil olmak üzere hiçbir veriye erişim sahibi değildir ve bunları gerektirmez, saklamaz, işlemez veya kontrol etmez. ",
-                "1": "Bu gizlilik politikası, WSO2 IS çalıştıran kurum veya kişilerin bilgilendirme amaçlıdır ve kişisel verilerin korunmasına ilişkin olarak WSO2 IS kapsamında yer alan süreçleri ve işlevleri belirler. "
+                "0": "Elveriş, çalışanları, ortakları ve bağlı kuruluşları, Elveriş IS'de yer alan kişisel veriler de dahil olmak üzere hiçbir veriye erişim sahibi değildir ve bunları gerektirmez, saklamaz, işlemez veya kontrol etmez. ",
+                "1": "Bu gizlilik politikası, Elveriş IS çalıştıran kurum veya kişilerin bilgilendirme amaçlıdır ve kişisel verilerin korunmasına ilişkin olarak Elveriş IS kapsamında yer alan süreçleri ve işlevleri belirler. "
               }
             },
             heading: "Feragatname"
           },
           disclosureOfPersonalInfo: {
-            description: "WSO2 IS, kişisel bilgileri yalnızca WSO2 IS'ye kayıtlı ilgili uygulamalara (Hizmet Sağlayıcı olarak da bilinir) ifşa eder. ",
+            description: "Elveriş IS, kişisel bilgileri yalnızca Elveriş IS'ye kayıtlı ilgili uygulamalara (Hizmet Sağlayıcı olarak da bilinir) ifşa eder. ",
             heading: "kişisel bilgilerin ifşası",
             legalProcess: {
-              description: "Lütfen, WSO2 IS'yi çalıştıran kuruluş, kuruluş veya bireyin, gerekli ve yasal süreci takiben kanunen gerekli olduğu durumlarda, kişisel bilgilerinizi izniniz olsun veya olmasın ifşa etmek zorunda kalabileceğini unutmayın.",
+              description: "Lütfen, Elveriş IS'yi çalıştıran kuruluş, kuruluş veya bireyin, gerekli ve yasal süreci takiben kanunen gerekli olduğu durumlarda, kişisel bilgilerinizi izniniz olsun veya olmasın ifşa etmek zorunda kalabileceğini unutmayın.",
               heading: "Yasal süreç"
             }
           },
@@ -296,21 +296,21 @@ export const console: ConsoleNS = {
           moreInfo: {
             changesToPolicy: {
               description: {
-                para1: "WSO2 IS'nin yükseltilmiş sürümleri, bu politikada değişiklikler içerebilir ve bu politikada yapılan revizyonlar, bu tür yükseltmeler içinde paketlenecektir. ",
-                para2: "WSO2 IS'yi çalıştıran kuruluş, Gizlilik Politikasını zaman zaman revize edebilir. "
+                para1: "Elveriş IS'nin yükseltilmiş sürümleri, bu politikada değişiklikler içerebilir ve bu politikada yapılan revizyonlar, bu tür yükseltmeler içinde paketlenecektir. ",
+                para2: "Elveriş IS'yi çalıştıran kuruluş, Gizlilik Politikasını zaman zaman revize edebilir. "
               },
               heading: "Bu politikadaki değişiklikler"
             },
             contactUs: {
               description: {
-                para1: "Bu gizlilik politikasıyla ilgili herhangi bir sorunuz veya endişeniz varsa lütfen WSO2 ile iletişime geçin."
+                para1: "Bu gizlilik politikasıyla ilgili herhangi bir sorunuz veya endişeniz varsa lütfen Elveriş ile iletişime geçin."
               },
               heading: "Bize Ulaşın"
             },
             heading: "Daha fazla bilgi",
             yourChoices: {
               description: {
-                para1: "WSO2 IS içinde zaten bir kullanıcı hesabınız varsa ve bu gizlilik politikasının sizin için kabul edilemez olduğunu fark ederseniz, hesabınızı devre dışı bırakma hakkınız vardır.",
+                para1: "Elveriş IS içinde zaten bir kullanıcı hesabınız varsa ve bu gizlilik politikasının sizin için kabul edilemez olduğunu fark ederseniz, hesabınızı devre dışı bırakma hakkınız vardır.",
                 para2: "Hesabınız yoksa ve gizlilik politikamızı kabul etmiyorsanız, hesap oluşturmamayı seçebilirsiniz."
               },
               heading: "Senin seçimlerin"
@@ -324,22 +324,22 @@ export const console: ConsoleNS = {
                   "0": "Mevcut Şifre",
                   "1": "Daha önce kullanılan şifreler"
                 },
-                para1: "WSO2 IS, sistemimizin aktif bir kullanıcısı olduğunuz sürece kişisel verilerinizi saklar. ",
-                para2: "WSO2 IS, size ek bir güvenlik düzeyi sağlamak için hashlenmiş sırlar tutabilir. "
+                para1: "Elveriş IS, sistemimizin aktif bir kullanıcısı olduğunuz sürece kişisel verilerinizi saklar. ",
+                para2: "Elveriş IS, size ek bir güvenlik düzeyi sağlamak için hashlenmiş sırlar tutabilir. "
               },
               heading: "Kişisel bilgileriniz ne kadar süreyle saklanır?"
             },
             requestRemoval: {
               description: {
                 para1: "Yöneticiden hesabınızı silmesini isteyebilirsiniz. ",
-                para2: "Ek olarak, WSO2 IS'nin günlüklerde, veritabanlarında veya analitik depolamada tutmuş olabileceği faaliyetlerinizin tüm izlerini anonimleştirme talebinde bulunabilirsiniz."
+                para2: "Ek olarak, Elveriş IS'nin günlüklerde, veritabanlarında veya analitik depolamada tutmuş olabileceği faaliyetlerinizin tüm izlerini anonimleştirme talebinde bulunabilirsiniz."
               },
               heading: "Kişisel bilgilerinizin kaldırılmasını nasıl talep edebilirsiniz?"
             },
             where: {
               description: {
-                para1: "WSO2 IS, kişisel bilgilerinizi güvenli veritabanlarında saklar. ",
-                para2: "WSO2 IS, kişisel verilerinizi ek bir güvenlik düzeyiyle saklamak için şifreleme kullanabilir."
+                para1: "Elveriş IS, kişisel bilgilerinizi güvenli veritabanlarında saklar. ",
+                para2: "Elveriş IS, kişisel verilerinizi ek bir güvenlik düzeyiyle saklamak için şifreleme kullanabilir."
               },
               heading: "Kişisel bilgileriniz nerede saklanır?"
             }
@@ -351,8 +351,8 @@ export const console: ConsoleNS = {
                 "1": "Hesabınızı yetkisiz erişimden veya olası bilgisayar korsanlığı girişimlerinden korumak için. ",
                 "2": "Sistem performansı iyileştirmelerine ilişkin analitik amaçlar için istatistiksel veriler elde edin. "
               },
-              para1: "WSO2 IS, kişisel bilgilerinizi yalnızca toplanma amaçları (veya bu amaçla tutarlı olarak tanımlanan bir kullanım için) için kullanacaktır.",
-              para2: "WSO2 IS, kişisel bilgilerinizi yalnızca aşağıdaki amaçlar için kullanır.",
+              para1: "Elveriş IS, kişisel bilgilerinizi yalnızca toplanma amaçları (veya bu amaçla tutarlı olarak tanımlanan bir kullanım için) için kullanacaktır.",
+              para2: "Elveriş IS, kişisel bilgilerinizi yalnızca aşağıdaki amaçlar için kullanır.",
               subList1: {
                 heading: "Bu içerir:",
                 list: {
@@ -362,7 +362,7 @@ export const console: ConsoleNS = {
                 }
               },
               subList2: {
-                heading: "WSO2 IS şunları kullanabilir:",
+                heading: "Elveriş IS şunları kullanabilir:",
                 list: {
                   "0": "Coğrafi bilgi elde etmek için IP Adresi",
                   "1": "Tarayıcı teknolojisini ve/veya sürümünü belirlemek için tarayıcı parmak izi"
@@ -385,8 +385,8 @@ export const console: ConsoleNS = {
                 "2": "Giriş yapmak için kullandığınız cihazın türü (Örn. telefon veya tablet)",
                 "3": "İşletim sistemi ve genel tarayıcı bilgileri"
               },
-              para1: "WSO2 IS, sizinle ilgili olan ve tanımlanabileceğiniz her şeyi kişisel bilgileriniz olarak kabul eder. ",
-              para2: "Bununla birlikte, WSO2 IS, kişisel bilgi olarak kabul edilmeyen, yalnızca aşağıdaki bilgileri de toplar: <1>istatistiksel</1> amaçlar. "
+              para1: "Elveriş IS, sizinle ilgili olan ve tanımlanabileceğiniz her şeyi kişisel bilgileriniz olarak kabul eder. ",
+              para2: "Bununla birlikte, Elveriş IS, kişisel bilgi olarak kabul edilmeyen, yalnızca aşağıdaki bilgileri de toplar: <1>istatistiksel</1> amaçlar. "
             },
             heading: "Kişisel bilgi nedir?"
           }
@@ -806,7 +806,7 @@ export const console: ConsoleNS = {
               provisioning: {
                 inbound: {
                   heading: "Gelen Provizyon",
-                  subHeading: "Bu uygulama aracılığıyla bir WSO2 Kimlik Sunucusunun kullanıcı deposunda kullanıcıları veya grupları sağlayın."
+                  subHeading: "Bu uygulama aracılığıyla bir Elveriş Kimlik Sunucusunun kullanıcı deposunda kullanıcıları veya grupları sağlayın."
                 },
                 outbound: {
                   actions: {
@@ -2042,7 +2042,7 @@ export const console: ConsoleNS = {
                     },
                     downloadSample: {
                       btn: "örneği indir",
-                      subTitle: "Bu örnek uygulama, WSO2 Identity Server SDK'nın kullanımını ve herhangi bir uygulamayı Identity Server ile nasıl entegre edebileceğinizi gösterecektir.",
+                      subTitle: "Bu örnek uygulama, Elveriş Identity Server SDK'nın kullanımını ve herhangi bir uygulamayı Identity Server ile nasıl entegre edebileceğinizi gösterecektir.",
                       title: "örneği deneyin"
                     },
                     goBack: "Geri gitmek",
@@ -2069,7 +2069,7 @@ export const console: ConsoleNS = {
               start: {
                 content: {
                   endpoints: {
-                    subTitle: "Uygulamanızı bir WSO2 SDK kullanmadan uygularsanız, uygulama için kimlik doğrulaması gerçekleştirmeniz için aşağıdaki sunucu uç noktaları yararlı olacaktır.",
+                    subTitle: "Uygulamanızı bir Elveriş SDK kullanmadan uygularsanız, uygulama için kimlik doğrulaması gerçekleştirmeniz için aşağıdaki sunucu uç noktaları yararlı olacaktır.",
                     title: "Sunucu uç noktaları"
                   },
                   oidcConfigurations: {
@@ -4416,7 +4416,7 @@ export const console: ConsoleNS = {
           }
         },
         footer: {
-          copyright: "WSO2 Kimlik Sunucusu © {{year}}"
+          copyright: "Elveriş Kimlik Sunucusu © {{year}}"
         },
         header: {
           links: {
@@ -5546,7 +5546,7 @@ export const console: ConsoleNS = {
         },
         overview: {
           banner: {
-            heading: "Geliştiriciler için WSO2 Kimlik Sunucusu",
+            heading: "Geliştiriciler için Elveriş Kimlik Sunucusu",
             subHeading: "SDK'ları kullanın",
             welcome: "Hoş geldin, {{username}}"
           },
@@ -5566,7 +5566,7 @@ export const console: ConsoleNS = {
               },
               remoteFetch: {
                 heading: "Uzaktan Alma",
-                subHeading: "WSO2 Identity Server ile sorunsuz çalışacak şekilde bir uzak havuz yapılandırın."
+                subHeading: "Elveriş Identity Server ile sorunsuz çalışacak şekilde bir uzak havuz yapılandırın."
               }
             }
           }
@@ -7007,7 +7007,7 @@ export const console: ConsoleNS = {
           }
         },
         footer: {
-          copyright: "WSO2 Kimlik Sunucusu © {{year}}"
+          copyright: "Elveriş Kimlik Sunucusu © {{year}}"
         },
         governanceConnectors: {
           categories: "Kategoriler",
@@ -7451,7 +7451,7 @@ export const console: ConsoleNS = {
                   friendlyName: "[Kullanımdan kaldırıldı] Kimlik Sunucusu Analitiği",
                   messages: {
                     deprecation: {
-                      description: "WSO2 Kimlik Sunucusu Analizi artık kullanımdan kaldırılmıştır.  <1>ELK Analizi</1> yerine.",
+                      description: "Elveriş Kimlik Sunucusu Analizi artık kullanımdan kaldırılmıştır.  <1>ELK Analizi</1> yerine.",
                       heading: "Kullanımdan kaldırıldı"
                     }
                   },

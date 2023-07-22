@@ -173,18 +173,18 @@ export const myAccount: MyAccountNS = {
             hints: {
                 querySearch: {
                     actionKeys: "Shift Enter",
-                    label: "Sorgu olarak aramak için"
+                    label: "Sorgulamak için"
                 }
             },
             options: {
                 header: "Gelişmiş Arama"
             },
-            placeholder: "şuna göre ara: {{attribute}}",
+            placeholder: "Şuna göre ara: {{attribute}}",
             popups: {
-                clear: "aramayı Temizle",
+                clear: "Aramayı Temizle",
                 dropdown: "Seçenekleri göster"
             },
-            resultsIndicator: "\" sorgusu için sonuçlar gösteriliyor.{{query}}\""
+            resultsIndicator: "\"{{query}} sorgusu için sonuçlar gösteriliyor.\""
         },
         applications: {
             advancedSearch: {
@@ -801,7 +801,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "geriye kalan"
             },
             fido: {
-                description: "kullanabilirsiniz <1>geçiş anahtarı</1>, <1>FIDO2 Güvenlik Anahtarı</1> veya <1>Biyometri</1> Hesabınızda oturum açmak için cihazınızda.",
+                description: "Hesabınızda oturum açmak için <1>Passkey</1>, <1>FIDO2 Güvenlik Anahtarı</1> veya <1>Biyometrik Anahtar</1> cihazınızda kullanabilirsiniz  .",
                 form: {
                     label: "Güvenlik Anahtarı/Biyometrik",
                     placeholder: "Güvenlik anahtarı/biyometri için bir ad girin",
@@ -1379,7 +1379,7 @@ export const myAccount: MyAccountNS = {
             browserAndOS: "{{browser}} Açık {{os}} {{version}}",
             dangerZones: {
                 terminate: {
-                    actionTitle: "sonlandırmak",
+                    actionTitle: "Oturumu sonlandır",
                     header: "Oturumu sonlandır",
                     subheader: "Belirli bir cihazda oturumunuz kapatılacaktır."
                 }
@@ -1389,7 +1389,7 @@ export const myAccount: MyAccountNS = {
                 terminateActiveUserSessionModal: {
                     heading: "Mevcut Aktif Oturumları Sonlandır",
                     message: "İkinci faktörlü kimlik doğrulama (2FA) seçenek değişiklikleri aktif oturumlarınıza uygulanmayacaktır. ",
-                    primaryAction: "Tümünü sonlandır",
+                    primaryAction: "Tüm oturumları sonlandır",
                     secondaryAction: "İncele ve sonlandır"
                 },
                 terminateAllUserSessionsModal: {
@@ -1599,7 +1599,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 empty: "Herhangi bir uygulamaya izin vermediniz"
             },
-            description: "Her başvuru için sağladığınız onayları inceleyin. ",
+            description: "Uygulamalar için verdiğiniz izinleri inceleyin. ",
             heading: "İzinleri Yönet",
             placeholders: {
                 emptyConsentList: {
@@ -1635,7 +1635,7 @@ export const myAccount: MyAccountNS = {
         },
         profileExport: {
             actionTitles: {
-                "export": "profili indir"
+                "export": "Profil Bilgilerini İndir"
             },
             description: "Kişisel veriler, güvenlik soruları ve izinler dahil olmak üzere tüm profil verilerinizi indirin",
             heading: "Profili Dışa Aktar"
