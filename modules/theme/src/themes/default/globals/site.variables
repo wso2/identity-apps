@@ -227,7 +227,7 @@
 @dashboardLayoutSidePanelWidth: 300px;
 @dashboardLayoutMobileContentPadding: 20px 14px;
 
-@fluidDashboardLayoutTopPadding: 25px;
+@fluidDashboardLayoutTopPadding: 3rem;
 @fluidDashboardLayoutHorizontalPadding: 15px;
 @fluidLayoutTopPadding: 25px;
 @fluidLayoutHorizontalPadding: 15px;
@@ -236,4 +236,4 @@
 @fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;
 
-@pageLayoutContentPadding: @fluidDashboardLayoutTopPadding 30px;
+@pageLayoutContentPadding: @fluidDashboardLayoutTopPadding 1rem;
