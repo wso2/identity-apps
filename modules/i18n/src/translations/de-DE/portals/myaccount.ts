@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -450,7 +450,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         "footer": {
-            "copyright": "WSO2-Identity Server © {{year}}"
+            "copyright": "Elveriş-Identity Server © {{year}}"
         },
         "header": {
             "appSwitch": {
@@ -965,18 +965,18 @@ export const myAccount: MyAccountNS = {
         },
         "privacy": {
             "about": {
-                "description": "WSO2 Identity Server (in dieser Richtlinie als „WSO2 IS“ bezeichnet) ist ein Open-Source-Identitätsmanagement- und Berechtigungsserver, der auf offenen Standards und Spezifikationen basiert.",
-                "heading": "Über den WSO2-Identitätsserver"
+                "description": "Elveriş Identity Server (in dieser Richtlinie als „Elveriş IS“ bezeichnet) ist ein Open-Source-Identitätsmanagement- und Berechtigungsserver, der auf offenen Standards und Spezifikationen basiert.",
+                "heading": "Über den Elveriş-Identitätsserver"
             },
             "privacyPolicy": {
                 "collectionOfPersonalInfo": {
                     "description": {
                         "list1": {
-                            "0": "WSO2 IS verwendet Ihre IP-Adresse, um verdächtige Anmeldeversuche bei Ihrem Konto zu erkennen.",
-                            "1": "WSO2 IS verwendet Attribute wie Ihren Vornamen, Nachnamen usw., um eine reichhaltige und personalisierte Benutzererfahrung zu bieten.",
-                            "2": "WSO2 IS verwendet Ihre Sicherheitsfragen und -antworten nur, um eine Kontowiederherstellung zu ermöglichen."
+                            "0": "Elveriş IS verwendet Ihre IP-Adresse, um verdächtige Anmeldeversuche bei Ihrem Konto zu erkennen.",
+                            "1": "Elveriş IS verwendet Attribute wie Ihren Vornamen, Nachnamen usw., um eine reichhaltige und personalisierte Benutzererfahrung zu bieten.",
+                            "2": "Elveriş IS verwendet Ihre Sicherheitsfragen und -antworten nur, um eine Kontowiederherstellung zu ermöglichen."
                         },
-                        "para1": "WSO2 IS sammelt Ihre Informationen nur, um Ihre Zugriffsanforderungen zu erfüllen. Zum Beispiel:"
+                        "para1": "Elveriş IS sammelt Ihre Informationen nur, um Ihre Zugriffsanforderungen zu erfüllen. Zum Beispiel:"
                     },
                     "heading": "Erfassung personenbezogener Daten",
                     "trackingTechnologies": {
@@ -987,30 +987,30 @@ export const myAccount: MyAccountNS = {
                                 "2": "Tracking Ihrer geografischen Informationen mit der IP-Adresse.",
                                 "3": "Verfolgen Sie Ihren Anmeldeverlauf mit Browser-Cookies. Weitere Informationen finden Sie in unserem {{cookiePolicyLink}}."
                             },
-                            "para1": "WSO2 IS sammelt Ihre Informationen durch:"
+                            "para1": "Elveriş IS sammelt Ihre Informationen durch:"
                         },
                         "heading": "Tracking-Technologien"
                     }
                 },
                 "description": {
-                    "para1": "Diese Richtlinie beschreibt, wie WSO2 IS Ihre personenbezogenen Daten erfasst, die Zwecke der Erfassung und Informationen über die Aufbewahrung Ihrer personenbezogenen Daten.",
-                    "para2": "Bitte beachten Sie, dass diese Richtlinie nur als Referenz dient und für die Software als Produkt gilt. WSO2 LLC. und seine Entwickler haben keinen Zugriff auf die in WSO2 IS enthaltenen Informationen. Bitte beachten Sie den <1>Haftungsausschluss</1> Abschnitt für weitere Informationen.",
-                    "para3": "Körperschaften, Organisationen oder Einzelpersonen, die die Nutzung und Verwaltung von WSO2 IS kontrollieren, sollten ihre eigenen Datenschutzrichtlinien erstellen, die darlegen, wie Daten von der jeweiligen Körperschaft, Organisation oder Person kontrolliert oder verarbeitet werden."
+                    "para1": "Diese Richtlinie beschreibt, wie Elveriş IS Ihre personenbezogenen Daten erfasst, die Zwecke der Erfassung und Informationen über die Aufbewahrung Ihrer personenbezogenen Daten.",
+                    "para2": "Bitte beachten Sie, dass diese Richtlinie nur als Referenz dient und für die Software als Produkt gilt. Elveriş LLC. und seine Entwickler haben keinen Zugriff auf die in Elveriş IS enthaltenen Informationen. Bitte beachten Sie den <1>Haftungsausschluss</1> Abschnitt für weitere Informationen.",
+                    "para3": "Körperschaften, Organisationen oder Einzelpersonen, die die Nutzung und Verwaltung von Elveriş IS kontrollieren, sollten ihre eigenen Datenschutzrichtlinien erstellen, die darlegen, wie Daten von der jeweiligen Körperschaft, Organisation oder Person kontrolliert oder verarbeitet werden."
                 },
                 "disclaimer": {
                     "description": {
                         "list1": {
-                            "0": "WSO2, seine Mitarbeiter, Partner und verbundenen Unternehmen haben keinen Zugriff auf Daten, einschließlich personenbezogener Daten, die in WSO2 IS enthalten sind, und benötigen, speichern, verarbeiten oder kontrollieren diese nicht. Alle Daten, einschließlich personenbezogener Daten, werden von der juristischen oder natürlichen Person kontrolliert und verarbeitet, die WSO2 IS betreibt. WSO2, seine Mitarbeiter, Partner und verbundenen Unternehmen sind kein Datenverarbeiter oder Datenverantwortlicher im Sinne von Datenschutzbestimmungen. WSO2 gibt keine Garantien ab und übernimmt keine Verantwortung oder Haftung in Verbindung mit der Rechtmäßigkeit oder der Art und Weise und den Zwecken, für die WSO2 IS von solchen Unternehmen oder Personen verwendet wird.",
-                            "1": "Diese Datenschutzrichtlinie dient zu Informationszwecken der Organisation oder Personen, die WSO2 IS betreiben, und legt die Prozesse und Funktionen dar, die in WSO2 IS in Bezug auf den Schutz personenbezogener Daten enthalten sind. Es liegt in der Verantwortung der Unternehmen und Personen, die WSO2 IS betreiben, ihre eigenen Regeln und Prozesse zu erstellen und zu verwalten, die die personenbezogenen Daten von Benutzern regeln, und solche Regeln und Prozesse können die hierin enthaltenen Nutzungs-, Speicher- und Offenlegungsrichtlinien ändern. Daher sollten Benutzer die Organisation oder Personen konsultieren, die WSO2 IS betreiben, um ihre eigenen Datenschutzrichtlinien für Einzelheiten zu den personenbezogenen Daten der Benutzer zu erhalten."
+                            "0": "Elveriş, seine Mitarbeiter, Partner und verbundenen Unternehmen haben keinen Zugriff auf Daten, einschließlich personenbezogener Daten, die in Elveriş IS enthalten sind, und benötigen, speichern, verarbeiten oder kontrollieren diese nicht. Alle Daten, einschließlich personenbezogener Daten, werden von der juristischen oder natürlichen Person kontrolliert und verarbeitet, die Elveriş IS betreibt. Elveriş, seine Mitarbeiter, Partner und verbundenen Unternehmen sind kein Datenverarbeiter oder Datenverantwortlicher im Sinne von Datenschutzbestimmungen. Elveriş gibt keine Garantien ab und übernimmt keine Verantwortung oder Haftung in Verbindung mit der Rechtmäßigkeit oder der Art und Weise und den Zwecken, für die Elveriş IS von solchen Unternehmen oder Personen verwendet wird.",
+                            "1": "Diese Datenschutzrichtlinie dient zu Informationszwecken der Organisation oder Personen, die Elveriş IS betreiben, und legt die Prozesse und Funktionen dar, die in Elveriş IS in Bezug auf den Schutz personenbezogener Daten enthalten sind. Es liegt in der Verantwortung der Unternehmen und Personen, die Elveriş IS betreiben, ihre eigenen Regeln und Prozesse zu erstellen und zu verwalten, die die personenbezogenen Daten von Benutzern regeln, und solche Regeln und Prozesse können die hierin enthaltenen Nutzungs-, Speicher- und Offenlegungsrichtlinien ändern. Daher sollten Benutzer die Organisation oder Personen konsultieren, die Elveriş IS betreiben, um ihre eigenen Datenschutzrichtlinien für Einzelheiten zu den personenbezogenen Daten der Benutzer zu erhalten."
                         }
                     },
                     "heading": "Haftungsausschluss"
                 },
                 "disclosureOfPersonalInfo": {
-                    "description": "WSO2 IS gibt personenbezogene Daten nur an die entsprechenden Anwendungen (auch bekannt als Dienstanbieter) weiter, die bei WSO2 IS registriert sind. Diese Anwendungen werden vom Identitätsadministrator Ihres Unternehmens oder Ihrer Organisation registriert. Personenbezogene Daten werden nur für die Zwecke offengelegt, für die sie erhoben wurden (oder für eine Verwendung, die als mit diesem Zweck übereinstimmend identifiziert wurde), die von diesen Dienstanbietern kontrolliert wird, es sei denn, Sie haben anderweitig zugestimmt oder es ist gesetzlich vorgeschrieben.",
+                    "description": "Elveriş IS gibt personenbezogene Daten nur an die entsprechenden Anwendungen (auch bekannt als Dienstanbieter) weiter, die bei Elveriş IS registriert sind. Diese Anwendungen werden vom Identitätsadministrator Ihres Unternehmens oder Ihrer Organisation registriert. Personenbezogene Daten werden nur für die Zwecke offengelegt, für die sie erhoben wurden (oder für eine Verwendung, die als mit diesem Zweck übereinstimmend identifiziert wurde), die von diesen Dienstanbietern kontrolliert wird, es sei denn, Sie haben anderweitig zugestimmt oder es ist gesetzlich vorgeschrieben.",
                     "heading": "Offenlegung personenbezogener Daten",
                     "legalProcess": {
-                        "description": "Bitte beachten Sie, dass die Organisation, das Unternehmen oder die Einzelperson, die WSO2 IS betreibt, gezwungen sein kann, Ihre personenbezogenen Daten mit oder ohne Ihre Zustimmung offenzulegen, wenn dies nach einem ordnungsgemäßen und rechtmäßigen Verfahren gesetzlich vorgeschrieben ist.",
+                        "description": "Bitte beachten Sie, dass die Organisation, das Unternehmen oder die Einzelperson, die Elveriş IS betreibt, gezwungen sein kann, Ihre personenbezogenen Daten mit oder ohne Ihre Zustimmung offenzulegen, wenn dies nach einem ordnungsgemäßen und rechtmäßigen Verfahren gesetzlich vorgeschrieben ist.",
                         "heading": "Legaler Prozess"
                     }
                 },
@@ -1018,21 +1018,21 @@ export const myAccount: MyAccountNS = {
                 "moreInfo": {
                     "changesToPolicy": {
                         "description": {
-                            "para1": "Aktualisierte Versionen von WSO2 IS können Änderungen an dieser Richtlinie enthalten, und Überarbeitungen dieser Richtlinie werden in solche Upgrades gepackt. Solche Änderungen würden nur für Benutzer gelten, die sich für die Verwendung aktualisierter Versionen entscheiden.",
-                            "para2": "Die Organisation, die WSO2 IS betreibt, kann die Datenschutzrichtlinie von Zeit zu Zeit überarbeiten. Die aktuellste geltende Richtlinie finden Sie unter dem entsprechenden Link, der von der Organisation bereitgestellt wird, die WSO2 IS betreibt. Die Organisation wird alle Änderungen der Datenschutzrichtlinie über unsere offiziellen öffentlichen Kanäle bekannt geben."
+                            "para1": "Aktualisierte Versionen von Elveriş IS können Änderungen an dieser Richtlinie enthalten, und Überarbeitungen dieser Richtlinie werden in solche Upgrades gepackt. Solche Änderungen würden nur für Benutzer gelten, die sich für die Verwendung aktualisierter Versionen entscheiden.",
+                            "para2": "Die Organisation, die Elveriş IS betreibt, kann die Datenschutzrichtlinie von Zeit zu Zeit überarbeiten. Die aktuellste geltende Richtlinie finden Sie unter dem entsprechenden Link, der von der Organisation bereitgestellt wird, die Elveriş IS betreibt. Die Organisation wird alle Änderungen der Datenschutzrichtlinie über unsere offiziellen öffentlichen Kanäle bekannt geben."
                         },
                         "heading": "Änderungen an dieser Richtlinie"
                     },
                     "contactUs": {
                         "description": {
-                            "para1": "Bitte wenden Sie sich an WSO2, wenn Sie Fragen oder Bedenken bezüglich dieser Datenschutzrichtlinie haben."
+                            "para1": "Bitte wenden Sie sich an Elveriş, wenn Sie Fragen oder Bedenken bezüglich dieser Datenschutzrichtlinie haben."
                         },
                         "heading": "Kontaktiere uns"
                     },
                     "heading": "Weitere Hinweise",
                     "yourChoices": {
                         "description": {
-                            "para1": "Wenn Sie bereits ein Benutzerkonto bei WSO2 IS haben, haben Sie das Recht, Ihr Konto zu deaktivieren, wenn Sie feststellen, dass diese Datenschutzrichtlinie für Sie nicht akzeptabel ist.",
+                            "para1": "Wenn Sie bereits ein Benutzerkonto bei Elveriş IS haben, haben Sie das Recht, Ihr Konto zu deaktivieren, wenn Sie feststellen, dass diese Datenschutzrichtlinie für Sie nicht akzeptabel ist.",
                             "para2": "Wenn Sie kein Konto haben und unserer Datenschutzrichtlinie nicht zustimmen, können Sie sich dafür entscheiden, kein Konto zu erstellen."
                         },
                         "heading": "Deine Entscheidungen"
@@ -1046,22 +1046,22 @@ export const myAccount: MyAccountNS = {
                                 "0": "Aktuelles Passwort",
                                 "1": "Zuvor verwendete Passwörter"
                             },
-                            "para1": "WSO2 IS speichert Ihre personenbezogenen Daten, solange Sie ein aktiver Benutzer unseres Systems sind. Sie können Ihre persönlichen Daten jederzeit über die angegebenen Self-Care-Benutzerportale aktualisieren.",
-                            "para2": "WSO2 IS kann gehashte Geheimnisse aufbewahren, um Ihnen ein zusätzliches Maß an Sicherheit zu bieten. Das beinhaltet:"
+                            "para1": "Elveriş IS speichert Ihre personenbezogenen Daten, solange Sie ein aktiver Benutzer unseres Systems sind. Sie können Ihre persönlichen Daten jederzeit über die angegebenen Self-Care-Benutzerportale aktualisieren.",
+                            "para2": "Elveriş IS kann gehashte Geheimnisse aufbewahren, um Ihnen ein zusätzliches Maß an Sicherheit zu bieten. Das beinhaltet:"
                         },
                         "heading": "Wie lange Ihre personenbezogenen Daten gespeichert werden"
                     },
                     "requestRemoval": {
                         "description": {
                             "para1": "Sie können den Administrator bitten, Ihr Konto zu löschen. Der Administrator ist der Administrator der Organisation, bei der Sie registriert sind, oder der Superadministrator, wenn Sie die Organisationsfunktion nicht verwenden.",
-                            "para2": "Darüber hinaus können Sie die Anonymisierung aller Spuren Ihrer Aktivitäten anfordern, die WSO2 IS möglicherweise in Protokollen, Datenbanken oder analytischen Speichern aufbewahrt hat."
+                            "para2": "Darüber hinaus können Sie die Anonymisierung aller Spuren Ihrer Aktivitäten anfordern, die Elveriş IS möglicherweise in Protokollen, Datenbanken oder analytischen Speichern aufbewahrt hat."
                         },
                         "heading": "So beantragen Sie die Entfernung Ihrer personenbezogenen Daten"
                     },
                     "where": {
                         "description": {
-                            "para1": "WSO2 IS speichert Ihre persönlichen Informationen in gesicherten Datenbanken. WSO2 IS wendet geeignete branchenweit anerkannte Sicherheitsmaßnahmen an, um die Datenbank zu schützen, in der Ihre persönlichen Daten gespeichert sind. WSO2 IS als Produkt überträgt oder teilt Ihre Daten nicht mit Dritten oder Standorten.",
-                            "para2": "WSO2 IS kann Verschlüsselung verwenden, um Ihre persönlichen Daten mit einem zusätzlichen Sicherheitsniveau zu speichern."
+                            "para1": "Elveriş IS speichert Ihre persönlichen Informationen in gesicherten Datenbanken. Elveriş IS wendet geeignete branchenweit anerkannte Sicherheitsmaßnahmen an, um die Datenbank zu schützen, in der Ihre persönlichen Daten gespeichert sind. Elveriş IS als Produkt überträgt oder teilt Ihre Daten nicht mit Dritten oder Standorten.",
+                            "para2": "Elveriş IS kann Verschlüsselung verwenden, um Ihre persönlichen Daten mit einem zusätzlichen Sicherheitsniveau zu speichern."
                         },
                         "heading": "Wo Ihre persönlichen Daten gespeichert werden"
                     }
@@ -1069,12 +1069,12 @@ export const myAccount: MyAccountNS = {
                 "useOfPersonalInfo": {
                     "description": {
                         "list1": {
-                            "0": "Um Ihnen ein personalisiertes Benutzererlebnis zu bieten. WSO2 IS verwendet zu diesem Zweck Ihren Namen und hochgeladene Profilbilder.",
-                            "1": "Um Ihr Konto vor unbefugtem Zugriff oder potenziellen Hacking-Versuchen zu schützen. WSO2 IS verwendet zu diesem Zweck HTTP- oder TCP/IP-Header.",
-                            "2": "Leiten Sie statistische Daten zu Analysezwecken über Systemleistungsverbesserungen ab. WSO2 IS speichert nach statistischen Berechnungen keine personenbezogenen Daten. Der statistische Bericht enthält daher keine Möglichkeit, eine einzelne Person zu identifizieren."
+                            "0": "Um Ihnen ein personalisiertes Benutzererlebnis zu bieten. Elveriş IS verwendet zu diesem Zweck Ihren Namen und hochgeladene Profilbilder.",
+                            "1": "Um Ihr Konto vor unbefugtem Zugriff oder potenziellen Hacking-Versuchen zu schützen. Elveriş IS verwendet zu diesem Zweck HTTP- oder TCP/IP-Header.",
+                            "2": "Leiten Sie statistische Daten zu Analysezwecken über Systemleistungsverbesserungen ab. Elveriş IS speichert nach statistischen Berechnungen keine personenbezogenen Daten. Der statistische Bericht enthält daher keine Möglichkeit, eine einzelne Person zu identifizieren."
                         },
-                        "para1": "WSO2 IS wird Ihre personenbezogenen Daten nur für die Zwecke verwenden, für die sie erhoben wurden (oder für eine Verwendung, die als mit diesem Zweck übereinstimmend identifiziert wurde).",
-                        "para2": "WSO2 IS verwendet Ihre persönlichen Daten nur für die folgenden Zwecke.",
+                        "para1": "Elveriş IS wird Ihre personenbezogenen Daten nur für die Zwecke verwenden, für die sie erhoben wurden (oder für eine Verwendung, die als mit diesem Zweck übereinstimmend identifiziert wurde).",
+                        "para2": "Elveriş IS verwendet Ihre persönlichen Daten nur für die folgenden Zwecke.",
                         "subList1": {
                             "heading": "Das beinhaltet:",
                             "list": {
@@ -1084,7 +1084,7 @@ export const myAccount: MyAccountNS = {
                             }
                         },
                         "subList2": {
-                            "heading": "WSO2 IS kann Folgendes verwenden:",
+                            "heading": "Elveriş IS kann Folgendes verwenden:",
                             "list": {
                                 "0": "IP-Adresse, um geografische Informationen abzuleiten",
                                 "1": "Browser-Fingerprinting zur Ermittlung der Browser-Technologie oder/und -Version"
@@ -1107,8 +1107,8 @@ export const myAccount: MyAccountNS = {
                             "2": "Gerätetyp, mit dem Sie sich angemeldet haben (z. B. Telefon oder Tablet)",
                             "3": "Betriebssystem und allgemeine Browserinformationen"
                         },
-                        "para1": "WSO2 IS betrachtet alles, was sich auf Sie bezieht und durch das Sie identifiziert werden können, als Ihre persönlichen Daten. Dies beinhaltet, ist aber nicht beschränkt auf:",
-                        "para2": "WSO2 IS sammelt jedoch auch die folgenden Informationen, die nicht als persönliche Informationen gelten, sondern nur für <1>statistische Zwecke verwendet werden</1> Zwecke. Der Grund dafür ist, dass diese Informationen nicht verwendet werden können, um Sie zu verfolgen."
+                        "para1": "Elveriş IS betrachtet alles, was sich auf Sie bezieht und durch das Sie identifiziert werden können, als Ihre persönlichen Daten. Dies beinhaltet, ist aber nicht beschränkt auf:",
+                        "para2": "Elveriş IS sammelt jedoch auch die folgenden Informationen, die nicht als persönliche Informationen gelten, sondern nur für <1>statistische Zwecke verwendet werden</1> Zwecke. Der Grund dafür ist, dass diese Informationen nicht verwendet werden können, um Sie zu verfolgen."
                     },
                     "heading": "Was sind personenbezogene Daten?"
                 }
@@ -1527,7 +1527,7 @@ export const myAccount: MyAccountNS = {
         },
         "privacy": {
             "subTitle": "",
-            "title": "Datenschutzrichtlinie des WSO2-Identitätsservers"
+            "title": "Datenschutzrichtlinie des Elveriş-Identitätsservers"
         },
         "readOnlyProfileBanner": "Ihr Profil kann von diesem Portal aus nicht geändert werden. Bitte kontaktieren Sie Ihren Administrator für weitere Details.",
         "security": {

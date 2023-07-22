@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -450,7 +450,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         footer: {
-            copyright: "WSO2 Kimlik Sunucusu © {{year}}"
+            copyright: "Elveriş Kimlik Sunucusu © {{year}}"
         },
         header: {
             appSwitch: {
@@ -964,18 +964,18 @@ export const myAccount: MyAccountNS = {
         },
         privacy: {
             about: {
-                description: "WSO2 Kimlik Sunucusu (bu politikada \"WSO2 IS\" olarak anılacaktır), açık standartlara ve spesifikasyonlara dayalı açık kaynaklı bir Kimlik Yönetimi ve Yetkilendirme Sunucusudur.",
-                heading: "WSO2 Kimlik Sunucusu Hakkında"
+                description: "Elveriş Kimlik Sunucusu (bu politikada \"Elveriş IS\" olarak anılacaktır), açık standartlara ve spesifikasyonlara dayalı açık kaynaklı bir Kimlik Yönetimi ve Yetkilendirme Sunucusudur.",
+                heading: "Elveriş Kimlik Sunucusu Hakkında"
             },
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
-                            "0": "WSO2 IS, hesabınıza yapılan herhangi bir şüpheli oturum açma girişimini tespit etmek için IP adresinizi kullanır.",
-                            "1": "WSO2 IS, zengin ve kişiselleştirilmiş bir kullanıcı deneyimi sağlamak için adınız, soyadınız vb. gibi öznitelikleri kullanır.",
-                            "2": "WSO2 IS, güvenlik sorularınızı ve yanıtlarınızı yalnızca hesap kurtarmaya izin vermek için kullanır."
+                            "0": "Elveriş IS, hesabınıza yapılan herhangi bir şüpheli oturum açma girişimini tespit etmek için IP adresinizi kullanır.",
+                            "1": "Elveriş IS, zengin ve kişiselleştirilmiş bir kullanıcı deneyimi sağlamak için adınız, soyadınız vb. gibi öznitelikleri kullanır.",
+                            "2": "Elveriş IS, güvenlik sorularınızı ve yanıtlarınızı yalnızca hesap kurtarmaya izin vermek için kullanır."
                         },
-                        para1: "WSO2 IS, bilgilerinizi yalnızca erişim gereksinimlerinizi karşılamak için toplar. "
+                        para1: "Elveriş IS, bilgilerinizi yalnızca erişim gereksinimlerinizi karşılamak için toplar. "
                     },
                     heading: "Kişisel bilgilerin toplanması",
                     trackingTechnologies: {
@@ -986,30 +986,30 @@ export const myAccount: MyAccountNS = {
                                 "2": "IP adresi ile coğrafi bilgilerinizin takibi.",
                                 "3": "Giriş geçmişinizi tarayıcı tanımlama bilgileriyle izleme.  {{cookiePolicyLink}} daha fazla bilgi için."
                             },
-                            para1: "WSO2 IS, bilgilerinizi şu şekilde toplar:"
+                            para1: "Elveriş IS, bilgilerinizi şu şekilde toplar:"
                         },
                         heading: "Takip Teknolojileri"
                     }
                 },
                 description: {
-                    para1: "Bu politika, WSO2 IS'nin kişisel bilgilerinizi nasıl topladığını, toplama amaçlarını ve kişisel bilgilerinizin saklanmasına ilişkin bilgileri açıklamaktadır.",
+                    para1: "Bu politika, Elveriş IS'nin kişisel bilgilerinizi nasıl topladığını, toplama amaçlarını ve kişisel bilgilerinizin saklanmasına ilişkin bilgileri açıklamaktadır.",
                     para2: "Lütfen bu politikanın yalnızca referans amaçlı olduğunu ve bir ürün olarak yazılım için geçerli olduğunu unutmayın.  <1>feragatname</1> Daha fazla bilgi için bölüm.",
-                    para3: "WSO2 IS'nin kullanımını ve yönetimini kontrol eden kuruluşlar, kuruluşlar veya bireyler, verilerin ilgili varlık, kuruluş veya kişi tarafından kontrol edilme veya işlenme şeklini belirleyen kendi gizlilik politikalarını oluşturmalıdır."
+                    para3: "Elveriş IS'nin kullanımını ve yönetimini kontrol eden kuruluşlar, kuruluşlar veya bireyler, verilerin ilgili varlık, kuruluş veya kişi tarafından kontrol edilme veya işlenme şeklini belirleyen kendi gizlilik politikalarını oluşturmalıdır."
                 },
                 disclaimer: {
                     description: {
                         list1: {
-                            "0": "WSO2, çalışanları, ortakları ve bağlı kuruluşları, WSO2 IS'de yer alan kişisel veriler de dahil olmak üzere hiçbir veriye erişim sahibi değildir ve bunları gerektirmez, saklamaz, işlemez veya kontrol etmez. ",
-                            "1": "Bu gizlilik politikası, WSO2 IS çalıştıran kurum veya kişilerin bilgilendirme amaçlıdır ve kişisel verilerin korunmasına ilişkin olarak WSO2 IS kapsamında yer alan süreçleri ve işlevleri belirler. "
+                            "0": "Elveriş, çalışanları, ortakları ve bağlı kuruluşları, Elveriş IS'de yer alan kişisel veriler de dahil olmak üzere hiçbir veriye erişim sahibi değildir ve bunları gerektirmez, saklamaz, işlemez veya kontrol etmez. ",
+                            "1": "Bu gizlilik politikası, Elveriş IS çalıştıran kurum veya kişilerin bilgilendirme amaçlıdır ve kişisel verilerin korunmasına ilişkin olarak Elveriş IS kapsamında yer alan süreçleri ve işlevleri belirler. "
                         }
                     },
                     heading: "Feragatname"
                 },
                 disclosureOfPersonalInfo: {
-                    description: "WSO2 IS, kişisel bilgileri yalnızca WSO2 IS'ye kayıtlı ilgili uygulamalara (Hizmet Sağlayıcı olarak da bilinir) ifşa eder. ",
+                    description: "Elveriş IS, kişisel bilgileri yalnızca Elveriş IS'ye kayıtlı ilgili uygulamalara (Hizmet Sağlayıcı olarak da bilinir) ifşa eder. ",
                     heading: "kişisel bilgilerin ifşası",
                     legalProcess: {
-                        description: "Lütfen, WSO2 IS'yi çalıştıran kuruluş, kuruluş veya bireyin, gerekli ve yasal süreci takiben kanunen gerekli olduğu durumlarda, kişisel bilgilerinizi izniniz olsun veya olmasın ifşa etmek zorunda kalabileceğini unutmayın.",
+                        description: "Lütfen, Elveriş IS'yi çalıştıran kuruluş, kuruluş veya bireyin, gerekli ve yasal süreci takiben kanunen gerekli olduğu durumlarda, kişisel bilgilerinizi izniniz olsun veya olmasın ifşa etmek zorunda kalabileceğini unutmayın.",
                         heading: "Yasal süreç"
                     }
                 },
@@ -1017,21 +1017,21 @@ export const myAccount: MyAccountNS = {
                 moreInfo: {
                     changesToPolicy: {
                         description: {
-                            para1: "WSO2 IS'nin yükseltilmiş sürümleri, bu politikada değişiklikler içerebilir ve bu politikada yapılan revizyonlar, bu tür yükseltmeler içinde paketlenecektir. ",
-                            para2: "WSO2 IS'yi çalıştıran kuruluş, Gizlilik Politikasını zaman zaman revize edebilir. "
+                            para1: "Elveriş IS'nin yükseltilmiş sürümleri, bu politikada değişiklikler içerebilir ve bu politikada yapılan revizyonlar, bu tür yükseltmeler içinde paketlenecektir. ",
+                            para2: "Elveriş IS'yi çalıştıran kuruluş, Gizlilik Politikasını zaman zaman revize edebilir. "
                         },
                         heading: "Bu politikadaki değişiklikler"
                     },
                     contactUs: {
                         description: {
-                            para1: "Bu gizlilik politikasıyla ilgili herhangi bir sorunuz veya endişeniz varsa lütfen WSO2 ile iletişime geçin."
+                            para1: "Bu gizlilik politikasıyla ilgili herhangi bir sorunuz veya endişeniz varsa lütfen Elveriş ile iletişime geçin."
                         },
                         heading: "Bize Ulaşın"
                     },
                     heading: "Daha fazla bilgi",
                     yourChoices: {
                         description: {
-                            para1: "WSO2 IS içinde zaten bir kullanıcı hesabınız varsa ve bu gizlilik politikasının sizin için kabul edilemez olduğunu fark ederseniz, hesabınızı devre dışı bırakma hakkınız vardır.",
+                            para1: "Elveriş IS içinde zaten bir kullanıcı hesabınız varsa ve bu gizlilik politikasının sizin için kabul edilemez olduğunu fark ederseniz, hesabınızı devre dışı bırakma hakkınız vardır.",
                             para2: "Hesabınız yoksa ve gizlilik politikamızı kabul etmiyorsanız, hesap oluşturmamayı seçebilirsiniz."
                         },
                         heading: "Senin seçimlerin"
@@ -1045,22 +1045,22 @@ export const myAccount: MyAccountNS = {
                                 "0": "Mevcut Şifre",
                                 "1": "Daha önce kullanılan şifreler"
                             },
-                            para1: "WSO2 IS, sistemimizin aktif bir kullanıcısı olduğunuz sürece kişisel verilerinizi saklar. ",
-                            para2: "WSO2 IS, size ek bir güvenlik düzeyi sağlamak için hashlenmiş sırlar tutabilir. "
+                            para1: "Elveriş IS, sistemimizin aktif bir kullanıcısı olduğunuz sürece kişisel verilerinizi saklar. ",
+                            para2: "Elveriş IS, size ek bir güvenlik düzeyi sağlamak için hashlenmiş sırlar tutabilir. "
                         },
                         heading: "Kişisel bilgileriniz ne kadar süreyle saklanır?"
                     },
                     requestRemoval: {
                         description: {
                             para1: "Yöneticiden hesabınızı silmesini isteyebilirsiniz. ",
-                            para2: "Ek olarak, WSO2 IS'nin günlüklerde, veritabanlarında veya analitik depolamada tutmuş olabileceği faaliyetlerinizin tüm izlerini anonimleştirme talebinde bulunabilirsiniz."
+                            para2: "Ek olarak, Elveriş IS'nin günlüklerde, veritabanlarında veya analitik depolamada tutmuş olabileceği faaliyetlerinizin tüm izlerini anonimleştirme talebinde bulunabilirsiniz."
                         },
                         heading: "Kişisel bilgilerinizin kaldırılmasını nasıl talep edebilirsiniz?"
                     },
                     where: {
                         description: {
-                            para1: "WSO2 IS, kişisel bilgilerinizi güvenli veritabanlarında saklar. ",
-                            para2: "WSO2 IS, kişisel verilerinizi ek bir güvenlik düzeyiyle saklamak için şifreleme kullanabilir."
+                            para1: "Elveriş IS, kişisel bilgilerinizi güvenli veritabanlarında saklar. ",
+                            para2: "Elveriş IS, kişisel verilerinizi ek bir güvenlik düzeyiyle saklamak için şifreleme kullanabilir."
                         },
                         heading: "Kişisel bilgileriniz nerede saklanır?"
                     }
@@ -1072,8 +1072,8 @@ export const myAccount: MyAccountNS = {
                             "1": "Hesabınızı yetkisiz erişimden veya olası bilgisayar korsanlığı girişimlerinden korumak için. ",
                             "2": "Sistem performansı iyileştirmelerine ilişkin analitik amaçlar için istatistiksel veriler elde edin. "
                         },
-                        para1: "WSO2 IS, kişisel bilgilerinizi yalnızca toplanma amaçları (veya bu amaçla tutarlı olarak tanımlanan bir kullanım için) için kullanacaktır.",
-                        para2: "WSO2 IS, kişisel bilgilerinizi yalnızca aşağıdaki amaçlar için kullanır.",
+                        para1: "Elveriş IS, kişisel bilgilerinizi yalnızca toplanma amaçları (veya bu amaçla tutarlı olarak tanımlanan bir kullanım için) için kullanacaktır.",
+                        para2: "Elveriş IS, kişisel bilgilerinizi yalnızca aşağıdaki amaçlar için kullanır.",
                         subList1: {
                             heading: "Bu içerir:",
                             list: {
@@ -1083,7 +1083,7 @@ export const myAccount: MyAccountNS = {
                             }
                         },
                         subList2: {
-                            heading: "WSO2 IS şunları kullanabilir:",
+                            heading: "Elveriş IS şunları kullanabilir:",
                             list: {
                                 "0": "Coğrafi bilgi elde etmek için IP Adresi",
                                 "1": "Tarayıcı teknolojisini ve/veya sürümünü belirlemek için tarayıcı parmak izi"
@@ -1106,31 +1106,31 @@ export const myAccount: MyAccountNS = {
                             "2": "Giriş yapmak için kullandığınız cihazın türü (ör. telefon veya tablet)",
                             "3": "İşletim sistemi ve genel tarayıcı bilgileri"
                         },
-                        para1: "WSO2 IS, sizinle ilgili olan ve tanımlanabileceğiniz her şeyi kişisel bilgileriniz olarak kabul eder. ",
-                        para2: "Bununla birlikte, WSO2 IS, kişisel bilgi olarak kabul edilmeyen, yalnızca aşağıdaki bilgileri de toplar: <1>istatistiksel</1> amaçlar. "
+                        para1: "Elveriş IS, sizinle ilgili olan ve tanımlanabileceğiniz her şeyi kişisel bilgileriniz olarak kabul eder. ",
+                        para2: "Bununla birlikte, Elveriş IS, kişisel bilgi olarak kabul edilmeyen, yalnızca aşağıdaki bilgileri de toplar: <1>istatistiksel</1> amaçlar. "
                     },
                     heading: "Kişisel bilgi nedir?"
                 }
             }
         },
-        profile: {
-            fields: {
+        "profile": {
+            "fields": {
                 "Account Confirmed Time": "Hesabın Onaylanma Zamanı",
                 "Account Disabled": "Hesap Devre Dışı",
                 "Account Locked": "Hesap Kilitli",
                 "Account State": "Hesap Durumu",
-                Active: "Aktif",
+                "Active": "Aktif",
                 "Address - Street": "Sokak adresi",
                 "Ask Password": "Şifre Sor",
                 "Backup Code Enabled": "Yedekleme Kodu Etkin",
                 "Backup Codes": "Yedek Kodlar",
                 "Birth Date": "Doğum günü",
-                Country: "Ülke",
+                "Country": "Ülke",
                 "Created Time": "Oluşturma Zamanı",
                 "Disable EmailOTP": "EmailOTP'yi devre dışı bırak",
                 "Disable SMSOTP": "SMSOTP'yi devre dışı bırak",
                 "Display Name": "Ekran adı",
-                Email: "E-posta",
+                "Email": "E-posta",
                 "Email Verified": "E-posta Doğrulandı",
                 "Enabled Authenticators": "Etkin Doğrulayıcılar",
                 "Existing Lite User": "Mevcut Lite Kullanıcısı",
@@ -1143,11 +1143,11 @@ export const myAccount: MyAccountNS = {
                 "Failed Password Recovery Attempts": "Başarısız Şifre Kurtarma Girişimleri",
                 "Failed SMS OTP Attempts": "Başarısız SMS OTP Denemeleri",
                 "Failed TOTP Attempts": "Başarısız TOTP Denemeleri",
-                "First Name": "İlk adı",
+                "First Name": "Ad",
                 "Force Password Reset": "Parola Sıfırlamaya Zorla",
                 "Full Name": "Ad Soyad",
-                Gender: "Cinsiyet",
-                Groups: "Gruplar",
+                "Gender": "Cinsiyet",
+                "Groups": "Gruplar",
                 "Identity Provider Type": "Kimlik Sağlayıcı Türü",
                 "Last Logon": "Son Oturum Açma",
                 "Last Modified Time": "Son Değiştirme Zamanı",
@@ -1155,51 +1155,51 @@ export const myAccount: MyAccountNS = {
                 "Last Password Update": "Son Şifre Güncellemesi",
                 "Lite User": "Basit Kullanıcı",
                 "Lite User ID": "Basit Kullanıcı Kimliği",
-                Local: "Yerel",
+                "Local": "Yerel",
                 "Local Credential Exists": "Yerel Kimlik Bilgileri Var",
-                Locality: "yerellik",
-                Location: "Konum",
+                "Locality": "yerellik",
+                "Location": "Konum",
                 "Locked Reason": "Kilitlenme Nedeni",
                 "Manager - Name": "Yönetici ismi",
-                "Middle Name": "İkinci ad",
-                Mobile: "mobil",
+                "Middle Name": "İkinci Ad",
+                "Mobile": "Cep Telefonu",
                 "Nick Name": "Takma ad",
-                "Phone Verified": "Telefon Doğrulandı",
+                "Phone Verified": "Doğrulanmış Telefon Numarası",
                 "Photo - Thumbnail": "Fotoğraf - Küçük resim",
                 "Photo URL": "Fotoğraf URL'si",
                 "Postal Code": "Posta Kodu",
                 "Preferred Channel": "Tercih Edilen Kanal",
                 "Read Only User": "Salt Okunur Kullanıcı",
-                Region: "Bölge",
-                "Resource Type": "Kaynak tipi",
-                Roles: "Roller",
-                "Secret Key": "Gizli anahtar",
+                "Region": "Bölge",
+                "Resource Type": "Kaynak Tipi",
+                "Roles": "Roller",
+                "Secret Key": "Gizli Anahtar",
                 "TOTP Enabled": "TOTP Etkin",
                 "Time Zone": "Saat dilimi",
-                URL: "URL",
+                "URL": "URL",
                 "Unlock Time": "Kilit Açma Zamanı",
                 "User Account Type": "Kullanıcı Hesabı Türü",
                 "User ID": "Kullanıcı kimliği",
                 "User Metadata - Version": "Kullanıcı Meta Verileri - Sürüm",
                 "User Source": "Kullanıcı Kaynağı",
                 "User Source ID": "Kullanıcı Kaynağı Kimliği",
-                Username: "Kullanıcı adı",
+                "Username": "Kullanıcı adı",
                 "Verification Pending Email": "Doğrulama Bekleyen E-posta",
-                "Verification Pending Mobile Number": "Doğrulama Bekleyen Cep Numarası",
-                "Verify Email": "E-mail'i doğrula",
-                "Verify Mobile": "Mobil Doğrula",
-                "Verify Secret Key": "Gizli Anahtarı Doğrulayın",
+                "Verification Pending Mobile Number": "Doğrulama Bekleyen Cep Telefonu Numarası",
+                "Verify Email": "E-posta Doğrula",
+                "Verify Mobile": "Cep Telefonu Doğrula",
+                "Verify Secret Key": "Gizli Anahtarı Doğrula",
                 "Website URL": "Web Sitesi URL'si",
-                emails: "E-posta",
-                generic: {
-                    "default": "Eklemek {{fieldName}}"
+                "emails": "E-postalar",
+                "generic": {
+                    "default": "{{fieldName}} Ekle"
                 },
-                nameFamilyName: "Soy isim",
-                nameGivenName: "İlk adı",
-                phoneNumbers: "Telefon numarası",
-                profileImage: "Profil Resmi",
-                profileUrl: "URL",
-                userName: "Kullanıcı adı"
+                "nameFamilyName": "Soyad",
+                "nameGivenName": "Ad",
+                "phoneNumbers": "Telefon Numaraları",
+                "profileImage": "Profil Resmi",
+                "profileUrl": "Profil URL'i",
+                "userName": "Kullanıcı Adı"
             },
             forms: {
                 countryChangeForm: {
@@ -1248,7 +1248,7 @@ export const myAccount: MyAccountNS = {
                 mobileChangeForm: {
                     inputs: {
                         mobile: {
-                            label: "Cep numarası",
+                            label: "Cep Telefonu Numarası",
                             note: "NOT: Bu, profilinizdeki cep telefonu numarasını değiştirecektir.",
                             placeholder: "telefon numaranızı girin",
                             validations: {
@@ -1526,7 +1526,7 @@ export const myAccount: MyAccountNS = {
         },
         privacy: {
             subTitle: "",
-            title: "WSO2 Kimlik Sunucusu Gizlilik Politikası"
+            title: "Elveriş Kimlik Sunucusu Gizlilik Politikası"
         },
         readOnlyProfileBanner: "Profiliniz bu portaldan değiştirilemez. ",
         security: {
