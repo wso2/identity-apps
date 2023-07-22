@@ -1,0 +1,8 @@
+/*******************************
+        Reset Overrides
+*******************************/
+
+/* Setting text area font as it's been set to sans-serif */
+textarea {
+  font-family: inherit;
+}

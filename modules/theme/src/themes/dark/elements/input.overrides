@@ -1,0 +1,127 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+.copy-field {
+    input {
+        font-size: 0.9em;
+        padding: 0.7em!important;
+        background-color: @galleryGray!important;
+        border: none!important;
+        font-style: italic;
+        color: @doveGray!important;
+    }
+}
+
+/*******************************
+    Claim Search Variation
+*******************************/
+.ui.icon.input {
+    &.available-claim-search {
+       padding-left: 10px;
+       width: 100%;
+       margin: 10px 0px;
+    }
+}
+
+.ui.input {
+    &.panel-url-input {
+        height: 2em;
+        font-size: 0.9em;
+        color: #666767 !important;
+    }
+}
+
+/*-------------------------------
+         Copy Input Field
+--------------------------------*/
+
+.ui.input {
+    &.copy-input {
+        .copy-input-eye-icon {
+            margin-right: @copyInputFieldMarginRight;
+        }
+        &.copy-input-dark {
+            input {
+                background: #29363c;
+                color: white;
+            }
+            
+            &.spaced {
+                margin: 15px 0;
+            }
+        }
+    }
+}
+
+/*-------------------------------
+ Remove Duplicated Eye-Icon for Password Fields in MS Edge Browser
+--------------------------------*/
+input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
+    display: none;
+}
+
+/*-------------------------------
+  Addon wrapper for input fields to avoid
+  overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.ui.input {
+    &.addon-wrapper {
+        margin: 0;
+        outline: 0;
+        border: @border;
+        border-radius: @borderRadius;
+        box-shadow: @boxShadow;
+        transition: @transition;
+
+        &:focus-within {
+            border-color: @focusBorderColor;
+        }
+
+        > input {
+            border: none;
+            max-width: calc(100% - @inputAddonWrapperOffset);
+        }
+    }
+}
+
+/*-------------------------------
+  Addon field wrapper for input fields in My Account
+  & Console to avoid overlapping with browser added icons
+  ex: Password Managers
+--------------------------------*/
+.addon-field-wrapper {
+    .ui.input {
+        margin: 0;
+        outline: 0;
+        border: @border;
+        border-radius: @borderRadius;
+        box-shadow: @boxShadow;
+        transition: @transition;
+
+        &:focus-within {
+            border-color: @focusBorderColor;
+        }
+
+        > input {
+            border: none;
+            max-width: calc(100% - @inputAddonWrapperOffset);
+        }
+    }  
+}

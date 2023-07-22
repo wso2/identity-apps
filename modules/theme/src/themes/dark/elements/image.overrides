@@ -1,0 +1,485 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*******************************
+     User Image Variation
+*******************************/
+
+/* @deprecated Moved to avatar module */
+.ui.image {
+    &.user-image {
+        &.user-avatar {
+            text-align: center;
+            background: @dustyGray;
+
+            .initials {
+                color: @white;
+            }
+            &.editable {
+                cursor: pointer;
+                animation-fill-mode: both;
+                animation-duration: 0.5s;
+                transition: background-color 0.5s linear;
+
+                .edit-icon {
+                    position: absolute;
+                    color: @white;
+                    display: none;
+                    z-index: 9;
+                    top: 0;
+                }
+            }
+            &:hover {
+                &.editable {
+                    .edit-icon {
+                        display: inline-block;
+                    }
+                    .initials, img {
+                        -webkit-filter: blur(4px);
+                        -moz-filter: blur(4px);
+                        -o-filter: blur(4px);
+                        -ms-filter: blur(4px);
+                        filter: blur(4px);
+                    }
+                }
+            }
+            &.mini {
+                width: @miniWidth;
+                height: @miniWidth;
+
+                .initials {
+                    font-size: 1.5em;
+                    line-height: @miniWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1em;
+                        line-height: @miniWidth;
+                        margin-left: -1px;
+                    }
+                }
+            }
+            &.little {
+                width: @littleWidth;
+                height: @littleWidth;
+
+                .initials {
+                    font-size: 2em;
+                    line-height: @littleWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1.2em;
+                        line-height: @littleWidth;
+                        margin-left: -1px;
+                    }
+                }
+            }
+            &.x60 {
+                width: @x60Width;
+                height: @x60Width;
+
+                .initials {
+                    font-size: 2.4em;
+                    line-height: @x60Width;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1.8em;
+                        line-height: @x60Width;
+                        margin-left: -2px;
+                    }
+                }
+            }
+            &.tiny {
+                width: @tinyWidth;
+                height: @tinyWidth;
+
+                .initials {
+                    font-size: 3em;
+                    line-height: @tinyWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 2.2em;
+                        line-height: @tinyWidth;
+                        margin-left: -4px;
+                    }
+                }
+            }
+            &.small {
+                width: @smallWidth;
+                height: @smallWidth;
+
+                .initials {
+                    font-size: 4em;
+                    line-height: @smallWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 3em;
+                        line-height: @smallWidth;
+                        margin-left: -6px;
+                    }
+                }
+            }
+            &.medium {
+                width: @mediumWidth;
+                height: @mediumWidth;
+
+                .initials {
+                    font-size: 8em;
+                    line-height: @mediumWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 7em;
+                        line-height: @mediumWidth;
+                        margin-left: -23px;
+                    }
+                }
+            }
+            &.large {
+                width: @largeWidth;
+                height: @largeWidth;
+
+                .initials {
+                    font-size: 11em;
+                    line-height: @largeWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 11em;
+                        line-height: @largeWidth;
+                        margin-left: -30px;
+                    }
+                }
+            }
+            &.big {
+                width: @bigWidth;
+                height: @bigWidth;
+
+                .initials {
+                    font-size: 13em;
+                    line-height: @bigWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 13em;
+                        line-height: @bigWidth;
+                        margin-left: -52px;
+                    }
+                }
+            }
+            &.huge {
+                width: @hugeWidth;
+                height: @hugeWidth;
+
+                .initials {
+                    font-size: 16em;
+                    line-height: @hugeWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 15em;
+                        line-height: @hugeWidth;
+                        margin-left: -76px;
+                    }
+                }
+            }
+            &.massive {
+                width: @massiveWidth;
+                height: @massiveWidth;
+
+                .initials {
+                    font-size: 17em;
+                    line-height: @massiveWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 16em;
+                        line-height: @massiveWidth;
+                        margin-left: -97px;
+                    }
+                }
+            }
+            &.spaced-right {
+                margin-right: @userAvatarSpacingRight;
+            }
+            &.spaced-left {
+                margin-left: @userAvatarSpacingLeft;
+            }
+            .custom-label {
+                position: fixed;
+                z-index: 999;
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: 22px;
+                margin-top: -16px;
+            }
+        }
+    }
+    &.app-image {
+        &.app-avatar {
+            text-align: center;
+
+            &.with-app-image {
+                img {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                }
+            }
+            &.bg-image {
+                background-repeat: no-repeat;
+
+                .initials {
+                    color: @white;
+                }
+            }
+            &.default-app-icon {
+                .initials {
+                    color: @primaryColor;
+                }
+            }
+            &.mini {
+                width: @miniWidth;
+                height: @miniWidth;
+
+                .initials {
+                    font-size: 1.5em;
+                    line-height: @miniWidth;
+                }
+                &.bg-image {
+                    background-size: @miniWidth @miniWidth;
+                }
+                
+                &.with-app-image img {
+                    width: @miniWidth;
+                    height: @miniWidth;
+                }
+            }
+            &.little {
+                width: @littleWidth;
+                height: @littleWidth;
+
+                .initials {
+                    font-size: 2em;
+                    line-height: @littleWidth;
+                }
+                &.bg-image {
+                    background-size: @littleWidth @littleWidth;
+                }
+
+                &.with-app-image img {
+                    width: @littleWidth;
+                    height: @littleWidth;
+                }
+            }
+            &.tiny {
+                height: @tinyWidth;
+
+                .initials {
+                    font-size: 3em;
+                    line-height: @tinyWidth;
+                }
+                &.bg-image {
+                    background-size: @tinyWidth @tinyWidth;
+                }
+
+                &.with-app-image img {
+                    width: @tinyWidth;
+                    height: @tinyWidth;
+                }
+            }
+            &.small {
+                height: @smallWidth;
+
+                .initials {
+                    font-size: 4em;
+                    line-height: @smallWidth;
+                }
+                &.bg-image {
+                    background-size: @smallWidth @smallWidth;
+                }
+
+                &.with-app-image img {
+                    width: @smallWidth;
+                    height: @smallWidth;
+                }
+            }
+            &.medium {
+                height: @mediumWidth;
+
+                .initials {
+                    font-size: 8em;
+                    line-height: @mediumWidth;
+                }
+                &.bg-image {
+                    background-size: @mediumWidth @mediumWidth;
+                }
+
+                &.with-app-image img {
+                    width: @mediumWidth;
+                    height: @mediumWidth;
+                }
+            }
+            &.large {
+                height: @largeWidth;
+
+                .initials {
+                    font-size: 11em;
+                    line-height: @largeWidth;
+                }
+                &.bg-image {
+                    background-size: @largeWidth @largeWidth;
+                }
+
+                &.with-app-image img {
+                    width: @largeWidth;
+                    height: @largeWidth;
+                }
+            }
+            &.big {
+                height: @bigWidth;
+
+                .initials {
+                    font-size: 13em;
+                    line-height: @bigWidth;
+                }
+                &.bg-image {
+                    background-size: @bigWidth @bigWidth;
+                }
+
+                &.with-app-image img {
+                    width: @bigWidth;
+                    height: @bigWidth;
+                }
+            }
+            &.huge {
+                height: @hugeWidth;
+
+                .initials {
+                    font-size: 16em;
+                    line-height: @hugeWidth;
+                }
+                &.bg-image {
+                    background-size: @hugeWidth @hugeWidth;
+                }
+
+                &.with-app-image img {
+                    width: @hugeWidth;
+                    height: @hugeWidth;
+                }
+            }
+            &.massive {
+                height: @massiveWidth;
+
+                .initials {
+                    font-size: 17em;
+                    line-height: @massiveWidth;
+                }
+                &.bg-image {
+                    background-size: @massiveWidth @massiveWidth;
+                }
+
+                &.with-app-image img {
+                    width: @massiveWidth;
+                    height: @massiveWidth;
+                }
+            }
+            &.spaced-right {
+                margin-right: @appAvatarSpacingRight;
+            }
+            &.spaced-left {
+                margin-left: @appAvatarSpacingLeft;
+            }
+        }
+    }
+    &.circular.user-image {
+        .wrapper {
+            overflow: hidden;
+            background: @dustyGray;
+            overflow: hidden;
+            display: flex;
+            height: 3.2em;
+            width: 3.2em;
+            justify-content: center;
+            align-items: center;
+
+            i {
+                display: flex;
+                align-items: center;
+                margin: 0px;
+            }
+
+            .edit-icon {
+                margin-left: unset !important;
+            }
+            // remove img once .inner-image class is added in the user portal.
+            img, .inner-image {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: auto;
+                max-width: max-content;
+                left: 0;
+            }
+
+            &.pref-background{
+                background: white;
+            }
+        }
+    }
+}
+
+/*-------------------
+   Animated Avatar
+--------------------*/
+
+.ui.image {
+    &.animated-avatar {
+        .initial {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        &.mini {
+            .initial {
+                font-size: 1.5em;
+            }
+        }
+        
+        &.tiny {
+            .initial {
+                font-size: 3em;
+            }
+        }
+    }
+}

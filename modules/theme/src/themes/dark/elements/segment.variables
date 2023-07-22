@@ -1,0 +1,144 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+ /*******************************
+          Edit Segment
+ *******************************/
+
+@editSegmentBackgroundColor: @athensGray;
+@editSegmentTableValueMaxWidth: 220px;
+@editSegmentMarginTop: 15px;
+
+/*******************************
+          User List Segment
+ *******************************/
+
+/* User Roles List Segment */
+@userRolesListSegmentMarginTop: 10px;
+@userRolesListSegmentHeight: 281px;
+
+/* Assigned Roles List Segment */
+@assignedRolesListSegmentHeight: 298px;
+@assignedRolesListLabelMarginTop: 0.4em;
+@assignedRolesListLabelMarginLeft: 0.2em;
+@assignedRolesListIconMarginLeft: 0.3em;
+@InfoLabelBackgroundColor: #b5b7b7;
+@InfoLabelBorderColor: #b5b7b7;
+
+/*************************************
+    Create Role Summary Variation
+*************************************/
+
+@RoleSummaryUserListBackgroundColor: #f7f7f7;
+@RoleSummaryUserListBackgroundColor: #efefef;
+
+/*************************************
+    Transfer Component Variation
+*************************************/
+
+@TransferComponentSegmentWidth: 100% !important;
+@TransferComponentSegmentheight: 311px !important;
+@TransferComponentSegmentTableFontSize: 12px;
+@TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC;
+@TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
+@TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
+@TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
+@TransferComponentSegmentApplicationAttributeSecondaryColor: #f99467;
+@TransferListSegmentHeight: 210px;
+
+/*************************************
+    User edit section Variation
+*************************************/
+
+@EditRoleSegmentHeaderMarginBottom: 0.4em;
+@EditRoleSegmentHeaderWidth: 75% !important;
+@EditRoleSegmentHeaderButtonMarginBottom: 0.4em !important;
+@EditRoleSegmentFooterHeight: 60px !important;
+@EditRoleSegmentMaxHeight: 490px;
+
+/*************************************
+    Roles listing variation
+*************************************/
+
+@rolesListingLabelMargin: 1em;
+
+/*************************************
+             Variation
+*************************************/
+
+/*-----------------------------------
+            Ordinality
+------------------------------------*/
+
+@secondaryLighterBackground: @alabaster;
+
+/*-----------------------------
+         Jumbotron
+------------------------------*/
+
+@jumbotronInvertedHeadingColor: @white;
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+@emphasizedSegmentBackgroundColor: @lightPageBackground;
+@emphasizedSegmentBorder: @defaultBorderWidth solid @lightBorderColor;
+@emphasizedSegmentBorderRadius: @defaultBorderRadius;
+
+/*-----------------------------
+      Clickable Segment
+------------------------------*/
+
+@clickableSegmentHover: @defaultHoverBackgroundColor;
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+@cookieConsentBannerPosition: fixed;
+@cookieConsentBannerHorizontalSpacing: 16px;
+@cookieConsentBannerBottom: 16px;
+@cookieConsentBannerMaxWidth: 400px;
+@cookieConsentBannerTop: auto;
+@cookieConsentBannerOpacity: 0.95;
+@cookieConsentBannerPadding: 2em;
+@cookieConsentBannerImageMargin: 0 0 1.5em 0;
+@cookieConsentBannerContentMargin: 0 0 1em 0;
+@cookieConsentBannerBorder: @defaultBorderWidth solid transparent;
+@cookieConsentBannerIconColor: @darkGray;
+@cookieConsentBannerZIndex: 999;
+
+// Light Mode
+@cookieConsentBannerColor: inherit;
+@cookieConsentBannerBackground: @background;
+
+// Inverted Mode
+@cookieConsentBannerInvertedColor: @invertedTextColor;
+@cookieConsentBannerInvertedBackground: @invertedBackground;
+@cookieConsentBannerInvertedIconColor: @white;
+@cookieConsentBannerInvertedBorder: @defaultBorderWidth solid transparent;
+
+/*-------------------------------
+        Image Preview
+--------------------------------*/
+
+@imagePreviewOutline: @defaultBorderColor dashed 2px;
+@imagePreviewHeight: 120px;
+@imagePreviewBorderRadius: @defaultBorderRadius;

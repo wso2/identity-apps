@@ -1,0 +1,82 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+ 
+/*******************************
+            List
+*******************************/
+
+/*------------------------
+   Settings section list
+--------------------------*/
+
+/* List Padding */
+@settingsSectionInnerListHeaderPaddingLeft: 37px;
+
+/*------------------------
+   User roles list
+--------------------------*/
+
+/* List Padding */
+@userRolesListPadding: 0.5em 0.5em;
+
+/* List Margin */
+@userRolesListMargin: 0em;
+
+/* List Item Font Color */
+@userRolesListItemFontColor: #666666;
+
+/* List Item Icon Padding */
+@userRolesListIconPaddingRight: 2px;
+
+/* List Item Background Color */
+@userRolesListItemBackgroundColorOnHover: #f7f7f7;
+
+/* List Item Border Radius */
+@userRolesListItemBorderRadius: 0.5em;
+
+/* Role List Icon wrapper */
+@roleListWrapperColor: #e8e8e8;
+
+/*------------------------
+   roles list
+--------------------------*/
+
+@userRoleAvatarSize: 41px;
+
+/*------------------------
+   Dynamic Fields
+--------------------------*/
+
+@borderRadius: @defaultBorderRadius;
+@raisedShadow: 0px 2px 3px 0px @borderColor;
+@menuBorderWidth: 1px;
+@menuBorderColor: @borderColor;
+@menuBorder: @menuBorderWidth solid @menuBorderColor;
+@menuBoxShadow: @raisedShadow;
+@menuBorderRadius: @borderRadius;
+@dynamicFieldButtons: 108px;
+
+/*------------------------
+      Resource List
+--------------------------*/
+
+@resourceListItemBorderColor: @lightBorderColor;
+
+@resourceListFillVariationOuterBorder: @defaultBorderWidth solid @resourceListItemBorderColor;
+@resourceListFillVariationItemPadding: @veryRelaxedItemVerticalPadding 0.9em !important;

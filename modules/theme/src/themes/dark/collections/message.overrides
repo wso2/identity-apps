@@ -1,0 +1,131 @@
+/*******************************
+       Message Overrides
+*******************************/
+
+/*-------------------
+    Announcement
+--------------------*/
+
+.ui.message {
+    &.announcement {
+        border-radius: 0;
+        box-shadow: none;
+        margin-bottom: 0;
+        padding: @announcementPadding;
+        font-weight: 400;
+
+        &.primary {
+            color: @white;
+            background: @primaryColor;
+        }
+        &.secondary {
+            color: @white;
+            background: @secondaryColor;
+        }
+    }
+
+    &.feature-announcement { 
+        margin-top: 0; 
+        text-align: center;
+        border-bottom: none;
+        background: #d7e2de;
+        border-radius: 0;
+    }
+
+    &.with-close-button {
+        padding: 1em 2em 1em 1.5em;
+    }
+
+    &.border-less {
+        border: none !important;
+        box-shadow: none;
+    }
+
+    .close.icon {
+        top: 1em;
+        right: 1em;
+    }
+
+    .message-content-flex {
+        display: flex;
+    }
+}
+
+/*------------------------
+    TOTP
+-------------------------*/
+
+.ui.message {
+    &.totp-tooltip {
+        box-shadow: 0 0 0 1px @tooltipBachGroundoxColor inset;
+        background-color: @tooltipBachGroundoxColor;
+        color: @tooltipColor;
+        text-align: left;
+    }
+    &.totp-error-message {
+        box-shadow: 0 0 0 1px #e0b4b4 inset;
+        background-color: @tooltipErrorBachGroundoxColor;
+        color: @tooltipErrorColor;
+        text-align: center;
+        margin-right: 2rem;
+        margin-left: 2rem;
+    }
+}
+
+/*------------------------
+    Message With Icon
+-------------------------*/
+
+.ui.message {
+    &.with-inline-icon {
+        >.icon:not(.close) {
+            font-size: 2em;
+        }
+    }
+}
+
+/*---------------------------
+    Message Box Overrides
+---------------------------*/
+
+.ui.message {
+    box-shadow: none !important;
+    color: black !important;
+
+    h5.ui.header {
+        font-weight: 550 !important;
+        color: black !important;
+    }
+}
+
+.ui.info.message {
+    background-color: @infoMessageBackgroundColor !important;
+
+    i.info.circle.icon {
+        color: @infoMessageIconColor !important;
+    }
+}
+
+.ui.error.message {
+    background-color: @errorMessageBackgroundColor !important;
+
+    i.times.circle.icon {
+        color: @errorMessageIconColor !important;
+    }
+}
+
+.ui.success.message {
+    background-color: @successMessageBackgroundColor !important;
+
+    i.check.circle.icon {
+        color: @successMessageIconColor !important;
+    }
+}
+
+.ui.warning.message {
+    background-color: @warningMessageBackgroundColor !important;
+
+    i.warning.circle.icon {
+        color: @warningMessageIconColor !important;
+    }
+}

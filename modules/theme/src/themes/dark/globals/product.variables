@@ -1,0 +1,227 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*-------------------
+    Generic Icon
+--------------------*/
+
+@iconWrapperBgColor: @lightGray;
+@iconWrapperBorderColor: @darkGray;
+@iconWrapperBorderWidth: 1px;
+@iconWrapperPadding: 5px;
+@iconWrapperVeryPadding: 10px;
+@iconDefaultBgHoverColor: @black;
+@iconWrapperTwoTonePrimaryColor: @primaryColor;
+@iconWrapperTwoToneSecondaryColor: @secondaryColor;
+@iconWrapperColoredPrimaryColor: @primaryColor;
+@iconWrapperSpacingRight: 8px;
+@iconWrapperSpacingLeft: 8px;
+
+@genericIconRoundedHoverPadding: 6px;
+@genericIconSquareHoverPadding: 6px;
+@genericIconCircularHoverPadding: 10px;
+@genericIconCircularHoverWidth: fit-content;
+@genericIconCircularHoverMargin: 0 auto;
+@genericIconInvertedBackgroundColor: @black;
+
+/*-------------------
+   Advanced search
+--------------------*/
+
+@advancedSearchInputBorder: @defaultBorderWidth solid transparent;
+@advancedSearchInputBorderRadius: @defaultBorderRadius;
+@advancedSearchActiveInputBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@advancedSearchActiveInputBorderBottom: none;
+
+@advancedSearchHintBackground: @lightInputBackground;
+@advancedSearchHintBorder: none;
+@advancedSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
+@advancedSearchOptionsBorder: 1px solid rgba(0,0,0,0.2);
+@advancedSearchOptionsHeaderBorderBottom: 1px solid #dededf;
+@advancedSearchDropdownMaxWidth: 520px;
+
+@advancedSearchWhiteInputBackgroundColor: @white;
+@advancedSearchWhiteHintBackground: @white;
+@advancedSearchWhiteInputBorder: @defaultBorderWidth solid @defaultBorderColor;
+
+@advancedSearchActiveInputBorder: @defaultBorderWidth solid @borderColor;
+@advancedSearchActiveBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+
+@advancedSearchQueryHintPadding: 5px 16px;
+@advancedSearchQueryHintBorderBottomRightRadius: @defaultBorderRadius;
+@advancedSearchQueryHintBorderBottomLeftRadius: @defaultBorderRadius;
+@advancedSearchQueryHintFontSize: 12px;
+@advancedSearchActiveSearchQueryBorder: 1px solid @borderColor;
+@advancedSearchActiveSearchQueryBorderTop: @defaultBorderWidth solid @lightBorderColor;
+@advancedSearchActiveSearchQueryWidth: @advancedSearchWidth;
+@advancedSearchQueryHintZIndex: 9999;
+
+@advancedSearchInputBackgroundColor: @lightInputBackground;
+
+@advancedSearchAddonButtonBorder: none;
+@advancedSearchAddonButtonBackgroundColor: @advancedSearchInputBackgroundColor;
+@advancedSearchAddonButtonActiveBackgroundColor: @advancedSearchInputBackgroundColor;
+
+// Mobile Responsive Variables
+@mobileAdvancedSearchActiveSearchQueryWidth: 274px;
+
+/*-------------------
+       Alert
+--------------------*/
+
+@alertBackgroundColor: @white;
+@alertWidth: 420px;
+@alertMessageMaxWidth: 350px;
+@alertBoxShadow: @floatingShadow;
+
+/*-------------------
+        Steps
+--------------------*/
+
+@stepIconSize: 40px;
+@stepCheckSize: 20px;
+@stepIconDefaultBgColor: @dustyGray;
+@stepIconCheckedBgColor: @green;
+@stepIconCheckedTick: @white;
+@stepDefaultFontColor: @nobel;
+@stepFontSize: 0.9em;
+@stepCompleteFontColor: @green;
+@stepIconCompleteBgColor: @green;
+@stepActiveFontColor: @primaryColor;
+@stepIconActiveBgColor: @primaryColor;
+@stepHorizontalSpacing: 2em;
+@stepsHeaderFontColor: @dustyGray;
+@stepsHeaderFontSize: 0.9em;
+@stepTrailTransition: all .5s ease-in;;
+@stepMinWidth: 110px;
+@stepCheckPositionBottom: -5px;
+@stepCheckPositionRight: -6px;
+@stepCheckBorderRadius: 20px;
+@stepCheckTickRotation: rotate(45deg);
+@stepCheckTickMarginTop: 3px;
+@stepCheckTickMarginLeft: 7px;
+
+/*-------------------
+      Sort List
+--------------------*/
+
+@borderRadius: @defaultBorderRadius;
+@raisedShadow: 0px 2px 3px 0px @borderColor;
+@menuBorderWidth: 1px;
+@menuBorderColor: @borderColor;
+@menuBorder: @menuBorderWidth solid @menuBorderColor;
+@menuBoxShadow: @raisedShadow;
+@menuBorderRadius: @borderRadius;
+
+/*-----------------------------
+      Product Branding
+------------------------------*/
+
+@productLogoHeight: 70px;
+@productLogoVerticalAlign: middle;
+@productLogoWidth: 60px;
+@productLogoMargin: -3px 0 0 0;
+
+@productTitleTextTransform: uppercase;
+@productTitleAppNameTextTransform: none;
+@productTitleFontWeight: 400;
+@productTitleFontSize: 1.2rem;
+@productTitleAppNameMargin: 0 0 0 5px;
+@productTitleAppNameFontSize: inherit;
+@productTitleAppNameFontWeight: 300;
+@productTitleAppNameColor: inherit;
+
+@productVersionLabelPadding: 3px 6px;
+@productVersionLabelFontSize: 0.6em;
+@productVersionLabelFontWeight: 600;
+@productVersionLabelAbsoluteTop: -5px;
+@productVersionLabelAbsoluteRight: 15px;
+
+/*-----------------------------
+      Empty Placeholder
+------------------------------*/
+
+@emptyPlaceholderActionMargin: 15px 0 0 0;
+@emptyPlaceholderImageMarginBottom: 25px;
+@emptyPlaceholderSubtitleMarginTop: 25px;
+@emptyPlaceholderActionMarginTop: 25px;
+@listPlaceholderMarginRight: 150px;
+
+/*-----------------------------
+        Pagination Bar
+------------------------------*/
+
+// Same color as @listPaginationItemBorderColor in menu.
+@paginationBarItemLimitLabelColor: lighten(@textColor, 20);
+
+// Same value as @listPaginationFontSize in menu.
+@paginationBarItemLimitDropdownFontSize: 0.8em;
+
+/*-----------------------------
+        List Layout
+------------------------------*/
+
+@listLayoutActionPanelBackgroundColor: @lightPageBackground;
+@listLayoutActionPanelMarginRight: 0;
+@listLayoutActionPanelMarginLeft: 0;
+@listLayoutActionPanelBorder: @defaultBorderWidth solid @lightBorderColor;
+@listLayoutActionPanelBorderRadius: @defaultBorderRadius;
+@listLayoutActionPanelBorderRadius: @defaultBorderRadius;
+@listLayoutActionPanelPadding: 8px 0;
+
+@listLayoutActionPanelDropdownBackground: @lightInputBackground;
+@listLayoutActionPanelDropdownBorder: none;
+@listLayoutActionPanelDropdownAddonBackground: @lightInputBackground;
+
+@listLayoutActionPanelDropdownWithSortBorder: @listLayoutActionPanelDropdownBorder;
+@listLayoutActionPanelDropdownWithSortBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@listLayoutActionPanelDropdownWithSortAddonBorderRadius: 0 0 @defaultBorderRadius @defaultBorderRadius;
+
+@listLayoutActionPanelTriggerButtonBackground: @lightInputBackground;
+@listLayoutActionPanelTriggerButtonBorder: none;
+@listLayoutActionPanelTriggerButtonBoxShadow: none;
+
+/*-------------------------------
+          Code Editor
+--------------------------------*/
+
+@codeEditorOneLinerPadding: 1em;
+@codeEditorActionWidth: 25px;
+@codeEditorActionHeight: 25px;
+@codeEditorActionMarginBottom: 8px;
+
+@codeEditorActionsPaddingRight: 15px;
+@codeEditorActionsPaddingTop: 10px;
+
+@codeEditorFullScreenWrapperHeight: 90vh;
+
+/*-------------------------------
+        Inline Code Block
+--------------------------------*/
+
+@inlineCodeBlockColor: #5c666f;
+@inlineCodeBlockBgColor: #eef0f1;
+@inlineCodeBlockBorder: 1px solid #c7ced1;
+
+/*-------------------------------
+        Preloader
+--------------------------------*/
+
+@preLoaderWrapperBackgroundColor: @white;
+@preLoaderWrapperBackgroundImage: none;
