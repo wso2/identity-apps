@@ -1,0 +1,759 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*******************************
+    Edit Segment Variation
+*******************************/
+
+.ui.segment {
+    &.edit-segment {
+        background: @editSegmentBackgroundColor;
+        box-shadow: none;
+        border: none;
+
+        &.top-margin {
+            margin-top: @editSegmentMarginTop;
+        }
+        .edit-segment-table {
+            .values-cell {
+                max-width: @editSegmentTableValueMaxWidth;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                .values-list {
+                    .item {
+                         max-width: @editSegmentTableValueMaxWidth;
+                         overflow: hidden;
+                         text-overflow: ellipsis;
+                         white-space: nowrap
+                     }
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+     Danger Zone Variation
+*******************************/
+
+.ui.segments {
+    &.danger-zone-group {
+        box-shadow: none;
+        border: 1px solid @red;
+        border-radius: @defaultBorderRadius;
+
+        .group-header {
+            font-weight: 500;
+        }
+        .ui.segment {
+            &.danger-zone {
+                border: none;
+                border-bottom: 1px solid @red;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}
+
+.ui.segment {
+    &.danger-zone {
+        background: transparent;
+        box-shadow: none;
+        border: 1px solid @red;
+        border-radius: @defaultBorderRadius;
+
+        .sub-header {
+            margin-top: 5px;
+        }
+    }
+}
+
+/*******************************
+     User List Variation
+*******************************/
+
+.ui.segment {
+    &.user-role-list-segment {
+        margin-top: @userRolesListSegmentMarginTop;
+        height: @userRolesListSegmentHeight;
+        overflow: auto;
+
+        .user-role-list-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-role-list-item i{
+            margin-left: auto;
+        }
+
+        .user-role-list-item .user-image {
+            background-color: #ccc;
+            padding: 0px !important;
+        }
+    }
+
+    &.user-assigned-roles-segment {
+        height: @assignedRolesListSegmentHeight;
+        overflow: auto;
+
+        .ui.label {
+            margin-top: @assignedRolesListLabelMarginTop;
+            margin-left: @assignedRolesListLabelMarginLeft;
+            display: inline-flex;
+            align-items: center;
+            vertical-align: top;
+
+            .user-avatar {
+                margin: 0px 5px 0px 0px !important;
+            }
+
+            &.info-label {
+                background-color: @InfoLabelBackgroundColor !important;
+                border-color: @InfoLabelBorderColor !important;
+                color: white;
+                margin-left: @assignedRolesListLabelMarginLeft;
+
+                i {
+                    margin-right: auto;
+                    margin-left: @assignedRolesListIconMarginLeft;
+                }
+            }
+        }
+    }
+
+    &.user-roles-segment {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border: none;
+        box-shadow: none;
+        overflow: auto;
+
+        .ui.label {
+            margin-top: @assignedRolesListLabelMarginTop;
+            margin-left: @assignedRolesListLabelMarginLeft;
+            background-color: #dcdcdc;
+
+            &.info-label {
+                background-color: @InfoLabelBackgroundColor !important;
+                border-color: @InfoLabelBorderColor !important;
+                color: white;
+                margin-left: @assignedRolesListLabelMarginLeft;
+
+                i {
+                    margin-right: auto;
+                    margin-left: @assignedRolesListIconMarginLeft;
+                }
+            }
+        }
+    }
+
+    &.user-roles-segment-header {
+        padding: 0;
+        border-bottom: #dededf solid 0.1em !important;
+
+        i {
+            padding-bottom: 1.5em;
+            padding-top: 0.2em;
+            color: #9c9c9c !important;
+
+            &:hover {
+                color: @primaryColor !important;
+            }
+        }
+    }
+}
+
+/*************************************
+    Create Role Summary Variation
+*************************************/
+
+.role-summary-user {
+    display: inline-flex;
+    margin: 0.2em;
+    background-color: #f7f7f7;
+    border-radius: 100px;
+    align-items: center;
+    padding: 0 1em 0 0;
+    border: 0.5px solid @RoleSummaryUserListBackgroundColor;
+    vertical-align: top;
+
+    .circular {
+        margin-right: 0.5em !important;
+    }
+}
+
+/*******************************
+     Transfer list Variation
+*******************************/
+
+.ui.segment {
+    &.transfer-segment {
+        margin-top: @userRolesListSegmentMarginTop;
+        height: @userRolesListSegmentHeight;
+        width: @TransferComponentSegmentWidth;
+    }
+
+    &.transfer-list-segment {
+        overflow: auto;
+        border: none !important;
+        box-shadow: none;
+        padding: 0;
+        height: @TransferListSegmentHeight;
+
+        .ui.table {
+            font-size: @TransferComponentSegmentTableFontSize;
+            border-left: none;
+            border-right: none;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .user-role-list-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-role-list-item i{
+            margin-left: auto;
+        }
+
+        .user-role-list-item .user-image {
+            background-color: #ccc;
+            padding: 0px !important;
+        }
+
+        .ui.label {
+            color: white;
+
+            &.application-label {
+                background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+                border-color: @TransferComponentSegmentApplicationLabelBorderColor;
+
+            }
+
+            &.internal-label {
+                background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+                border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            }
+        }
+    }
+}
+
+/*******************************
+     Roles Variation
+*******************************/
+
+.roles-list{
+    .ui.label {
+        color: white;
+
+        &.application-label {
+            background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+            border-color: @TransferComponentSegmentApplicationLabelBorderColor;
+            margin-right: @rolesListingLabelMargin;
+        }
+
+        &.internal-label {
+            background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+            border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            margin-right: @rolesListingLabelMargin;
+        }
+
+        &.group-label {
+            margin-right: @rolesListingLabelMargin;
+        }
+
+        &.primary-label {
+            margin-right: @rolesListingLabelMargin;
+        }
+    }
+}
+
+.create-role-wizard {
+    .step-icon {
+        i {
+            margin: 0 !important;
+        }
+    }
+}
+
+
+/***********************************
+     User Edit Section Variation
+************************************/
+
+.ui.segment {
+    &.user-role-edit-header-segment {
+        &.attributes {
+            max-height: 500px;
+            padding: 0 0 20px 0;
+            overflow-y: scroll;
+
+            .transfer-list-sub-content {
+                color: @TransferComponentSegmentApplicationAttributeSecondaryColor;
+            }
+
+            thead tr:first-child {
+
+                th {
+                    position: sticky !important;
+                    position: -webkit-sticky !important;
+                    top: 0;
+                    z-index: 2;
+                }
+            }
+        }
+        .ui.input {
+            margin-bottom: @EditRoleSegmentHeaderMarginBottom;
+            width: @EditRoleSegmentHeaderWidth;
+        }
+
+        i {
+            margin-right: auto;
+        }
+
+        .ui.button {
+            margin-bottom: @EditRoleSegmentHeaderButtonMarginBottom;
+        }
+
+        .ui.label {
+            color: white;
+
+            &.application-label {
+                background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+                border-color: @TransferComponentSegmentApplicationLabelBorderColor;
+
+            }
+
+            &.internal-label {
+                background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+                border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            }
+        }
+    }
+
+    &.user-role-edit-footer-segment {
+        height: @EditRoleSegmentFooterHeight;
+    }
+}
+
+.attributes {
+
+    .ui.input {
+        margin: 0 !important;
+        width: @EditRoleSegmentHeaderWidth;
+    }
+
+    .ui-hint {
+        margin: 0 5px!important;
+    }
+}
+
+/*******************************************
+     OIDC Scope Attribute List Variation
+*******************************************/
+
+.ui.segment {
+    &.oidc-scopes-attributes-list-segment {
+        max-height: @EditRoleSegmentMaxHeight;
+        overflow: auto;
+
+        .ui.input {
+            margin-bottom: @EditRoleSegmentHeaderMarginBottom;
+            width: @EditRoleSegmentHeaderWidth;
+        }
+
+        .ui.table {
+            border-left: none;
+            border-right: none;
+        }
+
+        i {
+            margin-right: auto;
+        }
+
+        .ui.button {
+            margin-bottom: @EditRoleSegmentHeaderButtonMarginBottom;
+        }
+    }
+}
+
+/***********************************
+  Secondary Segment with lighter BG
+************************************/
+
+.ui.segment {
+    &.secondary {
+        &.lighter-bg {
+            background: @secondaryLighterBackground;
+        }
+    }
+}
+
+/***********************************
+        Certificates Segment
+************************************/
+
+.ui.segment {
+    &.certificate {
+        border: none;
+        position: relative;
+        padding: 1.5em 5em;
+        border-radius: 0;
+        width: 100%;
+
+        .ui.header{
+            margin-top: 0;
+        }
+
+        .certificate-field, .certificate-version {
+            margin-bottom: 0;
+            font-size: 0.8em;
+            color: @doveGray;
+
+            span {
+                &.valid-till-date {
+                    margin-left: 24px;
+                }
+
+                &.valid-before-date {
+                    margin-left: 15px;
+                }
+
+                color: @black;
+            }
+        }
+
+        .certificate-version {
+            position: absolute;
+            bottom: 1.5em;
+        }
+
+        .certificate-badge {
+            text-align: right;
+            margin-top: 10px;
+            position: relative;
+            right: -3.5em;
+        }
+
+        .ui.divider {
+            margin: 0.1em 0;
+        }
+    }
+
+    .certificate-ribbon {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+/***********************************
+        Drag and drop zone
+************************************/
+
+.ui.placeholder.segment{
+    &.drop-zone {
+        .description{
+            color: @nobel;
+        }
+
+        &.drag-over {
+            background: @lightGray;
+        }
+    }
+
+    .certificate-upload-placeholder {
+        text-align: center;
+        margin-bottom: 1em;
+
+        svg {
+            filter: opacity(0.3);
+        }
+    }
+
+    .file-name {
+        font-size: 1em;
+    }
+}
+
+/*-----------------------------
+         Jumbotron
+------------------------------*/
+
+.ui.segment {
+    &.jumbotron {
+        &.matched-padding {
+            padding: @pageLayoutContentPadding;
+        }
+
+        &.background {
+            &-transparent {
+                background-color: transparent;
+            }
+            &-white {
+                background-color: @white;
+            }
+            &-primary {
+                background-color: @primaryColor;
+            }
+            &-secondary {
+                background-color: @secondaryColor;
+            }
+            &-accent1 {
+                background-color: @accentColor1;
+            }
+            &-accent2 {
+                background-color: @accentColor2;
+            }
+            &-accent3 {
+                background-color: @accentColor3;
+            }
+        }
+        &.bordered {
+            &-default {
+                border: @defaultBorderWidth solid @defaultBorderColor;
+            }
+            &-bottom {
+                border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+            }
+            &-top {
+                border-top: @defaultBorderWidth solid @defaultBorderColor;
+            }
+        }
+        &.border-radius {
+            &-none {
+                border-radius: 0;
+            }
+            &-default {
+                border-radius: @defaultBorderRadius;
+            }
+        }
+        &.inverted {
+            .jumbotron-heading {
+                color: @jumbotronInvertedHeadingColor;
+            }
+        }
+    }
+}
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+.ui.segment {
+    &.emphasized {
+        background: @emphasizedSegmentBackgroundColor;
+        border: @emphasizedSegmentBorder;
+        border-radius: @emphasizedSegmentBorderRadius;
+
+        &.placeholder-container {
+            border: none;
+        }
+    }
+}
+
+/*-----------------------------
+      Protocols Segments
+------------------------------*/
+
+.ui.segment {
+    &.protocol-cards {
+        cursor: pointer;
+
+        &:hover{
+            transform: scale(1.02);
+        }
+
+        &.active {
+            border-color: @primaryColor;
+        }
+    }
+}
+
+/*-----------------------------
+      ToTP Segment
+------------------------------*/
+
+.ui.segment {
+    &.totp {
+        text-align: center;
+        .success-content {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+/*-----------------------------
+      Clickable Segment
+------------------------------*/
+
+.ui.segment {
+    &.clickable {
+        cursor: pointer;
+
+        &:hover {
+            background-color: @clickableSegmentHover;
+        }
+
+        .header {
+            margin-bottom: 5px;
+        }
+
+        .theme-icon.spaced-right {
+            margin-right: 15px;
+        }
+    }
+}
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+.ui.segment {
+    &.cookie-consent-banner {
+        position: @cookieConsentBannerPosition;
+        bottom: @cookieConsentBannerBottom;
+        max-width: @cookieConsentBannerMaxWidth;
+        top: @cookieConsentBannerTop;
+        background: @cookieConsentBannerBackground;
+        opacity: @cookieConsentBannerOpacity;
+        color: @cookieConsentBannerColor;
+        padding: @cookieConsentBannerPadding;
+        border: @cookieConsentBannerBorder;
+        z-index: @cookieConsentBannerZIndex;
+
+        &.aligned {
+            &-left {
+                left: @cookieConsentBannerHorizontalSpacing;
+                right: auto;
+            }
+            &-right {
+                right: @cookieConsentBannerHorizontalSpacing;
+                left: auto;
+            }
+        }
+
+        .banner-image {
+            display: flex;
+            margin: @cookieConsentBannerImageMargin;
+
+            .cookie-icon {
+                svg {
+                    path {
+                        fill: @cookieConsentBannerIconColor;
+                    }
+                }
+            }
+        }
+
+        .banner-content {
+            margin: @cookieConsentBannerContentMargin;
+        }
+
+        &.inverted {
+            color: @cookieConsentBannerInvertedColor;
+            background: @cookieConsentBannerInvertedBackground;
+            border: @cookieConsentBannerInvertedBorder;
+
+            .banner-image {
+                .cookie-icon {
+                    svg {
+                        path {
+                            fill: @cookieConsentBannerInvertedIconColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 485px) {
+    .ui.segment {
+        &.cookie-consent-banner {
+            left: auto !important;
+            right: auto !important;
+            margin: 10px;
+        }
+    }
+}
+
+/*-------------------------------
+      Basic Segment Group
+--------------------------------*/
+
+.ui.segments {
+    &.basic {
+        border: none;
+        box-shadow: none;
+
+        > .ui.segment {
+            padding: 0;
+            border: none;
+        }
+    }
+}
+
+/*-------------------------------
+         Image Preview
+--------------------------------*/
+
+.ui.segment {
+    &.image-preview {
+        outline: @imagePreviewOutline;
+        height: @imagePreviewHeight;
+        display: flex;
+        align-items: center;
+        border-radius: @imagePreviewBorderRadius;
+        justify-content: center;
+
+        &.relaxed {
+            padding-left: 5em;
+            padding-right: 5em;
+        }
+    }
+}
+
+/*-------------------------------
+        Sticky Bar
+--------------------------------*/
+
+.ui.segment {
+    &.sticky-bar {
+        border: none;
+        box-shadow: none;
+        position: fixed;
+        z-index: 1000;
+        bottom: 36px;
+        border-top: 1px solid @borderColor;
+        background-color: @white;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        border-radius: 0;
+    }
+}

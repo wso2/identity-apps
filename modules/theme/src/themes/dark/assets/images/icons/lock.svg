@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg width="340" height="480" viewBox="0 0 340 480" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon"
+     id="lock">
+    <path d="M273.334 266.031C255.52 266.031 241.079 251.705 241.079 234.034V134.619C241.079 95.6762 209.141 63.9954 169.885 63.9954C130.628 63.9954 98.69 95.6772 98.69 134.619V234.034C98.69 251.705 84.2485 266.031 66.4349 266.031C48.6214 266.031 34.1799 251.705 34.1799 234.034V134.619C34.1799 60.3906 95.0572 0 169.886 0C244.714 0 305.59 60.3897 305.59 134.617V234.033C305.589 251.705 291.147 266.031 273.334 266.031Z"
+          fill="#E5E5E5"/>
+    <g opacity="0.1">
+        <path opacity="0.1"
+              d="M66.4349 266.031C84.2485 266.031 98.69 251.705 98.69 234.034V162.764H34.1799V234.034C34.1799 251.705 48.6214 266.031 66.4349 266.031Z"
+              fill="black"/>
+        <path opacity="0.1"
+              d="M241.08 162.763V234.033C241.08 251.704 255.521 266.03 273.335 266.03C291.148 266.03 305.59 251.704 305.59 234.033V162.763H241.08Z"
+              fill="black"/>
+    </g>
+    <path d="M309.923 194.761H30.0773C13.4659 194.761 0 208.12 0 224.597V450.164C0 466.642 13.4659 480 30.0773 480H309.923C326.534 480 340 466.642 340 450.164V224.596C340 208.119 326.533 194.761 309.923 194.761Z"
+          fill="#FFD782"/>
+    <path opacity="0.2"
+          d="M206.931 316.048C206.931 295.745 190.339 279.286 169.872 279.286C149.405 279.286 132.813 295.745 132.813 316.048C132.813 327.785 138.364 338.23 146.998 344.96V414.895H192.746V344.96C201.379 338.23 206.931 327.785 206.931 316.048Z"
+          fill="black"/>
+</svg>

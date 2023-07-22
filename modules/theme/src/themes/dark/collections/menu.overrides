@@ -1,0 +1,1013 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.menu {
+    &.app-header, &.app-footer {
+        .item {
+            &:hover, &:active, &:focus, &:visited {
+                background: transparent;
+            }
+        }
+    }
+    &.app-header {
+        display: @appHeaderDisplay;
+        background: @appHeaderBackground;
+        height: @appHeaderHeight;
+        box-shadow: @appHeaderBoxShadow;
+        border-bottom: @appHeaderBorderBottom;
+
+        .app-header-container {
+            background: @appHeaderContainerBackground;
+
+            .icon.bars {
+                color: @appHeaderHamburgerIconColor;
+            }
+            display: flex;
+            justify-content: space-between;
+
+            .bars-container {
+                height: 100%;
+            }
+
+            .brand-container {
+                padding: 0;
+                height: 100%;
+            }
+        }
+        &.has-announcement {
+            display: block;
+            height: auto;
+        }
+        &.has-feature-announcement {
+            display: block; 
+            height: auto;
+            border-bottom: 0px;
+        }
+        .header-extensions {
+            .header-link {
+                .header-link-inner {
+                    background: @appHeaderExtensionLinkBackground;
+                    padding: 10px 15px;
+                    border-radius: @defaultBorderRadius;
+                    color: @appHeaderExtensionLinkColor;
+
+                    &:hover {
+                        cursor: pointer;
+                        background: @appHeaderExtensionLinkHoverBackground;
+                    }
+                }
+            }
+            .item.secondary-panel-item {
+                background: @appHeaderPortalSwitchExtensionBackgroundColor;
+                color: @appHeaderPortalSwitchExtensionColor;
+
+                &.active {
+                    color: @appHeaderPortalSwitchExtensionActiveColor;
+                    border-bottom: @appHeaderPortalSwitchExtensionActiveBorderBottom;
+                }
+            }
+            &.right {
+                justify-content: flex-end;
+
+                >.item {
+                    &:not(:last-child) {
+                        padding-left: @appHeaderExtensionItemPaddingLeft;
+                        padding-right: @appHeaderExtensionItemPaddingRight;
+                    }
+
+                    >.item {
+                        padding: @appHeaderExtensionInnerItemPadding;
+                    }
+
+                    .theme-icon {
+                        i {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        // Common styles for header drop-downs.
+        .header-dropdown {
+            .header-dropdown-menu {
+                padding: @userDropdownPadding;
+
+                .header-dropdown-item {
+                    border: none;
+                    margin: @userDropdownLinkMargin;
+                    padding: 1.2em 1em!important;
+                    border-radius: @defaultBorderRadius !important;
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+
+                    .header-dropdown-item-inner {
+                        padding: 0;
+
+                        &.flex {
+                            display: flex !important;
+                        }
+
+                        .header {
+                            font-weight: 400;
+                        }
+                        .meta {
+                            color: @nobel;
+                        }
+                    }
+                }
+            }
+
+            // App switch dropdown overrides.
+            &.app-switch-dropdown {
+                .header-dropdown-menu {
+                    .header-dropdown-item {
+                        &:first-child {
+                            margin-top: 0 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tenant-dropdown-wrapper {
+                            padding-left: 0;
+                            .tenant-dropdown {
+                                border: 1px solid @defaultBorderColor;
+                                border-radius: @tenantDropdownTriggerBorderRadius !important;
+                                color: @tenantDropdownTriggerTextColor;
+                                padding: 10px 15px;
+
+                                &:hover, &:active, &:focus {
+                                    color: darken(@tenantDropdownTriggerTextColor, 10);
+
+                                    .tenant-dropdown-trigger {
+                                        .theme-icon {
+                                            svg {
+                                                > path {
+                                                    fill: darken(@tenantDropdownTriggerTextColor, 10);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                &:hover {
+                                    background: @tenantDropdownTriggerHoverBackground;
+                                }
+                                &.active {
+                                    background: @tenantDropdownTriggerActiveBackground;
+                                }
+
+                                .tenant-dropdown-trigger {
+                                    display: contents;
+
+                                    .tenant-dropdown-trigger-display-name {
+                                        max-width: @tenantDropdownTriggerDisplayNameMaxWidth;
+                                        line-height: initial;
+                                        margin-top: -3px;
+                                    }
+
+                                    .theme-icon {
+                                        svg {
+                                            > path {
+                                                fill: @tenantDropdownTriggerTextColor;
+                                            }
+                                        }
+                                    }
+                                }
+                                .ui.items {
+                                    margin: 0;
+                                }
+                            }
+                        }
+                        .tenant-dropdown {
+                            .divider {
+                                margin: 0;
+                            }
+                            .tenant-item-wrapper {
+                                .item {
+                                    display: flex!important;
+                                    padding: 12px 8px;
+                                    border: 1px solid @defaultBorderColor;
+                                    margin-bottom: 8px;
+                                }
+                                .associated-tenant-icon {
+                                    .icon {
+                                        width: 24px;
+                                    }
+                                }
+                                .tenant-description {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    cursor: pointer;
+
+                                    .manage-icon-wrapper {
+                                        display: flex;
+                                        align-items: center;
+
+                                        .manage-tenant-icon {
+                                            padding: 4px;
+                                            border: 1px solid @defaultBorderColor;
+                                            display: flex;
+                                            border-radius: 4px;
+                                        }
+
+                                        .manage-tenant-icon:hover {
+                                            background-color: darken(@defaultBorderColor, 0.08);
+                                        }
+                                    }
+                                }
+                                .spaced-right {
+                                    padding-right: 5px;
+                                }
+                            }
+                            .menu {
+                                min-width: @tenantDropdownMinWidth;
+                                padding: @tenantDropdownPadding;
+
+                                .header {
+
+                                    .content{
+                                        padding-left: 15px;
+
+                                        .description {
+                                            margin-top: 0;
+
+                                            .name {
+                                                min-width: 100px;
+                                            }
+                                            .default-button {
+                                                min-width: 60px;
+                                                padding: 0.4em 1em;
+                                                font-size: 0.8em;
+
+                                                &.active {
+                                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonBorderColor inset!important;
+                                                    background-color: @tenantDropdownDefaultButtonBackground!important;
+                                                    &:hover {
+                                                        box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonHoverBorderColor inset!important;
+                                                    }
+                                                }
+                                                &.disabled {
+                                                    box-shadow: 0 0 0 1px @tenantDropdownDefaultLabelBorderColor inset!important;
+                                                    background-color: @tenantDropdownDefaultLabelBackground!important;
+                                                    color: @black!important;
+                                                    &.loading {
+                                                        color: transparent!important;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .header-with-margin {
+                                    margin-bottom: 8px;
+                                }
+
+                                .search-bar {
+                                    padding: 12px 0;
+                                    margin: 0;
+
+                                    &.tenant {
+                                        padding: 12px 15px !important;
+                                    }
+                                }
+
+                                .tenant-pagination {
+                                    display: flex;
+                                    justify-content: flex-end;
+
+                                    &.organizations {
+                                        margin-top: 1em;
+                                    }
+
+                                    button {
+                                        &:first-child {
+                                            margin-left: 8px;
+                                        }
+                                    }
+                                }
+
+                                .tenants-list {
+                                    max-height: 210px;
+                                    overflow: auto;
+
+                                    .tenant-account {
+                                        border-radius: @defaultBorderRadius !important;
+                                        padding: @tenantDropdownTenantPadding !important;
+                                        border: none;
+                                        transition: none !important;
+                                        margin: 0;
+
+                                        .theme-icon {
+                                            margin-top: 0 !important;
+                                        }
+                                        .description {
+                                            margin-top: 0;
+                                        }
+                                        &:hover {
+                                            cursor: pointer;
+                                            background: darken(@whiteSmoke, 2);
+                                        }
+                                        .name {
+                                            font-weight: 400;
+                                        }
+                                        .email {
+                                            color: @nobel;
+                                        }
+                                    }
+                                    .empty-list {
+                                        margin: 8px 0;
+                                        padding: 5px 10px !important;
+
+                                        .message {
+                                            color: @nobel;
+                                            height: 30px;
+                                            padding-top: 5px;
+                                            text-align: center;
+                                        }
+                                    }
+
+                                    &.organizations {
+                                        max-height: none !important;
+                                    }
+                                }
+                                .action-panel {
+                                    border: none;
+                                    margin: @tenantDropdownLinkMargin;
+                                    padding: 14px 20px !important;
+                                    border-radius: 0;
+                                    min-height: @tenantDropdownLinkMinHeight;
+
+                                    &:last-child {
+                                        margin-bottom: 0 !important;
+                                    }
+                                    &.no-hover {
+                                        &:hover {
+                                            background: transparent !important;
+                                        }
+                                    }
+                                    .link-icon {
+                                        color: @textColor;
+                                    }
+                                    .link-text {
+                                        color: @textColor;
+                                        text-decoration: none;
+                                    }
+                                    .action-button {
+                                        background: #f8f8f8;
+                                        border: 1px solid #c6c6c6;
+                                        line-height: 28px;
+                                        padding: 6px 20px;
+                                        color: #666;
+
+                                        &, &:hover {
+                                            text-decoration: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+        .user-dropdown {
+            &:hover, &:active, &:focus {
+                background: transparent;
+            }
+            .divider {
+                margin: 0;
+            }
+            .user-dropdown-trigger {
+                display: contents;
+
+                .username {
+                    color: @userDropdownTriggerTextColor;
+                    display: inline-block;
+                    margin-right: 0.7em;
+                    text-align: right;
+                    display: inline-block;
+                    max-width: 100px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+            .menu {
+                min-width: @userDropdownMinWidth !important;
+                padding: @userDropdownPadding;
+
+                .header {
+                    border-bottom: 1px solid @defaultBorderColor;
+
+                    .content{
+                        padding-left: 15px;
+
+                        .description {
+                            margin-top: 0;
+
+                            &.linked {
+                                cursor: pointer;
+                            }
+
+                            .name {
+                                font-weight: bold;
+                                min-width: 100px;
+                            }
+                            .email {
+                                color: @nobel;
+                                min-width: 100px;
+                            }
+                        }
+                    }
+                }
+                .linked-accounts-list {
+                    max-height: 200px;
+                    overflow: auto;
+                    border-bottom: 1px solid @defaultBorderColor;
+
+                    .linked-account {
+                        border-radius: 0 !important;
+                        margin: @userDropdownLinkedAccountMargin;
+                        border: none;
+                        transition: none !important;
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
+                    }
+                }
+                .action-panel {
+                    border: none;
+                    margin: @userDropdownLinkMargin;
+                    padding: 14px 20px !important;
+                    border-radius: 0;
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                    &.no-hover {
+                        &:hover {
+                            background: transparent !important;
+                        }
+                    }
+                    .link-icon {
+                        color: @textColor;
+                    }
+                    .link-text {
+                        color: @textColor;
+                        text-decoration: none;
+                    }
+                    .action-button {
+                        background: #f8f8f8;
+                        border: 1px solid #c6c6c6;
+                        line-height: 28px;
+                        padding: 6px 20px;
+                        color: #666;
+
+                        &, &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+        &:not(.fluid-header) {
+            .user-dropdown {
+                padding-right: 0;
+            }
+        }
+        .ui.dropdown.item.user-dropdown .menu .item.linked-account {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+        }
+        .ui.dropdown.item.user-dropdown .menu .item.header {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+            .ui.divider {
+                margin: 0.5rem 0rem;
+            }
+        }
+        .secondary-panel {
+            display: @appHeaderSecondaryPanelDisplay;
+            box-shadow: @appHeaderSecondaryPanelBoxShadow;
+            border-left: @appHeaderSecondaryPanelBorderLeft;
+            border-right: @appHeaderSecondaryPanelBorderRight;
+            border-bottom: @appHeaderSecondaryPanelBorderBottom;
+            border-top: @appHeaderSecondaryPanelBorderTop;
+            background: @appHeaderSecondaryPanelBackground;
+            height: @appHeaderSecondaryPanelHeight;
+
+            .ui.container {
+                height: @appHeaderSecondaryPanelContainerHeight;
+            }
+            .inner-menu {
+                box-shadow: @appHeaderSecondaryPanelInnerMenuBoxShadow;
+                border: @appHeaderSecondaryPanelInnerMenuBorder;
+                border-radius: @appHeaderSecondaryPanelInnerMenuBorderRadius;
+                background: @appHeaderSecondaryPanelInnerMenuBackground;
+                height: @appHeaderSecondaryPanelInnerMenuHeight;
+
+                .item.secondary-panel-item {
+                    background: @appHeaderSecondaryPanelPortalSwitchBackground;
+                    color: @appHeaderSecondaryPanelPortalSwitchColor;
+                    border-bottom: @appHeaderSecondaryPanelPortalSwitchBorderBottom;
+
+                    &.active {
+                        background: @appHeaderSecondaryPanelPortalSwitchActiveBackground;
+                        color: @appHeaderSecondaryPanelPortalSwitchActiveColor;
+                        border-bottom: @appHeaderSecondaryPanelPortalSwitchActiveBorderBottom;
+                    }
+
+                    &:not(.active) {
+                        border-bottom: @appHeaderSecondaryPanelPortalSwitchInactiveBorderBottom;
+                    }
+
+                    &:first-child {
+                        margin-left: @appHeaderSecondaryPanelPortalSwitchesLeftSpacing;
+                    }
+                }
+            }
+        }
+    }
+
+    &.app-footer {
+        background: @appFooterBackground;
+        height: @appFooterHeight;
+
+        .footer-link, .footer-dropdown .dropdown-trigger.link {
+            color: @appFooterLinkColor;
+
+            &:hover {
+                text-decoration: @appFooterLinkTextDecoration;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+/*-------------------------------
+         User Dropdown
+--------------------------------*/
+
+.ui.menu {
+    .user-dropdown-menu-trigger {
+        padding-left: @userDropdownMenuTriggerPaddingLeft;
+    }
+    .user-dropdown {
+        .user-dropdown-trigger-with-bars-wrapper {
+            border-radius: 25px;
+            padding: 6px 7px;
+            background: @userDropdownTriggerWrapperBackground;
+
+            &:hover, &:active, &:focus {
+                background: @userDropdownTriggerHoverWrapperBackground;
+            }
+            .bars {
+                font-size: 1.3em;
+                margin: 0 7px;
+            }
+            .ui-avatar {
+                box-shadow: 0 0 0px 2px @white;
+            }
+        }
+        .user-dropdown-menu {
+            .authenticated-user {
+                &:hover {
+                    cursor: pointer;
+                    background: @transparentBlack;
+                }
+            }
+            .user-dropdown-links-category-header {
+                text-transform: none;
+                border-bottom: none !important;
+                font-weight: 500;
+                color: @lightFontColor;
+                padding: 0 20px !important;
+                margin-bottom: 8px;
+            }
+            .user-dropdown-link {
+                display: flex !important;
+                margin: 0 !important;
+                min-height: @userDropdownLinkMinHeight;
+            }
+            .organization-label {
+                background: #ffebd2;
+                margin: 5px;
+                min-width: 272px !important;
+                text-align: center;
+                width: calc(100% - 10px);
+            }
+        }
+    }
+}
+
+.ui.vertical.menu {
+    &.governance-connector-categories {
+        width: @governanceConnectorCategoriesMenuWidth;
+
+        .item.active {
+            border-left: @activeBorderWidth @primaryColor solid;
+        }
+    }
+
+    &.side-panel {
+        // override the box shadow and border in the semantic ui menu component
+        box-shadow: none;
+        border-radius: 0;
+
+        &.desktop {
+            border: none;
+
+            .side-panel-item {
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        &.mobile {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+
+            .side-panel-item {
+                .caret {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .side-panel-category {
+            font-size: @sidePanelCategoryFontSize;
+            text-transform: @sidePanelCategoryTextTransform;
+            color: @lightFontColor;
+            padding-left: @itemHorizontalPadding;
+            margin-bottom: @sidePanelCategoryMarginBottom;
+
+            &.with-dividers {
+                &:not(:first-child) {
+                    &:before {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        background-color: @defaultBorderColor;
+                        height: 1px;
+                        margin: @sidePanelCategoryDividerMargin;
+                    }
+                }
+            }
+        }
+
+        .side-panel-item {
+            border-radius: @defaultBorderRadius !important;
+            padding: @sidePanelItemPadding;
+
+            .route-name {
+                cursor: pointer;
+                color: @sidePanelDefaultFontColor;
+                padding: 10px 5px;
+
+                .feature-status-label {
+                    font-size: .6em;
+                    padding: 4px 7px;
+                    font-weight: 500;
+                    top: 8px;
+                    margin-left: 10px;
+                    position: absolute;
+                    border: 1px solid @defaultBorderColor;
+
+                    &.new {
+                        text-transform: uppercase;
+                        color: @white;
+                        background-color: @accentColor4;
+                    }
+
+                    &.coming-soon {
+                        filter: grayscale(100%);
+                    }
+
+                    &.preview {
+                        text-transform: uppercase;
+                        color: @previewStatusTextColor;
+                        font-weight: 500;
+                        background-color: @previewStatusBgColor;
+                        font-size: 0.7em;
+                    }
+                }
+            }
+
+            svg, .icon {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 1;
+
+                path, .path {
+                    fill: @sidePanelDefaultFontColor;
+                }
+            }
+
+            .left-icon {
+                margin-top: -2px;
+            }
+
+            .caret {
+                margin-right: -4px;
+                margin-top: 2px;
+                transition: transform .3s ease-in-out;
+
+                svg.icon {
+                    height: 10px;
+                    width: 10px;
+                }
+                &.down {
+                    transform: rotate(90deg);
+                }
+            }
+
+            &.hover-background {
+                margin-top: @sidePanelBackgroundHoveredItemMarginTop;
+            }
+
+            &.active {
+                &.hover-highlighted {
+                    // override semantic ui menu item active background color
+                    background-color: transparent;
+
+                    .route-name {
+                        color: @sidePanelActiveFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelActiveFontColor;
+                        }
+                    }
+                }
+            }
+
+            &:hover {
+                &.hover-highlighted {
+                    // override semantic ui menu item hover background color
+                    background-color: transparent;
+
+                    .route-name {
+                        color: @sidePanelHoverFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelHoverFontColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.relaxed {
+            .side-panel-category {
+                margin-bottom: @sidePanelCategoryRelaxedMarginBottom;
+            }
+
+            .side-panel-item {
+                &.hover-background {
+                    margin-bottom: @sidePanelBackgroundHoveredItemRelaxedMarginBottom;
+                }
+            }
+        }
+
+        .child-routes {
+            padding-left: @sidePanelChildItemGroupLeftPadding;
+            max-height: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.5s ease 0s, visibility 0.5s ease 0s;
+
+            &.open {
+                visibility: visible;
+            }
+            .item {
+                font-size: inherit;
+                padding: @sidePanelChildItemPadding;
+
+                .left-icon {
+                    height: 8px;
+                    width: 8px;
+                    margin-top: 3px;
+                }
+            }
+            .categorized {
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+}
+
+// Fix for the unstackable list item images getting weird sizes on mobile.
+@media only screen and (max-width: @tabletBreakpoint) {
+    .ui.menu {
+        &.app-header {
+            .user-dropdown {
+                .authenticated-user {
+                    .ui.image.user-image.x60 {
+                        width: 60px !important;
+                    }
+                }
+                .linked-accounts-list {
+                    .ui.image.user-image.little {
+                        width: @littleWidth !important;
+                    }
+                }
+            }
+            // Fix for username and avatar in the header being pushed right to the right edge in tablet view
+            &:not(.fluid-header) {
+                .user-dropdown {
+                    padding-right: 0.92857143em;
+                }
+            }
+        }
+    }
+}
+
+/*-------------------
+      Pagination
+--------------------*/
+
+.ui.pagination.menu {
+    &.list-pagination {
+        box-shadow: @listPaginationBoxShadow;
+        border: @listPaginationBorder;
+        background: @listPaginationBackground;
+        font-size: @listPaginationFontSize;
+
+        > .item {
+            border: @listPaginationItemBorder;
+            border-radius: @listPaginationItemBorderRadius;
+            background: @listPaginationItemBackground;
+            color: @listPaginationItemColor;
+
+            &:hover {
+                color: @listPaginationItemHoverColor;
+                border-color: @listPaginationItemHoverBorderColor;
+                background: @listPaginationItemHoverBackground;
+            }
+            &.active {
+                color: @listPaginationItemActiveColor;
+                border-color: @listPaginationItemActiveBorderColor;
+                background: @listPaginationItemActiveBackground;
+            }
+            &:not(:last-child) {
+                margin-right: @listPaginationMarginRight;
+            }
+            &:before {
+                display: none;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
+/*-------------------
+   Secrets Dropdown
+--------------------*/
+
+.ui.menu {
+    .ui.dropdown {
+        .menu {
+            &.create-button-item {
+                .item {
+                    .text {
+                        color: @primaryColor;
+                    }
+                }
+            }
+            &.custom-dropdown {
+                max-height: 200px;
+                max-width: 156px;
+
+                .item {
+                    height: 43px;
+
+                    .theme-icon {
+                        padding-right: 0;
+                        padding-left: 0;
+                        background: 0 0!important;
+                    }
+
+                    .icon:hover {
+                        cursor: pointer;
+                    }
+                }
+                .item:hover {
+                    background: 0 0!important;
+                    cursor: default;
+                }
+            }
+        }
+    }
+}
+
+/*----------------------------------
+      Organization Breadcrumb
+-----------------------------------*/
+
+.ui.menu {
+    &.organization-breadcrumb, .organization-breadcrumb {
+        box-shadow: none;
+        padding: 0 15px 0 0;
+        color: @tenantDropdownTriggerTextColor;
+        background: none;
+        cursor: default;
+
+        .icon-wrapper {
+            padding: 10px 0 0 15px;
+        }
+
+        .item {
+            &.breadcrumb {
+                padding: 0 0 0 5px;
+                cursor: default;
+
+                &.end {
+                    padding-right: 5px;
+                }
+
+                >span, >.text {
+                    padding: 10px;
+                    border-radius: 25px;
+                    cursor: pointer;
+
+
+                    &:hover, &:active, &:focus {
+                        &:not(.un-clickable) {
+                            color: darken(@tenantDropdownTriggerTextColor, 10);
+                            background: @tenantDropdownTriggerHoverBackground;
+                        }
+                    }
+
+                    &.un-clickable {
+                        cursor: default;
+                        pointer-events: none;
+                    }
+                }
+
+                .close-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .separator-icon, .dropdown.breadcrumb-dropdown .icon {
+            margin: 0 !important;
+            padding: 0 0 0 10px;
+        }
+
+        &.trigger {
+            &:hover, &:active, &:focus {
+                color: darken(@tenantDropdownTriggerTextColor, 10);
+                background: @tenantDropdownTriggerHoverBackground;
+            }
+
+            cursor: pointer;
+            display: flex;
+            min-height: @minHeight;
+        }
+    }
+}

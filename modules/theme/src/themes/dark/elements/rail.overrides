@@ -1,0 +1,15 @@
+/*******************************
+         Rail Overrides
+*******************************/
+
+/*-------------------------------
+     Non Emphasized Variant
+--------------------------------*/
+
+.ui.rail {
+    &.non-emphasized {
+        .ui.fixed.sticky {
+            z-index: @nonEmphasizedFixedRailZIndex;       
+        }
+    }
+}

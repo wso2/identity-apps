@@ -1,0 +1,239 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*-------------------
+       Fonts
+--------------------*/
+
+// Needed to enable portals to be run offline.
+// Ref - https://github.com/Semantic-Org/Semantic-UI/issues/1521
+@importGoogleFonts : false;
+
+@iconFont          : "font-awesome";
+@primaryFont       : "''";
+@fontFallbacks     : -apple-system, BlinkMacSystemFont, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif, @iconFont;
+@fontName          : @primaryFont, @fontFallbacks;
+@googleFontName    : 'Lato';
+
+@bold              : 400;
+@lightFontColor    : @lightTextColor;
+
+/*-------------------
+     Borders
+--------------------*/
+
+@relativeBorderRadius: 3px;
+@absoluteBorderRadius: 3px;
+@defaultBorderRadius: @absoluteBorderRadius;
+
+@defaultBorderWidth: 1px;
+@defaultBorderColor: @borderColor;
+@lightBorderColor: lighten(@borderColor, 40);
+
+/*-------------------
+    Brand Colors
+--------------------*/
+
+@primaryColor        : #3865B5;
+@secondaryColor      : #E0E1E2;
+@accentColor1        : @orange;
+@accentColor2        : #19BECE;
+@accentColor3        : #FFFFFF;
+@accentColor4        : #92278F;
+
+@lightPrimaryColor   : lighten(@primaryColor, 40);
+
+/*-------------------
+    Site Colors
+--------------------*/
+
+/*---  Colors  ---*/
+@teal             : #22b7b1;
+@blue             : #006faa;
+@black            : #464646;
+@green            : #7cd25a;
+@orange           : #ff5000;
+@lightGray        : #f1f1f1;
+@darkGray         : #d9d9d9;
+@athensGray       : #f9fafb;
+@nobel            : #969696;
+@iron             : #DADCE0;
+@whiteSmoke       : #f5f5f5;
+@dustyGray        : #9c9c9c;
+@galleryGray      : #eeeeee;
+@doveGray         : #666666;
+@dullGreen        : #34a850;
+@paleGray         : #d6d6d6;
+@alabaster        : #fcfcfc;
+@doveGray         : #616161;
+@aliceBlue        : #f7fcff;
+@alabaster        : #f7f7f7;
+@pureBlack        : #000000;
+@focusBorderBlue  : #0000ff;
+
+/*-------------------
+        Page
+--------------------*/
+
+@pageBackground      : rgb(17, 18, 20);
+@lightPageBackground : @black;
+
+/*-------------------
+       Accents
+--------------------*/
+
+@defaultHoverBackgroundColor: @transparentBlack;
+
+/*-------------------
+       Inverted
+--------------------*/
+
+// inverted state colors are not defined site wide. Used the once that are in menu.variables etc.
+@defaultInvertedHoverBackground: @transparentWhite;
+@defaultInvertedActiveBackground: @strongTransparentWhite;
+
+/*-------------------
+     Image Sizes
+--------------------*/
+
+@littleWidth: 48px;
+@x60Width: 60px;
+
+/*-------------------
+       Icons
+--------------------*/
+
+@iconHoverBgColor: @whiteSmoke;
+@iconDefaultBgColor: #838383;
+
+/*-------------------
+    Icon Sizes
+--------------------*/
+
+@iconNano: 10px;
+@iconDefault: 14px;
+@iconMicro: 18px;
+@iconX22: 22px;
+@iconX30: 30px;
+@iconMini: 35px;
+@iconX50: 50px;
+@iconX60: 60px;
+@iconTiny: 80px;
+@iconSmall: 150px;
+@iconMedium: 300px;
+@iconLarge: 450px;
+@iconBig: 600px;
+@iconHuge: 800px;
+@iconMassive: 960px;
+
+/*-------------------
+   Header Component
+--------------------*/
+@headerHeight: 58px;
+
+/*--------------
+  Page Heading
+---------------*/
+
+@h3 : unit((22 / 14), rem);
+@h4 : unit((19 / 14), rem);
+@h5 : unit((16 / 14), rem);
+@h6 : unit((14 / 14), rem);
+
+@h6SubHeaderFontSize: unit((12 / 14), rem);
+
+/*-------------------
+       Links
+--------------------*/
+
+@linkColor           : @primaryColor;
+@linkHoverUnderline  : underline;
+
+/*--------------
+   Form Input
+---------------*/
+
+@lightInputBackground : #fafafa;
+@inputAddonWrapperOffset: 2.67142857em;
+
+/*-------------------
+    Focused Input
+--------------------*/
+
+/* Used on inputs, textarea etc */
+@focusedFormBorderColor: @primaryColor;
+
+/* Used on dropdowns, other larger blocks */
+@focusedFormMutedBorderColor: @primaryColor;
+
+/*-------------------
+   Advanced search
+--------------------*/
+
+@advancedSearchWidth: 320px;
+@mobileAdvancedSearchMinWidth: auto;
+@advancedSearchDropdownMinWidth: 260px;
+@advancedSearchDropdownMaxWidth: 520px;
+@advancedSearchBorder: 1px solid @borderColor;
+
+
+/*-------------------------
+   Overview page widgets
+--------------------------*/
+
+@overviewPageWidgetHeaderMinHeight: 155px;
+
+/*-------------------------
+           Card
+--------------------------*/
+
+@defaultCardHoverBoxShadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+@defaultCardTransition: all 0.3s;
+@defaultCardBorder: 1px solid #e8e8e8;
+
+/*-------------------------
+           Forms
+--------------------------*/
+
+@readOnlyFormFieldBgColor: #e9ecef;
+@readOnlyFieldCursor: default;
+
+/*-------------------
+    Site Colors
+--------------------*/
+
+@warningColor: #EBA91C;
+
+/*-------------------
+       Layouts
+--------------------*/
+
+@dashboardLayoutSidePanelWidth: 300px;
+@dashboardLayoutMobileContentPadding: 20px 14px;
+
+@fluidDashboardLayoutTopPadding: 25px;
+@fluidDashboardLayoutHorizontalPadding: 15px;
+@fluidLayoutTopPadding: 25px;
+@fluidLayoutHorizontalPadding: 15px;
+@fluidDashboardLayoutHeaderPadding: 0 @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutFooterPadding: 0 @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;
+
+@pageLayoutContentPadding: @fluidDashboardLayoutTopPadding 30px;

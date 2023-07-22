@@ -1,0 +1,6 @@
+/*******************************
+      Checkbox Variables
+*******************************/
+
+/* Label */
+@labelFontSize: @relativeSmall;

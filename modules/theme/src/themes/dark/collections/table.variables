@@ -1,0 +1,27 @@
+/*******************************
+        Table Variables
+*******************************/
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+@dataTableTransparentBackground: transparent;
+@dataTableTransparentBorder: none;
+@dataTableSelectableRowCursor: pointer;
+@dataTableColumnSelectorFloat: right;
+@dataTableRowSubHeaderMaxWidth: 500px;
+
+@dataTableHeaderFontWeight: 500;
+
+// Overrides for the semantic header component used inside rows.
+@dataTableRowHeaderDisplay: flex;
+@dataTableRowHeaderContentVerticalAlignment: middle;
+@dataTableRowHeaderIconDisplay: inline-flex;
+
+// Mobile Variables
+@mobileDataTableSearchMarginBottom: 10px;
+
+@actionsCellItemOneWidth: 47px;
+@actionsCellItemsTwoWidth: 75px;
+@actionsCellItemsThreeWidth: 100px;

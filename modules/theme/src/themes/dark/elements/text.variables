@@ -1,0 +1,13 @@
+/*******************************
+         Text Variables
+*******************************/
+
+/*-----------------------
+          Text
+------------------------*/
+
+@textTypographyColor: @textColor;
+@textTypographyFontSize: @fontSize;
+@textTypographyMargin: 0 0 1em;
+@textTypographyMutedColor: @lightTextColor;
+@textTypographySpacer: 1em;

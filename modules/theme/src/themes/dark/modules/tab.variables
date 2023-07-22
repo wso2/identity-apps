@@ -1,0 +1,12 @@
+/*******************************
+        Tab Variables
+*******************************/
+
+/*-----------------------------
+         Resource Tabs
+------------------------------*/
+
+@resourceTabsPaneMarginTop: 2em;
+
+@resourceTabsControlledSegmentsPaneBackground: transparent;
+@resourceTabsControlledSegmentsPanePadding: 0;

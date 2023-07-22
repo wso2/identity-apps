@@ -1,0 +1,86 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+ /*******************************
+             Modal
+ *******************************/
+
+@customModalContentAlignment: center;
+@customModalIconMarginTop: 0.5em;
+@customModalDescriptionMarginTop: 0em 1.5em 0em 1.5em;
+@customModalHeadingMarginTop: -1.25em 1.5em 0em 1.5em;
+
+/*-------------------------------
+             Wizard
+--------------------------------*/
+
+@wizardContentHeight: 500px;
+@wizardStepsContainerBgColor: @athensGray;
+@wizardSubHeaderFontColor: @dustyGray;
+@wizardSubHeaderMaxWidth: 600px;
+@wizardContentHorizontalPadding: 3em;
+@wizardSummaryFieldValueColor: @nobel;
+
+@minimalApplicationCreateWizardSubTemplateSelectionCardFontSize: 0.9em;
+
+/*-------------------------------
+        Side Panel Modal
+--------------------------------*/
+
+@sidePanelModalHeaderFontWeight: 400;
+@sidePanelModalBorderRadius: @defaultBorderRadius;
+@sidePanelModalHeaderFontWeight: @headerFontWeight;
+@sidePanelModalHeaderFontSize: @headerFontSize;
+@sidePanelModalHeaderPadding: @headerPadding;
+@sidePanelModalHeaderHeight: 75px;
+@sidePanelModalHeaderBorderBottom: @defaultBorderWidth solid @borderColor;
+
+@sidePanelModalContentPadding: 30px;
+@sidePanelModalContentHeight: 500px;
+
+@sidePanelModalMutedHeaderBackground: @lightGray;
+
+@sidePanelModalHelpSectionBoxShadow: -4px 0px 15px -8px #d6d6d6;
+@sidePanelModalHelpSectionBorderLeft: whitesmoke solid 1px;
+@sidePanelModalHelpSectionTransition: all 100ms ease-in-out !important;
+@sidePanelModalHelpContentHeight: @sidePanelModalContentHeight + @sidePanelModalActionPanelHeight;
+@sidePanelModalHelpContentTransition: opacity ease-out 100ms;
+
+@sidePanelModalActionPanelHeight: 68px;
+@sidePanelModalActionPanelBorderTop: @defaultBorderWidth solid @borderColor;
+
+/*-------------------------------
+        Attribute Modal
+--------------------------------*/
+@attributeModalContentHeight: 500px;
+@transferComponentSegmentHeight: 450px;
+@transferComponentListSegmentHeight: 350px;
+
+/*-------------------------------
+      Edit Avatar Modal
+--------------------------------*/
+
+@editAvatarModalContentLoaderContainerHeight: 100px;
+@editAvatarModalContentLoaderContainerWidth: 100%;
+
+@editAvatarModalURLFieldContainerDisplay: flex;
+
+@editAvatarModalURLFieldDisplay: inline-block;
+@editAvatarModalURLFieldWidth: 80%;
+@editAvatarModalURLFieldMarginBottom: 0;

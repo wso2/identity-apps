@@ -1,0 +1,24 @@
+/*******************************
+     Login Portal Variables
+*******************************/
+
+/*-----------------------------
+     Login Portals Commons
+------------------------------*/
+
+@loginPortalBackgroundColor: @white;
+@loginPortalProductLogoHeight: 22px;
+@loginPortalProductLogoMaxHeight: 85px;
+@loginPortalLoginCardBackground: @white;
+@loginPortalLoginCardPadding: 3rem;
+@loginPortalLoginCardBorderRadius: @defaultBorderRadius;
+@loginPortalProductTitleMargin: 2em 0 1em;
+@loginPortalProductTitleInHeaderMargin: 5px 0;
+@loginPortalExternalConnectionButtonBackgroundColor: @white;
+@loginPortalExternalConnectionButtonHoverBackgroundColor: @white;
+
+/*----------------------------
+      Keyboard Focus Outline
+------------------------------*/
+
+@focusVisibleOutline: 2px solid @focusBorderBlue;

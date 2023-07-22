@@ -1,0 +1,187 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+/*******************************
+            Menu
+*******************************/
+
+@background: @pageBackground;
+@verticalBackground: @pageBackground;
+@sidePanelDefaultFontColor: @textColor;
+
+/*-------------------
+      App Header
+--------------------*/
+
+@appHeaderDisplay: block;
+@appHeaderBackground: @lightPageBackground;
+@appHeaderHeight: auto;
+@appHeaderBoxShadow: none;
+@appHeaderBorderBottom: 1px solid @galleryGray;
+@appHeaderHamburgerIconColor: inherit;
+
+@appHeaderContainerBackground: inherit;
+
+@appHeaderSecondaryPanelDisplay: block;
+@appHeaderSecondaryPanelHeight: 50px;
+@appHeaderSecondaryPanelBackground: @lightPageBackground;
+@appHeaderSecondaryPanelBoxShadow: none;
+@appHeaderSecondaryPanelBorderLeft: 0;
+@appHeaderSecondaryPanelBorderRight: 0;
+@appHeaderSecondaryPanelBorderBottom: 0;
+@appHeaderSecondaryPanelBorderTop: @defaultBorderWidth solid @borderColor;
+@appHeaderSecondaryPanelInnerMenuBorder: 0;
+@appHeaderSecondaryPanelInnerMenuBoxShadow: none;
+@appHeaderSecondaryPanelInnerMenuBorderRadius: 0;
+@appHeaderSecondaryPanelInnerMenuBackground: @appHeaderSecondaryPanelBackground;
+@appHeaderSecondaryPanelInnerMenuHeight: 100%;
+
+@appHeaderSecondaryPanelPortalSwitchesLeftSpacing: 14px;
+
+@appHeaderSecondaryPanelPortalSwitchBackground: inherit;
+@appHeaderSecondaryPanelPortalSwitchColor: @mutedTextColor;
+@appHeaderSecondaryPanelPortalSwitchBorderBottom: 3px solid transparent;
+
+@appHeaderSecondaryPanelPortalSwitchActiveBackground: inherit;
+@appHeaderSecondaryPanelPortalSwitchActiveColor: @textColor;
+@appHeaderSecondaryPanelPortalSwitchActiveBorderBottom: 3px solid @primaryColor;
+@appHeaderSecondaryPanelPortalSwitchInactiveBorderBottom: 3px solid @whiteSmoke;
+
+@appHeaderSecondaryPanelContainerHeight: 100%;
+
+@appHeaderPortalSwitchExtensionBackgroundColor: transparent !important;
+@appHeaderPortalSwitchExtensionColor: @mutedTextColor !important;
+@appHeaderPortalSwitchExtensionActiveColor: @textColor !important;
+@appHeaderPortalSwitchExtensionActiveBorderBottom: 3px solid @primaryColor;
+
+@appHeaderExtensionItemPaddingLeft: 3px;
+@appHeaderExtensionItemPaddingRight: 3px;
+@appHeaderExtensionInnerItemPadding: 0;
+
+@appHeaderExtensionLinkBackground: transparent;
+@appHeaderExtensionLinkHoverBackground: @iconHoverBgColor;
+@appHeaderExtensionLinkColor: inherit;
+
+/*-------------------
+      App Footer
+--------------------*/
+
+@appFooterBackground: @lightPageBackground;
+@appFooterHeight: 50px;
+@appFooterLinkColor: @textColor;
+@appFooterLinkTextDecoration: underline;
+
+/*-------------------
+    Side Panel Menu
+--------------------*/
+
+@sidePanelDefaultFontColor: @black;
+@sidePanelActiveFontColor: @primaryColor;
+@sidePanelHoverFontColor: @primaryColor;
+
+@sidePanelItemHorizontalPadding: 1em;
+@sidePanelItemVerticalPadding: 0.7em;
+@sidePanelItemPadding: @sidePanelItemVerticalPadding @sidePanelItemHorizontalPadding;
+
+@sidePanelChildItemGroupLeftPadding: 15px;
+@sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
+
+@sidePanelCategoryFontSize: 10px;
+@sidePanelCategoryTextTransform: uppercase;
+@sidePanelCategoryMarginBottom: 3px;
+@sidePanelCategoryDividerMargin: 10px 0;
+@sidePanelBackgroundHoveredItemMarginTop: 5px;
+
+@sidePanelCategoryRelaxedMarginBottom: 10px;
+@sidePanelBackgroundHoveredItemRelaxedMarginBottom: 10px;
+
+/*-------------------
+      Pagination
+--------------------*/
+
+@listPaginationMarginRight: 10px;
+
+@listPaginationBoxShadow: none;
+@listPaginationBackground: transparent;
+@listPaginationBorder: none;
+@listPaginationFontSize: 0.8em;
+
+@listPaginationItemBorderColor: @lightBorderColor;
+@listPaginationItemBorder: @defaultBorderWidth solid @listPaginationItemBorderColor;
+@listPaginationItemBorderRadius: @defaultBorderRadius;
+@listPaginationItemBackground: @lightPageBackground;
+@listPaginationItemColor: lighten(@textColor, 20);
+
+@listPaginationItemHoverColor: @primaryColor;
+@listPaginationItemHoverBorderColor: @lightBorderColor;
+@listPaginationItemHoverBackground: @lightPrimaryColor;
+
+@listPaginationItemActiveColor: @primaryColor;
+@listPaginationItemActiveBorderColor: @lightBorderColor;
+@listPaginationItemActiveBackground: @lightPrimaryColor;
+
+/*-------------------
+    User Dropdown
+--------------------*/
+
+@userDropdownMinWidth: 270px;
+@userDropdownPadding: 0;
+@userDropdownLinkMargin: 8px 0;
+@userDropdownLinkedAccountMargin: 0;
+@userDropdownTriggerTextColor: inherit;
+@userDropdownMenuTriggerPaddingLeft: 5px;
+@userDropdownTriggerWrapperBackground: transparent;
+@userDropdownTriggerHoverWrapperBackground: @iconHoverBgColor;
+@userDropdownLinkMinHeight: 46px;
+
+/*-------------------------------
+      Governance Connectors
+--------------------------------*/
+
+@governanceConnectorCategoriesMenuWidth: 18rem;
+@activeBorderWidth: 5px;
+
+/*-------------------
+    Tenant Dropdown
+--------------------*/
+
+@tenantDropdownPadding: 12px 8px;
+@tenantDropdownMinWidth: 270px;
+@tenantDropdownTenantMargin: 5px 0;
+@tenantDropdownTenantPadding: 14px 20px;
+@tenantDropdownWrapperSpacingLeft: 15px;
+@tenantDropdownTriggerDisplayNameMaxWidth: 120px;
+@tenantDropdownSeparatorBorderColor: #7a8084;
+@tenantDropdownTriggerBorderRadius: 25px;
+@tenantDropdownTriggerTextColor: @textColor;
+@tenantDropdownTriggerHoverBackground: #EAEFF4;
+@tenantDropdownTriggerActiveBackground: #EAEFF4;
+@tenantDropdownDefaultLabelBackground: #eaeaea;
+@tenantDropdownDefaultLabelBorderColor: #767676;
+@tenantDropdownDefaultButtonBackground: #fff1eb;
+@tenantDropdownDefaultButtonBorderColor: #ffa176;
+@tenantDropdownDefaultButtonHoverBorderColor: #e64800;
+@tenantDropdownLinkMargin: 0;
+@tenantDropdownLinkMinHeight: 46px;
+
+/*-------------------
+   Feature Status
+--------------------*/
+@previewStatusBgColor: #c3e6f6;
+@previewStatusTextColor: #01698a;
