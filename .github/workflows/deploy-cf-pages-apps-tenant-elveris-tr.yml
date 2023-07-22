@@ -92,9 +92,15 @@ jobs:
           mkdir -p apps/all/build
           cp -aR apps/myaccount/build/myaccount apps/all/build/hesabim
           cp -aR apps/console/build/console apps/all/build/yonetim 
-          echo "/ /hesabim 302" > apps/all/build/_redirects
+          echo "/ /hesabim 301" > apps/all/build/_redirects
           echo "/hesabim/* /hesabim/:splat" >> apps/all/build/_redirects
           echo "/yonetim/* /yonetim/:splat" >> apps/all/build/_redirects
+
+          echo "/yonetim/*" > apps/all/build/_headers
+          echo "  Link: </yonetim>; rel="canonical"" >> apps/all/build/_headers
+          echo "/hesabim/*" > apps/all/build/_headers
+          echo "  Link: </hesabim>; rel="canonical"" >> apps/all/build/_headers
+
       - name: Publish to Cloudflare Pages - All
         uses: cloudflare/pages-action@v1
         with:
