@@ -93,6 +93,32 @@ jobs:
           cp -aR apps/myaccount/build/* apps/all/build/ 
           cp -aR apps/console/build/* apps/all/build/ 
           echo "/ /myaccount 301" > apps/all/build/_redirects
+
+
+          echo "<!DOCTYPE html>" > apps/all/build/404.html
+          echo "<html>" >> apps/all/build/404.html
+          echo "    <head>" >> apps/all/build/404.html
+          echo "        <title>Redirect</title>" >> apps/all/build/404.html
+          echo "        <meta charset='utf-8'>" >> apps/all/build/404.html
+          echo "        <script>" >> apps/all/build/404.html
+          echo "            document.addEventListener('DOMContentLoaded', function() {" >> apps/all/build/404.html
+          echo "                var path = window.location.pathname;" >> apps/all/build/404.html
+          echo "                if (path.indexOf('/myaccount') !== -1) {" >> apps/all/build/404.html
+          echo "                    window.location.href = 'https://identity.elveris.com/myaccount/';" >> apps/all/build/404.html
+          echo "                } else if (path.indexOf('/console') !== -1) {" >> apps/all/build/404.html
+          echo "                    window.location.href = 'https://identity.elveris.com/console/';" >> apps/all/build/404.html
+          echo "                } else {" >> apps/all/build/404.html
+          echo "                    window.location.href = 'https://identity.elveris.com/page-not-found';" >> apps/all/build/404.html
+          echo "                }" >> apps/all/build/404.html
+          echo "            });" >> apps/all/build/404.html
+          echo "        </script>" >> apps/all/build/404.html
+          echo "    </head>" >> apps/all/build/404.html
+          echo "    <body>" >> apps/all/build/404.html
+          echo "    </body>" >> apps/all/build/404.html
+          echo "</html>" >> apps/all/build/404.html
+          
+          echo "404" >> apps/all/build/page-not-found.html
+
       - name: Publish to Cloudflare Pages - All
         uses: cloudflare/pages-action@v1
         with:
