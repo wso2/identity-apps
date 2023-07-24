@@ -82,7 +82,7 @@
         "redux-thunk": "^2.3.0",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0",
-        "ua-parser-js": "0.7.28"
+        "ua-parser-js": "0.7.33"
     },
     "devDependencies": {
         "@babel/cli": "^7.10.5",
