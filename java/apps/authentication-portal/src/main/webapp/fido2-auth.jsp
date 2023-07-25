@@ -189,7 +189,7 @@
             var myaccountUrl = '<%=myaccountUrl%>';
 
             if ("<%=tenantDomain%>" !== "" && "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
+                myaccountUrl = myaccountUrl + "/t/" + "<%=Encode.forHtmlContent(tenantDomain)%>";
             }
 
             $("#my-account-link").attr("href", myaccountUrl +"/myaccount");
