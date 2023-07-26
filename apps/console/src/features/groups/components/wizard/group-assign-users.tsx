@@ -204,7 +204,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
             getList(listItemLimit, 0, null, attributes, userStore);
 
         }
-    }, [ listItemLimit ]);
+    }, [ listItemLimit, userStore ]);
 
     const handleUnassignedItemCheckboxChange = (role) => {
         const checkedGroups = [ ...checkedUnassignedListItems ];
