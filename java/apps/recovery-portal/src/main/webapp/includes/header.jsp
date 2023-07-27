@@ -78,6 +78,6 @@
 <% if (StringUtils.isNotBlank(siteTitle)) { %>
     <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
 <% } else { %>
-    <title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
+    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%>
 <% } %>
 </title>
