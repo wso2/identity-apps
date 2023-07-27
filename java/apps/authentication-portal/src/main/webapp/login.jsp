@@ -34,6 +34,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants.RequestParams.INITIATE_IDENTIFIER_FIRST" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -272,7 +273,8 @@
                     %>
                         <%@ include file="openid.jsp" %>
                     <%
-                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)
+                            || "true".equals(request.getParameter(INITIATE_IDENTIFIER_FIRST))) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
