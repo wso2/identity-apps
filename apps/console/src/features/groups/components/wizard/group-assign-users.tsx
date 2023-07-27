@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ import { GroupsMemberInterface } from "../../models";
  */
 interface AddGroupUserProps extends TestableComponentInterface {
     triggerSubmit?: boolean;
-    onSubmit?: (values: any) => void;
+    onSubmit?: (values: UserBasicInterface[]) => void;
     assignedUsers?: GroupsMemberInterface[];
     isEdit: boolean;
     userStore?: string;
@@ -133,8 +133,9 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject: UserBasicInterface, comparedUserObject: any) =>
-                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                        selectedUserList.sort(
+                            (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
+                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -186,7 +187,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
      * @returns string
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray: any[] = [];
+        const attArray: string[] = [];
         const iterator1: IterableIterator<string> = attributeMap[Symbol.iterator]();
 
         for (const attribute of iterator1) {
@@ -207,7 +208,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         }
     }, [ listItemLimit, userStore ]);
 
-    const handleUnassignedItemCheckboxChange = (role: any) => {
+    const handleUnassignedItemCheckboxChange = (role: UserBasicInterface) => {
         const checkedGroups: UserBasicInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups.includes(role)) {
@@ -219,7 +220,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         }
     };
 
-    const handleSearchFieldChange = (e: any, { value }: { value: any }) => {
+    const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
         let isMatch: boolean = false;
         const filteredGroupList: UserBasicInterface[] = [];
 
@@ -238,7 +239,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         }
     };
 
-    const handleAssignedItemCheckboxChange = (role: any) => {
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
         const checkedGroups: UserBasicInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedGroups.includes(role)) {
@@ -291,7 +292,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         setAddNewUserModalView(false);
     };
 
-    const handleAssignedUserListSearch = (e: any, { value }: { value: any }) => {
+    const handleAssignedUserListSearch = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
         let isMatch: boolean = false;
         const filteredUserList: UserBasicInterface[] = [];
 
