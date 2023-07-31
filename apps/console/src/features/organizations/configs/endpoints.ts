@@ -30,9 +30,9 @@ export const getOrganizationsResourceEndpoints = (
     serverHost: string
 ): OrganizationResourceEndpointsInterface => {
     return {
-        breadcrumb: `${serverHostWithOrgPath}/api/users/v1/me/organizations/root/descendants`,
+        breadcrumb: `${serverHostWithOrgPath}/api/users/v1/organizations/root/descendants`,
         organizations: `${serverHostWithOrgPath}/api/server/v1`,
         rootOrganization: `${serverHost}/api/server/v1`,
-        usersSuperOrganization: `${serverHostWithOrgPath}/api/users/v1/me/organizations/root`
+        usersSuperOrganization: `${serverHostWithOrgPath}/api/users/v1/organizations/root`
     };
 };
