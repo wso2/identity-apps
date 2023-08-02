@@ -24,8 +24,14 @@ import {
     PasswordHistoryCountInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
-import { GovernanceConnectorInterface } from "../../features/server-configurations";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
+import {
+    useGetPasswordExpiryProperties
+} from "../components/password-expiry/api/password-expiry";
+import {
+    useGetPasswordHistoryCount
+} from "../components/password-history-count/api";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
@@ -50,12 +56,28 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         return null;
     },
     processInitialValues: (
-        _initialValues: ValidationFormInterface,
-        _passwordHistoryCount: GovernanceConnectorInterface,
-        _setPasswordHistoryEnabled: (state: boolean) => void
+        initialValues: ValidationFormInterface,
+        passwordHistoryCount: GovernanceConnectorInterface,
+        setPasswordHistoryEnabled: (state: boolean) => void
     ): PasswordHistoryCountInterface => {
-        return;
-    },
+        const isEnabled: boolean =
+            passwordHistoryCount.properties.filter(
+                (property: ConnectorPropertyInterface) =>
+                    property.name === "passwordHistory.enable"
+            )[ 0 ].value === "true";
+
+        setPasswordHistoryEnabled(isEnabled);
+
+        return {
+            ...initialValues,
+            passwordHistoryCount: parseInt(
+                passwordHistoryCount.properties.filter(
+                    (property: ConnectorPropertyInterface) =>
+                        property.name === "passwordHistory.count"
+                )[ 0 ].value
+            ),
+            passwordHistoryCountEnabled: isEnabled
+        };    },
     processPasswordCountSubmitData: (
         _data: PasswordHistoryCountInterface
     ): Promise<any> => {
@@ -116,6 +138,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: true,
     showPageHeading: true,
+    // usePasswordExpiry: useGetPasswordExpiryProperties,
+    usePasswordHistory: useGetPasswordHistoryCount,
     usePasswordExpiry: () => ({
         data: null,
         error: null,
@@ -125,39 +149,33 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             return Promise.resolve({
                 config: {},
                 data: {
-                    category: "",
-                    displayName: "",
-                    friendlyName: "",
-                    id: "",
-                    name: "",
-                    order: "",
-                    properties: [],
-                    subCategory: ""
-                },
-                headers: {},
-                request: {},
-                status: 200,
-                statusText: "OK"
-            });
-        }
-    }),
-    usePasswordHistory: () => ({
-        data: null,
-        error: null,
-        isLoading: false,
-        isValidating: false,
-        mutate: () => {
-            return Promise.resolve({
-                config: {},
-                data: {
-                    category: "",
-                    displayName: "",
-                    friendlyName: "",
-                    id: "",
-                    name: "",
-                    order: "",
-                    properties: [],
-                    subCategory: ""
+                    category: "Password Policies",
+                    displayName: "Enable Password Expiry",
+                    friendlyName: "Password Expiry",
+                    id: "cGFzc3dvcmRFeHBpcnk",
+                    name: "passwordExpiry",
+                    order: "0",
+                    properties: [
+                        {
+                          name: "passwordExpiry.enablePasswordExpiry",
+                          value: "false",
+                          displayName: "Enable Password Expiry",
+                          description: "Allow users to reset the password after configured number of days",
+                          meta: {
+                            "groupID": 0
+                          }
+                        },
+                        {
+                          name: "passwordExpiry.passwordExpiryInDays",
+                          value: "1",
+                          displayName: "Password Expiry In Days",
+                          description: "Number of days after which the password will expire",
+                          meta: {
+                            "groupID": 0
+                          }
+                        }
+                      ],
+                    subCategory: "DEFAULT"
                 },
                 headers: {},
                 request: {},
@@ -166,4 +184,29 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             });
         }
     })
+    // usePasswordHistory: () => ({
+    //     data: null,
+    //     error: null,
+    //     isLoading: false,
+    //     isValidating: false,
+    //     mutate: () => {
+    //         return Promise.resolve({
+    //             config: {},
+    //             data: {
+    //                 category: "",
+    //                 displayName: "",
+    //                 friendlyName: "",
+    //                 id: "",
+    //                 name: "",
+    //                 order: "",
+    //                 properties: [],
+    //                 subCategory: ""
+    //             },
+    //             headers: {},
+    //             request: {},
+    //             status: 200,
+    //             statusText: "OK"
+    //         });
+    //     }
+    // })
 };

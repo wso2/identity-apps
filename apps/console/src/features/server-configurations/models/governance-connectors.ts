@@ -82,3 +82,10 @@ export interface GovernanceConnectorForOrgsInterface {
 	name: string,
 	properties: string[]
 }
+
+export interface ConnectorPropertyInterface {
+	name: string;
+	value: string;
+	displayName: string;
+	description: string;
+}
