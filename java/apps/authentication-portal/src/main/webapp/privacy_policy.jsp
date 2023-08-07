@@ -111,9 +111,9 @@
             link = "#" + el.attr("id");
 
             if (el.is("h3")){
-                newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li class='sub'>" + "<a href='" + link + "' onclick='scrollToTargetElementWithOffset(event)'>" + title + "</a>" + "</li>";
             } else {
-                newLine = "<li>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li>" + "<a href='" + link + "' onclick='scrollToTargetElementWithOffset(event)'>" + title + "</a>" + "</li>";
             }
 
             ToC += newLine;
@@ -122,6 +122,25 @@
         ToC += "</ul>" + "</nav>";
 
         $("#toc").append(ToC);
+
+        function scrollToTargetElementWithOffset(event) {
+            event.preventDefault();
+
+            // Find the required offset
+            const offsetElement = document.getElementById("toc");
+            const offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset
+
+            // Find the target element position
+            const targetElement = document.getElementById(event.target.getAttribute('href').slice(1));
+            const targetElementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = targetElementPosition - offset;
+
+            // Scroll to a target element with the offset
+            window.scrollBy({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
     </script>
 </body>
 </html>
