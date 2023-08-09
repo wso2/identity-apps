@@ -1,0 +1,13 @@
+<!--
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+
+<svg class="icon" id="email-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.65199 9.66437L9.74157 12.3303C11.5549 13.2802 13.7365 13.1943 15.4696 12.105L19.3991 9.63498L18.6009 8.36502L14.6713 10.835C13.3903 11.6402 11.7779 11.7037 10.4376 11.0016L5.34801 8.33563L4.65199 9.66437Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 7C0 4.79086 1.79086 3 4 3H20C22.2091 3 24 4.79086 24 7V17C24 19.2091 22.2091 21 20 21H4C1.79086 21 0 19.2091 0 17V7ZM4 4.5H20C21.3807 4.5 22.5 5.61929 22.5 7V17C22.5 18.3807 21.3807 19.5 20 19.5H4C2.61929 19.5 1.5 18.3807 1.5 17V7C1.5 5.61929 2.61929 4.5 4 4.5Z" fill="black"/>
+</svg>

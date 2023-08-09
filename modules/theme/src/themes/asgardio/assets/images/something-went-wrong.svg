@@ -1,0 +1,52 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="315.903" height="307" viewBox="0 0 315.903 307">
+    <defs>
+        <radialGradient id="radial-gradient" cx="0.285" cy="0.341" r="0.923" gradientTransform="translate(0.414 -0.202) rotate(38.01)" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ebebeb"/>
+            <stop offset="1" stop-color="#eee"/>
+        </radialGradient>
+        <filter id="Ellipse_10" x="8.903" y="0" width="307" height="307" filterUnits="userSpaceOnUse">
+            <feOffset dy="3" input="SourceAlpha"/>
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feFlood flood-opacity="0.051"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <radialGradient id="radial-gradient-2" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#f7f7f7"/>
+            <stop offset="1" stop-color="#dbdbdb"/>
+        </radialGradient>
+        <filter id="Path_312" x="0" y="33.29" width="223.677" height="152.19" filterUnits="userSpaceOnUse">
+            <feOffset dy="3" input="SourceAlpha"/>
+            <feGaussianBlur stdDeviation="3" result="blur-2"/>
+            <feFlood flood-opacity="0.078"/>
+            <feComposite operator="in" in2="blur-2"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g id="error-illustration-1" transform="translate(-902 -239)">
+        <g id="Group_14" data-name="Group 14" transform="translate(919.903 245)">
+            <g transform="matrix(1, 0, 0, 1, -17.9, -6)" filter="url(#Ellipse_10)">
+                <circle id="Ellipse_10-2" data-name="Ellipse 10" cx="144.5" cy="144.5" r="144.5" transform="translate(17.9 6)" fill="url(#radial-gradient)"/>
+            </g>
+          <path id="Subtraction_2" data-name="Subtraction 2" d="M118.2,251.4a145.133,145.133,0,0,1-35.4-4.366A143.778,143.778,0,0,1,50.6,234.646,145.235,145.235,0,0,1,0,190.071a144.191,144.191,0,0,0,97.356,37.7c79.706,0,144.552-64.846,144.552-144.552A143.634,143.634,0,0,0,215.564,0a144.961,144.961,0,0,1,34.468,47.464,143.8,143.8,0,0,1,9.426,28.549,145.472,145.472,0,0,1,3.3,30.835,143.875,143.875,0,0,1-24.687,80.819,144.974,144.974,0,0,1-63.6,52.372A143.644,143.644,0,0,1,118.2,251.4Z" transform="translate(26.244 37.601)" fill="url(#radial-gradient-2)"/>
+        </g>
+        <path id="Path_313" data-name="Path 313" d="M51.907,20.643A113.138,113.138,0,0,0,25.8,17a104.878,104.878,0,0,0-25.5,3.643A12.537,12.537,0,0,1,0,17.89C0,13.111,2.716,8.619,7.647,5.24A32.9,32.9,0,0,1,26.108,0a32.894,32.894,0,0,1,18.46,5.24c4.931,3.379,7.647,7.871,7.647,12.65a12.539,12.539,0,0,1-.307,2.752Z" transform="translate(987.903 449)" fill="#d95858"/>
+        <g id="Group_13" data-name="Group 13" transform="translate(911 278.29)">
+            <g transform="matrix(1, 0, 0, 1, -9, -39.29)" filter="url(#Path_312)">
+                <path id="Path_312-2" data-name="Path 312" d="M13.028.77S57.36-1.975,101.49-1.975,189.548.77,189.548.77a12.509,12.509,0,0,1,12.509,12.509s2.288,28.792,2.288,54.157-2.288,47.306-2.288,47.306a12.509,12.509,0,0,1-12.509,12.509s-43.928,4.962-88.058,4.962-88.461-4.962-88.461-4.962A12.509,12.509,0,0,1,.519,114.743S-1.332,88.895-1.332,63.529.519,13.279.519,13.279A12.509,12.509,0,0,1,13.028.77Z" transform="translate(10.33 41.27)" fill="#fff"/>
+            </g>
+            <path id="Subtraction_3" data-name="Subtraction 3" d="M100.6,126.82c-22.8,0-45.634-1.349-60.779-2.481-16.506-1.233-27.573-2.468-27.682-2.481A12.484,12.484,0,0,1,0,112.377,12.466,12.466,0,0,0,9.711,117c.445.049,44.932,4.963,88.461,4.963,43.545,0,87.618-4.913,88.058-4.963a12.523,12.523,0,0,0,12.509-12.509c.023-.22,2.288-22.29,2.288-47.306S198.762,3.316,198.74,3.028A12.561,12.561,0,0,0,198.371,0a12.536,12.536,0,0,1,2.8,7.885c.023.289,2.289,29.16,2.289,54.158,0,25.037-2.266,47.086-2.289,47.305a12.524,12.524,0,0,1-12.509,12.51c-.109.012-11.1,1.25-27.481,2.481C146.126,125.471,123.4,126.82,100.6,126.82Z" transform="translate(2.391 7.369)" fill="#d95858"/>
+            <path id="Union_4" data-name="Union 4" d="M32.873,37.166,18.685,22.978,4.5,37.166a1,1,0,0,1-1.414,0L.2,34.287a1,1,0,0,1,0-1.414L14.392,18.685.2,4.5a1,1,0,0,1,0-1.414L3.083.2A1,1,0,0,1,4.5.2L18.685,14.392,32.873.2a1,1,0,0,1,1.415,0l2.878,2.879a1,1,0,0,1,0,1.414L22.978,18.685,37.166,32.873a1,1,0,0,1,0,1.414l-2.879,2.879a1,1,0,0,1-1.414,0Z" transform="translate(35.901 43.713)" fill="#d95858"/>
+            <path id="Union_3" data-name="Union 3" d="M32.873,37.166,18.685,22.978,4.5,37.166a1,1,0,0,1-1.414,0L.2,34.287a1,1,0,0,1,0-1.414L14.392,18.685.2,4.5a1,1,0,0,1,0-1.414L3.083.2A1,1,0,0,1,4.5.2L18.685,14.392,32.873.2a1,1,0,0,1,1.415,0l2.878,2.879a1,1,0,0,1,0,1.414L22.978,18.685,37.166,32.873a1,1,0,0,1,0,1.414l-2.879,2.879a1,1,0,0,1-1.414,0Z" transform="translate(128.651 43.713)" fill="#d95858"/>
+        </g>
+    </g>
+</svg>

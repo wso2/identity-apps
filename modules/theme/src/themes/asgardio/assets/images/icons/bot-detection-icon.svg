@@ -1,0 +1,15 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg id="bot-detection-icon" class="icon" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.75 10C9.75 10.4142 9.41421 10.75 9 10.75C8.58579 10.75 8.25 10.4142 8.25 10C8.25 9.58579 8.58579 9.25 9 9.25C9.41421 9.25 9.75 9.58579 9.75 10Z" fill="black"/>
+<path d="M15 10.75C15.4142 10.75 15.75 10.4142 15.75 10C15.75 9.58579 15.4142 9.25 15 9.25C14.5858 9.25 14.25 9.58579 14.25 10C14.25 10.4142 14.5858 10.75 15 10.75Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5 7C5 5.89543 5.89543 5 7 5H17C18.1046 5 19 5.89543 19 7V13C19 14.1046 18.1046 15 17 15H7C5.89543 15 5 14.1046 5 13V7ZM7 6.5H17C17.2761 6.5 17.5 6.72386 17.5 7V13C17.5 13.2761 17.2761 13.5 17 13.5H7C6.72386 13.5 6.5 13.2761 6.5 13V7C6.5 6.72386 6.72386 6.5 7 6.5Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 2C2 0.895431 2.89543 0 4 0H20C21.1046 0 22 0.895431 22 2V10H24V11.5H22V18C22 19.1046 21.1046 20 20 20H17.1215C17.0952 20.0389 17.0648 20.0759 17.0303 20.1103L13.9445 23.1961C12.8706 24.2701 11.1294 24.2701 10.0555 23.1961L6.96967 20.1103C6.93521 20.0759 6.90481 20.0389 6.87846 20H4C2.89543 20 2 19.1046 2 18V11.5H0V10H2V2ZM4 1.5H20C20.2761 1.5 20.5 1.72386 20.5 2V18C20.5 18.2761 20.2761 18.5 20 18.5H4C3.72386 18.5 3.5 18.2761 3.5 18V2C3.5 1.72386 3.72386 1.5 4 1.5ZM8.98066 20L11.1161 22.1355C11.6043 22.6236 12.3957 22.6236 12.8839 22.1355L15.0193 20H8.98066Z" fill="black"/>
+</svg>

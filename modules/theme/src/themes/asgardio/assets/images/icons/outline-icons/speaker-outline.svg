@@ -1,0 +1,29 @@
+<!--
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M9.39738 1.56056L9.25434 1.59981L5.54131 5.24153L2.39472 6.10485C0.67417 6.57692 -0.350595 8.39427 0.110443 10.1561C0.522793 11.7319 1.98612 12.734 3.5214 12.5916L3.46294 16.5L6.9435 15.545L7.0012 11.6907L7.21367 11.6324L12.2076 12.8848L12.3506 12.8455C13.2723 12.5927 13.8214 11.619 13.5744 10.6751L11.5172 2.81358C11.27 1.86992 10.319 1.30769 9.39738 1.56056ZM5.80324 14.6346L4.64005 14.9538L4.67549 12.5838L5.83868 12.2647L5.80324 14.6346ZM8.88007 10.8337L7.20084 10.4125L3.76839 11.3543C2.66225 11.6578 1.52132 10.983 1.22493 9.85032C0.928542 8.71769 1.5872 7.54953 2.69334 7.24604L6.12579 6.30429L7.37434 5.07965L8.88007 10.8337ZM12.4597 10.9809C12.5311 11.2536 12.4029 11.5337 12.1677 11.6583L10.1585 11.1544L8.32493 4.14752L9.81886 2.68227C10.0836 2.66976 10.3312 2.84689 10.4026 3.11965L12.4597 10.9809Z"
+        fill="#FFFFFF" fill-opacity="0.74" />
+    <path
+        d="M14.0399 3.69478L13.4564 4.72962C14.0211 5.20076 14.4537 5.84815 14.6561 6.62186C14.8587 7.3958 14.8001 8.17795 14.5411 8.87484L15.5517 9.47231C15.9529 8.50789 16.0556 7.405 15.7706 6.31609C15.4857 5.22717 14.8583 4.32465 14.0399 3.69478Z"
+        fill="#FFFFFF" fill-opacity="0.74" />
+    <path
+        d="M15.0784 1.85308L14.4996 2.87947C15.5196 3.63296 16.3028 4.73596 16.6529 6.07401C17.0031 7.41227 16.8634 8.76825 16.348 9.943L17.3504 10.5356C18.0113 9.09651 18.1999 7.42102 17.7674 5.76823C17.3349 4.11543 16.3534 2.76102 15.0784 1.85308Z"
+        fill="#FFFFFF" fill-opacity="0.74" />
+</svg>

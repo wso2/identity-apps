@@ -1,0 +1,15 @@
+/*******************************
+      Label Overrides
+*******************************/
+
+/*----------------------------------------
+      Choreo themed label
+------------------------------------------*/
+
+.ui.label {
+    &.choreo-label {
+        background-color: @ChoreoThemeColorLightest;
+        color: @ChoreoThemeColorPrimary;
+        font-weight: 400;
+    }
+}

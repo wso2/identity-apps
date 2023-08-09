@@ -1,0 +1,12 @@
+<!--
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+
+<svg id="database-icon" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M24 5.5C24 2.46243 18.6274 0 12 0C5.37258 0 0 2.46243 0 5.5V18.5C0 21.5376 5.37258 24 12 24C18.6274 24 24 21.5376 24 18.5V5.5ZM19.8603 8.02549C21.9256 7.07889 22.5 6.07548 22.5 5.5C22.5 4.92452 21.9256 3.92111 19.8603 2.97451C17.926 2.08797 15.1485 1.5 12 1.5C8.85154 1.5 6.07397 2.08797 4.1397 2.97451C2.07439 3.92111 1.5 4.92452 1.5 5.5C1.5 6.07548 2.07439 7.07889 4.1397 8.02549C6.07397 8.91203 8.85154 9.5 12 9.5C15.1485 9.5 17.926 8.91203 19.8603 8.02549ZM22.5 8.16475C20.4529 9.8556 16.518 11 12 11C7.48196 11 3.54709 9.8556 1.5 8.16475V11.5C1.5 12.0755 2.07439 13.0789 4.1397 14.0255C6.07397 14.912 8.85154 15.5 12 15.5C15.1485 15.5 17.926 14.912 19.8603 14.0255C21.9256 13.0789 22.5 12.0755 22.5 11.5V8.16475ZM22.5 14.1648C20.4529 15.8556 16.518 17 12 17C7.48196 17 3.54709 15.8556 1.5 14.1648V18.5C1.5 19.0755 2.07439 20.0789 4.1397 21.0255C6.07397 21.912 8.85154 22.5 12 22.5C15.1485 22.5 17.926 21.912 19.8603 21.0255C21.9256 20.0789 22.5 19.0755 22.5 18.5V14.1648Z" fill="black"/>
+</svg>

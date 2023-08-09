@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="ad-illustration" class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 77.109 90.939">
+    <g id="ad-illustration" transform="translate(-4076.977 2454.052)">
+        <path class="path fill primary" d="M78.368,14.388A23.084,23.084,0,1,0,39.757,38.447a17.518,17.518,0,0,1,4.351,12.28q-.03.9-.008,1.806A31.089,31.089,0,0,0,74.775,82.443,30.671,30.671,0,0,0,87.45,23.851a17.713,17.713,0,0,1-9.082-9.463Z" transform="matrix(0.998, -0.07, 0.07, 0.998, 4043.161, -2446.695)" fill="#ff5000" opacity="0.1" />
+        <g transform="translate(135 122)" opacity="0.2">
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="translate(16)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M0,14.023,10.673,0" transform="translate(4002.196 -2519.393) rotate(160)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="matrix(0.94, 0.342, -0.342, 0.94, -603.47, -1490.069)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3980.119-2554.167l-10.673,14.023" fill="none" stroke="#ff5000" stroke-width="1" />
+            <g class="path fill stroke primary" transform="translate(3976 -2566)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <path class="path stroke primary" d="M0,14.023,10.673,0" transform="translate(3970.196 -2519.393) rotate(160)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="matrix(0.94, 0.342, -0.342, 0.94, -635.47, -1490.069)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <g class="path fill stroke primary" transform="translate(3959 -2543)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3991 -2543)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3951 -2519)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3967 -2519)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3984 -2519)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(4000 -2519)" fill="#ff5000" stroke="#ff5000" stroke-width="1">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <rect class="path fill primary" width="2" height="4" transform="translate(3977 -2537)" fill="#ff5000" />
+            <rect class="path fill primary" width="2" height="4" transform="translate(3982 -2537)" fill="#ff5000" />
+            <rect class="path fill primary" width="2" height="4" transform="translate(3987 -2537)" fill="#ff5000" />
+        </g>
+        <g transform="translate(137 124)">
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="translate(16)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M0,14.023,10.673,0" transform="translate(4002.196 -2519.393) rotate(160)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="matrix(0.94, 0.342, -0.342, 0.94, -603.47, -1490.069)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3980.119-2554.167l-10.673,14.023" fill="none" stroke="#ff5000" stroke-width="1" />
+            <g class="path fill stroke primary" transform="translate(3976 -2566)" fill="#ffbd9f" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.7;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <path class="path stroke primary" d="M0,14.023,10.673,0" transform="translate(3970.196 -2519.393) rotate(160)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <path class="path stroke primary" d="M3969.447-2554.167l10.673,14.023" transform="matrix(0.94, 0.342, -0.342, 0.94, -635.47, -1490.069)" fill="none" stroke="#ff5000" stroke-width="1" />
+            <g class="path fill stroke secondary" transform="translate(3959 -2543)" fill="#fdd250" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.5;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke secondary" transform="translate(3991 -2543)" fill="#fdd250" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.5;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3951 -2519)" fill="#ffa052" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.7;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3967 -2519)" fill="#ffa052" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.7;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(3984 -2519)" fill="#ffa052" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.7;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <g class="path fill stroke primary" transform="translate(4000 -2519)" fill="#ffa052" stroke="#ff5000" stroke-width="1" style="fill-opacity: 0.7;">
+                <circle cx="7.5" cy="7.5" r="7.5" stroke="none" />
+                <circle cx="7.5" cy="7.5" r="7" fill="none" />
+            </g>
+            <rect class="path fill primary" width="2" height="4" transform="translate(3977 -2537)" fill="#ff5000" />
+            <rect class="path fill primary" width="2" height="4" transform="translate(3982 -2537)" fill="#ff5000" />
+            <rect class="path fill primary" width="2" height="4" transform="translate(3987 -2537)" fill="#ff5000" />
+        </g>
+        <path class="path fill tertiary" d="M305.934,39.991a.816.816,0,0,1-.577-.239l-1.8-1.8a.816.816,0,0,1,0-1.154l1.8-1.8a.816.816,0,0,1,1.154,0l1.8,1.8a.816.816,0,0,1,0,1.155l-1.8,1.8a.817.817,0,0,1-.577.238Zm-.644-2.615.644.644.644-.644-.644-.644Z" transform="translate(3828.646 -2470.11)" fill="#696969" />
+        <path class="path fill secondary" d="M368.647,409.675a.816.816,0,0,1-.577-.239l-1.8-1.8a.816.816,0,0,1,0-1.154l1.8-1.8a.816.816,0,0,1,1.154,0l1.8,1.8a.816.816,0,0,1,0,1.155l-1.8,1.8a.817.817,0,0,1-.577.238ZM368,407.06l.644.644.644-.644-.644-.644Z" transform="translate(3776.171 -2779.442)" fill="#292929" />
+        <path class="path fill primary" d="M93.28,450.434a.816.816,0,0,1-.816-.816.984.984,0,0,0-.983-.982.816.816,0,1,1,0-1.633.984.984,0,0,0,.983-.982.816.816,0,1,1,1.633,0,.984.984,0,0,0,.982.982.816.816,0,0,1,0,1.633.984.984,0,0,0-.982.982.816.816,0,0,1-.817.816Z" transform="translate(4006.583 -2813.547)" fill="#ffe783" />
+        <path class="path fill tertiary" d="M136.613,404.036a.816.816,0,0,1-.816-.816.984.984,0,0,0-.982-.982.816.816,0,1,1,0-1.633.984.984,0,0,0,.982-.982.816.816,0,0,1,1.633,0,.984.984,0,0,0,.983.982.816.816,0,1,1,0,1.633.984.984,0,0,0-.983.982.816.816,0,0,1-.817.816Z" transform="translate(3970.326 -2774.724)" fill="#494949" />
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" id="sso-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 60 60" xml:space="preserve">
+  <g id="coding" transform="translate(-2 -2)">
+    <path id="Path_299" data-name="Path 299" d="M59,14H48V3a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1V14H5a3.009,3.009,0,0,0-3,3V49a3.009,3.009,0,0,0,3,3H24.82l-.67,4H23a1.014,1.014,0,0,0-.8.4l-3,4A1,1,0,0,0,20,62H44a1,1,0,0,0,.8-1.6l-3-4A1.014,1.014,0,0,0,41,56H39.85l-.67-4H59a3.009,3.009,0,0,0,3-3V17a3.009,3.009,0,0,0-3-3ZM18,4H46V24H18ZM40.5,58,42,60H22l1.5-2ZM26.18,56l.67-4h10.3l.67,4ZM60,49a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V46H60Zm0-5H4V17a1,1,0,0,1,1-1H16v9a1,1,0,0,0,1,1H47a1,1,0,0,0,1-1V16H59a1,1,0,0,1,1,1Z"/>
+    <path id="Path_300" data-name="Path 300" d="M57,28H45a1,1,0,0,0-1,1v1H36V29a1,1,0,0,0-1-1H29a1,1,0,0,0-1,1v1H20V29a1,1,0,0,0-1-1H7a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V32h8v1a1,1,0,0,0,1,1h2v2H29a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1h6a1,1,0,0,0,1-1V37a1,1,0,0,0-1-1H33V34h2a1,1,0,0,0,1-1V32h8v1a1,1,0,0,0,1,1H57a1,1,0,0,0,1-1V29A1,1,0,0,0,57,28ZM18,32H8V30H18Zm16,6v2H30V38Zm0-6H30V30h4Zm22,0H46V30H56Z"/>
+    <path id="Path_301" data-name="Path 301" d="M26.293,7.293l-6,6a1,1,0,0,0,0,1.414l6,6,1.414-1.414L22.414,14l5.293-5.293Z"/>
+    <path id="Path_302" data-name="Path 302" d="M37.707,7.293,36.293,8.707,41.586,14l-5.293,5.293,1.414,1.414,6-6a1,1,0,0,0,0-1.414Z"/>
+    <rect id="Rectangle_3" data-name="Rectangle 3" width="18.974" height="1.999" transform="translate(28.049 22.683) rotate(-71.547)"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<!--
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+
+<svg class="icon" id="briefcase-icon" width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17 2V3H22C23.1046 3 24 3.89543 24 5V18C24 19.1046 23.1046 20 22 20H2C0.89543 20 0 19.1046 0 18V5C0 3.89543 0.895431 3 2 3H7V2C7 0.89543 7.89543 0 9 0H15C16.1046 0 17 0.895431 17 2ZM9 1.5H15C15.2761 1.5 15.5 1.72386 15.5 2V3H8.5V2C8.5 1.72386 8.72386 1.5 9 1.5ZM22.5 5V10C22.5 10.2761 22.2761 10.5 22 10.5H14.5V10.2C14.5 9.26112 13.7389 8.5 12.8 8.5H11.2C10.2611 8.5 9.5 9.26112 9.5 10.2V10.5H2C1.72386 10.5 1.5 10.2761 1.5 10V5C1.5 4.72386 1.72386 4.5 2 4.5H22C22.2761 4.5 22.5 4.72386 22.5 5ZM9.51164 12H2C1.82735 12 1.65981 11.9781 1.5 11.937V18C1.5 18.2761 1.72386 18.5 2 18.5H22C22.2761 18.5 22.5 18.2761 22.5 18V11.937C22.3402 11.9781 22.1726 12 22 12H14.4884C14.3894 12.8446 13.6712 13.5 12.8 13.5H11.2C10.3288 13.5 9.61063 12.8446 9.51164 12ZM11 10.2C11 10.0895 11.0895 10 11.2 10H12.8C12.9105 10 13 10.0895 13 10.2V11.8C13 11.9105 12.9105 12 12.8 12H11.2C11.0895 12 11 11.9105 11 11.8V10.2Z" fill="black"/>
+</svg>
