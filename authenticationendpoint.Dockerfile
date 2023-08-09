@@ -126,14 +126,18 @@ FROM tomcat:9.0-jdk17-openjdk
 
 # Set the working directory in the container
 WORKDIR /usr/local/tomcat/webapps/
+ENV RUN_USER tomcat
+ENV RUN_GROUP tomcat
+RUN groupadd -r ${RUN_GROUP} && useradd -g ${RUN_GROUP} -d ${CATALINA_HOME} -s /bin/bash ${RUN_USER}
 
 # Copy the built war file into the webapps directory of Tomcat
-RUN mkdir -p authenticationendpoint
+RUN mkdir -p $CATALINA_HOME/authenticationendpoint
 WORKDIR /usr/local/tomcat/webapps/authenticationendpoint
 COPY --from=build-stage /app/java/apps/authentication-portal/target/authenticationendpoint.war .
 RUN jar -xvf authenticationendpoint.war
 RUN rm -rf authenticationendpoint.war
 COPY --from=is-stage  /home/wso2carbon/webapp-lib/* WEB-INF/lib
+RUN chown -R tomcat:tomcat $CATALINA_HOME/authenticationendpoint
 # Make port 8080 available to the world outside the container
 EXPOSE 8080
 

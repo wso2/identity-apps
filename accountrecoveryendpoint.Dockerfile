@@ -106,21 +106,26 @@ WORKDIR /app
 COPY . /app
 
 # Build the packages with Maven
-RUN mvn clean install -Djdk.util.zip.disableZip64ExtraFieldValidation="true"
+ENV MAVEN_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.zipfs.allowDotZipEntry=true"
+RUN mvn clean install
 
 # Use the official Tomcat runtime as a base image
 FROM tomcat:9.0-jdk17-openjdk
 
 # Set the working directory in the container
 WORKDIR /usr/local/tomcat/webapps/
+ENV RUN_USER tomcat
+ENV RUN_GROUP tomcat
+RUN groupadd -r ${RUN_GROUP} && useradd -g ${RUN_GROUP} -d ${CATALINA_HOME} -s /bin/bash ${RUN_USER}
 
 # Copy the built war file into the webapps directory of Tomcat
-RUN mkdir -p accountrecoveryendpoint
+RUN mkdir -p $CATALINA_HOME/accountrecoveryendpoint
 WORKDIR /usr/local/tomcat/webapps/accountrecoveryendpoint
 COPY --from=build-stage /app/java/apps/recovery-portal/target/accountrecoveryendpoint.war .
 RUN jar -xvf accountrecoveryendpoint.war
 RUN rm -rf accountrecoveryendpoint.war
 COPY --from=is-stage  /home/wso2carbon/webapp-lib/* WEB-INF/lib
+RUN chown -R tomcat:tomcat $CATALINA_HOME/accountrecoveryendpoint
 # Make port 8080 available to the world outside the container
 EXPOSE 8080
 
