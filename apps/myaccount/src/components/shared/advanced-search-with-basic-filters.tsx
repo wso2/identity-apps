@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,21 +28,18 @@ import { commonConfig } from "../../extensions";
 
 /**
  * Filter attribute field identifier.
- * @type {string}
  */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER = "filterAttribute";
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
 
 /**
  * Filter condition field identifier.
- * @type {string}
  */
-const FILTER_CONDITION_FIELD_IDENTIFIER = "filterCondition";
+const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
 
 /**
  * Filter value field identifier.
- * @type {string}
  */
-const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
+const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 
 /**
  * Prop types for the application search component.
@@ -51,6 +48,15 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends
     StrictAdvancedSearchWithBasicFiltersPropsInterface,
     TestableComponentInterface {
     [ key: string ]: any;
+}
+
+/**
+ * Interface for filter attributes.
+ */
+interface FilterAttributeOptionInterface {
+    key: number;
+    text: string;
+    value: string;
 }
 
 /**
@@ -122,8 +128,8 @@ export interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends Test
 /**
  * Advanced search component with SCIM like basic filters form.
  *
- * @param {AdvancedSearchWithBasicFiltersPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ReactElement.
  */
 export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWithBasicFiltersPropsInterface> = (
     props: AdvancedSearchWithBasicFiltersPropsInterface
@@ -157,10 +163,10 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Handles the form submit.
      *
-     * @param {Map<string, string | string[]>} values - Form values.
+     * @param values - Form values.
      */
-    const handleFormSubmit = (values: Map<string, string | string[]>): void => {
-        const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+    const handleFormSubmit = (values: Map<string, FormValue>): void => {
+        const query: string = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
@@ -174,12 +180,13 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Handles the search query submit.
      *
-     * @param {boolean} processQuery - Flag to enable query processing.
-     * @param {string} query - Search query.
+     * @param processQuery - Flag to enable query processing.
+     * @param query - Search query.
      */
     const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
         if (!processQuery) {
             onFilter(query);
+
             return;
         }
 
@@ -203,9 +210,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     /**
      * Default filter condition options.
      *
-     * @type {({text: string; value: string})[]}
      */
-    const defaultFilterConditionOptions = [
+    const defaultFilterConditionOptions: { text: string, value: string }[] = [
         {
             text: t("common:startsWith"),
             value: "sw"
@@ -229,7 +235,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             aligned="left"
             clearButtonPopupLabel={ t("myAccount:components.advancedSearch.popups.clear") }
             clearIcon={ getAdvancedSearchIcons().clear }
-            defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
+            defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator + " %search-value%" }
             dropdownTriggerPopupLabel={ t("myAccount:components.advancedSearch.popups.dropdown") }
             hintActionKeys={ t("myAccount:components.advancedSearch.hints.querySearch.actionKeys") }
             hintLabel={ t("myAccount:components.advancedSearch.hints.querySearch.label") }
@@ -251,10 +257,10 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
+                        <Forms onSubmit={ (values: Map<string, FormValue>) => handleFormSubmit(values) }>
                             <Field
                                 children={
-                                    filterAttributeOptions.map((attribute, index) => {
+                                    filterAttributeOptions.map((attribute: DropdownChild, index: number) => {
                                         return {
                                             key: index,
                                             text: attribute.text,
@@ -285,20 +291,22 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 <Field
                                     children={
                                         filterConditionOptions
-                                            ? filterConditionOptions.map((attribute, index) => {
+                                            ? filterConditionOptions.map((attribute: DropdownChild, index: number) => {
                                                 return {
                                                     key: index,
                                                     text: attribute.text,
                                                     value: attribute.value
                                                 };
                                             })
-                                            : defaultFilterConditionOptions.map((attribute, index) => {
-                                                return {
-                                                    key: index,
-                                                    text: attribute.text,
-                                                    value: attribute.value
-                                                };
-                                            })
+                                            : defaultFilterConditionOptions.map(
+                                                (attribute: FilterAttributeOptionInterface, index: number) => {
+                                                    return {
+                                                        key: index,
+                                                        text: attribute.text,
+                                                        value: attribute.value
+                                                    };
+                                                }
+                                            )
                                     }
                                     label={
                                         t("myAccount:components.advancedSearch.form.inputs.filterCondition.label")

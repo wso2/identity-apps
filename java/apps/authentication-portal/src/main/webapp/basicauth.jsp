@@ -16,6 +16,9 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.cxf.jaxrs.client.Client" %>
+<%@ page import="org.apache.cxf.configuration.jsse.TLSClientParameters" %>
+<%@ page import="org.apache.cxf.transport.http.HTTPConduit" %>
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
@@ -51,6 +54,12 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.utils.CustomHostNameVerifier" %>
+<%@ page import="javax.net.ssl.HostnameVerifier" %>
+<%@ page import="static org.wso2.carbon.CarbonConstants.ALLOW_ALL" %>
+<%@ page import="static org.wso2.carbon.CarbonConstants.DEFAULT_AND_LOCALHOST" %>
+<%@ page import="static org.wso2.carbon.CarbonConstants.HOST_NAME_VERIFIER" %>
+<%@ page import="org.apache.http.conn.ssl.AllowAllHostnameVerifier" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
@@ -245,6 +254,33 @@
 
         SelfUserRegistrationResource selfUserRegistrationResource = JAXRSClientFactory
                 .create(url, SelfUserRegistrationResource.class, providers);
+
+        Client client = WebClient.client(selfUserRegistrationResource);
+        HTTPConduit conduit = WebClient.getConfig(client).getHttpConduit();
+        TLSClientParameters tlsParams = conduit.getTlsClientParameters();
+        if (tlsParams == null) {
+            tlsParams = new TLSClientParameters();
+        }
+
+        HostnameVerifier allowAllHostnameVerifier = new AllowAllHostnameVerifier();
+        if (EndpointConfigManager.isHostnameVerificationEnabled()) {
+            if (DEFAULT_AND_LOCALHOST.equals(System.getProperty(HOST_NAME_VERIFIER))) {
+                /*
+                 * If hostname verifier is set to DefaultAndLocalhost, allow following domains in addition to the
+                 * hostname:
+                 *      ["::1", "127.0.0.1", "localhost", "localhost.localdomain"]
+                 */
+                tlsParams.setHostnameVerifier(new CustomHostNameVerifier());
+            } else if (ALLOW_ALL.equals(System.getProperty(HOST_NAME_VERIFIER))) {
+                // If hostname verifier is set to AllowAll, disable hostname verification.
+                tlsParams.setHostnameVerifier(allowAllHostnameVerifier);
+            }
+        } else {
+            // Disable hostname verification
+            tlsParams.setHostnameVerifier(allowAllHostnameVerifier);
+        }
+        conduit.setTlsClientParameters(tlsParams);
+
         String reCaptchaResponse = request.getParameter("g-recaptcha-response");
         WebClient.client(selfUserRegistrationResource).header("g-recaptcha-response", reCaptchaResponse);
         WebClient.client(selfUserRegistrationResource).header("Authorization", header);
@@ -339,7 +375,7 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Updated.the.password.successfully")%>
         </div>
    <% } %>
-    <% if (!isIdentifierFirstLogin(inputType)) { %>
+    <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
         <div class="field">
             <div class="ui fluid left icon input">
                 <input
@@ -461,7 +497,7 @@
         <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant) { %>
+            <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
@@ -470,7 +506,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
             <% }
-              if (!isIdentifierFirstLogin(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
+              if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% }
               if (isPasswordRecoveryEnabledInTenant) { %>
@@ -551,7 +587,7 @@
             </button>
         </div>
         <div class="column buttons">
-            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && isSelfSignUpEnabledInTenant) { %>
+            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant) { %>
             <button
                 type="button"
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
