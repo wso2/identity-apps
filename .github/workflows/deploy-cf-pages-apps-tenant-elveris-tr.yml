@@ -95,7 +95,7 @@ jobs:
           echo "/ /hesabim 301" > apps/all/build/_redirects
           echo "/*" > apps/all/build/_headers
           echo "  X-Frame-Options: SAMEORIGIN" >> apps/all/build/_headers
-          echo "  Access-Control-Allow-Origin: auth-sys.elveris.com" >> apps/all/build/_headers
+          echo "  Access-Control-Allow-Origin: https://auth-sys.elveris.com" >> apps/all/build/_headers
           
           echo "<!DOCTYPE html>" > apps/all/build/404.html
           echo "<html>" >> apps/all/build/404.html
