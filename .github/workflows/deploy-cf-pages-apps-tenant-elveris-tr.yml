@@ -93,6 +93,8 @@ jobs:
           cp -aR apps/myaccount/build/myaccount apps/all/build/hesabim
           cp -aR apps/console/build/console apps/all/build/yonetim 
           echo "/ /hesabim 301" > apps/all/build/_redirects
+          echo "/*" > apps/all/build/_headers
+          echo "  X-Frame-Options: ALLOW" >> apps/all/build/_headers
 
           
           echo "<!DOCTYPE html>" > apps/all/build/404.html
