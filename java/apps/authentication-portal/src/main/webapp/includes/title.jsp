@@ -17,7 +17,7 @@
 --%>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <%-- Include tenant context --%>

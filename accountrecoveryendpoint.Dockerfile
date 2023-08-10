@@ -92,7 +92,7 @@ RUN apt-get install -y maven
 RUN apt-get install -y openjdk-17-jdk
 
 # Install pnpm
-RUN npm install -g pnpm@7.x.x
+RUN npm install -g pnpm@latest
 
 # Set environment variables
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64

@@ -16,7 +16,7 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
