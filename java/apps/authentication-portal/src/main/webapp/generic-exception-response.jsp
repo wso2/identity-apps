@@ -32,12 +32,12 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String stat = request.getParameter("status");
-    String statusMessage = request.getParameter("statusMsg");
+    String stat = AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("status"));
+    String statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("statusMsg"));
 
     if (stat == null || statusMessage == null) {
-        stat = (String) request.getAttribute("status");
-        statusMessage = (String) request.getAttribute("statusMsg");
+        stat = AuthenticationEndpointUtil.i18n(resourceBundle, (String) request.getAttribute("status"));
+        statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, (String) request.getAttribute("statusMsg"));
     }
 
     if (stat == null || statusMessage == null) {
