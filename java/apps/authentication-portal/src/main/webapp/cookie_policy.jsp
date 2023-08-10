@@ -100,6 +100,7 @@
     <% } %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript">
         var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul class='ui list nav'>";
         var newLine, el, title, link;
@@ -110,9 +111,9 @@
             link = "#" + el.attr("id");
 
             if (el.is("h3")){
-                newLine = "<li class='sub'>" + "<a href='" + link + "' onclick='scrollToTargetElementWithOffset(event)'>" + title + "</a>" + "</li>";
+                newLine = "<li class='sub'>" + "<a href='" + link + "' onclick='scrollToElement(event)'>" + title + "</a>" + "</li>";
             } else {
-                newLine = "<li>" + "<a href='" + link + "' onclick='scrollToTargetElementWithOffset(event)'>" + title + "</a>" + "</li>";
+                newLine = "<li>" + "<a href='" + link + "' onclick='scrollToElement(event)'>" + title + "</a>" + "</li>";
             }
 
             ToC += newLine;
@@ -122,23 +123,8 @@
 
         $("#toc").append(ToC);
 
-        function scrollToTargetElementWithOffset(event) {
-            event.preventDefault();
-
-            // Find the required offset
-            const offsetElement = document.getElementById("toc");
-            const offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset
-
-            // Find the target element position
-            const targetElement = document.getElementById(event.target.getAttribute('href').slice(1));
-            const targetElementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = targetElementPosition - offset;
-
-            // Scroll to a target element with the offset
-            window.scrollBy({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+        function scrollToElement(event) {
+            scrollToTargetElementWithOffset(event, null, "toc");
         }
     </script>
 </body>
