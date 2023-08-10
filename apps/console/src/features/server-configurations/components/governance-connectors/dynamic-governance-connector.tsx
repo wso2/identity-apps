@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,22 +16,47 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { 
+    AlertLevels, 
+    IdentifiableComponentInterface, 
+    TestableComponentInterface 
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Message, Text } from "@wso2is/react-components";
+import { 
+    Message, 
+    Text 
+} from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { 
+    Dispatch, 
+    FunctionComponent, 
+    ReactElement, 
+    ReactNode, 
+    useEffect, 
+    useState 
+} from "react";
+import { 
+    Trans, 
+    useTranslation 
+} from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
+import { 
+    IdentityAppsApiException 
+} from "../../../../../../../modules/core/dist/types/exceptions/identity-apps-api-exception";
+import { AddAlertAction } from "../../../../../../../modules/core/dist/types/store/actions/types/global";
 import { serverConfigurationConfig } from "../../../../extensions";
 import { updateGovernanceConnector } from "../../api";
 import { getGovernanceConnectorIllustrations } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants";
-import { GovernanceConnectorInterface } from "../../models";
+import { 
+    ConnectorPropertyInterface, 
+    GovernanceConnectorInterface, 
+    UpdateGovernanceConnectorConfigInterface 
+} from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
 /**
@@ -45,9 +70,9 @@ interface DynamicGovernanceConnectorProps extends TestableComponentInterface, Id
 /**
  * Dynamic governance connector component.
  *
- * @param {DynamicGovernanceConnectorProps} props - Props injected to the dynamic connector component.
+ * @param props - Props injected to the dynamic connector component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConnectorProps> = (
     props: DynamicGovernanceConnectorProps
@@ -60,9 +85,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<AddAlertAction<{
+            description: string;
+            level: AlertLevels;
+            message: string;
+        }>> = useDispatch();
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [ connectorIllustration, setConnectorIllustration ] = useState<string>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -81,7 +110,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         setConnectorIllustration(illustration);
     }, [ connector, getGovernanceConnectorIllustrations ]);
 
-    const handleUpdateError = (error) => {
+    const handleUpdateError = (error: IdentityAppsApiException) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -114,12 +143,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         }
     };
 
-    const handleSubmit = (values) => {
-        const data = {
+    const handleSubmit = (values: Record<string, string | boolean>) => {
+        const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
-        };
-
+        };        
+        
         for (const key in values) {
             data.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
@@ -157,7 +186,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
                 onUpdate();
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 handleUpdateError(error);
             })
             .finally(() => {
@@ -166,9 +195,9 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     };
 
     const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {
-        const values = {};
+        const values: Record<string, string | boolean>= {};
 
-        connector?.properties.map((property) => {
+        connector?.properties.map((property: ConnectorPropertyInterface) => {
             if (property.value === "true") {
                 values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = true;
             } else if (property.value === "false") {
@@ -187,7 +216,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             connector={ connector }
             props={ {
                 properties: connector.properties.filter(
-                    (property => serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
+                    ((property: ConnectorPropertyInterface) => 
+                        serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
                         || serverConfigurationConfig.connectorPropertiesToShow
                             .includes(ServerConfigurationsConstants.ALL)))
             } }
@@ -201,8 +231,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     /**
      * Resolve connector title.
      *
-     * @param {GovernanceConnectorInterface} connector - Connector object.
-     * @returns {ReactNode}
+     * @param connector - Connector object.
+     * @returns ReactNode
      */
     const resolveConnectorTitle = (connector: GovernanceConnectorInterface): ReactNode => {
 
@@ -210,15 +240,22 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        return t("console:manage.features.governanceConnectors.connectorCategories." +
-            camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName");
+        const connectorTitleKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+            camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName";
+        let connectorTitle: string = connector?.friendlyName;
+
+        if (i18n.exists(connectorTitleKey)) {
+            connectorTitle = t(connectorTitleKey);
+        }
+        
+        return connectorTitle;
     };
 
     /**
      * Resolve connector description.
      *
-     * @param {GovernanceConnectorInterface} connector - Connector object.
-     * @returns {ReactNode}
+     * @param connector - Connector object.
+     * @returns ReactNode
      */
     const resolveConnectorDescription = (connector: GovernanceConnectorInterface): ReactNode => {
 
@@ -240,8 +277,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     /**
      * Resolve connector message.
      *
-     * @param {GovernanceConnectorInterface} connector - Connector object.
-     * @returns {ReactNode}
+     * @param connector - Connector object.
+     * @returns ReactNode
      */
     const resolveConnectorMessage = (connector: GovernanceConnectorInterface): ReactNode => {
 
