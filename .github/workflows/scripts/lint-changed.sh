@@ -33,7 +33,7 @@ GITHUB_PR_NUMBER=$1
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
 
 # Excluding files that adhere to the specified patterns from the list of supported files.
-SUPPORTED_EXT_REMOVING_PATTERN=("java/apps/**/js/*.js")
+PATHS_TO_EXCLUDE=("java/apps/**/*.js")
 
 MAX_FILE_THRESHOLD_FOR_LINTER=50
 
@@ -55,14 +55,16 @@ done <<< "$raw_changed_files"
 for file in "${changed_files[@]}"; do
     for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
         if [[ $file == *$ext ]]; then
-            pattern_match=0
-            for pattern in "${SUPPORTED_EXT_REMOVING_PATTERN[@]}"; do
+            pattern_match=false
+
+            for pattern in "${PATHS_TO_EXCLUDE[@]}"; do
                 if [[ $file == $pattern ]]; then
-                    pattern_match=1
+                    pattern_match=true
                     break
                 fi
             done
-            if [ $pattern_match -eq 0 ]; then
+
+            if [ $pattern_match == false ]; then
                 supported_files+=("$file")
             fi
         fi
