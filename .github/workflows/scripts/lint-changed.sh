@@ -33,7 +33,7 @@ GITHUB_PR_NUMBER=$1
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
 
 # Excluding files that adhere to the specified patterns from the list of supported files.
-SUPPORTED_EXT_REMOVING_PATTERN=("**/java/apps/**/js/*.js")
+SUPPORTED_EXT_REMOVING_PATTERN=("java/apps/**/js/*.js")
 
 MAX_FILE_THRESHOLD_FOR_LINTER=50
 
