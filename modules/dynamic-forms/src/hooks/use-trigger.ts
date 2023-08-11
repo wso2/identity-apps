@@ -26,6 +26,7 @@ import { useState } from "react";
  * @returns The state, A function that can be called to trigger a reset or submit event.
  */
 export const useTrigger = (): [boolean, () => void] => {
+    
     const [ state, setState ] = useState(false);
 
     return [ state, () => {

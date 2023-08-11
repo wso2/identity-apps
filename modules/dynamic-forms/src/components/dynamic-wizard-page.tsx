@@ -27,5 +27,7 @@ export const DynamicWizardPage = (props: PropsWithChildren<Record<string, any>>)
 
     const { children } = props;
 
-    return children;
+    return (
+        <>{ children }</>
+    );
 };

@@ -33,6 +33,7 @@ import { DynamicWizardPage } from "./dynamic-wizard-page";
 import { FormProps } from "react-final-form";
 
 interface DynamicWizardProps extends FormProps {
+
     /**
      * Unique id for the form.
      * Required for event propagation.
@@ -75,7 +76,7 @@ const ImperativeWizard = (props: DynamicWizardProps, ref: React.ForwardedRef<unk
 
     // Form reference to trigger the form submit externally
     // on each page submission.
-    const formRef: MutableRefObject<HTMLFormElement> = useRef(null);
+    const formRef: MutableRefObject<any> = useRef(null);
 
     const absoluteChildCount: number = React.Children.count(children);
     const lastPageIndex: number = absoluteChildCount - 1;
@@ -93,7 +94,7 @@ const ImperativeWizard = (props: DynamicWizardProps, ref: React.ForwardedRef<unk
     useEffect(() => {
         if (pageChanged)
             pageChanged(currentPageIndex);
-    });
+    }, [ currentPageIndex ]);
 
     useEffect((): void => {
         if (setTotalPages) {

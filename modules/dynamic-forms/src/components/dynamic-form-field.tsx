@@ -22,6 +22,7 @@ import { DynamicFieldInputTypes } from "../models";
 import { TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react";
 
 export type DynamicFormFieldProps = Partial<Omit<OuiTextFieldProps, 'type' | 'onChange'>> & {
+    
     /**
      * Type of the dynamic field.
      */

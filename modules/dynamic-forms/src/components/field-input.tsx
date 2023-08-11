@@ -24,6 +24,7 @@ import { getValidation } from "../utils/validate";
 import { FieldState } from "final-form";
 
 export interface FieldInputPropsInterface extends Omit<FieldProps<any, any, any>, 'component'> {
+    
     /**
      * Name of the input field.
      */

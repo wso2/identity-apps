@@ -23,9 +23,23 @@ import { FormHelperText, FormHelperTextProps } from "@oxygen-ui/react";
 import DynamicFormField from "./dynamic-form-field";
 
 export interface ErrorMessageProps {
+
+	/**
+	 * Flag to show/hide the error.
+	 */
 	showError: boolean;
+	/**
+	 * Meta data object of the field.
+	 */
 	meta: FieldMetaState<any>;
+	/**
+	 * Props to be passed down to the `FormHelperText` component 
+	 * from `oxygen-ui-react`.
+	 */
 	formHelperTextProps?: Partial<FormHelperTextProps>;
+	/**
+	 * Helper text to be shown when there are errors.
+	 */
 	helperText?: React.ReactNode;
 }
 

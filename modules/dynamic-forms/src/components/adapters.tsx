@@ -23,6 +23,7 @@ import { ShowErrorFunc, showErrorOnBlur } from './utils';
 import { DynamicFieldInputTypes } from "../models";
 
 export type TextFieldProps = Partial<Omit<OuiTextFieldProps, 'type' | 'onChange'>> & {
+    
     /**
      * The name of the text field.
      */
