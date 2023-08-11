@@ -32,6 +32,9 @@ GITHUB_PR_NUMBER=$1
 # Tracker: https://github.com/eslint/eslint/issues/15010
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
 
+# Excluding files that adhere to the specified patterns from the list of supported files.
+SUPPORTED_EXT_REMOVING_PATTERN=("**/java/apps/**/js/*.js")
+
 MAX_FILE_THRESHOLD_FOR_LINTER=50
 
 # Check relevant packages are available
@@ -52,7 +55,16 @@ done <<< "$raw_changed_files"
 for file in "${changed_files[@]}"; do
     for ext in "${ESLINT_SUPPORTED_EXT[@]}"; do
         if [[ $file == *$ext ]]; then
-            supported_files+=("$file")
+            pattern_match=0
+            for pattern in "${SUPPORTED_EXT_REMOVING_PATTERN[@]}"; do
+                if [[ $file == $pattern ]]; then
+                    pattern_match=1
+                    break
+                fi
+            done
+            if [ $pattern_match -eq 0 ]; then
+                supported_files+=("$file")
+            fi
         fi
     done
 done
