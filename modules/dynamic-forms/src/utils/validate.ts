@@ -50,9 +50,7 @@ export const getValidation = (
     }
 
     if (typeof(validation) === "function") {
-
-        const validationResponse = validation(value, allValues);
-        console.log("validationResponse", validationResponse);
+        
         return validation(value, allValues);
     }
     
