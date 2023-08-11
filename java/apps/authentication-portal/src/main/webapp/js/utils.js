@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+"use strict";
 
 /**
  * Scrolls to a target element with an offset.
@@ -28,26 +29,26 @@
  * @param {string} offsetCalElementID - The ID of the element to calculate the offset from (if offset is not provided).
  */
 function scrollToTargetElementWithOffset(event, offset, offsetCalElementID) {
-    event.preventDefault();
+  event.preventDefault();
 
-    // Find the required offset
-    if (offset == null) {
-        if (offsetCalElementID != null) {
-            const offsetElement = document.getElementById(offsetCalElementID);
-            offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset
-        } else {
-            offset = 0;
-        }   
+  // Find the required offset
+  if (offset == null) {
+    if (offsetCalElementID != null) {
+      var offsetElement = document.getElementById(offsetCalElementID);
+      offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset
+    } else {
+      offset = 0;
     }
+  }
 
-    // Find the target element position
-    const targetElement = document.getElementById(event.target.getAttribute('href').slice(1));
-    const targetElementPosition = targetElement.getBoundingClientRect().top;
-    const offsetPosition = targetElementPosition - offset;
+  // Find the target element position
+  var targetElement = document.getElementById(event.target.getAttribute('href').slice(1));
+  var targetElementPosition = targetElement.getBoundingClientRect().top;
+  var offsetPosition = targetElementPosition - offset;
 
-    // Scroll to a target element with the offset
-    window.scrollBy({
-        top: offsetPosition,
-        behavior: 'smooth'
-    });
+  // Scroll to a target element with the offset
+  window.scrollBy({
+    top: offsetPosition,
+    behavior: 'smooth'
+  });
 }
