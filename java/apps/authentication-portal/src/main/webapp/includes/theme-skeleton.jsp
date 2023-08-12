@@ -18,7 +18,7 @@
 
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="init-url.jsp"/>
