@@ -6,7 +6,6 @@
     "generators": {},
     "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [ "core" ],
     "targets": {
         "build": {
             "executor": "@nrwl/web:rollup",
