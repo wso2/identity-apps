@@ -4,13 +4,9 @@
     "sourceRoot": "modules/dynamic-forms/src",
     "projectType": "library",
     "generators": {},
-    "prefix": "@asgardeo",
+    "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [
-        "core",
-        "react-components",
-        "validation"
-    ],
+    "implicitDependencies": [ "core" ],
     "targets": {
         "build": {
             "executor": "@nrwl/web:rollup",
