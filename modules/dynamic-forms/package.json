@@ -17,7 +17,7 @@
         "clean:build": "pnpm rimraf dist",
         "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
         "clean:node-modules": "pnpm rimraf node_modules",
-        "compile": "pnpm tsc -p tsconfig.json --incremental",
+        "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json --incremental",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json --incremental",
         "lint": "pnpm lint:all",
