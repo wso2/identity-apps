@@ -442,11 +442,6 @@
                 <version>${org.apache.cxf.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-transports-http</artifactId>
-                <version>${org.apache.cxf.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.sun.jersey</groupId>
                 <artifactId>jersey-client</artifactId>
                 <version>${jersey-version}</version>
