@@ -354,8 +354,8 @@ export class ApplicationManagementUtils {
      */
     public static buildCallBackURLWithSeparator = (url: string): string => {
 
-        const regex = /regexp=\((.*)\)/;
-        const matches = url.match(regex);
+        const regex: RegExp = /regexp=\((.*)\)/;
+        const matches: RegExpMatchArray = url.match(regex);
 
         if (matches && matches[1]) {
             url = matches[1];
