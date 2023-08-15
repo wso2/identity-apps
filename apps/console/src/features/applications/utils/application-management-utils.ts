@@ -356,8 +356,9 @@ export class ApplicationManagementUtils {
 
         const regex = /regexp=\((.*)\)/;
         const matches = url.match(regex);
+
         if (matches && matches[1]) {
-            url = matches[1]
+            url = matches[1];
             url = url.split("|").join(",");
         }
 
