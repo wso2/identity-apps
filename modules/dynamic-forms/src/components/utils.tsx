@@ -17,7 +17,6 @@
  */
 
 import React, { ReactElement } from "react";
-
 import { FieldMetaState, useField } from "react-final-form";
 import { FormHelperText, FormHelperTextProps } from "@oxygen-ui/react";
 import DynamicFormField from "./dynamic-form-field";
@@ -45,9 +44,9 @@ export interface ErrorMessageProps {
 
 export function ErrorMessage({ showError, meta, formHelperTextProps, helperText }: ErrorMessageProps) {
 	if (showError) {
-		return <FormHelperText {...formHelperTextProps}>{meta.error || meta.submitError}</FormHelperText>;
+		return <FormHelperText { ...formHelperTextProps }>{ meta.error || meta.submitError }</FormHelperText>;
 	} else if (helperText) {
-		return <FormHelperText {...formHelperTextProps}>{helperText}</FormHelperText>;
+		return <FormHelperText { ...formHelperTextProps }>{ helperText }</FormHelperText>;
 	} else {
 		return <></>;
 	}
@@ -81,12 +80,13 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
 
-    return fields?.map((fieldProps) => (
-        <DynamicFormField
-            name={ fieldProps.name }
-            label={ fieldProps.label }
-            type={ fieldProps.type }
-            { ...fieldProps }
-        />
-    ));
+	return fields?.map((fieldProps, index) => (
+		<DynamicFormField
+			key={ index }
+			name={ fieldProps.name }
+			label={ fieldProps.label }
+			type={ fieldProps.type }
+			{ ...fieldProps }
+		/>
+	));
 };
