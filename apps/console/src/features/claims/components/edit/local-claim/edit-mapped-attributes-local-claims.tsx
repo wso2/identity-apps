@@ -1,34 +1,26 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
-
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+ */
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, AttributeMapping, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, store } from "../../../../core";
-import { UserStoreListItem } from "../../../../userstores";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 import { getUserStoreList } from "../../../../userstores/api";
+import { UserStoreListItem } from "../../../../userstores/models/user-stores";
 import { updateAClaim } from "../../../api";
 
 /**
@@ -49,9 +41,9 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends TestableComponen
  * This component renders the Mapped Attribute pane of
  * the edit local claim screen
  *
- * @param {EditMappedAttributesLocalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Edit mapped attributes component.
  */
 export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttributesLocalClaimsPropsInterface> = (
     props: EditMappedAttributesLocalClaimsPropsInterface
@@ -63,9 +55,9 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const [ userStore, setUserStore ] = useState([]);
+    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submit, setSubmit ] = useTrigger();
@@ -76,22 +68,26 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     useEffect(() => {
-        const userstore = [];
+        //TODO: [Type Fix] Cannot use `UserStoreListItem[]` here
+        // because in line 74 some attributes are missing.
+        const userstore: any[] = [];
 
         userstore.push({
             id: "PRIMARY",
             name: "PRIMARY"
         });
 
-        getUserStoreList().then((response) => {
-            userstore.push(...response.data);
-            setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
+        getUserStoreList()
+            .then((response: AxiosResponse) => {
+                userstore.push(...response.data);
+                setUserStore(userstore);
+            })
+            .catch(() => {
+                setUserStore(userstore);
+            });
     }, []);
 
-    const isReadOnly = useMemo(() => (
+    const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
             featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
@@ -108,49 +104,53 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                         <Forms
                             submitState={ submit }
                             onSubmit={ (values: Map<string, FormValue>) => {
-                                const claimData = { ...claim };
+                                const claimData: Claim = { ...claim };
 
                                 delete claimData.id;
                                 delete claimData.dialectURI;
 
-                                const submitData = {
+                                const submitData: Claim = {
                                     ...claimData,
-                                    attributeMapping: Array.from(values).map(([ userstore, attribute ]) => {
-                                        return {
-                                            mappedAttribute: attribute.toString(),
-                                            userstore: userstore.toString()
-                                        };
-                                    })
+                                    attributeMapping: Array.from(values).map(
+                                        ([ userstore, attribute ]: [ string, FormValue ]) => {
+                                            return {
+                                                mappedAttribute: attribute.toString(),
+                                                userstore: userstore.toString()
+                                            };
+                                        })
                                 };
 
                                 setIsSubmitting(true);
 
-                                updateAClaim(claim.id, submitData).then(() => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: t("console:manage.features.claims.local.notifications." +
+                                updateAClaim(claim.id, submitData)
+                                    .then(() => {
+                                        dispatch(addAlert(
+                                            {
+                                                description: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.description"),
-                                            level: AlertLevels.SUCCESS,
-                                            message: t("console:manage.features.claims.local.notifications." +
+                                                level: AlertLevels.SUCCESS,
+                                                message: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.message")
-                                        }
-                                    ));
-                                    update();
-                                }).catch(error => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: error?.description
+                                            }
+                                        ));
+                                        update();
+                                    })
+                                    //TODO: [Type Fix] Fix the type of the `error` object
+                                    .catch((error: any) => {
+                                        dispatch(addAlert(
+                                            {
+                                                description: error?.description
                                                 || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: error?.message
+                                                level: AlertLevels.ERROR,
+                                                message: error?.message
                                                 || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.message")
-                                        }
-                                    ));
-                                }).finally(() => {
-                                    setIsSubmitting(false);
-                                });
+                                            }
+                                        ));
+                                    }).finally(() => {
+                                        setIsSubmitting(false);
+                                    });
                             } }
                         >
                             <Grid>
@@ -171,10 +171,11 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                         t("console:manage.features.claims.local.forms." +
                                                         "attribute.requiredErrorMessage")
                                                     }
-                                                    value={ claim?.attributeMapping?.find((attribute) => {
-                                                        return attribute.userstore
-                                                            .toLowerCase() === store.name.toLowerCase();
-                                                    })?.mappedAttribute }
+                                                    value={ claim?.attributeMapping?.find(
+                                                        (attribute: AttributeMapping) => {
+                                                            return attribute.userstore
+                                                                .toLowerCase() === store.name.toLowerCase();
+                                                        })?.mappedAttribute }
                                                     data-testid={ `${ testId }-form-store-name-input` }
                                                     readOnly={ isReadOnly }
                                                 />

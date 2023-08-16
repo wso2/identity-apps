@@ -1,25 +1,15 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { RouteInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
-    AppLayout as AppLayoutSkeleton,
     CookieConsentBanner,
     EmptyPlaceholder,
     ErrorBoundary,
@@ -28,7 +18,7 @@ import {
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { AppState, AppUtils, PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes, getEmptyPlaceholderIllustrations } from "../features/core/configs";
@@ -57,7 +47,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
-        <AppLayoutSkeleton>
+        <>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
                 fallback={ (
@@ -80,9 +70,9 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
                         {
-                            appRoutes.map((route, index) => (
+                            appRoutes.map((route: RouteInterface, index: number) => (
                                 route.redirectTo
-                                    ? <Redirect to={ route.redirectTo } />
+                                    ? <Redirect to={ route.redirectTo } key={ index } />
                                     : route.protected
                                         ? (
                                             <ProtectedRoute
@@ -95,7 +85,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps) =>
+                                                render={ (renderProps: RouteComponentProps) =>
                                                     route.component
                                                         ? <route.component { ...renderProps } />
                                                         : null
@@ -137,6 +127,6 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                     )
                 }
             </ErrorBoundary>
-        </AppLayoutSkeleton>
+        </>
     );
 };

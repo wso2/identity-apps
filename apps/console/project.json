@@ -51,7 +51,6 @@
                         "output": "libs",
                         "ignore": [
                             "**/**.js",
-                            "**/**.json",
                             "**/**.less",
                             "**/assets/images/!(branding|identity-providers|flags.png)/**"
                         ]

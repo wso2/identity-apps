@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import Axios from "axios";
@@ -24,7 +15,7 @@ type ValidationFunction = (value: string) => boolean;
 /**
  * This validates email addresses. Returns true if valid. False if not valid.
  * Doesn't check for the validity of the top level domain.
- * 
+ *
  * @param value - string to be validated.
  */
 export const email: ValidationFunction = (value: string): boolean => {
@@ -42,7 +33,7 @@ export const email: ValidationFunction = (value: string): boolean => {
 /**
  * This validates mobile numbers. Returns true if valid. False if not valid.
  * Checks if the mobile number input has only numbers, '-', and '+'.
- * 
+ *
  * @param value - string to be validated.
  */
 export const mobileNumber: ValidationFunction = (value: string): boolean => {
@@ -60,7 +51,7 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
 /**
  * This validates URLs. Returns true if valid. False if not valid.
  * Check is the satisfies RFC 3986 specifications.
- * 
+ *
  * @param value - string to be validated.
  */
 export const url: ValidationFunction = (value: string): boolean => {
@@ -77,7 +68,7 @@ export const url: ValidationFunction = (value: string): boolean => {
 
 /**
  * Checks if the image url is valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const imageUrl = async (value: string): Promise<boolean> => {
@@ -100,7 +91,7 @@ export const imageUrl = async (value: string): Promise<boolean> => {
 
 /**
  * This validates identifiers. Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const identifier: ValidationFunction = (value: string): boolean => {
@@ -118,7 +109,7 @@ export const identifier: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates resource names. Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  * @deprecated please use {@link isValidResourceName}
  */
@@ -135,9 +126,9 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
 };
 
 /**
- * This validates if OpenID Connect scopes contains openid value. 
+ * This validates if OpenID Connect scopes contains openid value.
  * Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const scopes: ValidationFunction = (value: string): boolean => {
@@ -154,7 +145,7 @@ export const scopes: ValidationFunction = (value: string): boolean => {
 
 /**
  * Validates if the length of the value is less than the character limit.
- * 
+ *
  * @param value - string to be validated.
  * @param limit - max length.
  */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,11 @@ import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
@@ -39,14 +36,12 @@ import { AppState } from "../../../core/store";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
-import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
-    OrganizationRoleListResponseInterface } from "../../../organizations/models";
+import { OrganizationRoleListItemInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
-import { AddUserWizardStateInterface, PayloadInterface, UserDetailsInterface,
-    WizardStepInterface, createEmptyUserDetails } from "../../models";
+import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetails } from "../../models";
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
@@ -71,6 +66,7 @@ interface WizardStateInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
+ * @enum {string}
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
@@ -82,7 +78,7 @@ enum WizardStepsFormTypes {
 /**
  * User creation wizard.
  *
- * @returns User creation wizard.
+ * @return {JSX.Element}
  */
 export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     props: AddUserWizardPropsInterface
@@ -96,7 +92,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
+    const dispatch = useDispatch();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -126,9 +122,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ viewNextButton, setViewNextButton ] = useState<boolean>(true);
 
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
-        state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
+    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -151,25 +146,26 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ isRoleSelected ]);
 
     useEffect(() => {
+        console.log("Wizard state changed");
+        
         if (initialRoleList.length === 0) {
             if (isRootOrganization) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
-                    .then((response: AxiosResponse) => {
+                    .then((response) => {
                         setRoleList(response.data.Resources);
                         setInitialRoleList(response.data.Resources);
                     });
             } else {
                 // Get Roles from the Organization API
                 getOrganizationRoles(currentOrganization.id, null, 100, null)
-                    .then((response: OrganizationRoleListResponseInterface) => {
+                    .then((response) => {
                         if (!response.Resources) {
                             return;
                         }
 
-                        const roles: OrganizationRoleListItemInterface[] = response.Resources
-                            .filter((role: OrganizationRoleListItemInterface) =>
-                                role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+                        const roles = response.Resources.filter((role) =>
+                            role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
 
                         setRoleList(roles);
                         setInitialRoleList(roles);
@@ -200,7 +196,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const getGroupListForDomain = (domain: string) => {
         getGroupList(domain)
-            .then((response: AxiosResponse) => {
+            .then((response) => {
                 setGroupsList(response.data.Resources);
                 setInitialGroupList(response.data.Resources);
             });
@@ -215,40 +211,40 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setViewNextButton(show);
     };
 
-    const handleRoleIdSet = (roleId: string) => {
+    const handleRoleIdSet = (roleId) => {
         setSelectedRoleId(roleId);
         setRoleSelection(true);
     };
 
-    const handleRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+    const handleRoleListChange = (roleList) => {
         setRoleList(roleList);
     };
 
-    const handleInitialRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+    const handleInitialRoleListChange = (roleList) => {
         setInitialRoleList(roleList);
     };
 
-    const handleAddedListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+    const handleAddedListChange = (newRoleList) => {
         setTempRoleList(newRoleList);
     };
 
-    const handleAddedRoleInitialListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+    const handleAddedRoleInitialListChange = (newRoleList) => {
         setInitialTempRoleList(newRoleList);
     };
 
-    const handleGroupListChange = (groupList: RolesInterface[]) => {
+    const handleGroupListChange = (groupList) => {
         setGroupsList(groupList);
     };
 
-    const handleInitialGroupListChange = (groupList: RolesInterface[]) => {
+    const handleInitialGroupListChange = (groupList) => {
         setInitialGroupList(groupList);
     };
 
-    const handleAddedGroupListChange = (newGroupList: RolesInterface[]) => {
+    const handleAddedGroupListChange = (newGroupList) => {
         setTempGroupList(newGroupList);
     };
 
-    const handleAddedGroupInitialListChange = (newGroupList: RolesInterface[]) => {
+    const handleAddedGroupInitialListChange = (newGroupList) => {
         setInitialTempGroupList(newGroupList);
     };
 
@@ -281,11 +277,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * This function handles assigning the roles to the user.
      */
     const assignUserRole = (user: any, roles: any, groups: any) => {
-        const roleIds: string[] = [];
-        const groupIds: string[] = [];
+        const roleIds = [];
+        const groupIds = [];
 
         // Payload for the update role request.
-        const roleData: PayloadInterface = {
+        const roleData = {
             Operations: [
                 {
                     op: "add",
@@ -303,7 +299,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         };
 
         // Payload for the update group request.
-        const groupData: PayloadInterface = {
+        const groupData = {
             Operations: [
                 {
                     op: "add",
@@ -321,13 +317,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         };
 
         if (roles.length > 0) {
-            roles.map((role: RolesInterface | OrganizationRoleListItemInterface) => {
+            roles.map((role) => {
                 roleIds.push(role.id);
             });
 
             for (const roleId of roleIds) {
                 updateRoleDetails(roleId, roleData)
-                    .catch((error: AxiosError) => {
+                    .catch((error) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -367,13 +363,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
 
         if (groups.length > 0) {
-            groups.map((group: RolesInterface) => {
+            groups.map((group) => {
                 groupIds.push(group.id);
             });
 
             for (const groupId of groupIds) {
                 updateGroupDetails(groupId, groupData)
-                    .catch((error: AxiosError) => {
+                    .catch((error) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -417,14 +413,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * This function handles adding the user.
      */
     const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
-        let userName: string = "";
+        let userName = "";
 
         userInfo.domain !== "primary"
             ? userName = userInfo.domain + "/" + userInfo.userName
             : userName = userInfo.userName;
 
         let userDetails: UserDetailsInterface = createEmptyUserDetails();
-        const password: string = userInfo.newPassword;
+        const password = userInfo.newPassword;
 
         userInfo.passwordOption && userInfo.passwordOption !== "ask-password"
             ? (
@@ -468,37 +464,25 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setIsSubmitting(true);
 
         addUser(userDetails)
-            .then((response: AxiosResponse) => {
-                if (response.status === 202) {
-                    dispatch(addAlert({
-                        description: t(
-                            "console:manage.features.users.notifications.addUserPendingApproval.success.description"
-                        ),
-                        level: AlertLevels.WARNING,
-                        message: t(
-                            "console:manage.features.users.notifications.addUserPendingApproval.success.message"
-                        )
-                    }));
-                } else { 
-                    dispatch(addAlert({
-                        description: t(
-                            "console:manage.features.users.notifications.addUser.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.users.notifications.addUser.success.message"
-                        )
-                    }));
+            .then((response) => {
+                dispatch(addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.addUser.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.users.notifications.addUser.success.message"
+                    )
+                }));
 
-                    if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
-                        assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
-                    }
-                    history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
+                if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
+                    assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
                 }
 
                 closeWizard();
+                history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
             })
-            .catch((error: AxiosError) => {
+            .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
@@ -548,7 +532,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param formType - Type of the form.
+     * @param {WizardStepsFormTypes} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
@@ -558,7 +542,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     /**
      * Generates a summary of the wizard.
      *
-     * @returns Summary of the wizard.
+     * @return {any}
      */
     const generateWizardSummary = () => {
         if (!wizardState) {
@@ -567,7 +551,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         const wizardData: WizardStateInterface = { ...wizardState };
 
-        let summary: WizardStateInterface = {};
+        let summary = {};
 
         for (const value of Object.values(wizardData)) {
             summary = {
@@ -586,7 +570,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     /**
      * Persists the profile image change done from the summary view in wizard state.
      *
-     * @param url - Profile URL.
+     * @param {string} url - Profile URL.
      */
     const handleProfileImageChange = (url: string): void => {
         setWizardState({
@@ -598,45 +582,42 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         });
     };
 
-    const ALL_STEPS: WizardStepInterface[] = [
+    const ALL_STEPS = [
         {
             content: (
                 <AddUser
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
-                    onSubmit={ (values: AddUserWizardStateInterface) =>
-                        handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
             icon: getUserWizardStepIcons().general,
             title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
         },
-        {
-            content: (
-                <AddUserGroup
-                    triggerSubmit={ submitGroupList }
-                    onSubmit={ (values: AddUserWizardStateInterface) =>
-                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={
-                        {
-                            groupList: groupList,
-                            initialGroupList: initialGroupList,
-                            initialTempGroupList: initialTempGroupList,
-                            tempGroupList: tempGroupList
-                        }
-                    }
-                    handleGroupListChange={ (groups: RolesInterface[]) => handleGroupListChange(groups) }
-                    handleTempListChange={ (groups: RolesInterface[]) => handleAddedGroupListChange(groups) }
-                    handleInitialTempListChange={ (groups: RolesInterface[]) =>
-                        handleAddedGroupInitialListChange(groups) }
-                    handleInitialGroupListChange={ (groups: RolesInterface[]) => handleInitialGroupListChange(groups) }
-                    handleSetGroupId={ null }
-                />
-            ),
-            icon: getUserWizardStepIcons().groups,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
-        },
+        // {
+        //     content: (
+        //         <AddUserGroup
+        //             triggerSubmit={ submitGroupList }
+        //             onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+        //             initialValues={
+        //                 {
+        //                     groupList: groupList,
+        //                     initialGroupList: initialGroupList,
+        //                     initialTempGroupList: initialTempGroupList,
+        //                     tempGroupList: tempGroupList
+        //                 }
+        //             }
+        //             handleGroupListChange={ (groups) => handleGroupListChange(groups) }
+        //             handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+        //             handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+        //             handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+        //             handleSetGroupId={ null }
+        //         />
+        //     ),
+        //     icon: getUserWizardStepIcons().groups,
+        //     title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
+        // },
         {
             content: (
                 viewRolePermissions
@@ -648,8 +629,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     />)
                     : (<AddUserRole
                         triggerSubmit={ submitRoleList }
-                        onSubmit={ (values: AddUserWizardStateInterface) =>
-                            handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                        onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
                         initialValues={
                             {
                                 initialRoleList: initialRoleList,
@@ -658,15 +638,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 tempRoleList: tempRoleList
                             }
                         }
-                        handleRoleListChange={ (roles: RolesInterface[] |
-                             OrganizationRoleListItemInterface[]) => handleRoleListChange(roles) }
-                        handleTempListChange={ (roles: RolesInterface[] |
-                             OrganizationRoleListItemInterface[]) => handleAddedListChange(roles) }
-                        handleInitialTempListChange={ (roles: RolesInterface[] |
-                             OrganizationRoleListItemInterface[]) => handleAddedRoleInitialListChange(roles) }
-                        handleInitialRoleListChange={ (roles: RolesInterface[] |
-                             OrganizationRoleListItemInterface[]) => handleInitialRoleListChange(roles) }
-                        handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
+                        handleRoleListChange={ (roles) => handleRoleListChange(roles) }
+                        handleTempListChange={ (roles) => handleAddedListChange(roles) }
+                        handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
+                        handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
+                        handleSetRoleId={ (roleId) => handleRoleIdSet(roleId) }
                     />)
             ),
             icon: getUserWizardStepIcons().roles,
@@ -686,7 +662,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     ];
 
-    const STEPS: WizardStepInterface[] = OrganizationUtils.isCurrentOrganizationRoot()
+    const STEPS = OrganizationUtils.isCurrentOrganizationRoot()
         ? [ ...ALL_STEPS ]
         : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
 
@@ -715,7 +691,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <Steps.Group
                     current={ currentWizardStep }
                 >
-                    { STEPS.map((step: WizardStepInterface, index: number) => (
+                    { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

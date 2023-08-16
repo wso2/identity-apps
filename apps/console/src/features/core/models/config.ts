@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
@@ -29,17 +20,18 @@ import {
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
-import { ClaimResourceEndpointsInterface } from "../../claims";
+import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
-import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
+import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
+import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
 import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
-import { RolesResourceEndpointsInterface } from "../../roles";
+import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
-import { UsersResourceEndpointsInterface } from "../../users";
-import { UserstoreResourceEndpointsInterface } from "../../userstores";
+import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
+import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
 
 export type ConfigInterface = CommonConfigInterface<
@@ -70,6 +62,10 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Email providers feature.
+     */
+    emailProviders?: FeatureAccessConfigInterface;
+    /**
      * Email templates feature.
      */
     emailTemplates?: FeatureAccessConfigInterface;
@@ -90,9 +86,9 @@ export interface FeatureConfigInterface {
      */
     identityProviders?: FeatureAccessConfigInterface;
     /**
-     * Identity verification provider management feature.
+     * Identity provider groups feature.
      */
-    identityVerificationProviders?: FeatureAccessConfigInterface;
+    identityProviderGroups?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */
@@ -133,6 +129,10 @@ export interface FeatureConfigInterface {
      * Event Management feature
      */
     eventPublishing?: FeatureAccessConfigInterface;
+    /**
+     * Organization insights feature
+     */
+    insights?: FeatureAccessConfigInterface
 }
 
 /**
@@ -231,6 +231,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;
+    /**
+     * Flag to check if the feature gate should be enabled.
+     */
+    isFeatureGateEnabled?: boolean;
     /**
      * Enable roles and groups separation.
      */

@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { ConsoleNS } from "../../../models";
@@ -91,8 +82,8 @@ export const console: ConsoleNS = {
             },
             featureAnnouncements: {
                 organizations: {
-                    message: "B2B සංවිධාන හඳුන්වා දීම. ඔබේ සහකරු/පාරිභෝගික සංවිධාන ඇතුළත් කිරීමෙන් ඔබේ " +
-                    "B2B වේදිකාව ගොඩනැගීම ආරම්භ කරන්න.",
+                    message: "B2B ආයතන හඳුන්වා දීම. ඔබේ සහකරු/පාරිභෝගික ආයතන ඇතුළත් කිරීමෙන් ඔබේ " +
+                        "B2B වේදිකාව ගොඩනැගීම ආරම්භ කරන්න.",
                     buttons: {
                         tryout: "අත්හදා බලන්න"
                     }
@@ -289,11 +280,11 @@ export const console: ConsoleNS = {
                 description: {
                     para1: "මෙම ප්‍රතිපත්තියෙන් WSO2 IS ඔබේ පුද්ගලික තොරතුරු, එකතු කිරීමේ අරමුණු සහ ඔබේ " +
                         "පුද්ගලික තොරතුරු රඳවා තබා ගැනීම පිළිබඳ තොරතුරු ග්‍රහණය කරගන්නේ කෙසේද"
-                            + " යන්න විස්තර කරයි.",
+                        + " යන්න විස්තර කරයි.",
                     para2: "මෙම ප්‍රතිපත්තිය යොමු කිරීම සඳහා පමණක් වන අතර එය නිෂ්පාදනයක් ලෙස මෘදුකාංගයට " +
                         "අදාළ වන බව කරුණාවෙන් සලකන්න. WSO2 LLC. සහ එහි සංවර්ධකයින්ට WSO2 IS තුළ ඇති " +
                         "තොරතුරු වෙත ප්‍රවේශයක් නොමැත. වැඩි විස්තර සඳහා"
-                            +" කරුණාකර <1>disclaimer</1> කොටස බලන්න.",
+                        + " කරුණාකර <1>disclaimer</1> කොටස බලන්න.",
                     para3: "WSO2 IS හි භාවිතය සහ පරිපාලනය පාලනය කරන ආයතන, සංවිධාන හෝ පුද්ගලයින් අදාළ " +
                         "ආයතනය, සංවිධානය හෝ පුද්ගලයා විසින් දත්ත පාලනය කරන හෝ සකසන " +
                         "ආකාරය සැකසෙන තමන්ගේම රහස්‍යතා ප්‍රතිපත්ති නිර්මාණය කළ යුතුය."
@@ -317,7 +308,7 @@ export const console: ConsoleNS = {
                                 "ක්‍රියාවලීන් මෙහි අඩංගු භාවිතය, ගබඩා කිරීම සහ අනාවරණය කිරීමේ ප්‍රතිපත්ති වෙනස් " +
                                 "කළ හැකිය. එබැවින් පරිශීලකයින්ගේ පුද්ගලික දත්ත පාලනය කරන තොරතුරු සඳහා " +
                                 "පරිශීලකයින් තමන්ගේම රහස්‍යතා ප්‍රතිපත්තියක් සඳහා WSO2 IS ධාවනය කරන"
-                                    + " පුද්ගලයින්ගෙන් හෝ පුද්ගලයින්ගෙන් උපදෙස් ලබා ගත යුතුය."
+                                + " පුද්ගලයින්ගෙන් හෝ පුද්ගලයින්ගෙන් උපදෙස් ලබා ගත යුතුය."
                         }
                     },
                     heading: "වියාචනය"
@@ -345,7 +336,7 @@ export const console: ConsoleNS = {
                             para1: "WSO2 IS හි යාවත්කාලීන කරන ලද අනුවාද වල මෙම ප්‍රතිපත්තියේ වෙනස්කම් අඩංගු " +
                                 "විය හැකි අතර මෙම ප්‍රතිපත්තියේ සංශෝධන එවැනි වැඩිදියුණු කිරීම් තුළ ඇසුරුම් කෙරේ. " +
                                 "එවැනි වෙනස්කම් අදාළ වන්නේ නවීකරණය කරන ලද අනුවාදයන් භාවිතා කිරීමට"
-                                    + " තෝරා ගන්නා පරිශීලකයින්ට පමණි.",
+                                + " තෝරා ගන්නා පරිශීලකයින්ට පමණි.",
                             para2: "WSO2 IS පවත්වාගෙන යන සංවිධානය වරින් වර රහස්‍යතා ප්‍රතිපත්තිය සංශෝධනය " +
                                 "කළ හැකිය. WSO2 IS ක්‍රියාත්මක වන සංවිධානය විසින් සපයනු ලබන අදාළ සබැඳිය සමඟ " +
                                 "ඔබට නවතම පාලන ප්‍රතිපත්තිය සොයාගත හැකිය. අපගේ නිල පොදු නාලිකා " +
@@ -394,7 +385,7 @@ export const console: ConsoleNS = {
                                 " සුපිරි පරිපාලකයා ය.",
                             para2: "මීට අමතරව, WSO2 IS ල logs ු-සටහන්, දත්ත සමුදායන් හෝ විශ්ලේෂණ ආචයනයන් " +
                                 "තුළ රඳවාගෙන ඇති ඔබගේ ක්‍රියාකාරකම්වල සියලු අංශ නිර්නාමික කිරීමට"
-                                    + " ඔබට ඉල්ලිය හැකිය."
+                                + " ඔබට ඉල්ලිය හැකිය."
                         },
                         heading: "ඔබගේ පුද්ගලික තොරතුරු ඉවත් කිරීමට ඉල්ලන්නේ කෙසේද"
                     },
@@ -420,7 +411,7 @@ export const console: ConsoleNS = {
                             2: "පද්ධති කාර්ය සාධනය වැඩි දියුණු කිරීම පිළිබඳ විශ්ලේෂණාත්මක අරමුණු සඳහා සංඛ්‍යාන " +
                                 "දත්ත ලබා ගන්න. WSO2 IS සංඛ්‍යානමය ගණනය කිරීම් වලින් පසුව කිසිදු පුද්ගලික " +
                                 "තොරතුරක් තබා නොගනී. එබැවින් සංඛ්‍යාලේඛන වාර්තාවට තනි පුද්ගලයෙකු"
-                                    + " හඳුනා ගැනීමට ක්‍රමයක් නොමැත."
+                                + " හඳුනා ගැනීමට ක්‍රමයක් නොමැත."
                         },
                         para1: "WSO2 IS ඔබේ පුද්ගලික තොරතුරු භාවිතා කරනු ලැබුවේ එය එකතු කරන ලද අරමුණු " +
                             "සඳහා පමණි (හෝ එම අරමුණු වලට අනුකූල බව හඳුනාගත් භාවිතයක් සඳහා).",
@@ -499,7 +490,7 @@ export const console: ConsoleNS = {
                 withLabel: {
                     negative: {
                         content: "බ්‍රව්සරයකින් {{productName} to වෙත ඉල්ලීම් කිරීමට මෙම URL හි ආරම්භය " +
-                        "සඳහා ඔබ CORS සක්‍රීය කළ යුතුය.",
+                            "සඳහා ඔබ CORS සක්‍රීය කළ යුතුය.",
                         detailedContent: {
                             0: "",
                             1: ""
@@ -508,8 +499,8 @@ export const console: ConsoleNS = {
                         leftAction: "ඉඩ දෙන්න"
                     },
                     positive: {
-                        content: "මෙම URL හි මූලාරම්භය බ්‍රව්සරයකින් {{productName}} API සඳහා "+
-                        "ඉල්ලීම් කිරීමට අවසර ඇත.",
+                        content: "මෙම URL හි මූලාරම්භය බ්‍රව්සරයකින් {{productName}} API සඳහා " +
+                            "ඉල්ලීම් කිරීමට අවසර ඇත.",
                         detailedContent: {
                             0: "",
                             1: ""
@@ -600,7 +591,7 @@ export const console: ConsoleNS = {
                 },
                 confirmations: {
                     addSocialLogin: {
-                        content : "නව සමාජ පිවිසුමක් එක් කිරීම සඳහා, අපි ඔබව වෙනත් පිටුවකට යොමු කළ යුතු අතර " +
+                        content: "නව සමාජ පිවිසුමක් එක් කිරීම සඳහා, අපි ඔබව වෙනත් පිටුවකට යොමු කළ යුතු අතර " +
                             "මෙම පිටුවෙහි කිසියම් සුරකින ලද වෙනස්කම් නැති වනු ඇත. කරුණාකර තහවුරු කරන්න.",
                         header: "ඔයාට විශ්වාස ද?",
                         subHeader: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැක."
@@ -656,6 +647,13 @@ export const console: ConsoleNS = {
                         assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
                         content: "මෙය මත පදනම් වූ සියලුම යෙදුම් ද වැඩ කිරීම නවතා දැමිය හැකිය. " +
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර යෙදුම ස්ථිරවම මකා දමනු ඇත."
+                    },
+                    deleteChoreoApplication: {
+                        assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
+                        content: "මෙම යෙදුම මකා දැමීම සත්යාපනය ගලායාම බිඳ දමා ආශ්රිත Choreo යෙදුම එහි අක්තපත්ර සමඟ භාවිතා කිරීමට " +
+                            "හේතු වේ.<1> කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න. </1>",
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර යෙදුම ස්ථිරවම මකා දමනු ඇත."
                     },
@@ -715,16 +713,16 @@ export const console: ConsoleNS = {
                             "ඔබේ සේවාදායක යෙදුමේ යෙදුම් සේවාදායක රහස යාවත්කාලීන කරන්න.",
                         header: "ඔයාට විශ්වාස ද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සේවාදායකයාගේ රහස ස්ථිරවම වෙනස් කරයි. " +
-                                 "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
                     },
                     removeApplicationUserAttribute: {
-                        content : "ඔබ මෙය ඉවත් කළහොත්, විෂය ගුණාංගය " +
+                        content: "ඔබ මෙය ඉවත් කළහොත්, විෂය ගුණාංගය " +
                             "<1>{{ default }}</1>",
                         header: "ඔබට විශ්වාසද?",
                         subHeader: "ඔබ විෂය ගුණාංගය ඉවත් කිරීමට උත්සාහ කරයි"
                     },
                     removeApplicationUserAttributeMapping: {
-                        content : "ඔබ මෙම ක්‍රියාව සනාථ කරන්නේ නම්, ඔබ නව විෂය ලක්ෂණයක් තෝරා ගත යුතුය",
+                        content: "ඔබ මෙම ක්‍රියාව සනාථ කරන්නේ නම්, ඔබ නව විෂය ලක්ෂණයක් තෝරා ගත යුතුය",
                         header: "ඔබට විශ්වාසද?",
                         subHeader: "ඔබ විෂය ගුණාංගය ඉවත් කිරීමට උත්සාහ කරයි"
                     },
@@ -733,7 +731,7 @@ export const console: ConsoleNS = {
                         content: "යෙදුම පසුව සක්‍රිය කිරීමෙන් මෙම ක්‍රියාව ආපසු හැරවිය හැකිය.",
                         header: "ඔයාට විශ්වාස ද?",
                         message: "ඔබ මෙම යෙදුම අවලංගු කළහොත්, මෙම යෙදුම සඳහා සත්‍යාපන " +
-                                 "ප්‍රවාහයන් ක්‍රියා නොකරනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
+                            "ප්‍රවාහයන් ක්‍රියා නොකරනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න."
                     }
                 },
                 dangerZoneGroup: {
@@ -964,8 +962,8 @@ export const console: ConsoleNS = {
                             },
                             getSharedOrganizations: {
                                 genericError: {
-                                    description: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
-                                    message: "බෙදාගත් සංවිධාන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
+                                    description: "බෙදාගත් ආයතන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!",
+                                    message: "බෙදාගත් ආයතන ලැයිස්තුව ලබා ගැනීම අසාර්ථක විය!"
                                 }
                             },
                             heading: "යෙදුම බෙදාගන්න",
@@ -1103,7 +1101,7 @@ export const console: ConsoleNS = {
                                                     },
                                                     stepSelectDropdown: {
                                                         hint: "ඔබට සත්‍යාපකයන් එකතු කිරීමට අවශ්‍ය පියවර තෝරන්න.",
-                                                        label:  "පියවර තෝරන්න",
+                                                        label: "පියවර තෝරන්න",
                                                         placeholder: "පියවර තෝරන්න"
                                                     }
                                                 },
@@ -1148,12 +1146,12 @@ export const console: ConsoleNS = {
                                                 "බහු සාධක සත්‍යාපක තිබේ නම් පමණි.",
                                             backupCodesDisabledInFirstStep: "උපස්ථ කේත සත්‍යාපනය පළමු පියවරේදී භාවිතා " +
                                                 "කළ නොහැක.",
-                                            federatedSMSOTPConflictNote:{
+                                            federatedSMSOTPConflictNote: {
                                                 multipleIdps: "පහත සම්බන්ධතා සමඟ <3>SMS OTP</3> වින්‍යාස කිරීමට" +
-                                                " Asgardeo හට <1>ජංගම දුරකථන</1> අංකය අඩංගු පරිශීලක පැතිකඩ අවශ්‍ය වේ.",
+                                                    " Asgardeo හට <1>ජංගම දුරකථන</1> අංකය අඩංගු පරිශීලක පැතිකඩ අවශ්‍ය වේ.",
                                                 singleIdp: "<5>{{idpName}}</5> සම්බන්ධතාවය සමඟ <3>SMS OTP</3>" +
-                                                " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
-                                                " පැතිකඩ අවශ්‍ය වේ."
+                                                    " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
+                                                    " පැතිකඩ අවශ්‍ය වේ."
                                             }
                                         }
                                     }
@@ -1234,6 +1232,12 @@ export const console: ConsoleNS = {
                                                 description: "ගූගල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                                                 heading: "ගූගල් පිවිසුම එක් කරන්න"
                                             },
+                                            idf: {
+                                                tooltipText: "හඳුනාගැනීමේ පළමු සත්‍යාපකය පරිශීලකයාගේ අනන්‍යතාවය" +
+                                                    " සත්‍යාපනය නොකරයි, එබැවින් පරිශීලක අනන්‍යතාවය හෝ ගුණාංග" +
+                                                    " තෝරා ගැනීමට භාවිතා කළ නොහැක. එසේ කිරීමට, සත්‍යාපන ස්ක්‍රිප්ට්" +
+                                                    " භාවිතයෙන් වලංගු කිරීම් සක්‍රීය කරන්න."
+                                            },
                                             magicLink: {
                                                 description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද මැජික් " +
                                                     "සබැඳියක් භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
@@ -1256,7 +1260,6 @@ export const console: ConsoleNS = {
                                                     "ඔබේ පරිශීලකයින්ට ඔවුන්ගේ FIDO2 ආරක්ෂක " +
                                                     "යතුරු හෝ මගේ ගිණුම හරහා ජෛවමිතික ලියාපදිංචි " +
                                                     "කර තිබිය යුතුය."
-
                                             },
                                             emailOTP: {
                                                 description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
@@ -1265,6 +1268,11 @@ export const console: ConsoleNS = {
                                             smsOTP: {
                                                 description: "SMS පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
                                                 heading: "SMS දෙවන සාධකය ලෙස එක් කරන්න"
+                                            },
+                                            emailOTPFirstFactor: {
+                                                description: "පරිශීලකයින්ට ඔවුන්ගේ විද්‍යුත් තැපෑලට යවන ලද එක්-වරක් මුර කේතයක් " +
+                                                    "භාවිතයෙන් පුරනය වීමට සබල කරන්න.",
+                                                heading: "ඊමේල් OTP පිවිසුම එක් කරන්න"
                                             }
                                         }
                                     }
@@ -1330,7 +1338,7 @@ export const console: ConsoleNS = {
                                 heading: "කාර්යභාරය"
                             },
                             subject: {
-                                fields:{
+                                fields: {
                                     subjectAttribute: {
                                         hint: "පරිශීලකයාගේ විෂය හඳුනාගැනීමේ යන්ත්‍රය ලෙස ඔබට භාවිතා කිරීමට" +
                                             " අවශ්‍ය හවුල් ගුණාංගවලින් එකක් තෝරන්න.",
@@ -1619,7 +1627,7 @@ export const console: ConsoleNS = {
                                 hint: "යෙදුම ටෝකන් සේවාව සමඟ සන්නිවේදනය කරන්නේ කෙසේද යන්න මෙය තීරණය කරයි.",
                                 label: "අවසර ලත් ප්‍රදාන වර්ග",
                                 validation: {
-                                    refreshToken:"Refresh token ප්‍රදාන වර්ගය තෝරා ගත යුත්තේ ප්‍රබෝධවත් ටෝකනයක් " +
+                                    refreshToken: "Refresh token ප්‍රදාන වර්ගය තෝරා ගත යුත්තේ ප්‍රබෝධවත් ටෝකනයක් " +
                                         "සපයන ප්‍රදාන වර්ග සමඟ පමණි."
                                 },
                                 validations: {
@@ -1677,7 +1685,7 @@ export const console: ConsoleNS = {
                                         label: "ටෝකන් බන්ධන වර්ගය",
                                         valueDescriptions: {
                                             cookie: "ආරක්ෂිත සහ httpOnly පරාමිතීන් සහිත කුකියකට ප්‍රවේශ " +
-                                            "ටෝකනය බැඳ තබන්න.",
+                                                "ටෝකනය බැඳ තබන්න.",
                                             none: "බන්ධනයක් නැත. {{productName}} නව ප්‍රවේශ ටෝකනයක් නිකුත් කරන්නේ " +
                                                 "ටෝකනය කල් ඉකුත් වූ විට හෝ අවලංගු කළ විට පමණි.",
                                             sso_session: "පිවිසුම් සැසියට ප්‍රවේශ ටෝකනය බැඳ තබයි. {{productName}} " +
@@ -1743,9 +1751,9 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     encryption: {
-                                        hint: "ඔබගේ යෙදුමේ පොදු යතුර භාවිතයෙන් ටෝකනය නිකුත් කිරීමේදී <1>හැඳුනුම්පත් "+
-                                        "ටෝකන</1> සංකේතනය කිරීමට තෝරන්න. ගුප්තකේතනය භාවිතා කිරීම සඳහා, පහත "+
-                                        "සහතික කොටසේ JWKS අන්ත ලක්ෂ්‍යය හෝ ඔබගේ අයදුම්පතේ සහතිකය වින්‍යාස කරන්න.",
+                                        hint: "ඔබගේ යෙදුමේ පොදු යතුර භාවිතයෙන් ටෝකනය නිකුත් කිරීමේදී <1>හැඳුනුම්පත් " +
+                                            "ටෝකන</1> සංකේතනය කිරීමට තෝරන්න. ගුප්තකේතනය භාවිතා කිරීම සඳහා, පහත " +
+                                            "සහතික කොටසේ JWKS අන්ත ලක්ෂ්‍යය හෝ ඔබගේ අයදුම්පතේ සහතිකය වින්‍යාස කරන්න.",
                                         label: "සංකේතනය සක්‍රීය කරන්න",
                                         validations: {
                                             empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
@@ -1765,7 +1773,7 @@ export const console: ConsoleNS = {
                                         label: "ගුප්තකේතන ක්‍රමය",
                                         placeholder: "ක්රමය තෝරන්න",
                                         validations: {
-                                            empty:  "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
+                                            empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
                                         }
                                     }
                                 },
@@ -1978,7 +1986,7 @@ export const console: ConsoleNS = {
                                         }
                                     },
                                     recipients: {
-                                        hint:  "ප්‍රතිචාරයේ ලබන්නන් වලංගු කරන්න.",
+                                        hint: "ප්‍රතිචාරයේ ලබන්නන් වලංගු කරන්න.",
                                         label: "ලබන්නන්",
                                         placeholder: "ලබන්නන් ඇතුළත් කරන්න",
                                         validations: {
@@ -2267,7 +2275,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    spaProtocolSettingsWizard:{
+                    spaProtocolSettingsWizard: {
                         fields: {
                             callBackUrls: {
                                 label: "බලයලත් URL",
@@ -2415,7 +2423,7 @@ export const console: ConsoleNS = {
                 myaccount: {
                     description: "Asgardeo භාවිතා කරන්නන් සඳහා ස්වයං සේවා ද්වාරය",
                     popup: "මගේ ගිණුමට ප්‍රවේශ වීමට සහ ඔවුන්ගේ ගිණුම් කළමනාකරණය කිරීමට" +
-                    " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
+                        " ඔබේ පරිශීලකයන් සමඟ මෙම සබැඳිය බෙදා ගන්න.",
                     title: "මගේ ගිණුම",
                     enable: {
                         0: "සක්‍රීය කර ඇත",
@@ -2862,6 +2870,10 @@ export const console: ConsoleNS = {
                             "සත්‍යාපකය විය නොහැක. එය අතිරේක පියවරක් අවශ්ය වේ.",
                         message: "යාවත්කාලීන දෝෂයකි"
                     },
+                    updateIdentifierFirstInFirstStepError: {
+                        description: "Identifier First Authenticator හට පුරනය වීමේ ප්‍රවාහයේ බහු සත්‍යාපන පියවර අවශ්‍ය වේ.",
+                        message: "යාවත්කාලීන දෝෂයකි"
+                    },
                     updateOutboundProvisioning: {
                         genericError: {
                             description: "පිටතට යන ප්‍රතිපාදන IDP දැනටමත් පවතී.",
@@ -2957,7 +2969,7 @@ export const console: ConsoleNS = {
                 wizards: {
                     applicationCertificateWizard: {
                         emptyPlaceHolder: {
-                            description1:"මෙම යෙදුමට සහතිකයක් එකතු කර නොමැත.",
+                            description1: "මෙම යෙදුමට සහතිකයක් එකතු කර නොමැත.",
                             description2: "එය බැලීමට සහතිකයක් එක් කරන්න.",
                             title: "සහතිකයක් නැත"
                         },
@@ -3021,11 +3033,24 @@ export const console: ConsoleNS = {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: "සැලසුම් බලන්න",
-                            subtitles: "ඔබට සංවිධානයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
+                            subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ මෙම සංවිධානය සඳහා අවසර දී ඇති උපරිම උප සංවිධාන සංඛ්‍යාවට ළඟා වී ඇත."
+                            title: "ඔබ අවසර දී ඇති උපරිම උප ආයතන ගණනට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ උප සංවිධාන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                        heading: "ඔබ උප ආයතන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                    },
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "සැලසුම් බලන්න",
+                            subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
+                                "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
+                            title: "ඔබ අනුමත උප ආයතන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
+                        },
+                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම උප ආයතන මට්ටම් කරා ළඟා වී ඇත."
+                    },
+                    duplicateOrgError: {
+                        message: "එම නමින්ම උප සංවිධානයක් දැනටමත් පවතී.",
+                        description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන උප සංවිධානය දැනටමත් පවතී."
                     }
                 }
             },
@@ -3044,7 +3069,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් ලබා දෙන්න.",
-                                idpDescription: "අනන්යතා සපයන්නා සඳහා අද්විතීය නමක් ලබා දෙන්න.",
+                                idpDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් ලබා දෙන්න.",
                                 heading: "නම"
                             },
                             preRequisites: {
@@ -3078,18 +3103,73 @@ export const console: ConsoleNS = {
                             name: "වලංගු නමක් ඇතුළත් කරන්න"
                         }
                     },
+                    trustedTokenIssuer: {
+                        addWizard: {
+                            title: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නන්",
+                            subtitle: "Asgardeo නිකුත් කළ ටෝකනයක් සඳහා සිය ටෝකනය හුවමාරු කර ගැනීම සඳහා විශ්වාසදායක ටෝකන් " +
+                                "නිකුත් කරන්නෙකු ලියාපදිංචි කරන්න"
+                        },
+                        forms: {
+                            steps: {
+                                general: "සාමාන්ය සැකසුම්",
+                                certificate: "සහතික"
+                            },
+                            name: {
+                                label: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නාගේ නම",
+                                placeholder: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නා සඳහා නමක් ඇතුළත් කරන්න"
+                            },
+                            issuer: {
+                                label: "නිකුත් කරන්නා",
+                                hint: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නාගේ, අද්විතීය 'නිකුත් කරන්නා' අගය.",
+                                placeholder: "නිකුත් කරන්නා ඇතුළත් කරන්න",
+                                validation: {
+                                    notValid: "{{issuer}} යනු වලංගු නිකුත් කරන්නෙකු නොවේ."
+                                }
+                            },
+                            alias: {
+                                label: "අන්වර්ථය",
+                                placeholder: "අන්වර්ථය ඇතුළත් කරන්න",
+                                hint: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නාගේ {{productName}} සඳහා අන්වර්ථය.",
+                                validation: {
+                                    notValid: "{{alias}} වලංගු අන්වර්ථයක් නොවේ."
+                                }
+                            },
+                            certificateType: {
+                                label: "සහතික වින්යාස කිරීමේ මාදිලිය",
+                                requiredCertificate: "විශ්වාසදායක ටෝකන් නිකුත් කරන්නෙක් සඳහා සහතිකයක් අවශ්ය වේ."
+                            },
+                            jwksUrl: {
+                                optionLabel: "JWKS එන්ඩ්පොයින්ට්",
+                                placeholder: "JWKS එන්ඩ්පොයින්ට් URL ඇතුළත් කරන්න",
+                                label: "JWKS එන්ඩ්පොයින්ට් URL",
+                                hint: "ඔබේ විශ්වාසවන්ත ටෝකන් නිකුත් කරන්නාගෙන් අත්සන් කළ ප්රතිචාර සත්යාපනය කිරීම සඳහා Asgardeo "
+                                    + "මෙම URL භාවිතා කරනු ඇත.",
+                                validation: {
+                                    notValid: "වලංගු URL එකක් ඇතුලත් කරන්න"
+                                }
+                            },
+                            pem: {
+                                optionLabel: "PEM සහතිකයක් භාවිතා කරන්න",
+                                hint: "Asgardeo විසින් ඔබගේ විශ්වාසදායක ටෝකන් නිකුත් කරන්නාගෙන් අත්සන් කළ ප්රතිචාර සත්යාපනය කිරීම " +
+                                    "සඳහා මෙම සහතිකය භාවිතා කරනු ඇත.",
+                                uploadCertificateButtonLabel: "සහතික ගොනුව උඩුගත කරන්න",
+                                dropzoneText: "සහතික ගොනුව මෙහි ගෙනැවිත් දමන්න.",
+                                pasteAreaPlaceholderText: "PEM ආකෘතියෙන් විශ්වාසනීය ටෝකන් නිකුත් කරන්නාගේ සහතිකය අලවන්න."
+                            }
+                        }
+                    },
                     expert: {
                         wizardHelp: {
                             description: {
                                 connectionDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් සපයන්න.",
                                 heading: "නම",
-                                idpDescription: "අනන්යතා සැපයුම්කරු සඳහා අද්විතීය නමක් සපයන්න."
+                                idpDescription: "සම්බන්ධතාවය සඳහා අද්විතීය නමක් සපයන්න."
                             },
                             heading: "උදව්",
                             name: {
-                                connectionDescription: "ඒ ගැන වැඩි විස්තර විස්තර කිරීමට සම්බන්ධතාවය සඳහා විස්තරයක් සපයන්න.",
+                                connectionDescription: "ඒ ගැන වැඩි විස්තර කිරීමට සම්බන්ධතාවය සඳහා විස්තරයක් සපයන්න.",
                                 heading: "විස්තර",
-                                idpDescription: "අනන්යතා සැපයුම්කරු ඒ ගැන වැඩි විස්තර විස්තර කිරීමට විස්තරයක් සපයන්න."
+                                idpDescription: "සම්බන්ධතාවය ගැන වැඩි විස්තර කිරීමට විස්තරයක් සපයන්න."
                             },
                             subHeading: "පහත මාර්ගෝපදේශය භාවිතා කරන්න"
                         }
@@ -3142,7 +3222,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     addIDP: {
-                        header: "අනන්යතා සැපයුම්කරු පිළිබඳ මූලික තොරතුරු පුරවන්න.",
+                        header: "සම්බන්ධතාවය පිළිබඳ මූලික තොරතුරු පුරවන්න.",
                         steps: {
                             authenticatorConfiguration: {
                                 title: "සත්යාපන වින්යාසය"
@@ -3340,7 +3420,39 @@ export const console: ConsoleNS = {
                             attributeMapColumnHeader: "අනන්‍යතා සැපයුම්කරුගේ ගුණාංගය",
                             attributeMapInputPlaceholderPrefix: "උදා",
                             componentHeading: "සිතියම්ගත කිරීම ආරෝපණය කරයි",
-                            hint: "හැඳුනුම් සැපයුම්කරුගේ සහය දක්වන ගුණාංග එක් කරන්න"
+                            hint: "හැඳුනුම් සැපයුම්කරුගේ සහය දක්වන ගුණාංග එක් කරන්න",
+                            placeHolder: {
+                                title: "සිතියම්ගත කළ ගුණාංග කිසිවක් හමු නොවීය",
+                                subtitle: "මේ මොහොතේ මෙම සම්බන්ධතාවය සඳහා සිතියම්ගත කළ උපලක්ෂණ කිසිවක් එක් කර නොමැත.",
+                                action: "Attribute Mapping එක් කරන්න"
+                            },
+                            attributeMapTable: {
+                                mappedAttributeColumnHeader: "සිතියම්ගත කළ ගුණාංගය",
+                                externalAttributeColumnHeader: "බාහිර IdP ගුණාංගය"
+                            },
+                            heading: "අනන්‍යතා සපයන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
+                            subheading: "බාහිර අනන්‍යතා සපයන්නා වෙතින් සහාය දක්වන උපලක්ෂණ එකතු කර සිතියම්ගත කරන්න.",
+                            search: {
+                                placeHolder: "සිතියම්ගත ගුණාංග සොයන්න"
+                            },
+                            attributeDropdown: {
+                                label: "සිතියම් වෙත",
+                                placeHolder: "සිතියම්කරණ ගුණාංගය තෝරන්න",
+                                noResultsMessage: "වෙනත් ගුණාංග සෙවීමක් උත්සාහ කරන්න."
+                            },
+                            externalAttributeInput: {
+                                label: "බාහිර IdP ගුණාංගය",
+                                placeHolder: "බාහිර IdP ගුණාංගය ඇතුළු කරන්න",
+                                existingErrorMessage: "දැනටමත් මෙම නම සමඟ සිතියම්ගත කර ඇති ගුණාංගයක් ඇත."
+                            },
+                            addAttributeButtonLabel: "Attribute Mapping එක් කරන්න",
+                            modal: {
+                                header: "Attribute Mappings එක් කරන්න",
+                                placeholder: {
+                                    title: "ඔබ කිසිදු උපලක්ෂණයක් තෝරාගෙන නැත",
+                                    subtitle: "සිතියම් ගුණාංග සහ ආරම්භ කිරීමට Add Attribute Mapping ක්ලික් කරන්න."
+                                }
+                            }
                         },
                         attributeProvisioning: {
                             attributeColumnHeader: {
@@ -4085,242 +4197,6 @@ export const console: ConsoleNS = {
                     }
                 }
             },
-            idvp: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterValue: {
-                                placeholder: "සෙවීමට අගය ඇතුලත් කරන්න"
-                            }
-                        }
-                    },
-                    placeholder: "නම මගින් සොයන්න"
-                },
-                buttons: {
-                    addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
-                },
-                placeholders: {
-                    emptyIDVPList: {
-                        subtitles: {
-                            0: "මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන් නොමැත.",
-                            1: "ඔබට අනන්‍යතා තහවුරු කරන්නන් නිර්මාණය කිරීමේ විසාඩය මගින්",
-                            2: "පහසුවෙන් අනන්‍යතා තහවුරු කරන්නෙක් එක් කර ගත හැක."
-                        },
-                        title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
-                    },
-                    emptyIDVPTypeList: {
-                        subtitles: "ඔබට <1>WSO2 Connector Store</1> වෙතින් නව අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි ඇතුල් කළ හැක.",
-                        title: "අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි කිසිවක් හමු නොවිණි"
-                    }
-                },
-                confirmations: {
-                    deleteIDVP: {
-                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න",
-                        content: "ඔබ මෙම අනන්‍යතා තහවුරු කරන්නා මකා දැමුවහොත්, ඔබට එය නැවත ආපසු හැරවීමට නොහැකි වනු ඇත. " +
-                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
-                        header: "ඔබට විශ්වාසද?",
-                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර අනන්‍යතා තහවුරු කරන්නා ස්ථිරවම මකා දැමෙනු ඇත."
-                    }
-                },
-                notifications: {
-                    getIDVPList: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
-                        },
-                        genericError: {
-                            description: "අනන්‍යතා තහවුරු කරන්නන් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
-                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
-                        }
-                    },
-                    deleteIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
-                        },
-                        genericError: {
-                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය",
-                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
-                        },
-                        success: {
-                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීම සාර්ථකයි",
-                            message: "මකා දැමීම සාර්ථකයි"
-                        }
-                    },
-                    updateIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
-                        },
-                        genericError: {
-                            description: "අනන්‍යතා තහවුරු කරන්නා යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
-                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
-                        },
-                        success: {
-                            description: "අනන්‍යතා තහවුරු කරන්නා සාර්ථකව යාවත්කාලීන කරන ලදී.",
-                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
-                        }
-                    },
-                    addIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "නිර්මාණය අසාර්ථකයි"
-                        },
-                        genericError: {
-                            description: "අනන්‍යතා තහවුරු කරන්නා නිර්මාණය කිරීමේදී දෝෂයක් ඇති විය.",
-                            message: "නිර්මාණය අසාර්ථකයි"
-                        },
-                        success: {
-                            description: "අනන්‍යතා තහවුරු කරන්නාව සාර්ථකව නිර්මාණය කරන ලදී.",
-                            message: "නිර්මාණය සාර්ථකයි"
-                        }
-                    },
-                    submitAttributeSettings: {
-                        error: {
-                            description: "සියලුම අනිවාර්ය ගුණාංග වින්‍යාස කිරීමට අවශ්‍යය.",
-                            message: "යාවත්කාලීන කිරීම කළ නොහැක"
-                        }
-                    },
-                    getAllLocalClaims: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "දේශීය හිමිකම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    },
-                    getIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "අනන්‍යතා තහවුරු කරන්නාගේ තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    },
-                    getUIMetadata: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description:"අනන්‍යතා තහවුරු කරන්නාගේ පාරදත්ත ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    },
-                    getIDVPTemplateTypes: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description:"අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි වර්ග ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    },
-                    getIDVPTemplateType: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිලි වර්ගය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    },
-                    getIDVPTemplate: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        },
-                        genericError: {
-                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිල්ල ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
-                            message: "ලබා ගැනීමේ දෝෂයකි"
-                        }
-                    }
-                },
-                forms: {
-                    generalDetails: {
-                        description: {
-                            hint: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය",
-                            label: "විස්තරය",
-                            placeholder: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය ඇතුළත් කරන්න."
-                        },
-                        name: {
-                            hint: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක්",
-                            label: "නම",
-                            placeholder: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක් ඇතුළත් කරන්න.",
-                            validations: {
-                                duplicate: "මෙම නම සහිත තවත් අනන්‍යතා තහවුරු කරන්නෙක් සිටී",
-                                empty: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
-                                maxLengthReached: "අනන්‍යතා තහවුරු කරන්නාගේ නමෙහි අකුරු ගණන {{ maxLength }} ට වඩා වැඩි විය නොහැක",
-                                required: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
-                                invalid: "අන්‍යතා තහවුරු කරන්නාගේ නම වලංගු නොවේ"
-                            }
-                        }
-                    },
-                    attributeSettings: {
-                        attributeMapping: {
-                            heading: "අනන්‍යතා තහවුරු කරන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
-                            hint: "බාහිර අනන්‍යතා තහවුරු කරන්නාගේ සහය දක්වන ගුණාංග එකතු කර සිතියම්ගත කරන්න.",
-                            addButton: "ගුණාංගයක් සිතියම්ගත කරන්න",
-                            emptyPlaceholderEdit: {
-                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා සිතියම් ගතකල ගුණාංග නොමැත.",
-                                title: "ගුණාංග සිතියම් ගතකර නැත"
-                            },
-                            emptyPlaceholderCreate:{
-                                subtitle:"ගුණාංග සිතියම්ගත කර <1>ගුණාංගයක් සිතියම්ගත කරන්න</1> බොත්තම ඔබන්න.",
-                                title: "ඔබ ගුණාංග සිතියම් ගතකර නැත"
-                            }
-                        },
-                        attributeMappingListItem: {
-                            validation: {
-                                duplicate: "මෙම නම සමඟ සිතියම් ගත කළ ගුණාංගයක් දැනටමත් ඇත.",
-                                required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
-                                invalid: "කරුණාකර වලංගු ආදානයක් ඇතුළත් කරන්න"
-                            },
-                            placeholders: {
-                                mappedValue: "බාහිර ගුණාංගය ඇතුලත් කරන්න",
-                                localClaim: "සිතියම් ගතකරන ගුණාංගය තෝරාගන්න"
-                            },
-                            labels: {
-                                mappedValue: "බාහිර ගුණාංගය",
-                                localClaim: "සිතියම් ගතවන්නේ"
-                            }
-                        },
-                        attributeSelectionModal: {
-                            header: "ගුණාංග සිතියම්ගත කරන්න"
-                        }
-                    },
-                    dynamicUI: {
-                        validations: {
-                            required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
-                            regex: "ආදානය බලාපොරොත්තු වන ආකාරයට නොගැලපේ",
-                            range: "අගය {{min}} සිට {{max}} අතර විය යුතුය"
-                        }
-                    }
-                },
-                dangerZoneGroup: {
-                    deleteIDVP: {
-                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
-                        header: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
-                        subheader: "මෙය ආපසු හැරවිය නොහැකි ක්‍රියාවකි, ප්‍රවේශමෙන් කටයුතු කරන්න."
-                    },
-                    disableIDVP: {
-                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
-                        header: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
-                        subheader: "ඔබ අනන්‍යතා සත්‍යාපන සැපයුම්කරුවෙකු අක්‍රිය කළ පසු, එය නැවත සක්‍රිය කරන තෙක් එය තවදුරටත් භාවිත කළ නොහැක."
-                    },
-                    header: "ආන්තරා කලාපය"
-                },
-                list: {
-                    actions: "ක්‍රියා",
-                    name: "නම"
-                }
-            },
             overview: {
                 banner: {
                     heading: "සංවර්ධකයින් සඳහා WSO2 හැඳුනුම් සේවාදායකය",
@@ -4524,8 +4400,7 @@ export const console: ConsoleNS = {
                     application: "අයදුම්පත්",
                     general: "ජනරාල්",
                     gettingStarted: "ඇරඹේ",
-                    identityProviders: "හැඳුනුම්පත් සපයන්නන්",
-                    identityVerificationProviders: "අනන්‍යතා තහවුරු කරන්නන්"
+                    identityProviders: "හැඳුනුම්පත් සපයන්නන්"
                 },
                 customize: "අභිරුචිකරණය කරන්න",
                 identityProviderEdit: "හැඳුනුම්පත් සපයන්නන් සංස්කරණය කරන්න",
@@ -4619,18 +4494,6 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "ප්‍රතිපාදන"
                 },
                 title: "අනන්‍යතා සැපයුම්කරු තෝරන්න"
-            },
-            idvp: {
-                subTitle: "පරිශීලකයින්ට ඔවුන්ගේ අනන්‍යතා තහවුරු කිරීමට ඉඩ දීම සඳහා අනන්‍යතා තහවුරු කරන්නන් කළමනාකරණය කරන්න",
-                title: "අනන්‍යතා තහවුරු කරන්නන්"
-            },
-            idvpTemplate: {
-                backButton: "අනන්‍යතා තහවුරු කරන්නන් වෙත ආපසු යන්න",
-                subTitle: "පහත අනන්‍යතා තහවුරු කරන්නන්ගෙන් එකක් තෝරන්න.",
-                title: "අනන්‍යතා තහවුරු කරන්නන් තෝරන්න",
-                "search": {
-                    "placeholder": "නමින් සොයන්න"
-                }
             },
             overview: {
                 subTitle: "යෙදුම්, අනන්‍යතා සපයන්නන්, පරිශීලකයින් සහ භූමිකාවන් වින්‍යාස කිරීම සහ කළමනාකරණය " +
@@ -4772,7 +4635,7 @@ export const console: ConsoleNS = {
                             duplicate: "දී ඇති {{type}} නම සමඟ {{type}} දැනටමත් පවතී.",
                             empty: "ඉදිරියට යාමට {{type}} නම අවශ්‍ය වේ.",
                             invalid: "{{type}} නමක අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා, -, සහ _ පමණි. "
-                                +"අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
+                                + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
                         }
                     }
                 }
@@ -4827,7 +4690,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
-                        addCertificate:{
+                        addCertificate: {
                             genericError: {
                                 description: "සහතිකය ආයාත කිරීමේදී දෝෂයක් සිදුවිය.",
                                 message: "යම් දෝෂයක් ඇති වී ඇත"
@@ -5383,7 +5246,7 @@ export const console: ConsoleNS = {
                             label: "මෙම ගුණාංගය කියවීමට පමණක් කරන්න"
                         },
                         readOnlyHint: "මෙය තෝරන්නේ නම්, මෙම ගුණාංගයේ වටිනාකම පරිශීලක පැතිකඩක කියවීමට පමණි. " +
-                        "ගුණාංග අගය පද්ධතිය මඟින් නිර්වචනය කර ඇත්නම් මෙම විකල්පය තෝරා ගැනීමට වග බලා ගන්න.",
+                            "ගුණාංග අගය පද්ධතිය මඟින් නිර්වචනය කර ඇත්නම් මෙම විකල්පය තෝරා ගැනීමට වග බලා ගන්න.",
                         regEx: {
                             label: "සාමාන්ය ලෙස",
                             placeholder: "සාමාන්‍ය ප්‍රකාශනයක් ඇතුළත් කරන්න"
@@ -5393,7 +5256,7 @@ export const console: ConsoleNS = {
                             label: "පරිශීලක ලියාපදිංචි කිරීමේදී මෙම ගුණාංගය අවශ්‍ය කරන්න"
                         },
                         requiredHint: "තෝරාගෙන තිබේ නම්, පරිශීලකයා පැතිකඩෙහි මෙම ගුණාංගය සඳහා වටිනාකමක් සඳහන් " +
-                        "කළ යුතුය.",
+                            "කළ යුතුය.",
                         requiredWarning: "පරිශීලක පැතිකඩෙහි විද්‍යුත් තැපැල් උපලක්ෂණය නොපෙන්වීමට සහ අවශ්‍ය නොවන බවට " +
                             "පත් කිරීමට, ඔබ ඔබේ සංවිධානය සඳහා ගිණුම් සත්‍යාපනය අබල කිරීමට අවශ්‍ය වේ.",
                         supportedByDefault: {
@@ -5825,7 +5688,7 @@ export const console: ConsoleNS = {
                 categories: "ප්රවර්ග",
                 connectorSubHeading: "{{Name}} සැකසුම් වින්‍යාස කරන්න.",
                 connectorCategories: {
-                    passwordPolicies : {
+                    passwordPolicies: {
                         name: "මුරපද ප්රතිපත්ති",
                         connectors: {
                             passwordHistory: {
@@ -5868,7 +5731,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    userOnboarding : {
+                    userOnboarding: {
                         name: "පරිශීලක ඔන්බෝඩ් කිරීම",
                         connectors: {
                             selfSignUp: {
@@ -6008,7 +5871,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    loginAttemptsSecurity : {
+                    loginAttemptsSecurity: {
                         name: "පිවිසුම් උත්සාහය ආරක්ෂාව",
                         connectors: {
                             accountLockHandler: {
@@ -6059,7 +5922,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    accountManagement : {
+                    accountManagement: {
                         name: "ගිණුම් කළමනාකරණය",
                         connectors: {
                             suspensionNotification: {
@@ -6203,7 +6066,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    otherSettings : {
+                    otherSettings: {
                         name: "වෙනත් සැකසුම්",
                         connectors: {
                             piiController: {
@@ -6260,7 +6123,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             analyticsEngine: {
-                                friendlyName: "[අවලංගු කරන ලද] අනන්යතා සේවාදායක විශ්ලේෂණ",
+                                friendlyName: "[අවලංගු කරන ලද] සම්බන්ධතා විශ්ලේෂණ",
                                 messages: {
                                     deprecation: {
                                         description: "WSO2 Identity Server විශ්ලේෂණ දැන් ඉවත් කර ඇත.<1> එල්ක් ඇන්ටිෆික් </ 1> වෙනුවට භාවිතා කරන්න.",
@@ -6370,7 +6233,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    multiFactorAuthenticators : {
+                    multiFactorAuthenticators: {
                         name: "බහු සාධක සත්යාපනය",
                         connectors: {
                             backupCodeAuthenticator: {
@@ -6442,7 +6305,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 pageSubHeading: "{{ name }} වින්‍යාස කර කළමනාකරණය කරන්න."
-
             },
             groups: {
                 advancedSearch: {
@@ -6559,7 +6421,7 @@ export const console: ConsoleNS = {
                             "පරිශීලක වෙළඳසැලෙන් කණ්ඩායම් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයක් ඇතිවිය.",
                             "කරුණාකර පරිශීලක වෙළඳසැලේ සම්බන්ධතා තොරතුරු නිවැරදි බවට වග බලා ගන්න."
                         ],
-                        title:"පරිශීලක වෙළඳසැලෙන් කණ්ඩායම් ලබා ගැනීමට නොහැකි විය"
+                        title: "පරිශීලක වෙළඳසැලෙන් කණ්ඩායම් ලබා ගැනීමට නොහැකි විය"
                     }
                 }
             },
@@ -6580,6 +6442,8 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                viewAttributes: "ගුණාංග පෙන්වන්න",
+                manageAttributes: "ගුණාංග කළමනාකරණය කරන්න",
                 addAttributes: {
                     description: "ඔබට {{name}} විෂය පථය සමඟ සම්බන්ධ වීමට අවශ්‍ය පරිශීලක ගුණාංග තෝරන්න."
                 },
@@ -6604,7 +6468,7 @@ export const console: ConsoleNS = {
                 },
                 editScope: {
                     claimList: {
-                        addClaim:  "නව ගුණාංගය",
+                        addClaim: "නව ගුණාංගය",
                         emptyPlaceholder: {
                             action: "ගුණාංගය එක් කරන්න",
                             subtitles: {
@@ -6647,7 +6511,7 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක",
                                     invalid: "විෂය පථයට ඇතුළත් විය හැක්කේ අක්ෂරාංක සහ _. පමණි. " +
-                                    "තවද අක්ෂර 3 සිට 40 දක්වා දිග විය යුතුය."
+                                        "තවද අක්ෂර 3 සිට 40 දක්වා දිග විය යුතුය."
                                 }
                             }
                         }
@@ -6789,7 +6653,7 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                placeholders:{
+                placeholders: {
                     emptyList: {
                         action: "නව OIDC විෂය පථය",
                         subtitles: {
@@ -6854,10 +6718,10 @@ export const console: ConsoleNS = {
                 confirmations: {
                     deleteOrganization: {
                         assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
-                        content: "ඔබ මෙම සංවිධානය ඉවත් කළහොත්, මෙම සංවිධානය හා සම්බන්ධ සියලු " +
+                        content: "ඔබ මෙම ආයතනය ඉවත් කළහොත්, මෙම ආයතනය හා සම්බන්ධ සියලු " +
                             "දත්ත ඉවත් කරනු ලැබේ. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔබට විශ්වාසද?",
-                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සංවිධානය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර ආයතනය සම්පූර්ණයෙන්ම ඉවත් කරනු ඇත."
                     }
                 },
                 edit: {
@@ -6871,14 +6735,14 @@ export const console: ConsoleNS = {
                     back: "ආපසු",
                     dangerZone: {
                         disableOrganization: {
-                            disableActionTitle: "සංවිධානය අක්‍රීය කරන්න",
-                            enableActionTitle: "සංවිධානය සක්‍රීය කරන්න",
-                            subheader: "සංවිධානයක් අක්‍රිය කිරීමෙන් ඔබට සංවිධානයට සම්බන්ධ ප්‍රවේශය අහිමි විය හැක. කල්පනාකාරීව ඉදිරියට යන්න."
+                            disableActionTitle: "ආයතනය අක්‍රීය කරන්න",
+                            enableActionTitle: "ආයතනය සක්‍රීය කරන්න",
+                            subheader: "ආයතනයක් අක්‍රිය කිරීමෙන් ඔබට ආයතනයට සම්බන්ධ ප්‍රවේශය අහිමි විය හැක. කල්පනාකාරීව ඉදිරියට යන්න."
                         },
-                        subHeader: "ඔබට මෙම සංවිධානය මැකීමට අවශ්‍ය බව විශ්වාසද?",
-                        title: "සංවිධානය මකන්න"
+                        subHeader: "ඔබට මෙම ආයතනය මැකීමට අවශ්‍ය බව විශ්වාසද?",
+                        title: "ආයතනය මකන්න"
                     },
-                    description: "සංවිධානය සංස්කරණය කරන්න",
+                    description: "ආයතනය සංස්කරණය කරන්න",
                     fields: {
                         created: {
                             ariaLabel: "නිර්මාණය කළ කාලය",
@@ -6931,11 +6795,11 @@ export const console: ConsoleNS = {
                             }
                         },
                         name: {
-                            label: "සංවිධානයේ නම",
-                            placeholder: "සංවිධානයේ නම ඇතුළත් කරන්න",
+                            label: "ආයතනයේ නම",
+                            placeholder: "ආයතනයේ නම ඇතුළත් කරන්න",
                             validation: {
-                                duplicate: "සංවිධානයේ නම දැනටමත් පවතී",
-                                empty: "සංවිධානයේ නම අවශ්‍යයි"
+                                duplicate: "ආයතනයේ නම දැනටමත් පවතී",
+                                empty: "ආයතනයේ නම අවශ්‍යයි"
                             }
                         },
                         structural: "ව්යුහාත්මක",
@@ -6944,12 +6808,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
-                    name: "සියලුම සංවිධාන"
+                    description: "පවතින සියලුම උප ආයතන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම උප ආයතන"
                 },
                 list: {
                     actions: {
-                        add: "සංවිධානය එකතු කරන්න"
+                        add: "උප ආයතනය එකතු කරන්න"
                     },
                     columns: {
                         actions: "ක්රියාවන්",
@@ -6958,54 +6822,54 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "සංවිධානය එකතු කරන්න",
-                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
-                        subtitle2: "නව සංවිධානයක් සාදන්න."
+                        header: "උප ආයතනය එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව උප ආයතනයක් සාදන්න.",
+                        subtitle2: "නව උප ආයතනයක් සාදන්න."
                     }
                 },
                 notifications: {
                     addOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය එක් කිරීමේදී දෝෂයකි"
+                            message: "ආයතනය එක් කිරීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය එක් කිරීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය එක් කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව එකතු කරන ලදී",
-                            message: "සංවිධානය සාර්ථකව එකතු කරන ලදී"
+                            description: "ආයතනය සාර්ථකව එකතු කරන ලදී",
+                            message: "ආයතනය සාර්ථකව එකතු කරන ලදී"
                         }
                     },
                     deleteOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය මකා දැමීමේදී දෝෂයකි"
+                            message: "ආයතනය මකා දැමීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය මකා දැමීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය මකා දැමීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව මකා දමන ලදී",
-                            message: "සංවිධානය සාර්ථකව මකා ඇත"
+                            description: "ආයතනය සාර්ථකව මකා දමන ලදී",
+                            message: "ආයතනය සාර්ථකව මකා ඇත"
                         }
                     },
-                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} සංවිධානයට උප සංවිධාන එකක් හෝ " +
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} ආයතනයට උප සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     disableOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයකි"
+                            message: "ආයතනය අක්‍රිය කිරීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත",
-                            message: "සංවිධානය සාර්ථකව අක්‍රිය කර ඇත"
+                            description: "ආයතනය සාර්ථකව අක්‍රිය කර ඇත",
+                            message: "ආයතනය සාර්ථකව අක්‍රිය කර ඇත"
                         }
                     },
                     disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
@@ -7013,99 +6877,99 @@ export const console: ConsoleNS = {
                     enableOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයකි"
+                            message: "ආයතනය සක්‍රීය කිරීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය සක්‍රීය කිරීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය සක්‍රීය කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත",
-                            message: "සංවිධානය සාර්ථකව සක්‍රීය කර ඇත"
+                            description: "ආයතනය සාර්ථකව සක්‍රීය කර ඇත",
+                            message: "ආයතනය සාර්ථකව සක්‍රීය කර ඇත"
                         }
                     },
                     fetchOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය ලබා ගැනීමේදී දෝෂයකි"
+                            message: "ආයතනය ලබා ගැනීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව ගෙන එන ලදී",
-                            message: "සංවිධානය සාර්ථකව ලබා ගන්නා ලදී"
+                            description: "ආයතනය සාර්ථකව ගෙන එන ලදී",
+                            message: "ආයතනය සාර්ථකව ලබා ගන්නා ලදී"
                         }
                     },
                     getOrganizationList: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                            message: "ආයතන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     },
                     updateOrganization: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                            message: "ආයතනය යාවත්කාලීන කිරීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධානය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතනය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානය සාර්ථකව යාවත්කාලීන කරන ලදී",
-                            message: "යාවත්කාලීන සංවිධානය"
+                            description: "ආයතනය සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "යාවත්කාලීන ආයතනය"
                         }
                     },
                     updateOrganizationAttributes: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානයේ ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                            message: "ආයතනයේ ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
                         },
                         genericError: {
-                            description: "සංවිධාන ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            description: "ආයතන ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
                         success: {
-                            description: "සංවිධානයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
-                            message: "සංවිධානයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
+                            description: "ආයතනයේ උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "ආයතනයේ උපලක්ෂණ යාවත්කාලීන කරන ලදී"
                         }
                     }
                 },
                 placeholders: {
                     emptyList: {
-                        action: "සංවිධානය එකතු කරන්න",
+                        action: "උප ආයතනය එකතු කරන්න",
                         subtitles: {
-                            0: "මේ මොහොතේ සංවිධාන නොමැත.",
-                            1: "ඔබට පහසුවෙන් නව සංවිධානයක් එක් කළ හැකිය",
+                            0: "මේ මොහොතේ ආයතන නොමැත.",
+                            1: "ඔබට පහසුවෙන් නව ආයතනයක් එක් කළ හැකිය",
                             2: "පහත බොත්තම මත ක්ලික් කිරීම.",
-                            3: "මේ මොහොතේ {{parent}} යටතේ කිසිදු සංවිධානයක් නොමැත."
+                            3: "මේ මොහොතේ {{parent}} යටතේ කිසිදු ආයතනයක් නොමැත."
                         },
-                        title: "නව සංවිධානයක් එක් කරන්න"
+                        title: "නව ආයතනයක් එක් කරන්න"
                     }
                 },
                 shareApplicationSubTitle: "යෙදුම බෙදා ගැනීමට පහත විකල්ප වලින් එකක් තෝරන්න.",
-                shareApplicationRadio: "සියලුම උප සංවිධාන සමඟ බෙදා ගන්න",
-                shareApplicationInfo: "ඔබගේ වත්මන් සංවිධානය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
-                    "සංවිධාන සහ සියලුම නව උපසංවිධාන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
-                unshareApplicationRadio: "කිසිදු උප සංවිධානයක් සමඟ බෙදා නොගන්න",
-                shareWithSelectedOrgsRadio: "තෝරාගත් උප සංවිධාන සමඟ පමණක් බෙදා ගන්න",
-                unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම සංවිධානය යටතේ නිර්මාණය කරන " +
-                    "දැනට පවතින උප-සංවිධාන හෝ නව උප-සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
+                shareApplicationRadio: "සියලුම උප ආයතන සමඟ බෙදා ගන්න",
+                shareApplicationInfo: "ඔබගේ වත්මන් ආයතනය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
+                    "ආයතන සහ සියලුම නව උප ආයතන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
+                unshareApplicationRadio: "කිසිදු උප ආයතනයක් සමඟ බෙදා නොගන්න",
+                shareWithSelectedOrgsRadio: "තෝරාගත් උප ආයතන සමඟ පමණක් බෙදා ගන්න",
+                unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම ආයතනය යටතේ නිර්මාණය කරන " +
+                    "දැනට පවතින උප ආයතන හෝ නව උප ආයතන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
                     "මෙය ඔබට ඉඩ සලසයි.",
                 subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
-                    emptyList: "පෙන්වීමට සංවිධානයක් නැත.",
+                    emptyList: "පෙන්වීමට ආයතනයක් නැත.",
                     search: {
                         placeholder: "නම අනුව සොයන්න"
                     },
                     goBack: "ආපසු යන්න",
-                    subOrganizations: "උප සංවිධාන",
+                    subOrganizations: "උප ආයතන",
                     switchLabel: "ආයතනය"
                 },
                 title: "ආයතන"
@@ -7388,7 +7252,7 @@ export const console: ConsoleNS = {
                                     duplicate: "දී ඇති {{type}} නම සමඟ {{type}} දැනටමත් පවතී.",
                                     empty: "ඉදිරියට යාමට {{type}} නම අවශ්‍ය වේ.",
                                     invalid: "{{type}} නමක අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා, -, සහ _ පමණි. "
-                                        +"අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
+                                        + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
                                 }
                             }
                         }
@@ -7509,7 +7373,7 @@ export const console: ConsoleNS = {
                                 title: "පරිශීලකයින් පවරා නොමැත"
                             },
                             user: "පරිශීලකයා",
-                            organization: "සංවිධානය"
+                            organization: "ආයතනය"
                         }
                     }
                 },
@@ -7705,7 +7569,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "සංවිධාන කළමනාකරණය",
+                    organizations: "ආයතන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
@@ -7725,7 +7589,7 @@ export const console: ConsoleNS = {
                 localDialect: "දේශීය උපභාෂාව",
                 loginAttemptsSecurity: "පුරනය වීමේ උත්සාහයන් ආරක්ෂාව",
                 multiFactorAuthenticators: "බහු සාධක සත්‍යාපනය කරන්නන්",
-                organizations: "ආයතන",
+                organizations: "උප ආයතන",
                 otherSettings: "වෙනත් සැකසුම්",
                 overview: "දළ විශ්ලේෂණය",
                 passwordPolicies: "මුරපද ප්රතිපත්ති",
@@ -7826,7 +7690,7 @@ export const console: ConsoleNS = {
                     },
                     dateOfBirth: {
                         placeholder: {
-                            part1:"ඇතුල් කරන්න",
+                            part1: "ඇතුල් කරන්න",
                             part2: "YYYY-MM-DD ආකෘතියෙන්"
                         }
                     }
@@ -7839,7 +7703,6 @@ export const console: ConsoleNS = {
                                 options: {
                                     askPassword: "මුරපදය සැකසීමට පරිශීලකයාට ආරාධනා කරන්න",
                                     createPassword: "පරිශීලක මුරපදය සකසන්න"
-
                                 }
                             }
                         },
@@ -7924,7 +7787,7 @@ export const console: ConsoleNS = {
                     confirmationModal: {
                         assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
                         content: "ඔබ මෙම ගිණුම අගුළු දැමුවහොත්, පරිශීලකයාට කිසිදු ව්‍යාපාරික" +
-                          " යෙදුමකට පුරනය වීමට නොහැකි වනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                            " යෙදුමකට පුරනය වීමට නොහැකි වනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව පරිශීලක ගිණුම අගුළු දමයි."
                     }
@@ -7934,7 +7797,7 @@ export const console: ConsoleNS = {
                         heading: "අවවාදයයි",
                         message: "මෙම නිර්මාණය කළ පරිශීලකයාට කාර්යභාරයක් පැවරෙන්නේ නැති බව කරුණාවෙන්" +
                             " සලකන්න. ඔබට මෙම පරිශීලකයාට භූමිකාවන් පැවරීමට අවශ්‍ය නම් කරුණාකර"
-                                + " පහත බොත්තම ක්ලික් කරන්න."
+                            + " පහත බොත්තම ක්ලික් කරන්න."
                     },
                     addUserWizard: {
                         buttons: {
@@ -8060,7 +7923,7 @@ export const console: ConsoleNS = {
                                     label: "ආයතනය",
                                     placeholder: "ඔබේ සංවිධානයට ඇතුළු වන්න",
                                     validations: {
-                                        empty: "සංවිධානය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
+                                        empty: "ආයතනය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
                                     }
                                 }
                             }
@@ -8520,20 +8383,6 @@ export const console: ConsoleNS = {
                         success: {
                             description: "නව පරිශීලකයා සාර්ථකව එකතු කරන ලදි.",
                             message: "පරිශීලකයා සාර්ථකව එකතු කරන ලදි"
-                        }
-                    },
-                    addUserPendingApproval: {
-                        error: {
-                            description: "{{description}}",
-                            message: "නව පරිශීලකයා එකතු කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "නව පරිශීලකයා එක් කිරීමට නොහැකි විය",
-                            message: "යම් දෝෂයක් ඇති වී ඇත"
-                        },
-                        success: {
-                            description: "නව පරිශීලකයා පිළිගෙන ඇති අතර අනුමැතිය බලාපොරොත්තු වේ.",
-                            message: "පරිශීලකයා එකතු කිරීම සඳහා පිළිගෙන ඇත"
                         }
                     },
                     deleteUser: {
@@ -9023,6 +8872,71 @@ export const console: ConsoleNS = {
                 messageInfo: "සබල කර ඇත්නම්, JWT එහි කල් ඉකුත් වීමේ කාල සීමාව තුළ නැවත භාවිත කළ හැක.. JTI (JWT ID) යනු JWT සඳහා අනන්‍ය හඳුනාගැනීමක් සපයන හිමිකම් පෑමකි.",
                 tokenReuseEnabled: "ටෝකන් නැවත භාවිතය සබල කර ඇත",
                 tokenReuseDisabled: "ටෝකන් නැවත භාවිතා කිරීම අක්‍රීය කර ඇත"
+            },
+            insights: {
+                pageTitle: "විශ්ලේෂණ",
+                title: "විශ්ලේෂණ",
+                description: "භාවිත සංඛ්‍යාලේඛන සමඟ පරිශීලක හැසිරීම වඩා හොඳින් තේරුම් ගන්න.",
+                durationMessage: "<1>{{ startTimestamp }}</1> සිට <1>{{ endTimestamp }}</1> දක්වා ප්‍රතිඵල පෙන්වමින්",
+                durationOption: "අවසන් දින {{ duration}}",
+                lastFetchedMessage: {
+                    label: "අවසන් වරට ලබා ගත්තේ {{ time }}",
+                    tooltipText: "නවතම ක්‍රියාකාරකම් සඳහා විශ්ලේෂණ ප්‍රස්තාරවල පිළිබිඹු වීමට මිනිත්තු කිහිපයක් ගතවනු ඇත."
+                },
+                commonFilters: {
+                    userId: "පරිශීලක හැඳුනුම් අගය"
+                },
+                activityType: {
+                    login: {
+                        filters: {
+                            userStore: "පරිශීලක ගබඩාව",
+                            serviceProvider: "යෙදුම"
+                        }
+                    },
+                    registration: {
+                        filters: {
+                            onboardingMethod: {
+                                attributeName: "ඇතුල්වීමේ ක්‍රමය",
+                                values: {
+                                    adminInitiated: "පරිපාලක විසිනි",
+                                    userInvited: "ඊමේල් ආරාධනාවකින්",
+                                    selfSignUp: "ස්වයං ලියාපදිංචිය මගින්"
+                                }
+                            }
+                        }
+                    }
+                },
+                advancedFilter: {
+                    filterAttribute: "පෙරහන් ගුණාංගය",
+                    filterCondition: "පෙරහන් කොන්දේසිය",
+                    filterValue: "පෙරහන් අගය"
+                },
+                graphs: {
+                    activeUsers: {
+                        title: "ක්‍රියාකාරී පරිශීලකයින්",
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ ඔබේ සංවිධානයට පුරනය වූ අද්විතීය පරිශීලකයින් ගණන"
+                    },
+                    successLogins: {
+                        title: "සාර්ථක පිවිසුම්",
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ ඔබේ සංවිධානයට සාර්ථක පුරනය වීම් ගණන"
+                    },
+                    failedLogins: {
+                        title: "අසාර්ථක පිවිසුම්"
+                    },
+                    signups: {
+                        title: "පරිශීලක ලියාපදිංචි කිරීම්",
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක (B2C) ලියාපදිංචි කිරීම් ගණන"
+                    }
+                },
+                notifications: {
+                    fetchInsights: {
+                        genericError: {
+                            description: "තෝරාගත් කාල සීමාව සඳහා විදසුන් ලබා ගැනීමේදී දෝෂයක් සිදු විය.",
+                            message: "දෝෂයක් සිදු විය"
+                        }
+                    }
+                },
+                compareToLastPeriodMessage: "පසුගිය කාල පරිච්ඡේදය සමඟ සසඳන්න"
             }
         },
         notifications: {
@@ -9122,8 +9036,8 @@ export const console: ConsoleNS = {
                 title: "විෂය පථය සංස්කරණය කරන්න"
             },
             organizations: {
-                subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
-                title: "ආයතන"
+                subTitle: "උප ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                title: "උප ආයතන"
             },
             overview: {
                 subTitle: "පරිශීලකයින්, භූමිකාවන්, උපභාෂා, සේවාදායක වින්‍යාසයන් වින්‍යාස කිරීම " +
@@ -9154,7 +9068,6 @@ export const console: ConsoleNS = {
             }
         },
         placeholders: {
-
             emptySearchResult: {
                 action: "සෙවුම් විමසුම හිස් කරන්න",
                 subtitles: {
@@ -9170,6 +9083,15 @@ export const console: ConsoleNS = {
                     1: "කරුණාකර  පසුව එන්න. ඔබේ ඉවසීමට ස්තුතියි."
                 },
                 title: "පිටුව ඉදිවෙමින් පවතී"
+            }
+        }
+    },
+    featureGate: {
+        enabledFeatures: {
+            tags: {
+                premium: {
+                    warning: "මෙය ප්‍රීමියක් විවෘත කරන ලද විශේෂිත සේවාවක් වෙනුවට නොවනු ඇත්තේ නිදහස් සඳහා නොවේ. මෙම විශේෂිත සේවාව සඳහා අනුපාතය වෙළුම් කරන්න."
+                }
             }
         }
     }

@@ -744,6 +744,7 @@
 
             .left-icon {
                 margin-top: -2px;
+                fill: @black;
             }
 
             .caret {

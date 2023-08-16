@@ -1,48 +1,40 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import { AsgardeoSPAClient, BasicUserInfo } from "@asgardeo/auth-react";
+import {
+    AsgardeoSPAClient,
+    BasicUserInfo,
+    HttpError,
+    HttpInstance,
+    HttpRequestConfig,
+    HttpResponse
+} from "@asgardeo/auth-react";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
 /**
- * OAuth object.
- *
- * @type {OAuthSingletonInterface}
- */
-const oAuth = AsgardeoSPAClient.getInstance();
-
-/**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = oAuth.httpRequest.bind(oAuth);
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
  *
- * @return {{Promise<AxiosResponse<any>>} a promise containing the response
+ * @returns - A promise containing the response
  */
-export const getAssociations = (): Promise<any> => {
-    const requestConfig = {
+export const getAssociations = (): Promise<LinkedAccountInterface[]> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -50,14 +42,14 @@ export const getAssociations = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse<LinkedAccountInterface[]>) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve the linked accounts");
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -65,13 +57,16 @@ export const getAssociations = (): Promise<any> => {
 /**
  * Add new associate account for the currently authenticated user.
  *
- * @return {{Promise<AxiosResponse<any>>} a promise containing the response
+ * @returns a Promise.
  */
-export const addAccountAssociation = (data: Record<string, unknown>): Promise<any> => {
-    const requestConfig = {
+export const addAccountAssociation = (
+    data: Record<string, unknown>
+): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -79,10 +74,10 @@ export const addAccountAssociation = (data: Record<string, unknown>): Promise<an
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response.data);
+        .then(() => {
+            return Promise.resolve();
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -90,23 +85,24 @@ export const addAccountAssociation = (data: Record<string, unknown>): Promise<an
 /**
  * Remove a linked account for the currently authenticated user.
  *
- * @return {Promise<any>}
+ * @returns a Promise.
  */
-export const removeLinkedAccount = (id: string): Promise<any> => {
-    const requestConfig = {
+export const removeLinkedAccount = (id: string): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config.endpoints.associations }/${ id }`
+        url: `${store.getState().config.endpoints.associations}/${id}`
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response.data);
+        .then(() => {
+            return Promise.resolve();
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -119,12 +115,13 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
  * remove all the associations and add one again, already removed
  * associations are also added again.
  *
- * @return {Promise<any>}
+ * @returns a Promise.
  */
-export const removeAllLinkedAccounts = (): Promise<any> => {
-    const requestConfig = {
+export const removeAllLinkedAccounts = (): Promise<void> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -132,10 +129,10 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response.data);
+        .then(() => {
+            return Promise.resolve();
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -144,12 +141,14 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
  * Switches the logged in user's account to one of the linked accounts
  * associated to the corresponding user.
  *
- * @param {LinkedAccountInterface} account - The target account.
- * @return {Promise<any>}
+ * @param account - The target account.
+ *
+ * @returns a Promise.
  */
-export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-
-    return oAuth
+export const switchAccount = (
+    account: LinkedAccountInterface
+): Promise<any> => {
+    return AsgardeoSPAClient.getInstance()
         .requestCustomGrant({
             attachToken: false,
             data: {
@@ -168,7 +167,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         .then((response: BasicUserInfo) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

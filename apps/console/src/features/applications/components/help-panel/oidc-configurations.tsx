@@ -1,30 +1,21 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Form, Grid, Icon } from "semantic-ui-react";
-import { getHelpPanelIcons } from "../../configs";
+import { getHelpPanelIcons } from "../../configs/ui";
 import {
     OIDCApplicationConfigurationInterface,
     OIDCEndpointsInterface
@@ -34,7 +25,7 @@ import {
  * Get an identity client instance.
  *
  */
-const identityClient = AsgardeoSPAClient.getInstance();
+const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -46,16 +37,16 @@ interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
 /**
  * OIDC application configurations Component.
  *
- * @param {OIDCConfigurationsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns OIDC application configurations Component.
  */
 export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterface> = (
     props: OIDCConfigurationsPropsInterface
 ): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         oidcConfigurations,
@@ -71,7 +62,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 
         // Fetch the server endpoints for OIDC applications.
         identityClient.getOIDCServiceEndpoints()
-            .then((response) => {
+            .then((response: OIDCEndpoints) => {
                 setEndpoints({
                     authorize: response?.authorizationEndpoint,
                     jwks: response?.jwksUri,

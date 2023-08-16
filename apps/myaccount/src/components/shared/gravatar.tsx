@@ -1,0 +1,40 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+ */
+
+import Avatar from "@oxygen-ui/react/Avatar";
+import { getGravatarImage } from "@wso2is/core/api";
+import React, { ReactElement, useEffect, useState } from "react";
+
+interface GravatarProps {
+    /**
+     * Gravatar email.
+     */
+    email: string;
+}
+
+export const Gravatar = (props: GravatarProps): ReactElement => {
+    const { email } = props;
+    const [ imageSrc, setImageSrc ] = useState<string>("");
+
+    useEffect(() => {
+        if (!email) {
+            return;
+        }
+
+        getGravatarImage(email)
+            .then((response: string) => {
+                setImageSrc(response);
+            })
+            .catch(() => {
+                setImageSrc("");
+            });
+    }, [ email ]);
+
+    return <Avatar src={ imageSrc } />;
+};

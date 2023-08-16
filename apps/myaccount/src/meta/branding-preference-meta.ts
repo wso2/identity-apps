@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import isEmpty from "lodash-es/isEmpty";
@@ -105,11 +96,18 @@ export class BrandingPreferenceMeta {
         --language-selector-background-color: var(--asg-login-page-background-color) !important;
         --language-selector-text-color: var(--asg-footer-text-color) !important;
         --language-selector-border-color: var(--asg-colors-primary-main) !important;
+
+        /* Oxygen UI variables */
+        --oxygen-palette-text-primary: ${ theme[ theme.activeTheme ].colors.text?.primary };
     }
 
     body {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-body-main);
+    }
+
+    .oxygen-button {
+        font-family: var(--asg-primary-font-family);
     }
 
     /*-----------------------------
@@ -581,14 +579,16 @@ export class BrandingPreferenceMeta {
     ------------------------------*/
 
     /* Primary */
-    .ui.primary.button {
-        background: var(--asg-colors-primary-main);
+    .ui.primary.button:not(.basic) {
+        background: var(--asg-colors-primary-main) !important;
         color: var(--asg-primary-button-base-text-color);
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
-    .ui.primary.button:hover, .ui.primary.button:focus, .ui.primary.button:active {
-        background: var(--asg-colors-primary-main);
+    .ui.primary.button:not(.basic):hover,
+    .ui.primary.button:not(.basic):focus,
+    .ui.primary.button:not(.basic):active {
+        background: var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
     }
 
@@ -997,6 +997,7 @@ export class BrandingPreferenceMeta {
     .ui.menu.app-footer .footer-dropdown .dropdown-trigger.link, .ui.menu.app-footer .footer-link {
         color: var(--asg-colors-text-primary);
     }
+
     .ui.menu.app-footer .footer-dropdown .dropdown.icon {
         color: var(--asg-colors-text-primary);
     }

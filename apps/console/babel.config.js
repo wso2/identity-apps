@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,13 @@
  * under the License.
  */
 
+/**
+ * Temporarily duplicate the babel.config.js from identity-apps/apps/console here.
+ * TODO : We need to create an extension model for this instead of maintaining a copy if babel.config.js
+ * from identity apps console here.
+ *
+ * Tracked with issue : {@link https://github.com/wso2-enterprise/asgardeo-product/issues/7207}
+ */
 module.exports = {
     env: {
         test: {

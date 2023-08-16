@@ -1,34 +1,25 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AppState, SharedUserStoreConstants, SharedUserStoreUtils } from "../../../core";
-import { CreateRoleFormData } from "../../../roles";
+import { CreateRoleFormData } from "../../../roles/models/roles";
 import { getOrganizationRoles } from "../../api";
 import {
     PRIMARY_DOMAIN
 } from "../../constants";
-import { OrganizationResponseInterface } from "../../models";
+import { OrganizationResponseInterface, OrganizationRoleListResponseInterface } from "../../models";
 
 /**
  * Interface to capture role basics props.
@@ -44,7 +35,7 @@ interface OrganizationRoleBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new organizatiion role.
  *
- * @param props Organization Role Basic prop types
+ * @param props - Organization Role Basic prop types
  */
 export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProps> = (
     props: OrganizationRoleBasicProps
@@ -73,12 +64,12 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
      * @param roleName - User input role name
      */
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         if (userStore !== PRIMARY_DOMAIN) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 });
@@ -102,7 +93,7 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
     return (
         <Forms
             data-testid={ testId }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>) => {
                 onSubmit(getFormValues(values));
             } }
             submitState={ triggerSubmit }
@@ -128,7 +119,7 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
                                         "validations.empty", { type: "Role" })
                             }
                             validation={ async (value: string, validation: Validation) => {
-                                const response = await getOrganizationRoles(
+                                const response: OrganizationRoleListResponseInterface = await getOrganizationRoles(
                                     currentOrganization.id,
                                     `name eq ${value}`,
                                     null,

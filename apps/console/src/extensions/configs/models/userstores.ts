@@ -15,9 +15,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { ReactElement } from "react";
 
 export interface UserstoresConfig {
+    onUserstoreEdit: (userstoreId: string) => boolean;
     userstoreEdit: {
         basicDetails: {
             showType: boolean;
@@ -34,11 +36,10 @@ export interface UserstoresConfig {
     };
     userstoreList: {
         allowAddingUserstores: boolean;
-        renderEmptyPlaceholder: (emptyListPlaceholderActionClick) => ReactElement;
+        renderEmptyPlaceholder: (emptyPlaceholderAction: () => void) => ReactElement;
     };
     userstoreDomain: {
         appendToUsername: boolean;
     };
-    onUserstoreEdit: (userstoreId: string) => boolean;
     shouldShowUserstore: (typeName: string) => boolean;
 }

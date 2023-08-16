@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -24,9 +15,9 @@ import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
 import { ProfileWidget } from "./widgets/profile-widget";
 import { AppConstants } from "../../constants";
+import { commonConfig } from "../../extensions";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
-import { commonConfig } from "../../extensions";
 
 /**
  * Prop types for the overview edit component.
@@ -39,8 +30,7 @@ interface OverviewPropsInterface extends TestableComponentInterface {
 
 /**
  * Overview Component
- * @param props
- * @constructor
+ * @param props - Props injected to the component.
  */
 export const Overview: FunctionComponent<OverviewPropsInterface> = (
     props: OverviewPropsInterface
@@ -57,10 +47,10 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Profile status widget with link to profile.
-     * @param {SemanticWIDTHS} widthComputer - Width for the computer screens.
-     * @param widthMobile
+     * @param widthComputer - Width for the computer screens.
+     * @param widthMobile - Width for the mobile screens.
      */
-    const profileStatus = (widthComputer, widthMobile): React.ReactElement => {
+    const profileStatus = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
             <>
                 {
@@ -81,8 +71,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Account Security Widget
-     * @param widthComputer
-     * @param widthMobile
+     * @param widthComputer - Width for the computer screens.
+     * @param widthMobile - Width for the mobile screens.
      */
     const accountSecurity = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
@@ -103,8 +93,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Account Status widget with shield (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
+     * @param widthComputer - Width for the computer screens.
+     * @param widthMobile - Width for the mobile screens.
      */
     const accountStatus = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
@@ -125,8 +115,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Session Management Widget (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
+     * @param widthComputer - Width for the computer screens.
+     * @param widthMobile - Width for the mobile screens.
      */
     const accountActivity = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
@@ -147,8 +137,8 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
 
     /**
      * Consent Management Widget (Currently not displayed).
-     * @param widthComputer
-     * @param widthMobile
+     * @param widthComputer - Width for the computer screens.
+     * @param widthMobile - Width for the mobile screens.
      */
     const consents = (widthComputer: SemanticWIDTHS, widthMobile: SemanticWIDTHS): React.ReactElement => {
         return (
@@ -173,19 +163,19 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
             <Grid.Row>
                 { !enableAlternateWidgetLayout
                     ?
-                        <>
-                            { accountStatus(9, 16) }
-                            { accountActivity(7, 16) }
-                            { accountSecurity(8, 16) }
-                            { consents(8, 16) }
-                        </>
+                    (<>
+                        { accountStatus(9, 16) }
+                        { accountActivity(7, 16) }
+                        { accountSecurity(8, 16) }
+                        { consents(8, 16) }
+                    </>)
                     : !commonConfig.utils.isShowAdditionalWidgetAllowed(userStore)
                         ?
-                            <>
-                                { profileStatus(8, 16) }
-                                { accountSecurity(8, 16) }
-                            </>
-                        : <Grid>
+                        (<>
+                            { profileStatus(8, 16) }
+                            { accountSecurity(8, 16) }
+                        </>)
+                        : (<Grid>
                             <Grid.Row>
                                 { profileStatus(8, 16) }
                                 { accountSecurity(8, 16) }
@@ -194,10 +184,9 @@ export const Overview: FunctionComponent<OverviewPropsInterface> = (
                                 { accountActivity(8, 16) }
                                 { consents(8, 16) }
                             </Grid.Row>
-                        </Grid>
+                        </Grid>)
                 }
             </Grid.Row>
         </Grid>
     );
 };
-

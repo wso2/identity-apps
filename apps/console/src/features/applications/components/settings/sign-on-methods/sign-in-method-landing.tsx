@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -24,10 +14,12 @@ import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { IdentityProviderManagementConstants } from "../../../../identity-providers";
+import {
+    IdentityProviderManagementConstants
+} from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { OrganizationType } from "../../../../organizations/constants";
 import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { getAuthenticatorIcons } from "../../../configs";
+import { getAuthenticatorIcons } from "../../../configs/ui";
 import { LoginFlowTypes } from "../../../models";
 
 /**
@@ -88,9 +80,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                         </Heading>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
+                <Grid.Row className="pt-5">
                     <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
-                        <div className="pr-5 pl-5">
+                        <div className="pr-3">
                             { !hiddenOptions.includes(LoginFlowTypes.DEFAULT) && (
                                 <>
                                     <Heading as="h4">
@@ -115,11 +107,13 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         ) }
                                         onClick={ () => {
                                             eventPublisher.publish(
-                                                "application-begin-sign-in-default-configuration", 
+                                                "application-begin-sign-in-default-configuration",
                                                 { "client-id": clientId }
                                             );
                                             onLoginFlowSelect(LoginFlowTypes.DEFAULT);
                                         } }
+                                        showSetupGuideButton={ false }
+                                        showCardAction={ false }
                                     />
                                 </>
                             ) }
@@ -146,11 +140,13 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
-                                            "application-begin-sign-in-totp-mfa", 
+                                            "application-begin-sign-in-totp-mfa",
                                             { "client-id": clientId }
                                         );
                                         onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_TOTP);
                                     } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
                                 />
                             ) }
                             { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) && (
@@ -173,9 +169,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         });
                                         onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP);
                                     } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
                                 />
                             ) }
-                            { 
+                            {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
                                     orgType !== OrganizationType.SUBORGANIZATION) && (
                                     <InfoCard
@@ -193,18 +191,20 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                         ) }
                                         onClick={ () => {
                                             eventPublisher.publish(
-                                                "application-begin-sign-in-sms-otp-mfa", 
+                                                "application-begin-sign-in-sms-otp-mfa",
                                                 { "client-id": clientId }
                                             );
                                             onLoginFlowSelect(LoginFlowTypes.SECOND_FACTOR_SMS_OTP);
                                         } }
+                                        showSetupGuideButton={ false }
+                                        showCardAction={ false }
                                     />
-                                ) 
+                                )
                             }
                         </div>
                     </Grid.Column>
                     <Grid.Column computer={ 8 } tablet={ 16 } mobile={ 16 } className="flow-options-column">
-                        <div className="pr-5 pl-5">
+                        <div className="pl-3">
                             <Heading as="h4">
                                 { t(
                                     "console:develop.features.applications.edit." +
@@ -221,11 +221,11 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     data-testid="usernameless-flow-card"
                                     image={ getAuthenticatorIcons().fido }
                                     imageSize="mini"
-                                    header={ 
+                                    header={
                                         identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                                            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID, 
-                                            t("console:develop.features.applications.edit.sections.signOnMethod" 
-                                                + ".sections.landing.flowBuilder.types.usernameless.heading")) 
+                                            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
+                                            t("console:develop.features.applications.edit.sections.signOnMethod"
+                                                + ".sections.landing.flowBuilder.types.usernameless.heading"))
                                     }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +
@@ -234,11 +234,13 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
-                                            "application-begin-sign-in-biometrics-password-less", 
+                                            "application-begin-sign-in-biometrics-password-less",
                                             { "client-id": clientId }
                                         );
                                         onLoginFlowSelect(LoginFlowTypes.FIDO_LOGIN);
                                     } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
                                 />
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
@@ -262,11 +264,43 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
-                                            "application-begin-sign-in-magiclink-password-less", 
+                                            "application-begin-sign-in-magiclink-password-less",
                                             { "client-id": clientId }
                                         );
                                         onLoginFlowSelect(LoginFlowTypes.MAGIC_LINK);
                                     } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
+                                />
+                            ) }
+                            { !hiddenOptions?.includes(LoginFlowTypes.EMAIL_OTP) &&
+                                !config.ui?.hiddenAuthenticators.includes(
+                                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+                                ) && (
+                                <InfoCard
+                                    fluid
+                                    data-testid="email-otp-flow-card"
+                                    image={ getAuthenticatorIcons().emailOTP }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.emailOTPFirstFactor.heading"
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.emailOTPFirstFactor.description"
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-email-otp-password-less", 
+                                            { "client-id": clientId }
+                                        );
+                                        onLoginFlowSelect(LoginFlowTypes.EMAIL_OTP);
+                                    } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
                                 />
                             ) }
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
@@ -298,12 +332,14 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.google.description"
                                             ) }
                                             onClick={ () => {
-                                                eventPublisher.publish( 
-                                                    "application-begin-sign-in-google-social-login", 
+                                                eventPublisher.publish(
+                                                    "application-begin-sign-in-google-social-login",
                                                     { type: clientId }
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.GOOGLE_LOGIN);
                                             } }
+                                            showSetupGuideButton={ false }
+                                            showCardAction={ false }
                                         />
                                     ) }
 
@@ -323,6 +359,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.github.description"
                                             ) }
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.GITHUB_LOGIN) }
+                                            showSetupGuideButton={ false }
+                                            showCardAction={ false }
                                         />
                                     ) }
                                     { !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) && (
@@ -341,6 +379,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                 "types.facebook.description"
                                             ) }
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.FACEBOOK_LOGIN) }
+                                            showSetupGuideButton={ false }
+                                            showCardAction={ false }
                                         />
                                     ) }
                                     { !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN) && (
@@ -360,11 +400,13 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             ) }
                                             onClick={ () => {
                                                 eventPublisher.publish(
-                                                    "application-begin-sign-in-microsoft-social-login", 
+                                                    "application-begin-sign-in-microsoft-social-login",
                                                     { type: clientId }
                                                 );
                                                 onLoginFlowSelect(LoginFlowTypes.MICROSOFT_LOGIN);
                                             } }
+                                            showSetupGuideButton={ false }
+                                            showCardAction={ false }
                                         />
                                     ) }
                                     { !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN) && (
@@ -374,7 +416,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().apple }
                                             header={
-                                                t("console:develop.features.applications.edit.sections" + 
+                                                t("console:develop.features.applications.edit.sections" +
                                                     ".signOnMethod.sections.landing.flowBuilder.types.apple.heading")
                                             }
                                             description={
@@ -383,6 +425,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                                     "types.apple.description")
                                             }
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.APPLE_LOGIN) }
+                                            showSetupGuideButton={ false }
+                                            showCardAction={ false }
                                         />
                                     ) }
                                 </>

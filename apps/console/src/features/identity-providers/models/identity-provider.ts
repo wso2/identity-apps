@@ -1,22 +1,14 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { FunctionComponent, SVGProps } from "react";
 import { ApplicationBasicInterface } from "../../applications/models";
 import { GovernanceConnectorInterface } from "../../server-configurations/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
@@ -29,6 +21,7 @@ export interface IdentityProviderTemplateGroupInterface {
     name?: string;
     subTemplates?: IdentityProviderInterface[];
     subTemplatesSectionTitle?: string;
+    docLink?: string;
 }
 
 /**
@@ -60,11 +53,14 @@ export interface IdentityProviderInterface extends StrictIdentityProviderInterfa
     isPrimary?: boolean;
     isFederationHub?: boolean;
     homeRealmIdentifier?: string;
+    idpIssuerName?: string;
     alias?: string;
     claims?: IdentityProviderClaimsInterface;
     roles?: IdentityProviderRolesInterface;
     certificate?: CertificateConfigInterface;
     provisioning?: ProvisioningInterface;
+    groups?: IdentityProviderGroupInterface[];
+    docLink?: string;
 }
 
 export interface IdentityProviderRolesInterface {
@@ -218,6 +214,7 @@ export interface IdentityProviderTemplateItemInterface {
      * Template identifier.
     */
     templateId?: string;
+    docLink?: string;
 }
 
 /**
@@ -234,6 +231,7 @@ export interface IdentityProviderTemplateInterface extends IdentityProviderTempl
      * Should resource be listed as coming soon.
      */
     comingSoon?: boolean;
+    docLink?: string;
 }
 
 /**
@@ -242,6 +240,7 @@ export interface IdentityProviderTemplateInterface extends IdentityProviderTempl
 export interface IdentityProviderTemplateListItemInterface extends IdentityProviderTemplateItemInterface {
     services?: string[];
     content?: TemplateContentInterface;
+    docLink?: string;
 }
 
 /**
@@ -747,6 +746,14 @@ export interface GenericIdentityProviderCreateWizardPropsInterface {
 }
 
 /**
+ * Interface for Identity Provider Group.
+ */
+export interface IdentityProviderGroupInterface {
+    id: string;
+    name: string;
+}
+
+/**
  * Interface for Identity Provider Initial Values.
  */
 export interface IdentityProviderInitialValuesInterface {
@@ -760,6 +767,8 @@ export interface IdentityProviderInitialValuesInterface {
  */
 export interface IdentityProviderFormValuesInterface {
     name?: string;
+    issuer?: string;
+    alias?: string;
     NameIDType?: string;
     RequestMethod?: string;
     clientId?: string;
@@ -831,4 +840,90 @@ export enum IdentityProviderTabTypes {
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
+}
+
+/**
+ * Enum for Certificate Types
+ */
+export enum CertificateType {
+    JWKS = "jwks",
+    PEM = "pem"
+}
+
+/**
+ * Enum for Trusted Token Issuer Wizard Steps
+ */
+export enum TrsutedTokenIssuerWizardStep {
+    GENERAL_DETAILS = "GeneralDetails",
+    CERTIFICATES = "Certificates"
+}
+
+/**
+ * Interface for Trusted Token Issuer Wizard Step
+ */
+export interface  TrustedTokenIssuerWizardStepInterface {
+    /**
+     * Content of the step.
+     */
+    content: JSX.Element,
+    /**
+     * Icon of the step.
+     */
+    icon: FunctionComponent<SVGProps<SVGSVGElement>>,
+    /**
+     * Title of the step.
+     */
+    title: string,
+    /**
+     * Add API resource wizard steps form type of the step.
+     */
+    name: TrsutedTokenIssuerWizardStep
+}
+
+/**
+ * Interface for from values of the connection general details step
+ */
+export interface GeneralDetailsFormValuesInterface {
+    /**
+     * Alias of the connection
+     */
+    alias: string;
+    /**
+     * Description of the connection
+     */
+    description: string;
+    /**
+     * Issuer of the connection
+     */
+    idpIssuerName: string;
+    /**
+     * Image URL of the connection
+     */
+    image: string;
+    /**
+     * Set is primary connection
+     */
+    isPrimary: boolean;
+    /**
+     * Name of the connection
+     */
+    name: string;
+}
+
+/**
+ * Interface to capture the certificate details for certificate PATCH request.
+ */
+export interface CertificatePatchRequestInterface {
+    /**
+     * The operation to be performed.
+     */
+    operation: string;
+    /**
+     * Path of the certificate.
+     */
+    path: string;
+    /**
+     * Value of the certificate.
+     */
+    value: string;
 }

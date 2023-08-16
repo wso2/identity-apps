@@ -1,21 +1,13 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -40,7 +32,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
@@ -66,7 +58,8 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
-import { ApplicationTemplateManagementUtils } from "../utils";
+import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
 /**
  *
@@ -366,11 +359,33 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         </Label>
                                     )
                                 }
-                                <div>
-                                    { templateDisplayName && (
-                                        <Label className="no-margin-left" size="mini">{ templateDisplayName }</Label>
-                                    ) }
-                                </div>
+                                <Grid container spacing={ 1 }>
+                                    <Grid alignItems="flex-end">
+                                        <div>
+                                            { templateDisplayName && (
+                                                <Label 
+                                                    className="no-margin-left" 
+                                                    size="mini"
+                                                >
+                                                    { templateDisplayName }
+                                                </Label>
+                                            ) }
+                                        </div>
+                                    </Grid>
+                                    {
+                                        ApplicationManagementUtils.isChoreoApplication(app) 
+                                            && (<Grid>
+                                                <div>
+                                                    <Label
+                                                        size="mini"
+                                                        className="choreo-label no-margin-left"
+                                                    >
+                                                        { t("extensions:develop.apiResource.managedByChoreoText") }
+                                                    </Label>
+                                                </div>
+                                            </Grid>)
+                                    }
+                                </Grid>
                             </Header.Content>
                         </Header>
                     );
@@ -520,7 +535,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    className={ !isRenderedOnPortal ? "list-placeholder" : "" }
+                    className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={ (onEmptyListPlaceholderActionClick && orgType !== OrganizationType.SUBORGANIZATION) && (
                         <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                             <PrimaryButton
@@ -585,24 +600,64 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header
-                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
-                        >
-                            { t("console:develop.features.applications.confirmations.deleteApplication.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            attached
-                            negative
-                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
-                        >
-                            { t("console:develop.features.applications.confirmations.deleteApplication.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content
-                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
-                        >
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { t("console:develop.features.applications.confirmations.deleteApplication.content") }
-                        </ConfirmationModal.Content>
+                        {
+                            ApplicationManagementUtils.isChoreoApplication(deletingApplication)
+                                ? ( 
+                                    <>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.header") }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.message") }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                                        >
+                                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                                            <Trans 
+                                                i18nKey= { "console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.content" }>
+                                                Deleting this application will break the authentication flows and cause 
+                                                the associated Choreo application to be unusable with its credentials.
+                                                <b>Proceed at your own risk.</b>
+                                            </Trans>
+                                        </ConfirmationModal.Content>
+                                    </> 
+                                )
+                                : ( 
+                                    <>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.header") }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.message") }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                                        >
+                                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.content") }
+                                        </ConfirmationModal.Content>
+                                    </> 
+                                )
+                        }
                     </ConfirmationModal>
                 )
             }

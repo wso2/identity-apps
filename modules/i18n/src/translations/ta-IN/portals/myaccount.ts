@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { MyAccountNS } from "../../../models";
@@ -837,7 +828,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "மீதமுள்ள"
             },
             fido: {
-                description: "உங்கள் கணக்கில் உள்நுழைய, உங்கள் சாதனத்தில் <1>பாஸ் விசை</1>, " + 
+                description: "உங்கள் கணக்கில் உள்நுழைய, உங்கள் சாதனத்தில் <1>பாஸ் விசை</1>, " +
                     "<1>FIDO2 பாதுகாப்பு விசை</1> அல்லது <1>பயோமெட்ரிக்ஸைப்</1> பயன்படுத்தலாம்.",
                 form: {
                     label: "பாதுகாப்பு விசை/பயோமெட்ரிக்ஸ்",
@@ -1823,8 +1814,7 @@ export const myAccount: MyAccountNS = {
                 export: "சுயவிவரத்தைப் பதிவிறக்கவும்"
             },
             description:
-                "பயனர் தகவல், பாதுகாப்பு வினாக்கள், அனுமதிகள் உள்ளிட்ட அனைத்து " +
-                "சுயவிபரங்களையும் பதிவிறக்கம் செய்ய.",
+                "தனிப்பட்ட தரவு மற்றும் இணைக்கப்பட்ட கணக்குகள் உட்பட உங்களின் எல்லா சுயவிவரத் தரவையும் பதிவிறக்கம் செய்ய.",
             heading: "சுயவிபரத்தை ஏற்றுமதி செய்க"
         },
         userSessions: {

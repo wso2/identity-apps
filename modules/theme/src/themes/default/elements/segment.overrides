@@ -326,6 +326,10 @@
                     z-index: 2;
                 }
             }
+
+            .ui.table {
+                border: none !important;
+            }
         }
         .ui.input {
             margin-bottom: @EditRoleSegmentHeaderMarginBottom;
@@ -353,6 +357,46 @@
                 background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
                 border-color: @TransferComponentSegmentInternalLabelBorderColor;
             }
+        }
+    }
+
+    &.user-role-edit-footer-segment {
+        height: @EditRoleSegmentFooterHeight;
+    }
+}
+
+.ui.segment {
+    &.user-group-role-header-segment {
+        &.attributes {
+            max-height: 500px;
+            padding: 0 0 20px 0;
+            overflow-y: scroll;
+
+            .transfer-list-sub-content {
+                color: @TransferComponentSegmentApplicationAttributeSecondaryColor;
+            }
+
+            thead tr:first-child {
+
+                th {
+                    position: sticky !important;
+                    position: -webkit-sticky !important;
+                    top: 0;
+                    z-index: 2;
+                }
+            }
+        }
+        .ui.input {
+            margin-bottom: @EditRoleSegmentHeaderMarginBottom;
+            width: @EditRoleSegmentHeaderWidth;
+        }
+
+        i {
+            margin-right: auto;
+        }
+
+        .ui.button {
+            margin-bottom: @EditRoleSegmentHeaderButtonMarginBottom;
         }
     }
 
@@ -749,11 +793,12 @@
         box-shadow: none;
         position: fixed;
         z-index: 1000;
-        bottom: 36px;
+        bottom: 0;
         border-top: 1px solid @borderColor;
         background-color: @white;
         padding-left: 3rem;
         padding-right: 3rem;
         border-radius: 0;
+        margin-bottom: 0;
     }
 }

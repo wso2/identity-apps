@@ -17,6 +17,10 @@
  *
  */
 
+.ui.dimmer {
+    z-index: 1500;
+}
+
 .dimmable{
      &.circular{
          border-radius:50%;

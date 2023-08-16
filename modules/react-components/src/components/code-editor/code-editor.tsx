@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -21,13 +12,13 @@ import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import * as codemirror from "codemirror";
 import JSBeautify from "js-beautify";
-import { JSHINT } from "jshint/dist/jshint";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
     SVGProps,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
@@ -62,7 +53,10 @@ interface CustomWindow extends Window {
     JSHINT: any;
 }
 
-(window as CustomWindow & typeof globalThis).JSHINT = JSHINT;
+// Lazy load the jshint library.
+import("jshint/dist/jshint").then((module) => {
+    (window as CustomWindow & typeof globalThis).JSHINT = module.JSHINT;
+});
 
 /**
  * Code editor component Prop types.
@@ -212,6 +206,8 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ darkMode, setDarkMode ] = useState<boolean>(false);
 
+    const isFirstRender = useRef<boolean>(true);
+
     /**
      * Set the internal full screen state based on the externally provided state.
      */
@@ -220,7 +216,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         if (triggerFullScreen === undefined) {
             return;
         }
-        
+
         if (triggerFullScreen) {
             setFullScreenToggleIcon(MinimizeIcon);
         } else {
@@ -228,7 +224,12 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         }
 
         setIsEditorFullScreen(triggerFullScreen);
-        onFullScreenToggle(triggerFullScreen);
+
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        } else {
+            onFullScreenToggle(triggerFullScreen);
+        }
     }, [ triggerFullScreen ]);
 
     /**
@@ -479,6 +480,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
                         {
                             autoCloseBrackets: smart,
                             autoCloseTags: smart,
+                            autoRefresh: true,
                             extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
                             gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
                             indentUnit: tabSize,

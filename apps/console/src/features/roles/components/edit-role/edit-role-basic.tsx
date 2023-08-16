@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import {
     AlertInterface,
     AlertLevels,
@@ -25,12 +15,21 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
+import {
+    AppConstants,
+    SharedUserStoreConstants,
+    SharedUserStoreUtils,
+    UserStoreDetails,
+    UserStoreProperty,
+    history
+} from "../../../core";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores/constants/user-store-constants";
 import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api";
 import { PatchRoleDataInterface, SearchRoleInterface } from "../../models";
 
@@ -63,11 +62,11 @@ interface BasicRoleProps extends TestableComponentInterface {
 /**
  * Component to edit basic role details.
  *
- * @param props Role object containing details which needs to be edited.
+ * @param props - Role object containing details which needs to be edited.
  */
 export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         roleId,
@@ -101,7 +100,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             return;
         }
         fetchUserstoreRegEx()
-            .then((response) => {
+            .then((response: string) => {
                 setUserStoreRegEx(response);
                 setRegExLoading(false);
             });
@@ -128,20 +127,20 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * The following function validates role name against the user store regEx.
      */
     const validateRoleNamePattern = async (): Promise<string> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 });
         } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
+            await SharedUserStoreUtils.getPrimaryUserStore().then((response: UserStoreDetails) => {
                 setRegExLoading(true);
                 if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter(property => {
+                    userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
                         return property.name === "RolenameJavaScriptRegEx";
                     })[ 0 ].value;
                 }
@@ -150,7 +149,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setRegExLoading(false);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((
+            resolve: (value: string | PromiseLike<string>) => void,
+            reject: (reason?: any) => void
+        ) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
             } else {
@@ -163,8 +165,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     /**
      * The following function handles the role name change.
      *
-     * @param event
-     * @param data
+     * @param event - ChangeEvent.
+     * @param data - InputOnChangeData.
      */
     const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
         setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
@@ -173,7 +175,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
@@ -241,7 +243,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         <>
             <EmphasizedSegment padded="very">
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         updateRoleName(values);
                     } }
                 >
@@ -285,9 +287,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         value={ nameValue }
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
-                                                let isRoleNameValid = true;
+                                                let isRoleNameValid: boolean = true;
 
-                                                await validateRoleNamePattern().then(regex => {
+                                                await validateRoleNamePattern().then((regex: string) => {
                                                     isRoleNameValid = SharedUserStoreUtils
                                                         .validateInputAgainstRegEx(value, regex);
                                                 });
@@ -308,7 +310,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     startIndex: 1
                                                 };
 
-                                                await searchRoleList(searchData).then(response => {
+                                                await searchRoleList(searchData).then((response: AxiosResponse) => {
                                                     if (response?.data?.totalResults !== 0) {
                                                         if (response.data.Resources[0]?.id !== roleId) {
                                                             validation.isValid = false;

@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { MyAccountNS } from "../../../models";
@@ -851,7 +842,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "restant"
             },
             fido: {
-                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " + 
+                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " +
                     "<1>Des Données Biométriques</1> dans votre appareil pour vous connecter à votre compte.",
                 form: {
                     label: "Clé de sécurité/Biométrie",
@@ -1832,8 +1823,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 export: "Téléchargez le profil"
             },
-            description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, " +
-                "questions de sécurité et consentements",
+            description: "Téléchargez toutes les données de votre profil, y compris les données personnelles et les comptes liés",
             heading: "Télécharger mon profil"
         },
         userSessions: {

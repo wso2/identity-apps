@@ -1,22 +1,14 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import {
+    AsgardeoAuthException,
     AuthenticatedUserInfo,
     BasicUserInfo,
     Hooks,
@@ -43,32 +35,35 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
-import axios from "axios";
-import React, { FunctionComponent, ReactElement, lazy, useEffect } from "react";
+import axios, { AxiosResponse } from "axios";
+import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants, CommonConstants } from "./constants";
 import { history } from "./helpers";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./models";
-import { store } from "./store";
+import { BrandingPreferenceProvider } from "./providers";
+import { AppState, store } from "./store";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "./store/actions";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
-const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
-const TOKEN_ENDPOINT = "token_endpoint";
-const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";
-const LOGOUT_URL = "sign_out_url";
+const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
+const TOKEN_ENDPOINT: string = "token_endpoint";
+const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
+const LOGOUT_URL: string = "sign_out_url";
 
-const App = lazy(() => import("./app"));
+const App: LazyExoticComponent<() => ReactElement> = lazy(() => import("./app"));
 
 type AppPropsInterface = IdentifiableComponentInterface;
 
 /**
  * This component warps the `App` component with the `SecureApp` component to provide automatic authentication.
  *
- * @returns {ReactElement} ProtectedApp component
+ * @returns ProtectedApp component
  */
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
     const {
@@ -80,7 +75,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         state: { isAuthenticated }
     } = useAuthContext();
 
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, void, AnyAction> = useDispatch();
+
+    const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
 
     useEffect(() => {
         on(Hooks.HttpRequestError, onHttpRequestError);
@@ -89,10 +86,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
 
         on(Hooks.SignIn, (response: BasicUserInfo) => {
-            let logoutUrl;
-            let logoutRedirectUrl;
+            let logoutUrl: string;
+            let logoutRedirectUrl: string;
 
-            const event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+            const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
             dispatchEvent(event);
 
@@ -176,7 +173,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         setSignIn<AuthenticatedUserInfo>(AuthenticateUtils.getSignInState(response))
                     );
                 })
-                .catch((error) => {
+                .catch((error: AsgardeoAuthException) => {
                     throw error;
                 });
 
@@ -235,7 +232,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         signOutRedirectURL: logoutRedirectUrl
                     });
                 })
-                .catch((error) => {
+                .catch((error: AsgardeoAuthException) => {
                     throw error;
                 });
 
@@ -244,11 +241,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     const loginSuccessRedirect = (): void => {
-        const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(
+        const AuthenticationCallbackUrl: string = AuthenticateUtils.getAuthenticationCallbackUrl(
             AppConstantsCore.MY_ACCOUNT_APP
         );
 
-        const location =
+        const location: string =
             !AuthenticationCallbackUrl || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                 ? AppConstants.getAppHomePath()
                 : AuthenticationCallbackUrl;
@@ -257,7 +254,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     };
 
     useEffect(() => {
-        const error = new URLSearchParams(location.search).get("error_description");
+        const error: string = new URLSearchParams(location.search).get("error_description");
+
         if (error === AppConstants.USER_DENIED_CONSENT) {
             // TODO: Send it to an error page
 
@@ -291,21 +289,21 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             ? `/${ StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }`
             : "";
 
-        const metaFileNames = I18nModuleConstants.META_FILENAME.split(".");
-        const metaFileName = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+        const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");
+        const metaFileName: string = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
-        const metaPath = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
+        const metaPath: string = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
             Config.getI18nConfig().resourcePath
         ) }/${ metaFileName }`;
 
         // Fetch the meta file to get the supported languages.
         axios
             .get(metaPath)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 // Set up the i18n module.
                 I18n.init(
                     {
@@ -319,37 +317,42 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     // Set the supported languages in redux store.
                     store.dispatch(setSupportedI18nLanguages(response?.data));
 
-                    const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+                    const isSupported: boolean = isLanguageSupported(I18n.instance.language, null, response?.data);
 
                     if (!isSupported) {
-                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE).catch((error) => {
-                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
-                        });
+                        I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
+                            .catch((error: string) => {
+                                throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
+                            });
                     }
                 });
             })
-            .catch((error) => {
+            .catch((error: string) => {
                 throw new I18nInstanceInitException(error);
             });
     }, [ isAuthenticated ]);
 
     return (
-        <SecureApp
-            fallback={ <PreLoader /> }
-            onSignIn={ loginSuccessRedirect }
-            overrideSignIn={ async () => {
+        <BrandingPreferenceProvider tenantDomain={ tenantDomain }>
+            <SecureApp
+                fallback={ <PreLoader /> }
+                onSignIn={ loginSuccessRedirect }
+                overrideSignIn={ async () => {
                 // This is to prompt the SSO page if a user tries to sign in
                 // through a federated IdP using an existing email address.
-                if (new URL(location.href).searchParams.get("prompt")) {
-                    await signIn({ prompt: "login" });
-                } else {
-                    await signIn();
-                }
-            } }
-        >
-            <I18nextProvider i18n={ I18n.instance }>
-                <App />
-            </I18nextProvider>
-        </SecureApp>
+                    if (new URL(location.href).searchParams.get("prompt")) {
+                        await signIn({ prompt: "login" });
+                    } else {
+                        await signIn();
+                    }
+                } }
+            >
+                <I18nextProvider i18n={ I18n.instance }>
+
+                    <App />
+                </I18nextProvider>
+            </SecureApp>
+        </BrandingPreferenceProvider>
+
     );
 };

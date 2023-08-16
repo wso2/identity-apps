@@ -1,23 +1,12 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
 import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
@@ -40,26 +29,30 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
     SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
 
     if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT || _idleSecondsCounter >= IDLE_TIMEOUT) {
-        const warningSearchParamKey = "session_timeout_warning";
-        const currentURL = new URL(window.location.href);
+        const warningSearchParamKey: string = "session_timeout_warning";
+        const currentURL: URL = new URL(window.location.href);
 
         // If the URL already has the timeout warning search para, delete it first.
         if (currentURL && currentURL.searchParams && currentURL.searchParams.get(warningSearchParamKey) !== null) {
             currentURL.searchParams.delete(warningSearchParamKey);
         }
 
-        const existingSearchParams = currentURL.search;
+        const existingSearchParams: string = currentURL.search;
 
         // NOTE: This variable is used for push state.
         // If already other search params are available simply append using `&`,
         // otherwise just add the param using `?`.
-        const searchParam =
+        const searchParam: string =
             existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
 
         // Append the search param to the URL object.
         currentURL.searchParams.append(warningSearchParamKey, "true");
 
-        const state = {
+        const state: {
+            idleTimeout: number;
+            idleWarningTimeout: number;
+            url: string;
+        } = {
             idleTimeout: IDLE_TIMEOUT,
             idleWarningTimeout: IDLE_WARNING_TIMEOUT,
             url: currentURL.href
@@ -73,15 +66,15 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
     return _sessionAgeCounter;
 }
 
-const config = window["AppUtils"]?.getConfig();
+const config: any = window["AppUtils"]?.getConfig();
 
 // Tracking user interactions
-let IDLE_TIMEOUT = 600;
+let IDLE_TIMEOUT: number = 600;
 
 if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
     IDLE_TIMEOUT = config.session.userIdleTimeOut;
 }
-let IDLE_WARNING_TIMEOUT = 580;
+let IDLE_WARNING_TIMEOUT: number = 580;
 
 if (
     config?.session != null &&
@@ -90,7 +83,7 @@ if (
 ) {
     IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
 }
-let SESSION_REFRESH_TIMEOUT = 300;
+let SESSION_REFRESH_TIMEOUT: number = 300;
 
 if (
     config?.session != null &&
@@ -100,8 +93,8 @@ if (
     SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
 }
 
-let _idleSecondsCounter = 0;
-let _sessionAgeCounter = 0;
+let _idleSecondsCounter: number = 0;
+let _sessionAgeCounter: number = 0;
 
 document.onclick = function() {
     _idleSecondsCounter = 0;
@@ -127,7 +120,7 @@ if (new UAParser().getBrowser().name === "IE") {
         );
     }, 1000);
 } else {
-    const worker = new TimerWorker();
+    const worker: any = new TimerWorker();
 
     worker.onmessage = () => {
         _idleSecondsCounter++;

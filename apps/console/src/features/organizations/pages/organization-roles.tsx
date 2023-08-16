@@ -1,27 +1,19 @@
 /**
  * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { GridLayout, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -36,6 +28,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -45,7 +38,8 @@ import {
     UIConstants,
     history
 } from "../../core";
-import { CreateRoleInterface } from "../../roles";
+import { CreateGroupMemberInterface } from "../../groups/models";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "../../roles/models/roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
 import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
@@ -76,7 +70,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -117,7 +111,11 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      * @param after - After link for cursor based pagination
      * @param before - Before link for cursor based pagination
      */
-    const getOrganizationRoleLists = useCallback(
+    const getOrganizationRoleLists: (
+        limit?: number,
+        filter?: string,
+        after?: string,
+    ) => void = useCallback(
         (limit?: number, filter?: string, cursor?: string): void => {
             setOrganizationRoleListRequestLoading(true);
 
@@ -130,7 +128,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                     handleCursorPagination(response.nextCursor, response.previousCursor);
                     setOrganizationRoles(response.Resources);
                 })
-                .catch((error) => {
+                .catch((error: IdentityAppsError) => {
                     if (error?.description) {
                         dispatch(
                             addAlert({
@@ -176,7 +174,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         setListSortingStrategy(
-            find(ORGANIZATION_ROLES_LIST_SORTING_OPTIONS, (option) => {
+            find(ORGANIZATION_ROLES_LIST_SORTING_OPTIONS, (option: DropdownItemProps) => {
                 return data.value === option.value;
             })
         );
@@ -222,7 +220,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
      * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        const newPage = parseInt(data?.activePage as string);
+        const newPage: number = parseInt(data?.activePage as string);
 
         if (newPage > activePage) {
             setCursor(after);
@@ -259,19 +257,23 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
         getOrganizationRoleLists(listItemLimit, searchQuery, cursor);
     };
 
-    const handleOrganizationRoleCreate = useCallback((roleData: CreateRoleInterface) => {
+    /**
+     * Handles the organization role create action.
+     */
+    const handleOrganizationRoleCreate: (roleData: CreateRoleInterface) 
+    => void = useCallback((roleData: CreateRoleInterface) => {
         // Setting up the data model for organization role creation (temp)
-        roleData.groups.forEach((group) => {
+        roleData.groups.forEach((group: CreateGroupMemberInterface) => {
             delete(group.display);
         });
 
-        roleData.users.forEach((user) => {
+        roleData.users.forEach((user: CreateRoleMemberInterface) => {
             delete(user.display);
         });
 
         delete(roleData.schemas);
 
-        createOrganizationRole(currentOrganization.id, roleData).then(response => {
+        createOrganizationRole(currentOrganization.id, roleData).then((response: AxiosResponse) => {
             if (response.status === 201) {
                 dispatch(
                     addAlert({
@@ -286,7 +288,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 history.push(AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE").replace(":id", response.data.id));
             }
 
-        }).catch(error => {
+        }).catch((error: AxiosError) => {
             if (!error.response || error.response.status === 401) {
                 setShowWizard(false);
                 dispatch(
@@ -329,7 +331,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
-    const handleListItemClick = (_e, organizationRole: OrganizationRoleListItemInterface): void => {
+    const handleListItemClick = (_e: SyntheticEvent, organizationRole: OrganizationRoleListItemInterface): void => {
         history.push(
             AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE").replace(":id", organizationRole.id)
         );
@@ -338,6 +340,10 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     useEffect(() => {
         getOrganizationRoleLists(listItemLimit, searchQuery, cursor);
     }, [ listItemLimit, getOrganizationRoleLists, searchQuery ]);
+
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("ROLES"));
+    };
 
     return (
         <>
@@ -367,7 +373,10 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 pageTitle="Organization Roles"
                 description={ "Manage organization roles here" }
                 data-testid={ `${testId}-page-layout` }
-                titleAs="h3"
+                backButton={ {
+                    onClick: handleBackButtonClick,
+                    text: t("extensions:console.applicationRoles.roles.goBackToRoles")
+                } }
             >
                 { !isLoading ? (
                     <>

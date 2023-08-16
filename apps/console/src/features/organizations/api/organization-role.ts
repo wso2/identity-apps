@@ -1,32 +1,30 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import { AsgardeoSPAClient, HttpError, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import {
+    AsgardeoSPAClient,
+    HttpClientInstance,
+    HttpError,
+    HttpRequestConfig,
+    HttpResponse
+} from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { CreateRoleInterface } from "../../roles";
+import { CreateRoleInterface } from "../../roles/models/roles";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
 /**
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
@@ -110,7 +108,7 @@ export const deleteOrganizationRole = (organizationId: string, roleId: string): 
  * @param data - data object used to create the role
  */
 export const createOrganizationRole = (organizationId: string, data: CreateRoleInterface): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Content-Type": "application/json"
@@ -120,9 +118,9 @@ export const createOrganizationRole = (organizationId: string, data: CreateRoleI
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -139,7 +137,7 @@ export const updateRole = (
     roleId: string,
     roleData: PatchOrganizationRoleDataInterface
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: roleData,
         headers: {
             "Content-Type": "application/json"
@@ -149,9 +147,9 @@ export const updateRole = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -168,7 +166,7 @@ export const patchOrganizationRoleDetails = (
     roleId: string,
     roleData: PatchOrganizationRoleDataInterface
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: roleData,
         headers: {
             "Content-Type": "application/json"
@@ -178,9 +176,9 @@ export const patchOrganizationRoleDetails = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -192,7 +190,7 @@ export const patchOrganizationRoleDetails = (
  * @param roleId - role id to retrieve role details
  */
 export const getOrganizationRoleById = (organizationId: string, roleId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Content-Type": "application/json"
         },
@@ -201,9 +199,9 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -214,7 +212,12 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
  * Need to change this to a real API once the BE is ready
  */
 export const getOrganizationPermissions = (): Promise<any> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve: (
+        value: { 
+            data: { displayName: string, resourcePath: string }[],
+            status: number
+        }
+    ) => void) => {
         resolve({
             data: [
                 {

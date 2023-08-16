@@ -1,31 +1,24 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
 import { AppConstants, AppState, history } from "../../core";
 import { getOrganizationRoleById } from "../../organizations/api";
+import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
-import { PermissionList, getRoleById } from "../../roles";
+import { getRoleById } from "../../roles/api/roles";
+import { PermissionList } from "../../roles/components/wizard/role-permission";
 
 /**
  * Proptypes for the user role permission component.
@@ -43,8 +36,8 @@ interface UserRolePermissionsInterface extends TestableComponentInterface {
 /**
  *  User roles permission component.
  *
- * @param {UserRolePermissionsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns User roles permission component.
  */
 export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface> = (
     props: UserRolePermissionsInterface
@@ -63,8 +56,9 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization);
+    const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     /**
@@ -79,13 +73,13 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
         if (roleId) {
             if (isRootOrganization) {
                 getRoleById(roleId)
-                    .then((response) => {
+                    .then((response: AxiosResponse) => {
                         setRoleCheck(false);
                         setRole(response.data);
                     });
             } else {
                 getOrganizationRoleById(currentOrganization.id, roleId)
-                    .then((response) => {
+                    .then((response: AxiosResponse) => {
                         setRoleCheck(false);
                         setRole(response.data);
                     });

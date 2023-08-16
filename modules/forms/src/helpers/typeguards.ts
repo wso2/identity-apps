@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import {
@@ -35,7 +26,7 @@ import {
 
 /**
  * Type guard to check if an input element is a text field.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isTextField = (toBeDetermined: FormField): toBeDetermined is TextField | PasswordField => {
@@ -50,7 +41,7 @@ export const isTextField = (toBeDetermined: FormField): toBeDetermined is TextFi
 
 /**
  * Type guard to check if an input element is of the type Radio.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isRadioField = (toBeDetermined: FormField): toBeDetermined is RadioField => {
@@ -59,7 +50,7 @@ export const isRadioField = (toBeDetermined: FormField): toBeDetermined is Radio
 
 /**
  * Type guard to check if an input element is of the type Password.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isPasswordField = (toBeDetermined: FormField): toBeDetermined is PasswordField => {
@@ -68,7 +59,7 @@ export const isPasswordField = (toBeDetermined: FormField): toBeDetermined is Pa
 
 /**
  * Type guard to check if an input element is of the type Dropdown.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isDropdownField = (toBeDetermined: FormField): toBeDetermined is DropdownField => {
@@ -77,7 +68,7 @@ export const isDropdownField = (toBeDetermined: FormField): toBeDetermined is Dr
 
 /**
  * Type guard to check if an input element is of the type Checkbox.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is CheckboxField => {
@@ -86,7 +77,7 @@ export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is Ch
 
 /**
  * Type guard to check if an input element is of the type Scopes.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isScopesField = (toBeDetermined: FormField): toBeDetermined is ScopesField => {
@@ -95,7 +86,7 @@ export const isScopesField = (toBeDetermined: FormField): toBeDetermined is Scop
 
 /**
  * Type guard to check if an input element is of the type Query Parameters.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isQueryParamsField = (toBeDetermined: FormField): toBeDetermined is QueryParamsField => {
@@ -104,7 +95,7 @@ export const isQueryParamsField = (toBeDetermined: FormField): toBeDetermined is
 
 /**
  * Type guard to check if an input element is of the type Toggle.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isToggleField = (toBeDetermined: FormField): toBeDetermined is ToggleField => {
@@ -113,7 +104,7 @@ export const isToggleField = (toBeDetermined: FormField): toBeDetermined is Togg
 
 /**
  * Type guard to check if an input element is of the type Submit.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isSubmitField = (toBeDetermined: FormField): toBeDetermined is FormSubmit => {
@@ -122,7 +113,7 @@ export const isSubmitField = (toBeDetermined: FormField): toBeDetermined is Form
 
 /**
  * Type guard to check if an input element is of the type Reset.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isResetField = (toBeDetermined: FormField): toBeDetermined is Reset => {
@@ -131,7 +122,7 @@ export const isResetField = (toBeDetermined: FormField): toBeDetermined is Reset
 
 /**
  * Type guard to check if an input element is of the type Button.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isButtonField = (toBeDetermined: FormField): toBeDetermined is FormButton => {
@@ -140,7 +131,7 @@ export const isButtonField = (toBeDetermined: FormField): toBeDetermined is Form
 
 /**
  * Type guard to check if an input element is of the type Divider.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isDivider = (toBeDetermined: FormField): toBeDetermined is FormDivider => {
@@ -149,7 +140,7 @@ export const isDivider = (toBeDetermined: FormField): toBeDetermined is FormDivi
 
 /**
  * Type guard to check if an input element is of the type Custom.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isCustomField = (toBeDetermined: FormField): toBeDetermined is CustomField => {
@@ -158,7 +149,7 @@ export const isCustomField = (toBeDetermined: FormField): toBeDetermined is Cust
 
 /**
  * Checks if the field is an input/checkbox/dropdown/radio/password field.
- * 
+ *
  * @param toBeDetermined - Form field to be checked.
  */
 export const isInputField = (

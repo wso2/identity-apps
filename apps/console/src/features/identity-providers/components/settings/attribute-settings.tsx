@@ -1,26 +1,16 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -28,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
+import { AttributeSelection, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
 import { getAllLocalClaims } from "../../../claims/api";
 import {
@@ -129,7 +119,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const {
         idpId,
         initialClaims,
-        initialRoleMappings,
         isLoading,
         onUpdate,
         provisioningAttributesEnabled,
@@ -166,11 +155,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     // Selected role mapping.
-    const [ roleMapping, setRoleMapping ] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
+    const [ roleMapping ] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
-    // Trigger role mapping field to submission.
-    const [ triggerSubmission ] = useTrigger();
 
     /**
      * When IdP loads, this component is responsible for fetching the
@@ -432,17 +419,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         isReadOnly={ isReadOnly }
                     />) }
                     <Divider hidden/>
-
-                    { /* Set role mappings. */ }
-                    { isRoleMappingsEnabled && (<RoleMappingSettings
-                        triggerSubmit={ triggerSubmission }
-                        initialRoleMappings={ initialRoleMappings }
-                        onSubmit={ setRoleMapping }
-                        data-testid={ `${ testId }-role-mapping` }
-                        isReadOnly={ isReadOnly }
-                    />) }
-                    <Divider hidden/>
-
                     <Grid.Row>
                         <Grid.Column>
                             <Show when={ AccessControlConstants.IDP_EDIT }>

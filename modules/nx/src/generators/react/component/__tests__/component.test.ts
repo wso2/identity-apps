@@ -18,7 +18,7 @@
 
 import { Tree, logger } from "@nrwl/devkit";
 import { createTreeWithEmptyWorkspace } from "@nrwl/devkit/testing";
-import { createApp } from "../../../../../test-configs/utils";
+import { createApp } from "../../../../../test-configs/utils/testing-generators";
 import componentGenerator from "../component";
 import { Schema } from "../schema";
 

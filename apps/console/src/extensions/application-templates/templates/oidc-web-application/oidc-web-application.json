@@ -1,0 +1,55 @@
+{
+    "id": "b9c5e11e-fc78-484b-9bec-015d247561b8",
+    "templateId": "oidc-web-application",
+    "name": "OpenID Connect",
+    "description": "Regular web application that uses redirection within the browser.",
+    "image": "oidc",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "java"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 1,
+    "templateGroup": "web-application",
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "claimConfiguration":{
+            "dialect":"LOCAL",
+            "requestedClaims": [
+                {
+                    "claim": {
+                        "uri":"http://wso2.org/claims/username"
+                    }
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "allowedOrigins": [ "http://localhost:8080" ],
+                "callbackURLs": [ "http://localhost:8080/oidc-sample-app/oauth2client","http://localhost:8080/oidc-sample-app/index.html" ],
+                "publicClient": false
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+/*----------------------------
+      Choreo Navigation button
+------------------------------*/
+
+@ChoreoThemeColorPrimary : #5567D5;
+@ChoreoThemeColorSecondary : #4653a1;

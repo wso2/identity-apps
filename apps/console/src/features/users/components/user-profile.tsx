@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
@@ -49,16 +39,18 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { commonConfig,userConfig } from "../../../extensions";
+import { TenantInfo } from "../../../extensions/components/tenants/models";
+import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
+import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
+import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
     OperationValueInterface,
     PatchRoleDataInterface,
     ScimOperationsInterface,
-    SearchRoleInterface,
-    searchRoleList,
-    updateRoleDetails
-} from "../../roles";
+    SearchRoleInterface
+} from "../../roles/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserAccountTypes, UserManagementConstants } from "../constants";
@@ -148,6 +140,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
+    const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -170,6 +164,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
+    const [ associationType, setAssociationType ] = useState<string>("");
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
@@ -242,7 +237,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     }, [ user ]);
 
     /**
-     * This will load the countries to the dropdown.
+     *  This will load the countries to the dropdown.
      */
     useEffect(() => {
         setCountryList(CommonUtils.getCountryList());
@@ -250,6 +245,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
         }
+    }, []);
+
+    /**
+     * This will load authenticated user's association type to the current organization.
+     */
+    useEffect(() => {
+        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
     }, []);
 
     /**
@@ -354,9 +356,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: string[] | MultiValueAttributeInterface[] = userInfo[emailSchema];
-                                const primaryEmail: string = emails.find(
-                                    (subAttribute: string | MultiValueAttributeInterface ) =>
-                                        typeof subAttribute === "string");
+                                const primaryEmail: string = (emails as string[]).find((subAttribute: string) => {
+                                    return typeof subAttribute === "string";
+                                });
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
@@ -1102,7 +1104,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 )
                             }
                             {
-                                !isPrivilegedUser && adminUserType === AdminAccountTypes.INTERNAL && (
+                                !isPrivilegedUser && 
+                                adminUserType === AdminAccountTypes.INTERNAL && 
+                                associationType !== GUEST_ADMIN_ASSOCIATION_TYPE && 
+                                (
                                     <DangerZone
                                         data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +

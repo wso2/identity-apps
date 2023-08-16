@@ -1,30 +1,20 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { getInboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs/ui";
 import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 
 /**
  * Prop-types for the wizard summary component.
@@ -71,7 +61,9 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         }
 
         if (samlMetaFileSelected) {
-            const newSummary = {
+            const newSummary: {
+                metadataFile: any;
+            } = {
                 metadataFile: summary?.metadataFile
             };
 
@@ -171,7 +163,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                                 <Label.Group>
                                     {
                                         summary.grantTypes
-                                            .map((grant, index) => (
+                                            .map((grant: string, index: number) => (
                                                 <Label key={ index } basic circular>{ grant }</Label>
                                             ))
                                     }
@@ -194,7 +186,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
                                 summary.manualConfiguration?.assertionConsumerUrls
-                                    .map((url, index) => (
+                                    .map((url: string, index: number) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))
                             }
@@ -249,9 +241,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                                 // Multiple callback URLs are supported through regexp only.
                                 // Hence the retrieval of 0th index.
                                 // TODO: Revert this once the API supports callback URLs as string arrays.
-                                EncodeDecodeUtils.decodeURLRegex(
-                                    summary.callbackURLs[0])
-                                    .map((url, index) => (
+                                EncodeDecodeUtils.decodeURLRegex(summary.callbackURLs[0]).map(
+                                    (url: string, index: number) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))
                             }

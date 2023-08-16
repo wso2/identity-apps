@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -25,12 +15,18 @@ import {
     PrimaryButton,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../core";
-import { IdentityProviderInterface, getIdentityProviderList } from "../../../../identity-providers";
+import { getIdentityProviderList } from "../../../../identity-providers/api/identity-provider";
+import {
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
+} from "../../../../identity-providers/models/identity-provider";
 import { updateApplicationConfigurations } from "../../../api";
 import {
     ApplicationInterface,
@@ -68,9 +64,9 @@ interface OutboundProvisioningConfigurationPropsInterface extends TestableCompon
 /**
  * Provisioning configurations form component.
  *
- * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Outbound Provisioning Configurations component.
  */
 export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvisioningConfigurationPropsInterface> = (
     props: OutboundProvisioningConfigurationPropsInterface
@@ -86,13 +82,14 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const [
@@ -109,7 +106,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         }
 
         getIdentityProviderList()
-            .then((response) => {
+            .then((response: IdentityProviderListResponseInterface) => {
                 setIdpList(response.identityProviders);
             });
     }, []);
@@ -127,7 +124,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
                 onUpdate(application.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -155,18 +152,18 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     /**
      * Handles accordion title click.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     * @param e - Click event.
+     * @param SegmentedAuthenticatedAccordion - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
         SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
         if (!SegmentedAuthenticatedAccordion) {
             return;
         }
-        const newIndexes = [ ...accordionActiveIndexes ];
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            const removingIndex: number = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -180,8 +177,9 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
             application?.provisioningConfigurations?.outboundProvisioningIdps;
 
-        const editedIDP = outboundConfigs.find(idp =>
-            (idp.idp === values.idp) && (idp.connector === values.connector));
+        const editedIDP: OutboundProvisioningConfigurationInterface = outboundConfigs.find(
+            (idp: OutboundProvisioningConfigurationInterface) =>
+                (idp.idp === values.idp) && (idp.connector === values.connector));
 
         outboundConfigs.splice(outboundConfigs.indexOf(editedIDP), 1);
         outboundConfigs.push(values);
@@ -203,10 +201,14 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     const handleProvisioningIDPDelete = (deletingIDP: OutboundProvisioningConfigurationInterface): void => {
         const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
             application?.provisioningConfigurations?.outboundProvisioningIdps;
-        const tempOutboundConfig = [ ... outboundConfigs ];
+        const tempOutboundConfig: OutboundProvisioningConfigurationInterface[] = [ ...outboundConfigs ];
 
         tempOutboundConfig.splice(outboundConfigs.indexOf(deletingIDP), 1);
-        const newConfig = {
+        const newConfig: {
+            provisioningConfigurations: {
+                outboundProvisioningIdps: OutboundProvisioningConfigurationInterface[];
+            };
+        } = {
             provisioningConfigurations: {
                 outboundProvisioningIdps: tempOutboundConfig
             }
@@ -223,7 +225,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 onUpdate(application.id);
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
 
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
@@ -280,7 +282,8 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             <Grid.Column>
                                 {
                                     application?.provisioningConfigurations?.outboundProvisioningIdps?.map(
-                                        (provisioningIdp, index) => {
+                                        (provisioningIdp: OutboundProvisioningConfigurationInterface, 
+                                            index: number) => {
                                             return (
                                                 <AuthenticatorAccordion
                                                     key={ provisioningIdp.idp }
@@ -303,7 +306,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                     <OutboundProvisioningWizardIdpForm
                                                                         initialValues={ provisioningIdp }
                                                                         triggerSubmit={ null }
-                                                                        onSubmit={ (values): void => {
+                                                                        onSubmit={ (values: any): void => {
                                                                             updateIdentityProvider(values);
                                                                         } }
                                                                         idpList={ idpList }

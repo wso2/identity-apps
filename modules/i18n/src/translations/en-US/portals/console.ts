@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { ConsoleNS } from "../../../models";
@@ -478,6 +469,15 @@ export const console: ConsoleNS = {
             }
         }
     },
+    featureGate: {
+        enabledFeatures: {
+            tags: {
+                premium: {
+                    warning: "This is a premium feature and will soon be disabled for the free subscription plan. Upgrade your subscription for uninterrupted access to this feature."
+                }
+            }
+        }
+    },
     develop: {
         componentExtensions: {
             component: {
@@ -649,6 +649,15 @@ export const console: ConsoleNS = {
                     deleteApplication: {
                         assertionHint: "Please confirm your action.",
                         content: "This action is irreversible and will permanently delete the application.",
+                        header: "Are you sure?",
+                        message: "If you delete this application, authentication flows for this application will " +
+                            "stop working. Please proceed with caution."
+                    },
+                    deleteChoreoApplication: {
+                        assertionHint: "Please confirm your action.",
+                        content: "Deleting this application will break the authentication flows and cause the " +
+                            "associated Choreo application to be unusable with its credentials. " +
+                            "<1>Proceed at your own risk.</1>",
                         header: "Are you sure?",
                         message: "If you delete this application, authentication flows for this application will " +
                             "stop working. Please proceed with caution."
@@ -909,7 +918,7 @@ export const console: ConsoleNS = {
                             oidcHeading: "Server Endpoints",
                             oidcSubHeading: "The following server endpoints will be useful for you to implement and " +
                                 "configure authentication for your application using OpenID Connect.",
-                            samlHeading: "Identity Provider Details",
+                            samlHeading: "Connection Details",
                             samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
                             tabName: "Info"
@@ -1063,7 +1072,7 @@ export const console: ConsoleNS = {
                                             addAuthenticatorModal: {
                                                 content: {
                                                     addNewAuthenticatorCard: {
-                                                        title: "Configure New Identity Provider"
+                                                        title: "Configure New Connection"
                                                     },
                                                     authenticatorGroups: {
                                                         basic: {
@@ -1133,7 +1142,7 @@ export const console: ConsoleNS = {
                                                 "present in a previous step.",
                                             secondFactorDisabledDueToProxyMode: "To configure <1>{{auth}}</1>," +
                                                 " you should enable the Just-in-Time provisioning" +
-                                                " setting from the following Identity Providers.",
+                                                " setting from the following connections.",
                                             secondFactorDisabledInFirstStep: "Second factor authenticators can " +
                                                 "not be used in the first step.",
                                             backupCodesDisabled: "Backup code authenticator can only be used if multi factor " +
@@ -1227,6 +1236,12 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to login with Google.",
                                                 heading: "Add Google login"
                                             },
+                                            idf: {
+                                                tooltipText: "The identifier first authenticator does not verify" +
+                                                    " the user's identity, and hence cannot be used to pick the" +
+                                                    " user identity or attributes. To do so, enable validations" +
+                                                    " using an authentication script."
+                                            },
                                             magicLink: {
                                                 description: "Enable users to log in using a magic "
                                                     + "link sent to their email.",
@@ -1256,6 +1271,11 @@ export const console: ConsoleNS = {
                                             smsOTP: {
                                                 description: "Enable additional authentication layer with SMS based OTP.",
                                                 heading: "Add SMS OTP as a second factor"
+                                            },
+                                            emailOTPFirstFactor: {
+                                                description: "Enable users to log in using a one-time passcode "
+                                                    + "sent to their email.",
+                                                heading: "Add Email OTP login"
                                             }
                                         }
                                     }
@@ -1495,8 +1515,8 @@ export const console: ConsoleNS = {
                                 }
                             },
                             isSharingEnabled: {
-                                hint: "If enabled, it will allow this application to authenticate customers/partners " +
-                                    "into this organization or any of its sub-organizations.",
+                                hint: "If enabled, it will share this application with all or any selected sub-organizations " +
+                                    "that belong to your root organization.",
                                 label: "Allow sharing with sub-organizations"
                             },
                             isManagementApp: {
@@ -2885,6 +2905,10 @@ export const console: ConsoleNS = {
                             + "It needs an additional step.",
                         message: "Update error"
                     },
+                    updateIdentifierFirstInFirstStepError: {
+                        description: "The Identifier First authenticator requires multiple authentication steps in the sign-in flow.",
+                        message: "Update error"
+                    },
                     updateOutboundProvisioning: {
                         genericError: {
                             description: "The outbound provisioning IDP already exists.",
@@ -3092,6 +3116,14 @@ export const console: ConsoleNS = {
                         content: "Remove the associations from these applications before deleting:",
                         header: "Unable to Delete",
                         message: "There are applications using this connection."
+                    },
+                    deleteCertificate: {
+                        assertionHint: "Please confirm your action.",
+                        content: "This is the only certificate available for this trusted token issuer. " +
+                            "If this certificate is deleted, {{productName}} will no longer be able to validate tokens " +
+                            "issued from this issuer.<1> Proceed with caution.</1>",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the certificate."
                     }
                 },
                 dangerZoneGroup: {
@@ -3660,8 +3692,7 @@ export const console: ConsoleNS = {
                             },
                             IsLogoutEnabled: {
                                 ariaLabel: "Specify whether logout is enabled for IdP",
-                                hint: "Specify whether logout is supported by the external "
-                                    + "IdP.",
+                                hint: "Specify whether logout is supported by the external IdP.",
                                 label: "Identity provider logout enabled"
                             },
                             IsLogoutReqSigned: {
@@ -3761,6 +3792,16 @@ export const console: ConsoleNS = {
                                 maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters.",
                                 required: "Identity Provider name is required"
                             }
+                        },
+                        issuer: {
+                            hint: "A unique issuer value of the trusted token issuer.",
+                            label: "Issuer",
+                            placeholder: "Enter the issuer."
+                        },
+                        alias: {
+                            hint: "Alias value for {{productName}} in the trusted token issuer.",
+                            label: "Alias",
+                            placeholder: "Enter the alias."
                         }
                     },
                     jitProvisioning: {
@@ -3846,6 +3887,14 @@ export const console: ConsoleNS = {
                                 empty: "Please select an attribute for subject"
                             }
                         }
+                    },
+                    certificateSection: {
+                        certificateEditSwitch: {
+                            jwks: "Use JWKS Endpoint",
+                            pem: "Provide Certificates"
+                        },
+                        noCertificateAlert: "There are no certificates available for this trusted token issuer. " +
+                            "Therefore {{productName}} will no longer be able to validate tokens issued from this issuer."
                     }
                 },
                 helpPanel: {
@@ -3909,7 +3958,7 @@ export const console: ConsoleNS = {
                             message: "Create error"
                         },
                         genericError: {
-                            description: "An error occurred while creating the identity provider.",
+                            description: "An error occurred while creating the connection.",
                             message: "Create error"
                         },
                         success: {
@@ -3982,15 +4031,21 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         error: {
                             description: "{{ description }}",
-                            message: "Identity Provider Delete Error"
+                            message: "Connection Delete Error"
                         },
                         genericError: {
-                            description: "An error occurred while deleting the identity provider.",
-                            message: "Identity Provider Delete Error"
+                            description: "An error occurred while deleting the connection.",
+                            message: "Connection Delete Error"
                         },
                         success: {
-                            description: "Successfully deleted the identity provider.",
+                            description: "Successfully deleted the connection.",
                             message: "Delete successful"
+                        }
+                    },
+                    deleteIDPWithConnectedApps: {
+                        "error": {
+                            "description": "There are applications using this connection.",
+                            "message": "Cannot Delete"
                         }
                     },
                     disableAuthenticator: {
@@ -4005,6 +4060,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "",
                             message: ""
+                        }
+                    },
+                    disableIDPWithConnectedApps: {
+                        "error": {
+                            "description": "There are applications using this connection.",
+                            "message": "Cannot Disable"
                         }
                     },
                     disableOutboundProvisioningConnector: {
@@ -4111,7 +4172,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider details.",
+                            description: "An error occurred while retrieving connection details.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4125,7 +4186,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity providers.",
+                            description: "An error occurred while retrieving connections.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4153,7 +4214,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider template list.",
+                            description: "An error occurred while retrieving connection template list.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -4237,11 +4298,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating Identity Provider attributes.",
+                            description: "An error occurred while updating connection attributes.",
                             message: "Update error"
                         },
                         success: {
-                            description: "Successfully updated Identity Provider attributes.",
+                            description: "Successfully updated connection attributes.",
                             message: "Update successful"
                         }
                     },
@@ -4349,7 +4410,7 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the identity provider certificate.",
+                            description: "An error occurred while updating the connection certificate.",
                             message: "Update Error"
                         },
                         success: {
@@ -4450,7 +4511,7 @@ export const console: ConsoleNS = {
                             1: "You can add a new connection by following",
                             2: "the steps in the creation wizard."
                         },
-                        title: "Add a new Identity Provider"
+                        title: "Add a new Connection"
                     },
                     emptyIDPSearchResults: {
                         subtitles: {
@@ -4469,13 +4530,13 @@ export const console: ConsoleNS = {
                 popups: {
                     appStatus: {
                         disabled: {
-                            content: "The identity provider is disabled. Please enable the authentication " +
+                            content: "The connection is disabled. Please enable the authentication " +
                                 "provider to use it's services.",
                             header: "Disabled",
                             subHeader: ""
                         },
                         enabled: {
-                            content: "The identity provider is enabled.",
+                            content: "The connection is enabled.",
                             header: "Enabled",
                             subHeader: ""
                         }
@@ -4495,7 +4556,7 @@ export const console: ConsoleNS = {
                             },
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
-                                idpDescription: "Provide a unique name for the identity provider.",
+                                idpDescription: "Provide a unique name for the connection.",
                                 heading: "Name"
                             },
                             preRequisites: {
@@ -4522,7 +4583,7 @@ export const console: ConsoleNS = {
                     enterprise: {
                         addWizard: {
                             subtitle: "Configure an IDP to connect with standard authentication protocols.",
-                            title: "Standard based Identity Providers"
+                            title: "Standard based Connections"
                         },
                         saml: {
                             preRequisites: {
@@ -4538,7 +4599,62 @@ export const console: ConsoleNS = {
                         validation: {
                             invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
                                 " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
-                            name: "Identity verification provider name is not valid"
+                            name: "Please enter a valid name"
+                        }
+                    },
+                    trustedTokenIssuer: {
+                        addWizard: {
+                            title: "Trusted token issuer",
+                            subtitle: "Register a trusted token issuer to exchange its token for an Asgardeo issued " +
+                                "token"
+                        },
+                        forms: {
+                            steps: {
+                                general: "General Settings",
+                                certificate: "Certificates"
+                            },
+                            name: {
+                                label: "Trusted token issuer name",
+                                placeholder: "Enter a name for the trusted token isser"
+                            },
+                            issuer: {
+                                label: "Issuer",
+                                placeholder: "Enter the issuer",
+                                hint: "A unique issuer value of the trusted token issuer.",
+                                validation: {
+                                    notValid: "{{issuer}} is not a valid issuer."
+                                }
+                            },
+                            alias: {
+                                label: "Alias",
+                                placeholder: "Enter the alias",
+                                hint: "Alias value for {{productName}} in the trusted token issuer.",
+                                validation: {
+                                    notValid: "{{alias}} is not a valid alias."
+                                }
+                            },
+                            certificateType: {
+                                label: "Mode of certificate configuration",
+                                requiredCertificate: "A certificate is required to create a trusted token issuer."
+                            },
+                            jwksUrl: {
+                                optionLabel: "JWKS endpoint",
+                                placeholder: "Enter JWKS endpoint URL",
+                                label: "JWKS endpoint URL",
+                                hint: "Asgardeo will use this URL to obtain keys to verify the signed responses from " +
+                                    "your trusted token issuer.",
+                                validation: {
+                                    notValid: "Please enter a valid URL"
+                                }
+                            },
+                            pem: {
+                                optionLabel: "Use PEM certificate",
+                                hint: "Asgardeo will use this certificate to verify the signed responses from " +
+                                    "your trusted token issuer.",
+                                uploadCertificateButtonLabel: "Upload certificate file",
+                                dropzoneText: "Drag and drop a certificate file here.",
+                                pasteAreaPlaceholderText: "Paste trusted token issuer certificate in PEM format."
+                            }
                         }
                     },
                     expert: {
@@ -4546,13 +4662,13 @@ export const console: ConsoleNS = {
                             description: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             heading: "Help",
                             name: {
                                 connectionDescription: "Provide a description for the connection to explain more about it.",
                                 heading: "Description",
-                                idpDescription: "Provide a description for the identity provider to explain more about it."
+                                idpDescription: "Provide a description for the connection to explain more about it."
                             },
                             subHeading: "Use the guide below"
                         }
@@ -4573,7 +4689,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Facebooks's guide on configuring apps.",
@@ -4602,7 +4718,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
                                 configureHomePageURL: "Use the following as the <1>HomePage URL</1>.",
@@ -4631,7 +4747,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Google's guide on configuring OAuth Apps.",
@@ -4674,7 +4790,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
                                 configureOAuthApps: "See Microsoft's guide on configuring OAuth Apps.",
@@ -4704,7 +4820,7 @@ export const console: ConsoleNS = {
                             name: {
                                 connectionDescription: "Provide a unique name for the connection.",
                                 heading: "Name",
-                                idpDescription: "Provide a unique name for the identity provider."
+                                idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
                                 rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
@@ -4715,11 +4831,11 @@ export const console: ConsoleNS = {
                     },
                     manualSetup: {
                         heading: "Manual Setup",
-                        subHeading: "Create an identity provider with custom configurations."
+                        subHeading: "Create a connection with custom configurations."
                     },
                     quickSetup: {
                         heading: "Quick Setup",
-                        subHeading: "Predefined set of templates to speed up your identity provider creation."
+                        subHeading: "Predefined set of templates to speed up your connection creation."
                     }
                 },
                 wizards: {
@@ -4755,7 +4871,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     addIDP: {
-                        header: "Fill the basic information about the identity provider.",
+                        header: "Fill the basic information about the connection.",
                         steps: {
                             authenticatorConfiguration: {
                                 title: "Authenticator Configuration"
@@ -4803,10 +4919,22 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of suborganizations allowed " +
-                                "for this organization."
+                            title: "You have reached the maximum number of allowed suborganizations."
                         },
-                        heading: "You’ve reached the maximum limit for suborganizations"
+                        heading: "You've reached the maximum limit for sub organizations"
+                    },
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of allowed suborganization levels."
+                        },
+                        heading: "You’ve reached the maximum suborganization levels allowed for the organization."
+                    },
+                    duplicateOrgError: {
+                        message: "A suborganization with the same name already exists.",
+                        description: "The suborganization you are trying to create already exists."
                     }
                 }
             },
@@ -4850,14 +4978,14 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by IDP name"
+                    placeholder: "Search by connection name"
                 },
                 buttons: {
                     addAttribute: "Add Attribute",
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "New Identity Provider"
+                    addIDP: "New Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -4876,16 +5004,16 @@ export const console: ConsoleNS = {
                     },
                     deleteIDP: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this identity provider, you will not be able to recover it. " +
+                        content: "If you delete this connection, you will not be able to recover it. " +
                             "Please proceed with caution.",
                         header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the identity provider."
+                        message: "This action is irreversible and will permanently delete the connection."
                     },
                     deleteIDPWithConnectedApps: {
                         assertionHint: "",
                         content: "Remove the associations from these applications before deleting:",
                         header: "Unable to Delete",
-                        message: "There are applications using this identity provider. "
+                        message: "There are applications using this connection. "
                     }
                 },
                 connectedApps: {
@@ -4906,23 +5034,23 @@ export const console: ConsoleNS = {
                 },
                 dangerZoneGroup: {
                     deleteIDP: {
-                        actionTitle: "Delete Identity Provider",
-                        header: "Delete identity provider",
-                        subheader: "Once you delete an identity provider, it cannot be recovered. Please be certain."
+                        actionTitle: "Delete Connection",
+                        header: "Delete Connection",
+                        subheader: "Once you delete the connection, it cannot be recovered. Please be certain."
                     },
                     disableIDP: {
-                        actionTitle: "Disable Identity Provider",
-                        header: "Disable identity provider",
-                        subheader: "Once you disable an identity provider, it can no longer be used until " +
+                        actionTitle: "Disable Connection",
+                        header: "Disable Connection",
+                        subheader: "Once you disable the connection, it can no longer be used until " +
                             "you enable it again.",
-                        subheader2: "Enable the identity provider to use it with your applications."
+                        subheader2: "Enable the connection to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
                 forms: {
                     advancedConfigs: {
                         alias: {
-                            hint: "If the resident identity provider is known by an alias at the federated identity " +
+                            hint: "If the resident connection is known by an alias at the federated identity " +
                                 "provider, specify it here.",
                             label: "Alias"
                         },
@@ -4947,11 +5075,11 @@ export const console: ConsoleNS = {
                             label: "Select Certificate Type"
                         },
                         federationHub: {
-                            hint: "Check if this points to a federation hub identity provider",
+                            hint: "Check if this points to a federation hub connection",
                             label: "Federation Hub"
                         },
                         homeRealmIdentifier: {
-                            hint: "Enter the home realm identifier for this identity provider",
+                            hint: "Enter the home realm identifier for this connection",
                             label: "Home Realm Identifier"
                         }
                     },
@@ -4963,15 +5091,47 @@ export const console: ConsoleNS = {
                         },
                         attributeMapping: {
                             attributeColumnHeader: "Attribute",
-                            attributeMapColumnHeader: "Identity provider attribute",
-                            attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
+                            attributeMapColumnHeader: "Connection attribute",
+                            attributeMapInputPlaceholderPrefix: "eg: Connection's attribute for ",
                             componentHeading: "Attributes Mapping",
-                            hint: "Add attributes supported by Identity Provider"
+                            hint: "Add attributes supported by connection",
+                            placeHolder: {
+                                title: "No mapped attributes found",
+                                subtitle: "There are no mapped attributes added for this connection at the moment.",
+                                action: "Add Attribute Mapping"
+                            },
+                            attributeMapTable: {
+                                mappedAttributeColumnHeader: "Mapped Attribute",
+                                externalAttributeColumnHeader: "External IdP Attribute"
+                            },
+                            heading: "Connection Attribute Mappings",
+                            subheading: "Add and map the supported attributes from external connection.",
+                            search: {
+                                placeHolder: "Search mapped attributes"
+                            },
+                            attributeDropdown: {
+                                label: "Maps to",
+                                placeHolder: "Select mapping attribute",
+                                noResultsMessage: "Try another attribute search."
+                            },
+                            externalAttributeInput: {
+                                label: "External IdP Attribute",
+                                placeHolder: "Enter external IdP attribute",
+                                existingErrorMessage: "There's already a attribute mapped with this name."
+                            },
+                            addAttributeButtonLabel: "Add Attribute Mapping",
+                            modal: {
+                                header: "Add Attribute Mappings",
+                                placeholder: {
+                                    title: "You haven't selected any attributes",
+                                    subtitle: "Map attributes and click Add Attribute Mapping to get started."
+                                }
+                            }
                         },
                         attributeProvisioning: {
                             attributeColumnHeader: {
                                 0: "Attribute",
-                                1: "Identity provider attribute"
+                                1: "Connection attribute"
                             },
                             attributeMapColumnHeader: "Default value",
                             attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
@@ -5003,23 +5163,23 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "A meaningful description about the identity provider.",
+                            hint: "A meaningful description about the connection.",
                             label: "Description",
-                            placeholder: "Enter a description of the identity provider."
+                            placeholder: "Enter a description of the connection."
                         },
                         image: {
-                            hint: "A URL to query the image of the identity provider.",
-                            label: "Identity Provider Image URL",
+                            hint: "A URL to query the image of the connection.",
+                            label: "Connection Image URL",
                             placeholder: "E.g. https://example.com/image.png"
                         },
                         name: {
-                            hint: "Enter a unique name for this identity provider.",
-                            label: "Identity Provider Name",
-                            placeholder: "Enter a name for the identity provider.",
+                            hint: "Enter a unique name for this connection.",
+                            label: "Connection Name",
+                            placeholder: "Enter a name for the connection.",
                             validations: {
-                                duplicate: "An identity provider already exists with this name",
-                                empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity Provider name cannot exceed {{ maxLength }} characters."
+                                duplicate: "A connection already exists with this name",
+                                empty: "Connection name is required",
+                                maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters."
                             }
                         }
                     },
@@ -5064,7 +5224,7 @@ export const console: ConsoleNS = {
                     },
                     outboundProvisioningRoles: {
                         heading: "OutBound Provisioning Roles",
-                        hint: "Select and add as identity provider outbound provisioning roles",
+                        hint: "Select and add as connection outbound provisioning roles",
                         label: "Role",
                         placeHolder: "Select Role",
                         popup: {
@@ -5080,12 +5240,12 @@ export const console: ConsoleNS = {
                             keyRequiredMessage: "Please enter the local role",
                             valueRequiredErrorMessage: "Please enter an IDP role to map to"
                         },
-                        valueName: "Identity Provider Role"
+                        valueName: "Connection Role"
                     },
                     uriAttributeSettings: {
                         role: {
                             heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Identity Provider",
+                            hint: "Specifies the attribute that identifies the roles at the connection",
                             label: "Role Attribute",
                             placeHolder: "Select Attribute",
                             validation: {
@@ -5094,7 +5254,7 @@ export const console: ConsoleNS = {
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "Specifies the attribute that identifies the user at the identity provider",
+                            hint: "Specifies the attribute that identifies the user at the connection",
                             label: "Subject Attribute",
                             placeHolder: "Select Attribute",
                             validation: {
@@ -5109,7 +5269,7 @@ export const console: ConsoleNS = {
                             content: {
                                 docs: {
                                     goBack: "Go back",
-                                    hint: "Click on the following  Identity Provider types to check out the " +
+                                    hint: "Click on the following  connection types to check out the " +
                                         "corresponding documentation.",
                                     title: "Select a Template Type"
                                 }
@@ -5124,11 +5284,11 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addAuthenticator: {
-                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                        subTitle: "Add new authenticator to the connection: {{ idpName }}",
                         title: "Add New Authenticator"
                     },
                     addCertificate: {
-                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                        subTitle: "Add new certificate to the connection: {{ idpName }}",
                         title: "Configure Certificates"
                     },
                     addProvisioningConnector: {
@@ -5164,18 +5324,18 @@ export const console: ConsoleNS = {
                             message: "Create error"
                         },
                         genericError: {
-                            description: "An error occurred while creating the identity provider.",
+                            description: "An error occurred while creating the connection.",
                             message: "Create error"
                         },
                         success: {
-                            description: "Successfully created the identity provider.",
+                            description: "Successfully created the connection.",
                             message: "Create successful"
                         }
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "You have reached the maximum number of identity providers allowed.",
-                            message: "Failed to create the identity provider"
+                            description: "You have reached the maximum number of connections allowed.",
+                            message: "Failed to create the connection"
                         }
                     },
                     changeCertType: {
@@ -5223,14 +5383,14 @@ export const console: ConsoleNS = {
                     deleteIDP: {
                         error: {
                             description: "{{ description }}",
-                            message: "Identity Provider Delete Error"
+                            message: "Connection Delete Error"
                         },
                         genericError: {
-                            description: "An error occurred while deleting the identity provider.",
-                            message: "Identity Provider Delete Error"
+                            description: "An error occurred while deleting the connection.",
+                            message: "Connection Delete Error"
                         },
                         success: {
-                            description: "Successfully deleted the identity provider.",
+                            description: "Successfully deleted the connection.",
                             message: "Delete successful"
                         }
                     },
@@ -5338,7 +5498,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider details.",
+                            description: "An error occurred while retrieving connection details.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -5352,7 +5512,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity providers.",
+                            description: "An error occurred while retrieving connections.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -5366,7 +5526,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving IDP template.",
+                            description: "An error occurred while retrieving connection template.",
                             message: "Retrieval error"
                         },
                         success: {
@@ -5380,7 +5540,7 @@ export const console: ConsoleNS = {
                             message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving identity provider template list.",
+                            description: "An error occurred while retrieving connection template list.",
                             message: "Retrieval Error"
                         },
                         success: {
@@ -5516,11 +5676,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the identity provider.",
+                            description: "An error occurred while updating the connection.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider.",
+                            description: "Successfully updated the connection.",
                             message: "Update successful"
                         }
                     },
@@ -5530,11 +5690,11 @@ export const console: ConsoleNS = {
                             message: "Update error"
                         },
                         genericError: {
-                            description: "An error occurred while updating the identity provider certificate.",
+                            description: "An error occurred while updating the connection certificate.",
                             message: "Update Error"
                         },
                         success: {
-                            description: "Successfully updated the identity provider certificate.",
+                            description: "Successfully updated the connection certificate.",
                             message: "Update successful"
                         }
                     },
@@ -5606,25 +5766,25 @@ export const console: ConsoleNS = {
                     },
                     emptyCertificateList: {
                         subtitles: {
-                            0: "This IDP has no certificates added.",
+                            0: "This connection has no certificates added.",
                             1: "Add a certificate to view it here."
                         },
                         title: "No certificates"
                     },
                     emptyConnectorList: {
                         subtitles: {
-                            0: "This IDP has no outbound provisioning connectors configured.",
+                            0: "This connection has no outbound provisioning connectors configured.",
                             1: "Add a connector to view it here."
                         },
                         title: "No outbound provisioning connectors"
                     },
                     emptyIDPList: {
                         subtitles: {
-                            0: "There are no identity providers available at the moment.",
-                            1: "You can add a new identity provider easily by following the",
-                            2: "steps in the identity provider creation wizard."
+                            0: "There are no connections available at the moment.",
+                            1: "You can add a new connection easily by following the",
+                            2: "steps in the connection creation wizard."
                         },
-                        title: "Add a new Identity Provider"
+                        title: "Add a new Connection"
                     },
                     emptyIDPSearchResults: {
                         subtitles: {
@@ -5643,11 +5803,11 @@ export const console: ConsoleNS = {
                 templates: {
                     manualSetup: {
                         heading: "Manual Setup",
-                        subHeading: "Create an identity provider with custom configurations."
+                        subHeading: "Create a connection with custom configurations."
                     },
                     quickSetup: {
                         heading: "Quick Setup",
-                        subHeading: "Predefined set of templates to speed up your identity provider creation."
+                        subHeading: "Predefined set of templates to speed up your connection creation."
                     }
                 },
                 wizards: {
@@ -5674,7 +5834,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     addIDP: {
-                        header: "Fill the basic information about the identity provider.",
+                        header: "Fill the basic information about the connection.",
                         steps: {
                             authenticatorConfiguration: {
                                 title: "Authenticator Configuration"
@@ -5715,251 +5875,6 @@ export const console: ConsoleNS = {
                     }
                 }
             },
-            idvp: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterValue: {
-                                placeholder: "Enter the value to search"
-                            }
-                        }
-                    },
-                    placeholder: "Search by name"
-                },
-                buttons: {
-                    addIDVP: "New Identity Verification Provider"
-                },
-                placeholders: {
-                    emptyIDVPList: {
-                        subtitles: {
-                            0: "There are no identity verification providers available at the moment.",
-                            1: "You can add a new identity verification provider easily by following the",
-                            2: "steps in the identity verification provider creation wizard."
-                        },
-                        title: "Add a new Identity Verification Provider"
-                    },
-                    emptyIDVPTypeList: {
-                        subtitles: "You can onboard new identity verification provider templates from the" +
-                            "<1> WSO2 Connector Store </1>.",
-                        title: "No identity verification provider templates found"
-                    }
-                },
-                confirmations: {
-                    deleteIDVP: {
-                        assertionHint: "Please confirm your action.",
-                        content: "If you delete this identity verification provider, you will not be able to " +
-                            "recover it. Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the identity verification " +
-                            "provider."
-                    }
-                },
-                notifications: {
-                    getIDVPList: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity verification providers.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    deleteIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Delete Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while deleting the identity verification provider.",
-                            message: "Delete Error"
-                        },
-                        success: {
-                            description: "Successfully deleted the identity verification provider.",
-                            message: "Delete Successful"
-                        }
-                    },
-                    updateIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the identity verification provider.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the identity verification provider.",
-                            message: "Update successful"
-                        }
-                    },
-                    addIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Create error"
-                        },
-                        genericError: {
-                            description: "An error occurred while creating the identity verification provider.",
-                            message: "Create error"
-                        },
-                        success: {
-                            description: "Successfully created the identity verification provider.",
-                            message: "Create successful"
-                        }
-                    },
-                    submitAttributeSettings: {
-                        error: {
-                            description: "Need to configure all the mandatory properties.",
-                            message: "Cannot perform update"
-                        }
-                    },
-                    getAllLocalClaims: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving attributes.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    getIDVP: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity verification provider details.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    getUIMetadata: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving metadata for identity verification " +
-                                "provider.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    getIDVPTemplateTypes: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity verification provider template" +
-                                " types.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    getIDVPTemplateType: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity verification provider template " +
-                                "type.",
-                            message: "Retrieval Error"
-                        }
-                    },
-                    getIDVPTemplate: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity verification provider template.",
-                            message: "Retrieval Error"
-                        }
-                    }
-
-                },
-                forms: {
-                    generalDetails: {
-                        description: {
-                            hint: "A text description for the identity verification provider.",
-                            label: "Description",
-                            placeholder: "Enter a description for the identity verification provider."
-                        },
-                        name: {
-                            hint: "Enter a unique name for this identity verification provider.",
-                            label: "Name",
-                            placeholder: "Enter a name for the identity verification provider.",
-                            validations: {
-                                duplicate: "An identity verification provider already exists with this name",
-                                empty: "Identity Verification Provider name is required",
-                                maxLengthReached: "Identity verification provider name cannot exceed {{ maxLength }} " +
-                                    "characters.",
-                                required: "Identity Verification Provider name is required",
-                                invalid: "Please enter a valid name"
-                            }
-                        }
-                    },
-                    attributeSettings: {
-                        attributeMapping: {
-                            heading: "Identity Verification Provider Attribute Mappings",
-                            hint: "Add and map the supported attributes from external Identity Verification Provider.",
-                            addButton: "Add Attribute Mapping",
-                            emptyPlaceholderEdit: {
-                                subtitle: "There are no attributes mapped for this Identity Verification Provider.",
-                                title: "No attributes mapped"
-                            },
-                            emptyPlaceholderCreate:{
-                                subtitle: "Map attributes and click <1>Add Attribute Mapping</1> to get started.",
-                                title: "You haven't mapped any attributes"
-                            }
-                        },
-                        attributeMappingListItem: {
-                            validation: {
-                                duplicate: "There's already an attribute mapped with this name.",
-                                required: "This field cannot be empty",
-                                invalid: "Please enter a valid input"
-                            },
-                            placeholders: {
-                                mappedValue: "Enter external IDVP attribute",
-                                localClaim: "Select mapping attribute"
-                            },
-                            labels: {
-                                mappedValue: "External IDVP Attribute",
-                                localClaim: "Maps to"
-                            }
-                        },
-                        attributeSelectionModal: {
-                            header: "Add Attribute Mappings"
-                        }
-                    },
-                    dynamicUI: {
-                        validations: {
-                            required: "This field cannot be empty",
-                            regex: "Input does not match the expected format",
-                            range: "Value should be between {{ min }} and {{ max }}"
-                        }
-                    }
-                },
-                dangerZoneGroup: {
-                    deleteIDVP: {
-                        actionTitle: "Delete",
-                        header: "Delete identity verification provider",
-                        subheader: "This is an irreversible action, proceed with caution."
-                    },
-                    disableIDVP: {
-                        actionTitle: "{{ state }} Identity Verification Provider",
-                        header: "{{ state }} identity verification provider",
-                        subheader: "Once you disable an identity verification provider, it can no longer be used " +
-                            "until re-enabled.",
-                        subheader2: "Enable the identity verification provider to use it with your applications."
-                    },
-                    header: "Danger Zone"
-                },
-                list: {
-                    actions: "Actions",
-                    name: "Name"
-                }
-            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server for Developers",
@@ -5977,9 +5892,8 @@ export const console: ConsoleNS = {
                             subHeading: "Create and manage connections to use in the login flow of your applications."
                         },
                         idps: {
-                            heading: "Identity Providers",
-                            subHeading: "Create and manage identity providers based on templates and configure " +
-                                "authentication."
+                            heading: "Connections",
+                            subHeading: "Create and manage connections based on templates and configure authentication."
                         },
                         remoteFetch: {
                             heading: "Remote Fetch",
@@ -6161,21 +6075,20 @@ export const console: ConsoleNS = {
                 applicationEdit: "Application Edit",
                 applicationTemplates: "Application Templates",
                 applications: "Applications",
-                authenticationProviderEdit: "Identity Providers Edit",
-                authenticationProviderTemplates: "Identity Provider Templates",
+                authenticationProviderEdit: "Connections Edit",
+                authenticationProviderTemplates: "Connection Templates",
                 authenticationProviders: "Connections",
                 categories: {
                     application: "Applications",
-                    authenticationProviders: "Identity Providers",
+                    authenticationProviders: "Connections",
                     general: "General",
                     gettingStarted: "Getting Started",
-                    identityProviders: "Identity Providers",
-                    identityVerificationProviders: "Identity Verification Providers"
+                    identityProviders: "Connections"
                 },
                 customize: "Customize",
-                identityProviderEdit: "Identity Providers Edit",
-                identityProviderTemplates: "Identity Provider Templates",
-                identityProviders: "Identity Providers",
+                identityProviderEdit: "Connections Edit",
+                identityProviderTemplates: "Connection Templates",
+                identityProviders: "Connections",
                 oidcScopes: "Scopes",
                 oidcScopesEdit: "Scopes Edit",
                 overview: "Overview",
@@ -6268,33 +6181,20 @@ export const console: ConsoleNS = {
                 title: "Create a New Connection"
             },
             idp: {
-                subTitle: "Manage identity providers to allow users to log in to your application through them.",
-                title: "Identity Providers"
+                subTitle: "Manage connections to allow users to log in to your application through them.",
+                title: "Connections"
             },
             idpTemplate: {
-                backButton: "Go back to Identity Providers",
-                subTitle: "Choose one of the following identity providers.",
+                backButton: "Go back to connections",
+                subTitle: "Choose one of the following connections.",
                 supportServices: {
                     authenticationDisplayName: "Authentication",
                     provisioningDisplayName: "Provisioning"
                 },
-                title: "Select Identity Provider"
-            },
-            idvp: {
-                subTitle: "Manage Identity Verification Providers to allow users to verify their identities " +
-                    "through them.",
-                title: "Identity Verification Providers"
-            },
-            idvpTemplate: {
-                backButton: "Go back to Identity Verification Providers",
-                subTitle: "Choose one of the following identity verification providers.",
-                title: "Select Identity Verification Provider",
-                search: {
-                    placeholder: "Search by name"
-                }
+                title: "Select Connection"
             },
             overview: {
-                subTitle: "Configure and  manage applications, identity providers, users and roles, attribute " +
+                subTitle: "Configure and manage applications, connections, users and roles, attribute " +
                     "dialects, etc.",
                 title: "Welcome, {{firstName}}"
             }
@@ -8377,6 +8277,8 @@ export const console: ConsoleNS = {
                 }
             },
             oidcScopes: {
+                viewAttributes: "View Attributes",
+                manageAttributes: "Manage Attributes",
                 addAttributes: {
                     description: "Select which user attributes you want to associate with the scope {{name}}."
                 },
@@ -8768,12 +8670,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "View the list of all the available organizations.",
-                    name: "All Organizations"
+                    description: "View the list of all the available sub organizations.",
+                    name: "All Sub Organizations"
                 },
                 list: {
                     actions: {
-                        add: "Add Organization"
+                        add: "Add Sub Organization"
                     },
                     columns: {
                         actions: "Actions",
@@ -8782,9 +8684,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Add Organization",
-                        subtitle1: "Create a new organization in {{parent}}.",
-                        subtitle2: "Create a new organization."
+                        header: "Add Sub Organization",
+                        subtitle1: "Create a new sub organization in {{parent}}.",
+                        subtitle2: "Create a new sub organization."
                     }
                 },
                 notifications: {
@@ -8903,7 +8805,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Add Organization",
+                        action: "Add Sub Organization",
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",
@@ -9545,7 +9447,7 @@ export const console: ConsoleNS = {
                 localDialect: "Attributes",
                 loginAttemptsSecurity: "Login Attempts Security",
                 multiFactorAuthenticators: "Multi Factor Authenticators",
-                organizations: "Organizations",
+                organizations: "Sub Organizations",
                 otherSettings: "Other Settings",
                 overview: "Overview",
                 passwordPolicies: "Password Policies",
@@ -10335,20 +10237,6 @@ export const console: ConsoleNS = {
                             message: "User added successfully"
                         }
                     },
-                    addUserPendingApproval: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error adding the new user"
-                        },
-                        genericError: {
-                            description: "Couldn't add the new user",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "The new user was accepted and pending approval.",
-                            message: "User accepted for creation"
-                        }
-                    },
                     deleteUser: {
                         error: {
                             description: "{{description}}",
@@ -10683,7 +10571,7 @@ export const console: ConsoleNS = {
                     },
                     testConnection: {
                         genericError: {
-                            description: "An error occurred while testing the " + "connection to the user store",
+                            description: "An error occurred while testing the connection to the user store",
                             message: "Something went wrong"
                         },
                         success: {
@@ -10837,6 +10725,71 @@ export const console: ConsoleNS = {
                 messageInfo: "If enabled, the JWT can be reused again within its expiration period. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
                 tokenReuseEnabled: "Token Reuse Enabled",
                 tokenReuseDisabled: "Token Reuse Disabled"
+            },
+            insights: {
+                pageTitle: "Insights",
+                title: "Insights",
+                description: "Understand user behavior better with usage statistics.",
+                durationMessage: "Showing results from <1>{{ startTimestamp }}</1> to <1>{{ endTimestamp }}</1>",
+                durationOption: "Last {{ duration }} days",
+                lastFetchedMessage: {
+                    label: "Last fetched at {{ time }}",
+                    tooltipText: "Insights for the latest activity will take few minues to be reflected in the graphs"
+                },
+                advancedFilter: {
+                    filterAttribute: "Filter attribute",
+                    filterCondition: "Filter condition",
+                    filterValue: "Filter value"
+                },
+                commonFilters: {
+                    userId: "User ID"
+                },
+                activityType: {
+                    login: {
+                        filters: {
+                            userStore: "User Store",
+                            serviceProvider: "Application"
+                        }
+                    },
+                    registration: {
+                        filters: {
+                            onboardingMethod: {
+                                attributeName: "Onboarding Method",
+                                values: {
+                                    adminInitiated: "By administrator",
+                                    userInvited: "Email invitation",
+                                    selfSignUp: "Self-registration"
+                                }
+                            }
+                        }
+                    }
+                },
+                graphs: {
+                    activeUsers: {
+                        title: "Active Users",
+                        titleHint: "Number of unique users that signed in to your organization within the selected period"
+                    },
+                    successLogins: {
+                        title: "Total Logins",
+                        titleHint: "Number of successful logins to your organization within the selected period"
+                    },
+                    failedLogins: {
+                        title: "Failed Logins"
+                    },
+                    signups: {
+                        title: "User Signups",
+                        titleHint: "Total user (B2C) signups occurred within the selected period"
+                    }
+                },
+                notifications: {
+                    fetchInsights: {
+                        genericError: {
+                            description: "An error occurred while fetching insights for the selected duration.",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                compareToLastPeriodMessage: "Compare to last period"
             }
         },
         notifications: {
@@ -10940,8 +10893,8 @@ export const console: ConsoleNS = {
                 title: "Edit scope: {{ name }}"
             },
             organizations: {
-                subTitle: "Create and manage organizations.",
-                title: "Organizations"
+                subTitle: "Create and manage sub organizations.",
+                title: "Sub Organizations"
             },
             overview: {
                 subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg width="256px" height="318px" viewBox="0 0 256 318"
+     version="1.1" xmlns="http://www.w3.org/2000/svg"
+     preserveAspectRatio="xMidYMid">
+    <g>
+        <path d="M0,0 L0,171.944611 L127.983514,244.900539 L127.983514,195.308789 L42.3643479,146.5023 L42.3643479,69.8414195 L127.983514,118.647908 L127.983514,72.9559283 L0,0 L0,0 Z"
+              fill="#002A41"/>
+        <path d="M255.967029,0 L255.967029,171.944611 L127.983514,244.900539 L127.983514,195.308789 L213.602681,146.5023 L213.602681,69.8414195 L127.983514,118.647908 L127.983514,72.9559283 L255.967029,0 L255.967029,0 Z"
+              fill="#0071B5"/>
+        <path d="M0,317.932684 L0,145.988073 L127.983514,73.0321441 L127.983514,122.623895 L42.3643479,171.430383 L42.3643479,244.191489 L127.983514,195.385004 L127.983514,244.976756 L0,317.932684 L0,317.932684 Z"
+              fill="#0071B5"/>
+        <path d="M255.967029,317.932684 L255.967029,145.988073 L127.983514,73.0321441 L127.983514,122.623895 L213.602681,171.430383 L213.602681,244.191489 L127.983514,195.385004 L127.983514,244.976756 L255.967029,317.932684 L255.967029,317.932684 Z"
+              fill="#002A41"/>
+    </g>
+</svg>

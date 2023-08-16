@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -31,19 +22,23 @@ import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
 import {
+    IdentityProviderManagementConstants
+} from "../../../../../identity-providers/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
+import {
     AuthenticatorCategories,
-    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface,
     IdentityProviderTemplateLoadingStrategies,
-    IdentityProviderTemplateManagementUtils,
     SupportedAuthenticators
-} from "../../../../../identity-providers";
-import { getSignInFlowIcons } from "../../../../configs";
+} from "../../../../../identity-providers/models";
+import {
+    IdentityProviderTemplateManagementUtils
+} from "../../../../../identity-providers/utils/identity-provider-template-management-utils";
+import { getSignInFlowIcons } from "../../../../configs/ui";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
     AuthenticationSequenceInterface,
@@ -51,7 +46,7 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../../../models";
-import { SignInMethodUtils } from "../../../../utils";
+import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
 /**
  * Proptypes for the applications settings component.
@@ -416,6 +411,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             idp: authenticator.idp
         });
 
+        handleIdentifierFirstAsSubjectAttributeStep();
+
         setAuthenticationSteps(steps);
     };
 
@@ -677,6 +674,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const handleAuthenticationStepAdd = (): void => {
         const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
 
+        handleIdentifierFirstAsSubjectAttributeStep();
+
         steps.push({
             id: steps.length + 1,
             options: []
@@ -686,6 +685,18 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         setAuthenticationSteps(steps);
         updateSteps(true);
     };
+
+    /**
+     * Check if the options include the Identifier First as an authenticator.
+     *
+     * @param options - Authenticator options.
+     * @returns true or false - Options include Identifier First or not.
+     */
+    const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean => 
+        options.some(
+            (option: AuthenticatorInterface) => 
+                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+        );
 
     /**
      * Handles the subject identifier value onchange event.
@@ -750,6 +761,29 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     level: AlertLevels.WARNING,
                     message: t(
                         "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        // Don't allow identifier first being with another authenticator in the 1FA flow.
+        if ( 
+            steps.length === 1
+            && steps[0].options.length > 1
+            && handleIdentifierFirstInStep(steps[0].options)
+        ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
                         ".message"
                     )
                 })
@@ -975,6 +1009,25 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
+
+    /**
+     * Subject or attribute step needs to be increased when the identifier first authenticator 
+     * is added to a step, and it's set as subject or attribute step.
+     * This handles the related validations.
+     */
+    const handleIdentifierFirstAsSubjectAttributeStep = (): void => {
+
+        authenticationSteps.forEach((step: AuthenticationStepInterface) => {
+            if (handleIdentifierFirstInStep(step.options)) {
+                if (subjectStepId === step.id && step.id < authenticationSteps.length) {
+                    setSubjectStepId(subjectStepId + 1);
+                }
+                if (attributeStepId === step.id && step.id < authenticationSteps.length) {
+                    setAttributeStepId(attributeStepId + 1);
+                }
+            }
+        });
+    };
 
     return (
         <div className="authentication-flow-wrapper" data-testid={ testId }>

@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -26,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { organizationConfigs } from "../../../extensions";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { getOrganization } from "../api";
+import { getOrganization, useAuthorizedOrganizationsList } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
@@ -51,20 +42,82 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
     const [ isReadOnly, setIsReadOnly ] = useState(true);
+    const [ isAuthorizedOrganization, setIsAuthorizedOrganization ] = useState(false);
+    const [ filterQuery, setFilterQuery ] = useState<string>("");
+
 
     useEffect(() => {
         setIsReadOnly(
             !isFeatureEnabled(
                 featureConfig?.organizations,
                 OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-            ) || organization?.status !== "ACTIVE");
-    }, [ featureConfig, organization ]);
+            ) || organization?.status !== "ACTIVE" || !isAuthorizedOrganization);
+    }, [ featureConfig, organization, isAuthorizedOrganization ]);
 
+    const {
+        data: authorizedOrganizationList,
+        isLoading: isAuthorizedOrganizationListRequestLoading,
+        error: authorizedListFetchRequestError
+    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, false);
+
+    /**
+     * Handles the authorized list fetch request error.
+     */
+    useEffect(() => {
+        if (!authorizedListFetchRequestError) {
+            return;
+        }
+
+        handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
+    }, [ authorizedListFetchRequestError ]);
+
+    /**
+     * Handle check for authorized organization.
+     */
+    useEffect(() => {
+        if (!authorizedOrganizationList) {
+            return;
+        }
+
+        setIsAuthorizedOrganization(authorizedOrganizationList.organizations?.length === 1);
+    }, [ authorizedOrganizationList ]);
+
+    const handleGetAuthoriziedListCallError = (error) => {
+        if (error?.response?.data?.description) {
+            dispatch(
+                addAlert({
+                    description: error.description,
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                        "getOrganizationList.error.message"
+                    )
+                })
+            );
+
+            return;
+        }
+        dispatch(
+            addAlert({
+                description: t(
+                    "console:manage.features.organizations.notifications.getOrganizationList" +
+                    ".genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "console:manage.features.organizations.notifications." +
+                    "getOrganizationList.genericError.message"
+                )
+            })
+        );
+        return;
+    };
 
     const getOrganizationData = useCallback((organizationId: string) => {
         getOrganization(organizationId)
             .then((organization) => {
                 setOrganization(organization);
+                setFilterQuery("name eq " + organization?.name);
             }).catch((error) => {
                 if (error?.description) {
                     dispatch(addAlert({
@@ -101,7 +154,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     return (
         <PageLayout
-            isLoading={ false }
+            isLoading={ isAuthorizedOrganizationListRequestLoading }
             title={ organization?.name ?? t("console:manage.features.organizations.title") }
             pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
             description={ t("console:manage.features.organizations.edit.description") }

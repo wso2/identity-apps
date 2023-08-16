@@ -38,3 +38,5 @@ export * from "./preference";
 export * from "./backup-code-authenticator";
 export * from "./enabled-authenticator";
 export * from "./validation";
+export * from "./federated-associations";
+export * from "./sms-otp";

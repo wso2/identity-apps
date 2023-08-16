@@ -1,28 +1,21 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
@@ -32,7 +25,7 @@ import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
-import { UserBasicInterface } from "../../../users";
+import { UserBasicInterface } from "../../../users/models/user";
 import { createRole } from "../../api";
 import { getRolesWizardStepIcons } from "../../configs";
 import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../models";
@@ -51,7 +44,6 @@ interface CreateRoleProps extends TestableComponentInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
@@ -71,7 +63,7 @@ interface WizardStateInterface {
 /**
  * Component to handle addition of a new role to the system.
  *
- * @param props props related to the create role wizard
+ * @param props - props related to the create role wizard
  */
 export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
 
@@ -85,7 +77,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -122,9 +114,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     useEffect(() => {
         if (groupList.length < 1) {
             getGroupList(null)
-                .then((response) => {
-                    const groups = response.data.Resources.filter(
-                        (group) => group.displayName.split("/").length === 1);
+                .then((response: AxiosResponse) => {
+                    const groups: GroupsInterface[] = response.data.Resources.filter(
+                        (group: GroupsInterface) => group.displayName.split("/").length === 1);
 
                     setGroupList(groups);
                 });
@@ -146,14 +138,15 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      *
      * @param basicData - basic data required to create role.
      */
-    const addRole = (basicData: any): void => {
+    const addRole = (basicData: WizardStateInterface): void => {
 
         const users: CreateRoleMemberInterface[] = [];
         const groups: CreateGroupMemberInterface[] = [];
         const permissions: string[] = [];
 
         if (basicData?.UserList?.length > 0) {
-            basicData?.UserList?.forEach(user => {
+            //TODO: [Fix Type] Type of the `UserList` needs to be defined in `WizardStateInterface`.
+            basicData?.UserList?.forEach((user: any) => {
                 users?.push({
                     display: user?.userName,
                     value: user?.id
@@ -162,7 +155,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         }
 
         if (basicData?.GroupList?.length > 0) {
-            basicData?.GroupList?.forEach(group => {
+            //TODO: [Fix Type] Type of the `GroupList` needs to be defined in `WizardStateInterface`.
+            basicData?.GroupList?.forEach((group: any) => {
                 groups?.push({
                     display: group.displayName,
                     value: group.id
@@ -192,7 +186,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             onCreateRoleRequested(roleData);
         } else {
             // Create Role API Call.
-            createRole(roleData).then(response => {
+            createRole(roleData).then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(
                         addAlert({
@@ -207,7 +201,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
                 }
 
-            }).catch(error => {
+            }).catch((error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     closeWizard();
                     dispatch(
@@ -253,7 +247,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     /**
      * Generates a summary of the wizard.
      *
-     * @return {any}
+     * @returns Summary of the wizard.
      */
     const generateWizardSummary = () => {
         if (!wizardState) {
@@ -267,7 +261,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
@@ -286,31 +280,39 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         setWizardState({ ...wizardState, ...value });
     };
 
-    const handleGroupListChange = (groupList) => {
+    const handleGroupListChange = (groupList: GroupsInterface[]) => {
         setGroupList(groupList);
     };
 
-    const handleInitialGroupListChange = (groupList) => {
+    const handleInitialGroupListChange = (groupList: GroupsInterface[]) => {
         setInitialGroupList(groupList);
     };
 
-    const handleAddedGroupListChange = (newGroupList) => {
+    const handleAddedGroupListChange = (newGroupList: GroupsInterface[]) => {
         setTempGroupList(newGroupList);
     };
 
-    const handleAddedGroupInitialListChange = (newGroupList) => {
+    const handleAddedGroupInitialListChange = (newGroupList: GroupsInterface[]) => {
         setInitialTempGroupList(newGroupList);
     };
 
     // Create role wizard steps
-    const WIZARD_STEPS = [ {
+    const WIZARD_STEPS: ({
+        content: JSX.Element;
+        icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+        title: string;
+    } | {
+        content: JSX.Element;
+        icon: JSX.Element;
+        title: string;
+    })[] = [ {
         content: (
             <RoleBasics
                 data-testid="add-role-form"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
         icon: getRolesWizardStepIcons().general,
@@ -322,7 +324,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 isEdit={ false }
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
+                onSubmit={ (values: TreeNode[]) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
                 isSubmitting={ isSubmitting }
             />
         ),
@@ -343,10 +345,12 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 }
                 onRoleUpdate={ updateList }
                 selectedUserStore={ selectedUserStore }
-                handleAddedGroupInitialListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                handleAddedGroupListChange={ (groups) => handleAddedGroupListChange(groups) }
-                handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                handleAddedGroupInitialListChange={
+                    (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
+                }
+                handleAddedGroupListChange={ (groups: GroupsInterface[]) => handleAddedGroupListChange(groups) }
+                handleGroupListChange={ (groups: GroupsInterface[]) => handleGroupListChange(groups) }
+                handleInitialGroupListChange={ (groups: GroupsInterface[]) => handleInitialGroupListChange(groups) }
                 handleTempUsersListChange={ (list: UserBasicInterface[]) => {
                     setTempUsersList(list);
                 } }
@@ -433,7 +437,18 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 <Steps.Group
                     current={ currentStep }
                 >
-                    { WIZARD_STEPS.map((step, index) => (
+                    { WIZARD_STEPS.map((
+                        step: {
+                            content: JSX.Element;
+                            icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+                            title: string;
+                        } | {
+                            content: JSX.Element;
+                            icon: JSX.Element;
+                            title: string;
+                        },
+                        index: number
+                    ) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

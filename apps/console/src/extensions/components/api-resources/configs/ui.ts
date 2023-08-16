@@ -1,0 +1,27 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+ */
+
+import { FunctionComponent, SVGProps } from "react";
+import { ReactComponent as AuthorizeIcon } from 
+    "../../../../themes/default/assets/images/icons/account-policy-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as KeyIcon } from "../../../../themes/default/assets/images/icons/key-icon.svg";
+
+export const getAPIResourceWizardStepIcons = (): {
+    general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    authorize: FunctionComponent<SVGProps<SVGSVGElement>>;
+    permissions: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
+
+    return {
+        authorize: AuthorizeIcon,
+        general: DocumentIcon,
+        permissions: KeyIcon
+    };
+};

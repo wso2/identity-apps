@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import fs from "fs";
@@ -21,6 +12,7 @@ import path from "path";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nrwl/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
+import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -127,6 +119,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     // Dev Server Options.
     const devServerPort: number = process.env.DEV_SERVER_PORT || config.devServer?.port;
+    const devServerHost: number = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
@@ -289,8 +282,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 inject: !isDeployedOnExternalStaticServer,
                 minify: false,
                 port: devServerPort,
-                publicPath: (isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH) 
-                    ? "/"+process.env.APP_BASE_PATH+"/" 
+                publicPath: (isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH)
+                    ? "/"+process.env.APP_BASE_PATH+"/"
                     : baseHref,
                 template:
                     isDeployedOnExternalStaticServer
@@ -383,8 +376,17 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         }) as unknown as WebpackPluginInstance
     );
 
+    // Ignore all the locale files in moment.
+    // Required locale files will be explicitly imported in the app.
+    config.plugins.push(
+        new webpack.IgnorePlugin({
+            contextRegExp: /moment$/,
+            resourceRegExp: /^\.\/locale$/
+        })
+    );
+
     // Update the existing `DefinePlugin` plugin added by NX.
-    const existingDefinePlugin: WebpackPluginInstance = 
+    const existingDefinePlugin: WebpackPluginInstance =
         config.plugins.find((plugin: WebpackPluginInstance) => {
             return plugin.constructor.name === "DefinePlugin";
         });
@@ -405,7 +407,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     }
 
     // Update the existing `CopyPlugin` plugin added by NX.
-    const existingCopyPlugin: WebpackPluginInstance = 
+    const existingCopyPlugin: WebpackPluginInstance =
         config.plugins.find((plugin: WebpackPluginInstance) => {
             return plugin.constructor.name === "CopyPlugin";
         });
@@ -556,10 +558,40 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
-        path: (isPreAuthCheckEnabled && process.env.APP_BASE_PATH) ? 
-            `${config.output.path}/${process.env.APP_BASE_PATH}` 
+        path: (isPreAuthCheckEnabled && process.env.APP_BASE_PATH) ?
+            `${config.output.path}/${process.env.APP_BASE_PATH}`
             : config.output.path,
         publicPath: baseHref
+    };
+
+    // Manually split the vendor chunks.
+    config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+            cacheGroups: {
+                certificate: {
+                    chunks: "all",
+                    enforce: true,
+                    name: "certificate",
+                    priority: 20,
+                    test: /[\\/]node_modules[\\/](node-forge|jsrsasign)[\\/]/
+                },
+                codemirror: {
+                    chunks: "all",
+                    enforce: true,
+                    name: "codemirror",
+                    priority: 20,
+                    test: /[\\/]node_modules[\\/](codemirror|js-beautify)[\\/]/
+                },
+                vendor: {
+                    chunks: "initial",
+                    enforce: true,
+                    name: "vendor",
+                    priority: 10,
+                    test: /[\\/]node_modules[\\/](?!codemirror|js-beautify|node-forge|jsrsasign)/
+                }
+            }
+        }
     };
 
     config.devServer = {
@@ -577,17 +609,37 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             publicPath: getStaticFileServePath(baseHref),
             writeToDisk: true
         },
-        // When running the apps on root context, we need to set this to `true` to route all
-        // 404 to `index.html`. Setting to true doesn't seem to work when the apps are hosted
-        // in a sub path and the default configuration works fine in that scenario.
-        // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-        historyApiFallback: baseHref !== "/"
-            ? config.devServer?.historyApiFallback
-            : true,
-        host: "localhost",
+        host: devServerHost,
         open: baseHref,
         port: devServerPort
     };
+
+    if (isDeployedOnExternalStaticServer && isPreAuthCheckEnabled) {
+        config.devServer = {
+            ...config.devServer,
+            onBeforeSetupMiddleware: (devServer: { app: { use: (arg0: any) => void; }; }) => {
+                devServer.app.use(history({
+                    rewrites: [
+                        { from: /^\/$/, to: "/app" },
+                        { from: /^\/app(\/(login)?)?$/, to: "/app/index.html" },
+                        { from: /^\/o\/.*$/, to: "/app/index.html" },
+                        { from: /^\/t(\/.*)?$/, to: "/app/index.html" }
+                    ]
+                }));
+            }
+        };
+    } else {
+        config.devServer = {
+            ...config.devServer,
+            // When running the apps on root context, we need to set this to `true` to route all
+            // 404 to `index.html`. Setting to true doesn't seem to work when the apps are hosted
+            // in a sub path and the default configuration works fine in that scenario.
+            // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+            historyApiFallback: baseHref !== "/"
+                ? config.devServer?.historyApiFallback
+                : true
+        };
+    }
 
     return config;
 };
@@ -674,8 +726,8 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
             RELATIVE_PATHS.indexTemplate
         ),
         authTemplateInSource: path.resolve(
-            __dirname, 
-            RELATIVE_PATHS.source, 
+            __dirname,
+            RELATIVE_PATHS.source,
             "auth.html"
         ),
         distribution: path.resolve(__dirname, RELATIVE_PATHS.distribution),

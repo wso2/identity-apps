@@ -1,0 +1,76 @@
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.menu {
+    &.app-header {
+        .header-extensions {
+            .header-link {
+                .header-link-inner {
+                    background: @appHeaderExtensionLinkBackground;
+                    color: @appHeaderExtensionLinkColor;
+                    display: flex;
+                    align-items: center;
+
+                    &:hover {
+                        cursor: pointer;
+                        background: @appHeaderExtensionLinkHoverBackground;
+                    }
+
+                    .header-link-inner-text {
+                        @media only screen and (max-width: @tabletBreakpoint) {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            .user-dropdown-footer {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding-left: 8%;
+                padding-right: 8%;
+                padding-top: 6%;
+                width: 100%;
+            }
+
+        }
+        .secondary-panel {
+            padding: 0 !important;
+            border-top: none;
+
+            .inner-menu {
+                .item.secondary-panel-item {
+                    border-color: transparent;
+
+                    &.active {
+                        background: @primaryColor;
+                        border-color: @primaryColor;
+                        color: @white;
+
+                        &.quickstart-page-switch {
+                            .theme-icon {
+                                svg.icon path {
+                                    fill: @white;
+                                }
+                            }
+                        }
+                    }
+                    &:hover {
+                        border-color: @primaryColor;
+                    }
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &.console-footer {
+        .item.copyright {
+            margin-left: 50px;
+        }
+    }
+}

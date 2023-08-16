@@ -1,21 +1,12 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -23,10 +14,11 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddIDPCertificateFormComponent } from "./steps/add-certificate-steps";
 import { updateIDPCertificate } from "../../api";
-import { getAddIDPCertificateWizardStepIcons } from "../../configs";
+import { getAddIDPCertificateWizardStepIcons } from "../../configs/ui";
 import { IdentityProviderInterface } from "../../models";
 
 /**
@@ -42,8 +34,8 @@ interface AddIDPCertificateWizardPropsInterface extends TestableComponentInterfa
 /**
  *  Add Idp certificate wizard form component.
  *
- * @param {AddIDPCertificateWizard} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Add Idp certificate wizard component.
  */
 export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardPropsInterface> = (
     props: AddIDPCertificateWizardPropsInterface): ReactElement => {
@@ -58,12 +50,13 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ triggerUpload, setTriggerUpload ] = useTrigger();
 
-    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
+    //TODO: Check the usage of this state and remove if not needed.
+    const [ partiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -100,10 +93,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     "notifications.duplicateCertificateUpload.error.message")
             }));
             closeWizard();
+
             return;
         }
 
-        let data;
+        let data: { operation: string; path: string; value: string }[];
         const certificateIndex: number = idp?.certificate?.certificates ? idp?.certificate?.certificates?.length : 0;
 
         if (idp?.certificate?.jwksUri) {
@@ -144,7 +138,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 closeWizard();
                 onUpdate(idp.id);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -180,7 +174,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
     /**
      * This contains the wizard steps
      */
-    const STEPS = [
+    const STEPS: {
+        content: JSX.Element;
+        icon: any;
+        title: string;
+    }[] = [
         {
             content: (
                 <AddIDPCertificateFormComponent
@@ -217,7 +215,14 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     current={ currentWizardStep }
                     data-testid={ `${ testId }-steps` }
                 >
-                    { STEPS.map((step, index) => (
+                    { STEPS.map((
+                        step: {
+                            content: JSX.Element;
+                            icon: any;
+                            title: string;
+                        }, 
+                        index: number
+                    ) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

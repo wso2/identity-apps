@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -77,35 +68,6 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
         className
     );
 
-    const renderSubtitle = () => {
-        if (!subtitle) {
-            return;
-        }
-
-        if (Array.isArray(subtitle) && (subtitle.length > 0)) {
-            return subtitle.map((line, index) => (
-                <div
-                    key={ index }
-                    className="subtitle"
-                    data-componentid={ `${componentId}-sub-header-line-${index}` }
-                    data-testid={ `${testId}-sub-header-line-${index}` }
-                >
-                    { line }
-                </div>
-            ));
-        }
-
-        return (
-            <div
-                className="subtitle"
-                data-componentid={ `${componentId}-sub-header` }
-                data-testid={ `${testId}-sub-header` }
-            >
-                { subtitle }
-            </div>
-        );
-    };
-
     return (
         <div
             className={ classes }
@@ -138,7 +100,28 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                     { title }
                 </Header>
             ) }
-            { renderSubtitle() }
+            {
+                subtitle
+                    ? Array.isArray(subtitle) && (subtitle.length > 0) && subtitle.map((line, index) => (
+                        <div
+                            key={ index }
+                            className="subtitle"
+                            data-componentid={ `${ componentId }-sub-header-line-${ index }` }
+                            data-testid={ `${ testId }-sub-header-line-${ index }` }
+                        >
+                            { line }
+                        </div>
+                    ))
+                    : (
+                        <div
+                            className="subtitle"
+                            data-componentid={ `${ componentId }-sub-header` }
+                            data-testid={ `${ testId }-sub-header` }
+                        >
+                            { subtitle }
+                        </div>
+                    )
+            }
             {
                 action
                     ? (

@@ -1,19 +1,10 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import {
@@ -295,6 +286,15 @@ export interface ConsoleNS {
             privacy: string;
         };
     };
+    featureGate: {
+        enabledFeatures: {
+            tags: {
+                premium: {
+                    warning: string
+                }
+            }
+        }
+    };
     develop: {
         features: {
             URLInput: {
@@ -402,6 +402,7 @@ export interface ConsoleNS {
                     addSocialLogin: Popup;
                     changeProtocol: Confirmation;
                     deleteApplication: Confirmation;
+                    deleteChoreoApplication: Confirmation;
                     deleteOutboundProvisioningIDP: Confirmation;
                     deleteProtocol: Confirmation;
                     handlerAuthenticatorAddition: Confirmation;
@@ -718,6 +719,9 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                             },
+                                            idf: {
+                                                tooltipText: string;
+                                            },
                                             totp: {
                                                 description: string;
                                                 heading: string;
@@ -740,6 +744,10 @@ export interface ConsoleNS {
                                                 heading: string,
                                             },
                                             smsOTP: {
+                                                description: string;
+                                                heading: string;
+                                            },
+                                            emailOTPFirstFactor: {
                                                 description: string;
                                                 heading: string;
                                             }
@@ -1159,6 +1167,7 @@ export interface ConsoleNS {
                     deleteCertificateSuccess: NotificationItem;
                     deleteCertificateGenericError: NotificationItem;
                     updateOnlyIdentifierFirstError: NotificationItem;
+                    updateIdentifierFirstInFirstStepError: NotificationItem;
                 };
                 popups: {
                     appStatus: {
@@ -1233,6 +1242,7 @@ export interface ConsoleNS {
                     deleteIDPWithConnectedApps: Confirmation;
                     deleteAuthenticator: Confirmation;
                     deleteConnector: Confirmation;
+                    deleteCertificate: Confirmation;
                 };
                 dangerZoneGroup?: {
                     header: string;
@@ -1575,6 +1585,8 @@ export interface ConsoleNS {
                     };
                     generalDetails: {
                         name: FormAttributes;
+                        issuer: FormAttributes;
+                        alias: FormAttributes;
                         description: FormAttributes;
                         image: FormAttributes;
                     };
@@ -1633,6 +1645,13 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
+                    certificateSection: {
+                        certificateEditSwitch: {
+                            jwks: string;
+                            pem: string;
+                        };
+                        noCertificateAlert: string;
+                    }
                 };
                 helpPanel?: HelpPanelInterface;
                 templates?: {
@@ -1854,6 +1873,58 @@ export interface ConsoleNS {
                             invalidName: string;
                         };
                     };
+                    trustedTokenIssuer?: {
+                        addWizard?: {
+                            title: string;
+                            subtitle: string;
+                        };
+                        forms?: {
+                            steps?: {
+                                general?: string;
+                                certificate?: string;
+                            }
+                            name?: {
+                                label?: string;
+                                placeholder?: string;
+                            };
+                            issuer?: {
+                                label?: string;
+                                placeholder?: string;
+                                hint?: string;
+                                validation?: {
+                                    notValid: string;
+                                }
+                            };
+                            alias?: {
+                                label?: string;
+                                placeholder?: string;
+                                hint?: string;
+                                validation?: {
+                                    notValid: string;
+                                }
+                            };
+                            certificateType?: {
+                                label?: string;
+                                requiredCertificate?: string;
+                            };
+                            jwksUrl?: {
+                                optionLabel?: string;
+                                placeholder?: string;
+                                label?: string;
+                                hint?: string;
+                                validation?: {
+                                    notValid: string;
+                                }
+                            };
+                            pem?: {
+                                optionLabel?: string;
+                                hint?: string;
+                                uploadCertificateButtonLabel?: string;
+                                dropzoneText?: string;
+                                pasteAreaPlaceholderText?: string;
+                            };
+                        };
+                    };
                 };
                 list?: {
                     actions: string;
@@ -1895,8 +1966,10 @@ export interface ConsoleNS {
                     };
                     deleteCertificate: Notification;
                     deleteIDP: Notification;
+                    deleteIDPWithConnectedApps: Notification;
                     deleteConnection: Notification;
                     disableAuthenticator: Notification;
+                    disableIDPWithConnectedApps: Notification;
                     disableOutboundProvisioningConnector: Notification;
                     duplicateCertificateUpload: Notification;
                     getIDP: Notification;
@@ -2037,6 +2110,14 @@ export interface ConsoleNS {
                         emptyPlaceholder: Placeholder;
                         heading: string;
                     };
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: Placeholder;
+                        heading: string;
+                    };
+                    duplicateOrgError: {
+                        message: string;
+                        description: string;
+                    };
                 }
             },
             footer: {
@@ -2124,6 +2205,38 @@ export interface ConsoleNS {
                             attributeMapInputPlaceholderPrefix: string;
                             componentHeading: string;
                             hint: string;
+                            placeHolder: {
+                                title: string;
+                                subtitle: string;
+                                action: string;
+                            };
+                            attributeMapTable: {
+                                mappedAttributeColumnHeader: string;
+                                externalAttributeColumnHeader: string;
+                            };
+                            heading: string;
+                            subheading: string;
+                            search: {
+                                placeHolder: string;
+                            };
+                            attributeDropdown: {
+                                label: string;
+                                placeHolder: string;
+                                noResultsMessage: string;
+                            };
+                            externalAttributeInput: {
+                                label: string;
+                                placeHolder: string;
+                                existingErrorMessage: string;
+                            };
+                            addAttributeButtonLabel: string;
+                            modal: {
+                                header: string;
+                                placeholder: {
+                                    title: string;
+                                    subtitle: string
+                                }
+                            }
                         };
                         attributeProvisioning: {
                             attributeColumnHeader: {
@@ -2391,96 +2504,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            idvp: {
-                advancedSearch: {
-                    form: {
-                        inputs: {
-                            filterValue: {
-                                placeholder: string;
-                            };
-                        };
-                    };
-                    placeholder: string;
-                };
-                buttons: {
-                    addIDVP: string;
-                };
-                placeholders: {
-                    emptyIDVPList: Placeholder;
-                    emptyIDVPTypeList: Placeholder;
-                };
-                confirmations: {
-                    deleteIDVP: Confirmation;
-                };
-                notifications: {
-                  getIDVPList: Notification;
-                  deleteIDVP: Notification;
-                  updateIDVP: Notification;
-                  addIDVP: Notification;
-                  submitAttributeSettings: Notification;
-                  getAllLocalClaims: Notification;
-                  getIDVP: Notification;
-                  getUIMetadata: Notification;
-                  getIDVPTemplateTypes: Notification;
-                  getIDVPTemplateType: Notification;
-                  getIDVPTemplate: Notification;
-                };
-                forms: {
-                    attributeSettings: {
-                        attributeMapping: {
-                            heading: string;
-                            hint: string;
-                            addButton: string;
-                            emptyPlaceholderEdit: {
-                                title: string;
-                                subtitle: string;
-                            };
-                            emptyPlaceholderCreate: {
-                                title: string;
-                                subtitle: string;
-                            };
-                        };
-                        attributeMappingListItem: {
-                            validation: {
-                                duplicate: string;
-                                required: string;
-                                invalid: string;
-                            };
-                            placeholders: {
-                                mappedValue: string;
-                                localClaim: string;
-                            };
-                            labels: {
-                                mappedValue: string;
-                                localClaim: string;
-                            }
-                        };
-                        attributeSelectionModal: {
-                            header: string;
-                        };
-                    };
-                    generalDetails: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                    };
-                    dynamicUI: {
-                        validations: {
-                            required: string;
-                            regex: string;
-                            range: string;
-                        }
-                    }
-                };
-                dangerZoneGroup?: {
-                    header: string;
-                    disableIDVP: DangerZone;
-                    deleteIDVP: DangerZone;
-                };
-                list: {
-                    actions: string;
-                    name: string;
-                };
-            };
             overview: {
                 banner: {
                     heading: string;
@@ -2518,7 +2541,6 @@ export interface ConsoleNS {
                     identityProviders: string;
                     authenticationProviders?: string;
                     general: string;
-                    identityVerificationProviders: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2691,15 +2713,6 @@ export interface ConsoleNS {
                 supportServices: {
                     authenticationDisplayName: string;
                     provisioningDisplayName: string;
-                };
-            };
-            idvp: Page;
-            idvpTemplate: {
-                title: string;
-                subTitle: string;
-                backButton: string;
-                search: {
-                    placeholder: string;
                 };
             };
             overview: Page;
@@ -2978,7 +2991,6 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
-                    addUserPendingApproval: Notification;
                     deleteUser: Notification;
                     fetchUsers: Notification;
                     getAdminRole: Notification;
@@ -4275,6 +4287,8 @@ export interface ConsoleNS {
                 };
             };
             oidcScopes: {
+                viewAttributes: string;
+                manageAttributes: string;
                 buttons: {
                     addScope: string;
                 };
@@ -5327,6 +5341,71 @@ export interface ConsoleNS {
                 messageInfo: string;
                 tokenReuseEnabled: string;
                 tokenReuseDisabled: string;
+            };
+            insights: {
+                pageTitle: string;
+                title: string;
+                description: string;
+                durationMessage: string;
+                durationOption: string;
+                lastFetchedMessage: {
+                    label: string;
+                    tooltipText: string;
+                },
+                advancedFilter: {
+                    filterAttribute: string;
+                    filterCondition: string;
+                    filterValue: string;
+                },
+                commonFilters: {
+                    userId: string;
+                },
+                activityType: {
+                    login: {
+                        filters: {
+                            userStore: string;
+                            serviceProvider: string;
+                        }
+                    },
+                    registration: {
+                        filters: {
+                            onboardingMethod: {
+                                attributeName: string;
+                                values: {
+                                    adminInitiated: string;
+                                    userInvited: string;
+                                    selfSignUp: string;
+                                };
+                            };
+                        }
+                    }
+                },
+                graphs: {
+                    activeUsers: {
+                        title: string;
+                        titleHint: string;
+                    };
+                    successLogins: {
+                        title: string;
+                        titleHint: string;
+                    },
+                    failedLogins: {
+                        title: string;
+                    },
+                    signups: {
+                        title: string;
+                        titleHint: string;
+                    }
+                },
+                notifications: {
+                    fetchInsights: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        }
+                    }
+                };
+                compareToLastPeriodMessage: string;
             };
         };
         notifications: {

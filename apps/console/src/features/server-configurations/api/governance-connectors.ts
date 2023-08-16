@@ -1,26 +1,17 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosResponse } from "axios";
-import { LocalAuthenticatorInterface } from "../../../features/identity-providers";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { LocalAuthenticatorInterface } from "../../../features/identity-providers/models/identity-provider";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
 import {
@@ -33,10 +24,11 @@ import {
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance());
 
 export const getData = (url: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -46,7 +38,7 @@ export const getData = (url: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR,
@@ -59,7 +51,7 @@ export const getData = (url: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -71,7 +63,7 @@ export const getData = (url: string): Promise<any> => {
 };
 
 export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -95,7 +87,7 @@ export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterf
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
@@ -134,7 +126,7 @@ export const getConnectorCategory = (categoryId: string): Promise<any> => {
  */
 export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigInterface, categoryId: string,
     connectorId: string): Promise<any> => {
-    const url = store.getState().config.endpoints.governanceConnectorCategories +
+    const url: string = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/" + connectorId;
 
     return updateConfigurations(data, url);
@@ -147,7 +139,7 @@ export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigI
  * @returns a promise containing the response.
  */
 export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceConnectorInterface[]> => {
-    const url = store.getState().config.endpoints.governanceConnectorCategories +
+    const url: string = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/";
 
     return getData(url);

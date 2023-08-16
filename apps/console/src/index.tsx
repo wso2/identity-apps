@@ -1,24 +1,14 @@
 /**
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
+import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
@@ -26,6 +16,7 @@ import { ReactElement } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { AsgardeoTheme } from "./branding/theme";
 import { AuthenticateUtils } from "./features/authentication";
 import { Config, PreLoader, store } from "./features/core";
 import { ProtectedApp } from "./protected-app";
@@ -76,17 +67,19 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <Provider store={ store }>
-            <BrowserRouter>
-                <AuthProvider
-                    config={ AuthenticateUtils.getInitializeConfig() }
-                    fallback={ <PreLoader /> }
-                    getAuthParams={ getAuthParams }
-                >
-                    <ProtectedApp />
-                </AuthProvider>
-            </BrowserRouter>
-        </Provider>
+        <ThemeProvider theme={ AsgardeoTheme }>
+            <Provider store={ store }>
+                <BrowserRouter>
+                    <AuthProvider
+                        config={ AuthenticateUtils.getInitializeConfig() }
+                        fallback={ <PreLoader /> }
+                        getAuthParams={ getAuthParams }
+                    >
+                        <ProtectedApp />
+                    </AuthProvider>
+                </BrowserRouter>
+            </Provider>
+        </ThemeProvider>
     );
 };
 

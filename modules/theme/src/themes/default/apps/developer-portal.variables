@@ -77,3 +77,27 @@
 @formContainerMaxWidth: 750px;
 @formWrapperMaxHeight: 55vh;
 @applicationSubjectSelectWidth: 820px;
+
+/*-------------------
+    Tenant Dropdown
+--------------------*/
+
+@tenantDropdownPadding: 0;
+@tenantDropdownMinWidth: 270px;
+@tenantDropdownTenantMargin: 5px 0;
+@tenantDropdownTenantPadding: 8px 20px;
+@tenantDropdownTriggerDisplayNameMaxWidth: 120px;
+@tenantDropdownTriggerBorderRadius: 25px;
+@tenantDropdownTriggerTextColor: #ffffff;
+@tenantDropdownTriggerHoverBackground: darken(#EAEFF4, 10);
+@tenantDropdownTriggerActiveBackground: darken(#EAEFF4, 10);
+@tenantDropdownDefaultLabelBackground: #eaeaea;
+@tenantDropdownDefaultLabelBorderColor: #767676;
+@tenantDropdownDefaultButtonBackground: #fff1eb;
+@tenantDropdownDefaultButtonBorderColor: #ffa176;
+@tenantDropdownDefaultButtonHoverBorderColor: #e64800;
+@tenantDropdownLinkMargin: 0.2rem 0.5rem;
+@tenantDropdownLinkMinHeight: 36px;
+@tenantDropdownTriggerBackground: #212A32;
+@tenantDropdownWrapperSpacingLeft: 15px;
+@tenantDropdownSeparatorBorderColor: #7a8084;

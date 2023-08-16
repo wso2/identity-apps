@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -49,7 +39,8 @@ import {
 } from "../../core";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { getApplicationDetails } from "../api";
-import { EditApplication, InboundProtocolDefaultFallbackTemplates } from "../components";
+import { EditApplication } from "../components/edit-application";
+import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -62,7 +53,8 @@ import {
     emptyApplication,
     idpInfoTypeInterface
 } from "../models";
-import { ApplicationTemplateManagementUtils } from "../utils";
+import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -154,7 +146,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          *  @see https://github.com/wso2/identity-apps/pull/3028#issuecomment-1123847668
          */
         if (appDescElement || isApplicationRequestLoading) {
-            const nativeElement: HTMLDivElement = appDescElement.current;
+            const nativeElement: HTMLDivElement = appDescElement?.current;
 
             if (nativeElement && (nativeElement.offsetWidth < nativeElement.scrollWidth)) {
                 setIsDescTruncated(true);
@@ -494,6 +486,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             { applicationTemplate?.name && (
                                 <Label size="small">{ applicationTemplate.name }</Label>
                             ) }
+                            {
+                                ApplicationManagementUtils.isChoreoApplication(application) 
+                                    && (<Label
+                                        size="small"
+                                        className="choreo-label no-margin-left"
+                                    >
+                                        { t("extensions:develop.apiResource.managedByChoreoText") }
+                                    </Label>)
+                            }
                             <Popup
                                 disabled={ !isDescTruncated }
                                 content={ application?.description }

@@ -1,0 +1,79 @@
+{
+    "id": "asgardeo-login-playground-template",
+    "name":"Asgardeo Try It",
+    "image": "../../../../assets/illustrations/asgardeo-rafiki-illustration.svg",
+    "application": {
+        "templateId": "custom-application-oidc",
+        "name": "Asgardeo Try It",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "claimConfiguration":{
+            "dialect":"LOCAL",
+            "requestedClaims": [
+                
+                {
+                    "claim": {
+                        "uri":"http://wso2.org/claims/emailaddress"
+                    }, 
+                    "mandatory": false
+                },
+                {
+                    "claim": {
+                        "uri":"http://wso2.org/claims/givenname"
+                    },
+                    "mandatory": false
+                },
+                {
+                    "claim": {
+                        "uri":"http://wso2.org/claims/lastname"
+                    },
+                    "mandatory": false
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "clientId": "ASGARDEO_TRY_IT_<TENANT>",
+                "accessToken": {
+                    "applicationAccessTokenExpiryInSeconds": 3600,
+                    "bindingType": "sso-session",
+                    "revokeTokensWhenIDPSessionTerminated": true,
+                    "type": "Default",
+                    "userAccessTokenExpiryInSeconds": 3600,
+                    "validateTokenBinding": false
+                },
+                "grantTypes": [
+                    "authorization_code",
+                    "refresh_token"
+                ],
+                "allowedOrigins": [],
+                "callbackURLs": [],
+                "pkce": {
+                    "mandatory": true,
+                    "supportPlainTransformAlgorithm": false
+                },
+                "publicClient": true,
+                "refreshToken": {
+                    "expiryInSeconds": 86400,
+                    "renewRefreshToken": true
+                }
+            }
+        }
+    }
+}
