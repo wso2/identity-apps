@@ -1,27 +1,40 @@
-{{^isPolicyPage}}
-<main class="center-segment">
-    <div class="ui container {{containerSize}} center aligned middle aligned">
-        {{{ProductHeader}}}
-        {{{MainSection}}}
-    </div>
-</main>
-{{{ProductFooter}}}
-{{/isPolicyPage}}
-
-{{#isPolicyPage}}
-<main class="policy-page">
-    <div class="ui borderless top fixed app-header menu" id="app-header">
-        <div class="ui container">
-            <div class="header item product-logo">
+{{^isResponsePage}}
+  {{#isSuperTenant}}
+      <div class="page-wrapper right-aligned">
+          <main class="center-segment">
+              {{{product-tagline}}}
+  {{/isSuperTenant}}
+  {{^isSuperTenant}}
+      <div class="page-wrapper">
+          <main class="center-segment">
+  {{/isSuperTenant}}
+            <div class="ui container medium center aligned middle aligned">
                 {{{ProductHeader}}}
+                {{{MainSection}}}
             </div>
-        </div>
+          </main>
+      {{{ProductFooter}}}
     </div>
-    <div class="app-content policy-page-content" style="padding-top: 62px;">
-        <div class="ui container">
-            {{{MainSection}}}
-        </div>
+{{/isResponsePage}}
+{{#isResponsePage}}
+      <div class="page-wrapper {{#isSuperTenant}}default{{/isSuperTenant}} {{#isErrorResponse}}error-page{{/isErrorResponse}} {{#isSuccessResponse}}success-page{{/isSuccessResponse}}" >
+          <main class="center-segment">
+  {{#isSuperTenant}}
+            <div class="slogan-container">
+              {{{ProductHeader}}}
+              {{{MainSection}}}
+            </div>
+            <div class="medium aligned middle aligned">
+              {{{ResponseImage}}}
+            </div>
+  {{/isSuperTenant}}
+  {{^isSuperTenant}}
+            <div class="ui container medium center aligned middle aligned">
+                {{{ProductHeader}}}
+                {{{MainSection}}}
+            </div>
+  {{/isSuperTenant}}
+          </main>
+      {{{ProductFooter}}}
     </div>
-</main>
-{{{ProductFooter}}}
-{{/isPolicyPage}}
+{{/isResponsePage}}

@@ -62,10 +62,10 @@
             "apiResources": {
                 "scopes": "{update=[internal_application_mgt_update], create=[internal_application_mgt_create], read=[internal_application_mgt_view], delete=[internal_application_mgt_update]}",
                 "disabled_features": [],
-                "enabled": "true"
+                "enabled": "false"
             },
             "applicationRoles": {
-                "enabled": "true",
+                "enabled": "false",
                 "scopes": "{update=[], read=[], create=[], delete=[]}",
                 "disabled_features": []
             },
@@ -219,7 +219,7 @@
         "features": {
             "apiResources": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_update"
@@ -237,7 +237,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -559,7 +559,7 @@
                 "disabledFeatures": []
             },
             "organizations": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [
                         "console:organizations"
@@ -802,7 +802,7 @@
             "My Account"
         ],
         "theme": {
-            "name": "default"
+            "name": "asgardio"
         }
     }
 }

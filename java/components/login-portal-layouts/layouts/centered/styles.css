@@ -1,0 +1,39 @@
+/**
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+ */
+
+.login-portal.layout .page-wrapper.layout-file .center-segment>.ui.container>.ui.segment .ui.header:first-child {
+  text-align: center;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment {
+  flex-direction: column;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer {
+  border-top: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer .ui.menu {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer .ui.menu:not(.vertical) .right.item, .ui.menu:not(.vertical) .right.menu {
+  margin-left: 0 !important;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment>.ui.container {
+  margin-bottom: 10px;
+}

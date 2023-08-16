@@ -1,0 +1,88 @@
+/**
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+ */
+
+.login-portal.layout .page-wrapper.layout-file {
+  flex-direction: row;
+  width: 100%;
+}
+
+.page-wrapper.layout-file .right-side {
+  display: flex;
+  flex: 0.7;
+  height: 100vh;
+}
+
+.page-wrapper.layout-file .right-side .right-panel-image {
+  width: 100%;
+  object-fit: cover;
+  object-position: 0% 100%;
+  height: 100%;
+}
+
+.page-wrapper.layout-file .left-side {
+  display: flex;
+  flex-direction: column;
+  flex: 0.3;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.page-wrapper.layout-file .ui.menu {
+    flex-direction: column;
+}
+
+.page-wrapper.layout-file .ui.menu:not(.vertical)>.menu {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer {
+    padding: .6rem 0!important;
+}
+
+@media only screen and (max-width: 2000px) {
+  .page-wrapper.layout-file .right-side {
+    flex: 0.65;
+  }
+
+  .page-wrapper.layout-file .left-side {
+    flex: 0.35;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  .page-wrapper.layout-file .right-side {
+    flex: 0.6;
+  }
+
+  .page-wrapper.layout-file .left-side {
+    flex: 0.4;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .page-wrapper.layout-file .right-side {
+    flex: 0.5;
+  }
+
+  .page-wrapper.layout-file .left-side {
+    flex: 0.5;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .page-wrapper.layout-file .right-side {
+    flex: 0;
+  }
+
+  .page-wrapper.layout-file .left-side {
+    flex: 1;
+  }
+}
