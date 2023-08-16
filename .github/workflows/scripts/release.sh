@@ -40,8 +40,40 @@ process_console_package() {
     NEXUS_URL="https://maven.wso2.org/nexus"
     STAGING_REPO_URL="$NEXUS_URL/service/local/staging/deploy/maven2"
     GROUP_ID_PATH="org/wso2/identity/apps"
-    ARTIFACT_VERSION="1.6.362"
+    ARTIFACT_VERSION="1.6.365.1"
     artifact="console"
+
+    STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
+
+    curl -u $USERNAME:$PASSWORD --upload-file $artifact_path $STAGING_ARTIFACT_URL
+}
+
+process_myaccount_package() {
+    NEXUS_USERNAME=$1
+    NEXUS_PASSWORD=$2
+
+    goToRootDirectory
+
+    mkdir apps/myaccount/output
+    cd apps/myaccount
+    pnpm install
+    pnpm build
+    # Prepare `myaccount.war` server deployment artifact.
+    server_artifact_name="myaccount.war"
+    cd build
+    jar cvf $server_artifact_name -C myaccount/ .
+    mv $server_artifact_name ../output/$server_artifact_name
+    cd ../../..
+    artifact_path="$WORKSPACE_PATH/apps/myaccount/output/$server_artifact_name"
+    echo "Artifact path: $artifact_path"
+
+    echo "Deploying myaccount.war to staging server..."
+    # Variables
+    NEXUS_URL="https://maven.wso2.org/nexus"
+    STAGING_REPO_URL="$NEXUS_URL/service/local/staging/deploy/maven2"
+    GROUP_ID_PATH="org/wso2/identity/apps"
+    ARTIFACT_VERSION="1.6.365.1"
+    artifact="myaccount"
 
     STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
