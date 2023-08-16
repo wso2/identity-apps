@@ -47,8 +47,6 @@
         <module>java/components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>java/components/login-portal-layouts</module>
         <module>java/components/org.wso2.identity.apps.common</module>
-        <module>apps/myaccount</module>
-        <module>apps/console</module>
         <module>java/apps/authentication-portal</module>
         <module>java/apps/recovery-portal</module>
         <module>java/apps/x509-certificate-authentication-portal</module>
