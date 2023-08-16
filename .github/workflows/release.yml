@@ -102,7 +102,7 @@ jobs:
 
             - name: 🚀 Maven Release
               id: maven-release
-              run: mvn release:prepare && mvn release:perform
+              run: mvn -B release:prepare && mvn release:perform
 
             - name: 🚀 Release React Apps
               id: pnpm-release
