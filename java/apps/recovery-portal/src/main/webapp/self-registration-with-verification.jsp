@@ -97,7 +97,7 @@
 
 
     try {
-        usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
+        usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck, isSaaSApp);
     } catch (SelfRegistrationMgtClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
