@@ -354,9 +354,11 @@ export class ApplicationManagementUtils {
      */
     public static buildCallBackURLWithSeparator = (url: string): string => {
 
-        if (url.includes("regexp=(")) {
-            url = url.replace("regexp=(", "");
-            url = url.replace(")", "");
+        const regex: RegExp = /regexp=\((.*)\)/;
+        const matches: RegExpMatchArray = url.match(regex);
+
+        if (matches && matches[1]) {
+            url = matches[1];
             url = url.split("|").join(",");
         }
 
