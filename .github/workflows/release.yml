@@ -20,7 +20,7 @@ jobs:
                 node-version: [lts/*]
                 maven-version: [3.8.6]
                 java-version: [1.8]
-                pnpm-version: [7.30.0]
+                pnpm-version: [8.6.0]
         steps:
             - name: ⬇️ Checkout
               id: checkout
