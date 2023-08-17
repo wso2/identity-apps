@@ -116,7 +116,8 @@ Clone or download the Identity Apps repository and run the following commands fr
 
 ```shell
 # From project root.
-mvn clean install
+pnpm install
+pnpm build
 ```
 
 ### Run
