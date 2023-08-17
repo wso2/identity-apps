@@ -28,9 +28,9 @@ import React, {
     useRef,
     useState
 } from "react";
+import { FormProps } from "react-final-form";
 import { DynamicForm } from "./dynamic-form";
 import { DynamicWizardPage } from "./dynamic-wizard-page";
-import { FormProps } from "react-final-form";
 
 interface DynamicWizardProps extends FormProps {
 

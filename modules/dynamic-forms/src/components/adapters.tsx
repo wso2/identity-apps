@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { TextFieldProps as OuiTextFieldProps, TextField } from "@oxygen-ui/react";
 import React, { ReactElement } from "react";
 import { FieldProps, FieldRenderProps } from "react-final-form";
-import { TextField, TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react";
 import { ShowErrorFunc, showErrorOnBlur } from './utils';
 import { DynamicFieldInputTypes } from "../models";
 
-export type TextFieldProps = Partial<Omit<OuiTextFieldProps, 'type' | 'onChange'>> & {
+export type TextFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange">> & {
     
     /**
      * The name of the text field.

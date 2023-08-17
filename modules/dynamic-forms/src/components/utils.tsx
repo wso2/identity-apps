@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { FormHelperText, FormHelperTextProps } from "@oxygen-ui/react";
 import React, { ReactElement } from "react";
 import { FieldMetaState, useField } from "react-final-form";
-import { FormHelperText, FormHelperTextProps } from "@oxygen-ui/react";
 import DynamicFormField from "./dynamic-form-field";
 
 export interface ErrorMessageProps {
@@ -42,7 +42,7 @@ export interface ErrorMessageProps {
 	helperText?: React.ReactNode;
 }
 
-export function ErrorMessage({ showError, meta, formHelperTextProps, helperText }: ErrorMessageProps) {
+export function ErrorMessage({ showError, meta, formHelperTextProps, helperText }: ErrorMessageProps): ReactElement {
 	if (showError) {
 		return <FormHelperText { ...formHelperTextProps }>{ meta.error || meta.submitError }</FormHelperText>;
 	} else if (helperText) {
@@ -60,18 +60,18 @@ export interface ShowErrorProps {
 
 const config = {
 	subscription: {
+		dirtySinceLastSubmit: true,
 		error: true,
 		submitError: true,
-		dirtySinceLastSubmit: true,
-		touched: true,
 		modified: true,
-	},
+		touched: true
+	}
 };
 
 export const useFieldForErrors = (name: string) => useField(name, config);
 
 export const showErrorOnChange: ShowErrorFunc = ({
-	meta: { submitError, dirtySinceLastSubmit, error, touched, modified },
+	meta: { submitError, dirtySinceLastSubmit, error, touched, modified }
 }: ShowErrorProps) => !!(((submitError && !dirtySinceLastSubmit) || error) && (touched || modified));
 
 export const showErrorOnBlur: ShowErrorFunc = ({

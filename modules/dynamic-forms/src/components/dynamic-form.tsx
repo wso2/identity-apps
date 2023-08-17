@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { FormApi } from "final-form";
 import React, { FC, ReactElement, ReactNode, cloneElement } from "react";
 import { Form as FinalForm, FormProps, FormRenderProps } from "react-final-form";
-import { FormApi } from "final-form";
 import "./dynamic-form.scss";
 
 interface DynamicFormProps extends FormProps {
@@ -51,7 +51,7 @@ export const DynamicForm: FC<DynamicFormProps> = (
 
         const modifiedChildNodes: ReactNode[] = addPropsToChild(childNodes, formRenderProps);
 
-        return modifiedChildNodes.map((child: any, index: number) => {
+        return modifiedChildNodes.map((child: any) => {
             if (!child) {
                 return null;
             }
@@ -74,7 +74,13 @@ export const DynamicForm: FC<DynamicFormProps> = (
 
             const { form, handleSubmit, pristine, submitting, values, initialValues } = formRenderProps;
 
-            const parentFormProps: Partial<FormRenderProps> = { form, handleSubmit, initialValues, pristine, submitting, values };
+            const parentFormProps: Partial<FormRenderProps> = { 
+                form, handleSubmit,
+                initialValues,
+                pristine,
+                submitting, 
+                values 
+            };
             const childFieldProps: any = child.props;
             const childProps: any = { childFieldProps, parentFormProps };
 
@@ -109,6 +115,8 @@ export const DynamicForm: FC<DynamicFormProps> = (
 
     return (
         <FinalForm 
+            id={ id }
+            noValidate={ noValidate }
             onSubmit={ 
                 (values: Record<string, any>, form: FormApi<Record<string, any>>) => 
                     onSubmit(values, form) 

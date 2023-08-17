@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { FieldState } from "final-form";
 import React, { ReactElement } from "react";
 import { FieldProps, Field as FinalFormField } from "react-final-form";
 import { PasswordFieldAdapter, TextFieldAdapter } from "./adapters";
 import { DynamicFieldInputTypes, FieldInputTypes } from "../models";
 import { getValidation } from "../utils/validate";
-import { FieldState } from "final-form";
 
-export interface FieldInputPropsInterface extends Omit<FieldProps<any, any, any>, 'component'> {
+export interface FieldInputPropsInterface extends Omit<FieldProps<any, any, any>, "component"> {
     
     /**
      * Name of the input field.
@@ -61,7 +61,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                 <FinalFormField
                     type="number"
                     render={({ input, meta }) => (
-                        <TextFieldAdapter input={input} meta={meta} name={name} type={inputType} {...rest} />
+                        <TextFieldAdapter input={ input } meta={ meta } name={ name } type={ inputType } { ...rest } />
                     )}
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, props.required, validation)
@@ -87,7 +87,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                 <FinalFormField
                     type="password"
                     render={({ input, meta }) => (
-                        <PasswordFieldAdapter input={input} meta={meta} name={name} type={inputType} {...rest} />
+                        <PasswordFieldAdapter input={ input } meta={ meta } name={ name } type={ inputType } { ...rest } />
                     )}
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, props.required, validation)
