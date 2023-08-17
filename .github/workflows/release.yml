@@ -107,9 +107,10 @@ jobs:
 
             - name: 🚀 Maven Release
               id: maven-release
-              run: mvn -B release:prepare && mvn release:perform
+              run: mvn -B -e release:prepare && mvn -e release:perform
 
             - name: 🚀 Release React Apps
+              if: always()
               id: pnpm-release
               working-directory: .github/workflows
               run: |
