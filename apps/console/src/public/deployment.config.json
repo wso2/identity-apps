@@ -1,6 +1,6 @@
 {
     "accountApp": {
-        "path": "myaccount/overview"
+        "path": "/myaccount/overview"
     },
     "analytics": {
         "metrics": {

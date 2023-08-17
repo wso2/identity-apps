@@ -1,32 +1,32 @@
 {
     "consoleApp": {
         "path": "/getting-started",
-        "origin": "https://dev.console.asgardeo.io"
+        "origin": "https://localhost:9000"
     },
     "appBaseName": "",
     "clientID": "MY_ACCOUNT",
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
-    "serverOrigin": "https://dev.api.asgardeo.io",
+    "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/overview",
         "login": "",
         "logout": "/logout"
     },
     "extensions": {
-        "applicationInsightsCookieDomain": ".asgardeo.io",
-        "applicationInsightsCookiePostfix": "_dev",
-        "applicationInsightsEnabled": "true",
-        "applicationInsightsInstrumentationKey": "34fbd533-d8f9-4586-8b7d-28e42c929abb",
+        "applicationInsightsCookieDomain": "",
+        "applicationInsightsCookiePostfix": "",
+        "applicationInsightsEnabled": "false",
+        "applicationInsightsInstrumentationKey": "",
         "applicationInsightsProxyEndpoint": ""
     },
-    "superTenantProxy": "a",
+    "superTenantProxy": "",
     "idpConfigs": {
         "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/logout",
         "clockTolerance": 300,
         "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oauth2/authorize",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/checksession",
-        "serverOrigin": "https://dev.api.asgardeo.io",
+        "serverOrigin": "https://localhost:9443",
         "responseMode": "query"
     },
     "session": {
@@ -38,7 +38,7 @@
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
-        "appTitle": "Asgardeo Account",
+        "appTitle": "IS Account",
         "appName": "Account",
         "appLogoPath": "/assets/images/branding/logo-dark.svg",
         "enableMFAUserWise": true,

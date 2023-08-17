@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
@@ -43,6 +52,9 @@ import { history } from "../../../../../features/core/helpers/history";
 import { AppState } from "../../../../../features/core/store";
 import { OrganizationType } from "../../../../../features/organizations/constants";
 import { useGetOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
+import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
+import { useCheckFeatureStatus } from "../../../feature-gate/controller/featureGate-util";
+import { FeatureStatus } from "../../../feature-gate/models/feature-gate";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
@@ -106,10 +118,12 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const orgType: OrganizationType = useGetOrganizationType();
 
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     useEffect(() => {
-        if (!isPrivilegedUser) {
+        if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
             getAssociatedTenants()
                 .then((response: TenantRequestResponse) => {
                     let defaultDomain: string = "";
