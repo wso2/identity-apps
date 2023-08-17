@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/dynamic-forms",
-    "version": "1.6.356",
+    "version": "1.6.366",
     "description": "Dynamic form library for WSO2 Identity Server front end applications.",
     "keywords": [
         "WSO2",
