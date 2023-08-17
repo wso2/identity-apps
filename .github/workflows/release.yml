@@ -110,6 +110,7 @@ jobs:
               run: mvn -B -e release:prepare && mvn -e release:perform
 
             - name: 🚀 Release React Apps
+              if: always()
               id: pnpm-release
               working-directory: .github/workflows
               run: |
