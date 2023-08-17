@@ -101,6 +101,7 @@
     <% String onThisPageText = AuthenticationEndpointUtil.i18n(resourceBundle, "on.this.page"); %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript">
         var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4><%=onThisPageText%>:</h4>" + "<ul class='ui list nav'>";
         var newLine, el, title, link;
@@ -111,9 +112,9 @@
             link = "#" + el.attr("id");
 
             if (el.is("h3")){
-                newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li class='sub'>" + "<a href='" + link + "' onclick='scrollToElement(event)'>" + title + "</a>" + "</li>";
             } else {
-                newLine = "<li>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li>" + "<a href='" + link + "' onclick='scrollToElement(event)'>" + title + "</a>" + "</li>";
             }
 
             ToC += newLine;
@@ -122,6 +123,10 @@
         ToC += "</ul>" + "</nav>";
 
         $("#toc").append(ToC);
+
+        function scrollToElement(event) {
+            scrollToTargetElementWithOffset(event, null, "toc");
+        }
     </script>
 </body>
 </html>
