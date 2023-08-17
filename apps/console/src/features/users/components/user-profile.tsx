@@ -354,9 +354,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: string[] | MultiValueAttributeInterface[] = userInfo[emailSchema];
-                                const primaryEmail: string = emails.find(
-                                    (subAttribute: string | MultiValueAttributeInterface ) =>
-                                        typeof subAttribute === "string");
+                                const primaryEmail: string = (emails as string[]).find((subAttribute: string) => {
+                                    return typeof subAttribute === "string";
+                                });
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);

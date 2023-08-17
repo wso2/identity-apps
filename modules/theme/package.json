@@ -25,9 +25,7 @@
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
         "test": "pnpm jest",
         "test:watch": "pnpm test -- --watch",
-        "jest": "run-script-os",
-        "jest:win32": ".\\node_modules\\.bin\\jest --passWithNoTests",
-        "jest:default": "./node_modules/.bin/jest --passWithNoTests",
+        "jest": "pnpm jest --passWithNoTests",
         "watch": "watch \"pnpm build\" src"
     },
     "author": "WSO2",

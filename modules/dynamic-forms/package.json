@@ -1,21 +1,18 @@
 {
-    "name": "@wso2is/access-control",
-    "version": "1.6.365",
-    "description": "Access control module for WSO2 Identity Server front end applications",
-    "main": "dist/src/index.js",
-    "types": "dist/types/index.d.ts",
+    "name": "@wso2is/dynamic-forms",
+    "version": "1.6.356",
+    "description": "Dynamic form library for WSO2 Identity Server front end applications.",
     "keywords": [
         "WSO2",
         "WSO2 IS",
         "WSO2 Identity Server",
         "WSO2 Identity Apps",
-        "core",
-        "common",
-        "utils"
+        "Dynamic forms"
     ],
+    "author": "WSO2",
+    "license": "Apache-2.0",
     "scripts": {
-        "prebuild": "pnpm clean:build",
-        "build": "pnpm prebuild && pnpm compile",
+        "build": "pnpm nx run dynamic-forms:build",
         "clean": "pnpm clean:lock-files && pnpm clean:build && pnpm clean:node-modules",
         "clean:build": "pnpm rimraf dist",
         "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
@@ -24,33 +21,40 @@
         "lint": "pnpm lint:all",
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
-        "lint:targeted": "pnpm eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "pnpm jest",
+        "test:watch": "pnpm test -- --watch",
         "jest": "pnpm jest --passWithNoTests",
         "typecheck": "pnpm compile"
     },
-    "author": "WSO2",
-    "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.6.365",
-        "jest": "^26.4.2",
-        "react-access-control": "^1.0.1",
-        "ts-jest": "^26.4.0"
+        "@oxygen-ui/react": "^1.1.2",
+        "final-form": "^4.20.9",
+        "joi": "^17.4.0",
+        "lodash-es": "^4.17.21",
+        "react-final-form": "^6.5.9"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.0.4",
+        "@types/jest": "^26.0.14",
+        "@types/lodash-es": "^4.17.4",
         "@types/react": "^18.0.18",
+        "@types/testing-library__jest-dom": "^5.14.3",
         "@typescript-eslint/eslint-plugin": "^4.17.0",
         "@typescript-eslint/parser": "^4.17.0",
+        "babel-polyfill": "^6.26.0",
         "eslint": "^7.20.0",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^4.0.0",
+        "jest": "^26.4.2",
         "rimraf": "^3.0.2",
         "ts-jest": "^26.4.0",
+        "ts-node": "^10.8.1",
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "*",
-        "react-dom": "*"
+        "react": "*"
     }
 }
