@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.365-SNAPSHOT</version>
+    <version>1.6.365.1-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -47,8 +47,6 @@
         <module>java/components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>java/components/login-portal-layouts</module>
         <module>java/components/org.wso2.identity.apps.common</module>
-        <module>apps/myaccount</module>
-        <module>apps/console</module>
         <module>java/apps/authentication-portal</module>
         <module>java/apps/recovery-portal</module>
         <module>java/apps/x509-certificate-authentication-portal</module>

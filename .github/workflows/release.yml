@@ -1,0 +1,111 @@
+name: Release Workflow
+
+on:
+    push:
+        branches: [improve-release-workflow]
+        paths-ignore:
+            - "**.md"
+            - "LICENSE"
+        workflow_dispatch:
+
+env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+    release:
+        name: 🚀 Release
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [lts/*]
+                maven-version: [3.8.6]
+                java-version: [1.8]
+                pnpm-version: [7.30.0]
+        steps:
+            - name: ⬇️ Checkout
+              id: checkout
+              uses: actions/checkout@v2.3.3
+
+            - name: 🟢 Setup node
+              id: setup-node
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: ☕ Set up JDK 1.8
+              id: jdk-setup
+              uses: actions/setup-java@v1
+              with:
+                  java-version: ${{ matrix.java-version }}
+
+            - name: 🦩 Set up Maven
+              uses: stCarolas/setup-maven@v4
+              id: mvn-setup
+              with:
+                  maven-version: ${{ matrix.maven-version }}
+
+            - name: 🥡 Setup pnpm
+              uses: pnpm/action-setup@v2.1.0
+              with:
+                  version: ${{ matrix.pnpm-version }}
+                  run_install: false
+
+            - name: 🎈 Get pnpm store directory
+              id: get-pnpm-cache-dir
+              run: |
+                  echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+            - name: 🔆 Cache pnpm modules
+              uses: actions/cache@v3
+              id: pnpm-cache
+              with:
+                  path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+
+            - name: 🧩 Install Dependencies
+              id: install-dependencies
+              run: pnpm install
+
+            - name: 📝 Create settings.xml with Nexus credentials in ~/.m2
+              run: |
+                  echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+                    <servers>
+                      <!-- For the release repository -->
+                      <server>
+                        <id>nexus-releases</id>
+                        <username>${{ secrets.NEXUS_USERNAME }}</username>
+                        <password>${{ secrets.NEXUS_PASSWORD }}</password>
+                      </server>
+
+                      <!-- For the snapshot repository -->
+                      <server>
+                        <id>wso2.snapshots</id>
+                        <username>${{ secrets.NEXUS_USERNAME }}</username>
+                        <password>${{ secrets.NEXUS_PASSWORD }}</password>
+                      </server>
+                    </servers>
+                  </settings>' > ~/.m2/settings.xml
+
+            - name: 💾 Cache local Maven repository
+              id: cache-maven-m2
+              uses: actions/cache@v2
+              with:
+                  path: ~/.m2/repository
+                  key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-maven-
+
+            - name: 🚀 Maven Release
+              id: maven-release
+              run: mvn -B release:prepare && mvn release:perform
+
+            - name: 🚀 Release React Apps
+              id: pnpm-release
+              working-directory: .github/workflows
+              run: |
+                  bash ./scripts/release.sh "${{ env.GH_TOKEN }}" "${{ github.workspace }}" "${{ github.run_number }}" "${{ github.repository }}" ${{ env.BRANCH }} "${{ secrets.NEXUS_USERNAME }}" "${{ secrets.NEXUS_PASSWORD }}"
