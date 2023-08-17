@@ -107,7 +107,7 @@ jobs:
 
             - name: 🚀 Maven Release
               id: maven-release
-              run: mvn -B -e release:prepare && mvn -e release:perform
+              run: mvn -B release:prepare && mvn release:perform
 
             - name: 🚀 Release React Apps
               if: always()

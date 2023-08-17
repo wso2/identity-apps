@@ -40,12 +40,18 @@ process_console_package() {
     NEXUS_URL="https://maven.wso2.org/nexus"
     STAGING_REPO_URL="$NEXUS_URL/service/local/staging/deploy/maven2"
     GROUP_ID_PATH="org/wso2/identity/apps"
-    ARTIFACT_VERSION="1.6.365.1"
+    ARTIFACT_VERSION="1.6.365.2"
     artifact="console"
 
     STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
-    curl -u $USERNAME:$PASSWORD --upload-file $artifact_path $STAGING_ARTIFACT_URL
+    echo "Uploading artifact to $STAGING_ARTIFACT_URL"
+    curl -v -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL
+    if [ $? -eq 0 ]; then
+        echo "Upload successful! 🚀"
+    else
+        echo "Upload failed! ❌"
+    fi
 }
 
 process_myaccount_package() {
@@ -72,12 +78,18 @@ process_myaccount_package() {
     NEXUS_URL="https://maven.wso2.org/nexus"
     STAGING_REPO_URL="$NEXUS_URL/service/local/staging/deploy/maven2"
     GROUP_ID_PATH="org/wso2/identity/apps"
-    ARTIFACT_VERSION="1.6.365.1"
+    ARTIFACT_VERSION="1.6.365.2"
     artifact="myaccount"
 
     STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
-    curl -u $USERNAME:$PASSWORD --upload-file $artifact_path $STAGING_ARTIFACT_URL
+    echo "Uploading artifact to $STAGING_ARTIFACT_URL"
+    curl -v -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL
+    if [ $? -eq 0 ]; then
+        echo "Upload successful! 🚀"
+    else
+        echo "Upload failed! ❌"
+    fi
 }
 
 # Main script
@@ -96,5 +108,7 @@ display_variables
 
 # Process packages
 process_console_package "$NEXUS_USERNAME" "$NEXUS_PASSWORD"
+
+process_myaccount_package "$NEXUS_USERNAME" "$NEXUS_PASSWORD"
 
 # End of script
