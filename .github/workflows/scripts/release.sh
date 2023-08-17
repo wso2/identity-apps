@@ -39,11 +39,12 @@ process_console_package() {
     # Variables
     NEXUS_URL="https://maven.wso2.org/nexus"
     STAGING_REPO_URL="$NEXUS_URL/service/local/staging/deploy/maven2"
+    RELEASE_REPO_URL="$NEXUS_URL/content/repositories/releases"
     GROUP_ID_PATH="org/wso2/identity/apps"
     ARTIFACT_VERSION="1.6.365.2"
     artifact="console"
 
-    STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
+    STAGING_ARTIFACT_URL="$RELEASE_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
     echo "Uploading artifact to $STAGING_ARTIFACT_URL"
     curl -v -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL
