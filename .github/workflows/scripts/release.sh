@@ -47,12 +47,8 @@ process_console_package() {
     STAGING_ARTIFACT_URL="$RELEASE_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
     echo "Uploading artifact to $STAGING_ARTIFACT_URL"
-    curl -v -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL
-    if [ $? -eq 0 ]; then
-        echo "Upload successful! 🚀"
-    else
-        echo "Upload failed! ❌"
-    fi
+    status_code=$(curl -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL -o /dev/null -w '%{http_code}')
+    echo "HTTP Status Code: $status_code"
 }
 
 process_myaccount_package() {
@@ -85,12 +81,8 @@ process_myaccount_package() {
     STAGING_ARTIFACT_URL="$STAGING_REPO_URL/$GROUP_ID_PATH/$artifact/$ARTIFACT_VERSION/$artifact-$ARTIFACT_VERSION.war"
 
     echo "Uploading artifact to $STAGING_ARTIFACT_URL"
-    curl -v -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL
-    if [ $? -eq 0 ]; then
-        echo "Upload successful! 🚀"
-    else
-        echo "Upload failed! ❌"
-    fi
+    status_code=$(curl -u "$NEXUS_USERNAME":"$NEXUS_PASSWORD" --upload-file "$artifact_path" $STAGING_ARTIFACT_URL -o /dev/null -w '%{http_code}')
+    echo "HTTP Status Code: $status_code"
 }
 
 # Main script
