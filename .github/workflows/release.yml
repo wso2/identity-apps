@@ -82,6 +82,12 @@ jobs:
                         <password>${{ secrets.NEXUS_PASSWORD }}</password>
                       </server>
 
+                      <server>
+                        <id>wso2.releases</id>
+                        <username>${{ secrets.NEXUS_USERNAME }}</username>
+                        <password>${{ secrets.NEXUS_PASSWORD }}</password>
+                      </server>
+
                       <!-- For the snapshot repository -->
                       <server>
                         <id>wso2.snapshots</id>
@@ -105,12 +111,9 @@ jobs:
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: Verify Maven Settings
-              run: mvn help:effective-settings
-
-            # - name: 🚀 Maven Release
-            #   id: maven-release
-            #   run: mvn -B release:prepare && mvn release:perform --settings ~/.m2/settings.xml
+            - name: 🚀 Maven Release
+              id: maven-release
+              run: mvn -B release:prepare && mvn release:perform --settings ~/.m2/settings.xml
 
             - name: 🚀 Release React Apps
               if: always()
