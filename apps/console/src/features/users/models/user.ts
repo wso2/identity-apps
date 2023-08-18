@@ -18,7 +18,6 @@
 
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
 
@@ -307,33 +306,4 @@ export interface SubValueInterface {
 export interface SchemaAttributeValueInterface {
     type?: string;
     value?: string | string[];
-}
-
-/**
- * Interface for the wizard step.
- */
-export interface WizardStepInterface {
-    content: ReactElement;
-    icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    title: string;
-}
-
-/**
- * Interface for the role and group data.
- */
-export interface PayloadInterface {
-    Operations: {
-        op: string;
-        value: {
-          users?: {
-            display: string;
-            value: string;
-          }[];
-          members?: {
-            display: string;
-            value: string;
-          }[];
-        };
-      }[];
-      schemas: string[];
 }

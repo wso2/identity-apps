@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -29,6 +20,7 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import {
     AdvanceSettings,
@@ -36,10 +28,12 @@ import {
     AuthenticatorSettings,
     ConnectedApps,
     GeneralSettings,
+    IdentityProviderGroupsTab,
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../extensions";
+import { AppState, FeatureConfigInterface } from "../../core";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,
@@ -131,9 +125,16 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
+    
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
+    /**
+     * This is placed as a temporary fix until the dynamic tab loading is implemented. 
+     * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
+     */
+    const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === IdentityProviderManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
@@ -163,13 +164,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                             identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                         )
                 }
+                isTrustedTokenIssuer={ isTrustedTokenIssuer }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
                 editingIDP={ identityProvider }
-                description={ identityProvider.description }
-                isEnabled={ identityProvider.isEnabled }
-                imageUrl={ identityProvider.image }
-                name={ identityProvider.name }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
@@ -279,6 +277,22 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const IdentityProviderGroupsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <IdentityProviderGroupsTab 
+                editingIDP={ identityProvider } 
+                isReadOnly={ isReadOnly }
+                isLoading={ isLoading }
+                loader={ Loader }
+                data-componentid={ `${ testId }-groups-settings` }
+            />
+        </ResourceTab.Pane>
+    );
+    
+    useEffect(() => {
+        setIsTrustedTokenIssuer(type === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
+    }, [ type ]);
+
     useEffect(() => {
         if (tabPaneExtensions) {
             return;
@@ -316,70 +330,92 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             panes.push(...tabPaneExtensions);
         }
 
-        panes.push({
-            "data-tabid": IdentityProviderConstants.GENERAL_TAB_ID,
-            menuItem: "General",
-            render: GeneralIdentityProviderSettingsTabPane
-        });
-
-        !isOrganizationEnterpriseAuthenticator && panes.push({
-            "data-tabid": IdentityProviderConstants.SETTINGS_TAB_ID,
-            menuItem: "Settings",
-            render: AuthenticatorSettingsTabPane
-        });
-
         /**
-         * If the protocol is SAML and if the feature is enabled in
-         * configuration level we can show the attributes section.
-         * {@link identityProviderConfig} contains the configuration
-         * to enable or disable this via extensions. Please refer
-         * {@link apps/console/src/extensions#} configs folder and
-         * models folder for types. identity-provider.ts
+         * This check is used as a temporary fix to hide the un-necessary tabs for trusted token issuers.
+         * This will be removed once the dynamic tab loading is implemented.
+         * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
          */
-        const attributesForSamlEnabled: boolean = isSaml &&
+        if (isTrustedTokenIssuer) {
+            panes.push({
+                "data-tabid": IdentityProviderConstants.GENERAL_TAB_ID,
+                menuItem: "General",
+                render: GeneralIdentityProviderSettingsTabPane
+            });
+        } else {
+            panes.push({
+                "data-tabid": IdentityProviderConstants.GENERAL_TAB_ID,
+                menuItem: "General",
+                render: GeneralIdentityProviderSettingsTabPane
+            });
+
+            !isOrganizationEnterpriseAuthenticator && panes.push({
+                "data-tabid": IdentityProviderConstants.SETTINGS_TAB_ID,
+                menuItem: "Settings",
+                render: AuthenticatorSettingsTabPane
+            });
+
+            /**
+             * If the protocol is SAML and if the feature is enabled in
+             * configuration level we can show the attributes section.
+             * {@link identityProviderConfig} contains the configuration
+             * to enable or disable this via extensions. Please refer
+             * {@link apps/console/src/extensions#} configs folder and
+             * models folder for types. identity-provider.ts
+             */
+            const attributesForSamlEnabled: boolean = isSaml &&
             identityProviderConfig.editIdentityProvider.attributesSettings;
 
-        // Evaluate whether to Show/Hide `Attributes`.
-        if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
+            // Evaluate whether to Show/Hide `Attributes`.
+            if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
             && !isOrganizationEnterpriseAuthenticator) {
+                panes.push({
+                    "data-tabid": IdentityProviderConstants.ATTRIBUTES_TAB_ID,
+                    menuItem: "Attributes",
+                    render: AttributeSettingsTabPane
+                });
+            }
+
             panes.push({
-                "data-tabid": IdentityProviderConstants.ATTRIBUTES_TAB_ID,
-                menuItem: "Attributes",
-                render: AttributeSettingsTabPane
+                "data-tabid": IdentityProviderConstants.CONNECTED_APPS_TAB_ID,
+                menuItem: "Connected Apps",
+                render: ConnectedAppsTabPane
             });
-        }
 
-        panes.push({
-            "data-tabid": IdentityProviderConstants.CONNECTED_APPS_TAB_ID,
-            menuItem: "Connected Apps",
-            render: ConnectedAppsTabPane
-        });
-
-        if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
-            && !isOrganizationEnterpriseAuthenticator ) {
-            panes.push({
-                "data-tabid": IdentityProviderConstants.OUTBOUND_PROVISIONING_TAB_ID,
-                menuItem: "Outbound Provisioning",
-                render: OutboundProvisioningSettingsTabPane
-            });
-        }
-
-        if (identityProviderConfig.editIdentityProvider.showJitProvisioning
+            if (featureConfig?.identityProviderGroups?.enabled
             && !isOrganizationEnterpriseAuthenticator) {
-            panes.push({
-                "data-tabid": IdentityProviderConstants.JIT_PROVISIONING_TAB_ID,
-                menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
-                render: JITProvisioningSettingsTabPane
-            });
-        }
+                panes.push({
+                    "data-tabid": IdentityProviderConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
+                    menuItem: "Groups",
+                    render: IdentityProviderGroupsTabPane
+                });
+            }
 
-        if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
             && !isOrganizationEnterpriseAuthenticator) {
-            panes.push({
-                "data-tabid": IdentityProviderConstants.ADVANCED_TAB_ID,
-                menuItem: "Advanced",
-                render: AdvancedSettingsTabPane
-            });
+                panes.push({
+                    "data-tabid": IdentityProviderConstants.OUTBOUND_PROVISIONING_TAB_ID,
+                    menuItem: "Outbound Provisioning",
+                    render: OutboundProvisioningSettingsTabPane
+                });
+            }
+
+            if (identityProviderConfig.editIdentityProvider.showJitProvisioning
+            && !isOrganizationEnterpriseAuthenticator) {
+                panes.push({
+                    "data-tabid": IdentityProviderConstants.JIT_PROVISIONING_TAB_ID,
+                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                    render: JITProvisioningSettingsTabPane
+                });
+            }
+
+            if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
+            && !isOrganizationEnterpriseAuthenticator) {
+                panes.push({
+                    "data-tabid": IdentityProviderConstants.ADVANCED_TAB_ID,
+                    menuItem: "Advanced",
+                    render: AdvancedSettingsTabPane
+                });
+            }
         }
 
         return panes;

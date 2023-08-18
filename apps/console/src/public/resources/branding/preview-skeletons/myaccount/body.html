@@ -1,0 +1,636 @@
+<!--
+    Templated with Mustache.js (https://www.npmjs.com/package/mustache)
+
+    Here's the template:
+        {{logoImage}} - Logo image of the My Account. (default: Asgardeo Logo)
+        {{logoTitle}} - Name of the Application to show next to the logo (default: Account)
+        {{welcomeMessage}} - Welcome message to show in the My Account (default: Welcome, John)
+-->
+
+<div class="container-fluid">
+    <div class="oxygen-box oxygen-app-shell MuiBox-root">
+        <header
+            class="MuiPaper-root MuiPaper-outlined MuiAppBar-root MuiAppBar-colorDefault MuiAppBar-positionFixed oxygen-app-bar oxygen-header with-hamburger mui-fixed"
+            role="banner">
+            <div class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular oxygen-toolbar oxygen-header-toolbar">
+                <div class="oxygen-header-collapsible-hamburger">
+                    <button class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium oxygen-icon-button"
+                        tabindex="0" type="button" aria-label="Menu Icon">
+                        <svg aria-hidden="true" focusable="false" role="img" class="oxygen-icon oxygen-icon-bars"
+                            viewBox="0 0 16 16" width="16" height="16" fill="currentColor"
+                            style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M2 2.44444C2 2.19899 2.19899 2 2.44444 2H13.5556C13.801 2 14 2.19899 14 2.44444V2.55556C14 2.80101 13.801 3 13.5556 3H2.44444C2.19899 3 2 2.80101 2 2.55556V2.44444ZM2 7.94444C2 7.69899 2.19899 7.5 2.44444 7.5H13.5556C13.801 7.5 14 7.69899 14 7.94444V8.05556C14 8.30101 13.801 8.5 13.5556 8.5H2.44444C2.19899 8.5 2 8.30101 2 8.05556V7.94444ZM2.44444 13C2.19899 13 2 13.199 2 13.4444V13.5556C2 13.801 2.19899 14 2.44444 14H8.01709C8.26255 14 8.46154 13.801 8.46154 13.5556V13.4444C8.46154 13.199 8.26255 13 8.01709 13H2.44444Z"
+                                fill=""></path>
+                        </svg>
+                    </button>
+                </div>
+                <a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone oxygen-link oxygen-box oxygen-brand with-link MuiBox-root"
+                    tabindex="0">
+                    <div class="oxygen-box oxygen-brand-logo MuiBox-root">
+                        <img class="oxygen-image" alt="logo" src="{{logoImage}}" />
+                    </div>
+                    <h1 class="MuiTypography-root MuiTypography-h6 oxygen-typography oxygen-brand-portal-name">
+                        {{logoTitle}}
+                    </h1>
+                </a>
+                <div class="oxygen-box oxygen-header-elements MuiBox-root">
+                    <div class="oxygen-box oxygen-header-elements-right MuiBox-root">
+                        <button
+                            class="MuiButtonBase-root MuiButton-root MuiLoadingButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButton-root MuiLoadingButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit oxygen-button"
+                            tabindex="0" type="button" id=":r3c:"
+                            data-componentid="app-header-language-switcher-trigger">
+                            <span class="MuiButton-startIcon MuiButton-iconSizeMedium">
+                                <svg aria-hidden="true" focusable="false" role="img"
+                                    class="oxygen-icon oxygen-icon-language" viewBox="0 0 16 16" width="16" height="16"
+                                    fill="currentColor"
+                                    style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M5.00013 0C5.27627 0 5.50013 0.223858 5.50013 0.5V1H7.49497H7.50425H9.50013C9.77627 1 10.0001 1.22386 10.0001 1.5C10.0001 1.77614 9.77627 2 9.50013 2H7.95538C7.78802 3.45848 7.25446 5.67729 5.84346 7.75992C6.08727 7.87233 6.33942 7.95796 6.59818 8.00971C6.86896 8.06387 7.04457 8.32728 6.99042 8.59806C6.93626 8.86884 6.67285 9.04445 6.40207 8.99029C5.98941 8.90776 5.60002 8.7629 5.23676 8.57659C4.16654 9.8924 2.69966 11.1013 0.697086 11.9596C0.443271 12.0684 0.149332 11.9508 0.040554 11.697C-0.0682238 11.4431 0.049352 11.1492 0.303167 11.0404C2.08777 10.2756 3.40928 9.20581 4.38402 8.03603C4.09136 7.81409 3.82291 7.57176 3.5809 7.32535C2.85391 6.58514 2.32435 5.76648 2.05291 5.22361C1.92942 4.97662 2.02953 4.67628 2.27652 4.55279C2.52351 4.42929 2.82385 4.5294 2.94734 4.77639C3.17591 5.23352 3.64635 5.96486 4.29435 6.62465C4.51082 6.84505 4.74258 7.0529 4.98725 7.23852C6.27043 5.36652 6.77852 3.36369 6.9485 2H5.00013H0.500127C0.223984 2 0.000126539 1.77614 0.000126539 1.5C0.000126539 1.22386 0.223984 1 0.500127 1H4.50013V0.5C4.50013 0.223858 4.72398 0 5.00013 0ZM7.09126 15.2811C6.96968 15.5291 7.07216 15.8286 7.32014 15.9502C7.56807 16.0718 7.86763 15.9693 7.98915 15.7214L9.44795 12.7458C9.47188 12.7493 9.49629 12.7511 9.52119 12.7511H13.5212C13.546 12.7511 13.5704 12.7493 13.5943 12.7458L15.0531 15.7214C15.1746 15.9693 15.4741 16.0718 15.7221 15.9502C15.97 15.8286 16.0725 15.5291 15.9509 15.2811L11.9892 7.2C11.8994 7.01684 11.7127 6.91308 11.5213 6.92034C11.3298 6.91308 11.1428 7.01684 11.053 7.2L7.09126 15.2811ZM13.1066 11.7511H9.93556L11.5211 8.51696L13.1066 11.7511Z"
+                                        fill=""></path>
+                                </svg></span>English (United States)<span
+                                class="MuiButton-endIcon MuiButton-iconSizeMedium"><svg aria-hidden="true"
+                                    focusable="false" role="img" class="oxygen-icon oxygen-icon-chevron-down"
+                                    viewBox="0 0 16 16" width="16" height="16" fill="currentColor"
+                                    style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2.10987 5.58825C2.1099 5.58827 2.10985 5.58823 2.10987 5.58825C1.96343 5.4537 1.96335 5.23547 2.1098 5.10092C2.25624 4.96636 2.49368 4.96636 2.64013 5.10092C2.64003 5.10083 2.64022 5.101 2.64013 5.10092L7.99998 10.0255L13.3598 5.10092C13.5063 4.96636 13.7437 4.96636 13.8902 5.10092C14.0366 5.23547 14.0366 5.45362 13.8902 5.58818L7.99998 11L2.10987 5.58825Z"
+                                        fill=""></path>
+                                </svg></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="oxygen-box oxygen-header-user-dropdown-menu MuiBox-root">
+                    <button
+                        class="MuiButtonBase-root MuiButton-root MuiLoadingButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButton-root MuiLoadingButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit oxygen-button"
+                        tabindex="0" type="button" id=":r3d:" aria-haspopup="true"
+                        data-componentid="app-header-user-avatar" data-testid="app-header-user-avatar">
+                        <span class="MuiButton-startIcon MuiButton-iconSizeMedium">
+                            <div class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault oxygen-avatar image">
+                                J
+                            </div>
+                        </span>John<span class="MuiButton-endIcon MuiButton-iconSizeMedium"><svg aria-hidden="true"
+                                focusable="false" role="img" class="oxygen-icon oxygen-icon-chevron-down"
+                                viewBox="0 0 16 16" width="16" height="16" fill="currentColor"
+                                style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M2.10987 5.58825C2.1099 5.58827 2.10985 5.58823 2.10987 5.58825C1.96343 5.4537 1.96335 5.23547 2.1098 5.10092C2.25624 4.96636 2.49368 4.96636 2.64013 5.10092C2.64003 5.10083 2.64022 5.101 2.64013 5.10092L7.99998 10.0255L13.3598 5.10092C13.5063 4.96636 13.7437 4.96636 13.8902 5.10092C14.0366 5.23547 14.0366 5.45362 13.8902 5.58818L7.99998 11L2.10987 5.58825Z"
+                                    fill=""></path>
+                            </svg></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div class="oxygen-box oxygen-app-shell-content MuiBox-root">
+            <div class="oxygen-box oxygen-app-shell-navigation-wrapper MuiBox-root">
+                <div class="MuiDrawer-root MuiDrawer-docked oxygen-drawer oxygen-navbar solid fill open">
+                    <div
+                        class="MuiPaper-root MuiPaper-elevation MuiPaper-elevation0 MuiDrawer-paper MuiDrawer-paperAnchorLeft MuiDrawer-paperAnchorDockedLeft">
+                        <div></div>
+                        <ul class="MuiList-root MuiList-padding oxygen-list oxygen-navbar-list no-heading">
+                            <li
+                                class="MuiListItem-root MuiListItem-gutters oxygen-list-item oxygen-tooltip oxygen-navbar-list-item-tooltip oxygen-navbar-list-item selected">
+                                <div class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters Mui-selected MuiListItemButton-root MuiListItemButton-gutters Mui-selected oxygen-list-item-button oxygen-navbar-list-item-button selected"
+                                    tabindex="0" role="button" data-componentid="side-panel-items-overview"
+                                    data-testid="side-panel-items-overview">
+                                    <div
+                                        class="MuiListItemIcon-root oxygen-list-item-icon oxygen-navbar-list-item-button-icon">
+                                        <svg aria-hidden="true" focusable="false" role="img"
+                                            class="oxygen-icon oxygen-icon-home" viewBox="0 0 16 16" width="16"
+                                            height="16" fill="black"
+                                            style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M5 15.993H2C0.895431 15.993 0 15.0976 0 13.993V6.37428C0 5.73526 0.305378 5.13471 0.821753 4.75824L6.82175 0.383904C7.52386 -0.127968 8.47614 -0.127968 9.17825 0.383904L15.1782 4.75824C15.6946 5.1347 16 5.73526 16 6.37428V13.993C16 15.0976 15.1046 15.993 14 15.993H11V16H5V15.993ZM1.41088 5.56626L7.41088 1.19193C7.76193 0.93599 8.23807 0.935991 8.58912 1.19193L14.5891 5.56626C14.8473 5.75449 15 6.05477 15 6.37428V13.993C15 14.5453 14.5523 14.993 14 14.993H11V10.335C11 9.41459 10.2538 8.66842 9.33333 8.66842H6.66667C5.74619 8.66842 5 9.41459 5 10.335V14.993H2C1.44772 14.993 1 14.5453 1 13.993V6.37428C1 6.05477 1.15269 5.75449 1.41088 5.56626ZM10 14.993H6V10.335C6 9.96686 6.29848 9.66839 6.66667 9.66839H9.33333C9.70152 9.66839 10 9.96686 10 10.335V14.993Z"
+                                                fill=""></path>
+                                        </svg>
+                                    </div>
+                                    <div class="MuiListItemText-root oxygen-list-item-text oxygen-navbar-list-item-button-text"
+                                        color="white">
+                                        <span
+                                            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary">Overview</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li
+                                class="MuiListItem-root MuiListItem-gutters oxygen-list-item oxygen-tooltip oxygen-navbar-list-item-tooltip oxygen-navbar-list-item">
+                                <div class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters oxygen-list-item-button oxygen-navbar-list-item-button"
+                                    tabindex="0" role="button" data-componentid="side-panel-items-personal-info"
+                                    data-testid="side-panel-items-personal-info">
+                                    <div
+                                        class="MuiListItemIcon-root oxygen-list-item-icon oxygen-navbar-list-item-button-icon">
+                                        <svg aria-hidden="true" focusable="false" role="img"
+                                            class="oxygen-icon oxygen-icon-user-document" viewBox="0 0 16 16" width="16"
+                                            height="16" fill="black"
+                                            style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                            <path
+                                                d="M11 0C12.1046 0 13 0.89543 13 2V5.76756C12.7058 5.59739 12.3643 5.5 12 5.5V2C12 1.48716 11.614 1.06449 11.1166 1.00673L11 1H2C1.48716 1 1.06449 1.38604 1.00673 1.88338L0.999999 2V14C0.999999 14.5128 1.38604 14.9355 1.88338 14.9933L2 15H6C6 15.5523 6.44771 16 7 16H2C0.89543 16 0 15.1046 0 14V2C0 0.89543 0.89543 0 2 0H11Z"
+                                                fill=""></path>
+                                            <path
+                                                d="M3.5 4C3.22386 4 3 4.22386 3 4.5C3 4.77614 3.22386 5 3.5 5H7.5C7.77614 5 8 4.77614 8 4.5C8 4.22386 7.77614 4 7.5 4H3.5Z"
+                                                fill=""></path>
+                                            <path
+                                                d="M3 7.5C3 7.22386 3.22386 7 3.5 7H5.83333C6.10947 7 6.33333 7.22386 6.33333 7.5C6.33333 7.77614 6.10947 8 5.83333 8H3.5C3.22386 8 3 7.77614 3 7.5Z"
+                                                fill=""></path>
+                                            <path
+                                                d="M3.5 10C3.22386 10 3 10.2239 3 10.5C3 10.7761 3.22386 11 3.5 11C3.77614 11 4 10.7761 4 10.5C4 10.2239 3.77614 10 3.5 10Z"
+                                                fill=""></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M14 8.5C14 9.60457 13.1046 10.5 12 10.5C10.8954 10.5 10 9.60457 10 8.5C10 7.39543 10.8954 6.5 12 6.5C13.1046 6.5 14 7.39543 14 8.5ZM13 8.5C13 9.05229 12.5523 9.5 12 9.5C11.4477 9.5 11 9.05229 11 8.5C11 7.94772 11.4477 7.5 12 7.5C12.5523 7.5 13 7.94772 13 8.5Z"
+                                                fill=""></path>
+                                            <path
+                                                d="M11.9997 12C11.1842 12 10.432 12.3815 9.8795 13.0256C9.6997 13.2351 9.38404 13.2593 9.17445 13.0795C8.96486 12.8997 8.94071 12.584 9.12051 12.3744C9.83854 11.5374 10.8569 11 11.9997 11C14.2696 11 16 13.0795 16 15.5V16H11.9997C11.7236 16 11.4997 15.7761 11.4997 15.5C11.4997 15.2239 11.7236 15 11.9997 15H14.9701C14.759 13.2568 13.4599 12 11.9997 12Z"
+                                                fill=""></path>
+                                        </svg>
+                                    </div>
+                                    <div class="MuiListItemText-root oxygen-list-item-text oxygen-navbar-list-item-button-text"
+                                        color="white">
+                                        <span
+                                            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary">Personal
+                                            Info</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li
+                                class="MuiListItem-root MuiListItem-gutters oxygen-list-item oxygen-tooltip oxygen-navbar-list-item-tooltip oxygen-navbar-list-item">
+                                <div class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters oxygen-list-item-button oxygen-navbar-list-item-button"
+                                    tabindex="0" role="button" data-componentid="side-panel-items-security"
+                                    data-testid="side-panel-items-security">
+                                    <div
+                                        class="MuiListItemIcon-root oxygen-list-item-icon oxygen-navbar-list-item-button-icon">
+                                        <svg aria-hidden="true" focusable="false" role="img"
+                                            class="oxygen-icon oxygen-icon-shield-check" viewBox="0 0 16 16" width="16"
+                                            height="16" fill="black"
+                                            style="display: inline-block; overflow: visible; user-select: none; vertical-align: text-bottom;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M2.5 6.72448V3.1868L8 1.07141L13.5 3.1868V6.8662C13.5 9.63884 13.2099 12.1533 11.5356 13.6406C10.677 14.4033 9.53055 15 8 15C6.2753 15 5.02177 14.1471 4.11489 13.1038C2.74052 11.5228 2.5 9.23433 2.5 6.72448ZM1.5 6.72448V2.5L8 0L14.5 2.5V6.8662C14.5 9.60348 14.2462 12.5704 12.1997 14.3883C11.1947 15.281 9.82023 16 8 16C5.89818 16 4.39075 14.9454 3.36017 13.7599C1.71819 11.8709 1.5 9.2273 1.5 6.72448ZM11.3763 5.82925C11.5581 5.62143 11.5371 5.30555 11.3293 5.12371C11.1214 4.94187 10.8056 4.96293 10.6237 5.17075L7.47565 8.76854L5.85355 7.14645C5.65829 6.95118 5.34171 6.95118 5.14645 7.14645C4.95118 7.34171 4.95118 7.65829 5.14645 7.85355L7.14645 9.85355L7.52435 10.2315L7.87629 9.82925L11.3763 5.82925Z"
+                                                fill=""></path>
+                                        </svg>
+                                    </div>
+                                    <div class="MuiListItemText-root oxygen-list-item-text oxygen-navbar-list-item-button-text"
+                                        color="white">
+                                        <span
+                                            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary">Security</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="oxygen-box oxygen-app-shell-main-wrapper MuiBox-root">
+                <main class="oxygen-box oxygen-app-shell-main MuiBox-root">
+                    <div class="MuiContainer-root MuiContainer-maxWidthLg oxygen-container">
+                        <div class="layout page-layout" data-testid="page-layout" data-componentid="page-layout">
+                            <div class="layout-content padded">
+                                <div class="page-header-wrapper" data-componentid="page-layout-page-header"
+                                    data-testid="page-layout-page-header">
+                                    <div class="page-header-inner">
+                                        <h1 data-componentid="page-layout-page-header-text-wrapper"
+                                            data-testid="page-layout-page-header-text-wrapper"
+                                            class="ui left aligned header page-header no-max-width">
+                                            <span data-componentid="page-layout-page-header-title"
+                                                data-testid="page-layout-page-header-title">
+                                                <div>{{welcomeMessage}}</div>
+                                            </span>
+                                            <div data-componentid="page-layout-page-header-sub-title"
+                                                data-testid="page-layout-page-header-sub-title"
+                                                class="sub header sub-header">
+                                                Manage your personal information, account security, and privacy settings
+                                            </div>
+                                        </h1>
+                                    </div>
+                                    <div class="ui hidden divider"></div>
+                                </div>
+                                <div class="ui hidden divider"></div>
+                                <div class="ui grid overview-page">
+                                    <div class="ui hidden divider"></div>
+                                    <div class="row">
+                                        <div class="ui grid">
+                                            <div class="row">
+                                                <div class="eight wide computer sixteen wide mobile column">
+                                                    <div class="widget profile"
+                                                        data-testid="profile-status-overview-widget">
+                                                        <div padded="very"
+                                                            data-testid="profile-status-overview-widget-settings-section-card"
+                                                            class="ui fluid card settings-card with-top-action-bar overview">
+                                                            <div data-testid="profile-status-overview-widget-settings-section-card-content"
+                                                                class="content">
+                                                                <div class="ui grid">
+                                                                    <div data-testid="profile-status-overview-widget-settings-section-card-content-header"
+                                                                        class="two column row header-section">
+                                                                        <div class="ten wide column no-padding">
+                                                                            <h2 class="ui header">
+                                                                                Your Asgardeo Profile
+                                                                            </h2>
+                                                                            <div class="meta">
+                                                                                <div class="ui tiny warning progress account-status-progress"
+                                                                                    data-percent="50">
+                                                                                    <div class="bar"
+                                                                                        style="width: 50%;"></div>
+                                                                                    <div class="label">
+                                                                                        Your profile completion is at
+                                                                                        50%
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="six wide column no-padding">
+                                                                            <div
+                                                                                class="fresnel-container fresnel-greaterThanOrEqual-computer ">
+                                                                                <div class="theme-icon floated-right hover-rounded x60 transparent two-tone"
+                                                                                    data-testid="generic-icon"
+                                                                                    data-componentid="generic-icon">
+                                                                                    <svg id="selfcare-profile"
+                                                                                        class="icon" width="98"
+                                                                                        height="98" viewBox="0 0 98 98"
+                                                                                        fill="none"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <g id="user-settings">
+                                                                                            <g id="export-illustration">
+                                                                                                <g id="cogwheel">
+                                                                                                    <path
+                                                                                                        id="cogwheel-outer"
+                                                                                                        d="M97.7413 57.64V40.1013C97.7415 39.5124 97.6256 38.9293 97.4004 38.3853C97.1752 37.8412 96.845 37.3469 96.4287 36.9304C96.0124 36.514 95.5181 36.1837 94.9741 35.9583C94.4301 35.7329 93.847 35.6169 93.2582 35.6169H91.8735C90.9813 35.6139 90.1101 35.346 89.3704 34.8472C88.6306 34.3485 88.0556 33.6413 87.7182 32.8153L87.695 32.7598C87.348 31.9366 87.2535 31.0288 87.4235 30.1518C87.5936 29.2747 88.0204 28.468 88.6499 27.8341L89.6294 26.8546C90.0457 26.4383 90.3759 25.9441 90.6012 25.4002C90.8265 24.8563 90.9425 24.2733 90.9425 23.6846C90.9425 23.0959 90.8265 22.5129 90.6012 21.969C90.3759 21.4251 90.0457 20.9309 89.6294 20.5146L77.2254 8.11317C76.8091 7.69687 76.3149 7.36665 75.771 7.14135C75.2271 6.91605 74.6441 6.80009 74.0554 6.80009C73.4667 6.80009 72.8837 6.91605 72.3398 7.14135C71.7959 7.36665 71.3017 7.69687 70.8854 8.11317L69.9059 9.09263C69.272 9.72214 68.4653 10.149 67.5882 10.3191C66.7112 10.4891 65.8034 10.3946 64.9802 10.0476L64.9247 10.0244C64.0987 9.687 63.3915 9.11199 62.8928 8.37222C62.394 7.63245 62.1261 6.76124 62.1231 5.86905V4.48308C62.1231 3.2941 61.6508 2.15381 60.81 1.31306C59.9693 0.472324 58.829 0 57.64 0L40.1 0C38.911 0 37.7707 0.472324 36.93 1.31306C36.0892 2.15381 35.6169 3.2941 35.6169 4.48308V5.86776C35.6144 6.75922 35.3475 7.6299 34.8499 8.36958C34.3523 9.10927 33.6465 9.68471 32.8217 10.0231L32.7663 10.0463C31.943 10.3933 31.0352 10.4878 30.1582 10.3178C29.2812 10.1477 28.4745 9.72085 27.8405 9.09134L26.8611 8.11188C26.4448 7.69558 25.9506 7.36536 25.4067 7.14006C24.8627 6.91476 24.2798 6.7988 23.691 6.7988C23.1023 6.7988 22.5193 6.91476 21.9754 7.14006C21.4315 7.36536 20.9373 7.69558 20.521 8.11188L8.11317 20.5184C7.69687 20.9347 7.36664 21.4289 7.14135 21.9729C6.91605 22.5168 6.80009 23.0997 6.80009 23.6885C6.80009 24.2772 6.91605 24.8602 7.14135 25.4041C7.36664 25.948 7.69687 26.4422 8.11317 26.8585L9.09263 27.838C9.72214 28.4719 10.149 29.2786 10.3191 30.1556C10.4891 31.0327 10.3946 31.9405 10.0476 32.7637L10.0244 32.8192C9.687 33.6451 9.11199 34.3523 8.37222 34.8511C7.63245 35.3499 6.76124 35.6177 5.86905 35.6208H4.48308C3.29409 35.6208 2.15381 36.0931 1.31307 36.9338C0.472324 37.7746 0 38.9149 0 40.1039V57.64C0 58.829 0.472324 59.9693 1.31307 60.81C2.15381 61.6508 3.29409 62.1231 4.48308 62.1231H5.86775C6.75995 62.1261 7.63116 62.394 8.37093 62.8928C9.1107 63.3915 9.68571 64.0987 10.0231 64.9247L10.0463 64.9802C10.3933 65.8034 10.4878 66.7112 10.3178 67.5882C10.1477 68.4653 9.72085 69.272 9.09134 69.9059L8.11188 70.8854C7.69558 71.3017 7.36535 71.7959 7.14006 72.3398C6.91476 72.8837 6.7988 73.4667 6.7988 74.0554C6.7988 74.6441 6.91476 75.2271 7.14006 75.771C7.36535 76.3149 7.69558 76.8091 8.11188 77.2254L20.5146 89.6281C20.9309 90.0444 21.4251 90.3746 21.969 90.5999C22.5129 90.8252 23.0959 90.9412 23.6846 90.9412C24.2733 90.9412 24.8563 90.8252 25.4002 90.5999C25.9441 90.3746 26.4383 90.0444 26.8546 89.6281L27.8341 88.6487C28.468 88.0192 29.2747 87.5923 30.1517 87.4222C31.0288 87.2522 31.9366 87.3467 32.7598 87.6937L32.8153 87.7169C33.6413 88.0543 34.3485 88.6293 34.8472 89.3691C35.346 90.1088 35.6139 90.98 35.6169 91.8722V93.2569C35.6169 94.4459 36.0892 95.5862 36.93 96.4269C37.7707 97.2677 38.911 97.74 40.1 97.74H57.64C58.829 97.74 59.9693 97.2677 60.81 96.4269C61.6508 95.5862 62.1231 94.4459 62.1231 93.2569V91.8735C62.1261 90.9813 62.394 90.1101 62.8928 89.3704C63.3915 88.6306 64.0987 88.0556 64.9247 87.7182L64.9802 87.695C65.8034 87.348 66.7112 87.2535 67.5882 87.4235C68.4653 87.5936 69.272 88.0204 69.9059 88.6499L70.8854 89.6294C71.3017 90.0457 71.7959 90.3759 72.3398 90.6012C72.8837 90.8265 73.4667 90.9425 74.0554 90.9425C74.6441 90.9425 75.2271 90.8265 75.771 90.6012C76.3149 90.3759 76.8091 90.0457 77.2254 89.6294L89.6281 77.2267C90.0444 76.8104 90.3746 76.3162 90.5999 75.7723C90.8252 75.2284 90.9412 74.6454 90.9412 74.0567C90.9412 73.468 90.8252 72.885 90.5999 72.3411C90.3746 71.7972 90.0444 71.303 89.6281 70.8867L88.6487 69.9072C88.0192 69.2733 87.5923 68.4666 87.4222 67.5895C87.2522 66.7125 87.3467 65.8047 87.6937 64.9815L87.7169 64.926C88.0543 64.1 88.6293 63.3928 89.3691 62.8941C90.1088 62.3953 90.98 62.1274 91.8722 62.1244H93.2569C94.4459 62.1244 95.5862 61.6521 96.4269 60.8113C97.2677 59.9706 97.74 58.8303 97.74 57.6413L97.7413 57.64Z"
+                                                                                                        fill="#FF8826"
+                                                                                                        class="fill-primary lighten-1">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="cogwheel-middle"
+                                                                                                        d="M48.8699 82.8958C67.6611 82.8958 82.8944 67.6625 82.8944 48.8713C82.8944 30.0801 67.6611 14.8468 48.8699 14.8468C30.0787 14.8468 14.8455 30.0801 14.8455 48.8713C14.8455 67.6625 30.0787 82.8958 48.8699 82.8958Z"
+                                                                                                        fill="#FF7300"
+                                                                                                        class="fill-primary">
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                            </g>
+                                                                                            <g id="user-illustration">
+                                                                                                <g id="user-bg">
+                                                                                                    <path
+                                                                                                        id="outer-circle"
+                                                                                                        d="M49.0378 73.5566C62.5792 73.5566 73.5567 62.5792 73.5567 49.0378C73.5567 35.4964 62.5792 24.5189 49.0378 24.5189C35.4964 24.5189 24.5189 35.4964 24.5189 49.0378C24.5189 62.5792 35.4964 73.5566 49.0378 73.5566Z"
+                                                                                                        fill="#4CCBD7"
+                                                                                                        class="fill-accent2 lighten-1">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="inner-circle"
+                                                                                                        d="M48.9191 68.24C59.336 68.24 67.7806 59.7954 67.7806 49.3785C67.7806 38.9616 59.336 30.5171 48.9191 30.5171C38.5022 30.5171 30.0576 38.9616 30.0576 49.3785C30.0576 59.7954 38.5022 68.24 48.9191 68.24Z"
+                                                                                                        fill="#19BECE"
+                                                                                                        class="fill-accent2">
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                                <g id="user">
+                                                                                                    <path id="user-body"
+                                                                                                        d="M32.7546 67.4464C32.9603 67.073 33.1796 66.7039 33.4128 66.3391C35.0795 63.7578 37.3676 61.6363 40.0673 60.1692C42.7671 58.7021 45.7919 57.9363 48.8646 57.942C51.9372 57.9478 54.9591 58.725 57.6533 60.2023C60.3475 61.6796 62.6277 63.8097 64.2846 66.3972C64.5204 66.7654 64.7423 67.1405 64.9505 67.5225C60.511 71.4164 54.8049 73.5597 48.8997 73.5516C42.952 73.5618 37.2073 71.3895 32.7546 67.4464Z"
+                                                                                                        fill="white"
+                                                                                                        class="primary-accent3">
+                                                                                                    </path>
+                                                                                                    <path id="user-head"
+                                                                                                        d="M48.8301 57.471C54.159 57.471 58.4789 53.1586 58.4789 47.839C58.4789 42.5194 54.159 38.2069 48.8301 38.2069C43.5012 38.2069 39.1813 42.5194 39.1813 47.839C39.1813 53.1586 43.5012 57.471 48.8301 57.471Z"
+                                                                                                        fill="white"
+                                                                                                        class="primary-accent3">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="user-body-shadow"
+                                                                                                        d="M56.1469 72.4611C55.4405 69.4492 54.0903 66.626 52.1893 64.1855C50.2883 61.7449 47.8814 59.7448 45.134 58.3227C48.4238 57.6524 51.834 57.8911 54.9984 59.0131C56.9073 59.6932 58.6897 60.6862 60.2725 61.9515C61.8445 63.2055 63.1999 64.7091 64.2846 66.4023C64.5194 66.7688 64.744 67.1469 64.9505 67.5276C62.3956 69.7723 59.395 71.4534 56.1469 72.4611Z"
+                                                                                                        fill="#E0E1E2"
+                                                                                                        class="fill-accent3 darken-1">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="user-head-shadow"
+                                                                                                        d="M48.8299 57.4697C47.4708 57.4727 46.1265 57.1868 44.8862 56.6309C46.2975 56.9494 47.7624 56.9469 49.1726 56.6234C50.5828 56.2999 51.9023 55.6637 53.0337 54.7619C54.165 53.8601 55.0794 52.7156 55.7091 51.4131C56.3389 50.1105 56.6679 48.6831 56.6721 47.2363C56.6695 45.3777 56.1303 43.5594 55.1191 41.9999C54.1079 40.4405 52.6679 39.2062 50.9721 38.4456C53.2842 38.9687 55.3221 40.3262 56.6958 42.2582C58.0694 44.1902 58.6823 46.5609 58.417 48.9166C58.1518 51.2722 57.0271 53.4473 55.2581 55.0254C53.4892 56.6035 51.2004 57.4738 48.8299 57.4697Z"
+                                                                                                        fill="#E0E1E2"
+                                                                                                        class="fill-accent3 darken-1">
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                            </g>
+                                                                                        </g>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="fresnel-container fresnel-lessThan-computer ">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div data-testid="profile-status-overview-widget-settings-section-card-content-items"
+                                                                        class="one column row main-content no-padding">
+                                                                        <div class="sixteen wide column no-padding">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content extra-content">
+                                                                <div role="list"
+                                                                    class="ui selection middle aligned list">
+                                                                    <div role="listitem"
+                                                                        class="active item action-button" tabindex="0"
+                                                                        data-testid="profile-status-overview-widget-settings-section-card-primary-button">
+                                                                        <div class="left floated content">
+                                                                            <div class="header action-button-text">
+                                                                                Manage your profile
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="eight wide computer sixteen wide mobile column">
+                                                    <div class="widget account-security"
+                                                        data-testid="account-security-overview-widget">
+                                                        <div padded="very"
+                                                            data-testid="account-security-overview-widget-settings-section-card"
+                                                            class="ui fluid card settings-card with-top-action-bar overview">
+                                                            <div data-testid="account-security-overview-widget-settings-section-card-content"
+                                                                class="content">
+                                                                <div class="ui grid">
+                                                                    <div data-testid="account-security-overview-widget-settings-section-card-content-header"
+                                                                        class="two column row header-section">
+                                                                        <div class="ten wide column no-padding">
+                                                                            <h2 class="ui header">Account Security</h2>
+                                                                            <div class="meta">
+                                                                                Settings and recommendations to help you
+                                                                                keep your account secure
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="six wide column no-padding">
+                                                                            <div
+                                                                                class="fresnel-container fresnel-greaterThanOrEqual-computer ">
+                                                                                <div class="theme-icon floated-right hover-rounded x60 transparent two-tone"
+                                                                                    data-testid="generic-icon"
+                                                                                    data-componentid="generic-icon">
+                                                                                    <svg id="selfcare-account-security"
+                                                                                        class="icon" width="62"
+                                                                                        height="87" viewBox="0 0 62 87"
+                                                                                        fill="none"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <g id="security-illustration">
+                                                                                            <g id="padlock">
+                                                                                                <path id="padlock-head"
+                                                                                                    d="M15.3425 21.684C15.3274 19.6553 15.7124 17.6436 16.4755 15.7639C17.2386 13.8841 18.3649 12.1733 19.7898 10.7293C21.2148 9.28532 22.9105 8.13645 24.7799 7.34844C26.6494 6.56044 28.6558 6.14878 30.6845 6.137C32.6835 6.13831 34.6623 6.53679 36.5061 7.3093C38.3498 8.0818 40.0216 9.21294 41.4245 10.637C44.3442 13.5756 45.9957 17.5416 46.0245 21.684V32.219H52.1615V21.684C52.1478 15.9349 49.8692 10.4227 45.8195 6.342C43.8446 4.33239 41.489 2.73651 38.8904 1.64759C36.2917 0.558682 33.5021 -0.00142392 30.6845 2.71847e-06C24.9605 0.0275217 19.4817 2.32733 15.4531 6.39368C11.4244 10.46 9.17573 15.96 9.20151 21.684V32.219H15.3385L15.3425 21.684Z"
+                                                                                                    fill="#19BECE"
+                                                                                                    class="fill-accent2">
+                                                                                                </path>
+                                                                                                <path id="padlock-body"
+                                                                                                    d="M58.3025 31.503H3.06849C2.66358 31.4957 2.26135 31.57 1.88582 31.7216C1.51028 31.8732 1.16915 32.0989 0.882786 32.3853C0.596424 32.6717 0.37071 33.0128 0.219121 33.3883C0.0675314 33.7639 -0.00682927 34.1661 0.000492647 34.571V75.489C0.0120157 76.1438 0.224158 76.7793 0.608273 77.3097C0.992388 77.84 1.52998 78.2398 2.1485 78.455L29.7645 86.638C30.3706 86.7742 30.9994 86.7742 31.6055 86.638L59.2215 78.455C59.8586 78.2702 60.4158 77.8781 60.8049 77.3409C61.1939 76.8036 61.3926 76.1519 61.3695 75.489V34.571C61.377 34.1661 61.3027 33.7639 61.1512 33.3884C60.9998 33.0129 60.7741 32.6717 60.4879 32.3854C60.2016 32.099 59.8605 31.8732 59.485 31.7216C59.1095 31.57 58.7074 31.4957 58.3025 31.503Z"
+                                                                                                    fill="#FF7300"
+                                                                                                    class="fill-primary">
+                                                                                                </path>
+                                                                                            </g>
+                                                                                            <g id="user-section">
+                                                                                                <path id="circle-outer"
+                                                                                                    d="M30.7995 77.844C41.8452 77.844 50.7995 68.8897 50.7995 57.844C50.7995 46.7983 41.8452 37.844 30.7995 37.844C19.7538 37.844 10.7995 46.7983 10.7995 57.844C10.7995 68.8897 19.7538 77.844 30.7995 77.844Z"
+                                                                                                    fill="#FFA45A"
+                                                                                                    class="fill-primary lighten-2">
+                                                                                                </path>
+                                                                                                <path id="circle-inner"
+                                                                                                    d="M31.0024 75.3307C40.9435 75.3307 49.0024 67.4216 49.0024 57.6653C49.0024 47.909 40.9435 40 31.0024 40C21.0613 40 13.0024 47.909 13.0024 57.6653C13.0024 67.4216 21.0613 75.3307 31.0024 75.3307Z"
+                                                                                                    fill="#FF8826"
+                                                                                                    class="fill-primary lighten-1">
+                                                                                                </path>
+                                                                                                <g id="user">
+                                                                                                    <path id="user-body"
+                                                                                                        d="M18.1375 70.4433C18.2462 70.2607 18.3595 70.0792 18.4775 69.8986C19.7888 67.9058 21.589 66.268 23.7129 65.1353C25.8367 64.0027 28.2164 63.4116 30.6336 63.4161C33.0507 63.4205 35.4281 64.0206 37.5476 65.1611C39.6671 66.3016 41.4609 67.9461 42.7645 69.9437C42.9645 70.2453 43.1492 70.5532 43.3185 70.8672C41.71 72.4939 39.7846 73.7866 37.6568 74.6683C35.529 75.5501 33.2422 76.003 30.9325 76C28.5225 76.0032 26.1385 75.5103 23.9346 74.5532C21.7307 73.5961 19.7558 72.196 18.1375 70.4433Z"
+                                                                                                        fill="white"
+                                                                                                        class="fill-accent3">
+                                                                                                    </path>
+                                                                                                    <path id="user-head"
+                                                                                                        d="M30.6056 63.0493C34.798 63.0493 38.1966 59.7201 38.1966 55.6132C38.1966 51.5064 34.798 48.1771 30.6056 48.1771C26.4132 48.1771 23.0146 51.5064 23.0146 55.6132C23.0146 59.7201 26.4132 63.0493 30.6056 63.0493Z"
+                                                                                                        fill="white"
+                                                                                                        class="fill-accent3">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="user-body-shadow"
+                                                                                                        d="M36.3626 74.624C35.8069 72.2986 34.7448 70.1188 33.2492 68.2344C31.7536 66.35 29.86 64.8058 27.6986 63.7079C30.2866 63.1909 32.9692 63.3751 35.4586 64.2408C36.9607 64.7662 38.3632 65.5333 39.6086 66.5108C40.8452 67.4784 41.9114 68.6388 42.7646 69.9457C42.9486 70.2273 43.1246 70.5198 43.2886 70.8142C42.2904 71.6718 41.2047 72.426 40.0486 73.0646C38.8788 73.71 37.644 74.2327 36.3626 74.624Z"
+                                                                                                        fill="#E0E1E2"
+                                                                                                        class="fill-accent3 darken-1">
+                                                                                                    </path>
+                                                                                                    <path
+                                                                                                        id="user-head-shadow"
+                                                                                                        d="M30.6006 63.0493C29.5322 63.0513 28.4756 62.8305 27.5006 62.4016C28.611 62.6477 29.7634 62.6458 30.873 62.3962C31.9825 62.1466 33.0207 61.6555 33.9109 60.9593C34.8011 60.2631 35.5207 59.3796 36.0163 58.3739C36.512 57.3682 36.7711 56.2661 36.7746 55.149C36.7726 53.7137 36.3481 52.3094 35.5523 51.1052C34.7565 49.9009 33.6232 48.9478 32.2886 48.3606C33.9671 48.7304 35.4672 49.6502 36.5418 50.9685C37.6164 52.2868 38.2015 53.925 38.2006 55.6132C38.2014 56.6078 37.9973 57.5922 37.6006 58.5074C37.0185 59.8563 36.0438 61.0067 34.7987 61.8146C33.5536 62.6225 32.0933 63.052 30.6006 63.0493Z"
+                                                                                                        fill="#E0E1E2"
+                                                                                                        class="fill-accent3 darken-1">
+                                                                                                    </path>
+                                                                                                </g>
+                                                                                            </g>
+                                                                                        </g>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="fresnel-container fresnel-lessThan-computer ">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div data-testid="account-security-overview-widget-settings-section-card-content-items"
+                                                                        class="one column row main-content no-padding">
+                                                                        <div class="sixteen wide column no-padding">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content extra-content">
+                                                                <div role="list"
+                                                                    class="ui selection middle aligned list">
+                                                                    <div role="listitem"
+                                                                        class="active item action-button" tabindex="0"
+                                                                        data-testid="account-security-overview-widget-settings-section-card-primary-button">
+                                                                        <div class="left floated content">
+                                                                            <div class="header action-button-text">
+                                                                                Update account security
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="eight wide computer sixteen wide mobile column">
+                                                    <div class="widget account-status"
+                                                        data-testid="user-sessions-overview-widget">
+                                                        <div padded="very"
+                                                            data-testid="user-sessions-overview-widget-settings-section-card"
+                                                            class="ui fluid card settings-card with-top-action-bar overview">
+                                                            <div data-testid="user-sessions-overview-widget-settings-section-card-content"
+                                                                class="content">
+                                                                <div class="ui grid">
+                                                                    <div data-testid="user-sessions-overview-widget-settings-section-card-content-header"
+                                                                        class="two column row header-section">
+                                                                        <div class="sixteen wide column no-padding">
+                                                                            <h2 class="ui header">Active Sessions</h2>
+                                                                            <div class="meta">
+                                                                                You are currently logged in from the
+                                                                                following device
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div data-testid="user-sessions-overview-widget-settings-section-card-content-items"
+                                                                        class="one column row main-content no-padding">
+                                                                        <div class="sixteen wide column no-padding">
+                                                                            <div role="list"
+                                                                                class="ui divided middle aligned list main-content-inner"
+                                                                                data-testid="user-sessions-list">
+                                                                                <div role="listitem"
+                                                                                    class="item inner-list-item"
+                                                                                    data-testid="user-sessions-list-item">
+                                                                                    <div class="ui padded grid">
+                                                                                        <div class="two column row">
+                                                                                            <div
+                                                                                                class="sixteen wide column first-column">
+                                                                                                <div class="theme-icon floated-left hover-rounded auto spaced-right transparent"
+                                                                                                    data-testid="generic-icon"
+                                                                                                    data-componentid="generic-icon">
+                                                                                                    <i aria-hidden="true"
+                                                                                                        class="grey computer big icon"></i>
+                                                                                                </div>
+                                                                                                <div class="content">
+                                                                                                    <div class="header">
+                                                                                                        Chrome on Mac OS
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="description">
+                                                                                                        <div class="text-typography"
+                                                                                                            data-componentid="text"
+                                                                                                            data-testid="text"
+                                                                                                            style="font-size: 11px;">
+                                                                                                            Last
+                                                                                                            accessed a
+                                                                                                            minute ago
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content extra-content">
+                                                                <div role="list"
+                                                                    class="ui selection middle aligned list">
+                                                                    <div role="listitem"
+                                                                        class="active item action-button" tabindex="0"
+                                                                        data-testid="user-sessions-overview-widget-settings-section-card-primary-button">
+                                                                        <div class="left floated content">
+                                                                            <div class="header action-button-text">
+                                                                                Manage account activity
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="eight wide computer sixteen wide mobile column">
+                                                    <div class="widget consent-management"
+                                                        data-testid="consent-management-overview-widget">
+                                                        <div padded="very"
+                                                            data-testid="consent-management-overview-widget-settings-section-card"
+                                                            class="ui fluid card settings-card with-top-action-bar overview">
+                                                            <div data-testid="consent-management-overview-widget-settings-section-card-content"
+                                                                class="content">
+                                                                <div class="ui grid">
+                                                                    <div data-testid="consent-management-overview-widget-settings-section-card-content-header"
+                                                                        class="two column row header-section">
+                                                                        <div class="ten wide column no-padding">
+                                                                            <h2 class="ui header">Control Consents</h2>
+                                                                            <div class="meta">
+                                                                                Control the data you want to share with
+                                                                                applications
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="six wide column no-padding">
+                                                                            <div
+                                                                                class="fresnel-container fresnel-greaterThanOrEqual-computer ">
+                                                                                <div class="theme-icon floated-right hover-rounded x60 transparent two-tone"
+                                                                                    data-testid="generic-icon"
+                                                                                    data-componentid="generic-icon">
+                                                                                    <svg id="selfcare-consent"
+                                                                                        class="icon" width="87"
+                                                                                        height="87" viewBox="0 0 87 87"
+                                                                                        fill="none"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path class="fill-primary"
+                                                                                            d="M62.489 86.294H5.951C5.1695 86.294 4.39566 86.1401 3.67365 85.841C2.95164 85.5419 2.29561 85.1036 1.74301 84.551C1.19041 83.9984 0.752057 83.3424 0.452991 82.6203C0.153926 81.8983 0 81.1245 0 80.343V5.951C0 5.1695 0.153926 4.39566 0.452991 3.67365C0.752057 2.95164 1.19041 2.29561 1.74301 1.74301C2.29561 1.19041 2.95164 0.752059 3.67365 0.452993C4.39566 0.153928 5.1695 0 5.951 0H50.586L68.44 17.854V80.343C68.44 81.1245 68.2861 81.8983 67.987 82.6203C67.6879 83.3424 67.2496 83.9984 66.697 84.551C66.1444 85.1036 65.4884 85.5419 64.7663 85.841C64.0443 86.1401 63.2705 86.294 62.489 86.294Z"
+                                                                                            fill="#FF7300"></path>
+                                                                                        <path
+                                                                                            class="fill-primary lighten-1"
+                                                                                            d="M53.366 3.057C52.5944 2.26791 51.6221 1.70433 50.554 1.427L51.521 15.097L68.442 32.251V17.861C67.7909 17.5336 67.1899 17.1151 66.657 16.618L53.366 3.057Z"
+                                                                                            fill="#FF8826"></path>
+                                                                                        <path
+                                                                                            class="fill-primary lighten-2"
+                                                                                            d="M68.4399 17.854H56.5399C55.7579 17.8544 54.9835 17.7007 54.261 17.4016C53.5384 17.1025 52.8819 16.664 52.3289 16.111C51.776 15.558 51.3374 14.9015 51.0384 14.179C50.7393 13.4564 50.5855 12.682 50.5859 11.9V0L68.4399 17.854Z"
+                                                                                            fill="#FFA45A"></path>
+                                                                                        <path class="fill-accent3"
+                                                                                            fill-rule="evenodd"
+                                                                                            clip-rule="evenodd"
+                                                                                            d="M23.804 19.342H41.658C42.0526 19.342 42.4311 19.1852 42.7102 18.9062C42.9892 18.6271 43.146 18.2486 43.146 17.854C43.146 17.4594 42.9892 17.0809 42.7102 16.8018C42.4311 16.5228 42.0526 16.366 41.658 16.366H23.804C23.4093 16.366 23.0309 16.5228 22.7518 16.8018C22.4727 17.0809 22.316 17.4594 22.316 17.854C22.316 18.2486 22.4727 18.6271 22.7518 18.9062C23.0309 19.1852 23.4093 19.342 23.804 19.342ZM59.517 28.269H23.805C23.4103 28.269 23.0318 28.1122 22.7528 27.8332C22.4737 27.5541 22.317 27.1756 22.317 26.781C22.317 26.3864 22.4737 26.0079 22.7528 25.7288C23.0318 25.4498 23.4103 25.293 23.805 25.293H59.517C59.9116 25.293 60.2901 25.4498 60.5691 25.7288C60.8482 26.0079 61.005 26.3864 61.005 26.781C61.005 27.1756 60.8482 27.5541 60.5691 27.8332C60.2901 28.1122 59.9116 28.269 59.517 28.269ZM8.92696 37.196C8.53232 37.196 8.15384 37.0392 7.87479 36.7602C7.59573 36.4811 7.43896 36.1026 7.43896 35.708C7.43896 35.3134 7.59573 34.9349 7.87479 34.6558C8.15384 34.3768 8.53232 34.22 8.92696 34.22H38.684C39.0786 34.22 39.4571 34.3768 39.7361 34.6558C40.0152 34.9349 40.172 35.3134 40.172 35.708C40.172 36.1026 40.0152 36.4811 39.7361 36.7602C39.4571 37.0392 39.0776 37.196 38.683 37.196H8.92696ZM32.734 46.123H44.634C45.0286 46.123 45.4071 45.9662 45.6861 45.6872C45.9652 45.4081 46.122 45.0297 46.122 44.635C46.122 44.2404 45.9652 43.8619 45.6861 43.5828C45.4071 43.3038 45.0286 43.147 44.634 43.147H32.734C32.3393 43.147 31.9608 43.3038 31.6818 43.5828C31.4027 43.8619 31.246 44.2404 31.246 44.635C31.246 45.0297 31.4027 45.4081 31.6818 45.6872C31.9608 45.9662 32.3393 46.123 32.734 46.123ZM35.708 55.05H8.92696C8.53232 55.05 8.15384 54.8932 7.87479 54.6142C7.59573 54.3351 7.43896 53.9567 7.43896 53.562C7.43896 53.1674 7.59573 52.7889 7.87479 52.5098C8.15384 52.2308 8.53232 52.074 8.92696 52.074H35.708C36.1026 52.074 36.4811 52.2308 36.7601 52.5098C37.0392 52.7889 37.196 53.1674 37.196 53.562C37.196 53.9567 37.0392 54.3351 36.7601 54.6142C36.4811 54.8932 36.1026 55.05 35.708 55.05ZM44.635 37.196H59.513C59.9076 37.196 60.2861 37.0392 60.5652 36.7602C60.8442 36.4811 61.001 36.1026 61.001 35.708C61.001 35.3134 60.8442 34.9349 60.5652 34.6558C60.2861 34.3768 59.9076 34.22 59.513 34.22H44.635C44.2403 34.22 43.8618 34.3768 43.5828 34.6558C43.3037 34.9349 43.147 35.3134 43.147 35.708C43.147 36.1026 43.3037 36.4811 43.5828 36.7602C43.8618 37.0392 44.2403 37.196 44.635 37.196ZM26.781 46.123H8.92696C8.53232 46.123 8.15384 45.9662 7.87479 45.6872C7.59573 45.4081 7.43896 45.0297 7.43896 44.635C7.43896 44.2404 7.59573 43.8619 7.87479 43.5828C8.15384 43.3038 8.53232 43.147 8.92696 43.147H26.781C27.1756 43.147 27.5541 43.3038 27.8331 43.5828C28.1122 43.8619 28.269 44.2404 28.269 44.635C28.269 45.0297 28.1122 45.4081 27.8331 45.6872C27.5541 45.9662 27.1756 46.123 26.781 46.123ZM41.365 54.97H59.219C59.6136 54.97 59.9921 54.8132 60.2711 54.5342C60.5502 54.2551 60.707 53.8767 60.707 53.482C60.707 53.0874 60.5502 52.7089 60.2711 52.4298C59.9921 52.1508 59.6136 51.994 59.219 51.994H41.365C40.9703 51.994 40.5918 52.1508 40.3128 52.4298C40.0337 52.7089 39.877 53.0874 39.877 53.482C39.877 53.8767 40.0337 54.2551 40.3128 54.5342C40.5918 54.8132 40.9703 54.97 41.365 54.97ZM32.732 72.904H26.781C26.3863 72.904 26.0078 72.7472 25.7288 72.4682C25.4497 72.1891 25.293 71.8107 25.293 71.416C25.293 71.0214 25.4497 70.6429 25.7288 70.3638C26.0078 70.0848 26.3863 69.928 26.781 69.928H32.732C33.1266 69.928 33.5051 70.0848 33.7841 70.3638C34.0632 70.6429 34.22 71.0214 34.22 71.416C34.22 71.8107 34.0632 72.1891 33.7841 72.4682C33.5051 72.7472 33.1266 72.904 32.732 72.904ZM8.92898 72.904H20.829C21.2236 72.904 21.6021 72.7472 21.8812 72.4682C22.1602 72.1891 22.317 71.8107 22.317 71.416C22.317 71.0214 22.1602 70.6429 21.8812 70.3638C21.6021 70.0848 21.2236 69.928 20.829 69.928H8.92898C8.53434 69.928 8.15586 70.0848 7.87681 70.3638C7.59775 70.6429 7.44098 71.0214 7.44098 71.416C7.44098 71.8107 7.59775 72.1891 7.87681 72.4682C8.15586 72.7472 8.53434 72.904 8.92898 72.904ZM17.854 63.977H8.92696C8.53232 63.977 8.15384 63.8202 7.87479 63.5412C7.59573 63.2621 7.43896 62.8836 7.43896 62.489C7.43896 62.0944 7.59573 61.7159 7.87479 61.4368C8.15384 61.1578 8.53232 61.001 8.92696 61.001H17.854C18.2486 61.001 18.6271 61.1578 18.9061 61.4368C19.1852 61.7159 19.342 62.0944 19.342 62.489C19.342 62.8836 19.1852 63.2621 18.9061 63.5412C18.6271 63.8202 18.2486 63.977 17.854 63.977ZM32.7319 63.977H23.805C23.4103 63.977 23.0318 63.8202 22.7528 63.5412C22.4737 63.2621 22.317 62.8836 22.317 62.489C22.317 62.0944 22.4737 61.7159 22.7528 61.4368C23.0318 61.1578 23.4103 61.001 23.805 61.001H32.7319C33.1266 61.001 33.5051 61.1578 33.7841 61.4368C34.0632 61.7159 34.22 62.0944 34.22 62.489C34.22 62.8836 34.0632 63.2621 33.7841 63.5412C33.5051 63.8202 33.1266 63.977 32.7319 63.977ZM16.9784 26.4174C17.1726 26.9026 17.2683 27.4215 17.26 27.944H17.253C17.253 28.171 17.3432 28.3887 17.5037 28.5493C17.6643 28.7098 17.882 28.8 18.109 28.8C18.336 28.8 18.5538 28.7098 18.7143 28.5493C18.8748 28.3887 18.965 28.171 18.965 27.944C18.9659 26.7878 18.6114 25.6594 17.9496 24.7114C17.2878 23.7634 16.3506 23.0417 15.265 22.644C15.867 22.2288 16.3205 21.6319 16.5592 20.9407C16.7979 20.2494 16.8094 19.5 16.5919 18.8017C16.3745 18.1035 15.9395 17.4931 15.3505 17.0596C14.7615 16.6262 14.0493 16.3924 13.318 16.3924C12.5867 16.3924 11.8746 16.6262 11.2856 17.0596C10.6966 17.4931 10.2616 18.1035 10.0441 18.8017C9.82667 19.5 9.83814 20.2494 10.0769 20.9407C10.3156 21.6319 10.769 22.2288 11.371 22.644C10.2857 23.0422 9.34891 23.764 8.68718 24.7119C8.02545 25.6598 7.67074 26.788 7.67102 27.944C7.67102 28.171 7.76121 28.3887 7.92174 28.5493C8.08227 28.7098 8.3 28.8 8.52702 28.8C8.75405 28.8 8.97177 28.7098 9.1323 28.5493C9.29283 28.3887 9.38302 28.171 9.38302 27.944C9.37469 27.4215 9.47041 26.9026 9.66461 26.4174C9.8588 25.9323 10.1476 25.4907 10.5141 25.1182C10.8807 24.7458 11.3177 24.45 11.7996 24.2481C12.2816 24.0462 12.799 23.9422 13.3215 23.9422C13.8441 23.9422 14.3614 24.0462 14.8434 24.2481C15.3254 24.45 15.7624 24.7458 16.1289 25.1182C16.4955 25.4907 16.7842 25.9323 16.9784 26.4174ZM11.8923 20.7792C11.7039 20.4967 11.6036 20.1646 11.604 19.825C11.6053 19.3699 11.787 18.9338 12.1092 18.6124C12.4314 18.2909 12.8679 18.1103 13.323 18.11C13.6626 18.1104 13.9945 18.2115 14.2766 18.4005C14.5587 18.5895 14.7785 18.8579 14.9081 19.1718C15.0377 19.4857 15.0713 19.8309 15.0046 20.1639C14.938 20.4969 14.7741 20.8027 14.5337 21.0425C14.2933 21.2824 13.9872 21.4455 13.654 21.5114C13.3209 21.5773 12.9757 21.5428 12.6621 21.4125C12.3485 21.2822 12.0806 21.0618 11.8923 20.7792Z"
+                                                                                            fill="white"></path>
+                                                                                        <path
+                                                                                            class="fill-primary lighten-2"
+                                                                                            d="M82.2789 22.229V27.388C82.2789 27.9012 82.075 28.3934 81.7122 28.7563C81.3493 29.1191 80.8571 29.323 80.3439 29.323C80.0898 29.323 79.8383 29.2729 79.6035 29.1757C79.3688 29.0784 79.1556 28.9359 78.976 28.7562C78.7964 28.5765 78.654 28.3632 78.5568 28.1284C78.4597 27.8937 78.4098 27.6421 78.4099 27.388V22.229C78.4099 21.7163 78.6134 21.2246 78.9756 20.8618C79.3378 20.499 79.8292 20.2948 80.3419 20.294C80.5961 20.2939 80.8479 20.3438 81.0829 20.441C81.3178 20.5382 81.5313 20.6807 81.7112 20.8603C81.891 21.04 82.0338 21.2534 82.1312 21.4882C82.2286 21.723 82.2788 21.9748 82.2789 22.229Z"
+                                                                                            fill="#FFA45A"></path>
+                                                                                        <path class="fill-accent2"
+                                                                                            d="M86.7499 33.826V57.043L80.3419 59.624L73.9349 57.043V33.826L80.3419 31.245L86.7499 33.826Z"
+                                                                                            fill="#19BECE"></path>
+                                                                                        <path class="fill-secondary"
+                                                                                            d="M86.75 29.572V33.825H73.934V29.572C73.9355 28.4923 74.3654 27.4573 75.1292 26.6941C75.8929 25.9309 76.9282 25.5018 78.008 25.501H82.676C83.7557 25.5018 84.791 25.9309 85.5548 26.6941C86.3185 27.4573 86.7484 28.4923 86.75 29.572Z"
+                                                                                            fill="#E0E1E2"></path>
+                                                                                        <path class="fill-accent1"
+                                                                                            d="M86.75 57.042V70.933C86.7504 72.9132 86.355 74.8734 85.5871 76.6985C84.8191 78.5237 83.694 80.1769 82.278 81.561L80.341 83.496L78.407 81.561C76.9907 80.177 75.8654 78.5238 75.0973 76.6987C74.3291 74.8735 73.9336 72.9132 73.934 70.933V57.042H86.75Z"
+                                                                                            fill="#3865B5"></path>
+                                                                                        <path
+                                                                                            class="fill-primary lighten-1"
+                                                                                            d="M82.2789 81.558V84.421C82.2786 84.9341 82.0747 85.4261 81.7119 85.789C81.349 86.1518 80.857 86.3557 80.3439 86.356C79.8309 86.3557 79.339 86.1517 78.9763 85.7889C78.6136 85.426 78.4099 84.934 78.4099 84.421V81.558H82.2789Z"
+                                                                                            fill="#FF8826"></path>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
+                                                                                class="fresnel-container fresnel-lessThan-computer ">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div data-testid="consent-management-overview-widget-settings-section-card-content-items"
+                                                                        class="one column row main-content no-padding">
+                                                                        <div class="sixteen wide column no-padding">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="extra content extra-content">
+                                                                <div role="list"
+                                                                    class="ui selection middle aligned list">
+                                                                    <div role="listitem"
+                                                                        class="active item action-button" tabindex="0"
+                                                                        data-testid="consent-management-overview-widget-settings-section-card-primary-button">
+                                                                        <div class="left floated content">
+                                                                            <div class="header action-button-text">
+                                                                                Manage consents
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>

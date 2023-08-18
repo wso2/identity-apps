@@ -1,30 +1,33 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { 
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppState, getEmptyPlaceholderIllustrations, getTechnologyLogos } from "../../../core";
-import { getApplicationTemplateIllustrations, getInboundProtocolLogos } from "../../configs";
-import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
-import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../../utils";
+import { getApplicationTemplateIllustrations, getInboundProtocolLogos } from "../../configs/ui";
+import {
+    ApplicationTemplateCategories,
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface
+} from "../../models";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import { ApplicationTemplateManagementUtils } from "../../utils/application-template-management-utils";
 import { InboundProtocolsMeta } from "../meta";
 
 /**
@@ -42,8 +45,8 @@ interface ProtocolSelectionWizardFormPropsInterface extends TestableComponentInt
 /**
  * Protocol selection wizard form component.
  *
- * @param {ProtocolSelectionWizardFormPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Protocol selection wizard form component.
  */
 export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWizardFormPropsInterface> = (
     props: ProtocolSelectionWizardFormPropsInterface
@@ -64,10 +67,10 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
 
-    const availableCustomInboundProtocols = useSelector((state: AppState) =>
+    const availableCustomInboundProtocols: AuthProtocolMetaListItemInterface[] = useSelector((state: AppState) =>
         state.application.meta.customInboundProtocols);
 
-    const checkedCustomInboundProtocols = useSelector((state: AppState) =>
+    const checkedCustomInboundProtocols: boolean = useSelector((state: AppState) =>
         state.application.meta.customInboundProtocolChecked);
 
     const [
@@ -81,7 +84,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
 
-    const init = useRef(true);
+    const init: MutableRefObject<boolean> = useRef(true);
 
     /**
      * Called on `checkedCustomInboundProtocols` prop update.
@@ -135,15 +138,17 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     /**
      * Handles template selection.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Id of the template.
+     * @param e - Click event.
+     * @param id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        let selected = defaultTemplates?.find((template) => template.id === id);
+        let selected: ApplicationTemplateListItemInterface = defaultTemplates?.find(
+            (template: ApplicationTemplateListItemInterface) => template.id === id);
 
         if (!selected) {
-            selected = applicationTemplates?.find((template) => template.id === id);
+            selected = applicationTemplates?.find(
+                (template: ApplicationTemplateListItemInterface) => template.id === id);
         }
 
         if (!selected) {
@@ -155,12 +160,13 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     /**
      * Handles template selection for custom protocols.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Id of the template.
+     * @param e - Click event.
+     * @param id - Id of the template.
      */
     const handleTemplateCustomProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        const selected = availableCustomInboundTemplates?.find((template) => template.id === id);
+        const selected: ApplicationTemplateListItemInterface = availableCustomInboundTemplates?.find(
+            (template: ApplicationTemplateListItemInterface) => template.id === id);
 
         if (!selected) {
             return;
@@ -172,14 +178,15 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     /**
      * Filter already existing protocol from the template.
      *
-     * @param templates Templates array to be filtered.
+     * @param templates - Templates array to be filtered.
      */
     const filterProtocol = (
         templates: ApplicationTemplateListItemInterface[]
     ): ApplicationTemplateListItemInterface[] => {
         if (templates) {
             return templates.filter(
-                (temp) => !selectedProtocols.includes(temp.authenticationProtocol));
+                (temp: ApplicationTemplateListItemInterface) => 
+                    !selectedProtocols.includes(temp.authenticationProtocol));
         } else {
             return null;
         }
@@ -192,7 +199,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         const customTemplates: ApplicationTemplateListItemInterface[] = [];
 
         if (availableCustomInboundProtocols.length > 0) {
-            availableCustomInboundProtocols.map((protocol) => {
+            availableCustomInboundProtocols.map((protocol: AuthProtocolMetaListItemInterface) => {
                 const customTemplate: ApplicationTemplateListItemInterface = {
                     authenticationProtocol: protocol.name,
                     id: protocol.name,
@@ -204,24 +211,25 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
             });
 
             return customTemplates.filter(
-                (temp) => !selectedProtocols.includes(temp.authenticationProtocol));
+                (temp: ApplicationTemplateListItemInterface) => 
+                    !selectedProtocols.includes(temp.authenticationProtocol));
         }
     };
 
     /**
      * Available default templates after filtering.
      */
-    const availableDefaultTemplates = filterProtocol(defaultTemplates);
+    const availableDefaultTemplates: ApplicationTemplateListItemInterface[] = filterProtocol(defaultTemplates);
 
     /**
      * Available templates from api after filtering.
      */
-    const availableTemplates = filterProtocol(applicationTemplates);
+    const availableTemplates: ApplicationTemplateListItemInterface[] = filterProtocol(applicationTemplates);
 
     /**
      * Available custom protocol templates after filtering.
      */
-    const availableCustomInboundTemplates = filterCustomProtocol();
+    const availableCustomInboundTemplates: ApplicationTemplateListItemInterface[] = filterCustomProtocol();
 
     return (
         <>
@@ -232,7 +240,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         applicationTemplates
                         && applicationTemplates instanceof Array
                         && applicationTemplates.length > 0
-                            ? availableTemplates.filter((template) =>
+                            ? availableTemplates.filter((template: ApplicationTemplateListItemInterface) =>
                                 template.category === ApplicationTemplateCategories.DEFAULT)
                             : []
                     }

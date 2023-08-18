@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
@@ -35,7 +26,7 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPs: boolean;
     };
     generalSettings: {
-        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean ;
+        getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };
     attributeSettings: {
         advancedAttributeSettings: {
@@ -69,7 +60,8 @@ export interface ApplicationConfig {
          */
         getTabExtensions: (
             props: Record<string, unknown>,
-            features: FeatureConfigInterface
+            features: FeatureConfigInterface,
+            tenantDomain?: string
         ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
@@ -83,6 +75,7 @@ export interface ApplicationConfig {
             tenantDomain: string,
             templateName: string
         ) => ReactElement,
+        getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
         getOveriddenTab: (
             clientId: string,
             tabName: any,
@@ -90,15 +83,14 @@ export interface ApplicationConfig {
             appName: string,
             appId: string,
             tenantDomain: string
-        ) => ReactNode,
-        getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
+        ) => ReactNode;
         showApplicationShare: boolean;
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string,
             templateId: string,
             customApplicationTemplateId: string
-        ) => number;
+        ) => number
     };
     inboundOIDCForm: {
         shouldValidateCertificate: boolean;
@@ -112,7 +104,8 @@ export interface ApplicationConfig {
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;
         disabledGrantTypes: {
-            "custom-application": string[]
+            "choreo-apim-application-oidc": string[];
+            "custom-application": string[];
         };
     };
     inboundSAMLForm: {
@@ -122,19 +115,19 @@ export interface ApplicationConfig {
         artifactBindingAllowed: boolean;
     };
     marketingConsent: {
-        getBannerComponent: () => ReactElement;
+        getBannerComponent: () => ReactElement
     };
     signInMethod: {
         authenticatorSelection: {
-            messages: {
-                secondFactorDisabled: ReactNode;
-                secondFactorDisabledInFirstStep: ReactNode;
-            };
             customAuthenticatorAdditionValidation(
                 authenticatorID: string,
                 stepIndex: number,
                 dispatch: Dispatch
             ): boolean;
+            messages: {
+                secondFactorDisabled: ReactNode;
+                secondFactorDisabledInFirstStep: ReactNode;
+            };
         };
     };
     templates: {

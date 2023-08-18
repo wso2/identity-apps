@@ -124,13 +124,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         let devices: FIDODevice[] = [];
 
         getMetaData()
-            .then((response: AxiosResponse<FIDODevice[]>) => {
-                if (response.status === 200) {
-                    if (response.data.length > 0) {
-                        devices = [ ...response.data ];
-                    }
-                    setDeviceList(devices);
+            .then((response: FIDODevice[]) => {
+                if (response.length > 0) {
+                    devices = [ ...response ];
                 }
+                setDeviceList(devices);
             })
             .catch(() => {
                 fireFailureNotification();
@@ -201,7 +199,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const talkToDevice = (request?: any): void => {
         setDeviceErrorModalVisibility(false);
 
-        const fidoRequest: Record<string, unknown> = request ?? fidoFlowStartResponse;
+        const fidoRequest: Record<string, any> = request ?? fidoFlowStartResponse;
 
         if (!fidoRequest) {
             fireFailureNotification();
@@ -498,9 +496,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 <List.Header>{ t("myAccount:components.mfa.fido.heading") }</List.Header>
                                 <List.Description className="mt-2">
                                     <Trans i18nKey="myAccount:components.mfa.fido.description">
-                                        You can use a <Label size="tiny">Passkey</Label>, 
-                                        <Label size="tiny">FIDO2 Security Key</Label> or 
-                                        <Label size="tiny">Biometrics</Label> in your device 
+                                        You can use a <Label size="tiny">Passkey</Label>,
+                                        <Label size="tiny">FIDO2 Security Key</Label> or
+                                        <Label size="tiny">Biometrics</Label> in your device
                                         to sign in to your account.
                                     </Trans>
                                 </List.Description>

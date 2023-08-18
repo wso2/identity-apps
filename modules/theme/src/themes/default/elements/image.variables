@@ -30,3 +30,13 @@
 
 @appAvatarSpacingRight: 0.4em;
 @appAvatarSpacingLeft: 0.4em;
+
+/*******************************
+           Animated Avatar
+*******************************/
+
+@animatedAvatarMiniFontSize: 1rem;
+@animatedAvatarGradientBgColor: @primaryGradientColor;
+@animatedAvatarGradientDivHeight: 35px;
+@animatedAvatarGradientInitialColor: @black;
+@animatedAvatarGradientInitialFontWeight: 500;

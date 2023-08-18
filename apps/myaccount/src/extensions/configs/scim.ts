@@ -1,25 +1,17 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
 import { SCIMConfigInterface } from "./models/scim";
 
 /**
- * SCIM dialect configurations.
+ * This configuration is used to overwrite (in asgardeo-app-extension) and pass the,
+ * wso2 custom dialect to the Asgardeo.
  */
 export const SCIMConfigs: SCIMConfigInterface = {
 
@@ -30,15 +22,15 @@ export const SCIMConfigs: SCIMConfigInterface = {
         coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User",
-        customEnterpriseSchema:"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+        customEnterpriseSchema:"urn:scim:wso2:schema"
     },
 
     scimEnterpriseUserClaimUri: {
-        accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
-        accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
-        askPassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.askPassword",
-        isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
-        oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
-        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+        accountDisabled: "urn:scim:wso2:schema.accountDisabled",
+        accountLocked: "urn:scim:wso2:schema.accountLocked",
+        askPassword: "urn:scim:wso2:schema.askPassword",
+        isReadOnlyUser: "urn:scim:wso2:schema.isReadOnlyUser",
+        oneTimePassword: "urn:scim:wso2:schema.oneTimePassword",
+        profileUrl: "urn:scim:wso2:schema.profileUrl"
     }
 };

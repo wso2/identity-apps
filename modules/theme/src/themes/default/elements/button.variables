@@ -24,6 +24,9 @@
 /*-------------------
       Variations
 --------------------*/
+/* Primary */
+@gradientStop1: #EB4F63;
+@gradientStop2: #FA7B3F;
 
 /* Secondary */
 @secondaryTextColor: @textColor;

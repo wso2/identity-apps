@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -52,7 +42,8 @@ import {
     history
 } from "../../core";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
-import { EditIdentityProvider, EditMultiFactorAuthenticator } from "../components";
+import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
+import { EditIdentityProvider } from "../components/identity-provider-edit";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
@@ -182,9 +173,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     useEffect(() => {
         const tabName: string =  location.state as string;
 
-        if (tabName === undefined) {
-            return;
-        } else {
+        if (tabName !== undefined) {
             setIsAutomaticTabRedirectionEnabled(true);
             setTabIdentifier(tabName);
         }
@@ -276,7 +265,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
-            .then((response: any) => {
+            .then((response: IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => 
+            {
                 setConnector(response);
             })
             .catch((error: IdentityAppsApiException) => {

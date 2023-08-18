@@ -1,75 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="167.579" height="154.551" viewBox="0 0 167.579 154.551">
-  <g id="broken-page-illustration" transform="translate(-591 -209.501)">
-    <path id="Path_36" d="M95.826,20.037a32.147,32.147,0,1,0-53.77,33.5,24.4,24.4,0,0,1,6.059,17.1q-.042,1.249-.011,2.515A43.294,43.294,0,0,0,90.823,114.8a42.711,42.711,0,0,0,17.651-81.594A24.666,24.666,0,0,1,95.826,20.037Z" transform="translate(595.179 249.25)" fill="#f4f4f4"/>
-    <path id="Path_56" d="M432.755,180.351a1.8,1.8,0,0,1-1.279-.53l-3.977-3.977a1.809,1.809,0,0,1,0-2.559l3.977-3.977a1.809,1.809,0,0,1,2.559,0l3.977,3.977a1.809,1.809,0,0,1,0,2.559l-3.977,3.977a1.8,1.8,0,0,1-1.279.53Zm-1.418-5.784,1.418,1.418,1.418-1.418-1.418-1.418Z" transform="translate(311.076 99.677)" fill="#e6e6e6"/>
-    <path id="Path_57" d="M347.083,72.674a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,0,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,1,1,3.618,0,2.181,2.181,0,0,0,2.179,2.179,1.809,1.809,0,0,1,0,3.618,2.182,2.182,0,0,0-2.179,2.179A1.809,1.809,0,0,1,347.083,72.674Z" transform="translate(361.763 148.421)" fill="#cecece"/>
-    <path id="Path_8" data-name="Path 8" d="M637.508,331.457s-4.2-11.311,8.964-26.731,34.328-.338,44.964,0,21.891-2.532,29.6-17" transform="translate(34 -54.209)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="4"/>
-    <path id="Path_9" data-name="Path 9" d="M146.554,70.176a1.617,1.617,0,0,1-1.147-.475l-4.587-4.587a1.622,1.622,0,1,1,2.294-2.294l4.587,4.587a1.622,1.622,0,0,1-1.147,2.769Z" transform="translate(610.403 166.879)" fill="#707070"/>
-    <path id="Path_10" data-name="Path 10" d="M141.966,70.176a1.617,1.617,0,0,0,1.147-.475l4.587-4.587a1.622,1.622,0,1,0-2.294-2.294l-4.587,4.587a1.622,1.622,0,0,0,1.147,2.769Z" transform="translate(610.403 166.879)" fill="#707070"/>
-    <path id="Path_58" d="M53.06,332.889a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,1,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,0,1,3.618,0,2.182,2.182,0,0,0,2.179,2.179,1.809,1.809,0,1,1,0,3.618,2.181,2.181,0,0,0-2.179,2.179,1.809,1.809,0,0,1-1.809,1.809Z" transform="translate(551.43 -26.669)" fill="#e6e6e6"/>
-    <path id="Path_59" d="M45.617,386.6a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,1,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,0,1,3.618,0,2.182,2.182,0,0,0,2.179,2.179,1.809,1.809,0,0,1,0,3.618,2.181,2.181,0,0,0-2.179,2.179,1.809,1.809,0,0,1-1.809,1.809Z" transform="translate(551.18 -46.95)" fill="#cecece"/>
-    <g id="_404-illustration" data-name="404-illustration" transform="translate(82.269 67.178)">
-      <path id="Path_96" d="M67.7,417.655a.57.57,0,0,1-.4-.166l-1.246-1.246a.569.569,0,0,1,0-.8l1.246-1.246a.569.569,0,0,1,.8,0l1.246,1.246a.569.569,0,0,1,0,.8L68.1,417.494A.57.57,0,0,1,67.7,417.655Zm-.443-1.817.443.443.443-.443L67.7,415.4Z" transform="translate(475.116 -217.542)" fill="rgba(96,210,250,0.7)"/>
-      <g id="Group_4" data-name="Group 4" transform="translate(535.572 196.484)">
-        <g id="Group_4-2" data-name="Group 4" transform="translate(0 0)">
-          <g id="Group_4-3" data-name="Group 4" transform="translate(4.053 0)">
-            <path id="XMLID_15_" d="M481.677,419.658H396.5a3.614,3.614,0,0,1-3.6-3.6V349.3a3.614,3.614,0,0,1,3.6-3.6h85.173a3.614,3.614,0,0,1,3.6,3.6v66.8a3.576,3.576,0,0,1-3.6,3.558Z" transform="translate(-392.9 -345.655)" fill="#e2e2e2" stroke="#afafaf" stroke-width="3"/>
-            <path id="XMLID_23_" d="M485.281,356.1H392.9V349.2a3.614,3.614,0,0,1,3.6-3.6h85.173a3.614,3.614,0,0,1,3.6,3.6Z" transform="translate(-392.9 -345.6)" fill="#e2e2e2" stroke="#afafaf" stroke-width="3"/>
-            <circle id="XMLID_24_" cx="1.801" cy="1.801" r="1.801" transform="translate(7.252 3.469)" fill="#afafaf"/>
-            <circle id="XMLID_28_" cx="1.801" cy="1.801" r="1.801" transform="translate(13.513 3.469)" fill="#afafaf"/>
-            <circle id="XMLID_38_" cx="1.801" cy="1.801" r="1.801" transform="translate(19.774 3.469)" fill="#afafaf"/>
-            <g id="XMLID_61_" transform="translate(11.777 19.693)" opacity="0.68">
-              <line id="XMLID_54_" x2="6.035" transform="translate(43.498)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_66_" x2="26.136" transform="translate(12.906)" fill="none" stroke="#aaa" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_29_" x2="9.192" fill="none" stroke="#c6c6c6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_42_" transform="translate(11.777 65.418)" opacity="0.68">
-              <line id="XMLID_62_" x2="19.961" transform="translate(11.977)" fill="none" stroke="#adadad" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_30_" x2="6.453" fill="none" stroke="#c6c6c6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_27_" transform="translate(16.372 25.402)" opacity="0.68">
-              <line id="XMLID_60_" x2="3.76" transform="translate(34.445)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_45_" x2="12.627" transform="translate(17.362)" fill="none" stroke="#b8b8b8" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_47_" x2="12.859" fill="none" stroke="#8f8f8f" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_49_" transform="translate(22.361 31.112)" opacity="0.68">
-              <line id="XMLID_59_" x2="11.095" transform="translate(13.927)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_50_" x2="10.446" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_65_" transform="translate(16.372 36.822)" opacity="0.68">
-              <line id="XMLID_58_" x2="2.275" transform="translate(21.401)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_70_" x2="5.153" transform="translate(12.21)" fill="none" stroke="#adadad" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_67_" x2="8.309" fill="none" stroke="#c6c6c6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_73_" transform="translate(16.372 42.579)" opacity="0.68">
-              <line id="XMLID_77_" x2="14.808" transform="translate(17.826)" fill="none" stroke="#ebebeb" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_74_" x2="13.277" fill="none" stroke="#aaa" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_80_" transform="translate(22.361 48.288)" opacity="0.68">
-              <line id="XMLID_64_" x2="8.031" transform="translate(28.968)" fill="none" stroke="#adadad" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_84_" x2="12.859" transform="translate(11.837)" fill="none" stroke="#aaa" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_81_" x2="7.288" fill="none" stroke="#c6c6c6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_87_" transform="translate(22.361 53.999)" opacity="0.68">
-              <line id="XMLID_95_" x2="7.01" transform="translate(17.687)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <line id="XMLID_90_" x2="12.859" fill="none" stroke="#adadad" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-            <g id="XMLID_98_" transform="translate(16.372 59.708)" opacity="0.68">
-              <line id="XMLID_71_" x2="8.031" transform="translate(41.92)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-              <path id="XMLID_102_" d="M0,0H20.194" transform="translate(17.362)" fill="none" stroke="#ebebeb" stroke-linecap="round" stroke-width="4"/>
-              <line id="XMLID_99_" x2="12.859" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="4"/>
-            </g>
-          </g>
-        </g>
-        <g id="XMLID_72_" transform="translate(60.644 23.4)">
-          <path id="XMLID_16_" d="M628.552,461.963H576.3a3.614,3.614,0,0,1-3.6-3.6V403a3.614,3.614,0,0,1,3.6-3.6h52.248a3.614,3.614,0,0,1,3.6,3.6v55.356a3.585,3.585,0,0,1-3.6,3.6Z" transform="translate(-569.096 -399.399)" fill="#e2e2e2"/>
-          <path id="XMLID_14_" d="M628.552,461.963H576.3a3.614,3.614,0,0,1-3.6-3.6V403a3.614,3.614,0,0,1,3.6-3.6h52.248a3.614,3.614,0,0,1,3.6,3.6v55.356a3.585,3.585,0,0,1-3.6,3.6Z" transform="translate(-569.096 -399.399)" fill="none" stroke="#afafaf" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
-          <g id="Group_1283" data-name="Group 1283" transform="translate(-0.678 -0.995)">
-            <rect id="Rectangle_1" data-name="Rectangle 1" width="44.411" height="5.793" rx="2" transform="translate(20.407 14.375) rotate(45)" fill="#fff"/>
-            <rect id="Rectangle_2" data-name="Rectangle 2" width="44.411" height="5.793" rx="2" transform="translate(51.81 18.471) rotate(135)" fill="#fff"/>
-          </g>
-        </g>
-      </g>
-    </g>
-  </g>
+<svg id="broken-page-illustration" width="221" height="116" viewBox="0 0 221 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M61.7041 49.0179C62.1289 48.5416 62.6434 48.1536 63.2181 47.8762C63.7928 47.5987 64.4166 47.4372 65.0538 47.4007C65.691 47.3643 66.3291 47.4538 66.9317 47.664C67.5343 47.8742 68.0896 48.201 68.5659 48.6258L84.0756 62.459L77.6057 69.713L62.0959 55.8799C61.6196 55.455 61.2316 54.9405 60.9541 54.3658C60.6767 53.791 60.5151 53.1672 60.4787 52.53C60.4424 51.8928 60.5319 51.2547 60.7421 50.6521C60.9523 50.0495 61.2792 49.4942 61.7041 49.0179Z" fill="url(#paint0_linear_1375_13144)"/>
+<path d="M147.473 69.7124L141.003 62.4586L156.513 48.6255C157.475 47.7675 158.738 47.3269 160.025 47.4004C161.312 47.4739 162.517 48.0556 163.375 49.0175C164.233 49.9794 164.673 51.2427 164.6 52.5296C164.526 53.8164 163.945 55.0213 162.983 55.8792L147.473 69.7124Z" fill="url(#paint1_linear_1375_13144)"/>
+<path d="M153.932 78.7104C157.392 94.0309 162.128 103.887 159.77 109.548C158.53 112.524 155.985 115.019 151.773 115.019C145.207 115.019 145.207 107.275 138.641 107.275C132.074 107.275 132.076 115.019 125.51 115.019C118.944 115.019 118.945 107.275 112.38 107.275C105.815 107.275 105.815 115.019 99.2494 115.019C92.6841 115.019 92.6844 107.275 86.1195 107.275C79.5545 107.275 79.5553 115.019 72.991 115.019C69.0935 115.019 66.8903 112.723 65.493 110.071C62.1352 103.698 69.961 89.6749 72.991 77.3089C76.3388 63.6444 76.0568 46.6242 76.5059 36.359C77.3724 16.563 92.5678 0.480957 112.384 0.480957C132.201 0.480957 146.819 16.5967 148.263 36.359C149.041 47.0129 150.765 64.6858 153.932 78.7104Z" fill="url(#paint2_linear_1375_13144)"/>
+<path d="M220.883 28.3016L160.581 28.0439C160.581 17.9727 166.253 15.9899 172.284 14.3543C178.314 12.7187 181.027 1.64898 191.507 1.01908C197.695 0.646869 200.941 2.23951 203.629 4.29026C203.632 4.29384 203.632 4.29742 203.636 4.29742C210.37 11.543 216.165 19.6079 220.883 28.3016Z" fill="white"/>
+<path d="M48.8695 103.134L1.58384 103.338C0.776154 98.401 0.286018 93.4172 0.116455 88.4174C10.4741 86.95 9.41468 78.7184 21.7837 79.4664C30.9602 80.0176 33.3438 89.713 38.6229 91.1446C43.9019 92.5762 48.8695 94.3173 48.8695 103.134Z" fill="white"/>
+<path d="M105.04 31.9929L103.047 30L90.1165 42.9303L92.1094 44.9232L105.04 31.9929Z" fill="#212A32"/>
+<path d="M103.047 44.9231L105.04 42.9302L92.1094 29.9999L90.1165 31.9928L103.047 44.9231Z" fill="#212A32"/>
+<path d="M135.212 31.9929L133.219 30L120.288 42.9303L122.281 44.9232L135.212 31.9929Z" fill="#212A32"/>
+<path d="M133.219 44.9236L135.212 42.9307L122.281 30.0004L120.288 31.9933L133.219 44.9236Z" fill="#212A32"/>
+<path d="M99.7007 66.8635L97.6323 64.9822C97.8589 64.7376 103.298 58.9897 113.509 58.9897C123.779 58.9897 128.571 64.8087 128.77 65.0563L126.57 66.7856C126.406 66.5858 122.359 61.7693 113.509 61.7693C104.587 61.7695 99.7484 66.8121 99.7007 66.8635Z" fill="#212A32"/>
+<defs>
+<linearGradient id="paint0_linear_1375_13144" x1="61.704" y1="49.018" x2="80.8405" y2="66.0862" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF9D44"/>
+<stop offset="1" stop-color="#F5C58D"/>
+</linearGradient>
+<linearGradient id="paint1_linear_1375_13144" x1="144.238" y1="66.0855" x2="163.375" y2="49.0174" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF9D44"/>
+<stop offset="1" stop-color="#F5C58D"/>
+</linearGradient>
+<linearGradient id="paint2_linear_1375_13144" x1="112.538" y1="0.480957" x2="112.538" y2="115.019" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF9D44"/>
+<stop offset="1" stop-color="#F5C58D"/>
+</linearGradient>
+</defs>
 </svg>

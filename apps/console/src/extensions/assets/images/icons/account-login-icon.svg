@@ -1,0 +1,13 @@
+<!--
+ * Copyright (c) 2023, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ * 
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg class="icon" id="login-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.5 4.5C22.5 3.25736 21.4926 2.25 20.25 2.25H7.5C6.25736 2.25 5.25 3.25736 5.25 4.5C5.25 4.91421 4.91421 5.25 4.5 5.25C4.08579 5.25 3.75 4.91421 3.75 4.5C3.75 2.42893 5.42893 0.75 7.5 0.75H20.25C22.3211 0.75 24 2.42893 24 4.5V19.5C24 21.5711 22.3211 23.25 20.25 23.25H7.5C5.42893 23.25 3.75 21.5711 3.75 19.5C3.75 19.0858 4.08579 18.75 4.5 18.75C4.91421 18.75 5.25 19.0858 5.25 19.5C5.25 20.7426 6.25736 21.75 7.5 21.75H20.25C21.4926 21.75 22.5 20.7426 22.5 19.5V4.5Z" fill="black"/>
+<path d="M10.2803 8.21967C9.98744 7.92678 9.51256 7.92678 9.21967 8.21967C8.92678 8.51256 8.92678 8.98744 9.21967 9.28033L10.9393 11H0.75C0.335786 11 0 11.3358 0 11.75C0 12.1642 0.335786 12.5 0.75 12.5H10.9393L9.21967 14.2197C8.92678 14.5126 8.92678 14.9874 9.21967 15.2803C9.51256 15.5732 9.98744 15.5732 10.2803 15.2803L13.8107 11.75L10.2803 8.21967Z" fill="black"/>
+</svg>

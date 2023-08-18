@@ -1,0 +1,199 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+/*---------------------------------------
+                 Fonts
+----------------------------------------*/
+
+/* montserrat-200 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 200;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-200.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-200.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-200.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-200.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-200.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-200.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-300 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-300.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-300.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-300.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-regular - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-regular.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-italic - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 400;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-italic.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-italic.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-italic.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-500 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-500.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-500.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-500.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-600 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-600.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-600.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-600.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-700 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-700.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-700.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/* montserrat-800 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 800;
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-800.eot'); /* IE9 Compat Modes */
+  src: url('assets/fonts/montserrat/montserrat-v18-latin-800.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('assets/fonts/montserrat/montserrat-v18-latin-800.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-800.woff') format('woff'), /* Modern Browsers */
+       url('assets/fonts/montserrat/montserrat-v18-latin-800.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('assets/fonts/montserrat/montserrat-v18-latin-800.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+/*---------------------------------------
+            Gilmer Fonts
+----------------------------------------*/
+
+/*
+Font: 		Gilmer
+Style: 		Regular
+URL: 		https://www.youworkforthem.com/font/T9758/gilmer
+Foundry: 	Piotr Lapa
+Foundry: 	https://www.youworkforthem.com/designer/1166/piotr-lapa
+Copyright:	Copyright © 2018 by Piotr _apa. All rights reserved.
+Version: 	17
+Created:	August 17, 2018
+License: 	https://www.youworkforthem.com/font-license
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted
+			from using the WebFonts(s) listed without a purchased license.
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+    font-family: 'Gilmer';
+    src: url('assets/fonts/gilmer/gilmer-regular.eot');
+    src:
+        url('assets/fonts/gilmer/gilmer-regular.eot?#iefix') format('embedded-opentype'),
+        url('assets/fonts/gilmer/gilmer-regular.woff2') format('woff2'),
+        url('assets/fonts/gilmer/gilmer-regular.woff') format('woff'),
+        url('assets/fonts/gilmer/gilmer-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*
+Font: 		Gilmer
+Style: 		Medium
+URL: 		https://www.youworkforthem.com/font/T9758/gilmer
+Foundry: 	Piotr Lapa
+Foundry: 	https://www.youworkforthem.com/designer/1166/piotr-lapa
+Copyright:	Copyright © 2018 by Piotr _apa. All rights reserved.
+Version: 	17
+Created:	August 17, 2018
+License: 	https://www.youworkforthem.com/font-license
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted
+			from using the WebFonts(s) listed without a purchased license.
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+    font-family: 'Gilmer';
+    src: url('assets/fonts/gilmer/gilmer-medium.eot');
+    src:
+        url('assets/fonts/gilmer/gilmer-medium.eot?#iefix') format('embedded-opentype'),
+        url('assets/fonts/gilmer/gilmer-medium.woff2') format('woff2'),
+        url('assets/fonts/gilmer/gilmer-medium.woff') format('woff'),
+        url('assets/fonts/gilmer/gilmer-medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/*
+Font: 		Gilmer
+Style: 		Bold
+URL: 		https://www.youworkforthem.com/font/T9758/gilmer
+Foundry: 	Piotr Lapa
+Foundry: 	https://www.youworkforthem.com/designer/1166/piotr-lapa
+Copyright:	Copyright © 2018 by Piotr _apa. All rights reserved.
+Version: 	17
+Created:	August 17, 2018
+License: 	https://www.youworkforthem.com/font-license
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted
+			from using the WebFonts(s) listed without a purchased license.
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+    font-family: 'Gilmer';
+    src: url('assets/fonts/gilmer/gilmer-bold.eot');
+    src:
+        url('assets/fonts/gilmer/gilmer-bold.eot?#iefix') format('embedded-opentype'),
+        url('assets/fonts/gilmer/gilmer-bold.woff2') format('woff2'),
+        url('assets/fonts/gilmer/gilmer-bold.woff') format('woff'),
+        url('assets/fonts/gilmer/gilmer-bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

@@ -46,8 +46,6 @@ import {
     UIConstants,
     getDefaultLayoutRoutes
 } from "../features/core";
-import { OrganizationType } from "../features/organizations/constants";
-import { useGetOrganizationType } from "../features/organizations/hooks/use-get-organization-type";
 
 /**
  * Default page layout component Prop types.
@@ -82,7 +80,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
-    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -121,9 +118,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
             header={ (
                 <Header
-                    fluid={ fluid }
-                    showSidePanelToggle={ false }
-                    featureAnnouncement={ orgType !== OrganizationType.SUBORGANIZATION }
+                    handleSidePanelToggleClick={ ()=> null }
                 />
             ) }
             footer={ (
@@ -137,7 +132,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                     {
                         defaultLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo }/>
+                                ? <Redirect to={ route.redirectTo } key={ index } />
                                 : route.protected
                                     ? (
                                         <ProtectedRoute
@@ -150,9 +145,9 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ 
+                                            render={
                                                 (renderProps: RouteComponentProps<{
-                                                    [x: string]: string; }, 
+                                                    [x: string]: string; },
                                                     StaticContext, unknown>
                                                 ) => route.component
                                                     ? <route.component { ...renderProps } />

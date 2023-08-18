@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -111,7 +112,7 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
             .then((response: IdentityProviderListResponseInterface) => {
                 setIdPList(response);
             })
-            .catch((error: Promise<void>) => {
+            .catch((error: AxiosError) => {
                 handleGetIDPListCallError(error);
             })
             .finally(() => {
@@ -125,16 +126,21 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
      * @param value - IDP name.
      * @returns error msg if name is already taken.
      */
-    const idpNameValidation = (value: string): string| void => {
+    const idpNameValidation = (value: string): string => {
+
+        let nameExist: boolean = false;
 
         if (idpList?.count > 0) {
             idpList?.identityProviders.map((idp: IdentityProviderTemplateInterface) => {
                 if (idp?.name === value) {
-                    return t("console:develop.features." +
-                        "authenticationProvider.forms.generalDetails.name." +
-                        "validations.duplicate");
+                    nameExist = true;
                 }
             });
+        }
+        if (nameExist) {
+            return t("console:develop.features." +
+                "authenticationProvider.forms.generalDetails.name." +
+                "validations.duplicate");
         }
     };
 

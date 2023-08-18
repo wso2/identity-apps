@@ -35,35 +35,35 @@ export const AllMessageVariations = (): ReactElement => {
 
     return (
         <>
-            <Message 
+            <Message
                 type="info"
                 content="This is an info message"
                 header="Optional info message header"
                 visible={ true }
             />
-            <Message 
+            <Message
                 type="info"
                 content="This is an info message without header"
                 visible={ true }
             />
-            <Message 
+            <Message
                 type="warning"
                 content="This is a warning message"
                 header="Optional warning message header"
                 visible={ true }
             />
-            <Message 
+            <Message
                 type="warning"
                 content="This is a warning message without header"
                 visible={ true }
             />
-            <Message 
+            <Message
                 type="error"
                 content="This is an error message"
                 header="Optional error message header"
                 visible={ true }
             />
-            <Message 
+            <Message
                 type="error"
                 content="This is an error message without header"
                 visible={ true }
@@ -99,7 +99,7 @@ AllMessageVariations.story = {
 export const InfoMessage = (): ReactElement => {
 
     return (
-        <Message 
+        <Message
             type="info"
             content="This is an info message"
             header="Info message header"
@@ -124,7 +124,7 @@ InfoMessage.story = {
 export const WarningMessage = (): ReactElement => {
 
     return (
-        <Message 
+        <Message
             type="warning"
             content="This is a warning message"
             header="Warning message header"
@@ -149,7 +149,7 @@ WarningMessage.story = {
 export const ErrorMessage = (): ReactElement => {
 
     return (
-        <Message 
+        <Message
             type="error"
             content="This is an error message"
             header="Error message header"

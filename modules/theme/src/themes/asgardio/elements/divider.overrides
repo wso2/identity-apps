@@ -1,0 +1,23 @@
+/*******************************
+      Divider Overrides
+*******************************/
+
+/*----------------------------------------
+      Vertical divider with no border
+------------------------------------------*/
+
+.ui.vertical.divider {
+    &.vertical-divider-with-no-border {
+        font-size: @verticalDividerWithNoBordersFontSize;
+        font-weight: @verticalDividerWithNoBordersFontWeight;
+        color: @verticalDividerWithNoBordersFontColor;
+
+        &:after {
+            border: none;
+        }
+
+        &:before {
+            border: none;
+        }
+    }
+}

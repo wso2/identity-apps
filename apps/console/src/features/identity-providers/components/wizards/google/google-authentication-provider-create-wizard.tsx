@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,14 +19,17 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
-    GoogleAuthenticationProviderCreateWizardContent
+    GoogleAuthenticationProviderCreateWizardContent,
+    GoogleAuthenticationProviderCreateWizardFormValuesInterface
 } from "./google-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
@@ -51,9 +44,10 @@ import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata
 } from "../../../api";
-import { getIdPIcons } from "../../../configs";
+import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
+    FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface,
@@ -72,8 +66,8 @@ interface MinimalAuthenticationProviderCreateWizardPropsInterface extends Testab
 /**
  * Identity provider creation wizard component.
  *
- * @param { MinimalAuthenticationProviderCreateWizardPropsInterface } props - Props injected to the component.
- * @return { React.ReactElement }
+ * @param props - Props injected to the component.
+ * @returns GoogleAuthenticationProviderCreateWizard component.
  */
 export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
     MinimalAuthenticationProviderCreateWizardPropsInterface
@@ -93,19 +87,19 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         } = props;
 
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-        const [ defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata ] =
-        useState<FederatedAuthenticatorMetaInterface>(undefined);
-        const [ defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata ] =
+        //TODO: Remove unnecessary states setters.
+        const [ , setDefaultAuthenticatorMetadata ] = useState<FederatedAuthenticatorMetaInterface>(undefined);
+        const [ , setDefaultOutboundProvisioningConnectorMetadata ] =
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
         const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
 
         const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-        const availableAuthenticators = useSelector((state: AppState) =>
+        const availableAuthenticators: FederatedAuthenticatorListItemInterface[] = useSelector((state: AppState) =>
             state.identityProvider.meta.authenticators);
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -118,14 +112,14 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Creates a new identity provider.
         *
-        * @param identityProvider Identity provider object.
+        * @param identityProvider - Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     eventPublisher.publish("connections-finish-adding-connection", {
                         type: componentId
                     });
@@ -141,8 +135,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     // The created resource's id is sent as a location header.
                     // If that's available, navigate to the edit page.
                     if (!isEmpty(response.headers.location)) {
-                        const location = response.headers.location;
-                        const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                        const location: string = response.headers.location;
+                        const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
 
@@ -152,7 +146,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     // Since the location header is not present, trigger callback without the id.
                     onIDPCreate();
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
 
                     const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
@@ -243,14 +237,14 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Gets the authenticator meta data.
         *
-        * @param authenticatorId
+        * @param authenticatorId - Authenticator ID.
         */
         const setAuthenticatorMetadata = (authenticatorId: string) => {
             getFederatedAuthenticatorMetadata(authenticatorId)
-                .then((response) => {
+                .then((response: FederatedAuthenticatorMetaInterface) => {
                     setDefaultAuthenticatorMetadata(response);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     handleGetFederatedAuthenticatorMetadataAPICallError(error);
                 });
         };
@@ -259,7 +253,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         * Called when `availableAuthenticators` are changed.
         */
         useEffect(() => {
-            if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
+            if (availableAuthenticators?.find(
+                (eachAuthenticator: FederatedAuthenticatorListItemInterface) => eachAuthenticator.authenticatorId ===
             template?.idp?.federatedAuthenticators?.defaultAuthenticatorId)) {
                 setAuthenticatorMetadata(template?.idp?.federatedAuthenticators?.defaultAuthenticatorId);
             }
@@ -277,7 +272,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         let triggerPreviousForm: () => void;
 
 
-        const onSubmitWizard = (values): void => {
+        const onSubmitWizard = (values: GoogleAuthenticationProviderCreateWizardFormValuesInterface): void => {
             const identityProvider: IdentityProviderInterface = template.idp;
 
             identityProvider.name = values?.name.toString();
@@ -391,7 +386,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Renders the help panel containing wizard help.
         *
-        * @return { React.ReactElement }
+        * @returns Help panel component.
         */
         const renderHelpPanel = (): ReactElement => {
 

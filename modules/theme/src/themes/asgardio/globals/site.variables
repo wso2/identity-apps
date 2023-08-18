@@ -1,0 +1,37 @@
+/*******************************
+        Site Variables
+*******************************/
+
+/*-------------------
+       Fonts
+--------------------*/
+
+@primaryFont          : Gilmer;
+
+/*-------------------
+     Borders
+--------------------*/
+
+@relativeBorderRadius: 4px;
+@absoluteBorderRadius: 8px;
+@defaultBorderRadius: @absoluteBorderRadius;
+@buttonBorderRadius: 22px;
+
+@fixedElementBorderColor: @mako;
+
+/*-------------------
+    Site Colors
+--------------------*/
+
+@primaryColor        : #FF7300;
+@primaryColorGradient: linear-gradient(77.74deg, #EB4F63 11.16%, #FA7B3F 99.55%);
+@ebonyClay           : #212A32;
+@concrete            : #f3f3f3;
+@mako                : #454d52;
+@paleGray            : #d6d6d6;
+
+/*-------------------
+    Brand Colors
+--------------------*/
+
+@asgardeoBlack        : @ebonyClay;

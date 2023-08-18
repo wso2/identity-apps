@@ -1,0 +1,15 @@
+<!--
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+
+<svg class="icon" id="organization-roles-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 1.5H10C10.2761 1.5 10.5 1.72386 10.5 2V8.67709C10.8665 8.26188 11.4027 8 12 8V2C12 0.895431 11.1046 0 10 0H2C0.895431 0 0 0.89543 0 2V24H7.00766C6.47053 23.6924 6.08973 23.1429 6.01388 22.5H1.5V2C1.5 1.72386 1.72386 1.5 2 1.5Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 10.5V12H9C7.89543 12 7 12.8954 7 14V22C7 23.1046 7.89543 24 9 24H22C23.1046 24 24 23.1046 24 22V14C24 12.8954 23.1046 12 22 12H19.5V10.5C19.5 9.39543 18.6046 8.5 17.5 8.5H13.5C12.3954 8.5 11.5 9.39543 11.5 10.5ZM17.5 10H13.5C13.2239 10 13 10.2239 13 10.5V12H18V10.5C18 10.2239 17.7761 10 17.5 10ZM22 13.5C22.2761 13.5 22.5 13.7239 22.5 14V17C22.5 17.2761 22.2761 17.5 22 17.5H9C8.72386 17.5 8.5 17.2761 8.5 17V14C8.5 13.7239 8.72386 13.5 9 13.5H22ZM22.5 18.937V22C22.5 22.2761 22.2761 22.5 22 22.5H9C8.72386 22.5 8.5 22.2761 8.5 22V18.937C8.65981 18.9781 8.82735 19 9 19H22C22.1726 19 22.3402 18.9781 22.5 18.937Z" fill="black"/>
+<path d="M9 4.75H3V3.25H9V4.75Z" fill="black"/>
+<path d="M3 8.75H9V7.25H3V8.75Z" fill="black"/>
+</svg>

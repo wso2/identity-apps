@@ -16,30 +16,29 @@
  * under the License.
  */
 
-import React from "react";
+import React, { ReactElement } from "react";
 import { OrganizationConfigs } from "./models";
+import { OrganizationType } from "../../features/organizations/constants";
 import { BreadcrumbItem } from "../../features/organizations/models";
+import { OrganizationUtils } from "../../features/organizations/utils";
+import { OrganizationSuperTrigger } from "../components/tenants/components/dropdown/organization-super-trigger";
+import TenantDropdown from "../components/tenants/components/dropdown/tenant-dropdown";
 
 export const organizationConfigs: OrganizationConfigs = {
-    allowNavigationInDropdown: true,
+    allowNavigationInDropdown: false,
     canCreateOrganization: (): boolean => {
+        // Should be improve the logic to determine based on the subscription tier.
         return true;
     },
     showOrganizationDropdown: true,
-    showSwitcherInTenants: false,
-    superOrganizationBreadcrumb: (
-        breadcrumbItem: BreadcrumbItem,
-        onClick: (breadcrumbItem: BreadcrumbItem) => void
-    ) => {
-        return (
-            <span
-                className="ellipsis"
-                onClick={ () => onClick(breadcrumbItem) }
-                data-componentid={ "super-organization-breadcrumb-item" }
-            >
-                { breadcrumbItem.name }
-            </span>
-        );
+    showSwitcherInTenants: true,
+    superOrganizationBreadcrumb: (_breadcrumbItem: BreadcrumbItem, _onClick: (_breadcrumbItem: BreadcrumbItem
+    ) => void) => {
+        return <TenantDropdown trigger={ OrganizationSuperTrigger } contained />;
     },
-    tenantSwitcher: () => null
+    tenantSwitcher: (dropdownTrigger?: ReactElement, disable?: boolean) => {
+        return (
+            <TenantDropdown dropdownTrigger={ dropdownTrigger } disable={ disable } />
+        );
+    }
 };

@@ -4,6 +4,7 @@
     "enabled": true,
     "displayOrder": 4,
     "id": "enterprise-protocols",
+    "docLink": "/guides/authentication/enterprise-login/",
     "image": "enterprise",
     "name": "Enterprise",
     "services": [],

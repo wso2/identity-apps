@@ -1,40 +1,36 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
-import { IdentityProviderInterface, getIdentityProviderList } from "../../../identity-providers";
+import { getIdentityProviderList } from "../../../identity-providers/api/identity-provider";
+import {
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface
+} from "../../../identity-providers/models/identity-provider";
 import { updateApplicationConfigurations } from "../../api";
-import { getApplicationWizardStepIcons } from "../../configs";
-import { OutboundProvisioningConfigurationInterface } from "../../models";
+import { getApplicationWizardStepIcons } from "../../configs/ui";
+import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from "../../models";
 
 /**
  * Interface for the outbound provisioning IDP create wizard props.
  */
 interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface {
-    application: any;
+    application: ApplicationInterface;
     closeWizard: () => void;
     currentStep?: number;
     onUpdate: (id: string) => void;
@@ -43,8 +39,8 @@ interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComp
 /**
  * Outbound provisioning IDP create wizard form component.
  *
- * @param {OutboundProvisioningIdpCreateWizardPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Outbound provisioning IDP create wizard component.
  */
 export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
     OutboundProvisioningIdpCreateWizardPropsInterface
@@ -60,7 +56,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
         const { t } = useTranslation();
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
 
         const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
@@ -92,7 +88,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             }
 
             getIdentityProviderList()
-                .then((response) => {
+                .then((response: IdentityProviderListResponseInterface) => {
                     setIdpList(response.identityProviders);
                 });
         }, []);
@@ -122,7 +118,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
                     onUpdate(application.id);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -166,8 +162,10 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
      */
         const handleWizardFormFinish = (values: any): void => {
         // Validate whether an IDP with the same connector already exists.
-            if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(idp =>
-                (idp.connector === values.connector) && (idp.idp === values.idp))) {
+            if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(
+                (idp: OutboundProvisioningConfigurationInterface) =>
+                    (idp.connector === values.connector) && (idp.idp === values.idp))
+            ) {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateOutboundProvisioning" +
                     ".genericError.description"),
@@ -183,13 +181,18 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             addIdentityProvider(application.id, updateConfiguration(values));
         };
 
-        const STEPS = [
+        const STEPS: {
+            content: JSX.Element;
+            icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+            title: string;
+        }[] = [
             {
                 content: (
                     <OutboundProvisioningWizardIdpForm
                         initialValues={ null }
                         triggerSubmit={ finishSubmit }
-                        onSubmit={ (values): void => {
+                        //TODO: [Type fix] Define the type of `values` in form component.
+                        onSubmit={ (values: any): void => {
                             handleWizardFormFinish(values);
                         } }
                         idpList={ idpList }
@@ -227,7 +230,14 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                         current={ currentWizardStep }
                         data-testid={ `${ testId }-steps` }
                     >
-                        { STEPS.map((step, index) => (
+                        { STEPS.map((
+                            step: {
+                                content: JSX.Element;
+                                icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+                                title: string;
+                            }, 
+                            index: number
+                        ) => (
                             <Steps.Step
                                 key={ index }
                                 icon={ step.icon }

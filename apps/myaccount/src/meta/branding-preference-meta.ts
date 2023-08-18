@@ -105,11 +105,18 @@ export class BrandingPreferenceMeta {
         --language-selector-background-color: var(--asg-login-page-background-color) !important;
         --language-selector-text-color: var(--asg-footer-text-color) !important;
         --language-selector-border-color: var(--asg-colors-primary-main) !important;
+
+        /* Oxygen UI variables */
+        --oxygen-palette-text-primary: ${ theme[ theme.activeTheme ].colors.text?.primary };
     }
 
     body {
         color: var(--asg-colors-text-primary);
         background: var(--asg-colors-background-body-main);
+    }
+
+    .oxygen-button {
+        font-family: var(--asg-primary-font-family);
     }
 
     /*-----------------------------
@@ -581,14 +588,16 @@ export class BrandingPreferenceMeta {
     ------------------------------*/
 
     /* Primary */
-    .ui.primary.button {
-        background: var(--asg-colors-primary-main);
+    .ui.primary.button:not(.basic) {
+        background: var(--asg-colors-primary-main) !important;
         color: var(--asg-primary-button-base-text-color);
         border-radius: var(--asg-primary-button-base-border-radius);
     }
 
-    .ui.primary.button:hover, .ui.primary.button:focus, .ui.primary.button:active {
-        background: var(--asg-colors-primary-main);
+    .ui.primary.button:not(.basic):hover,
+    .ui.primary.button:not(.basic):focus,
+    .ui.primary.button:not(.basic):active {
+        background: var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
     }
 
@@ -997,6 +1006,7 @@ export class BrandingPreferenceMeta {
     .ui.menu.app-footer .footer-dropdown .dropdown-trigger.link, .ui.menu.app-footer .footer-link {
         color: var(--asg-colors-text-primary);
     }
+
     .ui.menu.app-footer .footer-dropdown .dropdown.icon {
         color: var(--asg-colors-text-primary);
     }

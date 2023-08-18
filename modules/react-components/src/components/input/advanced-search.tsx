@@ -29,8 +29,9 @@ import React, {
     useRef,
     useState
 } from "react";
-import { Button, Divider, Icon, Input, InputProps, PopupProps } from "semantic-ui-react";
+import { Button, Divider, Input, InputProps, PopupProps } from "semantic-ui-react";
 import { ReactComponent as CrossIcon } from "../../assets/images/cross-icon.svg";
+import { ReactComponent as FilterIcon } from "../../assets/images/icons/filter-icon.svg";
 import { GenericIcon } from "../icon";
 import { Popup } from "../popup";
 import { Heading } from "../typography";
@@ -402,7 +403,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                                     className="input-add-on"
                                                     onClick={ handleShowOptionsClick }
                                                 >
-                                                    <Icon name="caret down"/>
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        transparent
+                                                        icon={ FilterIcon }
+                                                    />
                                                 </Button>
                                             )
                                         }

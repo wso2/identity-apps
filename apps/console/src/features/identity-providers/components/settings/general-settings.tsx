@@ -1,43 +1,36 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
 import { getApplicationDetails } from "../../../applications/api";
 import { ApplicationBasicInterface } from "../../../applications/models";
 import {
     deleteIdentityProvider,
     getIDPConnectedApps,
-    getIdentityProviderList,
-    updateIdentityProviderDetails
+    updateIdentityProviderDetails,
+    useIdentityProviderList
 } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
-    IdentityProviderInterface,
-    IdentityProviderListResponseInterface
+    IdentityProviderInterface
 } from "../../models";
 import { GeneralDetailsForm } from "../forms";
 import { handleGetIDPListCallError, handleIDPDeleteError, handleIDPUpdateError } from "../utils";
@@ -51,25 +44,9 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      */
     editingIDP: IdentityProviderInterface;
     /**
-     * Identity provider description.
-     */
-    description?: string;
-    /**
-     * Is the idp enabled.
-     */
-    isEnabled?: boolean;
-    /**
-     * IDP image URL.
-     */
-    imageUrl?: string;
-    /**
      * Is the idp info request loading.
      */
     isLoading?: boolean;
-    /**
-     * Name of the idp.
-     */
-    name: string;
     /**
      * Callback to be triggered after deleting the idp.
      */
@@ -97,6 +74,11 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      */
     isOidc?: boolean;
     /**
+     * Explicitly specifies whether the currently displaying
+     * IdP is a trusted token issuer or not.
+     */
+    isTrustedTokenIssuer?: boolean;
+    /**
      * Loading Component.
      */
     loader: () => ReactElement;
@@ -114,10 +96,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const {
         editingIDP,
-        name,
-        description,
-        isEnabled,
-        imageUrl,
         isLoading,
         onDelete,
         onUpdate,
@@ -125,11 +103,12 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         hideIdPLogoEditField,
         isSaml,
         isOidc,
+        isTrustedTokenIssuer,
         loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -139,32 +118,20 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const [ showDeleteErrorDueToConnectedAppsModal, setShowDeleteErrorDueToConnectedAppsModal ] =
         useState<boolean>(false);
     const [ isAppsLoading, setIsAppsLoading ] = useState(true);
-
-    const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const {
+        data: idpList,
+        isLoading: isIdPListRequestLoading,
+        error: idpListError
+    } = useIdentityProviderList();
 
     /**
      * Loads the identity provider authenticators on initial component load.
      */
     useEffect(() => {
-        getIDPlist();
-    }, []);
-
-    /**
-     * Get Idp List.
-     */
-    const getIDPlist=()=>{
-        setIdPListRequestLoading(true);
-        getIdentityProviderList(null, null,null)
-            .then((response)=> {
-                setIdPList(response);
-            }).catch((error) => {
-                handleGetIDPListCallError(error);
-            }).finally(() => {
-                setIdPListRequestLoading(false);
-            });
-    };
+        idpListError && handleGetIDPListCallError(idpListError);
+    }, [ idpListError ]);
 
     const handleIdentityProviderDeleteAction = (): void => {
         setIsAppsLoading(true);
@@ -174,30 +141,29 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     setShowDeleteConfirmationModal(true);
                 } else {
                     setShowDeleteErrorDueToConnectedAppsModal(true);
-                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
-                        return getApplicationDetails(app.appId);
-                    });
+                    const appRequests: Promise<ApplicationBasicInterface>[]
+                        = response.connectedApps.map((app: ConnectedAppInterface) =>
+                            getApplicationDetails(app.appId)
+                        );
 
                     const results: ApplicationBasicInterface[] = await Promise.all(
-                        appRequests.map(response => response.catch(error => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || "Error occurred while trying to retrieve connected applications.",
-                                level: AlertLevels.ERROR,
-                                message: error?.message || "Error Occurred."
-                            }));
-                        }))
-                    );
+                        appRequests.map((response: Promise<ApplicationBasicInterface>) =>
+                            response.catch((error: IdentityAppsError) => {
+                                dispatch(addAlert({
+                                    description: error?.description
+                                        || "Error occurred while trying to retrieve connected applications.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Error Occurred."
+                                }));
+                            }))
+                    ) as ApplicationBasicInterface[];
 
-                    const appNames: string[] = [];
+                    const appNames: string[] = results.map((app: ApplicationBasicInterface) => app?.name);
 
-                    results.forEach((app) => {
-                        appNames.push(app.name);
-                    });
                     setConnectedApps(appNames);
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description || "Error occurred while trying to retrieve connected " +
                     "applications.",
@@ -214,7 +180,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * Deletes an identity provider.
      */
     const handleIdentityProviderDelete = (): void => {
-
         setLoading(true);
         deleteIdentityProvider(editingIDP.id)
             .then(() => {
@@ -229,7 +194,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 setShowDeleteConfirmationModal(false);
                 onDelete();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleIDPDeleteError(error);
             })
             .finally(() => {
@@ -256,7 +221,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 }));
                 onUpdate(editingIDP.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleIDPUpdateError(error);
             })
             .finally(() => {
@@ -264,7 +229,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             });
     };
 
-    const handleIdentityProviderDisable = (event: any, data: CheckboxProps) => {
+    const handleIdentityProviderDisable = (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         setIsAppsLoading(true);
         getIDPConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
@@ -276,13 +241,15 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     );
                 } else {
                     dispatch(addAlert({
-                        description: "There are applications using this identity provider.",
+                        description: t("console:develop.features.authenticationProvider.notifications" +
+                            ".disableIDPWithConnectedApps.error.description"),
                         level: AlertLevels.WARNING,
-                        message: "Cannot Disable."
+                        message: t("console:develop.features.authenticationProvider.notifications" +
+                            ".disableIDPWithConnectedApps.error.message")
                     }));
                 }
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description || "Error occurred while trying to retrieve connected " +
                         "applications.",
@@ -303,20 +270,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     <GeneralDetailsForm
                         isSaml={ isSaml }
                         isOidc={ isOidc }
+                        isTrustedTokenIssuer={ isTrustedTokenIssuer }
                         hideIdPLogoEditField={ hideIdPLogoEditField }
-                        name={ name }
                         editingIDP={ editingIDP }
-                        description={ description }
                         onSubmit={ handleFormSubmit }
                         onUpdate={ onUpdate }
-                        imageUrl={ imageUrl }
                         idpList={ idpList }
                         data-testid={ `${ testId }-form` }
                         isReadOnly={ isReadOnly }
                         isSubmitting={ isSubmitting }
                     />
                     <Divider hidden />
-                    { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (
+                    { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(editingIDP.name)) && (
                         <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
                             <DangerZoneGroup
                                 sectionHeader={ t("console:develop.features.authenticationProvider." +
@@ -325,16 +290,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     <DangerZone
                                         actionTitle={ t("console:develop.features.authenticationProvider." +
                                             "dangerZoneGroup.disableIDP.actionTitle",
-                                        { state: isEnabled ? t("common:disable") : t("common:enable") }) }
+                                        { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") }) }
                                         header={ t("console:develop.features.authenticationProvider.dangerZoneGroup." +
                                             "disableIDP.header",
-                                        { state: isEnabled ? t("common:disable") : t("common:enable") } ) }
-                                        subheader={ isEnabled ? t("console:develop.features.authenticationProvider." +
-                                            "dangerZoneGroup.disableIDP.subheader") : t("console:develop.features." +
+                                        { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") } ) }
+                                        subheader={ editingIDP.isEnabled
+                                            ? t("console:develop.features.authenticationProvider." +
+                                                "dangerZoneGroup.disableIDP.subheader")
+                                            : t("console:develop.features." +
                                                 "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
                                         onActionClick={ undefined }
                                         toggle={ {
-                                            checked: isEnabled,
+                                            checked: editingIDP.isEnabled,
                                             onChange: handleIdentityProviderDisable
                                         } }
                                         data-testid={ `${ testId }-disable-idp-danger-zone` }
@@ -362,7 +329,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                                 type="negative"
                                 open={ showDeleteConfirmationModal }
-                                assertion={ name }
+                                assertion={ editingIDP.name }
                                 assertionHint={ t("console:develop.features.authenticationProvider."+
                                 "confirmations.deleteIDP.assertionHint") }
                                 assertionType="checkbox"
@@ -419,14 +386,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     <Divider hidden />
                                     <List ordered className="ml-6">
                                         {
-                                            isAppsLoading ? (
-                                                <ContentLoader/>
-                                            ) :
-                                                connectedApps?.map((app, index) => {
-                                                    return (
-                                                        <List.Item key={ index }>{ app }</List.Item>
-                                                    );
-                                                })
+                                            isAppsLoading
+                                                ? <ContentLoader/>
+                                                : connectedApps?.map((app: string, index: number) => (
+                                                    <List.Item key={ index }>{ app }</List.Item>
+                                                ))
                                         }
                                     </List>
                                 </ConfirmationModal.Content>

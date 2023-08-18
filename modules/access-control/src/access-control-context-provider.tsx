@@ -137,15 +137,6 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
                 [ AccessControlConstants.IDP_DELETE ] : hasRequiredScopes(featureConfig?.identityProviders,
                     featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
 
-                [ AccessControlConstants.IDVP_READ ] : hasRequiredScopes(featureConfig?.identityVerificationProviders,
-                    featureConfig?.identityVerificationProviders?.scopes?.read, allowedScopes),
-                [ AccessControlConstants.IDVP_WRITE ] : hasRequiredScopes(featureConfig?.identityVerificationProviders,
-                    featureConfig?.identityVerificationProviders?.scopes?.create, allowedScopes),
-                [ AccessControlConstants.IDVP_EDIT ] : hasRequiredScopes(featureConfig?.identityVerificationProviders,
-                    featureConfig?.identityVerificationProviders?.scopes?.update, allowedScopes),
-                [ AccessControlConstants.IDVP_DELETE ] : hasRequiredScopes(featureConfig?.identityVerificationProviders,
-                    featureConfig?.identityVerificationProviders?.scopes?.delete, allowedScopes),
-
                 [ AccessControlConstants.SCOPE ] : hasRequiredScopes(featureConfig?.oidcScopes,
                     featureConfig?.oidcScopes?.scopes?.feature, allowedScopes),
                 [ AccessControlConstants.SCOPE_READ ] : hasRequiredScopes(featureConfig?.oidcScopes,

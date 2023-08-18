@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,34 +16,36 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { ChallengesQuestionsInterface, HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
+const httpRequestAll: (
+    config: HttpRequestConfig[]
+) => Promise<
+    HttpResponse[] | undefined
+> = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetch the configured security questions of the user.
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
 export const getSecurityQs = (): Promise<any> => {
-    const headers = {
+    const headers: HttpRequestConfig["headers"] = {
         "Accept": "application/json",
         "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
     };
 
-    const getQuestions = (): any => {
+    const getQuestions = (): HttpRequestConfig => {
         return {
             headers,
             method: HttpMethods.GET,
@@ -51,7 +53,7 @@ export const getSecurityQs = (): Promise<any> => {
         };
     };
 
-    const getAnswers = (): any => {
+    const getAnswers = (): HttpRequestConfig => {
         return {
             headers,
             method: HttpMethods.GET,
@@ -60,13 +62,13 @@ export const getSecurityQs = (): Promise<any> => {
     };
 
     return httpRequestAll([ getQuestions(), getAnswers() ])
-        .then(([ questions, answers ]) => {
+        .then(([ questions, answers ]: HttpResponse[]) => {
             if (questions.status !== 200 && answers.status !== 200) {
                 return Promise.reject(new Error("Failed to get security questions and answers"));
             }
 
             return Promise.resolve([ questions.data, answers.data ]);
-        }).catch(error => {
+        }).catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -74,11 +76,12 @@ export const getSecurityQs = (): Promise<any> => {
 /**
  * Add the user's security questions.
  *
- * @param {object} data the new set of challenge questions and the answers.
- * @return {Promise<any>} a promise containing the response.
+ * @param data - the new set of challenge questions and the answers.
+ *
+ * @returns - a promise containing the response.
  */
 export const addSecurityQs = (data: ChallengesQuestionsInterface[]): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data,
         headers: {
             "Accept": "application/json",
@@ -89,14 +92,14 @@ export const addSecurityQs = (data: ChallengesQuestionsInterface[]): Promise<any
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(new Error("Failed to add security questions"));
             }
 
             return Promise.resolve(response.status);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to add the security question - ${ error }`);
         });
 };
@@ -104,11 +107,11 @@ export const addSecurityQs = (data: ChallengesQuestionsInterface[]): Promise<any
 /**
  * Update the user's security questions.
  *
- * @param {object} data the new set of challenge questions and the answers.
- * @return {Promise<any>} a promise containing the response.
+ * @param data - the new set of challenge questions and the answers.
+ * @returns - a promise containing the response.
  */
 export const updateSecurityQs = (data: ChallengesQuestionsInterface[]): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data,
         headers: {
             "Accept": "application/json",
@@ -119,14 +122,14 @@ export const updateSecurityQs = (data: ChallengesQuestionsInterface[]): Promise<
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update security questions."));
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to update the security question - ${ error }`);
         });
 };

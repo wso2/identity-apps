@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
-import { ReactElement } from "react";
-import { HeaderSubPanelItemInterface } from "../../../features/core/components";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { FeatureConfigInterface } from "../../../features/core/models";
 
 export interface CommonConfig {
@@ -30,43 +28,13 @@ export interface CommonConfig {
     enableOrganizationAssociations: boolean;
     header: {
         /**
-         * Get the extensions for the header.
-         * @returns Header extensions.
+         * Header menu item config.
          */
-        getHeaderExtensions: (
-            tenantDomain: string,
-            associatedTenants: any[]
-        ) => Promise<HeaderExtension[]>;
-        /**
-         * Get the extensions for the Header sub panel.
-         * These will come along with the `Manage` & `Develop` links.
-         * @returns Header sub panel items
-         */
-        getHeaderSubPanelExtensions: () => HeaderSubPanelItemInterface[];
-        /**
-         * Get the user dropdown link extensions.
-         *
-         * @param tenantDomain - Current tenant.
-         * @param associatedTenants - Tenant list.
-         *
-         * @returns A promise that resolves with header link categories
-         */
-        getUserDropdownLinkExtensions: (tenantDomain: string,
-            associatedTenants: any[]) => Promise<HeaderLinkCategoryInterface[]>;
-        /**
-         * Get the user dropdown footer extensions.
-         *
-         * @returns A ReactElement that renders the footer.
-         */
-        getUserDropdownFooterExtensions: () => ReactElement;
+        headerQuickstartMenuItem: string;
         /**
          * Should the app switcher be shown as nine dots dropdown.
          */
         renderAppSwitcherAsDropdown: boolean;
-        /**
-         * Header menu item config.
-         */
-        headerQuickstartMenuItem: string;
     };
     footer: {
         customClassName: string;
@@ -88,12 +56,31 @@ export interface CommonConfig {
 
 /**
  * Types of views that are extended.
- * @remarks Any views other than `DEVELOP` and `MANAGE` can go here.
+ * @remarks Any views other thant `DEVELOP` and `MANAGE` can go here.
  * @readonly
  */
-export enum AppViewExtensionTypes { }
+export enum AppViewExtensionTypes {
+    QUICKSTART = "QUICKSTART"
+}
 
 /**
  * Interface for the extended feature configs.
  */
-export type ExtendedFeatureConfigInterface = FeatureConfigInterface;
+export interface ExtendedFeatureConfigInterface extends FeatureConfigInterface {
+    /**
+     * API resource feature.
+     */
+    apiResources?: FeatureAccessConfigInterface;
+    /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
+    /**
+     * Branding feature.
+     */
+    branding?: FeatureAccessConfigInterface;
+    /**
+     * Try it application feature
+     */
+    tryIt?: FeatureAccessConfigInterface;
+}

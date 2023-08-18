@@ -1,37 +1,31 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { SelectionCard } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getIdPIcons, getIdPTemplateDocsIcons } from "../../../..";
 import { store } from "../../../../../core";
 import { getIdentityProviderList } from "../../../../api";
+import { getIdPIcons, getIdPTemplateDocsIcons } from "../../../../configs/ui";
 import {
     FederatedAuthenticatorInterface,
     IdentityProviderInterface,
+    IdentityProviderListResponseInterface,
     IdentityProviderTemplateInterface
 } from "../../../../models";
-import { handleGetIDPListCallError } from "../../../utils";/**
+import { handleGetIDPListCallError } from "../../../utils";
+
+/**
  * Proptypes for the general settings wizard form component.
  */
 interface GeneralSettingsWizardFormPropsInterface extends TestableComponentInterface {
@@ -44,8 +38,8 @@ interface GeneralSettingsWizardFormPropsInterface extends TestableComponentInter
 /**
  * General settings wizard form component.
  *
- * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns General settings wizard form component.
  */
 export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsInterface> = (
     props: GeneralSettingsWizardFormPropsInterface
@@ -110,7 +104,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
-                                validation={ (value, validation) => {
+                                validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
@@ -131,7 +125,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common.requiredErrorMessage") }
                                 type="text"
-                                validation={ (value, validation) => {
+                                validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
@@ -200,7 +194,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
-                                validation={ (value, validation) => {
+                                validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
@@ -217,27 +211,30 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
         }
     };
 
-    const getFederatedAuthenticator = (values: Map<string, any>): FederatedAuthenticatorInterface => {
+    const getFederatedAuthenticator = (values: Map<string, FormValue>): FederatedAuthenticatorInterface => {
 
         const authenticator: FederatedAuthenticatorInterface = {};
+
         authenticator.authenticatorId = selectedProtocol === "oidc" ?
             "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I" : "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
         authenticator.properties = [];
-        values.forEach((value, key) => {
+        values.forEach((value: FormValue, key: string) => {
             if (key !== "name") {
                 authenticator.properties.push({
                     "key": key,
-                    "value": value
+                    "value": value as string
                 });
             }
         });
+
         return authenticator;
     };
 
     return (
         <Forms
-            onSubmit={ (values: Map<string, any>): void => {
+            onSubmit={ (values: Map<string, FormValue>): void => {
                 const idp: IdentityProviderInterface = template.idp;
+
                 idp.name = values.get("name").toString();
                 idp.federatedAuthenticators.authenticators = [];
                 idp.federatedAuthenticators.authenticators.push(getFederatedAuthenticator(values));
@@ -267,8 +264,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                             type="text"
                             validation={ async (value: string, validation: Validation) => {
                                 try {
-                                    const idpList = await getIdentityProviderList(
-                                        null, null, "name eq " + value.toString());
+                                    const idpList: IdentityProviderListResponseInterface = 
+                                        await getIdentityProviderList(null, null, "name eq " + value.toString());
 
                                     if (idpList?.totalResults === 0) {
                                         validation.isValid = true;

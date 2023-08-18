@@ -121,3 +121,46 @@
         }
     }
 }
+
+/*******************************
+        Oxygen Navbar
+*******************************/
+
+.oxygen-navbar {
+    .route-icon {
+        svg {
+            height: 16px;
+            width: 16px;
+            fill: black;
+        }
+    }
+
+    .route-sub-icon {
+        svg {
+            width: 14px;
+            height: 14px;
+            fill: black;
+        }
+    }
+}
+
+.oxygen-navbar .MuiDrawer-paper::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+.oxygen-navbar .MuiDrawer-paper::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+.oxygen-navbar .MuiDrawer-paper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.oxygen-navbar .MuiDrawer-paper:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .25);
+}
+
+.oxygen-navbar:not(.open) .MuiDrawer-paper::-webkit-scrollbar {
+    display: none;
+}

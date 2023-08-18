@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
@@ -30,8 +21,10 @@ import {
     TableColumnInterface,
     TableDataInterface
 } from "@wso2is/react-components";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, {
     FunctionComponent,
+    MutableRefObject,
     ReactElement,
     ReactNode,
     SyntheticEvent,
@@ -43,6 +36,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect }
     from "../../applications/components/settings/attribute-management/attirbute-selection-wizard-other-dialect";
@@ -96,9 +90,8 @@ interface EditScopePropsInterface extends SBACInterface<FeatureConfigInterface>,
 /**
  * OIDC scope edit component.
  *
- * @param {EditScopePropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns OIDC scopes table
  */
 export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     props: EditScopePropsInterface
@@ -117,21 +110,22 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
     const [ deletingClaim, setDeletingClaim ] = useState<ExternalClaim>(undefined);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ updatedClaimList, setUpdatedClaimList ] = useState<ExternalClaim[]>([]);
 
-    const init = useRef(true);
+    const init: MutableRefObject<boolean> = useRef(true);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const isReadOnly = useMemo(
-        () => !hasRequiredScopes(featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes),
-        [ featureConfig, allowedScopes ]
+    const isReadOnly: boolean = useMemo(
+        () => (!hasRequiredScopes(featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
+            || OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)),
+        [ featureConfig, allowedScopes, scope ]
     );
 
     useEffect(() => {
@@ -150,7 +144,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         setUpdatedClaimList(tempSelectedAttributes);
     }, [ tempSelectedAttributes ]);
 
-    const updateOIDCScope = useCallback((): void => {
+    const updateOIDCScope: () => void = useCallback((): void => {
         const data: OIDCScopesListInterface = {
             claims: updatedClaimList.map((claim: ExternalClaim) => claim.claimURI),
             description: scope.description,
@@ -175,7 +169,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 );
                 onUpdate(scope.name);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -227,7 +221,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     };
 
     const handleRemoveAttribute = (claim: ExternalClaim): void => {
-        const newClaimList = updatedClaimList.filter((claimItem) => claimItem.id !== claim.id);
+        const newClaimList: ExternalClaim[] = updatedClaimList.filter(
+            (claimItem: ExternalClaim) => claimItem.id !== claim.id);
 
         setUpdatedClaimList(newClaimList);
         setShowDeleteConfirmationModal(false);
@@ -236,7 +231,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -268,7 +263,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         const actions: TableActionsInterface[] = [
@@ -354,9 +349,13 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 showHeader={ false }
                 data-testid={ testId }
             />
-            <PrimaryButton onClick={ updateOIDCScope }>
-                { t("console:manage.features.claims.scopeMappings.saveChangesButton") }
-            </PrimaryButton>
+            {
+                !isReadOnly && (
+                    <PrimaryButton onClick={ updateOIDCScope }>
+                        { t("console:manage.features.claims.scopeMappings.saveChangesButton") }
+                    </PrimaryButton>
+                )
+            }
             {
                 deletingClaim && (
                     <ConfirmationModal

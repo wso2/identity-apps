@@ -41,6 +41,7 @@
 @relativeBorderRadius: 3px;
 @absoluteBorderRadius: 3px;
 @defaultBorderRadius: @absoluteBorderRadius;
+@buttonBorderRadius: 22px;
 
 @defaultBorderWidth: 1px;
 @defaultBorderColor: @borderColor;
@@ -51,6 +52,9 @@
 --------------------*/
 
 @primaryColor        : @orange;
+@primaryColorGradient: linear-gradient(77.74deg, #EB4F63 11.16%, #FA7B3F 99.55%);
+@negativeColor       : #E53535;
+@primaryGradientColor : linear-gradient(90deg,#FFF2E8 50%,#FEF8ED 100%);
 @secondaryColor      : #E0E1E2;
 @accentColor1        : #3865B5;
 @accentColor2        : #19BECE;
@@ -93,6 +97,7 @@
 
 @pageBackground      : #fbfbfb;
 @lightPageBackground : @white;
+@pageContentBgColor : #FAF9F8;
 
 /*-------------------
        Accents

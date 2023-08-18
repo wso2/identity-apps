@@ -43,6 +43,7 @@ export const common: CommonNS = {
     "authenticator": "Authentifikator",
     "authenticator_plural": "Authentifikatoren",
     "back": "Zurück",
+    "beta": "Beta",
     "browser": "Browser",
     "cancel": "Stornieren",
     "challengeQuestionNumber": "Herausforderungsfrage {{number}}",

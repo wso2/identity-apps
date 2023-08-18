@@ -101,7 +101,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
     const handleQuerySearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
 
         setSearchQuery(value);
-        
+
         onSearch(value, selectedFilterLabels);
     };
 
@@ -182,7 +182,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                     )
             }
             {
-                isLoading 
+                isLoading
                     ? (
                         <Card.Group style={ { borderRadius: "50px" } }>
                             {

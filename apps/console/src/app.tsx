@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
@@ -21,14 +12,9 @@ import { AccessControlProvider } from "@wso2is/access-control";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
-import {
-    setI18nConfigs,
-    setServiceResourceEndpoints
-} from "@wso2is/core/store";
+import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
-import {
-    I18nModuleOptionsInterface
-} from "@wso2is/i18n";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ChunkErrorModal,
     Code,
@@ -48,7 +34,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { applicationConfig, commonConfig } from "./extensions";
+import { commonConfig } from "./extensions";
+import { FeatureGateProvider } from "./extensions/components/feature-gate/reducer/feature-gate";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -63,7 +50,6 @@ import {
 import { AppState } from "./features/core/store";
 import "moment/locale/si";
 import "moment/locale/fr";
-import { FeatureGateProvider } from "./features/feature-gate/reducer/feature-gate";
 
 
 /**
@@ -82,9 +68,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isMarketingConsentBannerEnabled;
-    });
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
 
@@ -432,10 +415,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                     </Trans>)
                                                 }
                                             />
-                                            {
-                                                isMarketingConsentBannerEnabled
-                                                    && applicationConfig.marketingConsent.getBannerComponent()
-                                            }
                                             <Switch>
                                                 <Redirect
                                                     exact

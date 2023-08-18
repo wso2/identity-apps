@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,31 +16,39 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { HttpMethods } from "../models";
+import {
+    AsgardeoSPAClient,
+    HttpClientInstance,
+    HttpError,
+    HttpRequestConfig,
+    HttpResponse
+} from "@asgardeo/auth-react";
+import { Application, HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Fetches the list of applications.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns - A promise containing the response.
  */
 export const fetchApplications = (
     limit: number,
     offset: number,
     filter: string
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -53,16 +61,20 @@ export const fetchApplications = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            let applications = [];
+        .then((response: HttpResponse<{ applications: Application[] }>) => {
+            let applications: Application[] = [];
 
-            if (response
-                && response.data
-                && response.data.applications
-                && response.data.applications.length
-                && response.data.applications.length > 0) {
+            if (
+                response &&
+                response.data &&
+                response.data.applications &&
+                response.data.applications.length &&
+                response.data.applications.length > 0
+            ) {
                 applications = response.data.applications.filter(
-                    (app) => app.name !== store.getState().config.ui.appName);
+                    (app: Application) =>
+                        app.name !== store.getState().config.ui.appName
+                );
             }
 
             return Promise.resolve({
@@ -70,7 +82,7 @@ export const fetchApplications = (
                 applications
             });
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

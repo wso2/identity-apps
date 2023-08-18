@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import {
     AlertInterface,
     AlertLevels,
@@ -24,12 +14,20 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants, SharedUserStoreUtils, history } from "../../../core";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
+import {
+    AppConstants,
+    SharedUserStoreConstants,
+    SharedUserStoreUtils,
+    UserStoreDetails,
+    UserStoreProperty,
+    history
+} from "../../../core";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
 
@@ -66,11 +64,11 @@ interface BasicGroupProps extends TestableComponentInterface {
 /**
  * Component to edit basic group details.
  *
- * @param props Group object containing details which needs to be edited.
+ * @param props - Group object containing details which needs to be edited.
  */
 export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: BasicGroupProps): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         groupId,
@@ -104,29 +102,33 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      * The following function validates role name against the user store regEx.
      */
     const validateGroupNamePattern = async (): Promise<string> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 });
         } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
-                setRegExLoading(true);
-                if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter(property => {
-                        return property.name === "RolenameJavaScriptRegEx";
-                    })[ 0 ].value;
-                }
-            });
+            await SharedUserStoreUtils.getPrimaryUserStore()
+                .then((response: UserStoreDetails) => {
+                    setRegExLoading(true);
+                    if (response && response.properties) {
+                        userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
+                            return property.name === "RolenameJavaScriptRegEx";
+                        })[ 0 ].value;
+                    }
+                });
         }
 
         setRegExLoading(false);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((
+            resolve: (value: string | PromiseLike<string>) => void, 
+            reject: (reason?: any) => void
+        ) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
             } else {
@@ -139,7 +141,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
@@ -170,7 +172,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      *
      */
     const updateGroupName = (values: Map<string, FormValue>): void => {
-        const newName = values?.get("groupName")?.toString();
+        const newName: string = values?.get("groupName")?.toString();
 
         const groupData: PatchGroupDataInterface = {
             Operations: [ {
@@ -207,7 +209,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
         <>
             <EmphasizedSegment padded="very">
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         updateGroupName(values);
                     } }
                 >
@@ -249,12 +251,13 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                         value={ nameValue }
                                         validation={ async (value: string, validation: Validation) => {
                                             if (value) {
-                                                let isGroupNameValid = true;
+                                                let isGroupNameValid: boolean = true;
 
-                                                await validateGroupNamePattern().then(regex => {
-                                                    isGroupNameValid = SharedUserStoreUtils
-                                                        .validateInputAgainstRegEx(value, regex);
-                                                });
+                                                await validateGroupNamePattern()
+                                                    .then((regex: string) => {
+                                                        isGroupNameValid = SharedUserStoreUtils
+                                                            .validateInputAgainstRegEx(value, regex);
+                                                    });
 
                                                 if (!isGroupNameValid) {
                                                     validation.isValid = false;
@@ -272,27 +275,30 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     startIndex: 1
                                                 };
 
-                                                await searchGroupList(searchData).then(response => {
-                                                    if (response?.data?.totalResults !== 0) {
-                                                        if (response.data.Resources[0]?.id !== groupId) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(
-                                                                t("console:manage.features.roles." + "addRoleWizard." +
+                                                await searchGroupList(searchData)
+                                                    .then((response: AxiosResponse) => {
+                                                        if (response?.data?.totalResults !== 0) {
+                                                            if (response.data.Resources[0]?.id !== groupId) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("console:manage.features.roles." + 
+                                                                    "addRoleWizard." +
                                                                     "forms.roleBasicDetails.roleName." +
                                                                     "validations.duplicate",
-                                                                { type: "Group" }));
+                                                                    { type: "Group" }));
+                                                            }
                                                         }
-                                                    }
 
-                                                }).catch(() => {
-                                                    dispatch(addAlert({
-                                                        description: t("console:manage.features.groups.notifications." +
-                                                            "fetchGroups.genericError.description"),
-                                                        level: AlertLevels.ERROR,
-                                                        message: t("console:manage.features.groups.notifications." +
+                                                    })
+                                                    .catch(() => {
+                                                        dispatch(addAlert({
+                                                            description: t("console:manage.features.groups." + 
+                                                            "notifications.fetchGroups.genericError.description"),
+                                                            level: AlertLevels.ERROR,
+                                                            message: t("console:manage.features.groups.notifications." +
                                                             "fetchGroups.genericError.message")
-                                                    }));
-                                                });
+                                                        }));
+                                                    });
                                             }
                                         } }
                                         type="text"

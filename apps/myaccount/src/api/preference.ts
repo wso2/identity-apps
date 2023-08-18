@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,24 +16,22 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods, PreferenceRequest } from "../models";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Get account recovery preferences.
  *
- * @param data connector & property details
+ * @param data - connector & property details
  */
 export const getPreference = (data: PreferenceRequest[]): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data,
         headers: {
             "Accept": "application/json",
@@ -44,14 +42,14 @@ export const getPreference = (data: PreferenceRequest[]): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to load account recovery preferences"));
             }
 
             return Promise.resolve(response?.data);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

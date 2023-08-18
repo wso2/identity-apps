@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -25,6 +15,7 @@ import {
     Hint,
     LinkButton,
     Message,
+    PickerResult,
     URLInput,
     XMLFileStrategy
 } from "@wso2is/react-components";
@@ -37,7 +28,7 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 
 /**
  * Proptypes for the saml protocol all settings wizard form component.
@@ -70,7 +61,7 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
     onSubmit: (values: any) => void;
     /**
      * Maintain SAML configuration mode in parent Element.
-     * @param mode configuration mode
+     * @param mode - configuration mode
      */
     setSAMLConfigureMode?: (mode: string) => void;
     issuerRef?: any;
@@ -87,9 +78,9 @@ interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableCompon
 /**
  * SAML protocol all settings wizard form component.
  *
- * @param {SAMLProtocolAllSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns SAPML protocol all settings wizard form component.
  */
 export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAllSettingsWizardFormPropsInterface> = (
     props: SAMLProtocolAllSettingsWizardFormPropsInterface
@@ -132,9 +123,9 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     useEffect(() => {
         setConfigureMode(SAMLConfigModes.MANUAL);
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
-            const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
-                .assertionConsumerUrls;
-            const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+            const tempAssertionConsumerUrls: string[] = templateValues?.
+                inboundProtocolConfiguration?.saml?.manualConfiguration.assertionConsumerUrls;
+            const tempIssuer: string = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
 
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
@@ -198,40 +189,41 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         }
     }, [ templateValues ]);
 
-     /**
+    /**
       * Update AssertionConsumerUrls based on the new value and previous
       * values available in assertionConsumerUrls variable.
       *
-      * @param {string} value - UrlState value of Assertion consumer url URLInput field.
+      * @param value - UrlState value of Assertion consumer url URLInput field.
       */
-      const updateAssertionConsumerUrls = (value : string): void => {
+    const updateAssertionConsumerUrls = (value : string): void => {
         if (!hasAssertionConsumerUrls) {
             if (assertionConsumerUrls) {
-               setAssertionConsumerUrls(assertionConsumerUrls)
-               setHasAssertionConsumerUrls(true)
+                setAssertionConsumerUrls(assertionConsumerUrls);
+                setHasAssertionConsumerUrls(true);
             } else {
-               if (value){
-                   setHasAssertionConsumerUrls(true)
-               }
-               setAssertionConsumerUrls(value)
+                if (value){
+                    setHasAssertionConsumerUrls(true);
+                }
+                setAssertionConsumerUrls(value);
             }
         } else {
-           setAssertionConsumerUrls(value)
-           if (!value) {
-              setHasAssertionConsumerUrls(false)
-           }
+            setAssertionConsumerUrls(value);
+            if (!value) {
+                setHasAssertionConsumerUrls(false);
+            }
         }
-    }
+    };
 
     /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @param {string} urls - Callback URLs.
-     * @return {object} Prepared values.
+     * @param urls - Callback URLs.
+     * @returns Prepared values.
      */
     const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
-        let config;
+        //TODO: [Fix Type] Type of the config object need to be defined throguh `onSubmit` prop.
+        let config: any;
 
         if (configureMode === SAMLConfigModes.MANUAL) {
             config = {
@@ -290,7 +282,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         basic
                     >
                         {
-                            Object.values(SAMLConfigModes).map((mode: string, index) => {
+                            Object.values(SAMLConfigModes).map((mode: string, index: number) => {
                                 return(
                                     <Button
                                         key={ index }
@@ -301,10 +293,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                 mode as SAMLConfigModes
                                             )
                                         }
-                                        onClick={ (event) => {
+                                        onClick={ (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                                             event.preventDefault();
                                             setConfigureMode(mode);
-                                            setHasAssertionConsumerUrls(false)
+                                            setHasAssertionConsumerUrls(false);
                                         } }
                                     />
                                 );
@@ -346,7 +338,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             ".issuer.placeholder")
                                     }
                                     value={ issuer }
-                                    validation={ (value, validation) => {
+                                    validation={ (value: string, validation: Validation) => {
                                         if (issuerError) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
@@ -476,7 +468,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             visible
                                             type="info"
                                             content={
-                                                <>
+                                                (<>
                                                     {
                                                         <Trans
                                                             i18nKey={ "console:develop.features.applications.forms." +
@@ -487,8 +479,9 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                             } }
                                                         >
                                                             Don’t have an app? Try out a sample app
-                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong> as
-                                                            the assertion Response URL. (You can download and run a sample
+                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong> 
+                                                            as the assertion Response URL. 
+                                                            (You can download and run a sample
                                                             at a later step.)
                                                         </Trans>
                                                     }
@@ -497,20 +490,23 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                             assertionConsumerUrls === "") && (
                                                             <LinkButton
                                                                 className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (e) => {
-                                                                    e.preventDefault();
-                                                                    setAssertionConsumerUrls(
-                                                                        assertionConsumerURLFromTemplate);
-                                                                    setIssuer(issuerFromTemplate);
-                                                                    setHasAssertionConsumerUrls(true);
-                                                                } }
+                                                                onClick={ 
+                                                                    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        setAssertionConsumerUrls(
+                                                                            assertionConsumerURLFromTemplate);
+                                                                        setIssuer(issuerFromTemplate);
+                                                                        setHasAssertionConsumerUrls(true);
+                                                                    } 
+                                                                }
                                                                 data-testid={ `${testId}-add-now-button` }
                                                             >
                                                                 <span style={ { fontWeight: "bold" } }>Add Now</span>
                                                             </LinkButton>
                                                         )
                                                     }
-                                                </>
+                                                </>)
                                             }
                                         />
                                     )
@@ -591,7 +587,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                             file={ selectedMetadataFile }
                             pastedContent={ pastedMetadataContent }
-                            onChange={ (result) => {
+                            onChange={ (result: PickerResult<any>) => {
                                 setSelectedMetadataFile(result.file);
                                 setPastedMetadataContent(result.pastedContent);
                                 setXmlBase64String(result.serialized as string);
@@ -660,4 +656,4 @@ SAMLProtocolAllSettingsWizardForm.defaultProps = {
     hideFieldHints: false
 };
 
-const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();

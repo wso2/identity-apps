@@ -328,10 +328,10 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         >
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 10 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 13 } tablet={ 10 } mobile={ 16 } verticalAlign="middle">
                         { content || children }
                     </Grid.Column>
-                    <Grid.Column computer={ 6 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
+                    <Grid.Column computer={ 3 } tablet={ 6 } mobile={ 16 } verticalAlign="middle">
                         <div className="flex floated right">
                             {
                                 (actions && actions instanceof Array && actions.length > 0)

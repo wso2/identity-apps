@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import path from "path";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nrwl/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
+import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -73,6 +74,10 @@ interface AbsolutePathsInterface {
      */
     appSrc: string;
     /**
+     * Path to `auth.html` in src.
+     */
+    authTemplateInSource: string;
+    /**
      * The absolute path to the distribution directory for the application.
      */
     distribution: string;
@@ -105,7 +110,7 @@ interface AbsolutePathsInterface {
      */
     indexTemplateInSource: string;
 }
-  
+
 /**
  * Represents a set of relative paths used in the application.
  */
@@ -163,6 +168,8 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     // Flag to determine if the app is deployed on an external static server.
     // With this option, all the `jsp` files and java specific folders will be dropped.
     const isDeployedOnExternalStaticServer: boolean = process.env.SERVER_TYPE === ServerTypes.STATIC;
+    // Flag to determine if the PRE_AUTH_CHECK option is enabled from the .env.local file.
+    const isPreAuthCheckEnabled: boolean = process.env.PRE_AUTH_CHECK === "true";
 
     // Build Modes.
     const isProfilingMode: boolean = process.env.ENABLE_BUILD_PROFILER === "true";
@@ -171,6 +178,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     // Dev Server Options.
     const devServerPort: number = process.env.DEV_SERVER_PORT || config.devServer?.port;
+    const devServerHost: number = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
 
@@ -312,6 +320,40 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 tenantPrefix: !isDeployedOnExternalTomcatServer
                     ? "<%=TENANT_AWARE_URL_PREFIX%>"
                     : "",
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
+    } else if (isPreAuthCheckEnabled) {
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                basename: DeploymentConfig.appBaseName,
+                clientID: DeploymentConfig.clientID,
+                filename: ABSOLUTE_PATHS.indexTemplateInDistribution,
+                hash: true,
+                inject: !isDeployedOnExternalStaticServer,
+                minify: false,
+                port: devServerPort,
+                publicPath: (isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH)
+                    ? "/"+process.env.APP_BASE_PATH+"/"
+                    : baseHref,
+                template:
+                    isDeployedOnExternalStaticServer
+                        ? ABSOLUTE_PATHS.authTemplateInSource
+                        : ABSOLUTE_PATHS.indexTemplateInSource,
+                theme: theme,
+                themeHash: getThemeConfigs(theme).styleSheetHash
+            }) as unknown as WebpackPluginInstance
+        );
+
+        config.plugins.push(
+            new HtmlWebpackPlugin({
+                filename: ABSOLUTE_PATHS.homeTemplateInDistribution,
+                hash: true,
+                inject: isDeployedOnExternalStaticServer,
+                minify: false,
+                publicPath: baseHref,
+                template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
             }) as unknown as WebpackPluginInstance
@@ -548,6 +590,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             : `${ RELATIVE_PATHS.staticJs }/[name].js`,
         hotUpdateChunkFilename: "hot/[id].[fullhash].hot-update.js",
         hotUpdateMainFilename: "hot/[runtime].[fullhash].hot-update.json",
+        path: (isPreAuthCheckEnabled && process.env.APP_BASE_PATH)
+            ? `${config.output.path}/${process.env.APP_BASE_PATH}`
+            : config.output.path,
         publicPath: baseHref
     };
 
@@ -566,17 +611,37 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
             publicPath: getStaticFileServePath(baseHref),
             writeToDisk: true
         },
-        // When running the apps on root context, we need to set this to `true` to route all
-        // 404 to `index.html`. Setting to true doesn't seem to work when the apps are hosted
-        // in a sub path and the default configuration works fine in that scenario.
-        // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
-        historyApiFallback: baseHref !== "/"
-            ? config.devServer?.historyApiFallback
-            : true,
-        host: "localhost",
+        host: devServerHost,
         open: baseHref,
         port: devServerPort
     };
+
+    if (isDeployedOnExternalStaticServer && isPreAuthCheckEnabled) {
+        config.devServer = {
+            ...config.devServer,
+            onBeforeSetupMiddleware: (devServer: { app: { use: (arg0: any) => void; }; }) => {
+                devServer.app.use(history({
+                    rewrites: [
+                        { from: /^\/$/, to: "/app" },
+                        { from: /^\/app$/, to: "/app/index.html" },
+                        { from: /^\/o\/.*$/, to: "/app/index.html" },
+                        { from: /^\/t(\/.*)?$/, to: "/app/index.html" }
+                    ]
+                }));
+            }
+        };
+    } else {
+        config.devServer = {
+            ...config.devServer,
+            // When running the apps on root context, we need to set this to `true` to route all
+            // 404 to `index.html`. Setting to true doesn't seem to work when the apps are hosted
+            // in a sub path and the default configuration works fine in that scenario.
+            // https://webpack.js.org/configuration/dev-server/#devserverhistoryapifallback
+            historyApiFallback: baseHref !== "/"
+                ? config.devServer?.historyApiFallback
+                : true
+        };
+    }
 
     return config;
 };
@@ -623,9 +688,15 @@ const getRelativePaths = (env: Configuration["mode"], context: NxWebpackContextI
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isProduction: boolean = env === "production";
 
+    let homeTemplate: string = "home.jsp";
+
+    if (process.env.PRE_AUTH_CHECK === "true" && process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplate = "index.html";
+    }
+
     return {
         distribution: path.join("build", "myaccount"),
-        homeTemplate: "home.jsp",
+        homeTemplate,
         indexTemplate: context.buildOptions?.index ?? context.options.index,
         javaEEFolders: [ "**/WEB-INF/**/*" ],
         source: "src",
@@ -638,9 +709,34 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
     const isProduction: boolean = env === "production";
     const RELATIVE_PATHS: RelativePathsInterface = getRelativePaths(env, context);
 
+    let homeTemplateInDistribution: string = path.resolve(
+        __dirname,
+        RELATIVE_PATHS.distribution,
+        RELATIVE_PATHS.homeTemplate
+    );
+
+    if (process.env.SERVER_TYPE === ServerTypes.STATIC) {
+        homeTemplateInDistribution = path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            DeploymentConfig.appBaseName,
+            RELATIVE_PATHS.indexTemplate
+        );
+    }
+
     return {
         appNodeModules: path.resolve(__dirname, "node_modules"),
         appSrc: path.resolve(__dirname, "src"),
+        appTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
+        authTemplateInSource: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.source,
+            "auth.html"
+        ),
         distribution: path.resolve(__dirname, RELATIVE_PATHS.distribution),
         entryPoints: [
             "@babel/polyfill",
@@ -650,9 +746,13 @@ const getAbsolutePaths = (env: Configuration["mode"], context: NxWebpackContextI
         eslintrc: isProduction
             ? path.resolve(__dirname, ".prod.eslintrc.js")
             : path.resolve(__dirname, ".eslintrc.js"),
-        homeTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.homeTemplate),
+        homeTemplateInDistribution,
         homeTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.homeTemplate),
-        indexTemplateInDistribution: path.resolve(__dirname, RELATIVE_PATHS.distribution, RELATIVE_PATHS.indexTemplate),
+        indexTemplateInDistribution: path.resolve(
+            __dirname,
+            RELATIVE_PATHS.distribution,
+            RELATIVE_PATHS.indexTemplate
+        ),
         indexTemplateInSource: path.resolve(__dirname, RELATIVE_PATHS.source, RELATIVE_PATHS.indexTemplate)
     };
 };

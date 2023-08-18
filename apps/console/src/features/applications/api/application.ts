@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
@@ -43,7 +42,7 @@ import {
     SupportedAuthProtocolTypes,
     UpdateClaimConfiguration
 } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
  * TODO: move the error messages to a constant file.
@@ -203,23 +202,26 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     attributes?: string,
     limit?: number,
     offset?: number,
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            attributes,
-            filter,
-            limit,
-            offset
-        },
-        url: store.getState().config.endpoints.applications
-    };
+    const requestConfig: AxiosRequestConfig = shouldFetch 
+        ? {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                attributes,
+                filter,
+                limit,
+                offset
+            },
+            url: store.getState().config.endpoints.applications
+        }
+        : null;
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 

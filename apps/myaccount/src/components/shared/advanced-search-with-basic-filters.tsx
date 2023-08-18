@@ -186,7 +186,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
         if (!processQuery) {
             onFilter(query);
-
+            
             return;
         }
 
@@ -209,7 +209,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
     /**
      * Default filter condition options.
-     *
      */
     const defaultFilterConditionOptions: { text: string, value: string }[] = [
         {

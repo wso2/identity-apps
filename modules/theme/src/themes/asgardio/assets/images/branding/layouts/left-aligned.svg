@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+* Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+*
+* This software is the property of WSO2 LLC. and its suppliers, if any.
+* Dissemination of any information or reproduction of any material contained
+* herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+* You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg width="154mm" height="124mm" viewBox="0 0 154 124" version="1.1" id="svg5" inkscape:version="1.1.2 (1:1.1+202202050950+0a00cf5339)" sodipodi:docname="left-aligned-layout.svg"
+	xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:svg="http://www.w3.org/2000/svg">
+	<sodipodi:namedview id="namedview7" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="false" inkscape:document-units="mm" showgrid="false" inkscape:snap-grids="false" inkscape:zoom="0.60647144" inkscape:cx="395.73174" inkscape:cy="560.61997" inkscape:window-width="1848" inkscape:window-height="1024" inkscape:window-x="72" inkscape:window-y="27" inkscape:window-maximized="1" inkscape:current-layer="layer1" width="154mm" />
+	<defs id="defs2" />
+	<g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+		<path style="fill:#f5f6f6;fill-opacity:1;stroke:none;stroke-width:0.302381" d="M 0,62.000006 V 0 H 77.000008 154 V 62.000006 124 H 77.000008 0 Z" id="path793" />
+		<g id="g294" transform="matrix(0.70238678,0,0,0.82517034,5.2509906,-19.317921)">
+			<g id="g889">
+				<rect style="fill:#d1d2d3;fill-opacity:1;stroke:#ffffff;stroke-width:0.129195;stroke-opacity:1" id="rect3794" width="12.84448" height="11.55519" x="174.03217" y="84.290665" ry="0.85993606" />
+				<rect style="fill:#ffffff;fill-opacity:1;stroke-width:0.230353;stroke-miterlimit:4;stroke-dasharray:none" id="rect1821" width="89.376701" height="84.830971" x="16.727264" y="50.071991" ry="1.6195537" />
+				<rect style="fill:#d1d2d3;fill-opacity:0.5;stroke:#ffffff;stroke-width:0.2186;stroke-opacity:1" id="rect3063-9" width="35.530159" height="4.1745515" x="24.516586" y="60.415405" />
+				<rect style="fill:#d1d2d3;fill-opacity:0.5;stroke:#ffffff;stroke-width:0.2186;stroke-opacity:1" id="rect3063-9-6" width="35.530159" height="4.1745515" x="151.93289" y="98.199295" />
+				<rect style="fill:#d1d2d3;fill-opacity:0.5;stroke:#ffffff;stroke-width:0.277746;stroke-opacity:1" id="rect3063-9-5" width="58.174686" height="4.1159215" x="32.010571" y="78.437241" />
+				<rect style="fill:none;fill-opacity:0.632362;stroke:#d1d2d3;stroke-width:0.42261;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect4216" width="74.055321" height="11.976641" x="24.480268" y="74.307632" ry="1.2964177" />
+				<g id="g876">
+					<rect style="fill:#d1d2d3;fill-opacity:1;stroke:none;stroke-width:0.157102;stroke-opacity:1" id="rect4216-1" width="74.055321" height="11.976641" x="24.481707" y="110.00631" ry="1.2964177" />
+					<rect style="fill:#eff0f2;fill-opacity:0.3;stroke:none;stroke-width:0.277746;stroke-opacity:1" id="rect3063-9-5-5" width="58.174686" height="4.1159215" x="32.395683" y="114.1991" />
+				</g>
+				<rect style="fill:#d1d2d3;fill-opacity:0.5;stroke:#ffffff;stroke-width:0.265792;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect3063-9-5-1" width="58.174686" height="4.1159215" x="32.090794" y="94.184464" />
+				<rect style="fill:none;fill-opacity:0.632362;stroke:#d1d2d3;stroke-width:0.42261;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect4216-0" width="74.055321" height="11.976641" x="24.560495" y="90.054855" ry="1.2964177" />
+			</g>
+		</g>
+		<path style="fill:none;stroke:#dcdcdc;stroke-width:0.208128px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 5.4809517e-4,114.10406 C 153.99968,114.91517 153.99968,114.91517 153.99968,114.91517" id="path2740" />
+		<rect style="fill:#d1d2d3;fill-opacity:1;stroke:#ffffff;stroke-width:0.193686;stroke-opacity:1" id="rect3063" width="30.61002" height="3.8040082" x="7.7950096" y="116.92664" />
+		<rect style="fill:#d1d2d3;fill-opacity:1;stroke:#ffffff;stroke-width:0.168226;stroke-opacity:1" id="rect3063-1" width="22.934994" height="3.8299644" x="92.482559" y="117.44278" />
+		<rect style="fill:#d1d2d3;fill-opacity:1;stroke:#ffffff;stroke-width:0.168226;stroke-opacity:1" id="rect3063-1-4" width="22.934994" height="3.8299644" x="123.28254" y="117.44278" />
+	</g>
+</svg>

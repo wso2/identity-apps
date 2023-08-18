@@ -213,7 +213,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         // If developer unpin the help panel, we are closing the help panel also.
         if (isPinned)  {
             setHelpSidebarVisibility(!helpSidebarVisibility);
-            onHelpPanelVisibilityChange(!helpSidebarVisibility);   
+            onHelpPanelVisibilityChange(!helpSidebarVisibility);
         }
     };
 

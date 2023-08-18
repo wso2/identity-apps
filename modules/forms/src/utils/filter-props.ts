@@ -18,7 +18,7 @@
 
 /**
  * This removes the used props from passedProps.
- * 
+ *
  * @param props - Props to be filtered.
  */
 export const filterPassedProps = (props: Record<string, any>): any => {

@@ -1,0 +1,37 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg id="asgardeo-logo" class="icon" xmlns="http://www.w3.org/2000/svg" width="325.49" height="47.124"
+     viewBox="0 0 325.49 47.124">
+    <path id="Path_2321" data-name="Path 2321" d="M319.48,0l1.94,3.35-2.15,3.71h4.29l1.93,3.35H313.47Z" fill="#ff7300"/>
+    <path id="Path_2322" data-name="Path 2322" d="M304.45,10.41l1.93-3.35h4.29l-2.14-3.71L310.46,0l6.02,10.41Z"
+          fill="#ff7300"/>
+    <path id="Path_2323" data-name="Path 2323" d="M317.11,18.23l-2.14-3.72-2.14,3.72h-3.87l6.01-10.42,6.01,10.42Z"
+          fill="#fff"/>
+    <path id="Path_2324" data-name="Path 2324"
+          d="M44.6,47.2V39.41H64.26a3.16,3.16,0,0,0,2.3-.95,3.27,3.27,0,0,0-2.3-5.59h-8.6a10.6,10.6,0,0,1-7.82-3.24,10.58,10.58,0,0,1-3.24-7.82A10.56,10.56,0,0,1,47.84,14a10.57,10.57,0,0,1,7.82-3.25H75.32v7.79H55.66a3.27,3.27,0,1,0,0,6.54h8.6a11.06,11.06,0,1,1,0,22.12Z"
+          transform="translate(-0.49 -0.1)" fill="#fff"/>
+    <path id="Path_2325" data-name="Path 2325"
+          d="M96.41,47.2a17.41,17.41,0,0,1-12.89-5.33A17.44,17.44,0,0,1,78.18,29a17.44,17.44,0,0,1,5.34-12.89,17.42,17.42,0,0,1,12.89-5.34h15.36v7.79H96.41a10.425,10.425,0,0,0,0,20.85H104V32.87H98.24V25.08h13.53V47.2Z"
+          transform="translate(-0.49 -0.1)" fill="#fff"/>
+    <path id="Path_2326" data-name="Path 2326"
+          d="M186.09,47.2,168.52,29.78V47.2h-7.8V10.75h19.66A10.56,10.56,0,0,1,188.2,14a10.57,10.57,0,0,1,3.25,7.81,10.59,10.59,0,0,1-3.25,7.82,11.75,11.75,0,0,1-3.12,2.26L182.77,33,197,47.2Zm-5.71-22.12a3.27,3.27,0,1,0,0-6.54H168.52v6.54Z"
+          transform="translate(-0.49 -0.1)" fill="#fff"/>
+    <path id="Path_2327" data-name="Path 2327"
+          d="M199.87,47.2V10.75h15.36a17.42,17.42,0,0,1,12.89,5.34A17.44,17.44,0,0,1,233.46,29a17.44,17.44,0,0,1-5.34,12.89,17.41,17.41,0,0,1-12.89,5.33Zm15.36-7.79a10.425,10.425,0,1,0,0-20.85h-7.56V39.41Z"
+          transform="translate(-0.49 -0.1)" fill="#fff"/>
+    <path id="Path_2328" data-name="Path 2328"
+          d="M287.52,47.2a17.39,17.39,0,0,1-12.88-5.33A17.4,17.4,0,0,1,269.3,29a17.4,17.4,0,0,1,5.34-12.89,18.22,18.22,0,0,1,25.77,0A17.44,17.44,0,0,1,305.75,29a17.44,17.44,0,0,1-5.34,12.89,17.41,17.41,0,0,1-12.89,5.31Zm0-28.66a10.457,10.457,0,1,0,7.38,3.06A10.11,10.11,0,0,0,287.52,18.54Z"
+          transform="translate(-0.49 -0.1)" fill="#fff"/>
+    <path id="Path_2329" data-name="Path 2329" d="M0,47.1H8.71L21.04,25.73,33.37,47.1h8.71L21.04,10.65Z" fill="#fff"/>
+    <path id="Path_2330" data-name="Path 2330" d="M114.66,47.1h8.7L135.7,25.73,148.03,47.1h8.71L135.7,10.65Z"
+          fill="#fff"/>
+    <path id="Path_2331" data-name="Path 2331"
+          d="M236.34,46.99V10.67h30.45V18.4H244.11v6.68h17.01v7.53H244.11v6.66h22.68v7.72Z" fill="#fff"/>
+</svg>

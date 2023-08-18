@@ -196,7 +196,6 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             isLoading= { isGroupDetailsRequestLoading }
             image={
                 (<GenericIcon
-                    bordered
                     defaultIcon
                     size="x60"
                     relaxed="very"

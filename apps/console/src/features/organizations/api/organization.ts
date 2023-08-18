@@ -1,27 +1,18 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import { 
-    AsgardeoSPAClient, 
-    HttpClientInstance, 
-    HttpError, 
-    HttpRequestConfig, 
-    HttpResponse 
+import {
+    AsgardeoSPAClient,
+    HttpClientInstance,
+    HttpError,
+    HttpRequestConfig,
+    HttpResponse
 } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -96,6 +87,55 @@ export const getOrganizations = (
             return Promise.reject(error?.response?.data);
         });
 };
+
+/**
+ * Hook to get the list of authorized organizations.
+ *
+ * @param filter - The filter query.
+ * @param limit - The maximum number of organizations to return.
+ * @param after - The previous range of data to be returned.
+ * @param before - The next range of data to be returned.
+ * @param recursive - Whether we need to do a recursive search
+ * @param isRoot - Whether the organization is the root
+ *
+ * @returns requestedOrganizationList
+ */
+export function useAuthorizedOrganizationsList<Data = OrganizationListInterface, Error = AxiosError>(
+    filter: string,
+    limit: number,
+    after: string,
+    before: string,
+    recursive: boolean,
+    isRoot: boolean = false
+): RequestResultInterface<Data, Error> {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit,
+            recursive
+        },
+        url: `${ isRoot
+            ? store.getState().config.endpoints.rootOrganization
+            : store.getState().config.endpoints.organizations }/organizations/me`
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+}
 
 /**
  * Create an organization.

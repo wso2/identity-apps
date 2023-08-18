@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -38,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../../extensions/configs";
+import { Config } from "../../../features/core/configs/app";
 import {
     AppConstants,
     AppState,
@@ -46,8 +38,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { AuthenticatorCreateWizardFactory } from "../components/wizards";
-import { getIdPIcons } from "../configs";
+import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
+import { getIdPIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants, ORG_ENTERPRISE_IDP_ID } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
@@ -113,6 +105,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -487,6 +480,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        resourceDocumentationLink={ 
+                                                            documentationBaseUrl + template.docLink 
+                                                        }
                                                         resourceImage={
                                                             IdentityProviderManagementUtils
                                                                 .resolveTemplateImage(template.image, getIdPIcons())
@@ -495,7 +491,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                         } }
-                                                        showTooltips={ { description: true, header: false } }
+                                                        showTooltips={ 
+                                                            { 
+                                                                description: true, 
+                                                                header: false 
+                                                            } 
+                                                        }
                                                         data-testid={ `${ testId }-${ template.name }` }
                                                     />
                                                 );

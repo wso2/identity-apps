@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -162,11 +162,7 @@ export interface BrandingPreferenceStylesheetsInterface {
     /**
      * Login portal stylesheet.
      */
-    accountApp: string;
-    /**
-     * Selfcare app stylesheet.
-     */
-    selfcareApp: string;
+    accountApp: PredefinedThemes;
 }
 
 export type BrandingPreferenceThemeInterface = StrictBrandingPreferenceThemeInterface
@@ -201,7 +197,7 @@ export interface ThemeConfigInterface {
     loginPage?: BrandingPreferencePageInterface;
     /**
      * Page Preferences.
-     * @deprecated Renamed to `loginPage` to keep it specific for login page.
+     * @deprecated Renamed to `loginPage` to keep it specific for login page. 
      */
     page?: BrandingPreferencePageInterface;
     /**

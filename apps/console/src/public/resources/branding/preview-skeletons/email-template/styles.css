@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family={{organization.font}}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@font-face {
+    font-family: '{{organization.font}}',
+    Roboto,
+    Verdana,
+    Helvetica,
+    sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    src: local('{{organization.font}}'),
+    local('{{organization.font}}'),
+    url('https://fonts.googleapis.com/css2?family={{organization.font}}:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap') format('Roboto');
+}
+
+#outlook a {
+    padding: 0;
+}
+
+.wso2_body {
+    width: 100% !important;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.ExternalClass {
+    width: 100%;
+}
+
+*[x-apple-data-detectors],
+/* iOS */
+.unstyle-auto-detected-links *,
+.aBn {
+    border-bottom: 0 !important;
+    cursor: default !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
+.ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div {
+    line-height: 100%;
+}
+
+img {
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+}
+
+.wso2_orange a {
+    color: '{{organization.color.primary}}';
+    text-decoration: underline;
+}
+
+.wso2_orange a:hover {
+    text-decoration: none !important;
+}
+
+.Wrap_Border img:hover {
+    background-color: '{{organization.color.primary}}' !important;
+}
+
+a.wso2_orange3:hover {
+    color: '{{organization.color.primary}}' !important;
+    text-decoration: none !important;
+}
+
+.wso2_grey7 a:hover {
+    text-decoration: none !important;
+}
+
+a img {
+    border: none;
+}
+
+p {
+    margin: 1em 0;
+}
+
+table td {
+    border-collapse: collapse;
+}
+
+/* hide unsubscribe from forwards*/
+blockquote .original-only,
+.WordSection1 .original-only {
+    display: none !important;
+}
+
+.fadeimg:hover {
+    transition: 0.3s !important;
+    opacity: 0.7 !important;
+}
+
+.linkname:hover {
+    transition: 0.3s !important;
+    opacity: 0.6 !important;
+}
+
+.linktopic:hover {
+    transition: 0.3s !important;
+    opacity: 0.8 !important;
+}
+
+.linkbody:hover {
+    transition: 0.3s !important;
+    text-decoration: none !important;
+    color: #000000 !important;
+}
+
+.linkrevbut:hover {
+    transition: 0.3s !important;
+    text-decoration: none;
+    color: #ffffff !important;
+}
+
+.ctaorange:hover {
+    transition: 0.3s !important;
+    background-color: #000000 !important;
+}
+
+.ctaorange1:hover {
+    transition: 0.3s !important;
+    color: #000000 !important;
+}
+
+.wso2_center {
+    text-align: center !important;
+}
+
+@media only screen and (max-width: 480px) {
+
+    body,
+    table,
+    td,
+    p,
+    a,
+    li,
+    blockquote {
+        -webkit-text-size-adjust: none !important;
+    }
+
+    /* Prevent Webkit platforms from changing default text sizes */
+    body {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
+    /* Prevent iOS Mail from adding padding to the body */
+
+    #bodyCell {
+        padding: 10px !important;
+    }
+
+    #templateContainer {
+        /* max-width:650px !important; */
+        width: 100% !important;
+    }
+
+    h1 {
+        font-size: 24px !important;
+        line-height: 32px !important;
+        padding-right: 40px !important;
+    }
+
+    h2 {
+        font-size: 20px !important;
+        line-height: 100% !important;
+    }
+
+    h3 {
+        font-size: 18px !important;
+        line-height: 100% !important;
+    }
+
+    h4 {
+        font-size: 16px !important;
+        line-height: 100% !important;
+    }
+
+    #templatePreheader {
+        display: none !important;
+    }
+
+    /* Hide the template preheader to save space */
+
+    .headerContent {
+        font-size: 20px !important;
+        line-height: 125% !important;
+    }
+
+    .bodyContent {
+        font-size: 18px !important;
+        line-height: 125% !important;
+        padding-right: 0px !important;
+        padding-left: 10px !important;
+    }
+
+    .headercontent {
+        font-size: 18px !important;
+        line-height: 125% !important;
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+
+    .templateColumnContainer {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .columnImage {
+        height: auto !important;
+        max-width: 480px !important;
+        width: 100% !important;
+    }
+
+    .leftColumnContent {
+        font-size: 16px !important;
+        line-height: 125% !important;
+    }
+
+    .rightColumnContent {
+        font-size: 16px !important;
+        line-height: 125% !important;
+    }
+
+    .footerContent {
+        font-size: 14px !important;
+        line-height: 115% !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .logobottommobile {
+        display: none;
+    }
+
+    .main-content {
+        background-size: 100px;
+        padding-right: 50px !important;
+        background-repeat: no-repeat;
+        background-position-x: right;
+        background-position-y: bottom;
+    }
+
+    /* Place footer social and utility links on their own lines, for easier access */
+}
+
+/* u+.wso2_body .wso2_full_wrap {
+    width: 100% !important;
+    width: 100vw !important;
+} */

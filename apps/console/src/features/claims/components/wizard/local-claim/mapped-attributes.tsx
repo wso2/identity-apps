@@ -1,31 +1,22 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
-
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+ */
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { AppState, store } from "../../../../core";
-import { UserStoreListItem } from "../../../../userstores";
+import { AppState } from "../../../../core";
 import { getUserStoreList } from "../../../../userstores/api";
+import { UserStoreListItem } from "../../../../userstores/models/user-stores";
 
 /**
  * Prop types of `MappedAttributes` component
@@ -48,9 +39,9 @@ interface MappedAttributesPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the Mapped Attributes step of the wizard.
  *
- * @param {MappedAttributesPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Map Attributes component.
  */
 export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface> = (
     props: MappedAttributesPropsInterface
@@ -80,7 +71,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                 self: ""
             });
         }
-        getUserStoreList().then((response) => {
+        getUserStoreList().then((response: AxiosResponse) => {
             if (hiddenUserStores && hiddenUserStores.length > 0) {
                 response.data.map((store: UserStoreListItem) => {
                     if (hiddenUserStores.length > 0 && !hiddenUserStores.includes(store.name)) {
@@ -110,13 +101,14 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                     <Forms
                         submitState={ submitState }
                         onSubmit={ (values: Map<string, FormValue>) => {
-                            const submitData = {
-                                attributeMapping: Array.from(values).map(([ userstore, attribute ]) => {
-                                    return {
-                                        mappedAttribute: attribute,
-                                        userstore: userstore
-                                    };
-                                })
+                            const submitData: any = {
+                                attributeMapping: Array.from(values).map(
+                                    ([ userstore, attribute ]: [ string, FormValue ]) => {
+                                        return {
+                                            mappedAttribute: attribute,
+                                            userstore: userstore
+                                        };
+                                    })
                             };
 
                             onSubmit(submitData, values);

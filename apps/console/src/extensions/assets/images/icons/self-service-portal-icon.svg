@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+
+<svg id="self-service-portal-icon" class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 2C0 1.17157 0.671573 0.5 1.5 0.5H14.5C15.3284 0.5 16 1.17157 16 2V10C16 10.8284 15.3284 11.5 14.5 11.5H1.5C0.671573 11.5 0 10.8284 0 10V2ZM1.5 1.5C1.22386 1.5 1 1.72386 1 2V10C1 10.2761 1.22386 10.5 1.5 10.5H14.5C14.7761 10.5 15 10.2761 15 10V2C15 1.72386 14.7761 1.5 14.5 1.5H1.5ZM1.5 14C1.22386 14 1 14.2239 1 14.5C1 14.7761 1.22386 15 1.5 15H14.5C14.7761 15 15 14.7761 15 14.5C15 14.2239 14.7761 14 14.5 14H1.5Z" fill="black"/>
+</svg>

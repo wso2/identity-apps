@@ -19,11 +19,11 @@
 import { ReactElement } from "react";
 
 export interface AuthenticatorConfig {
-    overriddenAuthenticatorIds?: {
-        SMS_OTP_AUTHENTICATOR_ID?: string;
+    overriddenAuthenticatorIds: {
+        SMS_OTP_AUTHENTICATOR_ID: string;
     },
-    overriddenAuthenticatorNames?: {
-        SMS_OTP_AUTHENTICATOR?: string;
+    overriddenAuthenticatorNames: {
+        SMS_OTP_AUTHENTICATOR: string;
     }
     externalResourceButton: ReactElement;
 }

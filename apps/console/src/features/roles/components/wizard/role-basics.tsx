@@ -1,31 +1,23 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { searchRoleList } from "../..";
-import { store } from "../../../core";
+import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 import { getUserStoreList } from "../../../userstores/api";
+import { UserStoreListItem } from "../../../userstores/models/user-stores";
+import { searchRoleList } from "../../api/roles";
 import {
     PRIMARY_DOMAIN
 } from "../../constants";
@@ -45,7 +37,7 @@ interface RoleBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  *
- * @param props Role Basic prop types
+ * @param props - Role Basic prop types
  */
 export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicProps): ReactElement => {
 
@@ -74,12 +66,14 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * @param roleName - User input role name
      */
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         if (userStore !== PRIMARY_DOMAIN) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
+            await SharedUserStoreUtils.getUserStoreRegEx(
+                userStore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+            )
+                .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 });
@@ -93,25 +87,25 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [
+        const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
                 text: "Primary",
                 value: "primary"
             }
         ];
-        let storeOption = {
+        let storeOption: DropdownItemProps = {
             key: null,
             text: "",
             value: ""
         };
 
         getUserStoreList()
-            .then((response) => {
+            .then((response: AxiosResponse<UserStoreListItem[]>) => {
                 if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
+                response.data.map((store: UserStoreListItem, index: number) => {
                     storeOption = {
                         key: index,
                         text: store.name,
@@ -140,7 +134,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     return (
         <Forms
             data-testid={ testId }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>) => {
                 onSubmit(getFormValues(values));
             } }
             submitState={ triggerSubmit }
@@ -174,7 +168,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     ],
                                     startIndex: 1
                                 };
-                                const response = await searchRoleList(searchData);
+                                const response: AxiosResponse = await searchRoleList(searchData);
 
                                 if (response?.data?.totalResults > 0) {
                                     validation.isValid = false;

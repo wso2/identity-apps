@@ -46,7 +46,7 @@ import {
 } from "../../../../../features/core";
 import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
 import { createIdentityProvider } from "../../../api";
-import { getIdPIcons } from "../../../configs";
+import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -213,7 +213,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                         const createdIdpID: any = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
-                        
+
                         return;
                     }
 

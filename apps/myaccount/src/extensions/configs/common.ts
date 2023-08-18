@@ -18,21 +18,22 @@
 
 import { CommonConfig } from "./models";
 import { ProfileSchema } from "../../models";
+import { UserstoreConstants } from "../userstores/userstore-constants";
 
 export const commonConfig: CommonConfig = {
     accountSecurityPage: {
         accountRecovery: {
             emailRecovery: {
-                enableEditEmail: true
+                enableEditEmail: false
             }
         },
         mfa: {
             fido2: {
-                allowLegacyKeyRegistration: true
+                allowLegacyKeyRegistration: false
             },
             totp: {
-                regenerateWarning: "myAccount:components.mfa.authenticatorApp.modals.scan.regenerateWarning.extended",
-                showRegenerateConfirmation: true
+                regenerateWarning: "myAccount:components.mfa.authenticatorApp.modals.scan.regenerateWarning.generic",
+                showRegenerateConfirmation: false
             }
         }
     },
@@ -40,38 +41,55 @@ export const commonConfig: CommonConfig = {
         enableQuerySearch: false
     },
     header: {
-        organization: "WSO2",
+        organization: "Asgardeo",
         renderAppSwitcherAsDropdown: false
     },
     nonLocalCredentialUser: {
-        enableNonLocalCredentialUserView: false
+        enableNonLocalCredentialUserView: true
     },
     overviewPage: {
-        enableAlternateWidgetLayout: false
+        enableAlternateWidgetLayout: true
     },
     personalInfoPage: {
         externalLogins: {
-            disableExternalLoginsOnEmpty: false
+            disableExternalLoginsOnEmpty: true
         }
     },
     userProfilePage: {
         showEmail: true
     },
     utils: {
-        isConsoleNavigationAllowed(): boolean {
+        isConsoleNavigationAllowed(userstore: string): boolean {
+            if (userstore === UserstoreConstants.ASGARDEO_USERSTORE) {
+                return true;
+            }
+
+            return false;
+        },
+        isFIDOEnabled(userstore: string): boolean {
+            if (userstore === UserstoreConstants.ASGARDEO_USERSTORE) {
+                return false;
+            }
+
             return true;
         },
-        isFIDOEnabled(): boolean {
-            return true;
-        },
-        isManageConsentAllowedForUser(): boolean {
+        isManageConsentAllowedForUser(userstore: string): boolean {
+            if (userstore === UserstoreConstants.ASGARDEO_USERSTORE) {
+                return false;
+            }
+
             return true;
         },
         isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {
-            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" ;
+            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" 
+                || schema.displayName === "Username";
         },
-        isShowAdditionalWidgetAllowed(): boolean {
-            return false;
+        isShowAdditionalWidgetAllowed(userstore: string): boolean {
+            if (userstore === UserstoreConstants.ASGARDEO_USERSTORE) {
+                return false;
+            }
+
+            return true;
         }
     }
 };

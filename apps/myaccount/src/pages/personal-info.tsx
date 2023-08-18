@@ -20,7 +20,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -56,13 +56,16 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string = useSelector((state: AppState) => state
+        .authenticationInformation.profileInfo.isReadOnly);
+    // IDP by which the user initially signed up.
+    const [ userSourceIdp, setUserSourceIdp ] = useState<string>("");
 
     /**
      * Dispatches the alert object to the redux store.
@@ -80,8 +83,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
+
+        // Requires to validate if user is logged in from different IDP other than the source IDP.
+        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+            [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")]);
 
         if (localCredentialExist && localCredentialExist == "false") {
             setIsNonLocalCredentialUser(true);
@@ -156,8 +163,8 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <FederatedAssociations
-                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                     onAlertFired={ handleAlerts }
+                                    sourceIdp={ userSourceIdp }
                                 />
                             </Grid.Column>
                         </Grid.Row>

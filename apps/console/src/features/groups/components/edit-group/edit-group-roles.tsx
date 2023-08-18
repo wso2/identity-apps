@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 import {
@@ -34,6 +25,7 @@ import {
     TransferListItem,
     useWizardAlert
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEach from "lodash-es/forEach";
 import forEachRight from "lodash-es/forEachRight";
@@ -41,22 +33,29 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     Divider,
     Grid,
     Icon,
     Input,
+    InputOnChangeData,
     Label,
     Modal,
     Table
 } from "semantic-ui-react";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleListResponseInterface
+} from "../../../organizations/models/organizations";
 import { OrganizationUtils } from "../../../organizations/utils";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, getRolesList } from "../../../roles";
-import { RolePermissions } from "../../../users/components";
+import { getRolesList } from "../../../roles/api/roles";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../roles/constants/role-constants";
 import { UserRolePermissions } from "../../../users/components/user-role-permissions";
+import { RolePermissions } from "../../../users/components/wizard/user-role-permissions";
 import { GroupsInterface } from "../../models";
 
 interface GroupRolesPropsInterface extends TestableComponentInterface {
@@ -85,18 +84,22 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
-    const [ roleList, setRoleList ] = useState<any>([]);
+    //TODO: [Fix Type] Ideally this should be a `RolesMemberInterface[]`
+    //but the existing logic breaks since `RolesMemberInterface` does not have a `displayName` property.
+    const [ roleList, setRoleList ] = useState<any[]>([]);
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
+    //TODO: [Fix Type] Ideally this should be a `RolesInterface[]` 
+    //but the `setPrimaryRoles` method usage is not consistent with the type.
     const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     // The following constant holds the state of role already assigned roles.
-    const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
+    const [ primaryRolesList, setPrimaryRolesList ] = useState<Map<string, string>>(undefined);
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesMemberInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesMemberInterface[]>([]);
@@ -111,11 +114,15 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ roleId, setRoleId ] = useState<string>();
     const [ isSelected, setSelection ] = useState(false);
 
-    const [ assignedRoles, setAssignedRoles ] = useState([]);
+    const [ assignedRoles, setAssignedRoles ] = useState<RolesMemberInterface[]>([]);
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization);
+    
+    const isRootOrganization: boolean = useMemo(
+        () => OrganizationUtils.isRootOrganization(currentOrganization), 
+        [ currentOrganization ]
+    );
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -177,7 +184,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     useEffect(() => {
         if (isRootOrganization) {
             getRolesList(null)
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     setPrimaryRoles(response.data.Resources);
                 })
                 .catch(() => {
@@ -190,7 +197,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 });
         } else {
             getOrganizationRoles(currentOrganization.id, null, 100, null)
-                .then((response) => {
+                .then((response: OrganizationRoleListResponseInterface) => {
                     setPrimaryRoles(response.Resources);
                 })
                 .catch(() => {
@@ -209,13 +216,15 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
-        const addedRoles = [];
+        //TODO: [Fix Type] Ideally this should be a `RolesInterface[]` 
+        //but the `setPrimaryRoles` method usage is not consistent with the type.
+        const roleListCopy: any = primaryRoles ? [ ...primaryRoles ] : [];
+        const addedRoles: any = [];
 
         if (roleListCopy && primaryRolesList) {
-            const primaryRolesValues = Array.from(primaryRolesList?.values());
+            const primaryRolesValues: string[] = Array.from(primaryRolesList?.values());
 
-            forEach(roleListCopy, (role) => {
+            forEach(roleListCopy, (role: any) => {
                 if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
                 }
@@ -223,8 +232,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
         setTempRoleList(addedRoles);
         setInitialTempRoleList(addedRoles);
-        setRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
-        setInitialRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
+        setRoleList(roleListCopy.filter((x: any) => !addedRoles?.includes(x)));
+        setInitialRoleList(roleListCopy.filter((x: any) => !addedRoles?.includes(x)));
     };
 
     /**
@@ -233,11 +242,11 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * object differs from Users endpoint to Groups endpoint.
      */
     const mapUserRoles = () => {
-        const rolesMap = new Map<string, string>();
+        const rolesMap: Map<string, string> = new Map<string, string>();
 
         if (group.roles && group.roles instanceof Array) {
-            forEachRight(group.roles, (roles) => {
-                const role = roles.display.split("/");
+            forEachRight(group.roles, (roles: RolesMemberInterface) => {
+                const role: string[] = roles.display.split("/");
 
                 if (role.length >= 1) {
                     rolesMap.set(roles.display, roles.value);
@@ -256,10 +265,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     /**
      * This function handles updating the roles of the group.
      */
-    const updateUserRole = (group: any, roles: any) => {
-        const roleIds = [];
+    const updateUserRole = (group: GroupsInterface, roles: any) => {
+        const roleIds: string[] = [];
 
-        roles.map((role) => {
+        roles.map((role: any) => {
             roleIds.push(role.id);
         });
 
@@ -269,7 +278,19 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        let addOperation = {
+        //TODO: [Fix Type] Introduce proper type interfaces for patch operations and use here.
+        let addOperation: {
+            data: {
+                Operations: {
+                    op: string;
+                    path: string;
+                    value: {
+                        value: any;
+                    }[];
+                }[];
+            };
+            method: string;
+        } = {
             data: {
                 "Operations": [ {
                     "op": "add",
@@ -282,17 +303,37 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             method: "PATCH"
         };
 
-        const removeOperations = [];
-        const addOperations = [];
-        let removedIds = [];
-        const addedIds = [];
+        const removeOperations: {
+            data: {
+                Operations: {
+                    op: string;
+                    path: string;
+                }[];
+            };
+            method: string;
+            path: string;
+        }[] = [];
+        const addOperations: {
+            data: {
+                Operations: {
+                    op: string;
+                    path: string;
+                    value: {
+                        value: any;
+                    }[];
+                }[];
+            };
+            method: string;
+        }[] = [];
+        let removedIds: string[] = [];
+        const addedIds: string[] = [];
 
         if (primaryRolesList) {
             removedIds = [ ...primaryRolesList.values() ];
         }
 
         if (roleIds?.length > 0) {
-            roleIds.map((roleId) => {
+            roleIds.map((roleId: string) => {
                 if (removedIds?.includes(roleId)) {
                     removedIds.splice(removedIds.indexOf(roleId), 1);
                 } else {
@@ -302,8 +343,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
 
         if (removedIds && removedIds.length > 0) {
-            removedIds.map((id) => {
-                const operation = {
+            removedIds.map((id: string) => {
+                //TODO: [Fix Type] Introduce proper type interfaces for patch operations and use here.
+                const operation: {
+                    data: {
+                        Operations: {
+                            op: string;
+                            path: string;
+                        }[];
+                    };
+                    method: string;
+                    path: string;
+                } = {
                     data: {
                         "Operations": [
                             {
@@ -323,7 +374,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
 
         if (addedIds && addedIds?.length > 0) {
-            addedIds.map((id) => {
+            addedIds.map((id: string) => {
                 addOperation = {
                     ...addOperation,
                     ...{ path: "/Roles/" + id }
@@ -331,7 +382,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 addOperations.push(addOperation);
             });
 
-            addOperations.map((operation) => {
+            addOperations.map((operation: {
+                data: {
+                    Operations: {
+                        op: string;
+                        path: string;
+                        value: {
+                            value: any;
+                        }[];
+                    }[];
+                };
+                method: string;
+            }) => {
                 bulkData.Operations.push(operation);
             });
         }
@@ -353,7 +415,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 handelAddNewRoleModalClose();
                 onGroupUpdate(group.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.status === 404) {
                     return;
                 }
@@ -386,14 +448,14 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             });
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleUnselectedListSearch = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: any[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            roleList && roleList.map((role) => {
+            roleList && roleList.map((role: any) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
@@ -405,14 +467,14 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
     };
 
-    const handleSelectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleSelectedListSearch = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: any[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            tempRoleList && tempRoleList?.map((role) => {
+            tempRoleList && tempRoleList?.map((role: any) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
@@ -428,8 +490,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (role: RolesMemberInterface) => {
+        const checkedRoles: RolesMemberInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedRoles?.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -444,8 +506,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
      */
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedAssignedListItems ];
+    const handleAssignedItemCheckboxChange = (role: RolesMemberInterface) => {
+        const checkedRoles: RolesMemberInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedRoles?.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -471,10 +533,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     };
 
     const addRoles = () => {
-        const addedRoles = [ ...tempRoleList ];
+        const addedRoles: any[] = [ ...tempRoleList ];
 
         if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((role) => {
+            checkedUnassignedListItems.map((role: RolesMemberInterface) => {
                 if (!(tempRoleList?.includes(role))) {
                     addedRoles.push(role);
                 }
@@ -482,16 +544,16 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
         setTempRoleList(addedRoles);
         setInitialTempRoleList(addedRoles);
-        setRoleList(roleList.filter(x => !addedRoles?.includes(x)));
-        setInitialRoleList(roleList.filter(x => !addedRoles?.includes(x)));
+        setRoleList(roleList.filter((x: any) => !addedRoles?.includes(x)));
+        setInitialRoleList(roleList.filter((x: any) => !addedRoles?.includes(x)));
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
     const removeRoles = () => {
-        const removedRoles = [ ...roleList ];
+        const removedRoles: RolesMemberInterface[] = [ ...roleList ];
 
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role) => {
+            checkedAssignedListItems.map((role: RolesMemberInterface) => {
                 if (!(roleList?.includes(role))) {
                     removedRoles.push(role);
                 }
@@ -499,9 +561,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         }
         setRoleList(removedRoles);
         setInitialRoleList(removedRoles);
-        setTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        setInitialTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setTempRoleList(tempRoleList?.filter((x: any) => !removedRoles?.includes(x)));
+        setInitialTempRoleList(tempRoleList?.filter((x: any) => !removedRoles?.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(
+            (x: RolesMemberInterface) => !removedRoles?.includes(x)));
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
@@ -521,7 +584,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * @param roleName - Role Name to create item label
      */
     const createItemLabel = (roleName: string) => {
-        const role = roleName.split("/");
+        const role: string[] = roleName.split("/");
 
         if (role.length > 0) {
             if (role[0] == "Application") {
@@ -545,7 +608,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         setSelection(false);
     };
 
-    const handleRoleIdSet = (roleId) => {
+    const handleRoleIdSet = (roleId: string) => {
         setRoleId(roleId);
         setSelection(true);
     };
@@ -605,8 +668,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                         + "emptyPlaceholders.default") }
                                 >
                                     {
-                                        roleList?.map((role, index) => {
-                                            const roleName = role.displayName?.split("/");
+                                        roleList?.map((role: any, index: number) => {
+                                            const roleName: string[] = role.displayName?.split("/");
 
                                             if (roleName.length >= 1) {
                                                 return (
@@ -646,8 +709,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                         + "emptyPlaceholders.default") }
                                 >
                                     {
-                                        tempRoleList?.map((role, index) => {
-                                            const roleName = role.displayName.split("/");
+                                        tempRoleList?.map((role: any, index: number) => {
+                                            const roleName: string[] = role.displayName.split("/");
 
                                             if (roleName.length >= 1) {
                                                 return (
@@ -703,15 +766,15 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedRoleListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleAssignedRoleListSearch = (e: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
+        let isMatch: boolean = false;
+        const filteredRoleList:RolesMemberInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            assignedRoles && assignedRoles?.map((role) => {
-                const groupName = role.display.split("/");
+            assignedRoles && assignedRoles?.map((role: RolesMemberInterface) => {
+                const groupName: string[] = role.display.split("/");
 
                 if (groupName.length > 1) {
                     isMatch = re.test(role.display);
@@ -818,8 +881,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group, index: number) => {
-                                                        const groupRole = group.display.split("/");
+                                                    assignedRoles?.map((group: any, index: number) => {
+                                                        const groupRole: string[] = group.display.split("/");
 
                                                         if (groupRole.length >= 1) {
                                                             return (

@@ -1,0 +1,18 @@
+{
+    "id": "choreo-apim-application-oidc",
+    "templateId": "choreo-apim-application-oidc",
+    "name": "Standard-Based Application",
+    "description": "Applications built using standard protocols.",
+    "image": "customApp",
+    "authenticationProtocol": "",
+    "category": "CUSTOM",
+    "displayOrder": -1,
+    "self": "",
+    "subTemplates": [],
+    "subTemplatesSectionTitle": "Protocol",
+    "templateGroup": "",
+    "types": [
+        "oidc"
+    ],
+    "application": null
+}

@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -29,7 +28,6 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { Show } from "apps/console/src/features/feature-gate/controller/show-feature";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -42,7 +40,10 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { GenericAuthenticatorInterface, IdentityProviderManagementConstants } from "../../../../identity-providers";
+import { 
+    IdentityProviderManagementConstants
+} from "../../../../identity-providers/constants/identity-provider-management-constants";
+import { GenericAuthenticatorInterface } from "../../../../identity-providers/models/identity-provider";
 import { OrganizationType } from "../../../../organizations/constants";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
@@ -52,11 +53,8 @@ import {
     AuthenticatorInterface,
     FederatedConflictWithSMSOTPReturnValueInterface
 } from "../../../models";
-import {
-    AdaptiveScriptUtils,
-    ConnectionsJITUPConflictWithMFAReturnValue,
-    SignInMethodUtils
-} from "../../../utils";
+import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
+import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -154,7 +152,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
+    
     useEffect(() => {
 
         const FEDERATED_CONNECTIONS: number = 1;
@@ -740,19 +738,17 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             {
                 (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
                 && (
-                    <Show ifAllowed="console.application.signIn.adaptiveAuth">
-                        <ScriptBasedFlow
-                            authenticationSequence={ sequence }
-                            isLoading={ isLoading }
-                            onTemplateSelect={ handleLoadingDataFromTemplate }
-                            onScriptChange={ handleAdaptiveScriptChange }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-script-based-flow` }
-                            authenticationSteps={ steps }
-                            isDefaultScript={ isDefaultScript }
-                            onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
-                        />
-                    </Show>
+                    <ScriptBasedFlow
+                        authenticationSequence={ sequence }
+                        isLoading={ isLoading }
+                        onTemplateSelect={ handleLoadingDataFromTemplate }
+                        onScriptChange={ handleAdaptiveScriptChange }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-script-based-flow` }
+                        authenticationSteps={ steps }
+                        isDefaultScript={ isDefaultScript }
+                        onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                    />
                 )
             }
             {

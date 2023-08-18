@@ -19,7 +19,7 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "../components";
 import { getAuthLayoutRoutes } from "../configs";
 import { AppConstants } from "../constants";
@@ -61,9 +61,9 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
             <Suspense fallback={ <PreLoader /> }>
                 <Switch>
                     {
-                        authLayoutRoutes.map((route, index) => (
+                        authLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo } />
+                                ? <Redirect to={ route.redirectTo } key={ index } />
                                 : route.protected
                                     ? (
                                         <ProtectedRoute
@@ -76,7 +76,7 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
+                                            render={ (renderProps: RouteComponentProps) =>
                                                 route.component
                                                     ? <route.component { ...renderProps } />
                                                     : null

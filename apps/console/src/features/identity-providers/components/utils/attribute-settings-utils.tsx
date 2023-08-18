@@ -1,26 +1,20 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
+import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
+import { Dispatch, SetStateAction } from "react";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
 import { getAllLocalClaims } from "../../../claims/api";
 import { store } from "../../../core";
@@ -41,21 +35,21 @@ export interface DropdownOptionsInterface {
     value: string;
 }
 
-export const LocalDialectURI = "http://wso2.org/claims";
+export const LocalDialectURIL: string = "http://wso2.org/claims";
 
 export const getLocalDialectURI = (): string => {
 
-    let localDialect = "http://wso2.org/claims";
+    let localDialect: string = "http://wso2.org/claims";
 
     getAllLocalClaims(null)
-        .then((response) => {
-            const retrieved = response.slice(0, 1)[0].dialectURI;
+        .then((response: Claim[]) => {
+            const retrieved: string = response.slice(0, 1)[0].dialectURI;
 
             if (!isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
         })
-        .catch((error) => {
+        .catch((error: IdentityAppsApiException) => {
             handleGetAllLocalClaimsError(error);
         });
 
@@ -97,28 +91,36 @@ export const createDropdownOption = (selectedClaimsWithMapping: IdentityProvider
 };
 
 export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
-    availableLocalClaims: IdentityProviderClaimInterface[]):
-    IdentityProviderClaimInterface[] => {
-    return isEmpty(claimMappings) ? availableLocalClaims : claimMappings?.map(
-        (claimMapping: IdentityProviderCommonClaimMappingInterface): IdentityProviderClaimInterface => {
-            return {
-                displayName: claimMapping.mappedValue,
-                id: claimMapping.claim.id,
-                uri: claimMapping.mappedValue
-            } as IdentityProviderClaimInterface;
-        });
+    availableLocalClaims: IdentityProviderClaimInterface[]): IdentityProviderClaimInterface[] => {
+
+    return isEmpty(claimMappings)
+        ? availableLocalClaims
+        : claimMappings?.map(
+            (claimMapping: IdentityProviderCommonClaimMappingInterface): IdentityProviderClaimInterface => {
+                if (claimMapping?.claim?.id && claimMapping?.mappedValue) {
+                    return {
+                        displayName: claimMapping.mappedValue,
+                        id: claimMapping.claim.id,
+                        uri: claimMapping.mappedValue
+                    } as IdentityProviderClaimInterface;
+                }
+            });
 };
 
 export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMappingInterface,
     selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]): boolean => {
     // Mapped value of the selectedClaim is non-other than IdP's claim uri.
-    return find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
+    return find(selectedClaimsWithMapping,
+        (element: IdentityProviderCommonClaimMappingInterface) =>
+            element.mappedValue === mapping.claim.uri) !== undefined;
 };
 
-export const updateAvailableLocalClaims = (setAvailableLocalClaims): void => {
+export const updateAvailableLocalClaims = (
+    setAvailableLocalClaims: Dispatch<SetStateAction<IdentityProviderClaimInterface[]>>
+): void => {
     getAllLocalClaims(null)
         .then((response: Claim[]) => {
-            setAvailableLocalClaims(response?.map(claim => {
+            setAvailableLocalClaims(response?.map((claim: Claim) => {
                 return {
                     displayName: claim.displayName,
                     id: claim.id,
@@ -126,12 +128,15 @@ export const updateAvailableLocalClaims = (setAvailableLocalClaims): void => {
                 } as IdentityProviderClaimInterface;
             }));
         })
-        .catch((error) => {
+        .catch((error: IdentityAppsApiException) => {
             handleGetAllLocalClaimsError(error);
         });
 };
 
-export const initSelectedClaimMappings = (initialClaims, setSelectedClaimsWithMapping) => {
+export const initSelectedClaimMappings = (
+    initialClaims: IdentityProviderClaimsInterface,
+    setSelectedClaimsWithMapping: Dispatch<SetStateAction<IdentityProviderCommonClaimMappingInterface[]>>
+): void => {
     setSelectedClaimsWithMapping(
         initialClaims?.mappings?.map((element: IdentityProviderClaimMappingInterface) => {
             return {
@@ -142,8 +147,11 @@ export const initSelectedClaimMappings = (initialClaims, setSelectedClaimsWithMa
     );
 };
 
-export const initSelectedProvisioningClaimsWithDefaultValues = (initialClaims,
-    setSelectedProvisioningClaimsWithDefaultValue) => {
+export const initSelectedProvisioningClaimsWithDefaultValues = (
+    initialClaims: IdentityProviderClaimsInterface,
+    setSelectedProvisioningClaimsWithDefaultValue:
+        Dispatch<SetStateAction<IdentityProviderCommonClaimMappingInterface[]>>
+): void => {
     setSelectedProvisioningClaimsWithDefaultValue(
         initialClaims?.provisioningClaims?.map((element: IdentityProviderProvisioningClaimInterface) => {
             return {
@@ -158,7 +166,11 @@ export const initSelectedProvisioningClaimsWithDefaultValues = (initialClaims,
     );
 };
 
-export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRoleClaimUri) => {
+export const initSubjectAndRoleURIs = (
+    initialClaims: IdentityProviderClaimsInterface,
+    setSubjectClaimUri: Dispatch<SetStateAction<string>>,
+    setRoleClaimUri: Dispatch<SetStateAction<string>>
+): void => {
     setSubjectClaimUri(initialClaims?.userIdClaim?.uri);
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
 };
@@ -186,11 +198,11 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
                             "notifications.updateAttributes." +
                             "success.message")
                 }));
-            }).catch(error => {
+            }).catch((error: AxiosError) => {
                 handleUpdateIDPRoleMappingsError(error);
             });
         })
-        .catch((error) => {
+        .catch((error: IdentityAppsApiException) => {
             if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
                     description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
@@ -213,7 +225,7 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
         });
 };
 
-export const handleGetAllLocalClaimsError = (error) => {
+export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(addAlert({
             description: I18n.instance.t("console:develop.features.authenticationProvider" +

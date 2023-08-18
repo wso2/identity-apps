@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -29,13 +29,13 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /*
  * This API is used to get enabled second factor authenticators of the user.
  */
 export const getEnabledAuthenticators = (): Promise<EnabledAuthenticatorsInterface> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
             "Content-Type": "application/json"
@@ -68,7 +68,7 @@ export const getEnabledAuthenticators = (): Promise<EnabledAuthenticatorsInterfa
  * @param enabledAuthenticators string of enabled authenticator list.
  */
 export const updateEnabledAuthenticators = (enabledAuthenticators: string): Promise<AxiosResponse> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             enabledAuthenticators: enabledAuthenticators
         },

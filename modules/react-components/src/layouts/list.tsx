@@ -210,77 +210,64 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                     {
                                         !disableLeftActionPanel
                                             ? (
-                                                <Grid.Column
-                                                    mobile={ 16 }
-                                                    tablet={ 16 }
-                                                    computer={ disableRightActionPanel ? 16 : 8 }
-                                                >
-                                                    <div className="left-aligned actions">
-                                                        { advancedSearchPosition === "left" && advancedSearch }
-                                                        { leftActionPanel }
-                                                    </div>
-                                                </Grid.Column>
+                                                <div className={ "left-aligned actions" }>
+                                                    { advancedSearchPosition === "left" && advancedSearch }
+                                                    { leftActionPanel }
+                                                </div>
                                             ) : null
                                     }
                                     {
                                         !disableRightActionPanel
                                             ? (
-                                                <Grid.Column
-                                                    mobile={ 16 }
-                                                    tablet={ 16 }
-                                                    computer={ disableLeftActionPanel ? 16 : 8 }
-                                                >
-                                                    <div className="actions right-aligned">
-                                                        { advancedSearchPosition === "right" && advancedSearch }
-                                                        { rightActionPanel }
-                                                        {
-                                                            sortOptions &&
-                                                            sortStrategy &&
-                                                            onSortStrategyChange &&
-                                                            onSortOrderChange && (
-                                                                <div className="sort-list">
-                                                                    <Dropdown
-                                                                        onChange={ onSortStrategyChange }
-                                                                        options={ sortOptions }
-                                                                        placeholder={ "Sort by" }
-                                                                        selection
-                                                                        value={
-                                                                            sortOptions?.length === 1
-                                                                                ? sortOptions[0].value
-                                                                                : sortStrategy.value
-                                                                        }
-                                                                        disabled={ sortOptions?.length === 1 }
-                                                                        data-componentid={ `${ componentId }-sort` }
-                                                                        data-testid={ `${ testId }-sort` }
-                                                                    />
-                                                                    <Button
-                                                                        data-tooltip={
+                                                <div className="actions right-aligned">
+                                                    { advancedSearchPosition === "right" && advancedSearch }
+                                                    { rightActionPanel }
+                                                    {
+                                                        sortOptions && 
+                                                        sortStrategy &&
+                                                        onSortStrategyChange &&
+                                                        onSortOrderChange && (
+                                                            <div className="sort-list">
+                                                                <Dropdown
+                                                                    onChange={ onSortStrategyChange }
+                                                                    options={ sortOptions }
+                                                                    placeholder={ "Sort by" }
+                                                                    selection
+                                                                    value={
+                                                                        sortOptions?.length === 1
+                                                                            ? sortOptions[0].value
+                                                                            : sortStrategy.value
+                                                                    }
+                                                                    disabled={ sortOptions?.length === 1 }
+                                                                    data-componentid={ `${ componentId }-sort` }
+                                                                    data-testid={ `${ testId }-sort` }
+                                                                />
+                                                                <Button
+                                                                    data-tooltip={ isAscending
+                                                                        ? "Sort in the descending order"
+                                                                        : "Sort in the ascending order"
+                                                                    }
+                                                                    data-position="top right"
+                                                                    data-inverted=""
+                                                                    icon
+                                                                    onClick={ () => {
+                                                                        setIsAscending(!isAscending);
+                                                                        onSortOrderChange(!isAscending);
+                                                                    } }
+                                                                    className="left-aligned-action"
+                                                                >
+                                                                    <Icon
+                                                                        name={
                                                                             isAscending
-                                                                                ? "Sort in the descending order"
-                                                                                : "Sort in the ascending order"
+                                                                                ? "sort amount down"
+                                                                                : "sort amount up"
                                                                         }
-                                                                        data-position="top right"
-                                                                        data-inverted=""
-                                                                        icon
-                                                                        onClick={ () => {
-                                                                            setIsAscending(!isAscending);
-                                                                            onSortOrderChange(!isAscending);
-                                                                        } }
-                                                                        className="left-aligned-action"
-                                                                    >
-                                                                        <Icon
-                                                                            name={
-                                                                                isAscending
-                                                                                    ? "sort amount down"
-                                                                                    : "sort amount up"
-                                                                            }
-                                                                        />
-                                                                    </Button>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </Grid.Column>
+                                                                    />
+                                                                </Button>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
                                             ) : null
                                     }
                                 </Grid.Row>

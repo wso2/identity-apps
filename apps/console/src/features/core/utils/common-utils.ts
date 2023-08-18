@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,16 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { AlertLevels, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { addAlert, setTenants } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
+import { getAssociatedTenants } from "../../../extensions/components/tenants/api";
+import { TenantInfo, TenantRequestResponse } from "../../../extensions/components/tenants/models";
 import { CommonConstants } from "../constants";
+import { store } from "../store";
 
 /**
  * Utility class for common util operations.
@@ -34,7 +38,6 @@ export class CommonUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -42,7 +45,7 @@ export class CommonUtils {
     /**
      * Retrieve the set of seen announcements persisted in the storage.
      *
-     * @return {string[]} Seen announcements.
+     * @returns - Seen announcements.
      */
     public static getSeenAnnouncements(): string[] {
 
@@ -58,7 +61,7 @@ export class CommonUtils {
     /**
      * Persists the seen announcement in the storage.
      *
-     * @param {string} id - Id of the seen announcement.
+     * @param id - Id of the seen announcement.
      */
     public static setSeenAnnouncements(id: string): void {
 
@@ -69,10 +72,79 @@ export class CommonUtils {
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-        const seen = get(userPreferences, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, []);
+        const seen: any = get(userPreferences, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, []);
 
         set(newPref, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, [ ...seen, id ]);
 
         AppUtils.setUserPreferences(newPref);
+    }
+
+    public static async buildBillingURLs (tenantDomain?: string, associatedTenants?: any[]):
+        Promise<{
+            billingPortalURL: string;
+            upgradeButtonURL: string;
+        }> {
+        if (!tenantDomain) {
+            tenantDomain = store.getState()?.auth?.tenantDomain;
+        }
+        if (associatedTenants) {
+            associatedTenants = store.getState()?.auth?.tenants;
+        }
+
+        if (!Array.isArray(associatedTenants)) {
+            await getAssociatedTenants()
+                .then((response: TenantRequestResponse) => {
+                    associatedTenants = response?.associatedTenants;
+
+                    store.dispatch(setTenants<TenantInfo>(response.associatedTenants));
+                })
+                .catch((error: any) => {
+                    store.dispatch(
+                        addAlert({
+                            description:
+                                error?.description &&
+                                I18n.instance.t("extensions:manage.features.tenant.notifications."
+                                    + "getTenants.description"),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error?.description &&
+                                I18n.instance.t("extensions:manage.features.tenant.notifications."
+                                    + "getTenants.message")
+                        })
+                    );
+                });
+        }
+
+        if (!tenantDomain) {
+            return {
+                billingPortalURL: "",
+                upgradeButtonURL: ""
+            };
+        }
+
+        if (!Array.isArray(associatedTenants)) {
+            return {
+                billingPortalURL: "",
+                upgradeButtonURL: ""
+            };
+        }
+
+        const user: Record<string, unknown> = associatedTenants.find(
+            (tenant: any) => tenant.domain == tenantDomain
+        );
+
+        if (user?.associationType !== "MEMBER") {
+            return {
+                billingPortalURL: "",
+                upgradeButtonURL: ""
+            };
+        }
+
+        return {
+            billingPortalURL: window[ "AppUtils" ].getConfig()
+                .extensions?.billingPortalUrl?.replace("${tenantId}", user.id),
+            upgradeButtonURL: window[ "AppUtils" ].getConfig()
+                .extensions?.upgradeButtonUrl?.replace("${tenantId}", user.id)
+        };
     }
 }

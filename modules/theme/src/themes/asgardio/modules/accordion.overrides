@@ -1,0 +1,27 @@
+/*-----------------------------
+      Nested List Variation
+------------------------------*/
+
+.ui.accordion {
+    &.nested-list-accordion {
+        .nested-list-accordion-title {
+            .chevron {
+                transition: transform .1s ease-in-out;
+            }
+            &.active {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+
+                .chevron {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+        .nested-list-accordion-content-text {
+            padding-left: 1em !important;
+        }
+        .nested-list-accordion-content-checkbox {
+            padding-left: 2em !important;
+        }
+    }
+}

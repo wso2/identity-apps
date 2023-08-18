@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -110,5 +110,20 @@ createFile(newMetaFilePath, JSON.stringify(meta, undefined, 4));
 
 log("Cleaning the tmp directory...");
 execSync("pnpm clean:i18n:dist");
+
+// Path of the build directory.
+const layoutsDirectory = path.join(__dirname, "..", "..", "..", "java", "components", "login-portal-layouts", "layouts");
+const layoutsSrc = path.join(__dirname, "..", "src", "login-portal-layouts");
+
+// Remove the src directory if it exists.
+if (fs.existsSync(layoutsSrc)) {
+  log("Removing existing layouts directory in src");
+  fs.removeSync(layoutsSrc);
+}
+
+// Copy the layouts directory to the src directory.
+fs.copySync(layoutsDirectory, layoutsSrc);
+
+log("Moving layouts to the build directory");
 
 log("\nFinishing up the pre build script.....");

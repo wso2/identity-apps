@@ -1,6 +1,7 @@
 {
+    "private": true,
     "name": "@wso2is/theme",
-    "version": "1.6.364",
+    "version": "0.1.31",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -25,9 +26,7 @@
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
         "test": "pnpm jest",
         "test:watch": "pnpm test -- --watch",
-        "jest": "run-script-os",
-        "jest:win32": ".\\node_modules\\.bin\\jest --passWithNoTests",
-        "jest:default": "./node_modules/.bin/jest --passWithNoTests",
+        "jest": "pnpm jest --passWithNoTests",
         "watch": "watch \"pnpm build\" src"
     },
     "author": "WSO2",
@@ -36,8 +35,8 @@
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
         "@types/jest": "^26.0.14",
-        "@typescript-eslint/eslint-plugin": "^4.17.0",
-        "@typescript-eslint/parser": "^4.17.0",
+        "@typescript-eslint/eslint-plugin": "^4.32.0",
+        "@typescript-eslint/parser": "^4.32.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
         "eslint": "^7.20.0",

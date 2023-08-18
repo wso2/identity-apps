@@ -246,97 +246,109 @@ export class AppConstants {
 
         const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
 
-        return new Map<string, string>()
-            .set("ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview`)
-            .set("APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications`)
-            .set("APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates`)
-            .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
-            .set("APPLICATION_SIGN_IN_METHOD_EDIT", `${ AppConstants.getDeveloperViewBasePath()
-            }/applications/:id:tabName`)
-            .set("APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals`)
-            .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
-            .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings`)
-            .set("CONNECTIONS", `${ AppConstants.getDeveloperViewBasePath() }/connections`)
-            .set("CONNECTION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`)
-            .set("CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`)
-            .set("CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize`)
-            .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
-            .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
-            .set("EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId`)
-            .set("EMAIL_TEMPLATE", `${
-                AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/:templateId`)
-            .set("EMAIL_TEMPLATE_ADD", `${
-                AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
-                AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`)
-            .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id`)
-            .set("GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups`)
-            .set("GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id`)
-            .set("IDP",
+        const paths: Map<string, string> = new Map<string, string>([
+            [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
+            [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
+            [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
+            [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
+            [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
+            [ "APPLICATION_ROLES_EDIT", 
+                `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
+            [ "APPLICATION_ROLES_SUB", `${ AppConstants.getAdminViewBasePath() }/roles/application-roles` ],
+            [ "APPLICATION_ROLES_EDIT_SUB", 
+                `${ AppConstants.getAdminViewBasePath() }/roles/application-roles/:applicationId/:roleId` ],
+            [ 
+                "APPLICATION_SIGN_IN_METHOD_EDIT", 
+                `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName` 
+            ],
+            [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
+            [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
+            [ "CONNECTIONS", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
+            [ "CONNECTION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
+            [ "CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
+            [ "CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize` ],
+            [ "DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview` ],
+            [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
+            [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
+            [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
+            [
+                "EMAIL_TEMPLATE",
+                `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/:templateId`
+            ],
+            [
+                "EMAIL_TEMPLATE_ADD",
+                `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId/${
+                    AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`
+            ],
+            [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
+            [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
+            [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
+            [ "IDP",
                 useNewConnectionsView
                     ? `${ AppConstants.getDeveloperViewBasePath() }/connections`
                     : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`
-            )
-            .set("IDP_TEMPLATES",
+            ],
+            [ "IDP_TEMPLATES",
                 useNewConnectionsView
                     ? `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`
                     : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`
-            )
-            .set("IDP_EDIT",
+            ],
+            [ "IDP_EDIT",
                 useNewConnectionsView
-                    ?`${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-                    :`${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
-            )
-            .set("IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers`)
-            .set("IDVP_TEMPLATES",
-                `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
-            )
-            .set("IDVP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/:id`)
-            .set("EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit`)
-            .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes`)
-            .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id`)
-            .set("LOGIN",  window[ "AppUtils" ]?.getConfig()?.routes.login)
-            .set("SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim`)
-            .set("LOGOUT",  window[ "AppUtils" ]?.getConfig()?.routes.logout)
-            .set("OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes`)
-            .set("OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id`)
-            .set("PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404`)
-            .set("PRIVACY", `${ AppConstants.getMainViewBasePath() }/privacy`)
-            .set("REMOTE_REPO_CONFIG", `${ AppConstants.getAdminViewBasePath() }/remote-repository-config`)
-            .set("ROLES", `${ AppConstants.getAdminViewBasePath() }/roles`)
-            .set("ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id`)
-            .set("ROOT", "/")
-            .set("GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id`)
-            .set("UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized`)
-            .set("USERS", `${AppConstants.getAdminViewBasePath()}/users`)
-            .set("USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id`)
-            .set("USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores`)
-            .set("USERSTORES_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-user-store/:id`)
-            .set("USERSTORE_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/userstore-templates`)
-            .set("STORING_DATA_DISABLED", `${AppConstants.getMainViewBasePath()}/storing_data_disabled`)
-            .set("GOVERNANCE_CONNECTOR", `${AppConstants.getAdminViewBasePath()}/connector/:id`)
-            .set(
+                    ? `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
+                    : `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+            ],
+            [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
+            [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
+            [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
+            [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
+            [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
+            [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
+            [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
+            [ "OIDC_SCOPES_EDIT", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes/:id` ],
+            [ "PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404` ],
+            [ "PRIVACY", `${ AppConstants.getMainViewBasePath() }/privacy` ],
+            [ "REMOTE_REPO_CONFIG", `${ AppConstants.getAdminViewBasePath() }/remote-repository-config` ],
+            [ "ROLES", `${ AppConstants.getAdminViewBasePath() }/roles` ],
+            [ "ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id` ],
+            [ "ROOT", "/" ],
+            [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
+            [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
+            [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
+            [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
+            [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],
+            [ "USERSTORES_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-user-store/:id` ],
+            [ "USERSTORE_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/userstore-templates` ],
+            [ "STORING_DATA_DISABLED", `${AppConstants.getMainViewBasePath()}/storing_data_disabled` ],
+            [ "GOVERNANCE_CONNECTOR", `${AppConstants.getAdminViewBasePath()}/connector/:id` ],
+            [
                 "GOVERNANCE_CONNECTOR_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/connector/:categoryId/:connectorId`
-            )
-            .set("SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets`)
-            .set("SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name`)
-            .set("ATTRIBUTE_MAPPINGS", `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type`)
-            .set("CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant`)
-            .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
-            .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
-            .set("ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/organization-roles`)
-            .set("ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/organization-roles/:id`)
-            .set("ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators`)
-            .set("MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account`)
-            .set("MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account`)
-            .set("VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration`)
-            .set("VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration`)
-            .set("ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login`)
-            .set("USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation`)
-            .set(
-                "PRIVATE_KEY_JWT_CONFIG_EDIT",
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
-            );
+            ],
+            [ "SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets` ],
+            [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
+            [ "ATTRIBUTE_MAPPINGS", `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type` ],
+            [ "CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant` ],
+            [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
+            [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],
+            [ "ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles` ],
+            [ "ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles/:id` ],
+            [ "ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators` ],
+            [ "MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account` ],
+            [ "MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account` ],
+            [ "VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration` ],
+            [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
+            [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
+            [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
+            [ 
+                "PRIVATE_KEY_JWT_CONFIG_EDIT", 
+                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
+            ],
+            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ]
+        ]);
+
+        return paths;
     }
 
     /**
@@ -356,11 +368,16 @@ export class AppConstants {
                 showGovernanceConnectorsIdOfSuborgs.push(connector.id);
             });
 
-        const filteredGovernaceConnector: GovernanceConnectorCategoryInterface[] = 
-            governanceConnectorCategories.filter((connector: GovernanceConnectorCategoryInterface) =>
-                showGovernanceConnectorsIdOfSuborgs.includes(connector.id));
+        for (let index: number = governanceConnectorCategories.length-1; index >=0 ; index--) {
 
-        return filteredGovernaceConnector;
+            const connector: GovernanceConnectorCategoryInterface = governanceConnectorCategories[index];
+
+            if(!showGovernanceConnectorsIdOfSuborgs.includes(connector.id)) {
+                governanceConnectorCategories.splice(index,1);
+            }
+        }
+
+        return governanceConnectorCategories;
     }
 
     /**
@@ -376,20 +393,22 @@ export class AppConstants {
     /**
      * Set of login errors to be used as search params to toggle unauthorized page appearance.
      */
-    public static readonly LOGIN_ERRORS: Map<string, string> = new Map<string, string>()
-        .set("NO_LOGIN_PERMISSION", "no_login_permission")
-        .set("ACCESS_DENIED", "access_denied")
-        .set("USER_DENIED_CONSENT", "consent_denied");
+    public static readonly LOGIN_ERRORS: Map<string, string> = new Map<string, string>([
+        [ "NO_LOGIN_PERMISSION", "no_login_permission" ],
+        [ "ACCESS_DENIED", "access_denied" ],
+        [ "USER_DENIED_CONSENT", "consent_denied" ]
+    ]);
 
     /**
      * Route ids that are enabled in an organization.
      */
     public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
+        "gettingStarted",
         "identityProviders",
         "users",
         "organizations",
         "groups",
-        "organization-roles",
+        "roles",
         "applications",
         "emailTemplates",
         "governanceConnectors"
@@ -408,7 +427,7 @@ export class AppConstants {
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
      */
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
-        "organization-roles"
+        "roles"
     ]
 
     /**

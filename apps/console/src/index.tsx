@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
+import { ThemeProvider } from "@oxygen-ui/react/theme";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
@@ -26,6 +25,7 @@ import { ReactElement } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { AsgardeoTheme } from "./branding/theme";
 import { AuthenticateUtils } from "./features/authentication";
 import { Config, PreLoader, store } from "./features/core";
 import { ProtectedApp } from "./protected-app";
@@ -76,17 +76,19 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <Provider store={ store }>
-            <BrowserRouter>
-                <AuthProvider
-                    config={ AuthenticateUtils.getInitializeConfig() }
-                    fallback={ <PreLoader /> }
-                    getAuthParams={ getAuthParams }
-                >
-                    <ProtectedApp />
-                </AuthProvider>
-            </BrowserRouter>
-        </Provider>
+        <ThemeProvider theme={ AsgardeoTheme }>
+            <Provider store={ store }>
+                <BrowserRouter>
+                    <AuthProvider
+                        config={ AuthenticateUtils.getInitializeConfig() }
+                        fallback={ <PreLoader /> }
+                        getAuthParams={ getAuthParams }
+                    >
+                        <ProtectedApp />
+                    </AuthProvider>
+                </BrowserRouter>
+            </Provider>
+        </ThemeProvider>
     );
 };
 

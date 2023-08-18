@@ -111,7 +111,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     } = props;
 
     const contentRef: MutableRefObject<HTMLIFrameElement> = useRef<HTMLIFrameElement>(null);
-    
+
     const [ isParentStylesheetsCloningCompleted, setIsParentStylesheetsCloningCompleted ] = useState<boolean>(false);
     const [ clonedStyleSheets, setClonedStyleSheets ] = useState<string[]>([]);
     const [ clonedParentStyleSheets, setClonedParentStyleSheets ] = useState<string[]>([]);
@@ -133,7 +133,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
      * Clones the parent node's stylesheets to the iframe.
      */
     useEffect(() => {
-        
+
         // Check if main body node is loaded before proceeding.
         if (!iFrameBodyNode) {
             return;
@@ -151,7 +151,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!parentNodeStyleSheets || !parentNodeStyleSheets.length || parentNodeStyleSheets.length <= 0) {
             return;
         }
-        
+
         const styleSheetPromises: Promise<HTMLLinkElement>[] = [];
         const _clonedParentStyleSheets: string[] = [];
 
@@ -197,7 +197,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         if (!iFrameWindow) {
             return;
         }
-        
+
         // Check if the parent stylesheet cloning is completed.
         if (!isParentStylesheetsCloningCompleted) {
             isReady(false);
@@ -244,7 +244,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
     }, [ stylesheets, isParentStylesheetsCloningCompleted ]);
 
     /**
-     * 
+     *
      */
     useEffect(() => {
 
@@ -264,7 +264,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         // styles on `style` prop changes.
         const styleNodesCollection: HTMLCollectionOf<HTMLStyleElement> = iFrameWindow.document
             .getElementsByTagName("style");
-        
+
         for (const node of styleNodesCollection) {
             node.remove();
         }
@@ -272,7 +272,7 @@ export const Iframe: FunctionComponent<PropsWithChildren<IframeProps>> = (
         const styleNode: HTMLStyleElement = iFrameWindow.document.createElement("style");
 
         styleNode.innerHTML = styles;
-        
+
         // If the `injectStyleNodeAfterParentStyles` flag is set, change the inject strategy to append.
         if (injectStyleNodeAfterParentStyles) {
             iFrameWindow.document.head.appendChild(styleNode);

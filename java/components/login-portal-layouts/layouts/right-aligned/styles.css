@@ -1,0 +1,43 @@
+/**
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+ */
+
+.login-portal.layout .page-wrapper.layout-file .slogan-container .tag-line-text {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.login-portal.layout .page-wrapper.layout-file .slogan-container .tag-line-text > p {
+  font-size: 1.3rem;
+  max-width: 300px;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment .ui.container > .theme-icon.product-logo.portal-logo {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment:not(.landing-segment) .slogan-container{
+    margin-right: 70px;
+    min-width: 32em;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment:not(.landing-segment) .slogan-container{
+    margin-right: 70px;
+    min-width: 25em;
+  }
+}
+
+@media only screen and (max-width: 933px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment .ui.container > .theme-icon.product-logo.portal-logo {
+    display: block;
+  }
+}

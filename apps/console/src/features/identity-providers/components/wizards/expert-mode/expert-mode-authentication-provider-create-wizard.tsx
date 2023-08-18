@@ -1,21 +1,11 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
-
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,10 +19,12 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
@@ -43,7 +35,7 @@ import { AppConstants } from "../../../../core/constants";
 import { AppState } from "../../../../core/store";
 import { EventPublisher } from "../../../../core/utils";
 import { createIdentityProvider } from "../../../api";
-import { getIdPIcons } from "../../../configs";
+import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
@@ -84,9 +76,9 @@ export interface ExpertModeAuthenticationProviderCreateWizardFormErrorValidation
 /**
  * Expert Mode Authentication Provider Create Wizard Component.
  *
- * @param {ExpertModeAuthenticationProviderCreateWizardPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Expert Mode Authentication Provider Create Wizard Component.
  */
 export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
     ExpertModeAuthenticationProviderCreateWizardPropsInterface
@@ -104,7 +96,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
             [ "data-componentid" ]: componentId
         } = props;
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
 
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
@@ -131,14 +123,14 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Creates a new identity provider.
         *
-        * @param identityProvider Identity provider object.
+        * @param identityProvider - Identity provider object.
         */
         const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
             setIsSubmitting(true);
 
             createIdentityProvider(identityProvider)
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     eventPublisher.publish("connections-finish-adding-connection", {
                         type: componentId
                     });
@@ -154,8 +146,8 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     // The created resource's id is sent as a location header.
                     // If that's available, navigate to the edit page.
                     if (!isEmpty(response.headers.location)) {
-                        const location = response.headers.location;
-                        const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                        const location: string = response.headers.location;
+                        const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                         onIDPCreate(createdIdpID);
 
@@ -165,7 +157,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     // Since the location header is not present, trigger callback without the id.
                     onIDPCreate();
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
 
                     const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
@@ -225,7 +217,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Callback triggered when the form is submitted.
         *
-        * @param {ExpertModeAuthenticationProviderCreateWizardFormValuesInterface} values - Form values.
+        * @param values - Form values.
         */
         const onSubmitWizard = (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface): void => {
 
@@ -254,7 +246,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Resolve the step wizard actions.
         *
-        * @return {React.ReactElement}
+        * @returns Resolved step actions.
         */
         const resolveStepActions = (): ReactElement => {
 
@@ -323,7 +315,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         /**
         * Renders the help panel containing wizard help.
         *
-        * @return {React.ReactElement}
+        * @returns Resolved help panel.
         */
         const renderHelpPanel = (): ReactElement => {
 

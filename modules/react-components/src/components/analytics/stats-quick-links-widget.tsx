@@ -115,7 +115,7 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                                             key={ index }
                                             image={ image }
                                             imageOptions={ {
-                                                fill: "default"  
+                                                fill: "default"
                                             } }
                                             size="auto"
                                             header={ header }

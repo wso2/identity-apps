@@ -1,0 +1,14 @@
+<!--
+~    Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~
+~    This software is the property of WSO2 Inc. and its suppliers, if any.
+~    Dissemination of any information or reproduction of any material contained
+~    herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+~    You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg id="documentation" xmlns="http://www.w3.org/2000/svg" width="13.52" height="16.03" viewBox="0 0 13.52 16.03">
+  <g id="Group_1322" data-name="Group 1322" transform="translate(0)">
+    <path id="Path_2359" data-name="Path 2359" d="M52.844,2.124H51.492V.773A.775.775,0,0,0,50.72,0H40.87A.775.775,0,0,0,40.1.773V13.133a.775.775,0,0,0,.773.773h1.352v1.352a.775.775,0,0,0,.773.773H49.56A2.254,2.254,0,0,0,50.9,15.5l2.158-2.031a2.051,2.051,0,0,0,.563-1.3V2.9A.775.775,0,0,0,52.844,2.124ZM42.221,2.9V13.326H40.87a.2.2,0,0,1-.193-.193V.773A.2.2,0,0,1,40.87.579h9.85a.2.2,0,0,1,.193.193V2.125H42.994A.775.775,0,0,0,42.221,2.9ZM52.656,13.048,50.5,15.079a1.025,1.025,0,0,1-.165.121V13.423a.484.484,0,0,1,.483-.483h1.932A.811.811,0,0,1,52.656,13.048Zm.38-.88a.9.9,0,0,1-.026.193H50.816a1.064,1.064,0,0,0-1.062,1.062v2a1.01,1.01,0,0,1-.193.023H42.994a.2.2,0,0,1-.193-.193V2.9a.2.2,0,0,1,.193-.193h9.85a.2.2,0,0,1,.193.193Z" transform="translate(-40.097 0)" fill="#3b3b3b"/>
+  </g>
+</svg>
