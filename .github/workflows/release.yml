@@ -113,7 +113,7 @@ jobs:
 
             - name: 🚀 Maven Release
               id: maven-release
-              run: mvn -B release:prepare && mvn release:perform --settings ~/.m2/settings.xml
+              run: mvn -B release:prepare && mvn -X release:perform --settings ~/.m2/settings.xml
 
             - name: 🚀 Release React Apps
               if: always()
