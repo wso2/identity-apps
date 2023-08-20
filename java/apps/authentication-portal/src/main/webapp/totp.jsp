@@ -224,7 +224,7 @@
                             String multiOptionURI = request.getParameter("multiOptionURI");
                             if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
                         %>
-                            <a class="ui button secondary" id="goBackLink"
+                            <a class="ui primary basic button link-button" id="goBackLink"
                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                             </a>
