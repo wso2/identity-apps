@@ -1,32 +1,20 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~
+~ This software is the property of WSO2 Inc. and its suppliers, if any.
+~ Dissemination of any information or reproduction of any material contained
+~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+~ You may not alter or remove any copyright or other notice from copies of this content."
 --%>
 
 <%-- Tenant resolve JSP must be included in the calling script inorder to resolve tenant context --%>
 
-<%@ page import="java.io.File" %>
-<%@ page import="java.io.FileReader" %>
-<%@ page import="java.io.FileNotFoundException" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="org.json.JSONObject" %>
-<%@ page import="org.json.JSONTokener" %>
-<%@ page import="org.json.JSONException" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
 <%
@@ -35,6 +23,9 @@
     boolean isBrandingEnabledInTenantPreferences = true;
     boolean isSelfSignUpEnabledInTenantPreferences = true;
     boolean isPasswordRecoveryEnabledInTenantPreferences = true;
+    // This should be decided based on the subscription tier.
+    // TODO: Properly resolve once subscription API is integrated in to the console.
+    // Tracked Here: https://github.com/wso2-enterprise/asgardeo-product/issues/8625
     boolean shouldRemoveDefaultBranding = true;
     @Deprecated
     JSONObject colors = null;
@@ -42,66 +33,41 @@
     String activeThemeName = "";
     String overrideStylesheet = "";
     String copyrightText = "";
-    String siteTitle = "";
-    String supportEmail = "";
+    String siteTitle = "Asgardeo by WSO2";
+    String supportEmail = "asgardeo-help@wso2.com";
     String logoURL = "";
     String logoAlt = "";
     String faviconURL = "";
-    String privacyPolicyURL = "privacy_policy.do";
+    String privacyPolicyURL = "";
     String termsOfUseURL = "";
-    String cookiePolicyURL = "cookie_policy.do";
+    String cookiePolicyURL = "";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
     String layout = "default";
     String layoutFileRelativePath = "includes/layouts/default/body.ser";
-    String customLayoutFileRelativeBasePath = "";
     Map<String, Object> layoutData = new HashMap<String, Object>();
-    String productName = "WSO2 Identity Server";
+    String productName = "Asgardeo";
 
     try {
+        String DEFAULT_RESOURCE_LOCALE = "en-US";
+        String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
+        String APP_PREFERENCE_RESOURCE_TYPE = "APP";
 
         String tenantRequestingPreferences = tenantForTheming;
         String applicationRequestingPreferences = spAppName;
-        String brandingPreferenceFilePath = "";
+        String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
 
-        // If the `sp` param is defined, the resource is an app.
-        if (StringUtils.isNotBlank(applicationRequestingPreferences) && StringUtils.isNotBlank(tenantRequestingPreferences)) {
-            // TODO: Get the selected locale and check for the localization file.
-            String appWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/branding-preference_en_US.json");
-
-            File appWiseBrandingPreferenceFile = new File(appWiseBrandingPreferenceFilePath);
-
-            if (appWiseBrandingPreferenceFile.exists()) {
-                brandingPreferenceFilePath = appWiseBrandingPreferenceFilePath;
-                customLayoutFileRelativeBasePath = "extensions/branding/" + tenantRequestingPreferences + "/" + "apps" + "/" + applicationRequestingPreferences + "/layouts";
-            }
+        // If the `sp` param is defined, set the resource type as app.
+        if (StringUtils.isNotBlank(applicationRequestingPreferences)) {
+            preferenceResourceType = APP_PREFERENCE_RESOURCE_TYPE;
         }
 
-        if (StringUtils.isNotBlank(tenantRequestingPreferences)) {
+        // Only engage the preference retrieval if the flow is not super tenant.
+        if (!StringUtils.equals(tenantRequestingPreferences, IdentityManagementEndpointConstants.SUPER_TENANT)) {
 
-            JSONObject brandingPreferenceResponse = null;
-
-            if (StringUtils.isBlank(brandingPreferenceFilePath)) {
-                String tenantWiseBrandingPreferenceFilePath = getServletContext().getRealPath("extensions/branding/" + tenantRequestingPreferences + "/branding-preference_en_US.json");
-                File tenantWiseBrandingPreferenceFile = new File(tenantWiseBrandingPreferenceFilePath);
-
-                if (tenantWiseBrandingPreferenceFile.exists()) {
-                    brandingPreferenceFilePath = tenantWiseBrandingPreferenceFilePath;
-                    customLayoutFileRelativeBasePath = "extensions/branding/" + tenantRequestingPreferences + "/layouts";
-                }
-            }
-
-            if (StringUtils.isNotBlank(brandingPreferenceFilePath)) {
-                try {
-                    JSONTokener tokener = new JSONTokener(new FileReader(brandingPreferenceFilePath));
-                    JSONObject jsonObject = new JSONObject(tokener);
-                    brandingPreferenceResponse = jsonObject;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+            BrandingPreferenceRetrievalClient brandingPreferenceRetrievalClient = new BrandingPreferenceRetrievalClient();
+            JSONObject brandingPreferenceResponse = brandingPreferenceRetrievalClient.getPreference(tenantRequestingPreferences,
+                    preferenceResourceType, applicationRequestingPreferences, DEFAULT_RESOURCE_LOCALE);
 
             // Preferences response object pointer keys.
             String PREFERENCE_KEY = "preference";
@@ -129,15 +95,15 @@
             String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
             String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
             String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
-            String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
+            String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeAsgardeoBranding";
 
-            if (brandingPreferenceResponse != null && brandingPreferenceResponse.has(PREFERENCE_KEY)) {
+            if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
                 brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
             }
 
 %>
 
-<%@include file="layout-resolver.jsp" %>
+            <%@include file="layout-resolver.jsp" %>
 
 <%
 
@@ -307,7 +273,8 @@
                 }
             }
         }
-    } catch (Exception e) {
+
+    } catch (BrandingPreferenceRetrievalClientException e) {
         // Exception is ignored and the variable will use the fallbacks.
         // TODO: Move the duplicated logic to a common place.
     } finally {
@@ -315,26 +282,26 @@
         // Set fallbacks.
         if (StringUtils.isEmpty(logoURL)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = "libs/themes/asgardio/assets/images/branding/asgardeo-logo.svg";
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = "libs/themes/asgardio/assets/images/branding/asgardeo-logo-white.svg";
             } else {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = "libs/themes/asgardio/assets/images/branding/asgardeo-logo.svg";
             }
         }
 
         if (StringUtils.isEmpty(logoAlt)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = "Asgardeo Logo";
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoAlt = "WSO2 Identity Server Logo White Variation";
+                logoAlt = "Asgardeo Logo White Variation";
             } else {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = "Asgardeo Logo";
             }
         }
 
         if (StringUtils.isEmpty(faviconURL)) {
-            faviconURL = "libs/themes/default/assets/images/branding/favicon.ico";
+            faviconURL = "libs/themes/asgardio/assets/images/branding/favicon.ico";
         }
     }
 %>

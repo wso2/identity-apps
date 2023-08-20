@@ -1,56 +1,111 @@
 <%--
-  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+ ~
+ ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~
+ ~ This software is the property of WSO2 Inc. and its suppliers, if any.
+ ~ Dissemination of any information or reproduction of any material contained
+ ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ ~ You may not alter or remove any copyright or other notice from copies of this content."
+ ~
 --%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%-- Localization --%>
-<%@ include file="includes/localize.jsp" %>
+<%@include file="includes/localize.jsp" %>
+<%@ include file="./app-insights.jsp" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <%
-    String stat = AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("status"));
-    String statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("statusMsg"));
+    String stat = request.getParameter("status");
+    String actualError = request.getParameter("status");
+    String statusMessage = request.getParameter("statusMsg");
+    String actualErrorMessage = request.getParameter("statusMsg");
+    String emailOtpErrorCode = "email.not.found";
+    String emailOtpErrorKey = "NotSatisfyAuthenticatorPrerequisitesReason.email-otp-authenticator";
+    String statusDescription = "";
+    String statusTitle = "";
+    Gson gson = new Gson();
+
+    // Log the actual error for localized error fallbacks
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
 
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, (String) request.getAttribute("status"));
         statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, (String) request.getAttribute("statusMsg"));
     }
 
-    if (stat == null || statusMessage == null) {
-        stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
-        statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"something.went.wrong.during.authentication");
+    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+
+    if (StringUtils.isBlank(authAPIURL)) {
+        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    } else {
+        // Resolve tenant domain for the authentication API URl
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
     }
+    
+    if (!authAPIURL.endsWith("/")) {
+        authAPIURL += "/";
+    }
+    authAPIURL += "context/" + request.getParameter("authFlowId");
+
+    // Get the context properties.
+    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+    Map data = gson.fromJson(contextProperties, Map.class);
+
+    if (data == null) {
+        statusTitle = stat;
+        statusDescription = statusMessage;
+    } else {
+        String emailNotFoundCode = (String) data.get(emailOtpErrorKey);
+
+        // Set the error message title and descriptions.
+        if (emailOtpErrorCode.equals(emailNotFoundCode)) {
+            statusTitle = AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.error");                
+            statusDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.error.description");
+        } else {
+            statusTitle = stat;
+            statusDescription = statusMessage;
+        }
+    }
+
+    // Set the error message to the fallback error message, if current error message is none or for non-english locales
+    if ((stat == null || statusMessage == null) || isErrorFallbackLocale) {
+        stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+        statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.during.authentication");
+    }
+
     session.invalidate();
 %>
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "medium");
+    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
 %>
+
+<script type="text/javascript">
+    AppInsights.getInstance().trackEvent("authentication-portal-error-generic", {
+        "type": "error-response",
+        "status": "<%= Encode.forJavaScriptBlock(stat) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(stat) %>" : "",
+        "status-message": "<%= Encode.forJavaScriptBlock(statusMessage) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(statusMessage) %>" : ""
+    });
+</script>
 
 <!doctype html>
 <html lang="en-US">
@@ -70,38 +125,81 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <div class="ui segment">
-                <div class="segment-form">
-                    <div class="ui visible negative message">
-                        <div class="header"><%=Encode.forHtml(stat)%></div>
-                        <p><%=Encode.forHtmlContent(statusMessage)%></p>
-                    </div>
+            <%
+                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
+            %>
+                <div class="ui orange attached segment mt-3">
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                        <%=Encode.forHtmlContent(statusTitle)%>
+                    </h3>
+                    <p class="portal-tagline-description">
+                        <%=Encode.forHtmlContent(statusDescription)%>
+                    </p>
+                    <div class="ui divider hidden"></div>
+                    <div class="ui divider hidden"></div>
                 </div>
-            </div>
+                <div class="ui bottom attached warning message">
+                    <p  class="text-left mt-0">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                        </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                    </p>
+                    <div class="ui divider hidden"></div>
+                    <jsp:include page="includes/error-tracking-reference.jsp">
+                        <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
+                        <jsp:param name="errorCode" value="<%=actualError%>"/>
+                        <jsp:param name="error" value="<%=actualErrorMessage%>"/>
+                    </jsp:include>
+                    <div class="ui divider hidden"></div>
+                </div>
+            <% } else { %>
+                <h2 class="ui header portal-logo-tagline slogan-message">
+                    <%=Encode.forHtml(stat)%>
+                </h2>
+
+                <h4 class="ui header sub-tagline">
+                    <%=Encode.forHtmlContent(statusMessage)%>
+                </h4>
+
+                <p class="portal-tagline-description">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                    </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                </p>
+                <jsp:include page="includes/error-tracking-reference.jsp">
+                    <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
+                    <jsp:param name="errorCode" value="<%=actualError%>"/>
+                    <jsp:param name="error" value="<%=actualErrorMessage%>"/>
+                </jsp:include>
+            <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component componentName="ResponseImage" >
+            <%-- illustration--%>
+            <div class="thank-you-img">
+                <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
+            </div>
         </layout:component>
     </layout:main>
 

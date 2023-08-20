@@ -1,25 +1,21 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+ ~
+ ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~
+ ~ This software is the property of WSO2 Inc. and its suppliers, if any.
+ ~ Dissemination of any information or reproduction of any material contained
+ ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ ~ You may not alter or remove any copyright or other notice from copies of this content."
+ ~
 --%>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+
+
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
@@ -27,22 +23,14 @@
 
 <%-- Include tenant context --%>
 <%@include file="includes/init-url.jsp" %>
-
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<%@ include file="./app-insights.jsp" %>
 
 <%
     String authRequest = request.getParameter("data");
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
-<%!
-    private static final String MY_ACCOUNT = "/myaccount";
-%>
+<%-- Branding Preferences --%>
+<jsp:directive.include file="extensions/branding-preferences.jsp" />
 
 <!doctype html>
 <html lang="en-US">
@@ -58,7 +46,6 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
-
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -69,25 +56,31 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <%
+                    if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+                %>
+                    <div class="product-title">
+                        <jsp:include page="extensions/product-title.jsp"/>
+                    </div>
+                <% } else { %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } %>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment left aligned">
                 <div id="loader-bar" class="loader-bar"></div>
 
                 <h3 class="ui header">
-                    <span id="fido-header">
+                    <span id="fido-header" data-testid="login-page-fido-heading">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification" )%>
                     </span>
-                    <span id="fido-header-error" style="display: none;">
+                    <span id="fido-header-error" style="display: none;" data-testid="login-page-fido-heading-error">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error" )%>
                     </span>
                 </h3>
@@ -105,7 +98,8 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
                                 </p>
                                 <div class="ui divider hidden"></div>
-                                <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()">
+                                <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()"
+                                data-testid="login-page-fido-proceed-button">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
                                 </button>
                             </div>
@@ -115,14 +109,14 @@
                         <div class="sixteen wide column">
                             <p>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
-                                <a id="my-account-link">My Account.</a>
+                                <a target="_blank" id="my-account-link">My Account.</a>
                             </p>
                             <p>
                                 <% if (supportEmail != null && !supportEmail.isEmpty()) { %>
                                     <span>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
                                     </span>
-                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%>.</a>
+                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>
                                 <% } %>
                             </p>
                             <div class="ui divider hidden"></div>
@@ -132,7 +126,7 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
                                 </button>
                                 <button class="ui button primary" type="button" onclick="retry()"
-                                    data-testid="login-page-fido-retry-button">
+                                data-testid="login-page-fido-retry-button">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                 </button>
                             </div>
@@ -152,15 +146,13 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
 
@@ -169,31 +161,43 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
-    <%
-        String myaccountUrl = application.getInitParameter("MyAccountURL");
-        if (StringUtils.isEmpty(myaccountUrl)) {
-            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+    <% String clientId=request.getParameter("client_id"); %>
+
+    <script type="text/javascript">
+        var insightsAppIdentifier = "<%=clientId%>";
+        var insightsTenantIdentifier = "<%=userTenant%>";
+        if (insightsAppIdentifier == "MY_ACCOUNT") {
+            insightsAppIdentifier = "my-account";
+        } else if (insightsAppIdentifier == "CONSOLE") {
+            insightsAppIdentifier = "console";
+        } else if (insightsTenantIdentifier !== "<%=org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME%>") {
+            insightsAppIdentifier = "business-app";
         }
-    %>
+        AppInsights.getInstance().trackEvent("page-visit-authentication-portal-fido2", {
+            "app": insightsAppIdentifier,
+            "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+        });
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=myaccountUrl%>';
+            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
             var tenantDomain = '<%=Encode.forJavaScriptBlock(tenantDomain)%>';
 
-            if (tenantDomain !== "" && tenantDomain !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
+            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
+                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
             }
 
-            $("#my-account-link").attr("href", myaccountUrl +"/myaccount");
+            $("#my-account-link").attr("href", myaccountUrl);
 
             if(navigator ){
                 let userAgent = navigator.userAgent;
@@ -305,6 +309,10 @@
         }
 
         function retry() {
+            AppInsights.getInstance().trackEvent("authentication-portal-fido2-click-retry", {
+                "app": insightsAppIdentifier,
+                "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+            });
             showFidoFlow();
             talkToDevice();
         }

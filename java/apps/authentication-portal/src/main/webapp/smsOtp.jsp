@@ -1,48 +1,50 @@
 <%--
-  ~ Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+ ~
+ ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~
+ ~ This software is the property of WSO2 Inc. and its suppliers, if any.
+ ~ Dissemination of any information or reproduction of any material contained
+ ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ ~ You may not alter or remove any copyright or other notice from copies of this content."
+ ~
 --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%-- Localization --%>
 <%@ include file="includes/localize.jsp" %>
-
-<%-- Include tenant context --%>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<%@ include file="./app-insights.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    }
+    
+    int otpLength = 6;
+
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
+    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -52,21 +54,13 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.retry");
-            }
-            if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
-                errorMessage = IdentityManagementEndpointUtil.i18n(resourceBundle,"error.code.expired.resend");
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
         }
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
-<html lang="en-US">
+<html>
     <head>
         <%-- header --%>
         <%
@@ -77,6 +71,7 @@
         <% } else { %>
         <jsp:include page="includes/header.jsp"/>
         <% } %>
+
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
@@ -84,100 +79,166 @@
     </head>
 
     <body class="login-portal layout sms-otp-portal-layout">
+
+        <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
+            <jsp:include page="extensions/timeout.jsp"/>
+        <% } else { %>
+            <jsp:include page="util/timeout.jsp"/>
+        <% } %>
+
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader">
+            <layout:component componentName="ProductHeader" >
                 <%-- product-title --%>
                 <%
-                String productTitleFilePath = "extensions/product-title.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                    productTitleFilePath = "includes/product-title.jsp";
-                }
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
                 %>
-                <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
             </layout:component>
             <layout:component componentName="MainSection" >
-                <div class="ui segment">
-                    <%-- page content --%>
-                    <h2><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "auth.with.smsotp")%></h2>
-                    <div class="ui divider hidden"></div>
-                    <%
-                        if ("true".equals(authenticationFailed)) {
-                    %>
-                            <div class="ui negative message" id="failed-msg">
-                                <%=Encode.forHtmlContent(errorMessage)%>
-                            </div>
-                            <div class="ui divider hidden"></div>
-                    <% } %>
-                    <div class="error-msg"></div>
-                    <div class="segment-form">
-                        <form class="ui large form" id="pin_form" name="pin_form" action="../commonauth"  method="POST">
-                            <%
-                                String loginFailed = request.getParameter("authFailure");
-                                if (loginFailed != null && "true".equals(loginFailed)) {
-                                    String authFailureMsg = request.getParameter("authFailureMsg");
-                                    if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                            %>
-                                <div class="ui visible negative message">
-                                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "error.retry")%>
-                                </div>
-                                <div class="ui divider hidden"></div>
-                            <% } }  %>
-                            <%-- Token Pin --%>
-                            <% if (request.getParameter("screenvalue") != null) { %>
-                            <div class="field">
-                                <label for="OTPcode">
-                                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%><%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
-                                </label>
-                                <input type="password" id='OTPcode' name="OTPcode"
-                                        size='30'/>
-                            <% } else { %>
-                            <div class="field">
-                                <label for="OTPcode"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%></label>
-                                <input type="password" id='OTPcode' name="OTPcode"
-                                size='30'/>
-                            <% } %>
-                            </div>
-                            <input type="hidden" name="sessionDataKey"
-                            value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/><br/>
-                            <div class="align-right buttons">
-                                <%
-                                    if ("true".equals(authenticationFailed)) {
-                                        String reSendCode = request.getParameter("resendCode");
-                                        if ("true".equals(reSendCode)) {
-                                %>
-                                    <div
-                                        id="resendCodeLinkDiv"
-                                        class="ui button secondary"
-                                        tabindex="0"
-                                        onclick="resendOtp()"
-                                        onkeypress="javascript: if (window.event.keyCode === 13) resendOtp()">
-                                        <a id="resend"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "resend.code")%></a>
-                                    </div>
-                                <% } } %>
-                                <input
-                                    type="submit" name="authenticate" id="authenticate"
-                                    value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "authenticate.button")%>" class="ui primary button"/>
-                            </div>
-                            <input type='hidden' name='resendCode' id='resendCode' value='false'/>
-                        </form>
-                    </div>
-                </div>
+              <div class="ui segment">
+                      <%-- page content --%>
+                      <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
+                      </h2>
+                      <div class="ui divider hidden"></div>
+                      <%
+                          if ("true".equals(authenticationFailed)) {
+                      %>
+                      <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+                      </div>
+                      <div class="ui divider hidden"></div>
+                      <% } %>
+                      <div id="alertDiv"></div>
+                      <div class="segment-form">
+                          <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
+                              <%
+                                  String loginFailed = request.getParameter("authFailure");
+                                  if (loginFailed != null && "true".equals(loginFailed)) {
+                                      String authFailureMsg = request.getParameter("authFailureMsg");
+                                      if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
+                              %>
+                              <div class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry")%>
+                              </div>
+                              <div class="ui divider hidden"></div>
+                              <% }
+                              } %>
+                              <% if (request.getParameter("screenValue") != null) { %>
+                              <div class="field">
+                                  <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%>
+                                      (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
+                                  </label>
+
+                                  <% if (otpLength <= 6) { %>
+                                  <div class="equal width fields">
+                                      <input hidden type="text"  id="OTPCode" name="OTPCode" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
+                                      <%  for (int index = 1; index <= otpLength;){
+                                          String previousStringIndex = null;
+                                          if (index != 1) {
+                                              previousStringIndex = "pincode-"+ (index - 1);
+                                          }
+                                          String currentStringIndex = null;
+                                          currentStringIndex = "pincode-"+ index;
+                                          index++;
+                                          String nextStringIndex = null;
+                                          if (index != (otpLength+1)) {
+                                              nextStringIndex = "pincode-"+ index;
+                                          }
+                                      %>
+                                          <div class="field mt-5">
+                                              <input class="text-center p-3" id=<%= currentStringIndex %> name=<%= currentStringIndex %>
+                                                  onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
+                                                  tabindex="1" placeholder="·" autofocus maxlength="1">
+                                          </div>
+                                      <%}%>
+                                  </div>
+                                  <% } else { %>
+                                      <div class="ui fluid icon input addon-wrapper">
+                                      <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
+                                      <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                  </div>
+                                  <% } %>
+
+
+                                  <% } else { %>
+                                      <div class="field">
+                                          <label for="password"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%>
+                                              :</label>
+                                          <div class="ui fluid icon input addon-wrapper">
+                                              <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                              <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                          </div>
+                                  <% } %>
+                                  </div>
+                                  <input type="hidden" name="sessionDataKey"
+                                      value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                                  <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+                                     value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
+                                  <input type='hidden' name='resendCode' id='resendCode' value='false'/>
+
+                                  <div class="ui divider hidden"></div>
+
+                                  <% if(request.getParameter("multiOptionURI") != null &&
+                                          request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
+                                      <div class="social-login blurring social-dimmer text-left">
+                                          <div class="field text-left">
+                                              <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "cannot.access.smsotp")%></label>
+
+                                              <a
+                                                  onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
+                                                  target="_blank"
+                                                  class="clickable-link text-left ui form"
+                                                  rel="noopener noreferrer"
+                                                  data-testid="login-page-backup-code-link"
+                                                  style="cursor: pointer;display:block"
+                                              >
+                                                  <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  <% }%>
+
+                                  <div class="buttons">
+                                      <% if (otpLength <= 6) { %>
+                                      <div>
+                                          <input type="button" id="subButton" onclick="sub(); return false;"
+                                          value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                          class="ui primary fluid large button" />
+                                      </div>
+                                      <% } else { %>
+                                      <input type="submit" name="authenticate" id="authenticate"
+                                          value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                          class="ui primary fluid large button"/>
+                                      <% } %>
+                                          <button type="button" class="ui fluid large button secondary mt-2" id="resend">
+                                              <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
+                                          </button>
+                                          <%
+                                              String multiOptionURI = request.getParameter("multiOptionURI");
+                                              if (isMultiAuthAvailable(multiOptionURI)) {
+                                          %>
+                                          <a class="ui fluid large button secondary mt-2" id="goBackLink"
+                                              href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                                  <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                          </a>
+                                          <% } %>
+                                  </div>
+                          </form>
+                      </div>
+                  </div>
             </layout:component>
-            <layout:component componentName="ProductFooter">
+            <layout:component componentName="ProductFooter" >
                 <%-- product-footer --%>
                 <%
-                String productFooterFilePath = "extensions/product-footer.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                    productFooterFilePath = "includes/product-footer.jsp";
-                }
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
                 %>
-                <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
             </layout:component>
         </layout:main>
 
@@ -192,32 +253,170 @@
         <% } %>
 
         <script type="text/javascript">
-        $(document).ready(function() {
-            $.fn.preventDoubleSubmission = function() {
-                $('#pin_form').on('submit', function(e) {
-                    if ($('#pin_form').data('submitted') === true) {
-                        // Previously submitted - don't submit again.
-                        e.preventDefault();
-                        console.warn("Prevented a possible double submit event");
+            var insightsTenantIdentifier = "<%=userTenant%>";
+            var otpLength = "<%=otpLength%>";
+
+            function movetoNext(current, nextFieldID, previousID) {
+                var key = event.keyCode || event.charCode;
+                if(key == 8 || key == 46) {
+                    if (previousID != null && previousID != 'null') {
+                        document.getElementById(previousID).focus();
+                    }
+                } else {
+                    if (nextFieldID != null && nextFieldID != 'null' && current.value.length >= current.maxLength) {
+                        document.getElementById(nextFieldID).focus();
+                    }
+                }
+            }
+
+            function sub() {
+
+                var token = null;
+                var hasNullDigit = false;
+
+                for(var i = 1; i <= otpLength; i++){
+                    var currentDigit = document.getElementById("pincode-"+i).value;
+                    if(!currentDigit || currentDigit == null || currentDigit == 'null') {
+                        hasNullDigit = true;
+                        break;
+                    }
+                    if(i === 1) {
+                        token = currentDigit;
                     } else {
-                        var OTPcode = document.getElementById("OTPcode").value;
-                        if (OTPcode == "") {
+                        token += currentDigit;
+                    }
+                }
+
+                document.getElementById('OTPCode').value = token;
+
+                if (!hasNullDigit) {
+                    AppInsights.getInstance().trackEvent("authentication-portal-sms-otp-click-continue", {
+                        "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
+                    });
+                    // Disable during the initial submission to prevent double submissions.
+                    document.getElementById("subButton").disabled = true;
+                    document.getElementById("codeForm").submit();
+                }
+
+            }
+
+            // Handle paste events
+    	    function handlePaste(e) {
+     	        var clipboardData, value;
+
+                // Stop data get being pasted into element
+                e.stopPropagation();
+                e.preventDefault();
+
+                // Get pasted data via clipboard API
+                clipboardData = e.clipboardData || window.clipboardData;
+                value = clipboardData.getData('Text');
+                const reg = new RegExp(/^\d+$/);
+                if (reg.test(value)) {
+                    for (n = 0; n < 6; ++n) {
+                        $("#pincode-" + (n+1)).val(value[n]);
+                        $("#pincode-" + (n+1)).focus();
+                    }
+                }
+            }
+
+           document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
+
+            $(document).ready(function () {
+                $.fn.preventDoubleSubmission = function() {
+                    $('#codeForm').on('submit',function(e){
+                        if($('#codeForm').data("submitted") == true) {
                             e.preventDefault();
-                            document.getElementById('alertDiv').innerHTML
-                                = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
+                            console.warn("Prevented a possible double submit event");
                         } else {
-                            $('#pin_form').data("submitted", true);
+                            var code = document.getElementById("OTPCode").value;
+                            if (code == "") {
+                                e.preventDefault();
+                                document.getElementById('alertDiv').innerHTML
+                                    = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                                    +'<div class="ui divider hidden"></div>';
+                            } else {
+                                AppInsights.getInstance().trackEvent("authentication-portal-sms-otp-click-continue", {
+                                    "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                                });
+                                $('#codeForm').data("submitted", true);
+                            }
+                        }
+                    });
+                };
+                $('#codeForm').preventDoubleSubmission();
+            });
+
+            $(document).ready(function () {
+                $('#resend').click(function () {
+                    document.getElementById("resendCode").value = "true";
+                    $('#codeForm').submit();
+                });
+            });
+
+            // Show OTP code function.
+            function showOTPCode() {
+                var otpField = $('#OTPCode');
+
+                if (otpField.attr("type") === 'text') {
+                    otpField.attr("type", "password");
+                    document.getElementById("password-eye").classList.remove("slash");
+                } else {
+                    otpField.attr("type", "text");
+                    document.getElementById("password-eye").classList.add("slash");
+                }
+            }
+
+            $(document).ready(handleWaitBeforeResendOTP);
+
+            function handleWaitBeforeResendOTP() {
+                // value should be less than 3600
+                const WAIT_TIME_SECONDS = 60;
+
+                const resendButton = document.getElementById("resend");
+                resendButton.disabled = true;
+                const resendButtonText = resendButton.innerHTML;
+                // Update the button text initially to avoid waiting until the first tick to update.
+                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
+
+                const countdown = new Countdown(
+                    Countdown.seconds(WAIT_TIME_SECONDS),
+                    () => {
+                        resendButton.innerHTML = resendButtonText;
+                        resendButton.disabled = false;
+                    },
+                    (time) => {
+                        resendButton.innerHTML = time.minutes.toString().padStart(2, '0') + " : " + time.seconds.toString().padStart(2, '0');
+                    },
+                    "SMS_OTP_TIMER"
+                ).start();
+            }
+        </script>
+
+        <%!
+            private boolean isMultiAuthAvailable(String multiOptionURI) {
+                boolean isMultiAuthAvailable = true;
+                if (multiOptionURI == null || multiOptionURI.equals("null")) {
+                    isMultiAuthAvailable = false;
+                } else {
+                    int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+                    if (authenticatorIndex == -1) {
+                        isMultiAuthAvailable = false;
+                    } else {
+                        String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                        int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                        authenticators = authenticators.substring(0, authLastIndex);
+                        List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                        if (authList.size() < 2) {
+                            isMultiAuthAvailable = false;
+                        }
+                        else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                            isMultiAuthAvailable = false;
                         }
                     }
-                });
-            };
-            $('#pin_form').preventDoubleSubmission();
-        });
-
-        function resendOtp() {
-            document.getElementById("resendCode").value = "true";
-            $("#pin_form").submit();
-        }
-        </script>
+                }
+                return isMultiAuthAvailable;
+            }
+        %>
     </body>
 </html>

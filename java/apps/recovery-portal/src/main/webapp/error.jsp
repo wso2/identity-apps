@@ -98,9 +98,9 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout recovery-layout">

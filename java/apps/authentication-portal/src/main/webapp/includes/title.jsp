@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -16,24 +16,8 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ include file="localize.jsp" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
-<%-- Include tenant context --%>
-<jsp:directive.include file="init-url.jsp"/>
-
-<%-- Branding Preferences --%>
-<jsp:directive.include file="branding-preferences.jsp"/>
-
-<%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
-
 <%-- title --%>
-<title>
-<% if (StringUtils.isNotBlank(siteTitle)) { %>
-    <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
-<% } else { %>
-    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>
-<% } %>
-</title>
+<title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>

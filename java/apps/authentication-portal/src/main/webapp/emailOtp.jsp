@@ -1,22 +1,23 @@
 <%--
-  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+~ Copyright (c) 2021, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+~
+~ WSO2 Inc. licenses this file to you under the Apache License,
+~ Version 2.0 (the "License"); you may not use this file except
+~ in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~ http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing,
+~ software distributed under the License is distributed on an
+~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~ KIND, either express or implied. See the License for the
+~ specific language governing permissions and limitations
+~ under the License.
 --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="java.io.File" %>
@@ -27,12 +28,11 @@
 
 <%-- Localization --%>
 <%@ include file="includes/localize.jsp" %>
-
-<%-- Include tenant context --%>
+<%@ include file="./app-insights.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
@@ -63,12 +63,6 @@
         }
     }
 %>
-
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
 <%
     boolean reCaptchaEnabled = false;
     if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
@@ -102,6 +96,7 @@
     %>
     <script type="text/javascript">
         function submitForm() {
+            var insightsTenantIdentifier = "<%=userTenant%>";
             var code = document.getElementById("OTPCode").value;
             if (code == "") {
                 document.getElementById('alertDiv').innerHTML
@@ -111,6 +106,9 @@
                 if ($('#codeForm').data("submitted") === true) {
                     console.warn("Prevented a possible double submit event");
                 } else {
+                    AppInsights.getInstance().trackEvent("authentication-portal-email-otp-click-continue", {
+                        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                    });
                     $('#codeForm').data("submitted", true);
                     $('#codeForm').submit();
                 }
@@ -120,7 +118,6 @@
 </head>
 
 <body class="login-portal layout email-otp-portal-layout">
-
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -131,15 +128,13 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
@@ -155,6 +150,13 @@
                 <div class="ui divider hidden"></div>
                 <% } %>
                 <div id="alertDiv"></div>
+                <%
+                    String resendCode = request.getParameter("resendCode");
+                    if (resendCode != null && "true".equals(resendCode)) {
+                %>
+                <div id="resend-msg" class="ui positive message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code.success")%></div>
+                <div class="ui divider hidden"></div>
+                <% } %>
                 <div class="segment-form">
                     <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
                         <%
@@ -173,8 +175,15 @@
                             <label for="OTPCode"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                 (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
                             </label>
+                            <%-- Input Description for Screen Readers --%>
+                            <span id="OTPDescription" style="display: none;">Enter your OTP</span>
                             <div class="ui fluid icon input addon-wrapper">
-                                <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
+                                <input 
+                                    type="password" 
+                                    id='OTPCode' 
+                                    name="OTPCode" 
+                                    c size='30' 
+                                    aria-describedby="OTPDescription"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle link" onclick="showOTPCode()"></i>
                             </div>
                                 <% } else { %>
@@ -182,7 +191,12 @@
                                 <label for="OTPCode"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
-                                    <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                    <input 
+                                        type="password" 
+                                        id='OTPCode' 
+                                        name="OTPCode" 
+                                        size='30' 
+                                        aria-describedby="OTPDescription"/>
                                     <i id="password-eye" class="eye icon right-align password-toggle link" onclick="showOTPCode()"></i>
                                 </div>
                                 <% } %>
@@ -210,6 +224,31 @@
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                     class="ui primary button"/>
                             </div>
+
+                            <div class="ui divider hidden"></div>
+
+                            <% if (request.getParameter("multiOptionURI") != null &&
+                                AuthenticationEndpointUtil.isValidURL(request.getParameter("multiOptionURI")) &&
+                                request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
+                                <div class="social-login blurring social-dimmer text-left">
+                                        <div class="field text-left">
+                                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "cannot.access.emailOTP")%></label>
+
+                                            <a
+                                                onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
+                                                target="_blank"
+                                                class="clickable-link text-left"
+                                                rel="noopener noreferrer"
+                                                data-testid="login-page-backup-code-link"
+                                            >
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
+                                            </a>
+                                        </div>
+                                </div>
+                            <% }%>
+
+                            <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                         <%
                             if (reCaptchaEnabled) {
                                 String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
@@ -235,15 +274,13 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
 
@@ -252,9 +289,9 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">
@@ -266,10 +303,12 @@
             });
         });
 
-        function resendOtp() {
-            document.getElementById("resendCode").value = "true";
-            $("#codeForm").submit();
-        }
+        $(document).ready(function () {
+            $('#resend').click(function () {
+                document.getElementById("resendCode").value = "true";
+                $('#codeForm').submit();
+            });
+        });
 
         // Show OTP code function.
         function showOTPCode() {
@@ -283,7 +322,6 @@
                 document.getElementById("password-eye").classList.add("slash");
             }
         }
-
     </script>
 </body>
 </html>
