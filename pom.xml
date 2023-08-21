@@ -642,7 +642,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>wso2.releases</serverId>
-                    <nexusUrl>https://maven.wso2.org/nexus/content/repositories/releases/</nexusUrl>
+                    <nexusUrl>https://maven.wso2.org/nexus</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
