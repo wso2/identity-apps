@@ -111,9 +111,9 @@ jobs:
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: 🚀 Maven Release
-              id: maven-release
-              run: mvn -B release:prepare && mvn -X release:perform --settings ~/.m2/settings.xml
+            # - name: 🚀 Maven Release
+            #   id: maven-release
+            #   run: mvn -B release:prepare && mvn -X release:perform --settings ~/.m2/settings.xml
 
             - name: 🚀 Release React Apps
               if: always()
