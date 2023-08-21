@@ -635,6 +635,17 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.5</version>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>wso2.releases</serverId>
+                    <nexusUrl>https://maven.wso2.org/nexus/content/repositories/releases/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
