@@ -28,3 +28,4 @@ export const useGetUpdatedFeatureGateConfig = (): FeatureGateInterface => {
 
     return featureGateConfig;
 };
+
