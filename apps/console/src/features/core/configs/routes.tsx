@@ -130,8 +130,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             import("../../../extensions/components/" + "api-resources/pages/api-resources")
                         ),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
                         },
@@ -296,67 +294,25 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../application-roles/pages/application-roles")),
+                                component: lazy(() => import("../../roles/pages/role-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "applicationRoles",
-                                name: "Application Roles",
-                                path: AppConstants.getPaths().get("APPLICATION_ROLES_SUB"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() => import("../../application-roles/pages/application-role-edit")),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "applicationRolesEdit",
-                                name: "Edit Application Role",
-                                path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT_SUB"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import("../../../features/organizations/pages/organization-roles")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().roles
-                                },
-                                id: "organization-roles",
-                                name: "Organization Roles",
-                                path: AppConstants.getPaths().get("ORGANIZATION_ROLES"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import("../../../features/organizations/pages/organization-roles-edit")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().roles
-                                },
-                                id: "organization-roles-edit",
-                                name: "organization Roles Edit",
-                                path: AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"),
+                                id: "rolesEdit",
+                                name: "console:manage.features.sidePanel.editRoles",
+                                path: AppConstants.getPaths().get("ROLE_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../parent-roles/parent-roles")),
+                        component: lazy(() => import("../../roles/pages/role")),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: {
                             icon: getSidePanelIcons().applicationRoles
                         },
                         id: "roles",
-                        name: "Roles",
+                        name: "console:manage.features.sidePanel.roles",
                         order: 7,
                         path: AppConstants.getPaths().get("ROLES"),
                         protected: true,
@@ -380,8 +336,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() => import("../../application-roles/pages/application-roles")),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: {
                             icon: getSidePanelIcons().roles
                         },
@@ -396,7 +350,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../../features/userstores/pages/user-stores-edit")),
+                                component: lazy(() => import("../../userstores/pages/user-stores-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -409,47 +363,26 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/user-stores/" +
-                                        "pages/remote-user-store-edit-page"
-                                    )
+                                    import("../../userstores/pages/userstores-templates")
                                 ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "remote-edit-user-store",
-                                name: "console:manage.features.sidePanel.editUserstore",
-                                path: AppConstants.getPaths()
-                                    .get("USERSTORES_EDIT")
-                                    .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/user-stores/pages/" +
-                                        "remote-customer-user-store-create"
-                                    )
-                                ),
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "remote-user-store-create",
-                                name: "userstore create",
-                                path: RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"),
+                                id: "userstore-templates",
+                                name: "console:manage.features.sidePanel.userstoreTemplates",
+                                path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
                                 protected: true,
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../../extensions/components/user-stores/pages/user-stores")),
+                        component: lazy(() => import("../../userstores/pages/user-stores")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().userStore
                         },
                         id: "userStores",
-                        name: "User Stores",
+                        name: "console:manage.features.sidePanel.userstores",
                         order: 9,
                         path: AppConstants.getPaths().get("USERSTORES"),
                         protected: true,
@@ -567,8 +500,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() => import("../../../features/organizations/pages/organizations")),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: {
                             icon: <HierarchyIcon fill="black" />
                         },
@@ -599,8 +530,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             import("../../../extensions/components/email-management/" + "pages/email-customization")
                         ),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: { icon: getSidePanelIcons().emailTemplates },
                         id: "communication-management",
                         name: "extensions:develop.sidePanel.emailTemplates",
@@ -615,8 +544,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             import("../../../extensions/components/email-providers" + "/pages/email-providers")
                         ),
                         exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
                         icon: {
                             icon: <EnvelopeCogwheelIcon fill="black" className="icon" />
                         },

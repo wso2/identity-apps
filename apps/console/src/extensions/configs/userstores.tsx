@@ -16,62 +16,34 @@
  * under the License.
  */
 
-import { I18n } from "@wso2is/i18n";
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactNode } from "react";
-import { Icon } from "semantic-ui-react";
 import { UserstoresConfig } from "./models";
-import { getEmptyPlaceholderIllustrations } from "../../features/core";
-import { RemoteUserStoreConstants } from "../components/user-stores/constants";
 
 export const userstoresConfig: UserstoresConfig = {
-    onUserstoreEdit: (userstoreId: string) => {
-        return userstoreId === RemoteUserStoreConstants.CUSTOMER_USERSTORE_ID;
-    },
-    shouldShowUserstore: (typeName: string) => {
-        const CONSUMER_USERSTORE_TYPE = "AsgardeoBusinessUserStoreManager";
-
-        return typeName === CONSUMER_USERSTORE_TYPE;
+    onUserstoreEdit: () => true,
+    shouldShowUserstore: () => {
+        return false;
     },
     userstoreDomain: {
-        appendToUsername: false
+        appendToUsername: true
     },
     userstoreEdit: {
         basicDetails: {
-            showType: false
+            showType: true
         },
         groupDetails: {
-            showAdditionalProperties: false,
-            showToggles: false
+            showAdditionalProperties: true,
+            showToggles: true
         },
-        remoteUserStoreEditPath: "edit-remote-user-store",
+        remoteUserStoreEditPath: "",
         userDetails: {
-            showAdditionalProperties: false,
-            showDisplayName: false
+            showAdditionalProperties: true,
+            showDisplayName: true
         }
     },
     userstoreList: {
-        allowAddingUserstores: false,
-        renderEmptyPlaceholder: (emptyPlaceholderAction) => {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton onClick={ emptyPlaceholderAction }>
-                            <Icon name="add" />
-                            { I18n.instance.t("extensions:manage.features.userStores.configs." +
-                                "addUserStores.actionTitle") as ReactNode }
-                        </PrimaryButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().newList }
-                    imageSize="tiny"
-                    title={ I18n.instance.t("extensions:manage.features.userStores.configs." +
-                        "addUserStores.title") }
-                    subtitle={ [
-                        I18n.instance.t("extensions:manage.features.userStores.configs." +
-                            "addUserStores.subTitle") as ReactNode
-                    ] }
-                />
-            );
+        allowAddingUserstores: true,
+        renderEmptyPlaceholder: () => {
+            return null;
         }
     }
 };
