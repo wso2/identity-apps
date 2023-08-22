@@ -10,15 +10,15 @@ goToRootDirectory() {
 process_console_package() {
     goToRootDirectory
 
-    mvn release:prepare -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B && \
-    mvn release:perform -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B --settings ~/.m2/settings.xml
 }
 
 process_myaccount_package() {
     goToRootDirectory
 
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:prepare -pl apps/myaccount,java/features/org.wso2.identity.apps.myaccount.server.feature -B && \
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:perform -pl apps/myaccount,java/features/org.wso2.identity.apps.myaccount.server.feature -B --settings ~/.m2/settings.xml
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -pl apps/myaccount,java/features/org.wso2.identity.apps.myaccount.server.feature -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -pl apps/myaccount,java/features/org.wso2.identity.apps.myaccount.server.feature -B --settings ~/.m2/settings.xml
 }
 
 PACKAGES=$1
