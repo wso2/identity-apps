@@ -1,37 +1,31 @@
 <%--
-  ~ Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+ ~
+ ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ ~
+ ~ This software is the property of WSO2 Inc. and its suppliers, if any.
+ ~ Dissemination of any information or reproduction of any material contained
+ ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ ~ You may not alter or remove any copyright or other notice from copies of this content."
+ ~
 --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.List" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
-
-<%-- Localization --%>
 <%@ include file="includes/localize.jsp" %>
-
-<%-- Include tenant context --%>
-<%@ include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
@@ -50,16 +44,42 @@
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
-                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
         }
     }
 %>
 
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                }
+                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
+    }
+%>
+
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "medium");
+    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
 %>
 
 <html lang="en-US">
@@ -83,32 +103,39 @@
 
     <body class="login-portal layout totp-portal-layout">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader">
+            <layout:component componentName="ProductHeader" >
                 <%-- product-title --%>
                 <%
-                String productTitleFilePath = "extensions/product-title.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                    productTitleFilePath = "includes/product-title.jsp";
-                }
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
                 %>
-                <jsp:include page="<%= productTitleFilePath %>" />
+                    <%
+                        if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+                    %>
+                        <div class="product-title">
+                            <jsp:include page="extensions/product-title.jsp"/>
+                        </div>
+                    <% } else { %>
+                        <jsp:include page="extensions/product-title.jsp"/>
+                    <% } %>
+                <% } else { %>
+                    <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
             </layout:component>
             <layout:component componentName="MainSection" >
-                <div class="ui segment">
+                <div class="ui segment attached segment-with-attached mt-3">
                     <%-- page content --%>
-                    <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enable.totp")%></h2>
-                    <div class="ui divider hidden"></div>
+                    <h3 class="ui header text-center">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enable.totp")%>
+                    </h3>
                     <%
                         if ("true".equals(authenticationFailed)) {
                     %>
-                            <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                            <div class="ui divider hidden"></div>
+                        <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
+                        <div class="ui divider hidden"></div>
                     <% } %>
                     <div class="segment-form">
-                        <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>"  method="POST">
+                        <form class="ui large form mb-0" id="pin_form" name="pin_form" action="<%=commonauthURL%>"  method="POST">
                             <%
                                 String loginFailed = request.getParameter("authFailure");
                                 if (loginFailed != null && "true".equals(loginFailed)) {
@@ -119,89 +146,119 @@
                                         <div class="ui divider hidden"></div>
                             <% } }  %>
 
-                            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled.please.enable")%></p>
+                            <p class="text-center">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                        "scan.the.qr.code.using.an.authenticator.app")%>
+                            </p>
 
                             <input type="hidden" id="ENABLE_TOTP" name="ENABLE_TOTP" value="false"/>
                             <input type="hidden" name='ske' id='ske' value='<%=Encode.forHtmlAttribute(request.getParameter("ske"))%>'/>
                             <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
-                            <div class="ui center aligned basic segment">
+                            <div class="ui center aligned basic segment middle aligned pl-6">
                                 <form name="qrinp">
                                     <input type="numeric" name="ECC" value="1" size="1" style="Display:none" id="ecc">
                                     <canvas id="qrcanv">
                                 </form>
                             </div>
 
-                            <div class="align-right buttons">
-                                <input type="button" name="cancel" id="cancel" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button secondary">
-                                <input type="button" name="continue" id="continue" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
+                            <div>
+                                <div id="checkboxField" class="field mb-5">
+                                    <div class="ui checkbox">
+                                        <input id="checkbox" type="checkbox"/>
+                                        <label for="checkbox"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                            "confirm.you.have.scanned.the.qr.code")%></label>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="mt-0">
+                                <input type="button" name="continue" id="continue"
+                                        value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>"
+                                        class="ui primary fluid large button" disabled>
+                            </div>
+                            <%
+                                String multiOptionURI = request.getParameter("multiOptionURI");
+                                if (multiOptionURI != null &&
+                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                        isMultiAuthAvailable(multiOptionURI)) {
+                            %>
+                            <div class="mt-1 align-center">
+                                <a id="cancel"
+                                   href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                   class="ui fluid large button secondary">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                                </a>
+                            </div>
+                            <% } %>
                         </form>
                     </div>
                 </div>
+                <div class="ui warning bottom attached message text-left display-flex" style="font-size: small;">
+                    <i aria-hidden="true" class="warning circle icon"></i>
+                    <div class="message-content">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.app.download.google.authenticator")%>
+                        <a href="https://www.apple.com/us/search/totp?src=globalnav">App Store</a>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                        <a href="https://play.google.com/store/search?q=totp">Google Play</a>
+                    </div>
+                </div>
             </layout:component>
-            <layout:component componentName="ProductFooter">
+            <layout:component componentName="ProductFooter" >
                 <%-- product-footer --%>
                 <%
-                String productFooterFilePath = "extensions/product-footer.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                    productFooterFilePath = "includes/product-footer.jsp";
-                }
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
                 %>
-                <jsp:include page="<%= productFooterFilePath %>" />
+                    <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                    <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
             </layout:component>
+            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+                <jsp:include page="${pathOfDynamicComponent}" />
+            </layout:dynamicComponent>
         </layout:main>
-
-        <div class="ui modal tiny">
-            <div class="content">
-                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "confirm.you.have.scanned.the.qr.code")%></p>
-            </div>
-            <div class="actions">
-                <div class="align-right buttons">
-                    <input type="button" name="cancelM" id="cancelM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>" class="ui button secondary">
-                    <input type="button" name="continueM" id="continueM" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" class="ui primary button">
-                </div>
-            </div>
-        </div>
 
         <%-- footer --%>
         <%
             File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
             if (footerFile.exists()) {
         %>
-        <jsp:include page="extensions/footer.jsp"/>
+            <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:include page="includes/footer.jsp"/>
+            <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">
+            var checkbox = $("#checkbox");
+            var continueBtn = $("#continue");
+            var pinForm = $("#pin_form");
+
+            checkbox.click(function () {
+                if ($(this).is(":checked")) {
+                    continueBtn.prop("disabled", false).removeClass("disabled");
+                } else {
+                    continueBtn.prop("disabled", true).addClass("disabled");
+                }
+            });
+
             $(document).ready(function() {
-                $('#continue').click(function() {
+                checkbox.prop('checked',false);
+                continueBtn.click(function() {
                     document.getElementById("ENABLE_TOTP").value = 'true';
-                    $(".ui.modal").modal("show");
-                });
-                $('#cancel').click(function() {
-                    document.getElementById("ENABLE_TOTP").value = 'false';
-                    $('#pin_form').submit();
+                    pinForm.submit();
                 });
                 initiateTOTP();
             });
+
             function initiateTOTP(){
                 var key =  document.getElementById("ske").value;
                 if(key != null) {
                     loadQRCode(key);
                 }
             }
-            $("#continueM").click(function () {
-                $('#pin_form').submit();
-            });
-            $("#cancelM").click(function () {
-                $(".ui.modal").modal("hide");
-            });
         </script>
     </body>
 </html>
