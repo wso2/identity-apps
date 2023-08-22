@@ -46,11 +46,11 @@
             <artifactId>org.wso2.identity.apps.myaccount.server.feature</artifactId>
             <type>zip</type>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.console.server.feature</artifactId>
             <type>zip</type>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <build>
