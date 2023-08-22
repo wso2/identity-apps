@@ -9,9 +9,16 @@ goToRootDirectory() {
 
 process_console_package() {
     goToRootDirectory
+    cd "apps/console" || exit 1
 
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B && \
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -pl apps/console,java/features/org.wso2.identity.apps.console.server.feature -B --settings ~/.m2/settings.xml
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
+
+    goToRootDirectory
+    cd "java/features/org.wso2.identity.apps.console.server.feature" || exit 1
+
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
 }
 
 process_myaccount_package() {
