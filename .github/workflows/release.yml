@@ -112,15 +112,18 @@ jobs:
             - name: 📝 Check Changeset status
               id: check-changeset-status
               run: |
-                  pnpm changeset status
+                pnpm changeset status --output=./.changeset/changeset-status.json
+                PACKAGES=$(jq -r '.changesets[].releases[].name' ./.changeset/changeset-status.json | paste -sd, -)
+                echo "Extracted names: $PACKAGES"
+                echo "::set-output name=extracted_names::$PACKAGES"
 
             # - name: 🚀 Maven Release
             #   id: maven-release
             #   run: mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -B release:prepare && mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:perform --settings ~/.m2/settings.xml
 
-            # - name: 🚀 Release React Apps
-            #   if: always()
-            #   id: pnpm-release
-            #   working-directory: .github/workflows
-            #   run: |
-            #       bash ./scripts/release.sh "${{ env.GH_TOKEN }}" "${{ github.workspace }}" "${{ github.run_number }}" "${{ github.repository }}" ${{ env.BRANCH }} "${{ secrets.NEXUS_USERNAME }}" "${{ secrets.NEXUS_PASSWORD }}"
+            - name: 🚀 Perform Release
+              id: perform-release
+              working-directory: .github/workflows
+              run: |
+                  PACKAGES="${{ toJson(steps.check-changeset-status.outputs.extracted_names) }}"
+                  bash ./scripts/release.sh "$PACKAGES"
