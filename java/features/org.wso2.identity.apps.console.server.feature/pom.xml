@@ -28,17 +28,17 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.identity.apps.authentication.portal.server.feature</artifactId>
+    <artifactId>org.wso2.identity.apps.console.server.feature</artifactId>
     <version>1.6.367.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server Apps - Authentication Portal Server Feature</name>
+    <name>WSO2 Identity Server Apps - Console Server Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains the authentication portal module</description>
+    <description>This feature contains the console application</description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>authentication-portal</artifactId>
+            <artifactId>console</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -60,11 +60,11 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.identity.apps</groupId>
-                                    <artifactId>authentication-portal</artifactId>
+                                    <artifactId>console</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
-                                    <destFileName>authenticationendpoint.war</destFileName>
+                                    <destFileName>console.war</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -88,7 +88,8 @@
                                     <includes>
                                         <include>p2.inf</include>
                                         <include>build.properties</include>
-                                        <include>authenticationendpoint.war</include>
+                                        <include>console.war</include>
+                                        <include>**/*.json</include>
                                         <include>**/*.j2</include>
                                     </includes>
                                 </resource>
@@ -109,7 +110,7 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>org.wso2.identity.apps.authentication.portal.server</id>
+                            <id>org.wso2.identity.apps.console.server</id>
                             <propertiesFile>../etc/feature.properties</propertiesFile>
                             <adviceFile>
                                 <properties>

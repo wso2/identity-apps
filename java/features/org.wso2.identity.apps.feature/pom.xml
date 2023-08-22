@@ -28,17 +28,28 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
+    <artifactId>org.wso2.identity.apps.feature</artifactId>
     <version>1.6.367.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server Apps - Common Server Feature</name>
+    <name>WSO2 Identity Server Apps - Portal Aggregate Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains common utils for identity app portals.</description>
+    <description>This is the aggregated feature of the identity app portals.</description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>org.wso2.identity.apps.common</artifactId>
+            <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.myaccount.server.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.console.server.feature</artifactId>
+            <type>zip</type>
         </dependency>
     </dependencies>
 
@@ -56,19 +67,19 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>org.wso2.identity.apps.common.server</id>
+                            <id>org.wso2.identity.apps</id>
                             <propertiesFile>../etc/feature.properties</propertiesFile>
-                            <adviceFile>
-                                <properties>
-                                    <propertyDef>org.wso2.carbon.p2.category.type:common</propertyDef>
-                                    <propertyDef>org.eclipse.equinox.p2.type.group:false</propertyDef>
-                                </properties>
-                            </adviceFile>
-                            <bundles>
-                                <bundleDef>
-                                    org.wso2.identity.apps:org.wso2.identity.apps.common
-                                </bundleDef>
-                            </bundles>
+                            <includedFeatures>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.common.server.feature
+                                </includedFeatureDef>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.myaccount.server.feature
+                                </includedFeatureDef>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.console.server.feature
+                                </includedFeatureDef>
+                            </includedFeatures>
                         </configuration>
                     </execution>
                 </executions>

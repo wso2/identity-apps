@@ -23,12 +23,13 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>1.6.365.9-SNAPSHOT</version>
+        <version>1.6.367.1-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
+    <version>1.6.367.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Identity Server Apps - Recovery Portal Server Feature</name>
     <url>http://wso2.org</url>
