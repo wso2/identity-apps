@@ -109,9 +109,14 @@ jobs:
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: 🚀 Maven Release
-              id: maven-release
-              run: mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -B release:prepare && mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:perform --settings ~/.m2/settings.xml
+            - name: 📝 Check Changeset status
+              id: check-changeset-status
+              run: |
+                  pnpm changeset status
+
+            # - name: 🚀 Maven Release
+            #   id: maven-release
+            #   run: mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -B release:prepare && mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:perform --settings ~/.m2/settings.xml
 
             # - name: 🚀 Release React Apps
             #   if: always()

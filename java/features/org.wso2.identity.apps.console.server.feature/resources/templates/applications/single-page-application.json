@@ -1,0 +1,41 @@
+{
+	"id": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
+    "name": "Single Page Application",
+    "description": "Front-end applications which consume REST APIs. Mostly written using scripting languages.",
+    "image": "spa",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "react", "angular", "vue"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 3,
+    "templateGroup": "spa",
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": true
+            }
+        }
+    }
+}
