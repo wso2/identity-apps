@@ -81,7 +81,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get app from: "));
+                return Promise.reject(new Error("Something went wrong: "));
             }
 
             return Promise.resolve(response.data as ApplicationBasicInterface);
