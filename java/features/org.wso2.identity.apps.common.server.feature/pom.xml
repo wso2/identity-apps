@@ -28,6 +28,7 @@
     </parent> -->
 
     <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.identity.apps</groupId>
     <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
     <version>1.6.367.1-SNAPSHOT</version>
     <packaging>pom</packaging>
