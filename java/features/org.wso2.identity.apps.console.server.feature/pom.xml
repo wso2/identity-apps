@@ -20,12 +20,12 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <!-- <parent>
+    <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
         <version>1.6.367.1-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
-    </parent> -->
+    </parent>
 
     <groupId>org.wso2.identity.apps</groupId>
     <modelVersion>4.0.0</modelVersion>
@@ -103,7 +103,7 @@
             <plugin>
                 <groupId>org.wso2.maven</groupId>
                 <artifactId>carbon-p2-plugin</artifactId>
-                <version>1.5.3</version>
+                <version>${carbon.p2.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>p2-feature-generation</id>
