@@ -27,6 +27,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent> -->
 
+    <groupId>org.wso2.identity.apps</groupId>
     <artifactId>myaccount</artifactId>
     <version>1.6.367.1-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - My Account</name>
