@@ -144,7 +144,10 @@
                 <executions>
                     <execution>
                         <id>npm install (initialize)</id>
-                        <phase />
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
                     </execution>
                     <execution>
                         <id>npm run build (compile)</id>
