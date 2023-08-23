@@ -11,11 +11,18 @@ process_console_package() {
     goToRootDirectory && \
     cd "apps/console" || exit 1 && \
 
+    local console_release_version
+    console_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
     goToRootDirectory && \
     cd "java/features/org.wso2.identity.apps.console.server.feature" || exit 1 && \
+
+    mvn versions:set-property -Dproperty=console.version -DnewVersion="$console_release_version" && \
+    git add pom.xml && \
+    git commit -m "Update console version to $console_release_version" && \
 
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml

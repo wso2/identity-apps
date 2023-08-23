@@ -132,11 +132,15 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <properties>
+        <console.version>1.6.367.4</console.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>console</artifactId>
-            <version>1.6.367.3</version>
+            <version>${console.version}</version>
             <type>war</type>
         </dependency>
     </dependencies>
