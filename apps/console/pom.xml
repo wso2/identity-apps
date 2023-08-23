@@ -144,7 +144,32 @@
                 <executions>
                     <execution>
                         <id>npm install (initialize)</id>
-                        <phase />
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <executable>pnpm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                            <skip>${bootstrap.exec.skip}</skip>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm run build (compile)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <executable>pnpm</executable>
+                            <arguments>
+                                <argument>build</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -174,7 +199,27 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.3</version>
+                <configuration>
+                    <warName>identity-console-v${project.version}</warName>
+                </configuration>
+            </plugin>
+
+            <!-- Release -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.1</version>
                 <inherited>true</inherited>
@@ -185,10 +230,23 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <warName>identity-console-v${project.version}</warName>
+                    <serverId>wso2.releases</serverId>
+                    <nexusUrl>https://maven.wso2.org/nexus</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
