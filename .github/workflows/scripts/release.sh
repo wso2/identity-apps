@@ -11,10 +11,6 @@ process_console_package() {
     goToRootDirectory && \
     cd "apps/console" || exit 1 && \
 
-    # Build Console app
-    # pnpm install && \
-    # pnpm build && \
-
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
