@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance, HttpError, HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
 import { store } from "../store";
@@ -62,8 +62,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Update bulks of resources
  *
- * @param data request payload
- * @returns {Promise<any>} a promise containing the response.
+ * @param data - data request payload
+ * @returns a promise containing the response.
  */
 export const updateResources = (data: BulkDataPropsInterface): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
@@ -97,7 +97,7 @@ export const updateResources = (data: BulkDataPropsInterface): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
