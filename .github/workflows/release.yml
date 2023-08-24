@@ -109,13 +109,22 @@ jobs:
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            - name: 📝 Check Changeset status
-              id: check-changeset-status
-              run: |
-                pnpm changeset status --output=./.changeset/changeset-status.json
-                PACKAGES=$(jq -r '.changesets[].releases[].name' ./.changeset/changeset-status.json | paste -sd, -)
-                echo "Extracted names: $PACKAGES"
-                echo "::set-output name=extracted_names::$PACKAGES"
+            - name: 📣 Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                title: "[Release] [GitHub Action] Update package versions"
+                publish: pnpm publish:packages
+                version: pnpm version:packages
+                commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
+
+            # - name: 📝 Check Changeset status
+            #   id: check-changeset-status
+            #   run: |
+            #     pnpm changeset status --output=./.changeset/changeset-status.json
+            #     PACKAGES=$(jq -r '.changesets[].releases[].name' ./.changeset/changeset-status.json | paste -sd, -)
+            #     echo "Extracted names: $PACKAGES"
+            #     echo "::set-output name=extracted_names::$PACKAGES"
 
             # - name: 🚀 Maven Release
             #   id: maven-release
@@ -125,5 +134,5 @@ jobs:
               id: perform-release
               working-directory: .github/workflows
               run: |
-                  PACKAGES="${{ toJson(steps.check-changeset-status.outputs.extracted_names) }}"
+                  PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
                   bash ./scripts/release.sh "$PACKAGES"
