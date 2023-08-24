@@ -20,8 +20,9 @@
       layoutStoreURL = "";
     }
 
-    // Common data for the layout file.
-    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantForTheming));
+    // Common data for the layout file. 
+    // temporarily commented until branding is unified
+    // layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantForTheming));
 
     if (brandingPreference != null) {
       // First, check if Branding is enabled.

@@ -24,7 +24,6 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 
 <%-- Branding Preferences --%>
@@ -72,6 +71,16 @@
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
         <jsp:include page="includes/header.jsp"/>
+        <% } %>
+
+        <%-- analytics --%>
+        <%
+            File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+            if (analyticsFile.exists()) {
+        %>
+            <jsp:include page="extensions/analytics.jsp"/>
+        <% } else { %>
+            <jsp:include page="includes/analytics.jsp"/>
         <% } %>
 
         <!--[if lt IE 9]>
@@ -292,7 +301,7 @@
                 document.getElementById('OTPCode').value = token;
 
                 if (!hasNullDigit) {
-                    AppInsights.getInstance().trackEvent("authentication-portal-sms-otp-click-continue", {
+                    trackEvent("authentication-portal-sms-otp-click-continue", {
                         "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
                     });
                     // Disable during the initial submission to prevent double submissions.
@@ -338,7 +347,7 @@
                                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
                                     +'<div class="ui divider hidden"></div>';
                             } else {
-                                AppInsights.getInstance().trackEvent("authentication-portal-sms-otp-click-continue", {
+                                trackEvent("authentication-portal-sms-otp-click-continue", {
                                     "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
                                 });
                                 $('#codeForm').data("submitted", true);

@@ -42,8 +42,8 @@
     String activeThemeName = "";
     String overrideStylesheet = "";
     String copyrightText = "";
-    String siteTitle = "Asgardeo by WSO2";
-    String supportEmail = "asgardeo-help@wso2.com";
+    String siteTitle = "WSO2 Identity Server";
+    String supportEmail = "contact@wso2.com";
     String logoURL = "";
     String logoAlt = "";
     String faviconURL = "";
