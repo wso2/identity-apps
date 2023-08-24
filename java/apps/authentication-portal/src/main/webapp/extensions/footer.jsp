@@ -8,7 +8,6 @@
 --%>
 
 <script src="libs/themes/default/semantic.min.js"></script>
-<%@ include file="../app-insights.jsp" %>
 
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.

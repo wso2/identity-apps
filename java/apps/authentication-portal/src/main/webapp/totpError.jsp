@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
@@ -66,13 +65,6 @@
     layoutData.put("isErrorResponse", true);
 %>
 
-<script type="text/javascript">
-    AppInsights.getInstance().trackEvent("authentication-portal-error-totp", {
-        "type": "error-response",
-        "error-message": "<%= Encode.forJavaScriptBlock(errorMessage) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(errorMessage) %>" : ""
-    });
-</script>
-
 <html>
     <head>
         <%-- header --%>
@@ -85,6 +77,16 @@
         <jsp:include page="includes/header.jsp"/>
         <% } %>
 
+        <%-- analytics --%>
+        <%
+            File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+            if (analyticsFile.exists()) {
+        %>
+            <jsp:include page="extensions/analytics.jsp"/>
+        <% } else { %>
+            <jsp:include page="includes/analytics.jsp"/>
+        <% } %>
+        
         <script src="js/scripts.js"></script>
         <script src="/totpauthenticationendpoint/js/scripts.js"></script>
 
@@ -92,6 +94,13 @@
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+
+        <script type="text/javascript">
+            trackEvent("authentication-portal-error-totp", {
+                "type": "error-response",
+                "error-message": "<%= Encode.forJavaScriptBlock(errorMessage) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(errorMessage) %>" : ""
+            });
+        </script>
     </head>
 
     <body class="login-portal layout totp-portal-layout" onload="getLoginDiv()">

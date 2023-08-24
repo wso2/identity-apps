@@ -17,7 +17,6 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="../includes/localize.jsp" %>
-<%@ include file="../app-insights.jsp" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../includes/init-url.jsp"/>
@@ -39,13 +38,6 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript">
-        AppInsights.getInstance().trackEvent("authentication-portal-error", {
-            "type": "error-response",
-            "status": "400",
-            "status-message": "<%=stat%>" !== "null" ? "<%=stat%>" : ""
-        });
-    </script>
     <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
@@ -55,6 +47,24 @@
     <% } else { %>
         <jsp:include page="../includes/header.jsp"/>
     <% } %>
+
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
+    <% } %>
+
+    <script type="text/javascript">
+        trackEvent("authentication-portal-error", {
+            "type": "error-response",
+            "status": "400",
+            "status-message": "<%=stat%>" !== "null" ? "<%=stat%>" : ""
+        });
+    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >

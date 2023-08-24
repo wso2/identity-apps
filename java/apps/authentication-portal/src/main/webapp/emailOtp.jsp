@@ -27,7 +27,6 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 
 <%-- Branding Preferences --%>
@@ -74,6 +73,16 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
+    <% } %>
+
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
@@ -98,7 +107,7 @@
                 if ($('#codeForm').data("submitted") === true) {
                     console.warn("Prevented a possible double submit event");
                 } else {
-                    AppInsights.getInstance().trackEvent("authentication-portal-email-otp-click-continue", {
+                    trackEvent("authentication-portal-email-otp-click-continue", {
                         "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
                     });
                     $('#codeForm').data("submitted", true);

@@ -1301,7 +1301,7 @@
             if ($(elem).hasClass(linkClicked)) {
                 console.warn("Preventing multi click.")
             } else {
-                AppInsights.getInstance().trackEvent("authentication-portal-click-sign-in-with", {
+                trackEvent("authentication-portal-click-sign-in-with", {
                     "type": StringUtils.kebabCase(value),
                     "app": insightsAppIdentifier,
                     "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
@@ -1319,7 +1319,7 @@
             if ($(elem).hasClass(linkClicked)) {
                 console.warn("Preventing multi click.")
             } else {
-                AppInsights.getInstance().trackEvent("authentication-portal-click-sign-in-with", {
+                trackEvent("authentication-portal-click-sign-in-with", {
                     "type": StringUtils.kebabCase(value),
                     "app": insightsAppIdentifier,
                     "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
@@ -1343,7 +1343,7 @@
             if ($(elem).hasClass(linkClicked)) {
                 console.warn("Preventing multi click.")
             } else {
-                AppInsights.getInstance().trackEvent("authentication-portal-click-sign-in-with", {
+                trackEvent("authentication-portal-click-sign-in-with", {
                     "type": StringUtils.kebabCase(value),
                     "app": insightsAppIdentifier,
                     "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
@@ -1371,7 +1371,7 @@
         });
 
         function handleSignupClick() {
-            AppInsights.getInstance().trackEvent("authentication-portal-click-signup", {
+            trackEvent("authentication-portal-click-signup", {
                 "app": insightsAppIdentifier,
                 "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
             });

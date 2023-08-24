@@ -123,23 +123,10 @@
         }
     });
 
-    function waitForAppInsights(callback){
-        if(typeof AppInsights !== "undefined"){
-            callback();
-        }
-        else{
-            setTimeout(waitForAppInsights, 250, callback);
-        }
-    }
-
-    waitForAppInsights(
-        function() {
-            AppInsights.getInstance().trackEvent("page-visit-authentication-portal-identifierauth", {
-                "app": insightsAppIdentifier,
-                "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-            });
-        }
-    );
+    trackEvent("page-visit-authentication-portal-identifierauth", {
+        "app": insightsAppIdentifier,
+        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+    });     
 
     function submitIdentifier (e) {
         e.preventDefault();
@@ -157,7 +144,7 @@
         }
 
         if (username.value) {
-            AppInsights.getInstance().trackEvent("authentication-portal-identifierauth-click-continue", {
+            trackEvent("authentication-portal-identifierauth-click-continue", {
                 "app": insightsAppIdentifier,
                 "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
             });

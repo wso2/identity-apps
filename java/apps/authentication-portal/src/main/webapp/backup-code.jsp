@@ -30,7 +30,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
@@ -83,6 +82,16 @@
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
         <jsp:include page="includes/header.jsp"/>
+        <% } %>
+
+        <%-- analytics --%>
+        <%
+            File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+            if (analyticsFile.exists()) {
+        %>
+            <jsp:include page="extensions/analytics.jsp"/>
+        <% } else { %>
+            <jsp:include page="includes/analytics.jsp"/>
         <% } %>
 
         <script src="js/scripts.js"></script>
@@ -325,7 +334,7 @@
                 var token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
                 document.getElementById('BackupCode').value = token;
                 if ( pin1 !=null &  pin2 !=null & pin3 !=null & pin5 !=null & pin6 !=null) {
-                    AppInsights.getInstance().trackEvent("authentication-portal-backup-code-click-continue", {
+                    trackEvent("authentication-portal-backup-code-click-continue", {
                         "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
                     });
                     document.getElementById("backupCodeForm").submit();

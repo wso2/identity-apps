@@ -27,7 +27,6 @@
 
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 
 <%
     String authRequest = request.getParameter("data");
@@ -47,6 +46,16 @@
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
     <jsp:include page="includes/header.jsp"/>
+    <% } %>
+
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -186,7 +195,7 @@
         } else if (insightsTenantIdentifier !== "<%=org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME%>") {
             insightsAppIdentifier = "business-app";
         }
-        AppInsights.getInstance().trackEvent("page-visit-authentication-portal-fido2", {
+        trackEvent("page-visit-authentication-portal-fido2", {
             "app": insightsAppIdentifier,
             "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
         });
@@ -312,7 +321,7 @@
         }
 
         function retry() {
-            AppInsights.getInstance().trackEvent("authentication-portal-fido2-click-retry", {
+            trackEvent("authentication-portal-fido2-click-retry", {
                 "app": insightsAppIdentifier,
                 "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
             });

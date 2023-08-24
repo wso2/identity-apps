@@ -29,7 +29,6 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
-<%@ include file="./app-insights.jsp" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
@@ -106,14 +105,6 @@
     layoutData.put("isErrorResponse", true);
 %>
 
-<script type="text/javascript">
-    AppInsights.getInstance().trackEvent("authentication-portal-error-generic", {
-        "type": "error-response",
-        "status": "<%= Encode.forJavaScriptBlock(stat) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(stat) %>" : "",
-        "status-message": "<%= Encode.forJavaScriptBlock(statusMessage) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(statusMessage) %>" : ""
-    });
-</script>
-
 <!doctype html>
 <html>
 <head>
@@ -126,6 +117,24 @@
     <% } else { %>
         <jsp:include page="includes/header.jsp"/>
     <% } %>
+
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
+    <% } %>
+
+    <script type="text/javascript">
+        trackEvent("authentication-portal-error-generic", {
+            "type": "error-response",
+            "status": "<%= Encode.forJavaScriptBlock(stat) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(stat) %>" : "",
+            "status-message": "<%= Encode.forJavaScriptBlock(statusMessage) %>" !== "null" ? "<%= Encode.forJavaScriptBlock(statusMessage) %>" : ""
+        });
+    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >

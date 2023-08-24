@@ -53,6 +53,16 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
+<%-- analytics --%>
+<%
+    File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+    if (analyticsFile.exists()) {
+%>
+    <jsp:include page="extensions/analytics.jsp"/>
+<% } else { %>
+    <jsp:include page="includes/analytics.jsp"/>
+<% } %>
+
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
@@ -742,26 +752,13 @@
         insightsAppIdentifier = "business-app";
     }
 
-    function waitForAppInsights(callback){
-        if(typeof AppInsights !== "undefined"){
-            callback();
-        }
-        else{
-            setTimeout(waitForAppInsights, 250, callback);
-        }
-    }
-
-    waitForAppInsights(
-        function() {
-            AppInsights.getInstance().trackEvent("page-visit-authentication-portal", {
-                "app": insightsAppIdentifier,
-                "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-            });
-        }
-    );
+    trackEvent("page-visit-authentication-portal", {
+        "app": insightsAppIdentifier,
+        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+    });
 
     function handleClickSignIn() {
-        AppInsights.getInstance().trackEvent("authentication-portal-basicauth-click-sign-in", {
+        trackEvent("authentication-portal-basicauth-click-sign-in", {
             "app": insightsAppIdentifier,
             "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
         });
