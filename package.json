@@ -12,12 +12,6 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "repository": "https://github.com/wso2/identity-apps.git",
-    "workspaces": [
-        "apps/*",
-        "modules/*",
-        "components/theme",
-        "tests"
-    ],
     "scripts": {
         "build": "pnpm nx run-many --target=build --all --with-deps",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount --with-deps",
