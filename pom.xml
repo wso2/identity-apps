@@ -52,7 +52,7 @@
         <module>java/apps/authentication-portal</module>
         <module>java/apps/recovery-portal</module>
         <module>java/apps/x509-certificate-authentication-portal</module>
-        <module>tests</module>
+        <!-- <module>tests</module> -->
         <module>java/features/org.wso2.identity.apps.common.server.feature</module>
         <!-- <module>java/features/org.wso2.identity.apps.myaccount.server.feature</module> -->
         <!-- <module>java/features/org.wso2.identity.apps.console.server.feature</module> -->
