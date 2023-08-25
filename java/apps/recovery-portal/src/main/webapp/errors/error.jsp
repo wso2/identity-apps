@@ -18,7 +18,7 @@
 
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>

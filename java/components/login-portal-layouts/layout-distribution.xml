@@ -26,49 +26,16 @@
         <mkdir dir="../../apps/authentication-portal/src/main/webapp/includes/layouts"/>
     </target>
 
-    <target name="copy-default-layout-into-authentication-portal" depends="create-authentication-portal-includes-layouts-dir">
-        <echo message="--- copying default layout to Authentication Portal ---"/>
+    <target name="copy-predefined-layout-into-authentication-portal" depends="create-authentication-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to Authentication Portal ---"/>
         <copy todir="../../apps/authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <include name="default/**"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="check-authentication-portal-extensions-layouts-dir">
-        <available
-            property="authentication-portal.extenions.layouts.dir.exists"
-            file="../../apps/authentication-portal/src/main/webapp/extensions/layouts"
-            type="dir"
-        />
-    </target>
-
-    <target
-        name="create-authentication-portal-extensions-layouts-dir"
-        depends="check-authentication-portal-extensions-layouts-dir"
-        unless="${authentication-portal.extenions.layouts.dir.exists}"
-    >
-        <mkdir dir="../../apps/authentication-portal/src/main/webapp/extensions/layouts"/>
-    </target>
-
-    <target 
-        name="copy-custom-layouts-into-authentication-portal"
-        depends="create-authentication-portal-extensions-layouts-dir"
-    >
-        <echo message="--- copying custom layouts to Authentication Portal ---"/>
-        <copy todir="../../apps/authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <exclude name="default/**"/>
-            </fileset>
+            <fileset dir="target/layouts/"/>
         </copy>
     </target>
 
     <target
         name="copy-layouts-into-authentication-portal"
-        depends="
-        copy-default-layout-into-authentication-portal,
-        copy-custom-layouts-into-authentication-portal
-        "
+        depends="copy-predefined-layout-into-authentication-portal"
     />
 
     <!-- Copy layouts to the recovery-portal -->
@@ -88,49 +55,16 @@
         <mkdir dir="../../apps/recovery-portal/src/main/webapp/includes/layouts"/>
     </target>
 
-    <target name="copy-default-layout-into-recovery-portal" depends="create-recovery-portal-includes-layouts-dir">
-        <echo message="--- copying default layout to Recovery Portal ---"/>
+    <target name="copy-predefined-layout-into-recovery-portal" depends="create-recovery-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to Recovery Portal ---"/>
         <copy todir="../../apps/recovery-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <include name="default/**"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="check-recovery-portal-extensions-layouts-dir">
-        <available
-            property="recovery-portal.extenions.layouts.dir.exists"
-            file="../../apps/recovery-portal/src/main/webapp/extensions/layouts"
-            type="dir"
-        />
-    </target>
-
-    <target
-        name="create-recovery-portal-extensions-layouts-dir"
-        depends="check-recovery-portal-extensions-layouts-dir"
-        unless="${recovery-portal.extenions.layouts.dir.exists}"
-    >
-        <mkdir dir="../../apps/recovery-portal/src/main/webapp/extensions/layouts"/>
-    </target>
-
-    <target 
-        name="copy-custom-layouts-into-recovery-portal"
-        depends="create-recovery-portal-extensions-layouts-dir"
-    >
-        <echo message="--- copying custom layouts to Recovery Portal ---"/>
-        <copy todir="../../apps/recovery-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <exclude name="default/**"/>
-            </fileset>
+            <fileset dir="target/layouts/"/>
         </copy>
     </target>
 
     <target
         name="copy-layouts-into-recovery-portal"
-        depends="
-        copy-default-layout-into-recovery-portal,
-        copy-custom-layouts-into-recovery-portal
-        "
+        depends="copy-predefined-layout-into-recovery-portal"
     />
 
     <!-- Copy layouts to the x509-certificate-authentication-portal -->
@@ -150,49 +84,16 @@
         <mkdir dir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts"/>
     </target>
 
-    <target name="copy-default-layout-into-x509-certificate-authentication-portal" depends="create-x509-certificate-authentication-portal-includes-layouts-dir">
-        <echo message="--- copying default layout to X509 Certificate Authentication Portal ---"/>
+    <target name="copy-predefined-layout-into-x509-certificate-authentication-portal" depends="create-x509-certificate-authentication-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to X509 Certificate Authentication Portal ---"/>
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <include name="default/**"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="check-x509-certificate-authentication-portal-extensions-layouts-dir">
-        <available
-            property="x509-certificate-authentication-portal.extenions.layouts.dir.exists"
-            file="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts"
-            type="dir"
-        />
-    </target>
-
-    <target
-        name="create-x509-certificate-authentication-portal-extensions-layouts-dir"
-        depends="check-x509-certificate-authentication-portal-extensions-layouts-dir"
-        unless="${x509-certificate-authentication-portal.extenions.layouts.dir.exists}"
-    >
-        <mkdir dir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts"/>
-    </target>
-
-    <target 
-        name="copy-custom-layouts-into-x509-certificate-authentication-portal"
-        depends="create-x509-certificate-authentication-portal-extensions-layouts-dir"
-    >
-        <echo message="--- copying custom layouts to X509 Certificate Authentication Portal ---"/>
-        <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
-            <fileset dir="target/layouts/">
-                <exclude name="default/**"/>
-            </fileset>
+            <fileset dir="target/layouts/"/>
         </copy>
     </target>
 
     <target
         name="copy-layouts-into-x509-certificate-authentication-portal"
-        depends="
-        copy-default-layout-into-x509-certificate-authentication-portal,
-        copy-custom-layouts-into-x509-certificate-authentication-portal
-        "
+        depends="copy-predefined-layout-into-x509-certificate-authentication-portal"
     />
 
     <!-- Copy layouts to the console -->
