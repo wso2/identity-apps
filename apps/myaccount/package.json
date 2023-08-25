@@ -2,6 +2,7 @@
     "name": "@wso2is/myaccount",
     "version": "1.6.365",
     "description": "WSO2 Identity Server My Account",
+    "private": true,
     "author": "WSO2",
     "license": "Apache-2.0",
     "main": "index.js",
