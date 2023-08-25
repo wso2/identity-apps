@@ -30,7 +30,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.identity.apps.console.server.feature</artifactId>
-    <version>1.6.367.6-SNAPSHOT</version>
+    <version>1.6.367.6</version>
     <packaging>pom</packaging>
     <name>WSO2 Identity Server Apps - Console Server Feature</name>
     <url>http://wso2.org</url>
@@ -40,7 +40,7 @@
         <url>https://github.com/wso2/identity-apps.git</url>
         <developerConnection>scm:git:https://github.com/wso2/identity-apps.git</developerConnection>
         <connection>scm:git:https://github.com/wso2/identity-apps.git</connection>
-        <tag>HEAD</tag>
+        <tag>org.wso2.identity.apps.console.server.feature-1.6.367.6</tag>
     </scm>
 
     <repositories>
