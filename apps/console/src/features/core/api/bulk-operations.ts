@@ -85,7 +85,7 @@ export const updateResources = (data: BulkDataPropsInterface): Promise<any> => {
                 bulkResponse?.Operations?.some((operation: BulkResponseOperationInterface) => {
                     const statusCode: number = operation?.status?.code;
 
-                    if (statusCode != 200 && statusCode != 201 && statusCode != 204) {
+                    if (statusCode !== 200 && statusCode !== 201 && statusCode !== 204) {
                         isSuccessful = false;
 
                         return false;
