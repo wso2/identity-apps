@@ -27,6 +27,8 @@
         "nyc:full-report": "pnpm nyc report --reporter=lcov --reporter=text",
         "nyc:text-report": "pnpm nyc report --reporter=text",
         "nyc:text-summary-report": "pnpm nyc report --reporter=text-summary",
+        "publish:packages": "pnpm build && changeset publish",
+        "version:packages": "changeset version && pnpm install --lockfile-only",
         "test": "pnpm run test:unit",
         "test:watch": "pnpm run test -- --watch",
         "test:integration": "pnpm nx run-many --target=test --projects=integration-tests",
