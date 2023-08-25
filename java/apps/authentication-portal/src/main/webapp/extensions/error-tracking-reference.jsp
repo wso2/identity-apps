@@ -13,7 +13,7 @@
 <%@ page import="java.util.logging.Logger" %>
 
 <%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
+<jsp:directive.include file="../includes/localize.jsp" />
 
 <div class="tracking-reference-container ${ param.align }" >
     <label class="tracking-reference-label"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "tracking.reference.id")%></label>

@@ -120,9 +120,16 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
-                    <div class="ui divider hidden"></div>
-                    <jsp:include page="includes/error-tracking-reference.jsp"/>
-                    <div class="ui divider hidden"></div>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                        <div class="ui divider hidden"></div>
+                    <% } %>
+                    
                 </div>
             <% } else { %>
                 <h2 class="ui header portal-logo-tagline slogan-message ">
@@ -144,7 +151,14 @@
                         <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                     </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                 </p>
-                <jsp:include page="includes/error-tracking-reference.jsp"/>
+
+                <%
+                    File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                    if (trackingRefFile.exists()) {
+                %>
+                    <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                <% } %>
+
             <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter" >
