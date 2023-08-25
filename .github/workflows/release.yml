@@ -9,7 +9,9 @@ on:
         workflow_dispatch:
 
 env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+    BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
+    BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
 jobs:
     release:
@@ -25,6 +27,9 @@ jobs:
             - name: ⬇️ Checkout
               id: checkout
               uses: actions/checkout@v2.3.3
+              with:
+                  token: ${{ env.GH_TOKEN }}
+                  fetch-depth: 0
 
             - name: 🟢 Setup node
               id: setup-node
@@ -104,10 +109,10 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-maven-
 
-            - name: 🤖 Configure Git user
-              run: |
-                git config --global user.name "github-actions[bot]"
-                git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            # - name: 🤖 Configure Git user
+            #   run: |
+            #     git config --global user.name "github-actions[bot]"
+            #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
             - name: 📣 Create Release Pull Request or Publish to npm
               id: changesets

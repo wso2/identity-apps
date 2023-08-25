@@ -53,6 +53,18 @@ process_myaccount_package() {
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
 }
 
+process_java_apps_package() {
+    goToRootDirectory && \
+    cd "java" || exit 1 && \
+
+    local java_apps_release_version
+    java_apps_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+
+    echo "Releasing java-apps version: $java_apps_release_version"
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
+}
+
 PACKAGES=$1
 
 if [ -z "$PACKAGES" ]; then
@@ -72,6 +84,9 @@ for package in $(echo "$PACKAGES" | jq -c '.[]'); do
                 ;;
             "@wso2is/myaccount")
                 process_myaccount_package
+                ;;
+            "@wso2is/java-apps")
+                process_java_apps_package
                 ;;
             *)
                 echo "Irrelevent package: $package"
