@@ -2,6 +2,7 @@
     "name": "@wso2is/core",
     "version": "1.6.365",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
+    "private": true,
     "keywords": [
         "WSO2",
         "WSO2 IS",

@@ -2,6 +2,7 @@
     "name": "@wso2is/form",
     "version": "1.6.365",
     "description": "Form library for WSO2 Identity Server front end applications.",
+    "private": true,
     "keywords": [
         "WSO2",
         "WSO2 IS",
