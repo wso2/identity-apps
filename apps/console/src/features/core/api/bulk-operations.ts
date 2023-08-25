@@ -83,7 +83,7 @@ export const updateResources = (data: BulkDataPropsInterface): Promise<any> => {
             if (bulkResponse?.schemas?.includes("urn:ietf:params:scim:api:messages:2.0:BulkResponse")) {
                 bulkResponse?.Operations?.some((operation: BulkResponseOperationInterface) => {
                     // Check if status code exists and if it is not 200.
-                    if (operation?.status?.code !== undefined && operation.status.code !== 200) {
+                    if (!isNaN(operation?.status?.code) && operation.status.code !== 200) {
                         isSuccessful = false;
 
                         return false;
