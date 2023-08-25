@@ -18,7 +18,11 @@
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
@@ -26,10 +30,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="branding-preferences.jsp"/>
 
-<%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
-
-<%-- Extract the name of the stylesheet--%>
+<!-- Extract the name of the stylesheet-->
 <%
     String themeName = "default";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
@@ -64,20 +65,36 @@
 
 <%-- Layout specific style sheet --%>
 <%
-    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
-    if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-        styleFilePath = customLayoutFileRelativeBasePath + "/" + layout + "/styles.css";
+    String tempStyleFilePath = "";
+    if (StringUtils.startsWith(layout, "custom-")) {
+        if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences)) {
+            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
+        } else if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences + "-" + applicationRequestingPreferences)) {
+            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
+        }
+    } else {
+        tempStyleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
-    if (config.getServletContext().getResource(styleFilePath) != null) {
+
+    if (config.getServletContext().getResource(tempStyleFilePath) != null) {
+        styleFilePath = tempStyleFilePath;
+    }
 %>
-    <link rel="stylesheet" href="<%= styleFilePath %>">
-<% } %>
+    
+<link rel="stylesheet" href="<%= styleFilePath %>">
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
-<title>
-<% if (StringUtils.isNotBlank(siteTitle)) { %>
-    <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
-<% } else { %>
-    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%>
-<% } %>
-</title>
+<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
+
+<%-- Downtime banner --%>
+<%
+    if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
+%>
+        <jsp:include page="extensions/planned-downtime-banner.jsp"/>
+<%
+    } else if (config.getServletContext().getResource("includes/planned-downtime-banner.jsp") != null) {
+%>
+        <jsp:include page="includes/planned-downtime-banner.jsp"/>
+<%
+    }
+%>

@@ -215,16 +215,16 @@
         <layout:component componentName="ProductHeader" >
             <!-- product-title -->
             <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) {
-                String productTitleFilePath = "extensions/product-title.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                    productTitleFilePath = "includes/product-title.jsp";
-                }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
-            <% } %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <%  } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <%  
+                } 
+               } 
+            %>
         </layout:component>
         <layout:component componentName="MainSection" >
         <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
@@ -241,16 +241,16 @@
         <layout:component componentName="ProductFooter" >
             <!-- product-footer -->
             <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) {
-                String productFooterFilePath = "extensions/product-footer.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                    productFooterFilePath = "includes/product-footer.jsp";
-                }
-                %>
-                <jsp:include page="<%= productFooterFilePath %>" />
-            <% } %>
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <%  } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% 
+                } 
+               } 
+            %>
         </layout:component>
     </layout:main>
 

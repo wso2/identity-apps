@@ -24,11 +24,6 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="branding-preferences.jsp"/>
 
-<%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
-
-<div class="product-title" data-testid="product-title">
-    <div class="theme-icon inline auto transparent product-logo portal-logo">
-        <img src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" id="product-logo" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
-    </div>
+<div class="theme-icon inline auto transparent product-logo portal-logo">
+    <img src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" id="product-logo" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
 </div>
