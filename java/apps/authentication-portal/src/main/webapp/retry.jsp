@@ -196,8 +196,15 @@
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
                     <div class="ui divider hidden"></div>
-                    <jsp:include page="includes/error-tracking-reference.jsp"/>
-                    <div class="ui divider hidden"></div>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                        <div class="ui divider hidden"></div>
+                    <% } %>
+                    
                 </div>
             <% } else { %>
                 <%
@@ -214,7 +221,14 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
-                    <jsp:include page="includes/error-tracking-reference.jsp"/>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
+                    <% } %>
+
                 <%
                     } else if (IdentityCoreConstants.USER_ACCOUNT_DISABLED_ERROR_CODE.equals(errorCode)) {
                 %>
@@ -228,7 +242,15 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
-                    <jsp:include page="includes/error-tracking-reference.jsp"/>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
+                    <% } %>
+
+
                 <% } else { %>
                     <h2 class="ui header portal-logo-tagline slogan-message">
                         <%=Encode.forHtmlContent(stat)%>
@@ -237,7 +259,13 @@
                     <p class="portal-tagline-description mt-1 mb-5">
                         <%=Encode.forHtmlContent(statusMessage)%>
                     </p>
-                    <jsp:include page="includes/error-tracking-reference.jsp"/>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                    <% } %>
 
                     <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
                     <button class="ui primary basic button mt-5"
