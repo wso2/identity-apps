@@ -108,11 +108,6 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-maven-
 
-            # - name: 🤖 Configure Git user
-            #   run: |
-            #     git config --global user.name "github-actions[bot]"
-            #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
             - name: 📣 Create Release Pull Request or Publish to npm
               id: changesets
               uses: changesets/action@v1
@@ -123,18 +118,6 @@ jobs:
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
-
-            # - name: 📝 Check Changeset status
-            #   id: check-changeset-status
-            #   run: |
-            #     pnpm changeset status --output=./.changeset/changeset-status.json
-            #     PACKAGES=$(jq -r '.changesets[].releases[].name' ./.changeset/changeset-status.json | paste -sd, -)
-            #     echo "Extracted names: $PACKAGES"
-            #     echo "::set-output name=extracted_names::$PACKAGES"
-
-            # - name: 🚀 Maven Release
-            #   id: maven-release
-            #   run: mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -B release:prepare && mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' release:perform --settings ~/.m2/settings.xml
 
             - name: 🚀 Perform Release
               id: perform-release

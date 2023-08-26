@@ -15,7 +15,7 @@ process_console_package() {
     console_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
 
     echo "Releasing console version: $console_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
     goToRootDirectory && \
@@ -23,10 +23,10 @@ process_console_package() {
 
     mvn versions:set-property -Dproperty=console.version -DnewVersion="$console_release_version" && \
     git add pom.xml && \
-    git commit -m "Update console version to $console_release_version" && \
+    git commit -m "[WSO2 Release] [GitHub Action] [Release] [skip ci] Update console version to $console_release_version" && \
 
     echo "Releasing console feature version: $console_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
 }
 
@@ -38,7 +38,7 @@ process_myaccount_package() {
     myaccount_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
 
     echo "Releasing myaccount version: $myaccount_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
     goToRootDirectory && \
@@ -46,10 +46,10 @@ process_myaccount_package() {
 
     mvn versions:set-property -Dproperty=myaccount.version -DnewVersion="$myaccount_release_version" && \
     git add pom.xml && \
-    git commit -m "Update myaccount version to $myaccount_release_version" && \
+    git commit -m "[WSO2 Release] [GitHub Action] [Release] [skip ci] Update myaccount version to $myaccount_release_version" && \
 
     echo "Releasing myaccount feature version: $myaccount_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
 }
 
@@ -61,7 +61,7 @@ process_java_apps_package() {
     java_apps_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
 
     echo "Releasing java-apps version: $java_apps_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B && \
+    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " && \
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml
 }
 
