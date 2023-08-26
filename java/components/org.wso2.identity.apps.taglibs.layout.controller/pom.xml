@@ -24,7 +24,7 @@
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
         <version>1.6.367.1-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
