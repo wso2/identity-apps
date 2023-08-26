@@ -133,7 +133,7 @@
     </pluginRepositories>
 
     <properties>
-        <myaccount.version>1.6.367.1</myaccount.version>
+        <myaccount.version>1.6.367.2</myaccount.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
     </properties>
 
