@@ -4,7 +4,6 @@ on:
     push:
         branches: [improve-release-workflow]
         paths-ignore:
-            - "**.md"
             - "LICENSE"
         workflow_dispatch:
 
