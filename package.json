@@ -92,6 +92,7 @@
         "@babel/preset-react": "^7.10.4",
         "@babel/preset-typescript": "^7.10.4",
         "@babel/runtime-corejs3": "^7.11.2",
+        "@changesets/changelog-github": "^0.4.8",
         "@changesets/cli": "^2.26.2",
         "@nrwl/cli": "14.4.2",
         "@nrwl/cypress": "14.4.2",
