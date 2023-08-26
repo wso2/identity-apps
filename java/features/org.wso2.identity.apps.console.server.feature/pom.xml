@@ -133,7 +133,7 @@
     </pluginRepositories>
 
     <properties>
-        <console.version>1.6.367.6</console.version>
+        <console.version>1.6.367.7</console.version>
     </properties>
 
     <dependencies>
