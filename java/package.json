@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/java-apps",
-    "version": "1.6.366",
+    "version": "1.6.367",
     "description": "WSO2 Identity Server Authentication Portal",
     "private": true,
     "author": "WSO2",
