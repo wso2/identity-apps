@@ -55,6 +55,7 @@
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
+    String productURL = "https://wso2.com/identity-server";
 
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";

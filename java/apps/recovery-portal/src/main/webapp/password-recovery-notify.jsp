@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
@@ -36,7 +37,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -44,13 +44,33 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
-
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+    String accessUrl = request.getParameter("accessUrl");
+    String modifiedAccessUrl = accessUrl;
+    if (isSaaSApp) {
+    	modifiedAccessUrl = IdentityManagementEndpointUtil.getUserPortalUrl(accessUrl, tenantDomain);
+    }
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+
+    String sp = request.getParameter("sp");
+    String spId = "";
+
+    if (!StringUtils.isBlank(sp)) {
+        try {
+            if (sp.equals("My Account")) {
+                spId = "My_Account";
+            } else if (sp.equals("Console")) {
+                spId = "Console";
+            } else {
+                ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+                spId = applicationDataRetrievalClient.getApplicationID(tenantDomain,sp);
+            }
+        } catch (Exception e) {
+            spId = "";
+        }
+    }
 
     NotificationApi notificationApi = new NotificationApi();
 
@@ -71,6 +91,10 @@
     sessionDataKeyProperty.setKey("sessionDataKey");
     sessionDataKeyProperty.setValue(sessionDataKey);
     properties.add(sessionDataKeyProperty);
+    Property appProperty = new Property();
+    appProperty.setKey("spId");
+    appProperty.setValue(spId);
+    properties.add(appProperty);
     recoveryInitiatingRequest.setProperties(properties);
 
     try {
@@ -79,99 +103,22 @@
             requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
         }
         notificationApi.recoverPasswordPost(recoveryInitiatingRequest, null, null, requestHeaders);
+        request.setAttribute("accessUrl", modifiedAccessUrl);
+        request.getRequestDispatcher("password-reset-success.jsp").forward(request, response);
     } catch (ApiException e) {
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
 <!doctype html>
-<html lang="en-US">
+<html>
 <head>
-    <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-        if (headerFile.exists()) {
-    %>
-    <jsp:include page="extensions/header.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
-    <% } %>
 </head>
 <body>
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
-
-        </layout:component>
-        <layout:component componentName="MainSection" >
-
-        </layout:component>
-        <layout:component componentName="ProductFooter" >
-
-        </layout:component>
-    </layout:main>
-
-    <div class="ui tiny modal notify">
-        <div class="header">
-            <h4>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
-            </h4>
-        </div>
-        <div class="content">
-            <p>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Password.recovery.information.sent.to.the.email.registered.with.account")%>
-                &nbsp; <%=Encode.forHtml(username)%>
-            </p>
-        </div>
-        <div class="actions">
-            <button type="button" class="ui primary button cancel" data-dismiss="modal">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-            </button>
-        </div>
-    </div>
-
-    <%-- footer --%>
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-    <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
-    <% } %>
-
-    <% String invalidCallbackErrorMessageText = IdentityManagementEndpointUtil
-        .i18n(recoveryResourceBundle, "invalid.callback.url.found.in.the.request"); %>
-
-    <script type="application/javascript">
-        $(document).ready(function () {
-            $(".notify").modal({
-                blurring: true,
-                closable: false,
-                onHide: function () {
-                    <%
-                    try {
-                        if (callback != null) {
-                    %>
-                        location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
-                    <%
-                    }
-                    } catch (URISyntaxException e) {
-                        request.setAttribute("error", true);
-                        request.setAttribute("errorMsg", invalidCallbackErrorMessageText);
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                        return;
-                    }
-                    %>
-                }
-            }).modal("show");
-        });
-    </script>
 </body>
 </html>

@@ -28,8 +28,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
-<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
-<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="java.util.ArrayList" %>
@@ -69,6 +67,8 @@
     if (StringUtils.isNotBlank(userTenantHint)) {
         username = MultitenantUtils.getTenantAwareUsername(username);
         username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
+    } else {
+        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
     }
 
     // Password recovery parameters
@@ -116,6 +116,9 @@
             claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
@@ -146,12 +149,12 @@
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "No.valid.user.found"));
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
                 return;
             }
 
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
             return;
         }
 
@@ -202,11 +205,17 @@
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "Unknown.password.recovery.option"));
+                    if (!StringUtils.isBlank(username)) {
+                        request.setAttribute("username", username);
+                    }
                     request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
             catch (ApiException e) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
@@ -235,12 +244,15 @@
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Unknown.password.recovery.option"));
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         }
     }
 %>
-<html lang="en-US">
+<html>
 <head>
     <title></title>
 </head>
