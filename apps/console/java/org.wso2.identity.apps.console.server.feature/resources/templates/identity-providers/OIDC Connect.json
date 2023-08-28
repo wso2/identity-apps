@@ -1,0 +1,93 @@
+{
+  "id": "63501347-128b-45a8-8a0b-fc80e411a688",
+  "name": "OpenID Connect",
+  "description": "Authenticate users from an OIDC IdP.",
+  "image": "oidc",
+  "category": "DEFAULT",
+  "displayOrder": 3,
+  "services": ["authentication"],
+  "idp": {
+    "name": "OpenIdConnect",
+    "description": "Identity provider for Federation via OpenId Connect",
+    "image": "",
+    "isPrimary": false,
+    "isFederationHub": false,
+    "homeRealmIdentifier": "",
+    "certificate": {
+      "certificates": []
+    },
+    "alias": "https://localhost:9444/oauth2/token",
+    "claims": {
+      "userIdClaim": {
+        "uri": "http://wso2.org/claims/username"
+      },
+      "roleClaim": {
+        "uri": "http://wso2.org/claims/role"
+      },
+      "provisioningClaims": []
+    },
+    "roles": {
+      "mappings": [],
+      "outboundProvisioningRoles": []
+    },
+    "federatedAuthenticators": {
+      "defaultAuthenticatorId": "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+      "authenticators": [
+        {
+          "authenticatorId": "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+          "isEnabled": true,
+          "properties": [
+            {
+              "key": "OAuth2TokenEPUrl",
+              "value": ""
+            },
+            {
+              "key": "IsUserIdInClaims",
+              "value": ""
+            },
+            {
+              "key": "callbackUrl",
+              "value": ""
+            },
+            {
+              "key": "IsBasicAuthEnabled",
+              "value": ""
+            },
+            {
+              "key": "ClientId",
+              "value": ""
+            },
+            {
+              "key": "commonAuthQueryParams",
+              "value": ""
+            },
+            {
+              "key": "UserInfoUrl",
+              "value": ""
+            },
+            {
+              "key": "OAuth2AuthzEPUrl",
+              "value": ""
+            },
+            {
+              "key": "ClientSecret",
+              "value": ""
+            }
+          ]
+        }
+      ]
+    },
+    "provisioning": {
+      "jit": {
+        "isEnabled": false,
+        "scheme": "PROVISION_SILENTLY",
+        "userstore": "PRIMARY"
+      },
+      "outboundConnectors": {
+        "defaultConnectorId": "",
+        "connectors": []
+      }
+    }
+  }
+}
+

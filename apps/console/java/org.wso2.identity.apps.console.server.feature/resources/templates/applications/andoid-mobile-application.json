@@ -1,0 +1,41 @@
+{
+	"id": "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec",
+    "name": "Android",
+    "description": "Applications developed to target Android mobiles devices.",
+    "image": "android",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "android"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 5,
+    "templateGroup": "mobile",
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": true
+            }
+        }
+    }
+}
