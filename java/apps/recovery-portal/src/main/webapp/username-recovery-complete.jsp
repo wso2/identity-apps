@@ -36,7 +36,6 @@
 
 <%
     String callback = (String) request.getAttribute("callback");
-    String tenantDomain = (String) request.getAttribute("tenantDomain");
     String username = request.getParameter("username");
     CallBackValidator callBackValidator = new CallBackValidator();
     try {
