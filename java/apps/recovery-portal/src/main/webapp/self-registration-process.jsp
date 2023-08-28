@@ -20,11 +20,16 @@
 
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
@@ -32,15 +37,14 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
-<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
-<%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Base64" %>
+<%@ page import="org.json.JSONObject" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
@@ -51,7 +55,10 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
-<html lang="en-US">
+<%-- Branding Preferences --%>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -77,15 +84,6 @@
     <![endif]-->
 </head>
 <body>
-    <%-- header --%>
-    <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-        if (headerFile.exists()) {
-    %>
-    <jsp:include page="extensions/header.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
-    <% } %>
 
     <%-- page content --%>
     <div class="container-fluid body-wrapper">
@@ -93,6 +91,7 @@
         <%
             String ERROR_MESSAGE = "errorMsg";
             String ERROR_CODE = "errorCode";
+            String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
             String SELF_REGISTRATION_WITH_VERIFICATION_PAGE = "self-registration-with-verification.jsp";
             String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
             String passwordPatternErrorCode = "20035";
@@ -101,19 +100,24 @@
             String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
-            Boolean isSelfRegistrationWithVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
+            Boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
 
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
-
+            boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
             String userLocaleForClaim = request.getHeader("Accept-Language");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
+            String sessionDataKey = request.getParameter("sessionDataKey");
+            String sp = request.getParameter("sp");
+            String spId = "";
+            JSONObject usernameValidityResponse;
+            SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
             String callback = request.getParameter("callback");
             String consent = request.getParameter("consent");
             boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-            String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
-                    "/authenticationendpoint/privacy_policy.do");
+            boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
+            String policyURL = privacyPolicyURL;
 
             Boolean isValidCallBackURL = false;
             try {
@@ -152,9 +156,87 @@
                                 IdentityManagementEndpointConstants.Consent.EXPLICIT_CONSENT_TYPE,
                                 true, false, IdentityManagementEndpointConstants.Consent.INFINITE_TERMINATION);
             }
+
+            /**
+            * For SaaS application read from user tenant from parameters.
+            */
+            String srtenantDomain = request.getParameter("srtenantDomain");
+            if (StringUtils.isNotBlank(srtenantDomain)) {
+                tenantDomain = srtenantDomain;
+            }
+
             if (StringUtils.isBlank(callback)) {
                 callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
+            }
+
+            User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+
+            if (StringUtils.isEmpty(username)) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Pick.username"));
+                request.getRequestDispatcher("register.do").forward(request, response);
+                return;
+            }
+
+            if (Boolean.parseBoolean(application.getInitParameter("useUserNameWithDomainForSelfSignUpNameCheck"))
+                    && StringUtils.isBlank(user.getRealm())) {
+                String userDomain = application.getInitParameter("DefaultBusinessUserStore").toString();
+                user.setUsername(IdentityManagementEndpointUtil.getFullQualifiedUsername(username,tenantDomain,userDomain));
+                user.setRealm(userDomain);
+                user.setTenantDomain(tenantDomain);
+            }
+
+            try {
+                usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
+            } catch (SelfRegistrationMgtClientException e) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                        .i18n(recoveryResourceBundle, "Something.went.wrong.while.registering.user") + Encode
+                        .forHtmlContent(username) + IdentityManagementEndpointUtil
+                        .i18n(recoveryResourceBundle, "Please.contact.administrator"));
+
+                if (allowchangeusername) {
+                    request.getRequestDispatcher("register.do").forward(request, response);
+                } else {
+                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                    if (!StringUtils.isBlank(username)) {
+                        request.setAttribute("username", username);
+                    }
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+                }
+                return;
+            }
+
+            Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+            if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+                if (allowchangeusername || !skipSignUpEnableCheck) {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorCode", userNameValidityStatusCode);
+                    if (usernameValidityResponse.has("message")) {
+                        if (usernameValidityResponse.get("message") instanceof String) {
+                            request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
+                        }
+                    }
+                    request.getRequestDispatcher("register.do").forward(request, response);
+                } else {
+                    String errorCode = String.valueOf(userNameValidityStatusCode);
+                    if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
+                        errorMsg = "Invalid tenant domain - " + user.getTenantDomain() + ".";
+                    } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+                        errorMsg = "Username '" + username + "' is already taken.";
+                    } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
+                        errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+                    }
+                    request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
+                    request.setAttribute("errorCode", errorCode);
+                    if (!StringUtils.isBlank(username)) {
+                        request.setAttribute("username", username);
+                    }
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+                return;
             }
             if (StringUtils.isBlank(username)) {
                 request.setAttribute("error", true);
@@ -180,9 +262,22 @@
 
             session.setAttribute("username", username);
 
+            if (StringUtils.isBlank(user.getRealm())
+                    && !StringUtils.isBlank(application.getInitParameter("DefaultBusinessUserStore"))) {
+                user.setRealm(application.getInitParameter("DefaultBusinessUserStore"));
+                user.setTenantDomain(tenantDomain);
+            }
 
-            User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
-
+            try {
+                if (sp.equals("My Account")) {
+                    spId = "My_Account";
+                } else {
+                    ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+                    spId = applicationDataRetrievalClient.getApplicationID(tenantDomain,sp);
+                }
+            } catch (Exception e) {
+                spId = "";
+            }
 
             Claim[] claims = new Claim[0];
 
@@ -195,6 +290,9 @@
                 }
             } catch (ApiException e) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
@@ -222,7 +320,7 @@
                 }
 
                 SelfRegistrationUser selfRegistrationUser = new SelfRegistrationUser();
-                selfRegistrationUser.setUsername(user.getUsername());
+                selfRegistrationUser.setUsername(username);
                 selfRegistrationUser.setTenantDomain(user.getTenantDomain());
                 selfRegistrationUser.setRealm(user.getRealm());
                 selfRegistrationUser.setPassword(password);
@@ -236,8 +334,14 @@
                 Property consentProperty = new Property();
                 consentProperty.setKey("consent");
                 consentProperty.setValue(consent);
+
+                Property spProperty = new Property();
+                spProperty.setKey("spId");
+                spProperty.setValue(spId);
+
                 properties.add(sessionKey);
                 properties.add(consentProperty);
+                properties.add(spProperty);
 
 
                 SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
@@ -252,15 +356,10 @@
                 SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
                 selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
                 // Add auto login cookie.
-                if (isAutoLoginEnable && !isSelfRegistrationWithVerificationEnabled) {
-                    if (StringUtils.isNotEmpty(user.getRealm())) {
-                        username = user.getRealm() + "/" + user.getUsername() + "@" + user.getTenantDomain();
-                    } else {
-                        username = user.getUsername() + "@" + user.getTenantDomain();
-                    }
+                if (isAutoLoginEnable && !isSelfRegistrationLockOnCreationEnabled) {
                     String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
                     JSONObject contentValueInJson = new JSONObject();
-                    contentValueInJson.put("username", username);
+                    contentValueInJson.put("username", user.getUsername());
                     contentValueInJson.put("createdTime", System.currentTimeMillis());
                     contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
                     if (StringUtils.isNotBlank(cookieDomain)) {
@@ -279,11 +378,16 @@
                     request.setAttribute("isAutoLoginEnabled", true);
                 }
                 request.setAttribute("callback", callback);
+                if (StringUtils.isNotBlank(srtenantDomain)) {
+                    request.setAttribute("srtenantDomain", srtenantDomain);
+                }
+                request.setAttribute("sessionDataKey", sessionDataKey);
                 request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);
 
             } catch (Exception e) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 String errorCode = (String) request.getAttribute("errorCode");
+                String errorMsg1 = (String) request.getAttribute("errorMsg");
                 if (passwordPatternErrorCode.equals(errorCode)) {
                     String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode);
                     if (!i18Resource.equals(errorCode)) {
@@ -298,23 +402,17 @@
                     }
 
                     return;
+                } else {
+                    if (!StringUtils.isBlank(username)) {
+                        request.setAttribute("username", username);
+                    }
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
 
 
         %>
     </div>
-
-
-    <%-- footer --%>
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-    <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
-    <% } %>
 
 </body>
 </html>
