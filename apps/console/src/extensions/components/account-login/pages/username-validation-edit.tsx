@@ -233,7 +233,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         const usernameConf: ValidationDataInterface[] =
             validationData?.filter((data: ValidationDataInterface) => data.field === "username");
 
-        if (usernameConf === undefined || usernameConf?.length < 1) {
+        if (usernameConf?.length < 1) {
             return;
         }
 
