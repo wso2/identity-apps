@@ -36,11 +36,11 @@
 
 <%
     String callback = (String) request.getAttribute("callback");
-    String tenantDomainHint = (String) request.getAttribute("tenantDomain");
+    String tenantDomain = (String) request.getAttribute("tenantDomain");
     String username = request.getParameter("username");
     CallBackValidator callBackValidator = new CallBackValidator();
     try {
-        if (!callBackValidator.isValidCallbackURL(callback, tenantDomainHint)) {
+        if (!callBackValidator.isValidCallbackURL(callback, tenantDomain)) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", "Configured callback URL does not match with the provided callback " +
                     "URL in the request.");
@@ -59,11 +59,6 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-%>
-
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
