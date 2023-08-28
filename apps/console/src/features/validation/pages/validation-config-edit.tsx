@@ -1,11 +1,21 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -151,13 +161,9 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            ValidationConfigStatusFetchRequestError.response &&
-            ValidationConfigStatusFetchRequestError.response.data &&
-            ValidationConfigStatusFetchRequestError.response.data.description
-        ) {
+        if (ValidationConfigStatusFetchRequestError?.response?.data?.description) {
             if (
-                ValidationConfigStatusFetchRequestError.response.status === 404
+                ValidationConfigStatusFetchRequestError?.response?.status === 404
             ) {
                 return;
             }
@@ -179,12 +185,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            passwordHistoryCountError.response &&
-            passwordHistoryCountError.response.data &&
-            passwordHistoryCountError.response.data.description
-        ) {
-            if (passwordHistoryCountError.response.status === 404) {
+        if (passwordHistoryCountError?.response?.data?.description) {
+            if (passwordHistoryCountError?.response?.status === 404) {
                 return;
             }
             dispatch(
@@ -205,10 +207,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            passwordExpiryError?.response?.data?.description
-        ) {
-            if (passwordExpiryError.response.status === 404) {
+        if (passwordExpiryError?.response?.data?.description) {
+            if (passwordExpiryError?.response?.status === 404) {
                 return;
             }
             dispatch(

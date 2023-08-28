@@ -233,7 +233,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         const usernameConf: ValidationDataInterface[] =
             validationData?.filter((data: ValidationDataInterface) => data.field === "username");
 
-        if (usernameConf === undefined || usernameConf.length < 1) {
+        if (usernameConf === undefined || usernameConf?.length < 1) {
             return;
         }
 
@@ -271,11 +271,11 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
             return data.validator === validatorName;
         });
 
-        if (config.length > 0) {
+        if (config?.length > 0) {
             let properties: ValidationPropertyInterface[] = config[0].properties;
 
             properties = properties.filter((data: ValidationPropertyInterface) => data.key === attributeName);
-            if (properties.length > 0) {
+            if (properties?.length > 0) {
                 return properties[0].value;
             }
         }
