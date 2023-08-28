@@ -56,7 +56,7 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <html>
 <head>
