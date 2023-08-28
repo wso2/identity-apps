@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.364-SNAPSHOT</version>
+    <version>1.6.367.3-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -44,21 +44,21 @@
     </scm>
 
     <modules>
-        <module>java/components/org.wso2.identity.apps.taglibs.layout.controller</module>
-        <module>java/components/login-portal-layouts</module>
-        <module>java/components/org.wso2.identity.apps.common</module>
-        <module>apps/myaccount</module>
-        <module>apps/console</module>
-        <module>java/apps/authentication-portal</module>
-        <module>java/apps/recovery-portal</module>
-        <module>java/apps/x509-certificate-authentication-portal</module>
-        <module>tests</module>
-        <module>java/features/org.wso2.identity.apps.common.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.myaccount.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.console.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.authentication.portal.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.recovery.portal.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.feature</module>
+        <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
+        <module>components/login-portal-layouts</module>
+        <module>components/org.wso2.identity.apps.common</module>
+        <!-- <module>apps/myaccount</module> -->
+        <!-- <module>apps/console</module> -->
+        <module>apps/authentication-portal</module>
+        <module>apps/recovery-portal</module>
+        <module>apps/x509-certificate-authentication-portal</module>
+        <!-- <module>tests</module> -->
+        <module>features/org.wso2.identity.apps.common.server.feature</module>
+        <!-- <module>features/org.wso2.identity.apps.myaccount.server.feature</module> -->
+        <!-- <module>features/org.wso2.identity.apps.console.server.feature</module> -->
+        <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
+        <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
+        <!-- <module>features/org.wso2.identity.apps.feature</module> -->
     </modules>
 
     <repositories>
@@ -639,6 +639,17 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>wso2.releases</serverId>
+                    <nexusUrl>https://maven.wso2.org/nexus</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>
