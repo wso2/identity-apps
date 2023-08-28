@@ -83,6 +83,7 @@ interface WizardStepInterface {
 /**
  * Component to handle addition of a new group to the system.
  *
+ * @param props - props related to the create group wizard Member
  */
 export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: CreateGroupProps): ReactElement => {
 
@@ -322,6 +323,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
+     * @param formType - Type of the form.
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
