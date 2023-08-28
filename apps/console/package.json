@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/console",
-    "version": "1.6.367",
+    "version": "1.6.368",
     "description": "WSO2 Identity Server Console",
     "private": true,
     "author": "WSO2",

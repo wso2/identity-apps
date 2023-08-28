@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 1.6.368
+
+### Patch Changes
+
+- [#4049](https://github.com/wso2/identity-apps/pull/4049) [`ba090cd5a0`](https://github.com/wso2/identity-apps/commit/ba090cd5a0be8c1c090231a99029278b88834ea7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - [Test] Update versions for testing purpose
+
 ## 1.6.367
 
 ### Patch Changes
