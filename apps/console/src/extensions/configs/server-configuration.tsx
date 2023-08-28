@@ -147,7 +147,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         setPasswordExpiryEnabled: (state: boolean) => void
     ): PasswordExpiryInterface => {
         const isEnabled: boolean =
-            passwordExpiry.properties.filter(
+            passwordExpiry?.properties?.filter(
                 (property: ConnectorPropertyInterface) =>
                     property.name === ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE
             )[ 0 ].value === "true";
@@ -158,7 +158,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             ...initialValues,
             passwordExpiryEnabled: isEnabled,
             passwordExpiryTime: parseInt(
-                passwordExpiry.properties.filter(
+                passwordExpiry?.properties?.filter(
                     (property: ConnectorPropertyInterface) =>
                         property.name === ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME
                 )[ 0 ].value
