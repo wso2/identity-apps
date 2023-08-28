@@ -38,6 +38,7 @@ export const commonConfig: CommonConfig = {
             manage: true
         }
     },
+    primaryUserstoreOnly: true,
     userEditSection: {
         isGuestUser: true,
         showEmail: true

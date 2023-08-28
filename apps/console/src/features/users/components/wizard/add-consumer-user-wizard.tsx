@@ -214,8 +214,6 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
     }, []);
 
     const getGroupListForDomain = (domain: string) => {
-        console.log("domain", domain);
-        
         getGroupList(domain)
             .then((response: AxiosResponse) => {
                 if (response.data.totalResults == 0) {

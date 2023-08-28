@@ -34,6 +34,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { resolveGroupName } from "./utils/group-utils";
 import {
     AppConstants,
     AppState,
@@ -234,7 +235,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
-                                    name={ group?.displayName?.split("/")[1] }
+                                    name={ resolveGroupName(group)  }
                                     size="mini"
                                     data-testid={ `${ testId }-item-image-inner` }
                                 />
@@ -244,7 +245,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
-                            <div className="mt-1">{ group?.displayName?.split("/")[1] } </div>
+                            <div className="mt-1">{ resolveGroupName(group) } </div>
                         </Header.Content>
                     </Header>
                 ),

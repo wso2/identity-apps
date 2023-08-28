@@ -20,13 +20,15 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { SharedUserStoreConstants, SharedUserStoreUtils } from "../../../../features/core";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../../../../features/groups";
-import { CONSUMER_USERSTORE } from "../../users/constants";
+import { commonConfig } from "../../../configs/common";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../users/constants";
 
 /**
  * Interface to capture group basics props.
@@ -41,7 +43,6 @@ interface GroupBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  *
- * @param props Group Basic prop types
  */
 export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasicProps): ReactElement => {
 
@@ -53,18 +54,18 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
-    const groupName = useRef<HTMLDivElement>();
+    const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     /**
      * The following function validates role name against the user store regEx.
      *
      */
     const validateGroupNamePattern = async (): Promise<string> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         await SharedUserStoreUtils.getUserStoreRegEx(CONSUMER_USERSTORE,
             SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
@@ -92,7 +93,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      */
     const getFormValues = (values: any): CreateGroupFormData => {
         return {
-            domain: CONSUMER_USERSTORE,
+            domain: commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE,
             groupName: values.get("groupName").toString()
         };
     };

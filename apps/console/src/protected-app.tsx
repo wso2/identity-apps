@@ -513,7 +513,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         /**
          * Prevent redirect to landing page when there is no association.
          */
-        console.log("idToken", idToken);
         if (commonConfig?.enableOrganizationAssociations) {
 
             const isPrivilegedUser: boolean =

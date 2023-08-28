@@ -48,6 +48,7 @@ export interface CommonConfig {
             manage: boolean;
         };
     };
+    primaryUserstoreOnly: boolean;
     userEditSection: {
         isGuestUser: boolean;
         showEmail: boolean;

@@ -20,10 +20,12 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { GenericIconProps, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import intersection from "lodash-es/intersection";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
 import { AppConstants, history } from "../../../../features/core";
@@ -36,7 +38,9 @@ import {
     CreateGroupMemberInterface
 } from "../../../../features/groups/models";
 import { updateRole } from "../../../../features/roles/api";
-import { CONSUMER_USERSTORE } from "../../users/constants";
+import { PatchRoleDataInterface } from "../../../../features/roles/models";
+import { commonConfig } from "../../../configs";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../users/constants";
 
 /**
  * Interface which captures create group props.
@@ -53,7 +57,6 @@ interface CreateGroupProps extends TestableComponentInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
@@ -80,7 +83,7 @@ interface WizardStepInterface {
 /**
  * Component to handle addition of a new group to the system.
  *
- * @param props props related to the create group wizard
+ * @param props - props related to the create group wizard Member
  */
 export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: CreateGroupProps): ReactElement => {
 
@@ -94,13 +97,14 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
+        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
@@ -148,7 +152,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      * @param groupDetails - basic data required to create group.
      */
     const addGroup = (groupDetails: any): void => {
-        let groupName = "";
+        let groupName: string = "";
 
         groupDetails?.domain !== "primary"
             ? groupName = groupDetails?.BasicDetails.basic
@@ -184,7 +188,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         /**
          * Create Group API Call.
          */
-        createGroup(groupData).then(response => {
+        createGroup(groupData).then((response: AxiosResponse) => {
             if (response.status === 201) {
 
                 const createdGroup = response.data;
@@ -196,7 +200,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     });
                 }
 
-                const roleData = {
+                const roleData: PatchRoleDataInterface = {
                     "Operations": [ {
                         "op": "add",
                         "value": {
@@ -212,7 +216,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 if (rolesList && rolesList.length > 0) {
                     for (const roleId of rolesList) {
                         updateRole(roleId, roleData)
-                            .catch(error => {
+                            .catch((error: AxiosError) => {
                                 if (!error.response || error.response.status === 401) {
                                     setAlert({
                                         description: t("console:manage.features.groups.notifications." +
@@ -260,7 +264,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
             closeWizard();
             history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", response.data.id));
-        }).catch(error => {
+        }).catch((error: AxiosError)  => {
             if (!error.response || error.response.status === 401) {
                 closeWizard();
                 dispatch(
@@ -306,7 +310,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     /**
      * Generates a summary of the wizard.
      *
-     * @return {any}
      */
     const generateWizardSummary = () => {
         if (!wizardState) {
@@ -320,7 +323,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
@@ -369,8 +372,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     /**
      * Filters the steps evaluating the requested steps.
      *
-     * @param {WizardStepsFormTypes[]} steps - Steps to filter.
-     * @return {WizardStepInterface[]}
      */
     const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
 
@@ -399,7 +400,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     /**
      * Get the wizard basic step.
      *
-     * @return {WizardStepInterface}
      */
     const getBasicDetailsWizardStep = (): WizardStepInterface => {
 
@@ -426,7 +426,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     /**
      * Get the summary wizard step.
      *
-     * @return {WizardStepInterface}
      */
     const getSummaryWizardStep = (): WizardStepInterface => {
 
@@ -448,7 +447,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     /**
      * Resolves the step content.
      *
-     * @return {React.ReactElement} Step content.
+     * @returns step content.
      */
     const resolveStepContent = (): ReactElement => {
 
@@ -492,7 +491,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         <Steps.Group
                             current={ currentStep }
                         >
-                            { wizardSteps?.map((step, index) => (
+                            { wizardSteps?.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step
                                     key={ index }
                                     icon={ step.icon }

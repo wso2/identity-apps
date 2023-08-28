@@ -52,7 +52,7 @@ import { AppConstants } from "../constants";
  *     path: "/applications"
  *  \}
  */
-export const getAppViewRoutes = (): RouteInterface[] => {
+export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
 
     const routes: RouteInterface[] = values(
         merge(
@@ -191,36 +191,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../../extensions/components/" + "users/pages/consumer-user-edit")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: import("../../../extensions/assets/images/icons/user-icon.svg")
-                                },
-                                id: "customer-user-edit",
-                                name: "Customer Users Edit",
-                                path: UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../../extensions/" + "components/users/pages/users")),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/user-icon.svg")
-                        },
-                        id: "users",
-                        name: "Users",
-                        order: 4,
-                        path: UsersConstants.getPaths().get("USERS_PATH"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
                                     import("../../../extensions/components/" + "users/pages/guest-user-edit")
                                 ),
                                 exact: true,
@@ -257,36 +227,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         name: "Administrators",
                         order: 5,
                         path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import("../../../extensions/components/" + "groups/pages/groups-edit")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "groupsEdit",
-                                name: "console:manage.features.sidePanel.editGroups",
-                                path: AppConstants.getPaths().get("GROUP_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../../extensions/components/groups/pages/groups")),
-                        exact: true,
-                        icon: {
-                            icon: <UserGroupIcon className="icon" fill="black" />
-                        },
-                        id: "groups",
-                        name: "Groups",
-                        order: 6,
-                        path: AppConstants.getPaths().get("GROUPS"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -343,48 +283,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         name: "Roles",
                         order: 8,
                         path: AppConstants.getPaths().get("APPLICATION_ROLES"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
-                            {
-                                component: lazy(() => import("../../userstores/pages/user-stores-edit")),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "edit-user-store",
-                                name: "console:manage.features.sidePanel.editUserstore",
-                                path: AppConstants.getPaths().get("USERSTORES_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import("../../userstores/pages/userstores-templates")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "userstore-templates",
-                                name: "console:manage.features.sidePanel.userstoreTemplates",
-                                path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../userstores/pages/user-stores")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().userStore
-                        },
-                        id: "userStores",
-                        name: "console:manage.features.sidePanel.userstores",
-                        order: 9,
-                        path: AppConstants.getPaths().get("USERSTORES"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -979,6 +877,237 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             )
         )
     );
+
+    if (useExtendedRoutes) {
+        routes.push(
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/" + "users/pages/consumer-user-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: import("../../../extensions/assets/images/icons/user-icon.svg")
+                        },
+                        id: "customer-user-edit",
+                        name: "Customer Users Edit",
+                        path: UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/" + "components/users/pages/users")),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/user-icon.svg")
+                },
+                id: "users",
+                name: "Users",
+                order: 4,
+                path: UsersConstants.getPaths().get("USERS_PATH"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/" + "groups/pages/groups-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "groupsEdit",
+                        name: "console:manage.features.sidePanel.editGroups",
+                        path: AppConstants.getPaths().get("GROUP_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/components/groups/pages/groups")),
+                exact: true,
+                icon: {
+                    icon: <UserGroupIcon className="icon" fill="black" />
+                },
+                id: "groups",
+                name: "Groups",
+                order: 6,
+                path: AppConstants.getPaths().get("GROUPS"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../../features/userstores/pages/user-stores-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "edit-user-store",
+                        name: "console:manage.features.sidePanel.editUserstore",
+                        path: AppConstants.getPaths().get("USERSTORES_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import(
+                                "../../../extensions/components/user-stores/" +
+                                "pages/remote-user-store-edit-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "remote-edit-user-store",
+                        name: "console:manage.features.sidePanel.editUserstore",
+                        path: AppConstants.getPaths()
+                            .get("USERSTORES_EDIT")
+                            .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import(
+                                "../../../extensions/components/user-stores/pages/" +
+                                "remote-customer-user-store-create"
+                            )
+                        ),
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "remote-user-store-create",
+                        name: "userstore create",
+                        path: RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/components/user-stores/pages/user-stores")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().userStore
+                },
+                id: "userStores",
+                name: "User Stores",
+                order: 9,
+                path: AppConstants.getPaths().get("USERSTORES"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    } else {
+        routes.push(
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../users/pages/user-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "usersEdit",
+                        name: "console:manage.features.sidePanel.editUsers",
+                        path: AppConstants.getPaths().get("USER_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../users/pages/users")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().users
+                },
+                id: "users",
+                name: "console:manage.features.sidePanel.users",
+                order: 4,
+                path: AppConstants.getPaths().get("USERS"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/" + "groups/pages/groups-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "groupsEdit",
+                        name: "console:manage.features.sidePanel.editGroups",
+                        path: AppConstants.getPaths().get("GROUP_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/components/groups/pages/groups")),
+                exact: true,
+                icon: {
+                    icon: <UserGroupIcon className="icon" fill="black" />
+                },
+                id: "groups",
+                name: "Groups",
+                order: 6,
+                path: AppConstants.getPaths().get("GROUPS"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../userstores/pages/user-stores-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "edit-user-store",
+                        name: "console:manage.features.sidePanel.editUserstore",
+                        path: AppConstants.getPaths().get("USERSTORES_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../userstores/pages/userstores-templates")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "userstore-templates",
+                        name: "console:manage.features.sidePanel.userstoreTemplates",
+                        path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../userstores/pages/user-stores")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().userStore
+                },
+                id: "userStores",
+                name: "console:manage.features.sidePanel.userstores",
+                order: 9,
+                path: AppConstants.getPaths().get("USERSTORES"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    }    
 
     routes.push({
         component: null,

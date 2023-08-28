@@ -16,26 +16,10 @@
  * under the License.
  */
 
-import { GroupsInterface } from "../../../features/groups";
+import { GroupConfig } from "./models";
 
-export interface GroupConfig {
+export const groupConfig: GroupConfig = {
     addGroupWizard: {
-        defaultUserstore?: string;
-        requiredSteps?: string[];
-        subHeading?: string;
-        submitStep?: string;
-    };
-    editGroups?: {
-        basicTab: {
-            showGroupNameLabel: boolean;
-            userstore: (groupObject: GroupsInterface) => string;
-        };
-        basicTabName: string;
-        showRolesTab: boolean;
-    };
-    groupsList?: {
-        description: string;
-        filterGroups: (groupResources: GroupsInterface[]) => GroupsInterface[];
-        showUserstoreDropdown: boolean;
-    };
-}
+        defaultUserstore: "PRIMARY"
+    }
+};

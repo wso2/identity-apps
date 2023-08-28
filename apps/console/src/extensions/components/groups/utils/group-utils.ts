@@ -16,18 +16,12 @@
  * under the License.
  */
 
-import { ProfileInfoInterface } from "@wso2is/core/models";
-import { User } from "./models";
-import { deleteUser } from "../../features/users/api/users";
-import { deleteGuestUser } from "../components/users/api";
-import { CONSUMER_USERSTORE } from "../components/users/constants";
+import { GroupsInterface } from "../../../../features/groups/models";
 
-export const userConfig : User = {
-    deleteUser: (user: ProfileInfoInterface): Promise<any> => {
-        if (user.userName?.split("/")[0] === CONSUMER_USERSTORE) {
-            return deleteUser(user.id);
-        } else {
-            return deleteGuestUser(user.id);
-        }
+export const resolveGroupName = (groupName: GroupsInterface): string => {
+    if (groupName?.displayName?.split("/").length > 1) {
+        return groupName?.displayName?.split("/")[1];
     }
+
+    return groupName?.displayName;
 };
