@@ -19,7 +19,7 @@ process_console_package() {
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
     goToRootDirectory && \
-    cd "java/features/org.wso2.identity.apps.console.server.feature" || exit 1 && \
+    cd "apps/server-features/console/org.wso2.identity.apps.console.server.feature" || exit 1 && \
 
     mvn versions:set-property -Dproperty=console.version -DnewVersion="$console_release_version" && \
     git add pom.xml && \
@@ -42,7 +42,7 @@ process_myaccount_package() {
     mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml && \
 
     goToRootDirectory && \
-    cd "java/features/org.wso2.identity.apps.myaccount.server.feature" || exit 1 && \
+    cd "apps/server-features/myaccount/org.wso2.identity.apps.myaccount.server.feature" || exit 1 && \
 
     mvn versions:set-property -Dproperty=myaccount.version -DnewVersion="$myaccount_release_version" && \
     git add pom.xml && \
