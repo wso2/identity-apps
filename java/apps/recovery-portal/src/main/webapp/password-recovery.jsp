@@ -22,7 +22,10 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
@@ -47,8 +50,11 @@
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-    String username = request.getParameter("username");
+    String username = StringUtils.isNotEmpty(request.getParameter("username"))
+        ? Encode.forHtmlAttribute(request.getParameter("username"))
+        : "";
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+    String sp = request.getParameter("sp");
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -62,6 +68,19 @@
             StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
 
         tenantDomain = IdentityManagementServiceUtil.getInstance().getUser(username).getTenantDomain();
+    }
+
+    // Retrieve application access url to redirect user back to the application.
+    String applicationAccessURLWithoutEncoding = null;
+
+    try {
+        ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+        applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
+                sp);
+        applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
+                                                                applicationAccessURLWithoutEncoding, userTenantDomain);
+    } catch (ApplicationDataRetrievalClientException e) {
+        // Ignored and fallback to login page url.
     }
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
@@ -79,6 +98,9 @@
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
@@ -95,8 +117,8 @@
         reCaptchaEnabled = true;
     }
 
-    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant;
-    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant;
+    Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isMultiAttributeLoginEnabledInTenant;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
@@ -108,19 +130,23 @@
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
                         .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
 
-    String enterUsernameHereText = "Enter.your.username.here";
+    String enterUsernameHereText = "password.reset.with.username";
     if (isMultiAttributeLoginEnabledInTenant) {
-        enterUsernameHereText = "Enter.your.user.identifier.here";
+        enterUsernameHereText = "password.reset.with.identifier";
     }
 %>
 
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("containerSize", "medium");
+    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
 %>
 
 <!doctype html>
@@ -139,7 +165,17 @@
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+    <script src='<%=(reCaptchaAPI)%>' async defer></script>
+    <style type="text/css">
+        .grecaptcha-badge {
+            bottom: 55px !important;
+        }
+        @media only screen and (max-width: 767px) {
+            .grecaptcha-badge {
+                bottom: 100px !important;
+            }
+        }
+    </style>
     <%
         }
     %>
@@ -168,8 +204,8 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <%-- page content --%>
-                <h3 class="ui header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%>
+                <h3 class="ui header m-0" data-testid="password-recovery-page-header">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "forgot.password")%>
                 </h3>
                 <% if (error) { %>
                 <div class="ui visible negative message" id="server-error-msg">
@@ -182,17 +218,36 @@
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <%
+                        if (StringUtils.isNotBlank(sp)) {
+                        %>
+                            <input id="sp" name="sp" type="hidden" value="<%=sp%>"/>
+                        <%
+                        }
+                        %>
+                        <%
                             if (StringUtils.isNotEmpty(username) && !error) {
                         %>
                         <div class="field">
-                            <label for="username">
+                            <label class="mb-5" for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </label>
-                            <input id="username" name="username" value="<%=Encode.forHtmlAttribute(username)%>" type="text" tabindex="0" required>
+                            <div class="ui fluid left icon input">
+                                <input
+                                    placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, "Username.email")%>"
+                                    id="usernameUserInput"
+                                    name="usernameUserInput"
+                                    value="<%=Encode.forHtmlAttribute(username)%>"
+                                    type="text"
+                                    tabindex="0"
+                                    required
+                                >
+                                <i aria-hidden="true" class="envelope outline icon"></i>
+                            </div>
+                            <input id="username" name="username" type="hidden">
                             <%
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                             %>
-                            <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <input id="tenantDomain" name="tenantDomain" value="<%= Encode.forHtmlAttribute(tenantDomain) %>" type="hidden">
                             <%
                                 }
                             %>
@@ -203,14 +258,25 @@
                         %>
 
                         <div class="field">
-                            <label for="username">
+                            <label class="mb-5" for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </label>
-                            <input id="username" name="username" type="text" tabindex="0" required>
+                            <div class="ui fluid left icon input">
+                                <input
+                                    placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, "Username")%>"
+                                    id="usernameUserInput"
+                                    name="usernameUserInput"
+                                    type="text"
+                                    tabindex="0"
+                                    required
+                                >
+                                <i aria-hidden="true" class="user outline icon"></i>
+                            </div>
+                            <input id="username" name="username" type="hidden">
                             <%
                                 if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                             %>
-                            <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <input id="tenantDomain" name="tenantDomain" value="<%= Encode.forHtmlAttribute(tenantDomain) %>" type="hidden">
                             <%
                                 }
                             %>
@@ -220,6 +286,12 @@
                         <%
                             }
                         %>
+                        <div class="ui list mb-5 field-validation-error-description" id="error-msg-invalid-email">
+                                <i class="exclamation circle icon"></i>
+                                <span id="error-message"><%=IdentityManagementEndpointUtil.i18n
+                                    (recoveryResourceBundle,"Please.enter.valid.email")%>
+                                </span>
+                        </div>
 
                         <%
                             if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
@@ -242,22 +314,16 @@
                             </div>
                         </div>
                         <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
-                        <div class="field">
                             <input type="hidden" name="recoveryOption" value="EMAIL"/>
-                        </div>
                         <% } else { %>
-                        <div class="field">
                             <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
-                        </div>
                         <% } %>
 
                         <%
                             String callback = request.getParameter("callback");
                             if (callback != null) {
                         %>
-                        <div>
                             <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-                        </div>
                         <%
                             }
                         %>
@@ -266,34 +332,52 @@
                             String sessionDataKey = request.getParameter("sessionDataKey");
                             if (sessionDataKey != null) {
                         %>
-                        <div>
                             <input type="hidden" name="sessionDataKey"
                                    value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
-                        </div>
-                        <%
-                            }
-                        %>
-                        <%
-                            if (isSaaSApp && StringUtils.isNotBlank(userTenant)) {
-                        %>
-                        <div>
-                            <input type="hidden" name="t"
-                                   value="<%=Encode.forHtmlAttribute(userTenant) %>"/>
-                        </div>
                         <%
                             }
                         %>
 
+                        <%
+                            if (isSaaSApp && StringUtils.isNotBlank(userTenant)) {
+                        %>
+                            <input type="hidden" name="t"
+                                   value="<%=Encode.forHtmlAttribute(userTenant) %>"/>
+                        <%
+                            }
+                        %>
+
+                        <%
+                            if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
+                        %>
+                            <input type="hidden" name="accessUrl"
+                                    value="<%=Encode.forHtmlAttribute(applicationAccessURLWithoutEncoding) %>"/>
+                        <%
+                            }
+                        %>
+                        <div class="mt-4">
+                            <button id="recoverySubmit"
+                                    class="ui primary button large fluid"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.reset.link")%>
+                            </button>
+                        </div>
+                        <div class="mt-1 align-center">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </a>
+                        </div>
                         <%
                             if (reCaptchaEnabled) {
                                 String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="g-recaptcha"
-                                data-size="invisible"
-                                data-callback="onCompleted"
-                                data-action="passwordRecovery"
-                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-sitekey=
+                                        "<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                data-bind="recoverySubmit"
+                                data-callback="submitFormReCaptcha"
+                                data-theme="light"
                                 data-tabindex="-1"
                             >
                             </div>
@@ -301,17 +385,6 @@
                         <%
                             }
                         %>
-                        <div class="ui divider hidden"></div>
-                        <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary button"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                            </button>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -327,6 +400,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>
@@ -344,59 +420,128 @@
             window.history.back();
         }
 
-        function onCompleted() {
-            $("#recoverDetailsForm").submit();
+        function submitFormReCaptcha() {
+            var subVal = submitForm();
+            if (subVal) {
+                document.getElementById("recoverDetailsForm").submit();
+            }
+        }
+
+        function submitForm() {
+            // Prevent clicking multiple times, and notify the user something
+            // is happening in the background.
+            const submitButton = $("#recoverySubmit");
+            submitButton.addClass("loading").attr("disabled", true);
+
+        	if (!validateForm()) {
+                submitButton.removeClass("loading").attr("disabled", false);
+
+                return false;
+        	}
+
+        	return true;
+        }
+
+        function validateForm() {
+            if(!validateUsername()){
+
+                return false;
+            }
+
+            // Validate reCaptcha
+            <% if (reCaptchaEnabled) { %>
+                const errorMessage = $("#error-msg");
+                const reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                if (reCaptchaResponse.trim() === "") {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.select.reCaptcha")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+
+                    return false;
+                }
+            <% } %>
+
+            return true;
+        }
+
+        function validateUsername() {
+            const errorMessage = $("#error-msg-invalid-email");
+            const invalidEmailErrorMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.enter.valid.email")%>";
+            const emptyUsernameErrorMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.enter.your.username")%>";
+	        let errorMsgContent = document.getElementById("error-message");
+
+            let userName = document.getElementById("username");
+            const usernameUserInput = document.getElementById("usernameUserInput");
+            if (usernameUserInput) {
+                userName.value = usernameUserInput.value.trim();
+            }
+
+            if ($("#username").val() === "") {
+                errorMsgContent.innerHTML = emptyUsernameErrorMsg;
+                errorMessage.show();
+                submitBtnState( { disabled: true } );
+
+                return false;
+            }
+
+            var emailRegex = /^(?=.{3,50}$)[\u00C0-\u00FFA-Za-z0-9_-]+(((\+(?!\.))|\.)[\u00C0-\u00FFA-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,10})$/;
+            <%
+            if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+            %>
+            emailRegex = /^(?=.{3,50}$)[\u00C0-\u00FFA-Za-z0-9_-]+(\.[\u00C0-\u00FFA-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,10})$/;
+            <%
+            }
+            %>
+            var userEmailAddress = $("#usernameUserInput").val();
+
+            if (!userEmailAddress){
+                errorMsgContent.innerHTML = invalidEmailErrorMsg;
+                errorMessage.show();
+                submitBtnState( { disabled: true } );
+
+                return false;
+            }
+
+            errorMessage.hide();
+            $("#recoverySubmit").attr("disabled", false);
+
+            return true;
+        }
+
+        function submitBtnState(options) {
+            const disabled = options.disabled;
+            $("#recoverySubmit").attr("disabled", disabled);
         }
 
         $(document).ready(function () {
 
-            $("#recoverDetailsForm").submit(function (e) {
+            const usernameInput = $("#usernameUserInput").val();
+            if(!usernameInput || usernameInput.trim().length === 0) {
+                submitBtnState( { disabled: true } );
+            } else{
+                submitBtnState( { disabled: false } );
+            }
 
-                <%
-                    if (reCaptchaEnabled) {
-                %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-
-                    return true;
-                }
-                <%
-                    }
-                %>
-
-                // Prevent clicking multiple times, and notify the user something
-                // is happening in the background.
-                const submitButton = $("#recoverySubmit");
-                submitButton.addClass("loading").attr("disabled", true);
-
-                const errorMessage = $("#error-msg");
-                errorMessage.hide();
-
-                let userName = document.getElementById("username");
-                userName.value = userName.value.trim();
-
-                // Validate User Name
-                const firstName = $("#username").val();
-
-                if (firstName === "") {
-                    errorMessage.text("Please fill the first name.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
-                    submitButton.removeClass("loading").attr("disabled", false);
-                    return false;
-                }
-
-                return true;
+            $("#usernameUserInput").on("input", function(event) {
+                validateUsername();
             });
+
+            $("#recoverDetailsForm")
+                .on("submit", submitForm)
+                .keyup(validateUsername)
+                .blur(validateUsername);
         });
 
         // Removing the recaptcha UI from the keyboard tab order
-        Array.prototype.forEach.call(document.getElementsByClassName('g-recaptcha'), function (element) {
+        Array.prototype.forEach.call(document.getElementsByClassName("g-recaptcha"), function (element) {
             //Add a load event listener to each wrapper, using capture.
-            element.addEventListener('load', function (e) {
+            element.addEventListener("load", function (e) {
                 //Get the data-tabindex attribute value from the wrapper.
-                var tabindex = e.currentTarget.getAttribute('data-tabindex');
+                var tabindex = e.currentTarget.getAttribute("data-tabindex");
                 //Check if the attribute is set.
                 if (tabindex) {
                     //Set the tabIndex on the iframe.

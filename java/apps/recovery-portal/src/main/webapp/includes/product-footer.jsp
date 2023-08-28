@@ -20,6 +20,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
@@ -84,9 +86,49 @@
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('https://wso2.com/asgardeo', '_self', 'noopener,noreferrer,resizable')">
+                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
                         <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                     </div>
                     <% } %>
+                </a>
+            </div>
+            <div class="right menu">
+            <%
+                if (!StringUtils.isBlank(privacyPolicyURL)) {
+            %>
+                <a
+                    id="privacy-policy"
+                    class="item"
+                    href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="login-page-privacy-policy-link"
+                >
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                </a>
+            <% } %>
+            <%
+                if (!StringUtils.isBlank(termsOfUseURL)) {
+            %>
+                <a
+                    id="terms-of-service"
+                    class="item"
+                    href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="login-page-privacy-policy-link"
+                >
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                </a>
+            <% } %>
+
+                <%
+                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp");
+                    if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
+                %>
+                        <jsp:include page="language-switcher.jsp"/>
+                <% } %>
+            </div>
+        </div>
     </div>
 </footer>
