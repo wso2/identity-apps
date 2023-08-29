@@ -16,7 +16,9 @@
   ~ under the License.
   --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -30,13 +32,18 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
+<%
+    String stat = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.404");
+%>
+
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "medium");
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
 %>
 
 <!doctype html>
-<html lang="en-US">
+<html>
 <head>
     <%-- header --%>
     <%
@@ -62,10 +69,35 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <div class="ui segment">
-                <div class="ui visible negative message">
-                   <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.404")%>
-                </div>
+            <div class="ui orange attached segment mt-3">
+                <h3 class="ui header text-center slogan-message mt-3 mb-2" data-testid="recovery-portal-error-404-page-header">
+                    <%=Encode.forHtml(stat)%>
+                </h3>
+            </div>
+            <div class="ui bottom attached warning message">
+                <p class="text-left mt-0">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "need.help.contact.us")%>
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                    <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                </a>
+                <%
+                    if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                %>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                    </p>
+                    <div class="ui divider hidden"></div>
+                    <jsp:include page="../extensions/error-tracking-reference.jsp"/>
+                <%
+                    } else if (config.getServletContext().getResource("includes/error-tracking-reference.jsp") != null) {
+                %>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                    </p>
+                    <div class="ui divider hidden"></div>
+                    <jsp:include page="../includes/error-tracking-reference.jsp"/>
+                <%
+                    }
+                %>
+                <div class="ui divider hidden"></div>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
@@ -90,7 +122,5 @@
     <% } else { %>
         <jsp:include page="../includes/footer.jsp"/>
     <% } %>
-
-
 </body>
 </html>
