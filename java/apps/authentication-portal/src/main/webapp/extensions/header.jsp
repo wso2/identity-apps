@@ -86,6 +86,3 @@
         }
     }
 </style>
-
-<%-- Downtime banner --%>
-<jsp:include page="planned-downtime-banner.jsp"/>

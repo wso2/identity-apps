@@ -53,16 +53,6 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
-<%-- analytics --%>
-<%
-    File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
-    if (analyticsFile.exists()) {
-%>
-    <jsp:include page="extensions/analytics.jsp"/>
-<% } else { %>
-    <jsp:include page="includes/analytics.jsp"/>
-<% } %>
-
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
