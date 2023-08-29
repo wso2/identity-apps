@@ -8,7 +8,7 @@
         "form": "modules/form",
         "forms": "modules/forms",
         "i18n": "modules/i18n",
-        "jsp-apps": "identity-apps-core",
+        "java-apps": "identity-apps-core",
         "myaccount": "apps/myaccount",
         "nx": "modules/nx",
         "react-components": "modules/react-components",
