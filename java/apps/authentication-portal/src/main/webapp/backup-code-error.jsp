@@ -111,7 +111,7 @@
 
     <body class="login-portal layout backup-code-portal-layout" onload="getLoginDiv()">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader" >
+            <layout:component componentName="ProductHeader">
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                     if (productTitleFile.exists()) {
@@ -121,7 +121,7 @@
                     <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component componentName="MainSection" >
+            <layout:component componentName="MainSection">
                 <%
                     if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
                 %>
@@ -189,7 +189,7 @@
                     <% } %>
                 <% } %>
             </layout:component>
-            <layout:component componentName="ProductFooter" >
+            <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
@@ -200,7 +200,7 @@
                     <jsp:include page="includes/product-footer.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component componentName="ResponseImage" >
+            <layout:component componentName="ResponseImage">
                 <%-- illustration--%>
                 <div class="thank-you-img">
                     <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">

@@ -90,7 +90,7 @@
 
 <body class="login-portal layout email-otp-portal-layout">
 <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-    <layout:component componentName="ProductHeader" >
+    <layout:component componentName="ProductHeader">
         <%-- product-title --%>
         <%
             File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -101,7 +101,7 @@
         <jsp:include page="includes/product-title.jsp"/>
         <% } %>
     </layout:component>
-    <layout:component componentName="MainSection" >
+    <layout:component componentName="MainSection">
         <div class="ui segment">
                 <%-- page content --%>
             <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailOTP.title")%>
@@ -115,7 +115,7 @@
             <% } %>
         </div>
     </layout:component>
-    <layout:component componentName="ProductFooter" >
+    <layout:component componentName="ProductFooter">
         <%-- product-footer --%>
         <%
             File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

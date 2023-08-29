@@ -84,7 +84,7 @@
 
     <body class="login-portal layout sms-otp-portal-layout" onload="getLoginDiv()">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader" >
+            <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -95,7 +95,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component componentName="MainSection" >
+            <layout:component componentName="MainSection">
                 <div class="ui segment">
                     <%-- page content --%>
                     <h2><%=IdentityManagementEndpointUtil.i18n(resourceBundle, "enter.phone.number")%></h2>
@@ -135,7 +135,7 @@
                     </div>
                 </div>
             </layout:component>
-            <layout:component componentName="ProductFooter" >
+            <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
                 <%
                     File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

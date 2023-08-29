@@ -392,7 +392,7 @@
     <% } %>
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
+        <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
                 StringUtils.equals("true", promptAccountLinking)) {
@@ -419,7 +419,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
+        <layout:component componentName="MainSection">
             <div class="ui segment">
                 <h3 class="ui header">
                     <%  if (Boolean.parseBoolean(promptAccountLinking)) { %>
@@ -1092,7 +1092,7 @@
                 </div>
             </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
+        <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
