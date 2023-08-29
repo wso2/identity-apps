@@ -16,28 +16,30 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { ServerConfigurationsInterface } from "./governance-connectors";
 import { store } from "../../core";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import useRequest,
+{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
 
 /**
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
+    httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve server configurations.
  *
- * @returns {Promise<ServerConfigurationsInterface>} a promise containing the server configurations.
+ * @returns a promise containing the server configurations.
  */
 export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
-
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -47,7 +49,7 @@ export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR,
@@ -60,7 +62,7 @@ export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -75,12 +77,13 @@ export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
 /**
  * Hook to get the server configurations.
  * 
- * @returns {RequestResultInterface<Data, Error>}
+ * @returns server configurations.
  */
 export const useServerConfigs = <Data = ServerConfigurationsInterface,
-    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
-
-    const requestConfig = {
+    Error = RequestErrorInterface>(
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
@@ -88,7 +91,7 @@ export const useServerConfigs = <Data = ServerConfigurationsInterface,
         url: store.getState().config.endpoints.serverConfigurations
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
