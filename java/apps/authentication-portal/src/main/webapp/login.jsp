@@ -375,6 +375,16 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
+    <% } %>
+
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>

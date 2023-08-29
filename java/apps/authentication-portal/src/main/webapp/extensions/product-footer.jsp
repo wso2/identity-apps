@@ -73,9 +73,6 @@
     }
 %>
 
-<%-- Cookie Consent Banner --%>
-<jsp:include page="cookie-consent-banner.jsp"/>
-
 <%-- footer --%>
 <footer class="footer">
     <div class="ui container fluid">
