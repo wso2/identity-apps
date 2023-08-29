@@ -38,7 +38,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isErrorResponse", true);
 %>
@@ -70,9 +69,6 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
                 <div class="ui orange attached segment mt-3">
                     <h3 class="ui header text-center slogan-message mt-3 mb-2" data-testid="recovery-portal-error-400-page-header">
                         <%=Encode.forHtml(stat)%>
@@ -83,45 +79,26 @@
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                         <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                    </a> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
-                    </p>
-                    <div class="ui divider hidden"></div>
+                    </a> 
                     <%
                         if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
                     %>
-                            <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                        </p>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="../extensions/error-tracking-reference.jsp"/>
                     <%
                         } else if (config.getServletContext().getResource("includes/error-tracking-reference.jsp") != null) {
                     %>
-                            <jsp:include page="includes/error-tracking-reference.jsp"/>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                        </p>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="../includes/error-tracking-reference.jsp"/>
                     <%
                         }
                     %>
                     <div class="ui divider hidden"></div>
                 </div>
-            <% } else { %>
-                <h2 class="ui header portal-logo-tagline slogan-message" data-testid="recovery-portal-error-400-page-header">
-                    <%=Encode.forHtml(stat)%>
-                </h2>
-
-                <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "need.help.contact.us")%>
-                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                    </a> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
-                </p>
-                <%
-                    if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
-                %>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                <%
-                    } else if (config.getServletContext().getResource("includes/error-tracking-reference.jsp") != null) {
-                %>
-                        <jsp:include page="includes/error-tracking-reference.jsp"/>
-                <%
-                    }
-                %>
-            <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
@@ -134,12 +111,6 @@
                 <jsp:include page="../includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="ResponseImage" >
-            <%-- illustration--%>
-            <div class="thank-you-img">
-                <img class="ui fluid image" src="libs/themes/default/assets/images/something-went-wrong.svg">
-            </div>
-        </layout:component>
     </layout:main>
 
     <%-- footer --%>
@@ -151,7 +122,5 @@
     <% } else { %>
         <jsp:include page="../includes/footer.jsp"/>
     <% } %>
-
-
 </body>
 </html>

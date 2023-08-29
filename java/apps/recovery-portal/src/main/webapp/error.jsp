@@ -17,14 +17,14 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@ page isErrorPage="true" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.event.IdentityEventException" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
@@ -87,11 +87,12 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "large");
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
 %>
 
 <!doctype html>
-<html lang="en-US">
+<html>
 <head>
     <%-- header --%>
     <%
@@ -117,30 +118,48 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <div class="ui segment">
-                <div class="segment-form">
-                    <div class="ui visible negative message" id="server-error-code">
-                        <div class="header"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error")%>!</div>
-                        <%
-                            if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()
-                                    .equals(errorCode)) {
-                        %>
-                        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%></p>
-                        <%
-                        } else {
-                        %>
-                        <p><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%></p>
-                        <%
-                            }
-                        %>
-                    </div>
-
-                    <div id="action-buttons" class="buttons">
-                        <a id = "go-back-button" href="javascript:goBack()" class="ui button primary button">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Go back")%>
-                        </a>
-                    </div>
-                </div>
+            <div class="ui orange attached segment mt-3">
+                <h3 class="ui header text-center slogan-message mt-3 mb-6" data-testid="error-page-header">
+                    <%
+                        if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()
+                                .equals(errorCode)) {
+                    %>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%>
+                    <%
+                    } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_EXPIRED_CODE.getCode()
+                            .equals(errorCode)){
+                    %>
+                    This link has expired.
+                    <% } else { %>
+                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                    <% } %>
+                </h3>
+            </div>
+            <div class="ui bottom attached warning message">
+                <p class="text-left mt-0">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "need.help.contact.us")%>
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                        </span>
+                    </a>
+                    <%
+                        if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                    %>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                        </p>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                    <%
+                        } else if (config.getServletContext().getResource("includes/error-tracking-reference.jsp") != null) {
+                    %>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
+                        </p>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="includes/error-tracking-reference.jsp"/>
+                    <%
+                        }
+                    %>
+                <div class="ui divider hidden"></div>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
@@ -165,7 +184,6 @@
     <% } else { %>
     <jsp:include page="includes/footer.jsp"/>
     <% } %>
-
     <script>
         $(document).ready(function () {
             // Checks if the `callback` URL param is present, and if not, hides the `Go Back` button.
@@ -191,7 +209,6 @@
 
                 return;
             }
-
             window.history.back();
         }
         <% } %>
