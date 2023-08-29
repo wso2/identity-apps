@@ -45,7 +45,7 @@
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
+        <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -56,7 +56,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
+        <layout:component componentName="MainSection">
             <div class="ui segment left aligned">
                 <form onsubmit="event.preventDefault()" id="identifierForm">
                     <div class="field">
@@ -90,7 +90,7 @@
                 </form>
             </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
+        <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));

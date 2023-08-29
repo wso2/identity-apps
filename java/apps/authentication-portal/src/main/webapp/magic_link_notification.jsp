@@ -47,7 +47,7 @@
 </head>
 <body class="login-portal layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
+        <layout:component componentName="ProductHeader">
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
@@ -57,7 +57,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
+        <layout:component componentName="MainSection">
             <div class="ui green segment mt-3 attached">
                 <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.heading" )%>
@@ -80,7 +80,7 @@
                 </p>
             </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
+        <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
