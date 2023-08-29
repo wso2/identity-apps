@@ -119,6 +119,7 @@ export class UsersConstants {
 export enum UserAccountTypes {
     OWNER = "Owner",
     ADMINISTRATOR = "Administrator",
+    ADMIN = "admin",
     USER = "User",
     CUSTOMER = "Customer",
     COLLABORATOR = "Collaborator"

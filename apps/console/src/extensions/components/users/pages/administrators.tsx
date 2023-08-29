@@ -70,7 +70,11 @@ import { useServerConfigs } from "../../../../features/server-configurations";
 import { useUsersList } from "../../../../features/users/api";
 import { InternalAdminUserListInterface, UserListInterface } from "../../../../features/users/models";
 import { UserManagementUtils } from "../../../../features/users/utils";
+import { adminitratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
+import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
+import { useCheckFeatureStatus } from "../../feature-gate/controller/featureGate-util";
+import { FeatureStatus } from "../../feature-gate/models/feature-gate";
 import { TenantInfo } from "../../tenants/models";
 import { getAssociationType } from "../../tenants/utils/tenants";
 import { getAgentConnections } from "../../user-stores/api";
@@ -128,6 +132,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
+
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
+        FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -203,7 +210,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         organizationName,
         {
             revalidateIfStale: true
-        }
+        },
+        saasFeatureStatus === FeatureStatus.ENABLED
     );
 
     // Used to retrive Asgardeo admins from Primary userstore.
@@ -224,7 +232,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         null,
         PRIMARY_USERSTORE,
         excludedAttributes,
-        invitationStatusOption === InvitationStatus.ACCEPTED
+        !adminitratorConfig.enableAdminInvite || invitationStatusOption === InvitationStatus.ACCEPTED
     );
 
     const {
@@ -232,12 +240,16 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         isLoading: isGuestUserListFetchRequestLoading,
         error: guestUserListFetchRequestError,
         mutate: mutateGuestUserListFetchRequest
-    } = useInvitedUsersList();
+    } = useInvitedUsersList(
+        adminitratorConfig.enableAdminInvite
+    );
 
     const {
         data: serverConfigs,
         error: serverConfigsFetchRequestError
-    } = useServerConfigs();
+    } = useServerConfigs(
+        saasFeatureStatus === FeatureStatus.ENABLED
+    );
 
     /**
      * Handles the invitation status option changes.
@@ -569,7 +581,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
          * Checks whether administrator role is present in the user.
          */
         const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user.roles.some((role: UserRoleInterface) => role.display === UserAccountTypes.ADMINISTRATOR);
+            return user.roles.some((role: UserRoleInterface) => 
+                role.display === (saasFeatureStatus === FeatureStatus.ENABLED
+                    ? UserAccountTypes.ADMINISTRATOR
+                    : UserAccountTypes.ADMIN
+                )
+            );
         };
 
         const isOwner = (user: UserBasicInterface):boolean => {
@@ -710,7 +727,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
      */
     const getAdminRoleId = () => {
         const searchData:SearchRoleInterface = {
-            filter: "displayName eq " + UserAccountTypes.ADMINISTRATOR,
+            filter: "displayName eq " + (saasFeatureStatus === FeatureStatus.ENABLED
+                ? UserAccountTypes.ADMINISTRATOR
+                : UserAccountTypes.ADMIN),
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
             startIndex: 0
         };
@@ -782,7 +801,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         setUserStoreChanged(true);
     };
 
-    const adminUserList: UserListInterface = useMemo(() => {
+    const adminUserList: UserListInterface = useMemo(() => {  
         return transformUserList(originalAdminUserList);
     }, [ originalAdminUserList ]);
 
@@ -1157,7 +1176,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     adminUserList?.totalResults : paginatedGuestList?.length }
                 isLoading={
                     (invitationStatusOption === InvitationStatus.ACCEPTED && isAdminUserListFetchRequestLoading) ||
-                    isGuestUserListFetchRequestLoading
+                    (adminitratorConfig.enableAdminInvite && isGuestUserListFetchRequestLoading)
                 }
                 onSearchQueryClear={ handleSearchQueryClear }
                 resetPagination={ isInvitationStatusOptionChanged }
@@ -1167,7 +1186,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         : !isNextPageAvailable
                 } }
                 disableRightActionPanel={ true }
-                leftActionPanel={ (
+                leftActionPanel={ adminitratorConfig.enableAdminInvite && (
                     <Dropdown
                         data-componentid={ `${ componentId }-list-userstore-dropdown` }
                         selection
@@ -1177,7 +1196,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         disabled={
                             (invitationStatusOption === InvitationStatus.ACCEPTED &&
                                 isAdminUserListFetchRequestLoading) ||
-                                 isGuestUserListFetchRequestLoading
+                                (adminitratorConfig.enableAdminInvite && isGuestUserListFetchRequestLoading)
                         }
                     />
                 ) }
@@ -1344,7 +1363,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
     //TODO: Refactor once unnecessary loading dependencies are removed.
     const getButtonLoadingState = (): boolean => {
-        return isGuestUserListFetchRequestLoading || isOrgConfigRequestRevalidating || isOrgConfigRequestLoading;
+        return (adminitratorConfig.enableAdminInvite && isGuestUserListFetchRequestLoading)
+        || isOrgConfigRequestRevalidating || isOrgConfigRequestLoading;
     };
 
     return (

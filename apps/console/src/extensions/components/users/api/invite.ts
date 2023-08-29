@@ -56,7 +56,9 @@ export const getInvitedUserList = (): Promise<any> => {
  * @returns {RequestResultInterface<Data, Error>}
  */
 export const useInvitedUsersList = <Data = UserInviteInterface[],
-    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
+    Error = RequestErrorInterface>(
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -66,7 +68,7 @@ export const useInvitedUsersList = <Data = UserInviteInterface[],
         url: store.getState().config.endpoints.inviteEndpoint
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
