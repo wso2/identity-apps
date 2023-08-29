@@ -112,13 +112,15 @@ log("Cleaning the tmp directory...");
 execSync("pnpm clean:i18n:dist");
 
 // Path of the build directory.
-const layoutsDirectory = path.join(__dirname, "..", "..", "..", "java", "components", "login-portal-layouts", "layouts");
+const layoutsDirectory = path.join(
+    __dirname, "..", "..", "..", "identity-apps-core", "components", "login-portal-layouts", "layouts"
+);
 const layoutsSrc = path.join(__dirname, "..", "src", "login-portal-layouts");
 
 // Remove the src directory if it exists.
 if (fs.existsSync(layoutsSrc)) {
-  log("Removing existing layouts directory in src");
-  fs.removeSync(layoutsSrc);
+    log("Removing existing layouts directory in src");
+    fs.removeSync(layoutsSrc);
 }
 
 // Copy the layouts directory to the src directory.
