@@ -40,6 +40,8 @@
             var userAccessedPath = window.location.href;
             var applicationDomain = window.location.origin;
 
+            var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
+            userTenant = userTenant ?  userTenant.split("?")[0] : null;
             var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null"
                                         ? "<%= htmlWebpackPlugin.options.authorizationCode %>"
@@ -100,7 +102,7 @@
                     storage: "webWorker",
                     enablePKCE: true,
                     endpoints: {
-                        authorizationEndpoint: getApiPath("/t/carbon.super/oauth2/authorize?ut=" + getOrganizationName())
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') : "/t/carbon.super/oauth2/authorize")
                     }
                 }
 
