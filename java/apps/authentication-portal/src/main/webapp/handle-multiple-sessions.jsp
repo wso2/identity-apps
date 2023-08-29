@@ -24,22 +24,16 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+
+<%@include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/template-mapper.jsp"/>
+<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
 <%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<%-- Localization --%>
-<%@ include file="includes/localize.jsp" %>
-
-<%-- Include tenant context --%>
-<jsp:directive.include file="includes/init-url.jsp"/>
-
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
-
-<%-- Dynamic Prompt Template Mapper --%>
-<jsp:directive.include file="includes/template-mapper.jsp"/>
 
 <%
     String promptId = request.getParameter("promptId");
@@ -84,17 +78,15 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
+        <layout:component componentName="MainSection">
             <div class="ui segment">
                 <div class="segment-form">
                     <c:set var="data" value="<%=data%>" scope="request"/>
@@ -161,15 +153,13 @@
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
 

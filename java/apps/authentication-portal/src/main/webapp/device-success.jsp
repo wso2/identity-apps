@@ -17,26 +17,30 @@
 --%>
 
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%-- Localization --%>
-<%@ include file="includes/localize.jsp" %>
-
 <%-- Include tenant context --%>
-<%@include file="includes/init-url.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+
+<%@include file="includes/localize.jsp" %>
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "medium");
+    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", request.getParameter("app_name") == null);
+    layoutData.put("isSuccessResponse", request.getParameter("app_name") != null);
 %>
 
 <!doctype html>
-<html lang="en-US">
+<html>
 <head>
     <%-- header --%>
     <%
@@ -53,56 +57,120 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
-            <div class="ui segment left aligned">
-                <div class="field">
-                    <%if(Encode.forHtmlAttribute(request.getParameter("app_name")) != null) { %>
-                        <div class="ui positive message">
-                            <div class="header">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
-                            </div>
-                            <p>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
-                                <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
-                            </p>
-                        </div>
-                    <% } else { %>
-                        <div class="ui negative message">
-                            <div class="header">
+        <layout:component componentName="MainSection">
+            <%
+                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
+            %>
+                <% if (request.getParameter("app_name") == null) {  %>
+                    <div class="ui orange attached segment mt-3">
+                            <h3 class="ui header text-center slogan-message mt-3 mb-6">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
-                            </div>
-                            <p>
+                            </h3>
+                            <p class="portal-tagline-description">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                     "something.went.wrong.during.authentication")%>
                             </p>
-                        </div>
+                            <div class="ui divider hidden"></div>
+                            <div class="ui divider hidden"></div>
+                    </div>
+                    <div class="ui bottom attached warning message">
+                        <p  class="text-left mt-0">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                        </p>
+
+                        <%
+                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                            if (trackingRefFile.exists()) {
+                        %>
+                            <div class="ui divider hidden"></div>
+                            <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                            <div class="ui divider hidden"></div>
+                        <% } %>
+                        
+                    </div>
+                <% } else { %>
+                    <div class="ui green segment mt-3 attached">
+                        <h3 class="ui header text-center slogan-message mt-4 mb-6">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
+                        </h3>
+                        <p class="portal-tagline-description">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
+                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                        </p>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <% if (request.getParameter("app_name") == null) {  %>
+                    <h2 class="ui header portal-logo-tagline slogan-message">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
+                    </h2>
+
+                    <h4 class="ui header sub-tagline">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                            "something.went.wrong.during.authentication")%>
+                    </h4>
+
+                    <p class="portal-tagline-description">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                        </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                    </p>
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
                     <% } %>
-                </div>
-            </div>
+
+                <% } else { %>
+                    <h2 class="ui header portal-logo-tagline">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
+                    </h2>
+                    <p class="portal-tagline-description">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
+                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                    </p>
+                <% } %>
+            <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component componentName="ResponseImage">
+            <%-- illustration--%>
+            <% if (request.getParameter("app_name") == null) {  %>
+                <div class="thank-you-img">
+                    <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
+                </div>
+            <% } else { %>
+                <div>
+                    <img class="ui centered medium image"
+                        src='libs/themes/asgardio/assets/images/illustrations/account-creation-success.svg'
+                        alt="password-recovery-success-illustration"/>
+                </div>
+            <% } %>
         </layout:component>
     </layout:main>
 
@@ -111,9 +179,9 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">

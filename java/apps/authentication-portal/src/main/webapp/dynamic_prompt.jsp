@@ -18,47 +18,41 @@
 
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.template.mgt.model.Template" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
-<%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%-- Localization --%>
-<%@ include file="includes/localize.jsp" %>
-
-<%-- Include tenant context --%>
+<%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
-
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
-
-<%-- Dynamic Prompt Template Mapper --%>
 <jsp:directive.include file="includes/template-mapper.jsp"/>
 
-<%
-    String templateId = Encode.forHtmlAttribute(request.getParameter("templateId"));
-    String promptId = Encode.forHtmlAttribute(request.getParameter("promptId"));
+<%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
+<%-- Branding Preferences --%>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+
+<%
+    String templateId = request.getParameter("templateId");
+    String promptId = request.getParameter("promptId");
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityManagementEndpointUtil.getBasePath(tenantDomain, "/api/identity/auth/v1.1/", true);
+        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
     } else {
-        // Resolve tenant domain for the authentication API URl
+        // Resolve tenant domain for the authentication API URL.
         authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
     }
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
-    authAPIURL += "context/" + promptId;
+    authAPIURL += "context/" + request.getParameter("promptId");
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-
-
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
     String templatePath = templateMap.get(templateId);
@@ -69,7 +63,6 @@
     String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
     layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
     layoutData.put("isDynamicPrompt", true);
-    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -87,7 +80,7 @@
 
     <script type="text/javascript">
         var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
-        var prompt_id = "<%=promptId%>";
+        var prompt_id = "<%= Encode.forJavaScriptBlock(promptId) %>";
     </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -95,51 +88,47 @@
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
-            String productTitleFilePath = "extensions/product-title.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                productTitleFilePath = "includes/product-title.jsp";
-            }
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <jsp:include page="<%= productTitleFilePath %>" />
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
-            <div class="ui segment">
-                <%
-                    if (templatePath != null) {
-                %>
-                <div>
+        <layout:component componentName="MainSection">
+            <%
+                if (templatePath != null) {
+            %>
+                <div class="ui segment">
                     <c:set var="data" value="<%=data%>" scope="request"/>
                     <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
                     scope="request"/>
                     <jsp:include page="<%=templatePath%>"/>
                 </div>
-                <% } else { %>
-                <h3 class="ui header">
-                        <%=Encode.forHtmlContent("Incorrect Request")%>
-                </h3>
+            <% } else { %>
+                <div class="ui segment">
+                    <h3 class="ui header">
+                            <%=Encode.forHtmlContent("Incorrect Request")%>
+                    </h3>
 
-                <div class="ui visible negative message">
-                    <div class="header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :</div>
-                    <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.template.found")%></p>
+                    <div class="ui visible negative message">
+                        <div class="header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :</div>
+                        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.template.found")%></p>
+                    </div>
                 </div>
-                <% } %>
-            </div>
+            <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
-            String productFooterFilePath = "extensions/product-footer.jsp";
-            if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-            }
-            if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                productFooterFilePath = "includes/product-footer.jsp";
-            }
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
             %>
-            <jsp:include page="<%= productFooterFilePath %>" />
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
 

@@ -1,47 +1,36 @@
 <%--
-  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
-  ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
-  ~ Version 2.0 (the "License"); you may not use this file except
-  ~ in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing,
-  ~ software distributed under the License is distributed on an
-  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
-  ~ specific language governing permissions and limitations
-  ~ under the License.
+~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~
+~ This software is the property of WSO2 Inc. and its suppliers, if any.
+~ Dissemination of any information or reproduction of any material contained
+~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+~ You may not alter or remove any copyright or other notice from copies of this content."
 --%>
 
-<%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
-<%@ page import="java.net.URISyntaxException" %>
-<%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
-
-<%-- Include tenant context --%>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp" />
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
+<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+
+<%
+    String accessUrl = (String) request.getAttribute("accessUrl");
+%>
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("containerSize", "medium");
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isSuccessResponse", true);
 %>
 
 <!doctype html>
@@ -51,54 +40,84 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body>
+<body class="login-portal layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
-
+        <layout:component componentName="ProductHeader">
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
-
+        <layout:component componentName="MainSection">
+            <div class="ui green segment mt-3 attached">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.heading" )%>
+                </h3>
+                <p class="portal-tagline-description">
+                    <span id="sent-email">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.content" )%>
+                    </span>
+                </p>
+                <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.you.still.havent.received.please.write.to")%>
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
+                    data-testid="magic-link-resend-support-email"
+                    target="_blank">
+                    <span class="orange-text-color button">
+                        <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                    </span>
+                    </a>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
+                </p>
+            </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
-
+        <layout:component componentName="ProductFooter">
+            <%-- product-footer --%>
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
-
-    <div class="ui tiny modal notify">
-        <div class="header">
-            <h4>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.heading")%>
-            </h4>
-        </div>
-        <div class="content">
-            <p>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                        "magic.link.content")%>
-            </p>
-        </div>
-    </div>
 
     <%-- footer --%>
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script type="application/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
-            $(".notify").modal({
-                blurring: true,
-                closable: false
-            }).modal("show");
+            if(sessionStorage.getItem("username")){
+                var username = sessionStorage.getItem("username").split("@");
+                username[0] = username[0].split("").map(function(letter, index) {
+                    if (index === 0 || index === username[0].length - 1) {
+                        return letter;
+                    } else {
+                        return "*";
+                    }
+                }).join("");
+                $('#sent-email').html(
+                    $('#sent-email').html().replace('your email', username.join("@"))
+                );
+            }
         });
     </script>
 </body>
