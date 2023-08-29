@@ -64,11 +64,13 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
-    if (StringUtils.isNotBlank(userTenantHint)) {
-        username = MultitenantUtils.getTenantAwareUsername(username);
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
-    } else {
-        username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+    if (StringUtils.isNotBlank(username)) {
+        if (StringUtils.isNotBlank(userTenantHint)) {
+            username = MultitenantUtils.getTenantAwareUsername(username);
+            username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
+        } else {
+            username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
+        }
     }
 
     // Password recovery parameters
