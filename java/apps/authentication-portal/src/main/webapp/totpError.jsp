@@ -130,6 +130,10 @@
                         <div class="ui divider hidden"></div>
                         <div class="ui divider hidden"></div>
                     </div>
+                    <%
+                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                            if (trackingRefFile.exists()) {
+                        %>
                     <div class="ui bottom attached warning message">
                         <p class="text-left mt-0">
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
@@ -138,10 +142,7 @@
                             </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                         </p>
                         
-                        <%
-                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                            if (trackingRefFile.exists()) {
-                        %>
+                       
                             <div class="ui divider hidden"></div>
                             <jsp:include page="extensions/error-tracking-reference.jsp">
                                 <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
@@ -149,8 +150,9 @@
                                 <jsp:param name="error" value="<%=actualError%>"/>
                             </jsp:include>
                             <div class="ui divider hidden"></div>
-                        <% } %>
+                        
                     </div>
+                    <% } %>
                 <% } else { %>
                     <h2 class="ui header portal-logo-tagline slogan-message">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.fail")%>
@@ -160,6 +162,11 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled")%>
                     </h4>
 
+                    
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
                     <p class="portal-tagline-description">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
@@ -167,10 +174,7 @@
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
 
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
+                    
                         <jsp:include page="extensions/error-tracking-reference.jsp">
                             <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
                             <jsp:param name="errorCode" value="<%=actualError%>"/>

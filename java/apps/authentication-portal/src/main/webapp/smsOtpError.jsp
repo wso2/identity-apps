@@ -138,18 +138,19 @@
                             <div class="ui divider hidden"></div>
                             <% } %>
                     </div>
-                    <div class="ui bottom attached warning message">
-                        <p class="text-left mt-0">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                        </p>
+                    
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <div class="ui bottom attached warning message">
+                            <p class="text-left mt-0">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                                <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                                    <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                                </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                            </p>
 
-                        <%
-                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                            if (trackingRefFile.exists()) {
-                        %>
                             <div class="ui divider hidden"></div>
                             <jsp:include page="extensions/error-tracking-reference.jsp">
                                 <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
@@ -157,9 +158,8 @@
                                 <jsp:param name="error" value="<%=actualError%>"/>
                             </jsp:include>
                             <div class="ui divider hidden"></div>
-                        <% } %>
-                        
-                    </div>
+                        </div>
+                    <% } %>
                 <% } else { %>
                     <h2 class="ui header portal-logo-tagline slogan-message">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.smsotp.title")%>
@@ -172,16 +172,16 @@
                     </h4>
                     <% } %>
 
-                    <p class="portal-tagline-description">
-                        Need help? Contact us via <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                        </a> with the tracking reference given below.
-                    </p>
-
                     <%
                         File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                         if (trackingRefFile.exists()) {
                     %>
+                        <p class="portal-tagline-description">
+                            Need help? Contact us via <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                            </a> with the tracking reference given below.
+                        </p>
+
                         <jsp:include page="extensions/error-tracking-reference.jsp">
                             <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
                             <jsp:param name="errorCode" value="<%=actualError%>"/>
