@@ -107,16 +107,6 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="ResponseImage" >
-            <%-- illustration--%>
-            <div>
-                <img 
-                    class="ui centered medium image"
-                    src='libs/themes/default/assets/images/illustrations/password-recovery-illustration.svg' 
-                    alt="email-sent-illustration"
-                    role="presentation"/>
-            </div>
-        </layout:component>
     </layout:main>
 
     <%-- footer --%>

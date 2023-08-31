@@ -18,6 +18,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CallBackValidator" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -60,6 +62,12 @@
     }
 %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isSuccessResponse", true);
+%>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -72,36 +80,62 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body>
+<body  class="login-portal layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
-
+            <%-- product-title --%>
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-
+            <div class="ui green segment mt-3 attached">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="username-recovery-notify-page-header">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
+                </h3>
+                <p class="portal-tagline-description">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username.recovery.information.sent.to.your.email")%>
+                    <br><br>
+                    <%
+                        if(StringUtils.isNotBlank(callback)) {
+                    %>
+                        <br/><br/>
+                        <i class="caret left icon primary"></i>
+                        <a href="<%= Encode.forHtml(callback)%>">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                        </a>
+                    <% } %>
+                </p>
+                <p class="ui portal-tagline-description" data-testid="username-recovery-support-message">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
+                    data-testid="username-recovery-resend-support-email"
+                    target="_blank">
+                    <span class="orange-text-color button">
+                        <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                    </span>
+                    </a>
+                    .
+                </p>
+            </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
-
+            <%-- product-footer --%>
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
         </layout:component>
     </layout:main>
-
-    <div class="ui tiny modal notify">
-        <div class="header">
-            <h4 class="modal-title"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Information")%>
-            </h4>
-        </div>
-        <div class="content">
-            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Username.recovery.information.sent.to.your.email")%>
-            </p>
-        </div>
-        <div class="actions">
-            <button type="button" class="ui primary button cancel" data-dismiss="modal">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-            </button>
-        </div>
-    </div>
 
     <%-- footer --%>
     <%
@@ -112,34 +146,5 @@
     <% } else { %>
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
-
-    <script type="application/javascript">
-
-        $(document).ready(function () {
-            $(".notify").modal({
-                blurring: true,
-                closable: false,
-                onHide: function () {
-                    <%
-                    try {
-                        if (callback != null) {
-                    %>
-                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
-                    <%
-                    }
-                    } catch (URISyntaxException e) {
-                        request.setAttribute("error", true);
-                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                        if (!StringUtils.isBlank(username)) {
-                            request.setAttribute("username", username);
-                        }
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
-                        return;
-                    }
-                    %>
-                }
-            }).modal("show");
-        });
-    </script>
 </body>
 </html>

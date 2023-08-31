@@ -415,14 +415,6 @@
                     <jsp:include page="includes/product-footer.jsp"/>
                 <% } %>
             </layout:component>
-            <layout:component componentName="ResponseImage" >
-                <%-- illustration--%>
-                <div>
-                    <img  class="ui centered medium image"
-                        src='libs/themes/asgardio/assets/images/illustrations/account-creation-success.svg'
-                        alt="account-creation-success-illustration"/>
-                </div>
-            </layout:component>
         </layout:main>
     <% } %>
 
