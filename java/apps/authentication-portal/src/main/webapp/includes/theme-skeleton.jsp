@@ -12,10 +12,10 @@
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
 <%-- Include tenant context --%>
-<jsp:directive.include file="../includes/init-url.jsp"/>
+<jsp:directive.include file="init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="./branding-preferences.jsp"/>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%
     String externalConnectionButtonBaseBackgroundColor = "";

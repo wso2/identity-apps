@@ -20,10 +20,11 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <%-- footer --%>
-<footer class="footer" style="text-align: center">
+<!-- temporarily commented during unification until the styles issues are sorted out -->
+<!-- <footer class="footer" style="text-align: center">
     <div class="container-fluid">
         <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> &copy;
             <script>document.write(new Date().getFullYear());</script>
         </p>
     </div>
-</footer>
+</footer> -->

@@ -26,7 +26,8 @@
 <%@ include file="includes/init-url.jsp" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
