@@ -225,7 +225,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
 %>
@@ -256,91 +255,50 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <div class="ui green segment mt-3 attached">
-                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
-                        <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.set.success")%>
-                        <% } else { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.reset.Success")%>
-                        <% } %>
-                    </h3>
-                    <p class="portal-tagline-description">
-                        <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
-                        <% } else { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
-                        <% } %>
-                        <br/><br/>
-                        <% if(StringUtils.isNotBlank(applicationAccessURLWithoutEncoding) &&
-                                !RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
-                            <i class="caret left icon primary"></i>
-                            <% if(StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) {
-                                if(StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {
-                            %>
-                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                                        applicationAccessURLWithoutEncoding)%>">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Go.to.MyAccount")%>
-                                </a>
-                            <%
-                                } else {
-                            %>
-                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                                    applicationAccessURLWithoutEncoding)%>">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                                </a>
-                            <%
-                                }
-                            %>
-                            <% } else { %>
-                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                        applicationAccessURLWithoutEncoding)%>">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                                </a>
-                            <% } %>
-                        <% } %>
-                    </p>
-                </div>
-            <% } else { %>
-                <h2 class="ui header portal-logo-tagline" data-testid="password-reset-complete-page-header">
+            <div class="ui green segment mt-3 attached">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
                     <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.set.success")%>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.reset.Success")%>
                     <% } %>
-                </h2>
+                </h3>
                 <p class="portal-tagline-description">
                     <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%> <b><%=username%></b>.
-                        <br/>
-                        <br/>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
-                        <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                            applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
                     <% } %>
-                    <br/>
-                    <br/>
+                    <br/><br/>
                     <% if(StringUtils.isNotBlank(applicationAccessURLWithoutEncoding) &&
-                                        !RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
+                            !RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <i class="caret left icon primary"></i>
-                        <% if(StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) { %>
+                        <% if(StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) {
+                            if(StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {
+                        %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                                applicationAccessURLWithoutEncoding)%>">
+                                                    applicationAccessURLWithoutEncoding)%>">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Go.to.MyAccount")%>
                             </a>
+                        <%
+                            } else {
+                        %>
+                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                                applicationAccessURLWithoutEncoding)%>">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                            </a>
+                        <%
+                            }
+                        %>
                         <% } else { %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                            applicationAccessURLWithoutEncoding)%>">
+                                    applicationAccessURLWithoutEncoding)%>">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
                             </a>
                         <% } %>
                     <% } %>
                 </p>
-            <% } %>
+            </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
             <%-- product-footer --%>

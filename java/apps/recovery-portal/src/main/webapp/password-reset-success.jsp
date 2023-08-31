@@ -33,7 +33,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
 %>
@@ -64,51 +63,15 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <div class="ui green segment mt-3 attached">
-                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
-                    </h3>
-                    <p class="portal-tagline-description">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "follow.reset.password.email.instructions")%>
-                        <br><br>
-                        <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered.alt") + " "
-                            + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
-                        %>
-                        <%
-                            if(StringUtils.isNotBlank(accessUrl)) {
-                        %>
-                            <br/><br/>
-                            <i class="caret left icon primary"></i>
-                            <a href="<%= Encode.forHtml(accessUrl)%>">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                            </a>
-                        <% } %>
-                    </p>
-                    <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
-                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
-                        data-testid="password-recovery-resend-support-email"
-                        target="_blank">
-                        <span class="orange-text-color button">
-                            <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
-                        </span>
-                        </a>
-                        .
-                    </p>
-                </div>
-            <% } else { %>
-                <h2 class="ui header portal-logo-tagline" data-testid="password-recovery-notify-page-header">
+            <div class="ui green segment mt-3 attached">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
-                </h2>
+                </h3>
                 <p class="portal-tagline-description">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "follow.reset.password.email.instructions")%>
                     <br><br>
-                    <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered")
-                            + " " + productName + " " +
-                            IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
+                    <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered.alt") + " "
+                        + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
                     %>
                     <%
                         if(StringUtils.isNotBlank(accessUrl)) {
@@ -118,22 +81,20 @@
                         <a href="<%= Encode.forHtml(accessUrl)%>">
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
                         </a>
-                    <%
-                        }
-                    %>
+                    <% } %>
                 </p>
                 <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
                     <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
                     data-testid="password-recovery-resend-support-email"
                     target="_blank">
-                        <span class="orange-text-color button">
-                            <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
-                        </span>
+                    <span class="orange-text-color button">
+                        <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                    </span>
                     </a>
                     .
                 </p>
-            <% } %>
+            </div>
         </layout:component>
         <layout:component componentName="ProductFooter" >
             <%-- product-footer --%>
