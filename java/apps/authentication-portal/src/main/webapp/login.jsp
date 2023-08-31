@@ -408,7 +408,7 @@
                 StringUtils.equals("true", promptAccountLinking)) {
             %>
                     <div class="theme-icon inline auto transparent product-logo portal-logo">
-                        <img src="libs/themes/asgardio/assets/images/illustrations/login-illustration.svg" alt="Asgardeo Logo" />
+                        <img src="libs/themes/default/assets/images/illustrations/login-illustration.svg" alt="Asgardeo Logo" />
                     </div>
             <% } %>
             <%-- product-title --%>
@@ -458,7 +458,7 @@
                         class="ui image mr-1"
                         alt="Username Icon"
                         role="presentation"
-                        src="libs/themes/asgardio/assets/images/user.svg">
+                        src="libs/themes/default/assets/images/user.svg">
                     <span id="user-name-label"
                             class="ellipsis"
                             data-position="top left"
@@ -603,7 +603,7 @@
                                         // Uses the `IdentityProviderDataRetrievalClient` to get the IDP image.
                                         // TODO: Use this approach for Google, GitHub etc. since it's not scalable.
                                         // Might Need to fix E2E suite as well.
-                                        String imageURL = "libs/themes/asgardio/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                                        String imageURL = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
                                         try {
                                             IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
                                             imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, idpName);
@@ -660,7 +660,7 @@
                                             >
                                                 <img 
                                                     class="ui image" 
-                                                    src="libs/themes/asgardio/assets/images/identity-providers/google-idp-illustration.svg"
+                                                    src="libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg"
                                                     alt="Google Login icon"
                                                     role="presentation">
                                                 <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
@@ -744,7 +744,7 @@
                                                 >
                                                 <img 
                                                     class="ui image" 
-                                                    src="libs/themes/asgardio/assets/images/identity-providers/github-idp-illustration.svg"
+                                                    src="libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg"
                                                     alt="Github login icon"
                                                     role="presentation">
                                                 <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
@@ -765,7 +765,7 @@
                                                 >
                                                 <img 
                                                     class="ui image" 
-                                                    src="libs/themes/asgardio/assets/images/identity-providers/facebook-idp-illustration.svg"
+                                                    src="libs/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg"
                                                     alt="Facebook login icon"
                                                     role="presentation">
                                                 <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
@@ -786,7 +786,7 @@
                                         >
                                                 <img 
                                                     class="ui image" 
-                                                    src="libs/themes/asgardio/assets/images/identity-providers/microsoft-idp-illustration.svg"
+                                                    src="libs/themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg"
                                                     alt="Microsoft login icon"
                                                     role="presentation">
                                                 <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
@@ -986,7 +986,7 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(ENTERPRISE_USER_LOGIN_AUTHENTICATOR))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
-                                                        <img class="ui image" src="libs/themes/asgardio/assets/images/branding/asgardeo-trifacta.svg">
+                                                        <img class="ui image" src="libs/themes/default/assets/images/branding/asgardeo-trifacta.svg">
                                                         <span><%=Encode.forHtmlContent("Continue With Asgardeo")%></span>
                                                 </button>
                                             </div>
@@ -1004,7 +1004,7 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(ENTERPRISE_USER_LOGIN_AUTHENTICATOR))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
-                                                        <img class="ui image" src="libs/themes/asgardio/assets/images/identity-providers/enterprise-idp-illustration.svg">
+                                                        <img class="ui image" src="libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg">
                                                         <span><%=Encode.forHtmlContent("Continue With Organization")%></span>
                                                 </button>
                                             </div>
