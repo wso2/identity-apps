@@ -188,6 +188,11 @@
                     <div class="ui divider hidden"></div>
                     <div class="ui divider hidden"></div>
                 </div>
+                
+                <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
                 <div class="ui bottom attached message support-message-container">
                     <p class="text-left mt-0">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%> <br />
@@ -197,15 +202,13 @@
                     </p>
                     <div class="ui divider hidden"></div>
 
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
+                    
                         <jsp:include page="extensions/error-tracking-reference.jsp"/>
                         <div class="ui divider hidden"></div>
-                    <% } %>
+                    
                     
                 </div>
+                <% } %>
             <% } else { %>
                 <%
                     if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
@@ -221,7 +224,7 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
-
+                    
                     <%
                         File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                         if (trackingRefFile.exists()) {

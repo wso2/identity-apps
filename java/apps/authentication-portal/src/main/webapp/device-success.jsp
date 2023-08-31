@@ -81,6 +81,11 @@
                             <div class="ui divider hidden"></div>
                             <div class="ui divider hidden"></div>
                     </div>
+                    
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
                     <div class="ui bottom attached warning message">
                         <p  class="text-left mt-0">
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
@@ -89,16 +94,12 @@
                             </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                         </p>
 
-                        <%
-                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                            if (trackingRefFile.exists()) {
-                        %>
+                        
                             <div class="ui divider hidden"></div>
                             <jsp:include page="extensions/error-tracking-reference.jsp"/>
                             <div class="ui divider hidden"></div>
-                        <% } %>
-                        
                     </div>
+                    <% } %>
                 <% } else { %>
                     <div class="ui green segment mt-3 attached">
                         <h3 class="ui header text-center slogan-message mt-4 mb-6">
@@ -122,16 +123,17 @@
                             "something.went.wrong.during.authentication")%>
                     </h4>
 
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
                     <p class="portal-tagline-description">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
+                    
                         <jsp:include page="extensions/error-tracking-reference.jsp"/>                
                     <% } %>
 
