@@ -68,6 +68,7 @@ import { getRoleById, searchRoleList } from "../../../../features/roles/api/role
 import { SearchRoleInterface } from "../../../../features/roles/models/roles";
 import { useServerConfigs } from "../../../../features/server-configurations";
 import { useUsersList } from "../../../../features/users/api";
+import { AddUserWizard } from "../../../../features/users/components/wizard/add-user-wizard";
 import { InternalAdminUserListInterface, UserListInterface } from "../../../../features/users/models";
 import { UserManagementUtils } from "../../../../features/users/utils";
 import { adminitratorConfig } from "../../../configs/administrator";
@@ -91,7 +92,7 @@ import {
     UsersConstants
 } from "../constants";
 import { InvitationStatus, UserInviteInterface } from "../models";
-import { AddUserWizard } from "../wizard";
+import { AddUserWizard as AddUserEmailInviteWizard } from "../wizard";
 
 /**
  * Props for the Users page.
@@ -1361,21 +1362,85 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         );
     };
 
+    const resolveAddAdminWizard = (): ReactElement => {
+        if (showExtenalAdminWizard) {
+
+            if (adminitratorConfig.enableAdminInvite) {
+                // Returns the add user wizard with email invitation.
+                return (
+                    <AddUserEmailInviteWizard
+                        data-componentid={ `${ componentId }-add-admin-wizard-modal` }
+                        closeWizard={ () => {
+                            setShowExtenalAdminWizard(false);
+                        } }
+                        updateList={ () => mutateGuestUserListFetchRequest() }
+                        rolesList={ rolesList }
+                        emailVerificationEnabled={ true }
+                        onInvitationSendSuccessful={ () => {
+                            mutateGuestUserListFetchRequest();
+                            eventPublisher.publish("manage-users-finish-creating-collaborator-user");
+                            if (selectedAddAdminType === AdminAccountTypes.EXTERNAL) {
+                                setInvitationStatusOption(InvitationStatus.PENDING);
+                                setActiveTabIndex(TabIndex.EXTERNAL_ADMINS);
+                            }
+                            if (selectedAddAdminType === AdminAccountTypes.INTERNAL) {
+                                setInvitationStatusOption(InvitationStatus.ACCEPTED);
+                                setActiveTabIndex(TabIndex.INTERNAL_ADMINS);
+                            }
+                            setIsInvitationStatusOptionChanged(true);
+                        } }
+                        defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
+                        adminTypeSelection={ selectedAddAdminType }
+                        onUserUpdate={ () => {
+                            if (selectedAddAdminType === AdminAccountTypes.EXTERNAL) {
+                                setActiveTabIndex(TabIndex.EXTERNAL_ADMINS);
+                                mutateAdminUserListFetchRequest();
+                            }
+                            if (selectedAddAdminType === AdminAccountTypes.INTERNAL) {
+                                setInvitationStatusOption(InvitationStatus.ACCEPTED);
+                                setActiveTabIndex(TabIndex.INTERNAL_ADMINS);
+                                getInternalAdmins();
+                            }
+                        } }
+                    />
+                );
+            }
+
+            return (
+                <AddUserWizard
+                    data-componentid={ `${ componentId }-add-admin-wizard-modal` }
+                    closeWizard={ () => {
+                        setShowExtenalAdminWizard(false);
+                    } }
+                    listOffset={ listOffset }
+                    listItemLimit={ listItemLimit }
+                    updateList={ () => mutateGuestUserListFetchRequest() }
+                    rolesList={ rolesList }
+                    emailVerificationEnabled={ false }
+                    isAdminUser={ true }
+                />
+            );
+        }
+
+        return null;
+    };
+
     //TODO: Refactor once unnecessary loading dependencies are removed.
     const getButtonLoadingState = (): boolean => {
         return (adminitratorConfig.enableAdminInvite && isGuestUserListFetchRequestLoading)
-        || isOrgConfigRequestRevalidating || isOrgConfigRequestLoading;
+        || (saasFeatureStatus === FeatureStatus.ENABLED
+        && (isOrgConfigRequestRevalidating || isOrgConfigRequestLoading));
     };
 
     return (
         <PageLayout
             pageTitle="Administrators"
             action={
-                isOrgConfigRequestLoading
+                saasFeatureStatus === FeatureStatus.ENABLED && isOrgConfigRequestLoading
                     ? <div />
                     : (
                         <Show when={ AccessControlConstants.USER_WRITE }>
-                            { !isAdvancedUserManagementDisabled &&
+                            { saasFeatureStatus === FeatureStatus.ENABLED && !isAdvancedUserManagementDisabled &&
                                 (
                                     <Button
                                         data-componentid={ `${ componentId }-admin-settings-button` }
@@ -1465,45 +1530,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         >
             { renderTenantedConsoleLink() }
             { renderAdministratorList() }
-            {
-                showExtenalAdminWizard && (
-                    <AddUserWizard
-                        data-componentid={ `${ componentId }-add-admin-wizard-modal` }
-                        closeWizard={ () => {
-                            setShowExtenalAdminWizard(false);
-                        } }
-                        updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ rolesList }
-                        emailVerificationEnabled={ true }
-                        onInvitationSendSuccessful={ () => {
-                            mutateGuestUserListFetchRequest();
-                            eventPublisher.publish("manage-users-finish-creating-collaborator-user");
-                            if (selectedAddAdminType === AdminAccountTypes.EXTERNAL) {
-                                setInvitationStatusOption(InvitationStatus.PENDING);
-                                setActiveTabIndex(TabIndex.EXTERNAL_ADMINS);
-                            }
-                            if (selectedAddAdminType === AdminAccountTypes.INTERNAL) {
-                                setInvitationStatusOption(InvitationStatus.ACCEPTED);
-                                setActiveTabIndex(TabIndex.INTERNAL_ADMINS);
-                            }
-                            setIsInvitationStatusOptionChanged(true);
-                        } }
-                        defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
-                        adminTypeSelection={ selectedAddAdminType }
-                        onUserUpdate={ () => {
-                            if (selectedAddAdminType === AdminAccountTypes.EXTERNAL) {
-                                setActiveTabIndex(TabIndex.EXTERNAL_ADMINS);
-                                mutateAdminUserListFetchRequest();
-                            }
-                            if (selectedAddAdminType === AdminAccountTypes.INTERNAL) {
-                                setInvitationStatusOption(InvitationStatus.ACCEPTED);
-                                setActiveTabIndex(TabIndex.INTERNAL_ADMINS);
-                                getInternalAdmins();
-                            }
-                        } }
-                    />
-                )
-            }
+            { resolveAddAdminWizard() }
         </PageLayout>
     );
 };

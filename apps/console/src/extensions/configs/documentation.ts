@@ -30,61 +30,52 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             apiResources: {
                 addAPIResource: {
                     rbacInfoBox: {
-                        learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/" + 
-                                "#role-based-access-control"
+                        learnMore: undefined
                     },
                     requiredAuthorization: {
-                        learnMore: documentationBaseUrl + "/guides/api-authorization/" + 
-                                "#authorize-the-api-resource-to-an-app"
+                        learnMore: undefined
                     }
                 },
-                learnMore: documentationBaseUrl + "/guides/api-authorization/#register-an-api-resource"
+                learnMore: undefined
             },
             applications: {
                 apiAuthorization: {
-                    learnMore: documentationBaseUrl + "/guides/api-authorization/#authorize-the-api-resource-to-an-app",
+                    learnMore: undefined,
                     policies: {
                         noPolicy: {
-                            learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/" + 
-                                "#no-authorization-policy"
+                            learnMore: undefined
                         },
                         rbac: {
-                            learnMore: documentationBaseUrl + "/references/authorization-policies-for-apps/" + 
-                                "#role-based-access-control"
+                            learnMore: undefined
                         }
                     }
                 },
                 editApplication: {
                     asgardeoTryitApplication: {
                         general: {
-                            learnMore: documentationBaseUrl + "/get-started/try-it-application/"
+                            learnMore: undefined
                         }
                     },
                     attributeManagement: {
-                        manageOIDCScopes: documentationBaseUrl + "/guides/users/attributes/manage-scopes" +
-                            "/#how-to-request-scope-to-request-user-attributes"
+                        manageOIDCScopes: undefined
                     },
                     common: {
                         signInMethod: {
                             conditionalAuthenticaion: {
-                                apiReference: documentationBaseUrl + "/references/conditional-auth/api-reference/",
-                                learnMore: documentationBaseUrl + "/guides/authentication/conditional-auth/",
+                                apiReference: undefined,
+                                learnMore: undefined,
                                 template: {
                                     deviceBased: {
-                                        learnMore: documentationBaseUrl +
-                                            "/guides/authentication/conditional-auth/new-device-based-template/"
+                                        learnMore: undefined
                                     },
                                     groupBased: {
-                                        learnMore: documentationBaseUrl +
-                                            "/guides/authentication/conditional-auth/group-based-template/"
+                                        learnMore: undefined
                                     },
                                     ipBased: {
-                                        learnMore: documentationBaseUrl +
-                                            "/guides/authentication/conditional-auth/ip-based-template/"
+                                        learnMore: undefined
                                     },
                                     userAgeBased: {
-                                        learnMore: documentationBaseUrl +
-                                            "/guides/authentication/conditional-auth/user-age-based-template/"
+                                        learnMore: undefined
                                     }
                                 }
                             },
@@ -96,25 +87,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             learnMore: undefined
                         },
                         attributes: {
-                            learnMore: documentationBaseUrl + "/guides/authentication/user-attributes" +
-                                "/enable-attributes-for-oidc-app/"
+                            learnMore: undefined
                         },
                         info: {
-                            learnMore: documentationBaseUrl + "/get-started/try-samples/qsg-oidc-webapp-java-ee/"
+                            learnMore: undefined
                         },
                         protocol: {
-                            learnMore: documentationBaseUrl + "/references/app-settings/oidc-settings-for-app/"
+                            learnMore: undefined
                         },
                         quickStart: {
                             applicationScopes: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/user-attributes/" +
-                                    "enable-attributes-for-oidc-app/#application-requests-with-scopes"
+                                learnMore: undefined
                             },
                             customConfig: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/oidc/implement-auth-code"
+                                learnMore: undefined
                             },
                             mobileApp: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/add-login-to-mobile-app"
+                                learnMore: undefined
                             }
                         }
                     },
@@ -123,208 +112,199 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             learnMore: undefined
                         },
                         attributes: {
-                            learnMore: documentationBaseUrl + "/guides/authentication/user-attributes" +
-                                "/enable-attributes-for-saml-app/"
+                            learnMore: undefined
                         },
                         info: {
-                            learnMore: documentationBaseUrl + "/guides/authentication/saml/"
+                            learnMore: undefined
                         },
                         protocol: {
-                            learnMore: documentationBaseUrl + "/references/app-settings/saml-settings-for-app/"
+                            learnMore: undefined
                         },
                         quickStart: {
                             customConfig: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/saml/discover-saml-configs/"
+                                learnMore: undefined
                             }
                         }
                     },
                     signInMethod: {
-                        fido: documentationBaseUrl + "/guides/authentication/passwordless-login/"
+                        fido: undefined
                     },
                     singlePageApplication: {
                         info: {
-                            learnMore: documentationBaseUrl +
-                                "/guides/authentication/oidc/implement-auth-code-with-pkce/"
+                            learnMore: undefined
                         },
                         quickStart: {
                             customConfig: {
-                                learnMore: documentationBaseUrl +
-                                    "/guides/authentication/oidc/implement-auth-code-with-pkce/"
+                                learnMore: undefined
                             }
                         }
                     },
                     standardBasedApplication: {
                         oauth2OIDC: {
                             protocol: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/oidc/"
+                                learnMore: undefined
                             }
                         },
                         saml: {
                             protocol: {
-                                learnMore: documentationBaseUrl + "/guides/authentication/saml/"
+                                learnMore: undefined
                             }
                         }
                     }
                 },
-                learnMore: documentationBaseUrl + "/guides/applications/",
+                learnMore: undefined,
                 managementApplication: {
-                    learnMore: documentationBaseUrl + "/apis/authentication/",
-                    selfServicePortal: documentationBaseUrl + "/guides/user-self-service/customer-self-service-portal/"
+                    learnMore: undefined,
+                    selfServicePortal: undefined
                 },
                 myaccount: {
-                    learnMore: documentationBaseUrl + "/guides/user-self-service/customer-self-service-portal/",
-                    smsOtp: documentationBaseUrl + "/guides/authentication/mfa/add-smsotp-login"
+                    learnMore: undefined,
+                    smsOtp: undefined
                 },
                 newApplication: {
                     mobileApplication: {
-                        learnMore: documentationBaseUrl + "/guides/applications/register-mobile-app/"
+                        learnMore: undefined
                     },
                     oidcApplication: {
-                        learnMore: documentationBaseUrl + "/guides/applications/register-oidc-web-app/"
+                        learnMore: undefined
                     },
                     samlApplication: {
-                        learnMore: documentationBaseUrl + "/guides/applications/register-saml-web-app/"
+                        learnMore: undefined
                     },
                     singlePageApplication: {
-                        learnMore: documentationBaseUrl + "/guides/applications/register-single-page-app/"
+                        learnMore: undefined
                     }
                 },
                 roles: {
-                    learnMore: documentationBaseUrl + "/guides/users/manage-groups/#assign-roles-to-groups"
+                    learnMore: undefined
                 }
             },
             branding: {
-                learnMore: documentationBaseUrl + "/guides/branding/"
+                learnMore: undefined
             },
             connections: {
                 edit: {
                     advancedSettings: {
-                        jit: documentationBaseUrl + "/guides/authentication/jit-user-provisioning"
+                        jit: undefined
                     },
                     quickStart: {
                         fido: {
-                            learnMore: documentationBaseUrl +
-                                "/guides/authentication/passwordless-login/add-passwordless-login-with-fido/"
+                            learnMore: undefined
                         }
                     }
                 },
-                learnMore: documentationBaseUrl + "/guides/authentication/#manage-connections",
+                learnMore: undefined,
                 newConnection: {
                     apple: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/social-login/add-apple-login/"
+                        learnMore: undefined
                     },
                     enterprise: {
-                        oidcLearnMore: documentationBaseUrl +
-                            "/guides/authentication/enterprise-login/add-oidc-idp-login/",
-                        samlLearnMore: documentationBaseUrl +
-                            "/guides/authentication/enterprise-login/add-saml-idp-login/"
+                        oidcLearnMore: undefined,
+                        samlLearnMore: undefined
                     },
                     facebook: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/social-login/add-facebook-login/"
+                        learnMore: undefined
                     },
                     github: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/social-login/add-github-login/"
+                        learnMore: undefined
                     },
                     google: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/social-login/add-google-login/"
+                        learnMore: undefined
                     },
                     hypr: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/passwordless-login/" + 
-                            "add-passwordless-login-with-hypr/"
+                        learnMore: undefined
                     },
-                    learnMore: documentationBaseUrl + "/guides/authentication/#manage-connections",
+                    learnMore: undefined,
                     microsoft: {
-                        learnMore: documentationBaseUrl + "/guides/authentication/social-login/add-microsoft-login/"
+                        learnMore: undefined
                     },
                     siwe: {
-                        learnMore: documentationBaseUrl +
-                            "/guides/authentication/decentralized-login/sign-in-with-ethereum"
+                        learnMore: undefined
                     }
                 }
             },
             emailCustomization: {
                 form: {
                     emailBody: {
-                        learnMore: documentationBaseUrl + "/references/email-templates/#general-literals"
+                        learnMore: undefined
                     }
                 },
-                learnMore: documentationBaseUrl + "/references/email-templates/"
+                learnMore: undefined
             },
             eventPublishing: {
-                learnMore :documentationBaseUrl + "/guides/asgardeo-events/"
+                learnMore: undefined
             }
         },
         manage: {
             accountRecovery: {
                 passwordRecovery: {
-                    learnMore: documentationBaseUrl + "/guides/user-accounts/password-recovery/"
+                    learnMore: undefined
                 }
             },
             attributes: {
                 attributes: {
-                    learnMore: documentationBaseUrl + "/guides/users/attributes/manage-attributes/"
+                    learnMore: undefined
                 },
                 oidcAttributes: {
-                    learnMore: documentationBaseUrl + "/guides/users/attributes/manage-oidc-attribute-mappings/"
+                    learnMore: undefined
                 },
                 scimAttributes: {
-                    learnMore: documentationBaseUrl + "/guides/users/attributes/manage-scim2-attribute-mappings/"
+                    learnMore: undefined
                 }
             },
             groups: {
-                learnMore: documentationBaseUrl + "/guides/users/manage-groups/",
+                learnMore: undefined,
                 roles: {
-                    learnMore: documentationBaseUrl + "/guides/users/manage-groups/#assign-roles-to-groups"
+                    learnMore: undefined
                 }
             },
             organizations: {
-                learnMore: documentationBaseUrl + "/guides/organization-management/manage-b2b-organizations/"
+                learnMore: undefined
             },
             privateKeyJWT: {
-                learnMore: documentationBaseUrl + "/guides/authentication/oidc/private-key-jwt-client-auth"
+                learnMore: undefined
             },
             selfRegistration: {
-                learnMore: documentationBaseUrl + "/guides/user-self-service/self-register/"
+                learnMore: undefined
             },
             userStores: {
                 attributeMappings: {
-                    learnMore: documentationBaseUrl + "/guides/users/attributes/"
+                    learnMore: undefined
                 },
                 createUserStore: {
-                    learnMore: documentationBaseUrl + "/guides/users/user-stores/configure-a-user-store/"
+                    learnMore: undefined
                 },
                 highAvailability: {
-                    learnMore: documentationBaseUrl + "/guides/users/user-stores/configure-high-availability/"
+                    learnMore: undefined
                 },
                 userStoreProperties: {
-                    learnMore: documentationBaseUrl + "/references/remote-user-store/remote-user-store-properties/"
+                    learnMore: undefined
                 },
                 userStoresList: {
-                    learnMore: documentationBaseUrl + "/guides/users/user-stores/"
+                    learnMore: undefined
                 }
             },
             users: {
                 allUsers: {
-                    learnMore: documentationBaseUrl + "/guides/users/"
+                    learnMore: undefined
                 },
                 collaboratorAccounts: {
-                    adminSettingsLearnMore: documentationBaseUrl + 
-                        "/guides/users/manage-collaborators/#assign-admin-privileges-to-users",
-                    learnMore: documentationBaseUrl + "/guides/users/manage-collaborators/",
+                    adminSettingsLearnMore: undefined,
+                    learnMore: undefined,
                     roles: {
-                        learnMore: documentationBaseUrl + "/references/user-management/user-roles/"
+                        learnMore: undefined
                     }
                 },
                 customerAccounts: {
-                    learnMore: documentationBaseUrl + "/guides/users/manage-customers/"
+                    learnMore: undefined
                 },
                 newCollaboratorUser: {
-                    learnMore: documentationBaseUrl + "/references/user-management/user-roles/"
+                    learnMore: undefined
                 }
             },
             validation: {
                 passwordValidation: {
-                    learnMore: documentationBaseUrl + "/guides/user-accounts/account-security/password-validation"
+                    learnMore: undefined
                 }
             }
         }

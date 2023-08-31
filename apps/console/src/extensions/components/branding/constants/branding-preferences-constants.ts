@@ -197,7 +197,7 @@ export class BrandingPreferencesConstants {
             // This should be decided based on the subscription tier.
             // TODO: Properly resolve once subscription API is integrated in to the console.
             // Tracked Here: https://github.com/wso2-enterprise/asgardeo-product/issues/8625
-            removeAsgardeoBranding: false
+            removeAsgardeoBranding: true
         },
         layout: {
             activeLayout: PredefinedLayouts.CENTERED,
