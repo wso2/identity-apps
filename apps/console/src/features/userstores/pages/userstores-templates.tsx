@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
-*
-* WSO2 LLC. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -22,6 +22,7 @@ import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-compon
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { userstoresConfig } from "../../../extensions";
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { getAType, getUserstoreTypes } from "../api";
@@ -54,9 +55,9 @@ interface UserstoreTypeListItem {
 /**
  * This renders the userstore templates page.
  *
- * @param {UserstoresTemplatesPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns userstore templates page.
  */
 const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> = (
     props: UserstoresTemplatesPageInterface
@@ -72,7 +73,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
     const [ selectedType, setSelectedType ] = useState<UserstoreType>(null);
     const [ isLoading, setIsLoading ] = useState(true);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -191,9 +192,6 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                             <TemplateGrid<UserstoreTypeListItem>
                                 type="userstore"
                                 templates={ userstoreTypes }
-                                heading={ t("console:manage.features.userstores.pageLayout.templates.templateHeading") }
-                                subHeading={ t("console:manage.features.userstores.pageLayout." +
-                                    "templates.templateSubHeading") }
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }
