@@ -802,7 +802,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         setUserStoreChanged(true);
     };
 
-    const adminUserList: UserListInterface = useMemo(() => {  
+    const adminUserList: UserListInterface = useMemo(() => {
         return transformUserList(originalAdminUserList);
     }, [ originalAdminUserList ]);
 
