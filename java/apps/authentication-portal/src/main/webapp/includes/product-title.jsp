@@ -16,11 +16,14 @@
   ~ under the License.
 --%>
 
-<%@ include file="localize.jsp" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
-<div class="product-title" data-testid="product-title">
-    <div class="theme-icon inline auto transparent product-logo portal-logo">
-        <img src="libs/themes/default/assets/images/branding/logo.svg" alt="WSO2 Identity Server Logo" />
-    </div>
+<%-- Include tenant context --%>
+<jsp:directive.include file="init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
+<div class="theme-icon inline auto transparent product-logo portal-logo">
+  <img src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" id="product-logo" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
 </div>

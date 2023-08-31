@@ -164,12 +164,12 @@
             <%-- illustration--%>
             <% if (request.getParameter("app_name") == null) {  %>
                 <div class="thank-you-img">
-                    <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
+                    <img src="libs/themes/default/assets/images/something-went-wrong.svg">
                 </div>
             <% } else { %>
                 <div>
                     <img class="ui centered medium image"
-                        src='libs/themes/asgardio/assets/images/illustrations/account-creation-success.svg'
+                        src='libs/themes/default/assets/images/illustrations/account-creation-success.svg'
                         alt="password-recovery-success-illustration"/>
                 </div>
             <% } %>

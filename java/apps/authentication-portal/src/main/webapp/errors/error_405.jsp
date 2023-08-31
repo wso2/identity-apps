@@ -152,7 +152,7 @@
         <layout:component componentName="ResponseImage">
             <%-- illustration--%>
             <div class="thank-you-img">
-                <img class="ui fluid image" src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
+                <img class="ui fluid image" src="libs/themes/default/assets/images/something-went-wrong.svg">
             </div>
         </layout:component>
     </layout:main>

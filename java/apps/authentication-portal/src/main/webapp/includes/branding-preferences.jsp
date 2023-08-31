@@ -45,7 +45,7 @@
     String logoAlt = "";
     String faviconURL = "";
     String privacyPolicyURL = "/authenticationendpoint/privacy_policy.do";
-    String termsOfUseURL = "";
+    String termsOfUseURL = "https://wso2.com/terms-of-use/";
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
@@ -55,6 +55,7 @@
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
+    String productURL = "https://wso2.com/identity-server";
 
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
