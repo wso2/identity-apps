@@ -217,7 +217,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
 %>
@@ -286,14 +285,8 @@
                 <% } %>
             </layout:component>
             <layout:component componentName="MainSection" >
-                <%
-                    if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-                %>
-                    <div class="ui green segment mt-3 attached">
+                <div class="ui green segment mt-3 attached">
                         <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="self-register-complete-page-header">
-                <% } else { %>
-                        <h2 class="ui header portal-logo-tagline" data-testid="self-register-complete-page-header">
-                <% } %>
                             <% if (StringUtils.isNotBlank(confirm)) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.verified.successfully")%>
                             <% } else if (accountLockOnCreationEnabled) { %>
@@ -301,13 +294,7 @@
                             <% } else  {%>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.created.successfully")%>
                             <% } %>
-                <%
-                    if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-                %>
                         </h3>
-                <% } else { %>
-                        </h2>
-                <% } %>
 
                         <p class="portal-tagline-description">
                             <%
@@ -415,11 +402,7 @@
                         }
                         %>
                     </p>
-                <%
-                    if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-                %>
                 </div>
-                <% } %>
             </layout:component>
             <layout:component componentName="ProductFooter" >
                 <%-- product-footer --%>

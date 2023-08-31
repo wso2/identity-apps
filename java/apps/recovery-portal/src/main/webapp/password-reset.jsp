@@ -74,11 +74,6 @@
 
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
-
 <!doctype html>
 <html lang="en-US">
     <head>
