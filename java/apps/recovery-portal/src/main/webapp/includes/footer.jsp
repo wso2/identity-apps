@@ -116,6 +116,8 @@
 
             if (hostnameTokens.length > 1) {
                 domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
+            } else if (hostnameTokens.length == 1) {
+                domain = hostnameTokens[0];
             }
         } catch(e) {
             // Couldn't parse the hostname.
