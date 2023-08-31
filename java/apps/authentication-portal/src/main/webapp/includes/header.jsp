@@ -17,14 +17,19 @@
   --%>
 
 <%@ include file="localize.jsp" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
-<jsp:directive.include file="layout-resolver.jsp"/>
+<%-- Include tenant context --%>
+<jsp:directive.include file="../includes/init-url.jsp"/>
+<%-- Branding Preferences --%>
+<jsp:directive.include file="../includes/branding-preferences.jsp"/>
+
 
 <%-- Extract the name of the stylesheet--%>
 <%
-    String themeName = "default";
+    String themeName = "asgardio";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
         + "/" + "libs/themes/" + themeName + "/");
     String[] fileNames = themeDir.list();
@@ -41,17 +46,49 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" href="libs/themes/default/assets/images/branding/favicon.ico" type="image/x-icon"/>
-<link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
+<%-- Updates the favicon with the URL resolved in branding-preferences --%>
+<link rel="icon" href="<%= StringEscapeUtils.escapeHtml4(faviconURL) %>" type="image/x-icon"/>
+
+<%-- Load the base theme --%>
+<link href="libs/themes/asgardio/<%= themeFileName %>" rel="stylesheet">
+
+<%-- Load Default Theme Skeleton --%>
+<jsp:include page="./theme-skeleton.jsp"/>
+
+<%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
+<% if (overrideStylesheet != null && !StringUtils.equals(layout, "custom-" + tenantForTheming)) { %>
+<link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
+<% } %>
 
 <%-- Layout specific style sheet --%>
 <%
-    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
-    if (config.getServletContext().getResource(styleFilePath) != null) {
+    if (StringUtils.equals(layout, "custom-" + tenantForTheming)) {
+        styleFilePath = application.getInitParameter("LayoutStoreURL").replace("${tenantDomain}", tenantForTheming) + "/styles.css";
 %>
     <link rel="stylesheet" href="<%= styleFilePath %>">
-<% } %>
+<%
+    } else {
+        styleFilePath = "extensions/layouts/" + layout + "/styles.css";
+        if (config.getServletContext().getResource(styleFilePath) != null) {
+%>
+    <link rel="stylesheet" href="<%= styleFilePath %>">
+<%
+        }
+    }
+%>
 
-<title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
+<%-- Updates the site tile with the text resolved in branding-preferences --%>
+<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
+
+<style type="text/css">
+    .grecaptcha-badge {
+        bottom: 55px !important;
+    }
+    @media only screen and (max-width: 767px) {
+        .grecaptcha-badge {
+            bottom: 100px !important;
+        }
+    }
+</style>

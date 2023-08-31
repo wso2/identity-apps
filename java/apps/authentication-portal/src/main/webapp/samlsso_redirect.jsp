@@ -25,7 +25,12 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String assertionConsumerURL = (String) request.getAttribute(Constants.SAML2SSO.ASSERTION_CONSUMER_URL);

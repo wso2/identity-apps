@@ -21,7 +21,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%-- Data for the layout from the page --%>
 <%

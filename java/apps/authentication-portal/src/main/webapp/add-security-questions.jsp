@@ -35,7 +35,11 @@
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";

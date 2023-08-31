@@ -39,7 +39,8 @@
 <%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String sessionDataKey = request.getParameter(SESSION_DATA_KEY);

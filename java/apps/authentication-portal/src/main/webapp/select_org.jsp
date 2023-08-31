@@ -24,7 +24,9 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
 
