@@ -55,6 +55,10 @@ export type ConfigInterface = CommonConfigInterface<
  */
 export interface FeatureConfigInterface {
     /**
+     * Admin user management feature.
+     */
+    administrators?: FeatureAccessConfigInterface;
+    /**
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
