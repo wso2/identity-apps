@@ -46,8 +46,9 @@ import {
 } from "../../../../../features/core";
 import { EventPublisher } from "../../../../../features/core/utils";
 import { getRolesList } from "../../../../../features/roles/api";
+import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
-import { AdminAccountTypes, UserAccountTypes } from "../../constants";
+import { AdminAccountTypes } from "../../constants";
 import { InternalAdminFormDataInterface, UserInviteInterface } from "../../models";
 import { UserManagementUtils } from "../../utils";
 
@@ -216,7 +217,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
     // Checks whether administrator role is present in the user.
     const isAdminUser = (user: UserBasicInterface): boolean => {
-        return user.roles.some((role: UserRoleInterface) => role.display === UserAccountTypes.ADMINISTRATOR);
+        return user.roles.some((role: UserRoleInterface) => role.display === administratorConfig.adminRoleName);
     };
 
     const getFormValues = (values: Map<string, FormValue>): void => {
@@ -291,7 +292,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const inviteInternalUserForm = () => (
         <Forms
             data-componentid={ `${ componentId }-external-form` }
-            onSubmit={ () => processInternalAdminFormData(UserAccountTypes.ADMINISTRATOR) }
+            onSubmit={ () => processInternalAdminFormData(administratorConfig.adminRoleName) }
             submitState={ triggerSubmit }
         >
             <Heading as="h5" className="mt-3">

@@ -143,19 +143,20 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath(),
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath() + "/"
+                        + "<%= htmlWebpackPlugin.options.basename %>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath(),
-                    clientID: "CONSOLE",
+                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: getApiPath(userTenant ? "/t/a/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : ''): "/t/a/oauth2/authorize"),
+                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : ''): "/t/carbon.super/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/t/a/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/t/a/oidc/checksession"),
+                        logoutEndpointURL: getApiPath("/t/carbon.super/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/t/carbon.super/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },
@@ -200,7 +201,7 @@
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
 
-            authSPAJS.setAttribute("src", "/auth-spa-0.3.3.min.js");
+            authSPAJS.setAttribute("src", "/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js");
             authSPAJS.setAttribute("async", "false");
 
             let head = document.head;

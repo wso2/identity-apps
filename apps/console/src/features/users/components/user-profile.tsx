@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -42,6 +51,7 @@ import { commonConfig,userConfig } from "../../../extensions";
 import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
 import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
+import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
@@ -53,7 +63,7 @@ import {
 } from "../../roles/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
 import { getUserDetails, updateUserInfo } from "../api";
-import { AdminAccountTypes, UserAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
@@ -521,7 +531,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const getAdminRoleId = () => {
         const searchData: SearchRoleInterface = {
-            filter: "displayName eq " + UserAccountTypes.ADMINISTRATOR,
+            filter: "displayName eq " + administratorConfig.adminRoleName,
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
             startIndex: 0
         };

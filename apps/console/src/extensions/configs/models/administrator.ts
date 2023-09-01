@@ -17,5 +17,6 @@
  */
 
 export interface AdministratorConfig {
+    adminRoleName: string;
     enableAdminInvite: boolean;
 }
