@@ -48,7 +48,7 @@
                     <div id="account-linking-finish-message" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
                         <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.can.now.user.your")%>
                                 ${input.accountType} <%=AuthenticationEndpointUtil.i18n(resourceBundle, "credentials.to.sign.in")%>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.asgardeo.account")%> <b>${input.email}</b>.
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.account")%> <b>${input.email}</b>.
                         </p>
                         </br>
                         <p style="text-align:left;">
