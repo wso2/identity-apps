@@ -339,7 +339,7 @@
 
                         </div>
                         </form>
-                        <% if(supportEmail.equals("asgardeo-help@wso2.com")) { %>
+                        <% if(StringUtils.isBlank(supportEmail)) { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></div>
                         <% } else { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>
