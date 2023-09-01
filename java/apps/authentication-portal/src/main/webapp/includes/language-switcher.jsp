@@ -62,11 +62,25 @@
             let hostnameTokens = window.location.hostname.split('.');
             if (hostnameTokens.length > 1) {
                 domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
+            } else if (hostnameTokens.length == 1) {
+                domain = hostnameTokens[0];
             }
         } catch(e) {
             // Couldn't parse the hostname.
         }
         return domain;
+    }
+
+    /**
+     * Look for a specific browser cookie.
+     * @param name - Name of the cookie to find.
+     */
+    function getCookie(name) {
+        var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+
+        if (match) {
+            return match[2];
+        }
     }
 
     /**
