@@ -69,6 +69,7 @@ import {
 import { getUsernameConfiguration } from "../../../../features/users/utils/user-management-utils";
 import { useValidationConfigData } from "../../../../features/validation/api";
 import { ValidationFormInterface } from "../../../../features/validation/models";
+import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { AdminAccountTypes, CONSUMER_USERSTORE } from "../../users/constants";
 import { getUserStores, sendInvite } from "../api";
@@ -1248,7 +1249,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (!wizardState) {
             return null;
         }
-        if (wizardState[ WizardStepsFormTypes.USER_TYPE ]?.userType === UserAccountTypes.ADMINISTRATOR) {
+        if (wizardState[ WizardStepsFormTypes.USER_TYPE ]?.userType === administratorConfig.adminRoleName) {
             return adminTypeSelection === AdminAccountTypes.INTERNAL
                 ? t("extensions:manage.features.user.addUser.add")
                 : t("extensions:manage.features.user.addUser.invite");
@@ -1318,7 +1319,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <Modal.Header className="wizard-header">
                     { defaultUserTypeSelection === UserAccountTypes.USER &&
                         t("extensions:manage.users.wizard.addUser.title") }
-                    { defaultUserTypeSelection === UserAccountTypes.ADMINISTRATOR &&
+                    { defaultUserTypeSelection === administratorConfig.adminRoleName &&
                         (
                             adminTypeSelection === AdminAccountTypes.INTERNAL
                                 ? t("extensions:manage.users.wizard.addAdmin.internal.title")
@@ -1338,7 +1339,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 { showSteps() &&
                     (
                         <Modal.Content className="steps-container">
-                            { defaultUserTypeSelection === UserAccountTypes.ADMINISTRATOR
+                            { defaultUserTypeSelection === administratorConfig.adminRoleName
                                 ? (
                                     <Heading className={ "invite-sub-heading" } as="h6">
                                         { (

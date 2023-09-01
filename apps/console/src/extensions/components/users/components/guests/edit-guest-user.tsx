@@ -35,7 +35,7 @@ import { UserProfile } from "../../../../../features/users/components/user-profi
 import { UserSessions } from "../../../../../features/users/components/user-sessions";
 import { UserManagementConstants } from "../../../../../features/users/constants/user-management-constants";
 import { UserManagementUtils } from "../../../../../features/users/utils/user-management-utils";
-
+import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { hiddenPermissions } from "../../../roles/meta";
 import { AdminAccountTypes } from "../../constants";
@@ -113,7 +113,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
      * Handles the visibility of the tab panes.
      */
     useEffect(() => {
-        if(realmConfigs?.adminUser && user.userName) {
+        if((!administratorConfig.enableAdminInvite || realmConfigs?.adminUser) && user.userName) {
             setIsProfileTabsLoading(false);
         }
     }, [ user, realmConfigs ]);

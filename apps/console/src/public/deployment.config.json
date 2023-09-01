@@ -217,6 +217,16 @@
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
+            "administrators": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "apiResources": {
                 "disabledFeatures": [],
                 "enabled": false,

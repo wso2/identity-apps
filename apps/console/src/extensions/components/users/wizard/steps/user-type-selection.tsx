@@ -23,6 +23,7 @@ import { Card, Dimmer } from "semantic-ui-react";
 import ConsumerUserImage from "../../../../assets/illustrations/consumer-user.svg";
 import GuestUserImage from "../../../../assets/illustrations/guest-user.svg";
 import WorkUserImage from "../../../../assets/illustrations/work-user.svg";
+import { administratorConfig } from "../../../../configs/administrator";
 import { UserAccountTypes } from "../../constants";
 
 interface UserTypeSelectionProps {
@@ -35,7 +36,6 @@ interface UserTypeSelectionProps {
 /**
  * User type selection component.
  *
- * @param props
  */
 export const UserTypeSelection: FunctionComponent<UserTypeSelectionProps> = (
     props: UserTypeSelectionProps
@@ -54,8 +54,8 @@ export const UserTypeSelection: FunctionComponent<UserTypeSelectionProps> = (
     /**
      * Handles the user type selection.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - User Type.
+     * @param e - Click event.
+     * @param id - User Type.
      */
     const handleUserTypeSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         setUserTypeSelection(id);
@@ -117,7 +117,7 @@ export const UserTypeSelection: FunctionComponent<UserTypeSelectionProps> = (
                     link={ false }
                     className={
                         `user-selection-card ${
-                            userTypeSelection === UserAccountTypes.ADMINISTRATOR
+                            userTypeSelection === administratorConfig.adminRoleName
                                 ? "selected underlined-selection"
                                 : ""
                         }`
@@ -125,7 +125,7 @@ export const UserTypeSelection: FunctionComponent<UserTypeSelectionProps> = (
                     size="mini"
                     centered
                     id="Collaborator"
-                    selected={ userTypeSelection === UserAccountTypes.ADMINISTRATOR }
+                    selected={ userTypeSelection === administratorConfig.adminRoleName }
                     inline
                     onClick={ handleUserTypeSelection }
                 >

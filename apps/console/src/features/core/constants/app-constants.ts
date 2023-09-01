@@ -335,6 +335,7 @@ export class AppConstants {
             [ "ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles` ],
             [ "ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles/:id` ],
             [ "ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators` ],
+            [ "ADMINISTRATOR_EDIT", `${AppConstants.getAdminViewBasePath()}/administrators/:id` ],
             [ "MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account` ],
             [ "MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account` ],
             [ "VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration` ],

@@ -1,15 +1,24 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, { 
     RequestConfigInterface,
     RequestErrorInterface,
@@ -23,20 +32,23 @@ import { OrganizationInterface } from "../../users/models/organization";
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
+    httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Hook to get enterprise login enable config.
  *
- * @param {string} organization - Organization name.
- * @param {boolean} revalidateIfStale - Revalidate if stale.
+ * @param organization - Organization name.
+ * @param revalidateIfStale - Revalidate if stale.
  *
- * @returns {RequestResultInterface<Data, Error>}
+ * @returns the organization config.
  */
 export const useOrganizationConfig =
     <Data = OrganizationInterface, Error = RequestErrorInterface> 
-    (organization: string, requestOptions: SWRConfig<Data, Error>): RequestResultInterface<Data, Error> => {
-
+    (
+        organization: string, requestOptions: SWRConfig<Data, Error>,
+        shouldFetch: boolean = true
+    ) : RequestResultInterface<Data, Error> => {
         const requestConfig: RequestConfigInterface = {
             headers: {
                 "Content-Type": "application/json"
@@ -45,7 +57,8 @@ export const useOrganizationConfig =
             url: store.getState().config.endpoints.organizationEndpoint.replace("{organization}", organization)
         };
 
-        const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, requestOptions);
+        const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+            shouldFetch ? requestConfig : null, requestOptions);
 
         return {
             data,
@@ -59,9 +72,9 @@ export const useOrganizationConfig =
 /**
  * Hook to update enterprise login enable config.
  *
- * @param {OrganizationInterface} isEnterpriseLoginEnabled - Enterpriselogin is enabled/disabled.
+ * @param isEnterpriseLoginEnabled - Enterpriselogin is enabled/disabled.
  * 
- * @return {Promise<any>} A promise containing the response.
+ * @returns a promise containing the response.
  */
 export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationInterface): Promise<any> => {
     
@@ -76,9 +89,9 @@ export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationI
         url: store.getState().config.endpoints.organizationPatchEndpoint
     };
 
-    return httpClient(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error) => {
+    }).catch((error: AxiosError) => {
         return Promise.reject(error);
     });
 };

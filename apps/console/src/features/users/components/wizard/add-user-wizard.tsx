@@ -32,6 +32,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { UserAccountTypes } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
@@ -59,6 +60,7 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
     updateList: () => void;
     rolesList: any;
     emailVerificationEnabled: boolean;
+    isAdminUser?: boolean;
 }
 
 /**
@@ -92,6 +94,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         closeWizard,
         currentStep,
         emailVerificationEnabled,
+        isAdminUser,
         [ "data-testid" ]: testId
     } = props;
 
@@ -198,7 +201,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
-    const getGroupListForDomain = (domain: string) => {
+    const getGroupListForDomain = (domain: string) => {        
         getGroupList(domain)
             .then((response: AxiosResponse) => {
                 setGroupsList(response.data.Resources);
@@ -262,7 +265,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
                 break;
             case 1:
-                setSubmitGroupList();
+                isAdminUser
+                    ? setFinishSubmit()
+                    : setSubmitGroupList();
 
                 break;
             case 2:
@@ -468,8 +473,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 }
             );
 
-        setIsSubmitting(true);
-
+        setIsSubmitting(true);                
         addUser(userDetails)
             .then((response: AxiosResponse) => {
                 if (response.status === 202) {
@@ -496,7 +500,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
                         assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
                     }
-                    history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
+
+                    if (isAdminUser) {
+                        assignUserRole(response.data, userInfo.roles, userInfo.groups);
+                        history.push(AppConstants.getPaths().get("ADMINISTRATOR_EDIT")
+                            .replace(":id", response.data.id));
+                    } else {
+                        history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
+                    }
+
                 }
 
                 closeWizard();
@@ -555,7 +567,26 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState({ ...wizardState, [ formType ]: values });
+        let processedValues: any = values;        
+
+        if (isAdminUser) {
+            // Add admin group and role names to the user.
+            processedValues = {
+                ...processedValues,
+                groups: [
+                    {
+                        displayName: UserAccountTypes.ADMIN
+                    }
+                ],
+                roles: [
+                    {
+                        displayName: UserAccountTypes.ADMIN
+                    }
+                ]
+            };
+        }
+
+        setWizardState({ ...wizardState, [ formType ]: processedValues });
     };
 
     /**
@@ -583,7 +614,31 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const handleWizardFormFinish = (user: AddUserWizardStateInterface) => {
-        addUserBasic(user);
+        let processedUser: AddUserWizardStateInterface = user;
+        
+        if (isAdminUser) {
+            // If the user is an admin user, skip the group and role selection steps.
+            // Find admin group and add it to the group list.
+            const adminGroup: RolesInterface = initialGroupList.find(
+                (group: RolesInterface) => group.displayName === UserAccountTypes.ADMIN);
+            const adminRole: RolesInterface = initialRoleList.find(
+                (role: RolesInterface) => role.displayName === UserAccountTypes.ADMIN) as RolesInterface;
+            const everyoneRole: RolesInterface = initialRoleList.find(
+                (role: RolesInterface) => role.displayName === "everyone") as RolesInterface;
+
+            
+            if (!adminGroup || !adminRole) {
+                return;
+            }
+
+            processedUser = {
+                ...processedUser,
+                groups: [ adminGroup ],
+                roles: [ adminRole, everyoneRole ]
+            };
+        }
+
+        addUserBasic(processedUser);
     };
 
     /**
@@ -689,9 +744,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     ];
 
-    const STEPS: WizardStepInterface[] = OrganizationUtils.isCurrentOrganizationRoot()
-        ? [ ...ALL_STEPS ]
-        : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
+    const STEPS: WizardStepInterface[] = isAdminUser 
+        ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ]
+        : OrganizationUtils.isCurrentOrganizationRoot()
+            ? [ ...ALL_STEPS ]
+            : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
 
 
     return (
@@ -787,5 +844,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
  */
 AddUserWizard.defaultProps = {
     currentStep: 0,
-    emailVerificationEnabled: false
+    emailVerificationEnabled: false,
+    isAdminUser: false
 };
