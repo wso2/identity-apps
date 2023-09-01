@@ -410,8 +410,7 @@
         </div>
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
-        <div class="field m-0">
-            <% if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) { %>
+            <div class="field m-0">
                 <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
                 <div class="ui fluid left icon input">
                 <input
@@ -423,23 +422,8 @@
                     data-testid="login-page-username-input"
                     aria-required="true"
                 >
-                <i aria-hidden="true" class="user outline icon"></i>
+                <i aria-hidden="true" class="user fill icon"></i>
                 <input id="username" name="username" type="hidden" value="<%=username%>">
-            <% } else { %>
-                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
-                <div class="ui fluid left icon input">
-                <input
-                    type="text"
-                    id="usernameUserInput"
-                    value=""
-                    name="usernameUserInput"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.email")%>"
-                    data-testid="login-page-username-input"
-                    aria-required="true"
-                >
-                <i aria-hidden="true" class="envelope outline icon"></i>
-                <input id="username" name="username" type="hidden" value="<%=username%>">
-            <% } %>
             </div>
         </div>
         <div class="mt-1" id="usernameError" style="display: none;">
