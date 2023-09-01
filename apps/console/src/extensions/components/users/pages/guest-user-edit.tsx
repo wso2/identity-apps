@@ -51,10 +51,11 @@ import {
 import { getUserDetails, updateUserInfo } from "../../../../features/users/api/users";
 import { UserManagementConstants } from "../../../../features/users/constants/user-management-constants";
 import { UserManagementUtils } from "../../../../features/users/utils/user-management-utils";
+import { administratorConfig } from "../../../configs/administrator";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { UserManagementUtils as UserUtils } from "../../users/utils";
 import { EditGuestUser } from "../components";
-import { UserAccountTypes, UsersConstants } from "../constants";
+import { UsersConstants } from "../constants";
 
 /**
  * Guest User Edit page.
@@ -300,8 +301,8 @@ const GuestUserEditPage = (): ReactElement => {
             return description;
         }
 
-        if (resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR) === description) {
-            return UserAccountTypes.ADMINISTRATOR;
+        if (resolveUserDisplayName(user, null, administratorConfig.adminRoleName) === description) {
+            return administratorConfig.adminRoleName;
         }
 
         return description;
@@ -351,7 +352,7 @@ const GuestUserEditPage = (): ReactElement => {
                                 {
                                     isDisplayNameEnabled
                                         ? user.displayName
-                                        : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
+                                        : resolveUserDisplayName(user, null, administratorConfig.adminRoleName)
                                 }
                             </>
                         </>
@@ -361,7 +362,7 @@ const GuestUserEditPage = (): ReactElement => {
                             {
                                 isDisplayNameEnabled
                                     ? user.displayName
-                                    : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
+                                    : resolveUserDisplayName(user, null, administratorConfig.adminRoleName)
                             }
                         </>
                     )

@@ -219,7 +219,7 @@
         "features": {
             "administrators": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [],
                     "read": [],

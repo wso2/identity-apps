@@ -63,11 +63,12 @@ import {
 import { getProfileSchemas, getUserDetails, updateUserInfo } from "../../../../features/users/api";
 import { UserManagementConstants } from "../../../../features/users/constants";
 import { UserManagementUtils } from "../../../../features/users/utils";
+import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { UserManagementUtils as UserUtils } from "../../users/utils";
 import { EditConsumerUser } from "../components/consumers";
-import { UserAccountTypes, UsersConstants } from "../constants";
+import { UsersConstants } from "../constants";
 
 /**
  * Customer user Edit page.
@@ -348,7 +349,7 @@ const ConsumerUserEditPage = (): ReactElement => {
             return description;
         }
 
-        if (resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR) === description) {
+        if (resolveUserDisplayName(user, null, administratorConfig.adminRoleName) === description) {
             return null;
         }
 
@@ -399,7 +400,7 @@ const ConsumerUserEditPage = (): ReactElement => {
                                 {
                                     isDisplayNameEnabled
                                         ? user.displayName
-                                        : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
+                                        : resolveUserDisplayName(user, null, administratorConfig.adminRoleName)
                                 }
                             </>
                         </>
@@ -409,7 +410,7 @@ const ConsumerUserEditPage = (): ReactElement => {
                             {
                                 isDisplayNameEnabled
                                     ? user.displayName
-                                    : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
+                                    : resolveUserDisplayName(user, null, administratorConfig.adminRoleName)
                             }
                         </>
                     )

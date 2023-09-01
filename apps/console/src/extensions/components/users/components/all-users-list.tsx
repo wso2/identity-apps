@@ -46,6 +46,7 @@ import {
 import { RealmConfigInterface } from "../../../../features/server-configurations";
 import { UserManagementConstants } from "../../../../features/users/constants";
 import { UserBasicInterface, UserListInterface } from "../../../../features/users/models";
+import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { CONSUMER_USERSTORE } from "../../users/constants";
 import { UserAccountTypes, UsersConstants } from "../constants";
@@ -291,7 +292,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                     if (resolveUserstore(user.userName) === CONSUMER_USERSTORE) {
                         return UserAccountTypes.USER;
                     } else {
-                        return UserAccountTypes.ADMINISTRATOR;
+                        return administratorConfig.adminRoleName;
                     }
                 },
                 title: (

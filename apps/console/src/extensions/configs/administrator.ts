@@ -18,6 +18,7 @@
 
 import { AdministratorConfig } from "./models/administrator";
 
-export const adminitratorConfig: AdministratorConfig = {
+export const administratorConfig: AdministratorConfig = {
+    adminRoleName: "admin",
     enableAdminInvite: false
 };
