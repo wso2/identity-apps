@@ -425,8 +425,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * This function handles adding the user.
      */
     const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
-        console.log("userInfo", userInfo);
-        
         let userName: string = "";
 
         userInfo.domain !== "primary"
