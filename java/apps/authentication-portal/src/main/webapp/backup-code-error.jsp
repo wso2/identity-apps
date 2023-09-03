@@ -72,7 +72,7 @@
     layoutData.put("isErrorResponse", true);
 %>
 
-<html>
+<html lang="en-US">
     <head>
         <%-- header --%>
         <%
@@ -157,8 +157,8 @@
                                     <jsp:param name="error" value="<%=actualError%>" />
                                 </jsp:include>
                         <div class="ui divider hidden"></div>
-                        <% } %>
                     </div>
+                    <% } %>
                 <% } else { %>
                     <h2 class="ui header portal-logo-tagline slogan-message">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.fail")%>

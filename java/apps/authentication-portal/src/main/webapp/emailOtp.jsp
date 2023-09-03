@@ -208,12 +208,12 @@
 
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
-                                <a class="ui button secondary" tabindex="0"
+                                <input type="button" name="authenticate" id="authenticate"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                class="ui primary fluid button"/>
+                                <a class="ui button fluid secondary mt-2" tabindex="0"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
-                                <input type="button" name="authenticate" id="authenticate"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                    class="ui primary button"/>
                             </div>
 
                             <div class="ui divider hidden"></div>

@@ -127,7 +127,7 @@
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <button type="submit" class="ui primary large button">
+                            <button type="submit" class="ui primary large fluid button">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
                             </button>
                         </div>
