@@ -67,17 +67,20 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link.content" )%>
                     </span>
                 </p>
-                <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.you.still.havent.received.please.write.to")%>
-                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
-                    data-testid="magic-link-resend-support-email"
-                    target="_blank">
-                    <span class="orange-text-color button">
-                        <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
-                    </span>
-                    </a>
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
-                </p>
+
+                <% if (StringUtils.isNotBlank(supportEmail)) { %>
+                    <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.you.still.havent.received.please.write.to")%>
+                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
+                        data-testid="magic-link-resend-support-email"
+                        target="_blank">
+                        <span class="orange-text-color button">
+                            <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                        </span>
+                        </a>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
+                    </p>
+                <% } %>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">

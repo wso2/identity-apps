@@ -129,7 +129,7 @@
 
                             <div class="align-right buttons">
                                 <input type="button" name="update" id="update" value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "update")%>"
-                                        class="ui primary button"/>
+                                        class="ui primary fluid button"/>
                             </div>
                         </form>
                     </div>

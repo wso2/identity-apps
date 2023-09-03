@@ -97,7 +97,7 @@
                             <button
                                     type="submit"
                                     onclick="submitCredentials(event)"
-                                    class="ui primary large button"
+                                    class="ui primary large fluid button"
                                     role="button">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
                             </button>

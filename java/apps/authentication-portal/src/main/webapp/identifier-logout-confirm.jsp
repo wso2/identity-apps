@@ -73,10 +73,10 @@
                     </div>
 
                     <div class="buttons right aligned">
-                        <input type="button" class="ui primary large button" id="continue" name="continue"
+                        <input type="button" class="ui primary large fluid button" id="continue" name="continue"
                             onclick="javascript: continueFlow(); return false;"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%>" />
-                        <input class="ui primary button" type="reset"
+                        <input class="ui secondary fluid button mt-2" type="reset"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>"
                             onclick="javascript: resetFlow(); return false;" />
                         <input type="hidden" name="sessionDataKey"
