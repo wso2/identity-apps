@@ -203,15 +203,7 @@
                                         onclick="return requestTOTPToken();">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
                                         </a>
-                                    <% } else {
-                                        String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
-                                    %>
-                                        <a class="ui button secondary" id="goBackLink"
-                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
-                                        </a>
-                                    <% } } %>
+                                    <% } %>
                                 </div>
                                 <div class="six wide column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
                                     <input type="submit" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>" class="ui primary button">
@@ -222,9 +214,9 @@
                         <div class="ui divider hidden"></div>
                         <%
                             String multiOptionURI = request.getParameter("multiOptionURI");
-                            if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                            if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
                         %>
-                            <a class="ui button secondary" id="goBackLink"
+                            <a class="ui primary basic button link-button" id="goBackLink"
                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                             </a>

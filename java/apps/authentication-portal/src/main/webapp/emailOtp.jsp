@@ -17,6 +17,7 @@
 --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="java.io.File" %>
@@ -230,6 +231,18 @@
                         %>
                     </form>
                 </div>
+                <div class="ui divider hidden"></div>
+                <%
+                    String multiOptionURI = request.getParameter("multiOptionURI");
+                    if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                %>
+                    <a class="ui primary basic button link-button" id="goBackLink"
+                    href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                    </a>
+                <%
+                    }
+                %>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
