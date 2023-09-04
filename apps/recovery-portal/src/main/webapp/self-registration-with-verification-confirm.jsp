@@ -112,6 +112,7 @@
             contentValueInJson.put("username", username);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
             contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
+            SignatureUtil.init();
             if (StringUtils.isNotBlank(cookieDomain)) {
                 contentValueInJson.put("domain", cookieDomain);
             }
