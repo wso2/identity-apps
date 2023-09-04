@@ -26,7 +26,7 @@
     }
 
     // Common data for the layout file.
-    layoutData.put("BASE_URL", "includes/layouts/centered");
+    layoutData.put("BASE_URL", "includes/layouts/" + layout);
 
     if (brandingPreference != null) {
         // First, check if Branding is enabled.

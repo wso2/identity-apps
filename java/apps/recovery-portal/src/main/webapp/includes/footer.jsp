@@ -1,10 +1,10 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -112,13 +112,8 @@
         * Ex: If dev.accounts.asgardeo.io is parsed, `asgardeo.io` will be set as the domain.
         */
         try {
-            var hostnameTokens = window.location.hostname.split('.');
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
-            } else if (hostnameTokens.length == 1) {
-                domain = hostnameTokens[0];
-            }
+            var url = new URL(window.location);
+            domain = url.hostname;
         } catch(e) {
             // Couldn't parse the hostname.
         }
