@@ -56,7 +56,7 @@
         let domain = undefined;
         /**
          * Extract the domain from the hostname.
-         * Ex: If dev.accounts.asgardeo.io is parsed, `asgardeo.io` will be set as the domain.
+         * Ex: If env.app.example.io is parsed, `example.io` will be set as the domain.
          */
         try {
             let hostnameTokens = window.location.hostname.split('.');

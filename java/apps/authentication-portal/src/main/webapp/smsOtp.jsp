@@ -35,7 +35,7 @@
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
     
-    // TODO: Use this once "com.wso2.identity.asgardeo.auth.smsotp.util.AuthenticatorUtils" is moved to IS
+    // TODO: Use this once "org.wso2.identity.local.auth.smsotp.util.AuthenticatorUtils" is available to IS
     // int otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
     int otpLength = 6;
 

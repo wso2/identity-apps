@@ -408,7 +408,7 @@
                 StringUtils.equals("true", promptAccountLinking)) {
             %>
                     <div class="theme-icon inline auto transparent product-logo portal-logo">
-                        <img src="libs/themes/default/assets/images/illustrations/login-illustration.svg" alt="Asgardeo Logo" />
+                        <img src="libs/themes/default/assets/images/illustrations/login-illustration.svg" alt="Logo" />
                     </div>
             <% } %>
             <%-- product-title --%>
