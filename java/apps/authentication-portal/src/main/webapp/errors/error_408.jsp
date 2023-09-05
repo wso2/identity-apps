@@ -87,16 +87,13 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <div class="ui orange attached segment mt-3">
-                    <h3 class="ui header text-center slogan-message mt-3 mb-2">
-                        <%=Encode.forHtml(stat)%>
-                    </h3>
-                </div>
+            <div class="ui orange attached segment mt-3">
+                <h3 class="ui header text-center slogan-message mt-3 mb-2">
+                    <%=Encode.forHtml(stat)%>
+                </h3>
+            </div>
 
-                <%
+            <%
                 File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                 if (trackingRefFile.exists()) {
             %>
@@ -109,33 +106,10 @@
                     </p>
                     <div class="ui divider hidden"></div>
 
-                  
-                        <jsp:include page="../extensions/error-tracking-reference.jsp"/>
-                        <div class="ui divider hidden"></div>                
-               
-
-                </div>
-                <% } %>
-            <% } else { %>
-                <h2 class="ui header portal-logo-tagline slogan-message">
-                    <%=Encode.forHtml(stat)%>
-                </h2>
-
-                <%
-                File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                if (trackingRefFile.exists()) {
-            %>
-                <p class="portal-tagline-description">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                    </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                </p>
-
-              
+                
                     <jsp:include page="../extensions/error-tracking-reference.jsp"/>
-                <% } %>
-
+                    <div class="ui divider hidden"></div>                
+                </div>
             <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
@@ -148,12 +122,6 @@
             <% } else { %>
                 <jsp:include page="../includes/product-footer.jsp"/>
             <% } %>
-        </layout:component>
-        <layout:component componentName="ResponseImage">
-            <%-- illustration--%>
-            <div class="thank-you-img">
-                <img class="ui fluid image" src="libs/themes/default/assets/images/something-went-wrong.svg">
-            </div>
         </layout:component>
     </layout:main>
 
