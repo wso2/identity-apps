@@ -175,7 +175,7 @@
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                 "allow")%>"/>
                         </div>
-                        <div class="mt-3 align-center">
+                        <div class="mt-2 align-center">
                             <input class="ui fluid large button secondary" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"
                                 onclick="javascript: deny(); return false;"/>
