@@ -290,12 +290,6 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="ResponseImage">
-            <%-- illustration--%>
-            <div class="thank-you-img">
-                <img src="libs/themes/default/assets/images/something-went-wrong.svg">
-            </div>
-        </layout:component>
     </layout:main>
 
     <%-- footer --%>
