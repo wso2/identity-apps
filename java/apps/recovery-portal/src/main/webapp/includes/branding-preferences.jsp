@@ -43,7 +43,7 @@
     String supportEmail = "";
     String logoURL = "";
     String logoAlt = "";
-    String faviconURL = "";
+    String faviconURL = "libs/themes/asgardio/assets/images/branding/favicon.ico";
     String privacyPolicyURL = "/authenticationendpoint/privacy_policy.do";
     String termsOfUseURL = "";
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
@@ -56,6 +56,66 @@
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
     String productURL = "https://wso2.com/identity-server";
+    String productLogoURL = "libs/themes/asgardio/assets/images/branding/logo.svg";
+    String productLogoAlt = "WSO2 Identity Server Logo";
+    String productWhiteLogoURL = "libs/themes/asgardio/assets/images/branding/logo-white.svg";
+    String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+
+    // Preferences response object pointer keys.
+    String PREFERENCE_KEY = "preference";
+    String ACTIVE_THEME_KEY = "activeTheme";
+    String COLORS_KEY = "colors";
+    String THEME_KEY = "theme";
+    String STYLESHEETS_KEY = "stylesheets";
+    String ACCOUNT_APP_STYLESHEET_KEY = "accountApp";
+    String ORG_DETAILS_KEY = "organizationDetails";
+    String COPYRIGHT_TEXT_KEY = "copyrightText";
+    String SITE_TITLE_KEY = "siteTitle";
+    String SUPPORT_EMAIL_KEY = "supportEmail";
+    String IMAGES_KEY = "images";
+    String IMAGE_URL_KEY = "imgURL";
+    String ALT_TEXT_KEY = "altText";
+    String LOGO_KEY = "logo";
+    String FAVICON_KEY = "favicon";
+    String URLS_KEY = "urls";
+    String PRIVACY_POLICY_URL_KEY = "privacyPolicyURL";
+    String TERMS_OF_USE_URL_KEY = "termsOfUseURL";
+    String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
+    String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
+    String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
+    String CONFIGS_KEY = "configs";
+    String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
+    String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
+    String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
+    String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
+
+    // Additional keys to override the fallback values.
+    String PRODUCT_NAME_KEY = "productName";
+    String PRODUCT_URL_KEY = "productURL";
+    String PRODUCT_LOGO_URL_KEY = "productLogoURL";
+    String PRODUCT_LOGO_ALT_KEY = "productLogoAlt";
+    String PRODUCT_WHITE_LOGO_URL_KEY = "productWhiteLogoURL";
+    String PRODUCT_WHITE_LOGO_ALT_KEY = "productWhiteLogoAlt";
+
+
+    File fallbackValuesFile = new File(getServletContext().getRealPath("extensions/branding-fallbacks.jsp"));
+    if (fallbackValuesFile.exists()) {
+%>
+
+        <jsp:include page="extensions/branding-fallbacks.jsp"/>
+
+<%      
+    }
+
+    Map<String, Object> overrideFallbackValues = request.getAttribute("overrideFallbackValues");
+
+    if (overrideFallbackValues != null) {
+%>
+
+        <jsp:directive.include file="branding-fallbacks-overrider.jsp"/>
+
+<%        
+    }
 
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
@@ -75,35 +135,8 @@
         JSONObject brandingPreferenceResponse = brandingPreferenceRetrievalClient.getPreference(tenantRequestingPreferences,
                 preferenceResourceType, applicationRequestingPreferences, DEFAULT_RESOURCE_LOCALE);
 
-        // Preferences response object pointer keys.
-        String PREFERENCE_KEY = "preference";
-        String ACTIVE_THEME_KEY = "activeTheme";
-        String COLORS_KEY = "colors";
-        String THEME_KEY = "theme";
-        String STYLESHEETS_KEY = "stylesheets";
-        String ACCOUNT_APP_STYLESHEET_KEY = "accountApp";
-        String ORG_DETAILS_KEY = "organizationDetails";
-        String COPYRIGHT_TEXT_KEY = "copyrightText";
-        String SITE_TITLE_KEY = "siteTitle";
-        String SUPPORT_EMAIL_KEY = "supportEmail";
-        String IMAGES_KEY = "images";
-        String IMAGE_URL_KEY = "imgURL";
-        String ALT_TEXT_KEY = "altText";
-        String LOGO_KEY = "logo";
-        String FAVICON_KEY = "favicon";
-        String URLS_KEY = "urls";
-        String PRIVACY_POLICY_URL_KEY = "privacyPolicyURL";
-        String TERMS_OF_USE_URL_KEY = "termsOfUseURL";
-        String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
-        String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
-        String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
-        String CONFIGS_KEY = "configs";
-        String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
-        String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
-        String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
-        String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
-
-        if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
+        if (brandingPreferenceResponse.has(PREFERENCE_KEY) 
+            && brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName) != null) {) {
             brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
         }
 
@@ -287,26 +320,22 @@
         // Set fallbacks.
         if (StringUtils.isEmpty(logoURL)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = productLogoURL;
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoURL = "libs/themes/default/assets/images/branding/logo-white.svg";
+                logoURL = productWhiteLogoURL;
             } else {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = productLogoURL;
             }
         }
 
         if (StringUtils.isEmpty(logoAlt)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = productLogoAlt;
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoAlt = "WSO2 Identity Server Logo White Variation";
+                logoAlt = productWhiteLogoAlt;
             } else {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = productLogoAlt;
             }
-        }
-
-        if (StringUtils.isEmpty(faviconURL)) {
-            faviconURL = "libs/themes/default/assets/images/branding/favicon.ico";
         }
     }
 %>
