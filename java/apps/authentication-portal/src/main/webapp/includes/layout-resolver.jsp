@@ -26,8 +26,7 @@
     }
 
     // Common data for the layout file.
-    // temporarily commented during unification
-    // layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences));
+    layoutData.put("BASE_URL", "includes/layouts/" + layout);
 
     if (brandingPreference != null) {
         // First, check if Branding is enabled.
@@ -66,21 +65,25 @@
                         if (StringUtils.equals(temp, "custom")) {
                             String tempLayout = "";
                             String tempLayoutFileRelativePath = "";
+                            String tempBaseURL = "";
 
                             // App-wise and tenant-wise custom layout resolving logic.
                             if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
                                 tempLayout = temp + "-" + tenantRequestingPreferences + "-" + applicationRequestingPreferences;
                                 tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/body.ser";
+                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences;
                             }
 
                             if (config.getServletContext().getResource(tempLayoutFileRelativePath) == null || StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
                                 tempLayout = temp + "-" + tenantRequestingPreferences;
                                 tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
+                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences);
                             }
 
                             if (config.getServletContext().getResource(tempLayoutFileRelativePath) != null) {
                                 layout = tempLayout;
                                 layoutFileRelativePath = tempLayoutFileRelativePath;
+                                layoutData.put("BASE_URL", tempBaseURL);
                             }
                         } else {
                             // Pre-added layouts
@@ -88,6 +91,7 @@
                             if (config.getServletContext().getResource(layoutFilePath) != null) {
                                 layout = temp;
                                 layoutFileRelativePath = layoutFilePath;
+                                layoutData.put("BASE_URL", "includes/layouts/" + temp);
 
                                 // Get the related data to specific layouts.
                                 if (brandingPreference.getJSONObject(LAYOUT_KEY).has(LAYOUT_ATTRIBUTE_SIDE_IMAGE_KEY)) {
