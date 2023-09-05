@@ -78,11 +78,11 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
-                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="username-recovery-notify-page-header">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username.recovery.information.sent.to.your.email")%>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password.recovery.information.sent.to.the.email.registered.with.account")%>
                     <br><br>
                     <%
                         if(StringUtils.isNotBlank(callback)) {
@@ -94,10 +94,10 @@
                         </a>
                     <% } %>
                 </p>
-                <p class="ui portal-tagline-description" data-testid="username-recovery-support-message">
+                <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
                     <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
-                    data-testid="username-recovery-resend-support-email"
+                    data-testid="password-recovery-resend-support-email"
                     target="_blank">
                     <span class="orange-text-color button">
                         <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
