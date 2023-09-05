@@ -28,7 +28,7 @@
 <html>
 
 <head>
-    <title>Identity Server by WSO2</title>
+    <title><%= productName %></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
