@@ -88,13 +88,6 @@
                         <div class="ui divider hidden"></div>
                         <jsp:include page="../extensions/error-tracking-reference.jsp"/>
                     <%
-                        } else if (config.getServletContext().getResource("includes/error-tracking-reference.jsp") != null) {
-                    %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                        <jsp:include page="../includes/error-tracking-reference.jsp"/>
-                    <%
                         }
                     %>
                     <div class="ui divider hidden"></div>
