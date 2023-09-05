@@ -98,7 +98,7 @@
     String PRODUCT_WHITE_LOGO_URL_KEY = "productWhiteLogoURL";
     String PRODUCT_WHITE_LOGO_ALT_KEY = "productWhiteLogoAlt";
 
-
+    // Load the branding fallback override values file if it exists.
     if (config.getServletContext().getResource("extensions/branding-fallbacks.jsp") != null) {
 %>
 
@@ -107,8 +107,15 @@
 <%      
     }
 
+    /*
+        The override values are set within the request object using a Map object.
+        This approach is necessary because 'branding-fallbacks.jsp' may not always exist.
+        Consequently, a directive include cannot be employed; rather, an action include must be utilized.
+        It ensures that the override values are accessible to this JSP page through the request object.
+    */
     Map<String, Object> overrideFallbackValues = (Map<String, Object>) request.getAttribute("overrideFallbackValues");
 
+    // Override the branding fallback values
     if (overrideFallbackValues != null) {
         // Configs
         if (overrideFallbackValues.containsKey(IS_BRANDING_ENABLED_KEY)) {
