@@ -77,7 +77,6 @@
     String BUTTONS_PRIMARY_KEY = "primary";
     String BUTTONS_SECONDARY_KEY = "secondary";
     String BUTTONS_EXTERNAL_CONNECTION_KEY = "externalConnection";
-    String COLORS_KEY = "colors";
     String COLORS_PRIMARY_KEY = "primary";
     String COLORS_SECONDARY_KEY = "secondary";
     String COLORS_BACKGROUND_KEY = "background";
