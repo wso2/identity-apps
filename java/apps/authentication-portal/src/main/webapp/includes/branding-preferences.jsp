@@ -40,7 +40,7 @@
     String overrideStylesheet = "";
     String copyrightText = "";
     String siteTitle = "";
-    String supportEmail = "";
+    String supportEmail = "contact@wso2.com";
     String logoURL = "";
     String logoAlt = "";
     String faviconURL = "";
