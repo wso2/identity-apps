@@ -66,7 +66,7 @@
 
 <div>
     <h3 class="ui header">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "we.found.account.with.email")%>
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "we.found.account.with.email").replace("{productName}",productName)%>
     </h3>
 </div>
 
@@ -82,14 +82,14 @@
                         <b>${input.accountType}</b> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.the.first.time")%>
                         </p>
 
-                        <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.already.have.account")%>
+                        <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.already.have.account").replace("{productName}",productName)%>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "different option")%>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "that.uses.email.address")%> <b>${input.email}</b>.
                         </p>
 
                         <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "click")%>
                             <b><%=AuthenticationEndpointUtil.i18n(resourceBundle, "next")%></b>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "to.link.account.to")%>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "to.link.account.to").replace("{productName}",productName)%>
                             <c:if test="${input.accountType ne 'Google'}">
                                 <b>${input.userName}</b>
                             </c:if>
