@@ -47,7 +47,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
     private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";

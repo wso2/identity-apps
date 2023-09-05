@@ -22,7 +22,12 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String errorCode = StringUtils.EMPTY;
@@ -92,7 +97,7 @@
                             <button
                                     type="submit"
                                     onclick="submitCredentials(event)"
-                                    class="ui primary large button"
+                                    class="ui primary large fluid button"
                                     role="button">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
                             </button>

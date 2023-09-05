@@ -25,7 +25,9 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String idp = request.getParameter("idp");
@@ -125,7 +127,7 @@
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <button type="submit" class="ui primary large button">
+                            <button type="submit" class="ui primary large fluid button">
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
                             </button>
                         </div>

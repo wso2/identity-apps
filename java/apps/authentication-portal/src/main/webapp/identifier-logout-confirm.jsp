@@ -22,7 +22,9 @@
 
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
-<jsp:directive.include file="includes/layout-resolver.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%-- Data for the layout from the page --%>
 <%
@@ -71,10 +73,10 @@
                     </div>
 
                     <div class="buttons right aligned">
-                        <input type="button" class="ui primary large button" id="continue" name="continue"
+                        <input type="button" class="ui primary large fluid button" id="continue" name="continue"
                             onclick="javascript: continueFlow(); return false;"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%>" />
-                        <input class="ui primary button" type="reset"
+                        <input class="ui secondary fluid button mt-2" type="reset"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>"
                             onclick="javascript: resetFlow(); return false;" />
                         <input type="hidden" name="sessionDataKey"

@@ -27,7 +27,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%@include file="includes/localize.jsp" %>
 
@@ -66,85 +66,48 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <% if (request.getParameter("app_name") == null) {  %>
-                    <div class="ui orange attached segment mt-3">
-                            <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
-                            </h3>
-                            <p class="portal-tagline-description">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                    "something.went.wrong.during.authentication")%>
-                            </p>
-                            <div class="ui divider hidden"></div>
-                            <div class="ui divider hidden"></div>
-                    </div>
-                    <div class="ui bottom attached warning message">
-                        <p  class="text-left mt-0">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                        </p>
-
-                        <%
-                            File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                            if (trackingRefFile.exists()) {
-                        %>
-                            <div class="ui divider hidden"></div>
-                            <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                            <div class="ui divider hidden"></div>
-                        <% } %>
-                        
-                    </div>
-                <% } else { %>
-                    <div class="ui green segment mt-3 attached">
-                        <h3 class="ui header text-center slogan-message mt-4 mb-6">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
+            <% if (request.getParameter("app_name") == null) {  %>
+                <div class="ui orange attached segment mt-3">
+                        <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
                         </h3>
                         <p class="portal-tagline-description">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
-                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                "something.went.wrong.during.authentication")%>
                         </p>
-                    </div>
-                <% } %>
-            <% } else { %>
-                <% if (request.getParameter("app_name") == null) {  %>
-                    <h2 class="ui header portal-logo-tagline slogan-message">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
-                    </h2>
-
-                    <h4 class="ui header sub-tagline">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                            "something.went.wrong.during.authentication")%>
-                    </h4>
-
-                    <p class="portal-tagline-description">
+                        <div class="ui divider hidden"></div>
+                        <div class="ui divider hidden"></div>
+                </div>
+                
+                <%
+                    File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                    if (trackingRefFile.exists()) {
+                %>
+                <div class="ui bottom attached warning message">
+                    <p  class="text-left mt-0">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
-                    <% } %>
 
-                <% } else { %>
-                    <h2 class="ui header portal-logo-tagline">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
-                    </h2>
-                    <p class="portal-tagline-description">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
-                        <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
-                    </p>
+                    
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                        <div class="ui divider hidden"></div>
+                </div>
                 <% } %>
+            <% } else { %>
+                <div class="ui green segment mt-3 attached">
+                    <h3 class="ui header text-center slogan-message mt-4 mb-6">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
+                    </h3>
+                    <p class="portal-tagline-description">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
+                    <%= Encode.forHtmlAttribute(request.getParameter("app_name"))%>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                    </p>
+                </div>
             <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
@@ -156,20 +119,6 @@
                 <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
                 <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
-        </layout:component>
-        <layout:component componentName="ResponseImage">
-            <%-- illustration--%>
-            <% if (request.getParameter("app_name") == null) {  %>
-                <div class="thank-you-img">
-                    <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
-                </div>
-            <% } else { %>
-                <div>
-                    <img class="ui centered medium image"
-                        src='libs/themes/asgardio/assets/images/illustrations/account-creation-success.svg'
-                        alt="password-recovery-success-illustration"/>
-                </div>
             <% } %>
         </layout:component>
     </layout:main>

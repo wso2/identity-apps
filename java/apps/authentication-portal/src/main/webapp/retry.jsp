@@ -32,7 +32,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
     private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
@@ -188,6 +188,11 @@
                     <div class="ui divider hidden"></div>
                     <div class="ui divider hidden"></div>
                 </div>
+                
+                <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
                 <div class="ui bottom attached message support-message-container">
                     <p class="text-left mt-0">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%> <br />
@@ -197,15 +202,13 @@
                     </p>
                     <div class="ui divider hidden"></div>
 
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
+                    
                         <jsp:include page="extensions/error-tracking-reference.jsp"/>
                         <div class="ui divider hidden"></div>
-                    <% } %>
+                    
                     
                 </div>
+                <% } %>
             <% } else { %>
                 <%
                     if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
@@ -221,7 +224,7 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
-
+                    
                     <%
                         File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                         if (trackingRefFile.exists()) {
@@ -286,12 +289,6 @@
             <% } else { %>
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
-        </layout:component>
-        <layout:component componentName="ResponseImage">
-            <%-- illustration--%>
-            <div class="thank-you-img">
-                <img src="libs/themes/asgardio/assets/images/something-went-wrong.svg">
-            </div>
         </layout:component>
     </layout:main>
 

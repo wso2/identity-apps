@@ -29,7 +29,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
     private boolean isMultiAuthAvailable(String multiOptionURI) {
@@ -330,7 +330,7 @@
                                         AuthenticationEndpointUtil.isValidURL(multiOptionURI) && 
                                         isMultiAuthAvailable(multiOptionURI)) {
                                 %>
-                                    <a class="ui fluid large button secondary" id="goBackLink"
+                                    <a class="ui fluid large button secondary mt-2" id="goBackLink"
                                         href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                     </a>
@@ -339,7 +339,7 @@
 
                         </div>
                         </form>
-                        <% if(supportEmail.equals("asgardeo-help@wso2.com")) { %>
+                        <% if(StringUtils.isBlank(supportEmail)) { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></div>
                         <% } else { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>

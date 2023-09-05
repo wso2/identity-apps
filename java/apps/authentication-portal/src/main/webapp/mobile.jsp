@@ -24,7 +24,7 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     request.getSession().invalidate();
@@ -129,7 +129,7 @@
 
                             <div class="align-right buttons">
                                 <input type="button" name="update" id="update" value="<%=IdentityManagementEndpointUtil.i18n(resourceBundle, "update")%>"
-                                        class="ui primary button"/>
+                                        class="ui primary fluid button"/>
                             </div>
                         </form>
                     </div>

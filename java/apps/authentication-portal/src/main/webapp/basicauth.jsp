@@ -53,16 +53,6 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
-<%-- analytics --%>
-<%
-    File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
-    if (analyticsFile.exists()) {
-%>
-    <jsp:include page="extensions/analytics.jsp"/>
-<% } else { %>
-    <jsp:include page="includes/analytics.jsp"/>
-<% } %>
-
 <script>
     function goBack() {
         document.getElementById("restartFlowForm").submit();
@@ -348,9 +338,10 @@
         !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE)) {
     if (StringUtils.equals(request.getParameter("errorCode"),
             IdentityCoreConstants.ADMIN_FORCED_USER_PASSWORD_RESET_VIA_EMAIL_LINK_ERROR_CODE) &&
-            StringUtils.equals(request.getParameter("t"), "carbon.super")) { %>
+            StringUtils.equals(request.getParameter("t"), "carbon.super") &&
+            StringUtils.isNotBlank(supportEmail)) { %>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-    <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant") %>
+    <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant").replace("{supportEmail}",supportEmail) %>
 </div>
 <% } else { %>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
@@ -420,8 +411,7 @@
         </div>
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
-        <div class="field m-0">
-            <% if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) { %>
+            <div class="field m-0">
                 <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
                 <div class="ui fluid left icon input">
                 <input
@@ -433,23 +423,8 @@
                     data-testid="login-page-username-input"
                     aria-required="true"
                 >
-                <i aria-hidden="true" class="user outline icon"></i>
+                <i aria-hidden="true" class="user fill icon"></i>
                 <input id="username" name="username" type="hidden" value="<%=username%>">
-            <% } else { %>
-                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
-                <div class="ui fluid left icon input">
-                <input
-                    type="text"
-                    id="usernameUserInput"
-                    value=""
-                    name="usernameUserInput"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.email")%>"
-                    data-testid="login-page-username-input"
-                    aria-required="true"
-                >
-                <i aria-hidden="true" class="envelope outline icon"></i>
-                <input id="username" name="username" type="hidden" value="<%=username%>">
-            <% } %>
             </div>
         </div>
         <div class="mt-1" id="usernameError" style="display: none;">

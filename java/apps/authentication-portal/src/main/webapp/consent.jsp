@@ -27,7 +27,7 @@
 <%@include file="includes/init-url.jsp" %>
 
 <%-- Branding Preferences --%>
-<jsp:directive.include file="extensions/branding-preferences.jsp"/>
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
     String[] requestedClaimList = new String[0];
@@ -175,7 +175,7 @@
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
                                 "allow")%>"/>
                         </div>
-                        <div class="mt-1 align-center">
+                        <div class="mt-2 align-center">
                             <input class="ui fluid large button secondary" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"
                                 onclick="javascript: deny(); return false;"/>
