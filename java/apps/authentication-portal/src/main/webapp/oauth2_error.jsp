@@ -89,35 +89,32 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <div class="ui orange attached segment mt-3">
-                        <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong")%>!
-                        </h3>
-                        <p class="portal-tagline-description">
-                            <%
-                                String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
-                                        errorCode, errorMsgContext);
-                                // Check the error is not null and whether there is a corresponding value in the resource bundle.
-                                if (errorCode != null && errorMsg != null &&
-                                        !("incorrect.error.mapping").equals(i18nErrorMapping)) {
-                            %>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, i18nErrorMapping)%>
-                                <%=Encode.forHtml(errorMsgApp)%>
-                            <% } else { %>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%>
-                            <% } %>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                        <div class="ui divider hidden"></div>
-                </div>
-
-                <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
+            <div class="ui orange attached segment mt-3">
+                <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong")%>!
+                </h3>
+                <p class="portal-tagline-description">
+                    <%
+                        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
+                                errorCode, errorMsgContext);
+                        // Check the error is not null and whether there is a corresponding value in the resource bundle.
+                        if (errorCode != null && errorMsg != null &&
+                                !("incorrect.error.mapping").equals(i18nErrorMapping)) {
                     %>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, i18nErrorMapping)%>
+                        <%=Encode.forHtml(errorMsgApp)%>
+                    <% } else { %>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%>
+                    <% } %>
+                </p>
+                <div class="ui divider hidden"></div>
+                <div class="ui divider hidden"></div>
+            </div>
+
+            <%
+                File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                if (trackingRefFile.exists()) {
+            %>
                 <div class="ui bottom attached warning message">
                     <p class="text-left mt-0">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
@@ -126,44 +123,10 @@
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
 
-                    
-                        <div class="ui divider hidden"></div>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                        <div class="ui divider hidden"></div>
-                    
-                    
-                </div>
-                <% } %>
-            <% } else { %>
-                <h2 class="ui header portal-logo-tagline slogan-message ">
-                    <%
-                        String i18nErrorMapping = AuthenticationEndpointUtil.getErrorCodeToi18nMapping(
-                                errorCode, errorMsgContext);
-                        // Check the error is not null and whether there is a corresponding value in the resource bundle.
-                        if (errorCode != null && errorMsg != null &&
-                                !("incorrect.error.mapping").equals(i18nErrorMapping)) {
-                    %>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, i18nErrorMapping)%><%=Encode.forHtml(errorMsgApp)%>
-                    <% } else { %>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%></td>
-                    <% } %>
-                </h2>
-                
-                <%
-                    File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                    if (trackingRefFile.exists()) {
-                %>
-                <p class="portal-tagline-description">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                    </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                </p>
-
-                
+                    <div class="ui divider hidden"></div>
                     <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                <% } %>
-
+                    <div class="ui divider hidden"></div>
+                </div>
             <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter">
@@ -176,12 +139,6 @@
             <% } else { %>
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
-        </layout:component>
-        <layout:component componentName="ResponseImage">
-            <%-- illustration--%>
-            <div class="thank-you-img">
-                <img src="libs/themes/default/assets/images/something-went-wrong.svg">
-            </div>
         </layout:component>
     </layout:main>
 

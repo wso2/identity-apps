@@ -338,9 +338,10 @@
         !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE)) {
     if (StringUtils.equals(request.getParameter("errorCode"),
             IdentityCoreConstants.ADMIN_FORCED_USER_PASSWORD_RESET_VIA_EMAIL_LINK_ERROR_CODE) &&
-            StringUtils.equals(request.getParameter("t"), "carbon.super")) { %>
+            StringUtils.equals(request.getParameter("t"), "carbon.super") &&
+            StringUtils.isNotBlank(supportEmail)) { %>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-    <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant") %>
+    <%= AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.pending.super.tenant").replace("{supportEmail}",supportEmail) %>
 </div>
 <% } else { %>
 <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
