@@ -44,21 +44,21 @@
     </scm>
 
     <modules>
-        <module>java/components/org.wso2.identity.apps.taglibs.layout.controller</module>
-        <module>java/components/login-portal-layouts</module>
-        <module>java/components/org.wso2.identity.apps.common</module>
+        <module>identity-apps-core/components/org.wso2.identity.apps.taglibs.layout.controller</module>
+        <module>identity-apps-core/components/login-portal-layouts</module>
+        <module>identity-apps-core/components/org.wso2.identity.apps.common</module>
         <module>apps/myaccount</module>
         <module>apps/console</module>
-        <module>java/apps/authentication-portal</module>
-        <module>java/apps/recovery-portal</module>
-        <module>java/apps/x509-certificate-authentication-portal</module>
+        <module>identity-apps-core/apps/authentication-portal</module>
+        <module>identity-apps-core/apps/recovery-portal</module>
+        <module>identity-apps-core/apps/x509-certificate-authentication-portal</module>
         <module>tests</module>
-        <module>java/features/org.wso2.identity.apps.common.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.myaccount.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.console.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.authentication.portal.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.recovery.portal.server.feature</module>
-        <module>java/features/org.wso2.identity.apps.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.common.server.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.myaccount.server.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.console.server.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.authentication.portal.server.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.recovery.portal.server.feature</module>
+        <module>identity-apps-core/features/org.wso2.identity.apps.feature</module>
     </modules>
 
     <repositories>
