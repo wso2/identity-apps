@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.6.363",
+    "version": "1.6.374",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -19,13 +19,13 @@
         "tests"
     ],
     "scripts": {
-        "build": "pnpm nx run-many --target=build --all --with-deps",
-        "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount --with-deps",
-        "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
+        "build": "pnpm nx run-many --target=build --all",
+        "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount",
+        "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,dynamic-forms,form,i18n,react-components,theme,validation",
         "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
-        "clean:root:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:root:lock-files": "pnpm rimraf yarn.lock",
         "clean:root:node-modules": "pnpm rimraf node_modules",
         "clean:root:maven-folders": "pnpm rimraf target",
         "nx": "nx",
@@ -75,7 +75,7 @@
         "react-markdown": "^4.3.1",
         "react-notification-system": "^0.4.0",
         "react-password-strength-bar": "^0.3.2",
-        "react-redux": "^7.1.0",
+        "react-redux": "^7.2.9",
         "react-router-dom": "^4.3.1",
         "react-top-loading-bar": "^1.2.0",
         "redux": "^4.0.4",
@@ -129,7 +129,7 @@
         "@types/node": "^13.9.2",
         "@types/node-forge": "^0.9.3",
         "@types/react-notification-system": "0.2.39",
-        "@types/react-redux": "^7.1.1",
+        "@types/react-redux": "^7.1.25",
         "@types/react-router-dom": "^5.1.3",
         "@types/redux-mock-store": "^1.0.2",
         "@types/ua-parser-js": "0.7.36",
@@ -187,7 +187,6 @@
         "react-refresh": "^0.9.0",
         "redux-devtools-extension": "^2.13.8",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7",
         "simple-git": "^1.129.0",
         "source-map-loader": "^0.2.4",
         "style-loader": "^0.23.1",
@@ -200,7 +199,7 @@
         "typescript": "^4.6.4",
         "url-loader": "^2.1.0",
         "watch": "^1.0.2",
-        "webpack": "^5.24.1",
+        "webpack": "^5.84.1",
         "webpack-bundle-analyzer": "^4.4.0",
         "webpack-cli": "^4.5.0",
         "webpack-dev-server": "^3.11.2",
@@ -209,7 +208,8 @@
     },
     "pnpm": {
         "overrides": {
-            "@types/react": "^18.0.18"
+            "@types/react": "^18.0.18",
+            "webpack": "5.84.1"
         }
     }
 }

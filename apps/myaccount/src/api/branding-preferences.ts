@@ -60,7 +60,8 @@ export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInt
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, { attachToken: false });
 
     return {
-        data: getMigratedBrandingPreference(data as BrandingPreferenceAPIResponseInterface) as Data,
+        data: getMigratedBrandingPreference(
+            data as unknown as BrandingPreferenceAPIResponseInterface) as unknown as Data,
         error,
         isLoading: !error && !data,
         isValidating,

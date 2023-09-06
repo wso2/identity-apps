@@ -5,6 +5,7 @@
         "access-control": "modules/access-control",
         "console": "apps/console",
         "core": "modules/core",
+        "dynamic-forms": "modules/dynamic-forms",
         "form": "modules/form",
         "forms": "modules/forms",
         "i18n": "modules/i18n",

@@ -1,0 +1,51 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "root": "modules/dynamic-forms",
+    "sourceRoot": "modules/dynamic-forms/src",
+    "projectType": "library",
+    "generators": {},
+    "prefix": "@wso2is",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "modules/dynamic-forms/dist",
+                "tsConfig": "modules/dynamic-forms/tsconfig.lib.json",
+                "project": "modules/dynamic-forms/package.json",
+                "entryFile": "modules/dynamic-forms/src/index.ts",
+                "external": ["react/jsx-runtime"],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "format": [
+                    "esm",
+                    "cjs"
+                ],
+                "assets": [
+                    {
+                        "glob": "modules/dynamic-forms/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm lint",
+                "cwd": "modules/dynamic-forms",
+                "parallel": false
+            }
+        },
+        "test": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "modules/dynamic-forms",
+                "parallel": false
+            }
+        }
+    }
+}
