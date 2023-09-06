@@ -392,6 +392,7 @@
 .ui.grid {
     &.organization-list-grid {
         max-height: 300px;
+        min-width: 320px;
         overflow-y: auto;
     }
 
