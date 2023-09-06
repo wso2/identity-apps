@@ -18,6 +18,7 @@
 
 <%-- Tenant resolve JSP must be included in the calling script inorder to resolve tenant context --%>
 
+<%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="org.json.JSONObject" %>
@@ -43,19 +44,180 @@
     String supportEmail = "contact@wso2.com";
     String logoURL = "";
     String logoAlt = "";
-    String faviconURL = "";
+    String faviconURL = "libs/themes/asgardio/assets/images/branding/favicon.ico";
     String privacyPolicyURL = "/authenticationendpoint/privacy_policy.do";
     String termsOfUseURL = "https://wso2.com/terms-of-use/";
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
     String layout = "centered";
-    String layoutFileRelativePath = "includes/layouts/centered/body.ser";
-    String styleFilePath = "includes/layouts/centered/styles.css";
+    String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
+    String styleFilePath = "includes/layouts/" + layout + "/styles.css";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
     String productURL = "https://wso2.com/identity-server";
+    String productLogoURL = "libs/themes/asgardio/assets/images/branding/logo.svg";
+    String productLogoAlt = "WSO2 Identity Server Logo";
+    String productWhiteLogoURL = "libs/themes/asgardio/assets/images/branding/logo-white.svg";
+    String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+
+    // Preferences response object pointer keys.
+    String PREFERENCE_KEY = "preference";
+    String ACTIVE_THEME_KEY = "activeTheme";
+    String COLORS_KEY = "colors";
+    String THEME_KEY = "theme";
+    String STYLESHEETS_KEY = "stylesheets";
+    String ACCOUNT_APP_STYLESHEET_KEY = "accountApp";
+    String ORG_DETAILS_KEY = "organizationDetails";
+    String COPYRIGHT_TEXT_KEY = "copyrightText";
+    String SITE_TITLE_KEY = "siteTitle";
+    String SUPPORT_EMAIL_KEY = "supportEmail";
+    String IMAGES_KEY = "images";
+    String IMAGE_URL_KEY = "imgURL";
+    String ALT_TEXT_KEY = "altText";
+    String LOGO_KEY = "logo";
+    String FAVICON_KEY = "favicon";
+    String URLS_KEY = "urls";
+    String PRIVACY_POLICY_URL_KEY = "privacyPolicyURL";
+    String TERMS_OF_USE_URL_KEY = "termsOfUseURL";
+    String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
+    String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
+    String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
+    String CONFIGS_KEY = "configs";
+    String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
+    String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
+    String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
+    String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
+
+    // Additional keys to override the fallback values.
+    String PRODUCT_NAME_KEY = "productName";
+    String PRODUCT_URL_KEY = "productURL";
+    String PRODUCT_LOGO_URL_KEY = "productLogoURL";
+    String PRODUCT_LOGO_ALT_KEY = "productLogoAlt";
+    String PRODUCT_WHITE_LOGO_URL_KEY = "productWhiteLogoURL";
+    String PRODUCT_WHITE_LOGO_ALT_KEY = "productWhiteLogoAlt";
+
+    // Load the branding fallback override values file if it exists.
+    if (config.getServletContext().getResource("extensions/branding-fallbacks.jsp") != null) {
+%>
+
+    <jsp:include page="/extensions/branding-fallbacks.jsp"/>
+
+<%      
+    }
+
+    /*
+        The override values are set within the request object using a Map object.
+        This approach is necessary because 'branding-fallbacks.jsp' may not always exist.
+        Consequently, a directive include cannot be employed; rather, an action include must be utilized.
+        It ensures that the override values are accessible to this JSP page through the request object.
+    */
+    Map<String, Object> overrideFallbackValues = (Map<String, Object>) request.getAttribute("overrideFallbackValues");
+
+    // Override the branding fallback values
+    if (overrideFallbackValues != null) {
+        // Configs
+        if (overrideFallbackValues.containsKey(IS_BRANDING_ENABLED_KEY)) {
+            isBrandingEnabledInTenantPreferences = (boolean) overrideFallbackValues.get(IS_BRANDING_ENABLED_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(IS_SELF_SIGN_UP_ENABLED_KEY)) {
+            isSelfSignUpEnabledInTenantPreferences = (boolean) overrideFallbackValues.get(IS_SELF_SIGN_UP_ENABLED_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(IS_PASSWORD_RECOVERY_ENABLED_KEY)) {
+            isPasswordRecoveryEnabledInTenantPreferences = (boolean) overrideFallbackValues.get(IS_PASSWORD_RECOVERY_ENABLED_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(SHOULD_REMOVE_DEFAULT_BRANDING_KEY)) {
+            shouldRemoveDefaultBranding = (boolean) overrideFallbackValues.get(SHOULD_REMOVE_DEFAULT_BRANDING_KEY);
+        }
+
+        // Colors.
+        // @deprecated Moved in to `theme` object. Kept here for backward compatibility.
+        if (overrideFallbackValues.containsKey(COLORS_KEY)) {
+            colors = (JSONObject) overrideFallbackValues.get(COLORS_KEY);
+        }
+
+        // Theme
+        if (overrideFallbackValues.containsKey(THEME_KEY)) {
+            theme = (JSONObject) overrideFallbackValues.get(THEME_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(ACTIVE_THEME_KEY)) {
+            activeThemeName = (String) overrideFallbackValues.get(ACTIVE_THEME_KEY);
+        }
+        
+        // Product details
+        if (overrideFallbackValues.containsKey(PRODUCT_NAME_KEY)) {
+            productName = (String) overrideFallbackValues.get(PRODUCT_NAME_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PRODUCT_URL_KEY)) {
+            productURL = (String) overrideFallbackValues.get(PRODUCT_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PRODUCT_LOGO_URL_KEY)) {
+            productLogoURL = (String) overrideFallbackValues.get(PRODUCT_LOGO_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PRODUCT_LOGO_ALT_KEY)) {
+            productLogoAlt = (String) overrideFallbackValues.get(PRODUCT_LOGO_ALT_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PRODUCT_WHITE_LOGO_URL_KEY)) {
+            productWhiteLogoURL = (String) overrideFallbackValues.get(PRODUCT_WHITE_LOGO_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PRODUCT_WHITE_LOGO_ALT_KEY)) {
+            productWhiteLogoAlt = (String) overrideFallbackValues.get(PRODUCT_WHITE_LOGO_ALT_KEY);
+        }
+
+        // Stylesheets
+        if (overrideFallbackValues.containsKey(ACCOUNT_APP_STYLESHEET_KEY)) {
+            overrideStylesheet = (String) overrideFallbackValues.get(ACCOUNT_APP_STYLESHEET_KEY);
+        }
+
+        // Organization Details
+        if (overrideFallbackValues.containsKey(COPYRIGHT_TEXT_KEY)) {
+            copyrightText = (String) overrideFallbackValues.get(COPYRIGHT_TEXT_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(SITE_TITLE_KEY)) {
+            siteTitle = (String) overrideFallbackValues.get(SITE_TITLE_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(SUPPORT_EMAIL_KEY)) {
+            supportEmail = (String) overrideFallbackValues.get(SUPPORT_EMAIL_KEY);
+        }
+
+        // Images
+        if (overrideFallbackValues.containsKey(FAVICON_KEY)) {
+            faviconURL = (String) overrideFallbackValues.get(FAVICON_KEY);
+        }
+
+        // Links
+        if (overrideFallbackValues.containsKey(PRIVACY_POLICY_URL_KEY)) {
+            privacyPolicyURL = (String) overrideFallbackValues.get(PRIVACY_POLICY_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(TERMS_OF_USE_URL_KEY)) {
+            termsOfUseURL = (String) overrideFallbackValues.get(TERMS_OF_USE_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(COOKIE_POLICY_URL_KEY)) {
+            cookiePolicyURL = (String) overrideFallbackValues.get(COOKIE_POLICY_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(SELF_SIGN_UP_URL_KEY)) {
+            selfSignUpOverrideURL = (String) overrideFallbackValues.get(SELF_SIGN_UP_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(PASSWORD_RECOVERY_URL_KEY)) {
+            passwordRecoveryOverrideURL = (String) overrideFallbackValues.get(PASSWORD_RECOVERY_URL_KEY);
+        }        
+    }
 
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
@@ -74,34 +236,6 @@
         BrandingPreferenceRetrievalClient brandingPreferenceRetrievalClient = new BrandingPreferenceRetrievalClient();
         JSONObject brandingPreferenceResponse = brandingPreferenceRetrievalClient.getPreference(tenantRequestingPreferences,
                 preferenceResourceType, applicationRequestingPreferences, DEFAULT_RESOURCE_LOCALE);
-
-        // Preferences response object pointer keys.
-        String PREFERENCE_KEY = "preference";
-        String ACTIVE_THEME_KEY = "activeTheme";
-        String COLORS_KEY = "colors";
-        String THEME_KEY = "theme";
-        String STYLESHEETS_KEY = "stylesheets";
-        String ACCOUNT_APP_STYLESHEET_KEY = "accountApp";
-        String ORG_DETAILS_KEY = "organizationDetails";
-        String COPYRIGHT_TEXT_KEY = "copyrightText";
-        String SITE_TITLE_KEY = "siteTitle";
-        String SUPPORT_EMAIL_KEY = "supportEmail";
-        String IMAGES_KEY = "images";
-        String IMAGE_URL_KEY = "imgURL";
-        String ALT_TEXT_KEY = "altText";
-        String LOGO_KEY = "logo";
-        String FAVICON_KEY = "favicon";
-        String URLS_KEY = "urls";
-        String PRIVACY_POLICY_URL_KEY = "privacyPolicyURL";
-        String TERMS_OF_USE_URL_KEY = "termsOfUseURL";
-        String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
-        String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
-        String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
-        String CONFIGS_KEY = "configs";
-        String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
-        String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
-        String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
-        String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
 
         if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
             brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
@@ -287,26 +421,22 @@
         // Set fallbacks.
         if (StringUtils.isEmpty(logoURL)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = productLogoURL;
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoURL = "libs/themes/default/assets/images/branding/logo-white.svg";
+                logoURL = productWhiteLogoURL;
             } else {
-                logoURL = "libs/themes/default/assets/images/branding/logo.svg";
+                logoURL = productLogoURL;
             }
         }
 
         if (StringUtils.isEmpty(logoAlt)) {
             if (StringUtils.isEmpty(activeThemeName)) {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = productLogoAlt;
             } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
-                logoAlt = "WSO2 Identity Server Logo White Variation";
+                logoAlt = productWhiteLogoAlt;
             } else {
-                logoAlt = "WSO2 Identity Server Logo";
+                logoAlt = productLogoAlt;
             }
-        }
-
-        if (StringUtils.isEmpty(faviconURL)) {
-            faviconURL = "libs/themes/default/assets/images/branding/favicon.ico";
         }
     }
 %>

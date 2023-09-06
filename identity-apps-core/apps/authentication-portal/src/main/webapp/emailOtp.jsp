@@ -207,11 +207,11 @@
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
 
                             <div class="ui divider hidden"></div>
-                            <div class="align-right buttons">
+                            <div class="buttons">
                                 <input type="button" name="authenticate" id="authenticate"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                 class="ui primary fluid button"/>
-                                <a class="ui button fluid secondary mt-2" tabindex="0"
+                                <a class="ui button fluid secondary mt-3" tabindex="0"
                                 id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                 </a>
                             </div>
