@@ -255,6 +255,16 @@
                     "delete": []
                 }
             },
+            "myAccount": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "branding": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -569,7 +579,7 @@
                 "disabledFeatures": []
             },
             "organizations": {
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "feature": [
                         "console:organizations"
@@ -761,7 +771,7 @@
             },
             "insights": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {}
             }
         },
