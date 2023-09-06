@@ -1,7 +1,7 @@
 {
     "$schema": "../node_modules/nx/schemas/project-schema.json",
-    "root": "./java",
-    "sourceRoot": "java/apps",
+    "root": "./identity-apps-core",
+    "sourceRoot": "identity-apps-core/apps",
     "projectType": "application",
     "generators": {},
     "prefix": "@wso2is",
@@ -19,7 +19,7 @@
                         "description": "Distributing Theme to JSP Apps"
                     }
                 ],
-                "cwd": "java/apps",
+                "cwd": "identity-apps-core/apps",
                 "parallel": false
             }
         },
@@ -32,7 +32,7 @@
                         "description": "Cleaning JSP Apps"
                     }
                 ],
-                "cwd": "java/apps",
+                "cwd": "identity-apps-core/apps",
                 "parallel": false
             }
         }

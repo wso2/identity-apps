@@ -1,7 +1,7 @@
 {
     "packages": [
         "apps/*",
-        "java",
+        "identity-apps-core",
         "modules/*",
         "tests"
     ],
