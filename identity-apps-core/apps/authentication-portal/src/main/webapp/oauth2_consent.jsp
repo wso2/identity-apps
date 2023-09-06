@@ -381,7 +381,7 @@
                                     onclick="approved(); return false;"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"allow")%> "/>
                         </div>
-                        <div class="mt-2 align-center">
+                        <div class="mt-3 align-center">
                             <input type="hidden" name="consent" id="consent" value="deny"/>
                             <input class="ui fluid large button secondary" type="reset"
                             onclick="deny(); return false; login-portal-app-font"
