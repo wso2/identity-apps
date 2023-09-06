@@ -291,7 +291,7 @@
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.verified.successfully")%>
                             <% } else if (accountLockOnCreationEnabled) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.are.almost.there")%>
-                            <% } else  {%>
+                            <% } else {%>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.created.successfully")%>
                             <% } %>
                         </h3>

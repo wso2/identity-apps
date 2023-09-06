@@ -66,10 +66,12 @@
 <%-- Layout specific style sheet --%>
 <%
     String tempStyleFilePath = "";
-    if (StringUtils.startsWith(layout, "custom-")) {
-        if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences)) {
+    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+                + tenantRequestingPreferences)) {
             tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences + "-" + applicationRequestingPreferences)) {
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences)) {
             tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
         }
     } else {

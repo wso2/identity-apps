@@ -85,7 +85,7 @@
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password.recovery.information.sent.to.the.email.registered.with.account")%>
                     <br><br>
                     <%
-                        if(StringUtils.isNotBlank(callback)) {
+                        if (StringUtils.isNotBlank(callback)) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>

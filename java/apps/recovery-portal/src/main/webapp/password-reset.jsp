@@ -457,6 +457,7 @@
                     $("#password-validation-check-case").css("display", "none");
                     $("#password-validation-cross-case").css("display", "none");
                 }
+
                 if (checkMatch(passwordField.val(), passwordConfig.minNumber, numbers)) {
                     $("#password-validation-check-number").css("display", "block");
                     $("#password-validation-neutral-number").css("display", "none");
@@ -466,6 +467,7 @@
                     $("#password-validation-check-number").css("display", "none");
                     $("#password-validation-cross-number").css("display", "none");
                 }
+
                 if (checkMatch(passwordField.val(), passwordConfig.minSpecialChr, specialChr)) {
                     $("#password-validation-check-special-chr").css("display", "block");
                     $("#password-validation-neutral-special-chr").css("display", "none");
@@ -475,6 +477,7 @@
                     $("#password-validation-check-special-chr").css("display", "none");
                     $("#password-validation-cross-special-chr").css("display", "none");
                 }
+
                 if (checkUniqueCharacter(passwordField.val(), passwordConfig.minUniqueChr)) {
                     $("#password-validation-check-unique-chr").css("display", "block");
                     $("#password-validation-neutral-unique-chr").css("display", "none");
@@ -484,6 +487,7 @@
                     $("#password-validation-check-unique-chr").css("display", "none");
                     $("#password-validation-cross-unique-chr").css("display", "none");
                 }
+
                 if (checkConsecutiveMatch(passwordField.val(), passwordConfig.maxConsecutiveChr, consecutiveChr)) {
                     $("#password-validation-check-repeated-chr").css("display", "block");
                     $("#password-validation-neutral-repeated-chr").css("display", "none");
@@ -496,7 +500,7 @@
             }
 
             /**
-             * Util function to validate confirm password
+             * Util function to validate confirm password.
              */
             function validateConfirmPassword() {
                 $("#reset-password2-container").removeClass("error");
@@ -513,7 +517,7 @@
             }
 
             /**
-             * Function to enable cross marks on unmet criteria when submitting
+             * Function to enable cross marks on unmet criteria when submitting.
              */
             function passwordSubmitValidation() {
 
@@ -628,7 +632,7 @@
                     displayError = true;
                 }
 
-                if(displayError) {
+                if (displayError) {
                     $("#reset-password-container").addClass("error");
                 }
             }
@@ -651,7 +655,7 @@
 
                 var _consValid = true;
                 if (limit > 0 &&
-                _password.match(pattern) && _password.match(pattern).length > 0) {
+                    _password.match(pattern) && _password.match(pattern).length > 0) {
                     var list = _password.match(pattern);
                     var longest = list.sort(
                         function(a,b) {
