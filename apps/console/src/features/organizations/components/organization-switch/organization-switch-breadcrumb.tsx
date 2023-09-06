@@ -33,9 +33,6 @@ import { Dispatch } from "redux";
 import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
-import { FeatureGateConstants } from "../../../../extensions/components/feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../../../extensions/components/feature-gate/controller/featureGate-util";
-import { FeatureStatus } from "../../../../extensions/components/feature-gate/models/feature-gate";
 import { AppConstants, AppState } from "../../../core";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import {
@@ -76,8 +73,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const { data: breadcrumbList, error, isLoading } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
-
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     useEffect(() => {
         if (!error) {
@@ -363,7 +358,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         return (
             <>
                 {
-                    !isLoading && saasFeatureStatus !== FeatureStatus.DISABLED && (
+                    !isLoading && (
                         <div className="organization-breadcrumb-wrapper">
                             <div
                                 tabIndex={ 0 }

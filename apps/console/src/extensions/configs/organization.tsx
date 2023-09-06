@@ -18,9 +18,7 @@
 
 import React, { ReactElement } from "react";
 import { OrganizationConfigs } from "./models";
-import { OrganizationType } from "../../features/organizations/constants";
 import { BreadcrumbItem } from "../../features/organizations/models";
-import { OrganizationUtils } from "../../features/organizations/utils";
 import { OrganizationSuperTrigger } from "../components/tenants/components/dropdown/organization-super-trigger";
 import TenantDropdown from "../components/tenants/components/dropdown/tenant-dropdown";
 
@@ -31,7 +29,7 @@ export const organizationConfigs: OrganizationConfigs = {
         return true;
     },
     showOrganizationDropdown: true,
-    showSwitcherInTenants: true,
+    showSwitcherInTenants: false,
     superOrganizationBreadcrumb: (_breadcrumbItem: BreadcrumbItem, _onClick: (_breadcrumbItem: BreadcrumbItem
     ) => void) => {
         return <TenantDropdown trigger={ OrganizationSuperTrigger } contained />;
