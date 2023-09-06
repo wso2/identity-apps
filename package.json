@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.6.364",
+    "version": "1.6.374",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -15,12 +15,11 @@
     "scripts": {
         "build": "pnpm nx run-many --target=build --all",
         "build:apps": "pnpm nx run-many --target=build --projects=console,myaccount",
-        "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,forms,form,i18n,react-components,theme,validation",
-        "changeset": "changeset",
+        "build:modules": "pnpm nx run-many --target=build --projects=access-control,core,dynamic-forms,form,i18n,react-components,theme,validation",
         "clean": "pnpm nx run-many --target=clean --all --parallel=false && pnpm clean:root",
         "clean:root": "pnpm clean:root:cache && pnpm clean:root:lock-files && pnpm clean:root:maven-folders & pnpm clean:root:node-modules",
         "clean:root:cache": "pnpm rimraf npm",
-        "clean:root:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
+        "clean:root:lock-files": "pnpm rimraf yarn.lock",
         "clean:root:node-modules": "pnpm rimraf node_modules",
         "clean:root:maven-folders": "pnpm rimraf target",
         "nx": "nx",

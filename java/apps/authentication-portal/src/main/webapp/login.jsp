@@ -814,7 +814,7 @@
                                 <button class="ui blue labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')"
+                                        'IwaNTLMAuthenticator')"
                                     id="icon-<%=iconId%>"
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>

@@ -209,81 +209,98 @@
                         value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
 
                     <div class="segment-form">
-                        <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form otp-form">
-                            <p class="text-center" id="instruction"></p>
+                        <form action="<%=commonauthURL%>" method="post" id="totpForm" class="ui large form">
+                            <p id="instruction"></p>
                             <div class="field">
-                                <input hidden type="text"  id="token" name="token" class="form-control" placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
+                                <input type="text" name="token" class="form-control" autocomplete="off" autofocus
+                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>">
+                            </div>
+                            <input id="sessionDataKey" type="hidden" name="sessionDataKey"
+                                    value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
+                            <div class="ui divider hidden"></div>
+                            <div class="ui two column stackable grid">
+                                <div class="ten wide column mobile center aligned tablet left aligned computer left aligned buttons tablet computer">
+                                    <% if(isSendVerificationCodeByEmailEnabled) { %>
+                                        <a class="ui button secondary" id="genToken" href="#"
+                                        onclick="return requestTOTPToken();">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "get.verification.code")%>
+                                        </a>
+                                    <% } %>
+                                </div>
+                                <div class="six wide column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
+                                    <input type="submit" value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>" class="ui primary button">
+                                </div>
                             </div>
 
                             <div class="equal width fields">
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3"
-                                            id="pincode-1"
-                                            name="pincode-1"
-                                            tabindex="1"
-                                            placeholder="·"
-                                            maxlength="1"
-                                            onkeyup="movetoNext(this, 'pincode-2', null)"
-                                            autocomplete="off"
-                                            autofocus>
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-2" 
-                                            name="pincode-2"
-                                            tabindex="2" 
-                                            placeholder="·" 
-                                            maxlength="1" 
-                                            onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
-                                            autocomplete="off">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-3" 
-                                            name="pincode-3"
-                                            tabindex="3" 
-                                            placeholder="·" 
-                                            maxlength="1" 
-                                            onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
-                                            autocomplete="off">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-4" 
-                                            name="pincode-4" 
-                                            tabindex="4"
-                                            placeholder="·" 
-                                            maxlength="1" 
-                                            onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
-                                            autocomplete="off">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-5" 
-                                            name="pincode-5" 
-                                            tabindex="5"
-                                            placeholder="·" 
-                                            maxlength="1" 
-                                            onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
-                                            autocomplete="off">
-                                    </div>
-                                    <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-6" 
-                                            name="pincode-6" 
-                                            tabindex="6"
-                                            placeholder="·" 
-                                            maxlength="1" 
-                                            onkeyup="movetoNext(this, null, 'pincode-5')"
-                                            autocomplete="off">
-                                    </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3"
+                                        id="pincode-1"
+                                        name="pincode-1"
+                                        tabindex="1"
+                                        placeholder="·"
+                                        maxlength="1"
+                                        onkeyup="movetoNext(this, 'pincode-2', null)"
+                                        autocomplete="off"
+                                        autofocus>
                                 </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3" 
+                                        id="pincode-2" 
+                                        name="pincode-2"
+                                        tabindex="2" 
+                                        placeholder="·" 
+                                        maxlength="1" 
+                                        onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
+                                        autocomplete="off">
+                                </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3" 
+                                        id="pincode-3" 
+                                        name="pincode-3"
+                                        tabindex="3" 
+                                        placeholder="·" 
+                                        maxlength="1" 
+                                        onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
+                                        autocomplete="off">
+                                </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3" 
+                                        id="pincode-4" 
+                                        name="pincode-4" 
+                                        tabindex="4"
+                                        placeholder="·" 
+                                        maxlength="1" 
+                                        onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
+                                        autocomplete="off">
+                                </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3" 
+                                        id="pincode-5" 
+                                        name="pincode-5" 
+                                        tabindex="5"
+                                        placeholder="·" 
+                                        maxlength="1" 
+                                        onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
+                                        autocomplete="off">
+                                </div>
+                                <div class="field mt-5">
+                                    <input 
+                                        class="text-center p-3" 
+                                        id="pincode-6" 
+                                        name="pincode-6" 
+                                        tabindex="6"
+                                        placeholder="·" 
+                                        maxlength="1" 
+                                        onkeyup="movetoNext(this, null, 'pincode-5')"
+                                        autocomplete="off">
+                                </div>
+                            </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
@@ -293,19 +310,19 @@
                                 AuthenticationEndpointUtil.isValidURL(request.getParameter("multiOptionURI")) &&
                                 request.getParameter("multiOptionURI").contains("backup-code-authenticator")) { %>
                                 <div class="social-login blurring social-dimmer text-left">
-                                        <div class="field text-left">
-                                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "cannot.access.totp")%></label>
+                                    <div class="field text-left">
+                                        <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "cannot.access.totp")%></label>
 
-                                            <a
-                                                onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
-                                                target="_blank"
-                                                class="clickable-link text-left"
-                                                rel="noopener noreferrer"
-                                                data-testid="login-page-backup-code-link"
-                                            >
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
-                                            </a>
-                                        </div>
+                                        <a
+                                            onclick="window.location.href='<%=commonauthURL%>?idp=LOCAL&authenticator=backup-code-authenticator&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>&multiOptionURI=<%=Encode.forUriComponent(request.getParameter("multiOptionURI"))%>';"
+                                            target="_blank"
+                                            class="clickable-link text-left"
+                                            rel="noopener noreferrer"
+                                            data-testid="login-page-backup-code-link"
+                                        >
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "use.backup.code")%>
+                                        </a>
+                                    </div>
                                 </div>
                             <% }%>
 
@@ -336,15 +353,31 @@
                                     </a>
                                 <% } } %>
                             </div>
-
-                        </div>
                         </form>
                         <% if(supportEmail.equals("asgardeo-help@wso2.com")) { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></div>
                         <% } else { %>
                             <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>
                         <% } %>
+                    </div>
+                    <div class="ui divider hidden"></div>
+                    <%
+                        String multiOptionURI = request.getParameter("multiOptionURI");
+                        if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                    %>
+                        <a class="ui primary basic button link-button" id="goBackLink"
+                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                        </a>
+                    <%
+                        }
+                    %>
                 </div>
+                <% if(supportEmail.equals("")) { %>
+                    <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></div>
+                <% } else { %>
+                    <div class="ui" id="enrol-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message1" )%> <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.message2" )%></a></div>
+                <% } %>
             </layout:component>
             <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
