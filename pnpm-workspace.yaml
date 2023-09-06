@@ -1,5 +1,5 @@
 packages:
   - "apps/*"
   - "modules/*"
-  - "components/theme"
+  - "identity-apps-core"
   - "tests"
