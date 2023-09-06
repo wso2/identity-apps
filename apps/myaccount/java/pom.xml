@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,11 +22,11 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.identity.apps</groupId>
-    <artifactId>identity-apps</artifactId>
+    <artifactId>identity-apps-myaccount</artifactId>
     <packaging>pom</packaging>
     <version>1.6.364-SNAPSHOT</version>
-    <name>WSO2 Identity Server Apps - Parent</name>
-    <description>WSO2 Identity Server Web Apps</description>
+    <name>WSO2 Identity Server MyAccount - Parent</name>
+    <description>WSO2 Identity Server MyAccount Parent</description>
 
     <url>http://wso2.org</url>
 
@@ -44,21 +44,8 @@
     </scm>
 
     <modules>
-        <module>identity-apps-core/components/org.wso2.identity.apps.taglibs.layout.controller</module>
-        <module>identity-apps-core/components/login-portal-layouts</module>
-        <module>identity-apps-core/components/org.wso2.identity.apps.common</module>
-        <module>apps/myaccount</module>
-        <module>apps/console</module>
-        <module>identity-apps-core/apps/authentication-portal</module>
-        <module>identity-apps-core/apps/recovery-portal</module>
-        <module>identity-apps-core/apps/x509-certificate-authentication-portal</module>
-        <module>tests</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.common.server.feature</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.myaccount.server.feature</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.console.server.feature</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.authentication.portal.server.feature</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.recovery.portal.server.feature</module>
-        <module>identity-apps-core/features/org.wso2.identity.apps.feature</module>
+        <module>webapp</module>
+        <module>org.wso2.identity.apps.myaccount.server.feature</module>
     </modules>
 
     <repositories>
@@ -112,7 +99,6 @@
             <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-
 
     <pluginRepositories>
         <pluginRepository>
@@ -207,24 +193,6 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>myaccount</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>console</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>authentication-portal</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>recovery-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
@@ -501,113 +469,11 @@
                 <artifactId>tomcat-catalina</artifactId>
                 <version>${apache.tomcat-catalina.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.myaccount.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.console.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.authentication.portal.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
-            </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-                <version>${project.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-            <!-- Build all npm packages (apps & modules) -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <version>1.6.0</version>
-                <artifactId>exec-maven-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>npm install (initialize)</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                            <skip>${bootstrap.exec.skip}</skip>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>run-linter</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>lint</argument>
-                            </arguments>
-                            <skip>${lint.exec.skip}</skip>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm run build (compile)</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>build</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <environmentVariables>
-                        <!-- The following parameters create an NPM sandbox for CI -->
-                        <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                        <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-                        <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-                    </environmentVariables>
-                </configuration>
-            </plugin>
-
             <!-- Release -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -639,6 +505,17 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>wso2.releases</serverId>
+                    <nexusUrl>https://maven.wso2.org/nexus</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>
