@@ -426,7 +426,7 @@
         }
 
         function validateForm() {
-            if(!validateUsername()){
+            if (!validateUsername()) {
 
                 return false;
             }
@@ -503,9 +503,9 @@
         $(document).ready(function () {
 
             const usernameInput = $("#usernameUserInput").val();
-            if(!usernameInput || usernameInput.trim().length === 0) {
+            if (!usernameInput || usernameInput.trim().length === 0) {
                 submitBtnState( { disabled: true } );
-            } else{
+            } else {
                 submitBtnState( { disabled: false } );
             }
 

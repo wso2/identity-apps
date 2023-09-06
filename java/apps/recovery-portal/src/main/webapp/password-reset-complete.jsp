@@ -177,7 +177,7 @@
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain) &&
         userStoreDomain.equals(ASGARDEO_USERSTORE)) {
-        if(callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
+        if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
         } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
             applicationName = MY_ACCOUNT_APP_NAME;
@@ -199,7 +199,7 @@
 
     // Retrieve application access url to redirect user back to the application.
     String applicationAccessURLWithoutEncoding = null;
-    if(StringUtils.isNotBlank(applicationName)) {
+    if (StringUtils.isNotBlank(applicationName)) {
         try {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
             applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
@@ -257,24 +257,24 @@
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
                 <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
-                    <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
+                    <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.set.success")%>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Password.reset.Success")%>
                     <% } %>
                 </h3>
                 <p class="portal-tagline-description">
-                    <% if(RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
+                    <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
                     <% } %>
                     <br/><br/>
-                    <% if(StringUtils.isNotBlank(applicationAccessURLWithoutEncoding) &&
+                    <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding) &&
                             !RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <i class="caret left icon primary"></i>
-                        <% if(StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) {
-                            if(StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {
+                        <% if (StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) {
+                            if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {
                         %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
                                                     applicationAccessURLWithoutEncoding)%>">

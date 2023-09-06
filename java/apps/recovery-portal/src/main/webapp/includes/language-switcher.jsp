@@ -57,7 +57,7 @@
         let domain = undefined;
         /**
          * Extract the domain from the hostname.
-         * Ex: If dev.accounts.asgardeo.io is parsed, `asgardeo.io` will be set as the domain.
+         * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
          */
         try {
             let url = new URL(window.location);

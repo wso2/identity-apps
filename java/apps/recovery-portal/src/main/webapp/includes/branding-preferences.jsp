@@ -62,6 +62,10 @@
     String productWhiteLogoURL = "libs/themes/asgardio/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
 
+    // Constants used to create full custom layout name
+    String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
+    String CUSTOM_LAYOUT_NAME_SEPERATOR = "-";
+
     // Preferences response object pointer keys.
     String PREFERENCE_KEY = "preference";
     String ACTIVE_THEME_KEY = "activeTheme";
