@@ -18,7 +18,11 @@
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
@@ -26,12 +30,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="branding-preferences.jsp"/>
 
-<%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
-
-<%-- Extract the name of the stylesheet--%>
+<!-- Extract the name of the stylesheet-->
 <%
-    String themeName = "default";
+    String themeName = "asgardio";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
         + "/" + "libs/themes/" + themeName + "/");
     String[] fileNames = themeDir.list();
@@ -52,7 +53,7 @@
 <link rel="icon" href="<%= StringEscapeUtils.escapeHtml4(faviconURL) %>" type="image/x-icon"/>
 
 <%-- Load the base theme --%>
-<link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
+<link href="libs/themes/asgardio/<%= themeFileName %>" rel="stylesheet">
 
 <%-- Load Default Theme Skeleton --%>
 <jsp:include page="theme-skeleton.jsp"/>
@@ -64,20 +65,34 @@
 
 <%-- Layout specific style sheet --%>
 <%
-    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
-    if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-        styleFilePath = customLayoutFileRelativeBasePath + "/" + layout + "/styles.css";
+    String tempStyleFilePath = "";
+    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+                + tenantRequestingPreferences)) {
+            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences)) {
+            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
+        }
+    } else {
+        tempStyleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
-    if (config.getServletContext().getResource(styleFilePath) != null) {
+
+    if (config.getServletContext().getResource(tempStyleFilePath) != null) {
+        styleFilePath = tempStyleFilePath;
+    }
 %>
-    <link rel="stylesheet" href="<%= styleFilePath %>">
-<% } %>
+    
+<link rel="stylesheet" href="<%= styleFilePath %>">
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
-<title>
-<% if (StringUtils.isNotBlank(siteTitle)) { %>
-    <%=StringEscapeUtils.escapeHtml4(siteTitle)%>
-<% } else { %>
-    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%>
-<% } %>
-</title>
+<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
+
+<%-- Downtime banner --%>
+<%
+    if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
+%>
+        <jsp:include page="extensions/planned-downtime-banner.jsp"/>
+<%
+    }
+%>

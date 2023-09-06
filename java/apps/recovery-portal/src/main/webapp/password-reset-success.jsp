@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -24,9 +24,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
-<%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%-- Include tenant context --%>
@@ -36,8 +37,7 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+    String accessUrl = (String) request.getAttribute("accessUrl");
 %>
 
 <%-- Data for the layout from the page --%>
@@ -53,9 +53,9 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout">
@@ -73,26 +73,29 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
-                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="self-registration-with-verification-notify-page-header">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Account.confirmation.sent.to.your.email")%>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "follow.reset.password.email.instructions")%>
                     <br><br>
+                    <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered.alt") + " "
+                        + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
+                    %>
                     <%
-                        if(StringUtils.isNotBlank(callback)) {
+                        if(StringUtils.isNotBlank(accessUrl)) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
-                        <a href="<%= Encode.forHtml(callback)%>">
+                        <a href="<%= Encode.forHtml(accessUrl)%>">
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
                         </a>
                     <% } %>
                 </p>
-                <p class="ui portal-tagline-description" data-testid="self-registration-with-verification-support-message">
+                <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
                     <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
-                    data-testid="self-registration-with-verification-resend-support-email"
+                    data-testid="password-recovery-resend-support-email"
                     target="_blank">
                     <span class="orange-text-color button">
                         <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
@@ -120,9 +123,9 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 </body>
 </html>

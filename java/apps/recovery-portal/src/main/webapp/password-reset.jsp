@@ -18,11 +18,15 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ValidationConfigurationRetrievalClient" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.net.URL" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
@@ -41,22 +45,33 @@
     String username = request.getParameter("username");
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
+    String spId = request.getParameter("spId");
+    boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
     String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
-    if (tenantDomainFromQuery == null) {
+    String ASGARDEO_USERSTORE = "ASGARDEO-USER";
+    if (StringUtils.isBlank(tenantDomainFromQuery)) {
         tenantDomainFromQuery = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
-    if (username == null) {
+    if (StringUtils.isBlank(username)) {
         username = (String) request.getAttribute("username");
     }
-    if (userStoreDomain == null) {
+    if (StringUtils.isBlank(userStoreDomain)) {
         userStoreDomain = (String) request.getAttribute("userstoredomain");
     }
+    if (StringUtils.isBlank(callback) &&
+        StringUtils.isNotBlank(userStoreDomain) &&
+        userStoreDomain.equals(ASGARDEO_USERSTORE)) {
+        callback = (String) request.getAttribute(IdentityManagementEndpointConstants.CALLBACK);
+    }
+    // Get validation configuration.
+    ValidationConfigurationRetrievalClient validationConfigurationRetrievalClient = new ValidationConfigurationRetrievalClient();
+    JSONObject passwordConfig = null;
+    try {
+        passwordConfig = validationConfigurationRetrievalClient.getPasswordConfiguration(tenantDomain);
+    } catch (Exception e) {
+        passwordConfig = null;
+    }
 
-%>
-
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
 %>
 
 <!doctype html>
@@ -76,72 +91,127 @@
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
                 <%
-                String productTitleFilePath = "extensions/product-title.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productTitleFilePath = customLayoutFileRelativeBasePath + "/product-title.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productTitleFilePath)).exists()) {
-                    productTitleFilePath = "includes/product-title.jsp";
-                }
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
                 %>
-                <jsp:include page="<%= productTitleFilePath %>" />
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:include page="includes/product-title.jsp"/>
+                <% } %>
             </layout:component>
             <layout:component componentName="MainSection" >
                 <div class="ui segment">
                     <%-- content --%>
                     <h2>
+                        <% if ("invite".equalsIgnoreCase(type)) { %>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Set.Password")%>
+                        <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
+                        <% } %>
                     </h2>
 
                     <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
-                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                        <%=StringEscapeUtils.unescapeHtml4(IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg))%>
+                    </div>
+                    <% } %>
+
+                    <% if (passwordExpired) { %>
+                    <div class="ui visible negative message" id="server-error-msg">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password.Expired")%>
                     </div>
                     <% } %>
                     <div id="ui visible negative message" hidden="hidden"></div>
 
                     <div class="segment-form">
                         <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
+                            <%
+                            if (StringUtils.isNotBlank(spId)) {
+                            %>
+                            <input id="spId" name="spId" type="hidden" value="<%=spId%>"/>
+                            <%
+                            }
+                            %>
                             <div class="ui negative message" hidden="hidden" id="error-msg"></div>
-                            <div class="field">
-                                <label for="reset-password">
+                            <div id="reset-password-container" class="field mt-5 mb-3">
+                                <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Enter.new.password")%>
                                 </label>
-                                <div class="ui right icon input">
+                                <div class="ui right icon input addon-wrapper">
                                     <input
                                         id="reset-password"
                                         name="reset-password"
                                         type="password"
                                         required=""
+                                        autocomplete="new-password"
+                                        aria-describedby="passwordRequirements"
                                     />
                                     <i id="passwordShowHide" class="eye link icon slash"
                                        onclick="passwordShowToggle()"></i>
+
+                                    <%-- Input Description for screen readers --%>
+                                    <span id="passwordRequirements" style="display: none;">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.requirements")%>
+                                    </span>
                                 </div>
+                            </div>
+                            <div id="password-validation-block">
+                                <div id="length-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-length" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-length" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-length" style="display: none;" class="green check circle icon"></i>
+                                    <p id="length" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "more.than.8.chars")%></p>
+                                </div>
+                                <div id="case-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-case" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-case" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-case" style="display: none;" class="green check circle icon"></i>
+                                    <p id="case" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase.and.uppercase.letter")%></p>
+                                </div>
+                                <div id="number-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-number" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-number" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-number" style="display: none;" class="green check circle icon"></i>
+                                    <p id="number" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least.one.number")%></p>
+                                </div>
+                                <div id="special-chr-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-special-chr" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-special-chr" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-special-chr" style="display: none;" class="green check circle icon"></i>
+                                    <p id="special-chr" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least.one.special.char")%></p>
+                                </div>
+                                <div id="unique-chr-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-unique-chr" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-unique-chr" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-unique-chr" style="display: none;" class="green check circle icon"></i>
+                                    <p id="unique-chr" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least.one.unique.char")%></p>
+                                </div>
+                                <div id="repeated-chr-block" class="password-policy-description mb-2" style="display: none;">
+                                    <i id="password-validation-neutral-repeated-chr" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-repeated-chr" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-repeated-chr" style="display: none;" class="green check circle icon"></i>
+                                    <p id="repeated-chr" class="pl-4"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than.one.repeated.char")%></p>
+                                </div>
+
                             </div>
 
                             <%
-                                if (username != null) {
+                                if (StringUtils.isNotBlank(username)) {
                             %>
                             <div>
                                 <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username) %>"/>
                             </div>
                             <%
                                 }
-                            %>
-
-                            <%
-                                if (callback != null) {
+                                if (StringUtils.isNotBlank(callback)) {
                             %>
                             <div>
                                 <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
                             </div>
                             <%
                                 }
-                            %>
-
-                            <%
-                                if (userStoreDomain != null) {
+                                if (StringUtils.isNotBlank(userStoreDomain)) {
                             %>
                             <div>
                                 <input type="hidden" name="userstoredomain"
@@ -149,20 +219,15 @@
                             </div>
                             <%
                                 }
-                            %>
-
-                            <%
-                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() && tenantDomainFromQuery != null) {
+                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() &&
+                                            StringUtils.isNotBlank(tenantDomainFromQuery)) {
                             %>
                             <div>
-                                <input type="hidden" name="tenantDomainFromQuery" value="<%=Encode.forHtmlAttribute(tenantDomainFromQuery) %>"/>
+                                <input type="hidden" name="tenantdomainFromQuery" value="<%=Encode.forHtmlAttribute(tenantDomainFromQuery) %>"/>
                             </div>
                             <%
                                 }
-                            %>
-
-                            <%
-                                if (type != null) {
+                                if (StringUtils.isNotBlank(type)) {
                             %>
                             <div>
                                 <input type="hidden" name="type" value="<%=Encode.forHtmlAttribute(type) %>"/>
@@ -170,21 +235,37 @@
                             <%
                                 }
                             %>
-
-                           <div class="field">
-                                <label for="confirm-password">
+                           <div id="reset-password2-container" class="field mt-5 mb-3">
+                                <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
                                 </label>
-                                <div class="ui right icon input">
+                                <div class="ui right icon input addon-wrapper">
                                     <input
-                                        id="confirm-password"
-                                        name="confirm-password"
+                                        id="reset-password2"
+                                        name="reset-password2"
                                         type="password"
                                         data-match="reset-password"
                                         required=""
+                                        autocomplete="new-password"
+                                        aria-describedby="passwordMatch"
                                     />
                                     <i id="confirmPasswordShowHide" class="eye link icon slash"
                                        onclick="confirmPasswordShowToggle()"></i>
+
+                                       <%-- Input Description for screen readers --%>
+                                    <span id="passwordMatch" style="display: none;">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "passwords.should.match")%>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="password-validation-block">
+                                <div class="password-policy-description">
+                                    <i id="password-validation-neutral-match" class="inverted grey circle icon"></i>
+                                    <i id="password-validation-cross-match" style="display: none;" class="red times circle icon"></i>
+                                    <i id="password-validation-check-match" style="display: none;" class="green check circle icon"></i>
+                                    <p class="pl-4">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "passwords.should.match")%>
+                                    </p>
                                 </div>
                             </div>
                             <div class="ui divider hidden"></div>
@@ -192,8 +273,8 @@
                             <div class="align-right buttons">
                                 <button id="submit"
                                         class="ui primary button"
-                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Proceed")%>
+                                        type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Proceed")%>
                                 </button>
                             </div>
                         </form>
@@ -203,15 +284,13 @@
             <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
                 <%
-                String productFooterFilePath = "extensions/product-footer.jsp";
-                if (StringUtils.isNotBlank(customLayoutFileRelativeBasePath)) {
-                    productFooterFilePath = customLayoutFileRelativeBasePath + "/product-footer.jsp";
-                }
-                if (!new File(getServletContext().getRealPath(productFooterFilePath)).exists()) {
-                    productFooterFilePath = "includes/product-footer.jsp";
-                }
+                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                    if (productFooterFile.exists()) {
                 %>
-                <jsp:include page="<%= productFooterFilePath %>" />
+                    <jsp:include page="extensions/product-footer.jsp"/>
+                <% } else { %>
+                    <jsp:include page="includes/product-footer.jsp"/>
+                <% } %>
             </layout:component>
         </layout:main>
 
@@ -226,32 +305,100 @@
         <% } %>
 
         <script type="text/javascript">
+            var passwordField = $("#reset-password");
+            var passwordConfirmField = $("#reset-password2");
+            var passwordConfig = <%=passwordConfig%>;
+            var lowerCaseLetters = /[a-z]/g;
+            var upperCaseLetters = /[A-Z]/g;
+            var numbers = /[0-9]/g;
+            var specialChr = /[!#$%&'()*+,\-\.\/:;<=>?@[\]^_{|}~]/g;
+            var consecutiveChr = /([^])\1+/g;
+
+            if (!passwordConfig) {
+                passwordConfig = {
+                    "minLength": 8,
+                    "maxLength": 30,
+                    "minNumber": 1,
+                    "minUpperCase": 1,
+                    "minLowerCase": 1,
+                    "minSpecialChr": 1
+                }
+            }
+
+            if (passwordConfig.minLength> 0 || passwordConfig.maxLength > 0) {
+                document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
+                    " " + (passwordConfig.minLength ?? 8) +
+                " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +
+                        " " + (passwordConfig.maxLength ?? 30) + " " +
+                '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters")%>';
+                $("#length-block").css("display", "block");
+            }
+            if (passwordConfig.minNumber > 0) {
+                document.getElementById("number").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minNumber + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "numbers")%>';
+                $("#number-block").css("display", "block");
+            }
+            if ((passwordConfig.minUpperCase > 0) || passwordConfig.minLowerCase > 0) {
+                let cases = [];
+                if (passwordConfig.minUpperCase > 0) {
+                    cases.push(passwordConfig.minUpperCase + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "uppercase")%>');
+                }
+                if (passwordConfig.minLowerCase > 0) {
+                    cases.push(passwordConfig.minLowerCase + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase")%>');
+                }
+                document.getElementById("case").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + (cases.length > 1
+                        ? cases.join(" " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +  " ")
+                        : cases[0]) + " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "character.s")%>';
+                $("#case-block").css("display", "block");
+            }
+            if (passwordConfig.minSpecialChr > 0) {
+                document.getElementById("special-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minSpecialChr + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "special.characters")%>';
+                $("#special-chr-block").css("display", "block");
+            }
+            if (passwordConfig.minUniqueChr > 0) {
+                document.getElementById("unique-chr").innerHTML =' <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minUniqueChr + " "
+                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "unique.characters")%>';
+                $("#unique-chr-block").css("display", "block");
+            }
+            if (passwordConfig.maxConsecutiveChr > 0) {
+                document.getElementById("repeated-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than")%>'
+                    + " " + passwordConfig.maxConsecutiveChr + " "
+                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "repeated.characters")%>';
+                $("#repeated-chr-block").css("display", "block");
+            }
+
             $(document).ready(function () {
 
+                passwordField.keyup(function() {
+                    validatePassword();
+                    validateConfirmPassword();
+                });
+
+                passwordConfirmField.keyup(function() {
+                    validateConfirmPassword();
+                });
+
+                passwordField.focusout(function() {
+                    displayPasswordCross();
+                });
+
+                passwordConfirmField.focusout(function() {
+                    displayConfirmPasswordCross();
+                });
+
                 $("#passwordResetForm").submit(function (e) {
-
                     $("#server-error-msg").remove();
-                    var password = $("#reset-password").val();
-                    var password2 = $("#confirm-password").val();
-                    var error_msg = $("#error-msg");
+                    displayPasswordCross();
+                    displayConfirmPasswordCross();
 
-                    if (!password || 0 === password.length) {
-                        error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Password.cannot.be.empty")%>");
-                        error_msg.show();
-                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                        return false;
-                    }
-
-                    if (password !== password2) {
-                        error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Passwords.did.not.match.please.try.again")%>");
-                        error_msg.show();
-                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                        return false;
-                    }
-
-                    return true;
+                    return passwordSubmitValidation();
                 });
             });
 
@@ -274,11 +421,285 @@
                 if(password2) {
                     password2 = false;
                     document.getElementById("confirmPasswordShowHide").classList.remove("slash");
-                    document.getElementById("confirm-password").setAttribute("type","text");
+                    document.getElementById("reset-password2").setAttribute("type","text");
                 } else{
                     password2 = true;
                     document.getElementById("confirmPasswordShowHide").classList.add("slash");
-                    document.getElementById("confirm-password").setAttribute("type","password");
+                    document.getElementById("reset-password2").setAttribute("type","password");
+                }
+            }
+
+            /**
+             * Util function to validate password
+             */
+            function validatePassword() {
+
+                $("#reset-password-container").removeClass("error");
+
+                if ((!passwordConfig.minLength || passwordField.val().length >= passwordConfig.minLength) &&
+                    (!passwordConfig.maxLength || passwordField.val().length <= passwordConfig.maxLength)) {
+                    $("#password-validation-check-length").css("display", "block");
+                    $("#password-validation-neutral-length").css("display", "none");
+                    $("#password-validation-cross-length").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-length").css("display", "block");
+                    $("#password-validation-check-length").css("display", "none");
+                    $("#password-validation-cross-length").css("display", "none");
+                }
+
+                if (checkMatch(passwordField.val(), passwordConfig.minUpperCase, upperCaseLetters) &&
+                    checkMatch(passwordField.val(), passwordConfig.minLowerCase, lowerCaseLetters)) {
+                    $("#password-validation-check-case").css("display", "block");
+                    $("#password-validation-neutral-case").css("display", "none");
+                    $("#password-validation-cross-case").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-case").css("display", "block");
+                    $("#password-validation-check-case").css("display", "none");
+                    $("#password-validation-cross-case").css("display", "none");
+                }
+
+                if (checkMatch(passwordField.val(), passwordConfig.minNumber, numbers)) {
+                    $("#password-validation-check-number").css("display", "block");
+                    $("#password-validation-neutral-number").css("display", "none");
+                    $("#password-validation-cross-number").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-number").css("display", "block");
+                    $("#password-validation-check-number").css("display", "none");
+                    $("#password-validation-cross-number").css("display", "none");
+                }
+
+                if (checkMatch(passwordField.val(), passwordConfig.minSpecialChr, specialChr)) {
+                    $("#password-validation-check-special-chr").css("display", "block");
+                    $("#password-validation-neutral-special-chr").css("display", "none");
+                    $("#password-validation-cross-special-chr").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-special-chr").css("display", "block");
+                    $("#password-validation-check-special-chr").css("display", "none");
+                    $("#password-validation-cross-special-chr").css("display", "none");
+                }
+
+                if (checkUniqueCharacter(passwordField.val(), passwordConfig.minUniqueChr)) {
+                    $("#password-validation-check-unique-chr").css("display", "block");
+                    $("#password-validation-neutral-unique-chr").css("display", "none");
+                    $("#password-validation-cross-unique-chr").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-unique-chr").css("display", "block");
+                    $("#password-validation-check-unique-chr").css("display", "none");
+                    $("#password-validation-cross-unique-chr").css("display", "none");
+                }
+
+                if (checkConsecutiveMatch(passwordField.val(), passwordConfig.maxConsecutiveChr, consecutiveChr)) {
+                    $("#password-validation-check-repeated-chr").css("display", "block");
+                    $("#password-validation-neutral-repeated-chr").css("display", "none");
+                    $("#password-validation-cross-repeated-chr").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-repeated-chr").css("display", "block");
+                    $("#password-validation-check-repeated-chr").css("display", "none");
+                    $("#password-validation-cross-repeated-chr").css("display", "none");
+                }
+            }
+
+            /**
+             * Util function to validate confirm password.
+             */
+            function validateConfirmPassword() {
+                $("#reset-password2-container").removeClass("error");
+
+                if (passwordField.val() !== "" && passwordField.val() === passwordConfirmField.val()) {
+                    $("#password-validation-check-match").css("display", "block");
+                    $("#password-validation-neutral-match").css("display", "none");
+                    $("#password-validation-cross-match").css("display", "none");
+                } else {
+                    $("#password-validation-neutral-match").css("display", "block");
+                    $("#password-validation-check-match").css("display", "none");
+                    $("#password-validation-cross-match").css("display", "none");
+                }
+            }
+
+            /**
+             * Function to enable cross marks on unmet criteria when submitting.
+             */
+            function passwordSubmitValidation() {
+
+                var validPassword = true;
+
+                if ((passwordConfig.minLength && passwordField.val().length < passwordConfig.minLength) ||
+                    (passwordConfig.maxLength && passwordField.val().length > passwordConfig.maxLength)) {
+                    validPassword = false;
+                }
+
+                if (!checkMatch(passwordField.val(), passwordConfig.minUpperCase, upperCaseLetters) ||
+                    !checkMatch(passwordField.val(), passwordConfig.minLowerCase, lowerCaseLetters)) {
+                    validPassword = false;
+                }
+                if (!checkMatch(passwordField.val(), passwordConfig.minNumber, numbers)) {
+                    validPassword = false;
+                }
+                if (!checkMatch(passwordField.val(), passwordConfig.minSpecialChr, specialChr)) {
+                    validPassword = false;
+                }
+                if (!checkUniqueCharacter(passwordField.val(), passwordConfig.minUniqueChr)) {
+                    validPassword = false;
+                }
+                if (!checkConsecutiveMatch(passwordField.val(), passwordConfig.maxConsecutiveChr, consecutiveChr)) {
+                    validPassword = false;
+                }
+                if (!(passwordField.val() !== "" && passwordField.val() === passwordConfirmField.val())) {
+                    validPassword = false;
+                }
+
+                return validPassword;
+            }
+
+            function displayPasswordCross() {
+                var displayError = false;
+
+                $("#reset-password-container").removeClass("error");
+
+                // Prevent validation from happening when the password is empty
+                if (passwordField.val().length <= 0) {
+                    return false;
+                }
+
+                if ((!passwordConfig.minLength || passwordField.val().length >= passwordConfig.minLength) &&
+                    (!passwordConfig.maxLength || passwordField.val().length <= passwordConfig.maxLength)) {
+                    $("#password-validation-check-length").css("display", "block");
+                    $("#password-validation-neutral-length").css("display", "none");
+                    $("#password-validation-cross-length").css("display", "none");
+                } else {
+                    $("#password-validation-cross-length").css("display", "block");
+                    $("#password-validation-check-length").css("display", "none");
+                    $("#password-validation-neutral-length").css("display", "none");
+
+                    displayError = true;
+                }
+
+                if (checkMatch(passwordField.val(), passwordConfig.minUpperCase, upperCaseLetters) &&
+                    checkMatch(passwordField.val(), passwordConfig.minLowerCase, lowerCaseLetters)) {
+                    $("#password-validation-check-case").css("display", "block");
+                    $("#password-validation-neutral-case").css("display", "none");
+                    $("#password-validation-cross-case").css("display", "none");
+                } else {
+                    $("#password-validation-cross-case").css("display", "block");
+                    $("#password-validation-check-case").css("display", "none");
+                    $("#password-validation-neutral-case").css("display", "none");
+
+                    displayError = true;
+                }
+
+                if (checkMatch(passwordField.val(), passwordConfig.minNumber, numbers)) {
+                    $("#password-validation-check-number").css("display", "block");
+                    $("#password-validation-neutral-number").css("display", "none");
+                    $("#password-validation-cross-number").css("display", "none");
+                } else {
+                    $("#password-validation-cross-number").css("display", "block");
+                    $("#password-validation-check-number").css("display", "none");
+                    $("#password-validation-neutral-number").css("display", "none");
+
+                    displayError = true;
+                }
+                if (checkMatch(passwordField.val(), passwordConfig.minSpecialChr, specialChr)) {
+                    $("#password-validation-check-special-chr").css("display", "block");
+                    $("#password-validation-neutral-special-chr").css("display", "none");
+                    $("#password-validation-cross-special-chr").css("display", "none");
+                } else {
+                    $("#password-validation-cross-special-chr").css("display", "block");
+                    $("#password-validation-check-special-chr").css("display", "none");
+                    $("#password-validation-neutral-special-chr").css("display", "none");
+
+                    displayError = true;
+                }
+                if (checkUniqueCharacter(passwordField.val(), passwordConfig.minUniqueChr)) {
+                    $("#password-validation-check-unique-chr").css("display", "block");
+                    $("#password-validation-neutral-unique-chr").css("display", "none");
+                    $("#password-validation-cross-unique-chr").css("display", "none");
+                } else {
+                    $("#password-validation-cross-unique-chr").css("display", "block");
+                    $("#password-validation-check-unique-chr").css("display", "none");
+                    $("#password-validation-neutral-unique-chr").css("display", "none");
+
+                    displayError = true;
+                }
+                if (checkConsecutiveMatch(passwordField.val(), passwordConfig.maxConsecutiveChr, consecutiveChr)) {
+                    $("#password-validation-check-repeated-chr").css("display", "block");
+                    $("#password-validation-neutral-repeated-chr").css("display", "none");
+                    $("#password-validation-cross-repeated-chr").css("display", "none");
+                } else {
+                    $("#password-validation-cross-repeated-chr").css("display", "block");
+                    $("#password-validation-check-repeated-chr").css("display", "none");
+                    $("#password-validation-neutral-repeated-chr").css("display", "none");
+
+                    displayError = true;
+                }
+
+                if (displayError) {
+                    $("#reset-password-container").addClass("error");
+                }
+            }
+
+            /**
+             * Function to validate against regex pattern.
+             */
+            function checkMatch(_password, limit, pattern) {
+                if (!limit || (_password.match(pattern)?.length >= limit)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            /**
+             * Function to validate against consecutive character validator.
+             */
+            function checkConsecutiveMatch(_password, limit, pattern) {
+
+                var _consValid = true;
+                if (limit > 0 &&
+                    _password.match(pattern) && _password.match(pattern).length > 0) {
+                    var list = _password.match(pattern);
+                    var longest = list.sort(
+                        function(a,b) {
+                            return b.length - a.length
+                        }
+                    )[0];
+                    if (longest.length > limit) {
+                        _consValid = false;
+                    }
+                }
+                return _consValid;
+            }
+
+            /**
+             * Function to validate against unique character validator.
+             */
+            function checkUniqueCharacter(_password, limit) {
+
+                var unique = _password.split("");
+                var _unique = new Set(unique);
+                if (!limit || (_unique.size >= limit)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function displayConfirmPasswordCross() {
+                $("#reset-password2-container").removeClass("error");
+
+                // Prevent validation from happening when the password is empty
+                if (passwordConfirmField.val().length <= 0) {
+                    return false;
+                }
+
+                if (passwordField.val() !== "" && passwordField.val() === passwordConfirmField.val()) {
+                    $("#password-validation-check-match").css("display", "block");
+                    $("#password-validation-neutral-match").css("display", "none");
+                    $("#password-validation-cross-match").css("display", "none");
+                } else {
+                    $("#reset-password2-container").addClass("error");
+                    $("#password-validation-cross-match").css("display", "block");
+                    $("#password-validation-check-match").css("display", "none");
+                    $("#password-validation-neutral-match").css("display", "none");
                 }
             }
         </script>
