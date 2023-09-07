@@ -196,7 +196,6 @@
                                     !StringUtils.equals(claim.getClaimUri(), IdentityManagementEndpointConstants.ClaimURIs.CHALLENGE_QUESTION_1_CLAIM) &&
                                     !StringUtils.equals(claim.getClaimUri(), IdentityManagementEndpointConstants.ClaimURIs.CHALLENGE_QUESTION_2_CLAIM) &&
                                     !claim.isReadOnly()) {
-                                System.out.println("Hi");
                             %>
                             <div class="field">
                                 <% if (claim.isRequired()) { %>

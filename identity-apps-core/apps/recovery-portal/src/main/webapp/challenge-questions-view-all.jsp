@@ -126,7 +126,7 @@
                             <div class="g-recaptcha"
                                 data-size="invisible"
                                 data-callback="onCompleted"
-                                data-action="usernameRecovery"
+                                data-action="securityQuestion"
                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                             >
                             </div>
