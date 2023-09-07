@@ -1,6 +1,6 @@
 {
     "$schema": "../node_modules/nx/schemas/project-schema.json",
-    "root": "./identity-apps-core",
+    "root": "identity-apps-core",
     "sourceRoot": "identity-apps-core/apps",
     "projectType": "application",
     "generators": {},
