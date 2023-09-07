@@ -60,9 +60,9 @@
         File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
         if (analyticsFile.exists()) {
     %>
-        <jsp:include page="extensions/analytics.jsp"/>
+        <jsp:include page="../extensions/analytics.jsp"/>
     <% } else { %>
-        <jsp:include page="includes/analytics.jsp"/>
+        <jsp:include page="../includes/analytics.jsp"/>
     <% } %>
     
     <script type="text/javascript">

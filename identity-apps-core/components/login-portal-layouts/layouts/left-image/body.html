@@ -1,3 +1,4 @@
+{{^isPolicyPage}}
 <div class="page-wrapper layout-file {{#isErrorResponse}}error-page{{/isErrorResponse}} {{#isSuccessResponse}}success-page{{/isSuccessResponse}}">
     <div class="left-side">
       {{#sideImgUrl}}
@@ -14,3 +15,16 @@
       {{{ProductFooter}}}
     </div>
 </div>
+{{/isPolicyPage}}
+
+{{#isPolicyPage}}
+<div class="page-wrapper layout-file {{#isErrorResponse}}error-page{{/isErrorResponse}} {{#isSuccessResponse}}success-page{{/isSuccessResponse}}">
+  <main class="center-segment">
+      <div class="ui container aligned middle">
+          {{{ProductHeader}}}
+          {{{MainSection}}}
+      </div>
+      {{{ProductFooter}}}
+  </main>
+</div>
+{{/isPolicyPage}}
