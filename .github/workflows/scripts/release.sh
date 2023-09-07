@@ -32,36 +32,81 @@ goToRootDirectory() {
 }
 
 process_console_package() {
+    local releaseVersion="$1"
+
+    if [ -z "$releaseVersion" ]; then
+        echo "Please provide a release version as an argument."
+        return 0
+    fi
+
     goToRootDirectory &&
         cd "apps/console/java" || exit 1 &&
-        local console_release_version
-    console_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+        echo "Releasing console version: $releaseVersion"
 
-    echo "Releasing console version: $console_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
-        mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml -P include-sources
+    mvn -Dresume=false \
+        -Darguments='-Dadditionalparam=-Xdoclint:none' \
+        -Dmaven.test.skip=true \
+        release:prepare -B \
+        -DreleaseVersion="$releaseVersion" \
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
+        mvn -Dresume=false \
+            -Darguments='-Dadditionalparam=-Xdoclint:none' \
+            -Dmaven.test.skip=true \
+            release:perform -B \
+            --settings ~/.m2/settings.xml \
+            -P include-sources
 }
 
 process_myaccount_package() {
+    local releaseVersion="$1"
+
+    if [ -z "$releaseVersion" ]; then
+        echo "Please provide a release version as an argument."
+        return 0
+    fi
+
     goToRootDirectory &&
         cd "apps/myaccount/java" || exit 1 &&
-        local myaccount_release_version
-    myaccount_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+        echo "Releasing myaccount version: $releaseVersion"
 
-    echo "Releasing myaccount version: $myaccount_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
-        mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml -P include-sources
+    mvn -Dresume=false \
+        -Darguments='-Dadditionalparam=-Xdoclint:none' \
+        -Dmaven.test.skip=true \
+        release:prepare -B \
+        -DreleaseVersion="$releaseVersion" \
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
+        mvn -Dresume=false \
+            -Darguments='-Dadditionalparam=-Xdoclint:none' \
+            -Dmaven.test.skip=true \
+            release:perform -B \
+            --settings ~/.m2/settings.xml \
+            -P include-sources
 }
 
 process_java_apps_package() {
+    local releaseVersion="$1"
+
+    if [ -z "$releaseVersion" ]; then
+        echo "Please provide a release version as an argument."
+        return 0
+    fi
+
     goToRootDirectory &&
         cd "identity-apps-core" || exit 1 &&
-        local java_apps_release_version
-    java_apps_release_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+        echo "Releasing java_apps version: $releaseVersion"
 
-    echo "Releasing java-apps version: $java_apps_release_version"
-    mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:prepare -B -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
-        mvn -Dresume=false -Darguments='-Dadditionalparam=-Xdoclint:none' -Dmaven.test.skip=true release:perform -B --settings ~/.m2/settings.xml -P include-sources
+    mvn -Dresume=false \
+        -Darguments='-Dadditionalparam=-Xdoclint:none' \
+        -Dmaven.test.skip=true \
+        release:prepare -B \
+        -DreleaseVersion="$releaseVersion" \
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
+        mvn -Dresume=false \
+            -Darguments='-Dadditionalparam=-Xdoclint:none' \
+            -Dmaven.test.skip=true \
+            release:perform -B \
+            --settings ~/.m2/settings.xml \
+            -P include-sources
 }
 
 PACKAGES=$1
@@ -76,16 +121,17 @@ echo "Releasing packages: $PACKAGES"
 # Iterate over each package in the JSON array
 for package in $(echo "$PACKAGES" | jq -c '.[]'); do
     name=$(echo "$package" | jq -r '.name')
+    version=$(echo "$package" | jq -r '.version')
 
     case "$name" in
     "@wso2is/console")
-        process_console_package
+        process_console_package "$version"
         ;;
     "@wso2is/myaccount")
-        process_myaccount_package
+        process_myaccount_package "$version"
         ;;
     "@wso2is/java-apps")
-        process_java_apps_package
+        process_java_apps_package "$version"
         ;;
     *)
         echo "Irrelevent package: $package"
