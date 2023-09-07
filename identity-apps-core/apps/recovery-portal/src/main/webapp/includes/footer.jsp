@@ -17,7 +17,7 @@
 --%>
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
-<script src="libs/themes/asgardio/semantic.min.js"></script>
+<script src="libs/themes/wso2is/semantic.min.js"></script>
 
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.

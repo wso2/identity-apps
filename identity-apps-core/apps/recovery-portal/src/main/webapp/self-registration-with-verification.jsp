@@ -324,7 +324,7 @@
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Create.account")%>
                 </h3>
                 <div class="identifier-container mb-2">
-                    <img class="ui image mr-1" alt="Username Icon" src="libs/themes/asgardio/assets/images/user.svg">
+                    <img class="ui image mr-1" alt="Username Icon" src="libs/themes/wso2is/assets/images/user.svg">
                     <span id="user-name-label" class="ellipsis" data-position="top left" data-variation="inverted">
                         <%=Encode.forHtmlAttribute(username)%>
                     </span>
