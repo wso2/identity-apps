@@ -445,7 +445,7 @@
                         String type = (String)federatedAuthenticator.get("type");
                         String displayName = name;
 
-                        String imageURL = "libs/themes/asgardio/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                        String imageURL = "libs/themes/wso2is/assets/images/identity-providers/enterprise-idp-illustration.svg";
                         try {
                             IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
                             imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, name);
@@ -473,7 +473,7 @@
                             >
                             <img 
                                 class="ui image" 
-                                src="libs/themes/asgardio/assets/images/identity-providers/google-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/google-idp-illustration.svg"
                                 alt="Google sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
@@ -495,7 +495,7 @@
                             >
                             <img 
                                 class="ui image" 
-                                src="libs/themes/asgardio/assets/images/identity-providers/github-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/github-idp-illustration.svg"
                                 alt="Github sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
@@ -517,7 +517,7 @@
                             >
                             <img
                                 class="ui image"
-                                src="libs/themes/asgardio/assets/images/identity-providers/facebook-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/facebook-idp-illustration.svg"
                                 alt="Facebook sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>

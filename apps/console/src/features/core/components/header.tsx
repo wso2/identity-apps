@@ -47,15 +47,15 @@ import { FeatureGateConstants } from "../../../extensions/components/feature-gat
 import { useCheckFeatureStatus } from "../../../extensions/components/feature-gate/controller/featureGate-util";
 import { ShowFeature } from "../../../extensions/components/feature-gate/controller/show-feature";
 import { FeatureStatus } from "../../../extensions/components/feature-gate/models/feature-gate";
-import { ReactComponent as AskHelpIcon } from "../../../themes/asgardio/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../../themes/asgardio/assets/images/icons/community-icon.svg";
-import {
-    ReactComponent as ContactSupportIcon
-} from "../../../themes/asgardio/assets/images/icons/contact-support-icon.svg";
-import { ReactComponent as DocsIcon } from "../../../themes/asgardio/assets/images/icons/docs-icon.svg";
-import { ReactComponent as BillingPortalIcon } from "../../../themes/asgardio/assets/images/icons/dollar-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
+import { ReactComponent as CommunityIcon } from "../../../themes/wso2is/assets/images/icons/community-icon.svg";
+import {
+    ReactComponent as ContactSupportIcon
+} from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
+import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
+import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";

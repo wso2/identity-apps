@@ -22,8 +22,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 import { AppState } from "../../../features/core";
-import { ReactComponent as DocIcon } from "../../../themes/asgardio/assets/images/documentation.svg";
-import { ReactComponent as HelpIcon } from "../../../themes/asgardio/assets/images/help.svg";
+import { ReactComponent as DocIcon } from "../../../themes/wso2is/assets/images/documentation.svg";
+import { ReactComponent as HelpIcon } from "../../../themes/wso2is/assets/images/help.svg";
 
 /**
  * Contact Support Icon to link support portal.

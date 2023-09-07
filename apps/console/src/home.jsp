@@ -147,7 +147,7 @@
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
             var isAdaptiveAuthenticationAvailable = true;
-            var isOrganizationManagementEnabled = !JSON.parse("<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>");
+            var isOrganizationManagementEnabled = "<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>" === "true";
         </script>
 
         <script>
