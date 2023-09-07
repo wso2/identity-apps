@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,15 +14,13 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 /**
  * Supported operator aliases.
  *
- * @type {{ew: string[]; sw: string[]; co: string[]; eq: string[]}}
  */
-const SUPPORTED_OPERATOR_ALIASES = {
+const SUPPORTED_OPERATOR_ALIASES: any = {
     co: [ "contain", "contains" ],
     eq: [ "equal", "equals" ],
     ew: [ "end with", "ends with" ],
@@ -32,12 +30,12 @@ const SUPPORTED_OPERATOR_ALIASES = {
 /**
  * Builds a search query once a raw search string is passed in.
  *
- * @param {string} raw - Raw search string.
- * @return {string}
+ * @param raw - Raw search string.
+ * @returns Built search query.
  */
 export const buildSearchQuery = (raw: string): string => {
-    const parts = raw.split(" ");
-    const moderatedQueryParts = parts.splice(1, parts.length);
+    const parts: string[] = raw.split(" ");
+    const moderatedQueryParts: string[] = parts.splice(1, parts.length);
 
     // Try to extract the operator of the query by checking the aliases.
     // i.e if query is `name starts with john doe`, extract the `starts with` portion

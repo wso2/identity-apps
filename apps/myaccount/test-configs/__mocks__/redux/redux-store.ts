@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Mocks the Redux store.
  */
 
 import { Middleware } from "redux";
@@ -26,7 +25,6 @@ import thunk from "redux-thunk";
 
 /**
  * Middleware for the Redux store.
- * @see {@link src/features/core/store/index.ts} for middleware used in the actual store.
  */
 const middleware: Middleware[] = [
     thunk
@@ -34,6 +32,5 @@ const middleware: Middleware[] = [
 
 /**
  * Configure mock store.
- * @type {MockStoreCreator<any, Dispatch<AnyAction>>}
  */
 export const mockStore: MockStoreCreator<any, Record<string, unknown>> = configureStore(middleware);

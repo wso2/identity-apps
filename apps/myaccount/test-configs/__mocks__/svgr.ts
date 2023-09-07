@@ -17,8 +17,7 @@
  */
 
 /**
- * @fileoverview Mocks SVGs loaded with `SVGR` plugin.
  */
 
 export default "SvgrURL";
-export const ReactComponent = "div";
+export const ReactComponent: string = "div";
