@@ -18,6 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -28,8 +29,10 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Checkbox, CheckboxProps, Divider, Header, Segment, Image, Grid } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Checkbox, CheckboxProps, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import {
+    ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
     updateGovernanceConnector
@@ -50,7 +53,7 @@ interface DynamicConnectorPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the connector settings.
  *
- * @param {DynamicConnectorPropsInterface} props - Component props.
+ * @param props - Component props.
  */
 export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsInterface> = (
     props: DynamicConnectorPropsInterface
@@ -59,7 +62,7 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
 
     const [ showForm, setShowForm ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     /**
@@ -67,7 +70,8 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
      */
     useEffect(() => {
         if (connector) {
-            const enableProperty = connector.properties.find((property) => property.name === connectorToggleName);
+            const enableProperty: ConnectorPropertyInterface = connector.properties.find(
+                (property: ConnectorPropertyInterface) => property.name === connectorToggleName);
 
             setShowForm(enableProperty?.value === "true");
         }
@@ -76,13 +80,13 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
     /**
      * This is called when the enable toggle changes.
      *
-     * @param {SyntheticEvent} e Event object
-     * @param {CheckboxProps} data The data object.
+     * @param e - Event object
+     * @param data - The data object.
      */
     const handleToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
         setShowForm(data.checked);
 
-        const updateData = {
+        const updateData: any = {
             operation: "UPDATE",
             properties: []
         };
@@ -123,7 +127,7 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                     })
                 );
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -180,8 +184,8 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                 <Grid.Row columns={ 2 }>
                     <Grid.Column computer={ 10 } tablet={ 16 } mobile={ 16 }>
                         <Header>
-                             <span data-testId={ `${ testId }-header` }>
-                                 { t("extensions:manage.serverConfigurations." +
+                            <span data-testId={ `${ testId }-header` }>
+                                { t("extensions:manage.serverConfigurations." +
                                      "accountManagement.accountRecovery.heading") }
                             </span>
                             <Divider hidden />

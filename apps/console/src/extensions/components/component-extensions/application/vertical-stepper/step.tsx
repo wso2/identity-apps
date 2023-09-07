@@ -62,7 +62,7 @@ export const VerticalStep: FunctionComponent<VerticalStepPropsInterface> = (
         isSidePanelOpen
     } = props;
 
-    const classes = classNames(
+    const classes: string = classNames(
         "quick-start-step",
         {
             "complete": !alwaysOpen && !isActiveStep && isComplete,

@@ -69,14 +69,14 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         await SharedUserStoreUtils.getUserStoreRegEx(CONSUMER_USERSTORE,
             SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-            .then((response) => {
+            .then((response: string) => {
                 setRegExLoading(true);
                 userStoreRegEx = response;
             });
 
         setRegExLoading(false);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve: any, reject: any) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
             } else {
@@ -101,7 +101,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     return (
         <Forms
             data-testid={ testId }
-            onSubmit={ (values) => {
+            onSubmit={ (values: any) => {
                 onSubmit(getFormValues(values));
             } }
             submitState={ triggerSubmit }
@@ -122,9 +122,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                             validation={ async (value: string, validation: Validation) => {
-                                let isGroupNameValid = true;
+                                let isGroupNameValid: boolean = true;
 
-                                await validateGroupNamePattern().then(regex => {
+                                await validateGroupNamePattern().then((regex: string) => {
                                     isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
                                 });
 
@@ -143,7 +143,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     startIndex: 1
                                 };
 
-                                await searchGroupList(searchData).then(response => {
+                                await searchGroupList(searchData).then((response: any) => {
                                     if (response?.data?.totalResults !== 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(

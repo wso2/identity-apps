@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { render, screen, waitFor } from "@unit-testing";
+import { render, screen } from "@unit-testing";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";

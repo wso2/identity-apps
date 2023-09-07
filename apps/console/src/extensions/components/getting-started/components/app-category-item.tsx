@@ -39,8 +39,7 @@ export type CategoryItemPropsInterface = {
 
 /**
  * A category item denotes top level application template type.
- * @param props {CategoryItemPropsInterface}
- * @constructor
+ * @param props - CategoryItemPropsInterface
  */
 export const CategoryItem: FC<CategoryItemPropsInterface> = (
     props: CategoryItemPropsInterface
@@ -54,7 +53,7 @@ export const CategoryItem: FC<CategoryItemPropsInterface> = (
         comingSoon,
         className,
         style,
-        ["data-componentid"]: testId,
+        ["data-componentid"]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -97,8 +96,8 @@ export const CategoryItem: FC<CategoryItemPropsInterface> = (
                                 : null
                         }
                         <div style={ technologyLogoRowStyles() }>
-                            { techStackIcons.map((icon, index) => {
-                                const uniqueId = `${ categoryName }-tech-stack-icon-${ index }`;
+                            { techStackIcons.map((icon: any, index: number) => {
+                                const uniqueId: string = `${ categoryName }-tech-stack-icon-${ index }`;
 
                                 return (
                                     <GenericIcon
@@ -134,8 +133,8 @@ export const CategoryItem: FC<CategoryItemPropsInterface> = (
  */
 CategoryItem.defaultProps = {
     comingSoon: false,
+    "data-componentid": "category-item",
     iconSize: "default",
     loading: false,
-    techStackIcons: undefined,
-    "data-componentid": "category-item"
+    techStackIcons: undefined
 };

@@ -34,6 +34,7 @@ export default (): ReactElement => {
     const docSiteURL: string = useSelector((state: AppState) => state.config.deployment.docSiteURL);
 
     const { t } = useTranslation();
+
     return (
         (helpCenterURL || docSiteURL) && (helpCenterURL !== "" || docSiteURL !== "")
             ? (
@@ -43,23 +44,23 @@ export default (): ReactElement => {
                         className="help-center-button help-dropdown"
                         data-testid="help-center-dropdown"
                         pointing="top right"
-                        trigger={
+                        trigger={ (
                             <GenericIcon
                                 inverted
                                 transparent
                                 hoverable
                                 hoverType="circular"
-                                icon={
+                                icon={ (
                                     <Icon
                                         className="help-center-button-icon"
                                         size="large"
                                         name="question circle outline"
                                     />
-                                }
+                                ) }
                                 data-testid="help-center-dropdown-trigger-icon"
                                 size="auto"
                             />
-                        }
+                        ) }
                         icon={ null }
                     >
                         <Dropdown.Menu>

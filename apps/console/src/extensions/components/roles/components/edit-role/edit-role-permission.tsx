@@ -18,9 +18,11 @@
 
 import { AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { updateRole } from "../../../../../features/roles/api";
 import { TreeNode } from "../../../../../features/roles/models";
 import { PermissionList } from "../wizard";
@@ -49,13 +51,13 @@ interface RolePermissionDetailProps {
 
 /**
  * Component to update permissions of the selected role.
- * @param props Contains role id to get permission details.
+ * @param props - Contains role id to get permission details.
  */
 export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props:
     RolePermissionDetailProps): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         isReadOnly,
@@ -65,7 +67,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     } = props;
 
     const onPermissionUpdate = (updatedPerms: TreeNode[]) => {
-        const roleData = {
+        const roleData: any = {
             "Operations": [ {
                 "op": "replace",
                 "path": "permissions",
@@ -73,6 +75,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
             } ],
             "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
         updateRole(roleObject.id, roleData)
             .then(() => {
                 dispatch(
@@ -88,7 +91,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 );
                 onRoleUpdate();
             })
-            .catch(error => {
+            .catch((error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     dispatch(
                         addAlert({
@@ -106,9 +109,9 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                         addAlert({
                             description: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.description",
-                                { description: error.response.data.detail })
+                                    { description: error.response.data.detail })
                                 : t("console:manage.features.roles.notifications.createPermission.error.description",
-                                { description: error.response.data.detail }),
+                                    { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
                             message: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.message")

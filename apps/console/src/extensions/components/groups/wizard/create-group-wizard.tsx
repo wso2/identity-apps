@@ -163,10 +163,10 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 : groupDetails?.groupName;
 
         const members: CreateGroupMemberInterface[] = [];
-        const users = groupDetails?.BasicDetails?.users;
+        const users: any = groupDetails?.BasicDetails?.users;
 
         if (users?.length > 0) {
-            users?.forEach(user => {
+            users?.forEach((user: any) => {
                 members?.push({
                     display: user.userName,
                     value: user.id
@@ -191,11 +191,11 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         createGroup(groupData).then((response: AxiosResponse) => {
             if (response.status === 201) {
 
-                const createdGroup = response.data;
+                const createdGroup: any = response.data;
                 const rolesList: string[] = [];
 
                 if (groupDetails?.RoleList?.roles) {
-                    groupDetails?.RoleList?.roles.forEach(role => {
+                    groupDetails?.RoleList?.roles.forEach((role: any) => {
                         rolesList?.push(role.id);
                     });
                 }
@@ -412,7 +412,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         triggerSubmit={ submitGeneralSettings }
                         userStore={ selectedUserStore }
                         initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
-                        onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                        onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                         onUserFetchRequestFinish={ () => setIsWizardActionDisabled(false) }
                     />
                 </>

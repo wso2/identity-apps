@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 // import { TryOutComponent } from "../application/try-out";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -28,53 +28,54 @@ import configureStore from "redux-mock-store";
  *@see {@link https://github.com/wso2-enterprise/asgardeo-product/issues/1368}
  */
 describe("Test Suite - Try Out Extension Component.", () => {
-    const mockStore = configureStore()
-    const store = mockStore({});
+    const mockStore: any = configureStore();
+    const store: any = mockStore({});
 
     test.skip("Test proper rendering of Try Out Page", () => {
         render(
-            <Provider store={store}>
-                {/*<TryOutComponent
+            <Provider store={ store }>
+                { /*<TryOutComponent
                     application={MockApplication}
                     data-testid="try-out"
-                />*/}
-            </Provider>)
+                />*/ }
+            </Provider>);
     });
 
     test.skip("Test download react sample button to be in the document", () => {
         render(
-            <Provider store={store}>
-                {/*<TryOutComponent
+            <Provider store={ store }>
+                { /*<TryOutComponent
                     application={MockApplication}
                     data-testid="try-out"
-                />*/}
+                />*/ }
             </Provider>
-        )
+        );
         expect(screen.getByTestId("try-out-download-react-sample")).toBeInTheDocument();
     });
 
     test.skip("Test download config button to be in the document", () => {
         render(
-            <Provider store={store}>
-               {/* <TryOutComponent
+            <Provider store={ store }>
+                { /* <TryOutComponent
                     application={MockApplication}
                     data-testid="try-out"
-                />*/}
+                />*/ }
             </Provider>
-        )
+        );
         expect(screen.getByTestId("try-out-download-config")).toBeInTheDocument();
     });
 
     test.skip("Test click event of react sample download button", () => {
-        const openSpy = jest.spyOn(window, "open");
+        const openSpy: any = jest.spyOn(window, "open");
+
         render(
-            <Provider store={store}>
-                {/*<TryOutComponent
+            <Provider store={ store }>
+                { /*<TryOutComponent
                     application={MockApplication}
                     data-testid="try-out"
-                />*/}
+                />*/ }
             </Provider>
-        )
+        );
         fireEvent.click(screen.getByTestId("try-out-download-react-sample"));
         expect(openSpy).toHaveBeenCalled();
     });

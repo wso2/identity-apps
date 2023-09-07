@@ -66,7 +66,7 @@ export const VerticalStepper: FunctionComponent<VerticalStepperProps> = (
 
     return (
         <div className={ "quick-start-step-container" } data-testid={ testId }>
-            { stepContent && stepContent.map((step, index) => (
+            { stepContent && stepContent.map((step: any, index: number) => (
                 <VerticalStep
                     key={ index }
                     alwaysOpen={ alwaysOpen }

@@ -76,7 +76,7 @@ export const CardExpandedNavigationButton: FC<CardExpandedNavigationButtonProps>
  * Default props of {@link CardExpandedNavigationButton}
  */
 CardExpandedNavigationButton.defaultProps = {
+    "data-componentid": "card-expanded-navigation-button",
     iconPlacement: "right",
-    primary: false,
-    "data-componentid": "card-expanded-navigation-button"
+    primary: false
 };

@@ -16,11 +16,10 @@
  * under the License.
  */
 
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
-import { render, screen } from "@testing-library/react";
 // import { IntegrateAppComponent } from "../application/integrate";
-import userEvent from "@testing-library/user-event"
 import configureStore from "redux-mock-store";
 // import MockApplication from "./__mocks__/mock.application";
 
@@ -29,8 +28,8 @@ import configureStore from "redux-mock-store";
  *@see {@link https://github.com/wso2-enterprise/asgardeo-product/issues/1368}
  */
 describe("Test Suite - Integrate Extension Component.", () => { 
-    const mockStore = configureStore();
-    const store = mockStore({ 
+    const mockStore: any = configureStore();
+    const store: any = mockStore({ 
         helpPanel: {
             "activeTabIndex": 0,
             "docStructure": null,
@@ -41,24 +40,24 @@ describe("Test Suite - Integrate Extension Component.", () => {
 
     test.skip("Test proper rendering of Integrate Component", () => {
         render(
-            <Provider store={store}>
-                {/*<IntegrateAppComponent
+            <Provider store={ store }>
+                { /*<IntegrateAppComponent
                     application={ MockApplication }
                     applicationType={ "Single Page Application" }
                     data-testid="integrate"
-                />*/}
+                />*/ }
             </Provider>
         );
     });
 
     test.skip("Test react technology selection button is in document.", () => {
         render(
-            <Provider store={store}>
-                {/*<IntegrateAppComponent
+            <Provider store={ store }>
+                { /*<IntegrateAppComponent
                     application={ MockApplication }
                     applicationType={ "Single Page Application" }
                     data-testid="integrate"
-                />*/}
+                />*/ }
             </Provider>
         );
         expect(screen.getByTestId("integrate-technology-react")).toBeInTheDocument();
@@ -66,12 +65,12 @@ describe("Test Suite - Integrate Extension Component.", () => {
 
     test.skip("Test react technology selection button click.", () => {
         render(
-            <Provider store={store}>
-                {/*<IntegrateAppComponent
+            <Provider store={ store }>
+                { /*<IntegrateAppComponent
                     application={ MockApplication }
                     applicationType={ "Single Page Application" }
                     data-testid="integrate"
-                />*/}
+                />*/ }
             </Provider>
         );
         // userEvent.click(screen.getByTestId("integrate-technology-react"));

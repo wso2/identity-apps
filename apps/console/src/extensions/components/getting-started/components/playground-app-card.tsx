@@ -1,19 +1,26 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Heading, PrimaryButton, Text } from "@wso2is/react-components";
-import { GenericIcon } from "@wso2is/react-components";
-import React, { FC, FunctionComponent, ReactElement, useState } from "react";
-import { Card, Divider, Grid, Label } from "semantic-ui-react";
+import { GenericIcon, Heading, PrimaryButton, Text } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Card, Divider, Grid } from "semantic-ui-react";
 import { LoginPlaygroundWizard } from "./login-playground-wizard";
-import { EventPublisher } from "../../../../features/core";
 import { getGettingStartedCardIllustrations } from "../configs";
 
 export type Context = "TEMPLATES" | "RECENT_APPS";
@@ -27,14 +34,11 @@ export const PlaygroundApplicationCard: FunctionComponent<PlaygroundApplicationC
     props: PlaygroundApplicationCardInterface
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId,
         onApplicationCreate
     } = props;
     
 
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
     
     return (
         <Card
@@ -65,8 +69,8 @@ export const PlaygroundApplicationCard: FunctionComponent<PlaygroundApplicationC
                         <Text
                             className="pl-5 pr-5"
                             styles={ {
-                                textAlign: "center",
-                                color: "#7d7272"
+                                color: "#7d7272",
+                                textAlign: "center"
                             } }>
                             Let&apos;s use the Try It application to try out the login flows of Asgardeo.
                         </Text>

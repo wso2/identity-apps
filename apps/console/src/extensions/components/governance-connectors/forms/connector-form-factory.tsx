@@ -16,15 +16,18 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { SelfRegistrationForm } from "./self-registration-form";
-import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
-import { GovernanceConnectorInterface, ServerConfigurationsConstants } from "../../../../features/server-configurations";
-import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
-import { FeatureConfigInterface, AppState } from "../../../../features/core";
 import { useSelector } from "react-redux";
+import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
+import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
+import { SelfRegistrationForm } from "./self-registration-form";
+import { AppState, FeatureConfigInterface } from "../../../../features/core";
+import {
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants
+} from "../../../../features/server-configurations";
 
 /**
  * Proptypes for the connector form factory component.
@@ -36,7 +39,7 @@ interface ConnectorFormFactoryInterface extends TestableComponentInterface {
     initialValues: GovernanceConnectorInterface;
     /**
      * Callback for form submit.
-     * @param {any} values - Resolved Form Values.
+     * @param values - Resolved Form Values.
      */
     onSubmit: (values) => void;
     /**
@@ -60,8 +63,8 @@ interface ConnectorFormFactoryInterface extends TestableComponentInterface {
 /**
  * Connector form factory.
  *
- * @param {ConnectorFormFactoryInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns connector form factory component.
  */
 export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterface> = (
     props: ConnectorFormFactoryInterface
@@ -72,14 +75,13 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         onSubmit,
         connectorId,
         isConnectorEnabled,
-        isSubmitting,
-        [ "data-testid" ]: testId
+        isSubmitting
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isReadOnly = useMemo(
+    const isReadOnly: boolean = useMemo(
         () =>
             !hasRequiredScopes(
                 featureConfig?.attributeDialects,

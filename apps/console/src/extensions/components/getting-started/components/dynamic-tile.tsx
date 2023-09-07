@@ -33,7 +33,6 @@ export type DynamicTilePropsInterface = {
     /**
      * You can specify whether the footer content/items
      * should be justified to the end or not. Otherwise,
-     * by default it has {@code justify-content: space-between}
      */
     justifyFooter?: "end" | "start";
     bodyAlignment?: "center" | "start";
@@ -60,7 +59,7 @@ export const DynamicTile: FC<DynamicTilePropsInterface> = (
         ...rest
     } = props;
 
-    const classes = classNames(
+    const classes: string = classNames(
         "application-tile",
         {
             /**

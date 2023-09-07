@@ -22,9 +22,12 @@ import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { SettingsSection } from "./settings-section";
 import { AppConstants, history } from "../../../../features/core";
-import { GovernanceConnectorInterface } from "../../../../features/server-configurations/models";
 import { ServerConfigurationsConstants } from "../../../../features/server-configurations";
 import { getSettingsSectionIcons } from "../../../../features/server-configurations/configs";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "../../../../features/server-configurations/models";
 
 /**
  * Prop types for the edit connector component.
@@ -39,16 +42,15 @@ interface EditConnectorProps extends TestableComponentInterface {
 /**
  * Edit connector component.
  *
- * @param {EditConnectorProps} props - Props injected to the connector component.
+ * @param props - Props injected to the connector component.
  *
- * @return {React.ReactElement}
+ * @returns Edit connector component.
  */
 export const EditConnector: FunctionComponent<EditConnectorProps> = (
     props: EditConnectorProps
 ): ReactElement => {
     const {
         connector,
-        onUpdate,
         categoryID,
         connectorToggleName,
         ["data-testid"]: testId
@@ -63,7 +65,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
      */
     useEffect(() => {
         if (connector) {
-            const enableProperty = connector.properties.find((property) => property.name === connectorToggleName);
+            const enableProperty: ConnectorPropertyInterface = connector.properties.find(
+                (property: ConnectorPropertyInterface) => property.name === connectorToggleName);
 
             setEnableOption(enableProperty?.value === "true");
         }
@@ -96,7 +99,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
         switch (connector?.id) {
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return (
-                    t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.connectorDescription")
+                    t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity" +
+                    ".connectorDescription")
                 );
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return (
