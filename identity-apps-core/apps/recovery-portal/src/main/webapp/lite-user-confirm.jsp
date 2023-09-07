@@ -48,6 +48,13 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
+    if (error) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", errorMsg);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
@@ -129,81 +136,11 @@
     }
 %>
 
-    <html lang="en-US">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <%-- title --%>
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:include page="includes/title.jsp"/>
-        <% } %>
+<html lang="en-US">
+<head>
+    <title></title>
+</head>
+<body>
 
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
-    <%-- header --%>
-    <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-        if (headerFile.exists()) {
-    %>
-            <jsp:include page="extensions/header.jsp"/>
-    <% } else { %>
-            <jsp:include page="includes/header.jsp"/>
-    <% } %>
-
-    <%-- page content --%>
-    <div class="container-fluid body-wrapper">
-
-        <div class="row">
-            <%-- content --%>
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-
-                <div class="boarder-all ">
-
-                    <% if (error) { %>
-                    <div class="alert alert-danger" id="server-error-msg">
-                        <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
-                    </div>
-                    <% }else{
-                        %>
-                    <div class="alert alert-info"><%=message%></div>
-                    <%
-                    } %>
-                    <div class="alert alert-danger" id="error-msg" hidden="hidden"></div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-
-        </div>
-    </div>
-
-    <%-- footer --%>
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-            <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-            <jsp:include page="includes/footer.jsp"/>
-    <% } %>
-
-    <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-    </body>
-    </html>
+</body>
+</html>

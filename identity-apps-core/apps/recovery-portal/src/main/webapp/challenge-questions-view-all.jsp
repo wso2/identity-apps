@@ -26,6 +26,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.UserIdentityManagementAdminServiceClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.stub.dto.ChallengeQuestionDTO" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -50,28 +54,16 @@
 
 <html lang="en-US">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%-- title --%>
+    <%-- header --%>
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+            <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:include page="includes/title.jsp"/>
+            <jsp:include page="includes/header.jsp"/>
     <% } %>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
+    
     <%
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
@@ -81,49 +73,47 @@
         }
     %>
 </head>
-<body>
-<%-- header --%>
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:include page="includes/header.jsp"/>
-<% } %>
-
-<%-- page content --%>
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <%-- content --%>
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
+<body class="login-portal layout recovery-layout">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader">
+            <%-- product-title --%>
             <%
-                if (errorResponse != null) {
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
             %>
-            <div class="alert alert-danger" id="server-error-msg">
-                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
-            </div>
-            <%
-                }
-            %>
-            <div class="clearfix"></div>
-            <div class="boarder-all ">
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component componentName="MainSection" >
+            <div class="ui segment">
+                <%-- page content --%>
+                <%
+                    if (errorResponse != null) {
+                %>
+                <div class="ui visible negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
+                </div>
+                <div class="ui divider hidden"></div>
 
-                <div class="padding-double">
-                    <form method="post" action="processsecurityquestions.do" id="securityQuestionForm">
+                <%
+                    }
+                %>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="processsecurityquestions.do"
+                          id="securityQuestionForm">
                         <%
-                            int count = 0;
                             if (challengeQuestions != null) {
                                 for (Question challengeQuestion : challengeQuestions) {
                         %>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                        <div class="field">
                             <label class="control-label"><%=Encode.forHtml(challengeQuestion.getQuestion())%>
                             </label>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                            <input name="<%=Encode.forHtmlAttribute(challengeQuestion.getQuestionSetId())%>"
-                                   type="text"
+                        <div class="field">
+                            <input name="<%=Encode.forHtmlAttribute(challengeQuestion.getQuestionSetId())%>" type="password"
                                    class="form-control"
                                    tabindex="0" autocomplete="off" required/>
                         </div>
@@ -139,7 +129,7 @@
                             <div class="g-recaptcha"
                                 data-size="invisible"
                                 data-callback="onCompleted"
-                                data-action="securityQuestion"
+                                data-action="usernameRecovery"
                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
                             >
                             </div>
@@ -147,58 +137,63 @@
                         <%
                             }
                         %>
-                        <div class="form-actions">
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
                             <button id="answerSubmit"
-                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    class="ui primary button"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
                             </button>
                         </div>
-                        <div class="clearfix"></div>
                     </form>
                 </div>
             </div>
-        </div>
-        <%-- /content/body --%>
+        </layout:component>
+        <layout:component componentName="ProductFooter">
+            <%-- product-footer --%>
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
-    </div>
-</div>
-<%-- /content/body --%>
+    <%-- footer --%>
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/footer.jsp"/>
+    <% } %>
 
-</div>
-</div>
+    <script type="text/javascript">
+        function onCompleted() {
+            $('#securityQuestionForm').submit();
+        }
+        $(document).ready(function () {
+            $("#securityQuestionForm").submit(function (e) {
+            <%
+                if (reCaptchaEnabled) {
+            %>
+            if (!grecaptcha.getResponse()) {
+                e.preventDefault();
+                grecaptcha.execute();
 
-<%-- footer --%>
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-        <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-        <jsp:include page="includes/footer.jsp"/>
-<% } %>
-
-<script type="text/javascript">
-    function onCompleted() {
-        $('#securityQuestionForm').submit();
-    }
-    $(document).ready(function () {
-        $("#securityQuestionForm").submit(function (e) {
-           <%
-               if (reCaptchaEnabled) {
-           %>
-           if (!grecaptcha.getResponse()) {
-               e.preventDefault();
-               grecaptcha.execute();
-
-               return true;
-           }
-           <%
-               }
-           %>
-           return true;
+                return true;
+            }
+            <%
+                }
+            %>
+            return true;
+            });
         });
-    });
 
-</script>
+    </script>
 </body>
 </html>
