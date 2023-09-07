@@ -26,7 +26,7 @@
 
 SCRIPT_LOCATION="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-# Goes the the project root directory.
+# Goes to the project root directory.
 goToRootDirectory() {
     cd "$SCRIPT_LOCATION/../../../" || exit 1
 }
