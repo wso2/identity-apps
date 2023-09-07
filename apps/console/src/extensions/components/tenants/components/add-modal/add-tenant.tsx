@@ -19,17 +19,18 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, useWizardAlert, ContentLoader } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { ContentLoader, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import delay from "lodash-es/delay";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { addNewTenant, checkDuplicateTenants } from "../../api";
-import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";
-import delay from "lodash-es/delay";
-import { handleTenantSwitch } from "../../utils";
 import { EventPublisher } from "../../../../../features/core/utils";
+import { addNewTenant, checkDuplicateTenants } from "../../api";
+import { handleTenantSwitch } from "../../utils";
+import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";
 
 /**
  * Interface for add tenant wizard props.
@@ -42,8 +43,8 @@ interface AddTenantWizardPropsInterface extends TestableComponentInterface {
 /**
  * Wizard component to add a new tenant.
  *
- * @param {AddTenantWizardPropsInterface} props - props required for the wizard component.
- * @return {React.ReactElement}
+ * @param props - props required for the wizard component.
+ * @returns Add Tenant Wizard component.
  */
 export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> = (
     props: AddTenantWizardPropsInterface
@@ -55,11 +56,11 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
-    const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
+    const [ currentStep ] = useState<number>(0);
     const [ isTenantDuplicate, setIsTenantDuplicate ] = useState<boolean>(false);
     const [ isCheckingTenantExistence, setCheckingTenantExistence ] = useState<boolean>(false);
     const [ isNewTenantLoading, setIsNewTenantLoading ] = useState<boolean>(false);
@@ -79,28 +80,31 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
 
     const handleFormSubmit = (): void => {
         setIsNewTenantLoading(true);
-        setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.duplicateCheck"));
+        setTenantLoaderText(
+            t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.duplicateCheck"));
         checkDuplicateTenants(submissionValue?.tenantName)
             .then((response: AxiosResponse) => {
                 setIsNewTenantLoading(false);
                 if (response.status == 200) {
                     setIsTenantDuplicate(true);
                     setAlert({
-                        description: t("extensions:manage.features.tenant.wizards.addTenant.forms.fields.tenantName.validations.duplicate",
-                            { tenantName: submissionValue.tenantName}),
+                        description: t("extensions:manage.features.tenant.wizards.addTenant.forms.fields" +
+                            ".tenantName.validations.duplicate",
+                        { tenantName: submissionValue.tenantName }),
                         level: AlertLevels.ERROR,
                         message: t("extensions:manage.features.tenant.notifications.addTenant.genericError.message")
                     });
                 }
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(submissionValue.tenantName);
                 } else {
                     setIsNewTenantLoading(false);
                     setAlert({
-                        description: t("extensions:manage.features.tenant.notifications.addTenant.genericError.description"),
+                        description: t("extensions:manage.features.tenant.notifications.addTenant" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("extensions:manage.features.tenant.notifications.addTenant.genericError.message")
                     });
@@ -118,7 +122,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
      */
     let submitAdvanceForm: () => void;
 
-    const WIZARD_STEPS = [ {
+    const WIZARD_STEPS: any = [ {
         content: (
             <AddTenantWizardForm
                 triggerSubmission={ (submitFunction: () => void) => {
@@ -132,13 +136,13 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                 setCheckingTenantExistence={ setCheckingTenantExistence }
             />
         ),
-        icon: '', // TODO: Add icon
+        icon: "", // TODO: Add icon
         title: t("extensions:manage.features.tenant.wizards.addTenant.heading")
     } ];
 
     const addTenant = (tenantName: string): void => {
         setIsNewTenantLoading(true);
-        setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"))
+        setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantCreate"));
         addNewTenant(tenantName)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
@@ -151,7 +155,8 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                         message: t("extensions:manage.features.tenant.notifications.addTenant.success.message")
                     }));
 
-                    setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms.loaderMessages.tenantSwitch"));
+                    setTenantLoaderText(t("extensions:manage.features.tenant.wizards.addTenant.forms." +
+                        "loaderMessages.tenantSwitch"));
 
                     // Delay 5s to give the user ample time to read the redirection message.
                     delay(() => {
@@ -161,28 +166,30 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     }, 5000);
                 }
             })
-            .catch(error => {
+            .catch((error: AxiosError) => {
                 setIsNewTenantLoading(false);
                 // This section gives error context on a former error scenario where the tenant creation would fail
                 // if the first name, last name or primary email of the user is absent in their personal info
                 // claims. This dependency was removed but the error catch has been left to handle the scenario if
                 // it occurs under a different circumstance.
                 if (error.response.data?.code &&
-                    ["TM-10011", "TM-10004", "TM-10008", "TM-10005"].includes(error.response.data.code)) {
+                    [ "TM-10011", "TM-10004", "TM-10008", "TM-10005" ].includes(error.response.data.code)) {
                     setAlert({
                         description: t("extensions:manage.features.tenant.notifications.missingClaims.description"),
                         level: AlertLevels.ERROR,
                         message: t("extensions:manage.features.tenant.notifications.missingClaims.message")
                     });
-                } else if (error.response.data?.code && ["TM-10013"].includes(error.response.data.code)) {
+                } else if (error.response.data?.code && [ "TM-10013" ].includes(error.response.data.code)) {
                     setAlert({
-                        description: t("extensions:manage.features.tenant.notifications.addTenant.limitReachError.description"),
+                        description: t("extensions:manage.features.tenant.notifications.addTenant." +
+                            "limitReachError.description"),
                         level: AlertLevels.ERROR,
                         message: t("extensions:manage.features.tenant.notifications.addTenant.limitReachError.message")
                     });
                 } else {
                     setAlert({
-                        description: t("extensions:manage.features.tenant.notifications.addTenant.genericError.description"),
+                        description: t("extensions:manage.features.tenant.notifications.addTenant." +
+                            "genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("extensions:manage.features.tenant.notifications.addTenant.genericError.message")
                     });
@@ -209,8 +216,8 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                 { WIZARD_STEPS[ currentStep ].content }
                 {
                     isNewTenantLoading && (
-                    <ContentLoader text={ tenantLoaderText }/>
-                )}
+                        <ContentLoader text={ tenantLoaderText }/>
+                    ) }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>

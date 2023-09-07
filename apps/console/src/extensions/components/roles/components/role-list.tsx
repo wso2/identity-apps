@@ -22,7 +22,6 @@ import {
     RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -36,7 +35,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../../features/core";
 import { APPLICATION_DOMAIN } from "../../../../features/roles/constants";
@@ -60,7 +59,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
     roleList: RoleListInterface;
     /**
      * Role delete callback.
-     * @param {RolesInterface} role - Deleting role.
+     * @param role - Deleting role.
      */
     handleRoleDelete?: (role: RolesInterface) => void;
     /**
@@ -104,7 +103,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 /**
  * List component for Role Management list
  *
- * @param props contains the role list as a prop to populate
+ * @param props - contains the role list as a prop to populate
  */
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
 
@@ -120,7 +119,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         selection,
         searchQuery,
         showListItemActions,
-        showMetaContent,
         showHeader,
         showRoleType,
         [ "data-testid" ]: testId
@@ -187,7 +185,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns placeholder component
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -226,7 +224,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: "Role" })}
+                                { type: "Role" }) }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
@@ -251,7 +249,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns table columns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -280,7 +278,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
-                           <div className="mt-2"> { generateHeaderContent(role?.displayName) } </div>
+                            <div className="mt-2"> { generateHeaderContent(role?.displayName) } </div>
                         </Header.Content>
                     </Header>
                 ),
@@ -300,7 +298,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns table actions
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -357,35 +355,36 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 data-testid={ testId }
             />
             {
-                showRoleDeleteConfirmation &&
-                <ConfirmationModal
-                    data-testid={ `${ testId }-delete-item-confirmation-modal` }
-                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                    type="warning"
-                    open={ showRoleDeleteConfirmation }
-                    assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
-                    assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => {
-                        handleRoleDelete(currentDeletedRole);
-                        setShowDeleteConfirmationModal(false);
-                    } }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached warning>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
-                            { type: "role" }) }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
-                            { type: "role" }) }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
+                showRoleDeleteConfirmation && (
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-delete-item-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showRoleDeleteConfirmation }
+                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => {
+                            handleRoleDelete(currentDeletedRole);
+                            setShowDeleteConfirmationModal(false);
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                                { type: "role" }) }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                                { type: "role" }) }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
         </>
     );

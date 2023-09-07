@@ -27,5 +27,4 @@ export * from "./userstores";
 export * from "./user";
 export * from "./endpoints";
 export * from "./organization";
-export * from "./authenticator"
-
+export * from "./authenticator";

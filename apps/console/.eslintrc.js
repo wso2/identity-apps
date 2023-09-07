@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 // ESLint Config which will be used by the IDE/Editors & webpack in development environments.

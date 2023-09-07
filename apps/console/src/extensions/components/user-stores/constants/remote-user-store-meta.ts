@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export const RemoteUserStoreMeta = {
+export const RemoteUserStoreMeta: any = {
     userStoreAgent: {
         artifact: "agent-v1.1.4.zip"
     }

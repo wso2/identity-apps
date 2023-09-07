@@ -27,7 +27,7 @@ interface AddConsumerUserWizardSummaryProps {
     onSubmit: (application: any) => void;
     /**
      * Callback fired when profile image is changed.
-     * @param {string} url - New URL.
+     * @param url - New URL.
      */
     onProfileImageChange: (url: string) => void;
 }
@@ -35,7 +35,7 @@ interface AddConsumerUserWizardSummaryProps {
 /**
  * Add consumer user wizard summary page.
  *
- * @param props
+ * @param props - Props injected to the component.
  */
 export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWizardSummaryProps> = (
     props: AddConsumerUserWizardSummaryProps
@@ -67,8 +67,8 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
     /**
      * Handles edit avatar modal submit action.
      *
-     * @param {<HTMLButtonElement>} e - Event.
-     * @param {string} url - Selected image URL.
+     * @param e - Event.
+     * @param url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
         setModifiedSummary({
@@ -129,7 +129,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                                 <Label.Group>
                                     {
                                         modifiedSummary.groups
-                                            .map((group, index) => (
+                                            .map((group: any, index: number) => (
                                                 <Label
                                                     key={ index }
                                                     basic
@@ -178,7 +178,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                                 {
                                     t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
                                         ".message.0",
-                                        { email: modifiedSummary.email })
+                                    { email: modifiedSummary.email })
                                 }
                             </div>
                         </Grid.Column>

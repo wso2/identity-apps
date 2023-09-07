@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { MarketingConsentModal } from "./marketing-consent-modal";
 import { AppState } from "../../../../../features/core";
 import { useUserConsentList } from "../api";
@@ -39,7 +40,7 @@ export const MarketingConsentModalWrapper: FunctionComponent<IdentifiableCompone
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
@@ -91,7 +92,7 @@ export const MarketingConsentModalWrapper: FunctionComponent<IdentifiableCompone
         }
 
         const marketingConsent: ConsentResponseInterface = userConsentList.find(
-            (consent) => consent.consentType === ConsentTypes.MARKETING);
+            (consent: ConsentResponseInterface) => consent.consentType === ConsentTypes.MARKETING);
         const marketingConsentStatus: ConsentStatus = 
             marketingConsent?.status ?? ConsentStatus.NOT_GIVEN;
 

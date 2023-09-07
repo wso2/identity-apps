@@ -14,13 +14,13 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import groupBy from "lodash-es/groupBy";
 import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
@@ -49,17 +49,16 @@ export class ApplicationTemplateManagementUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Retrieve Application template list form the API and sets it in redux state.
      *
-     * @param {boolean} skipGrouping - Skip grouping of templates.
-     * @param {boolean} useAPI - Flag to determine whether the usage of REST API is necessary.
-     * @param {boolean} sort - Should the returning templates be sorted.
-     * @return {Promise<void>}
+     * @param skipGrouping - Skip grouping of templates.
+     * @param useAPI - Flag to determine whether the usage of REST API is necessary.
+     * @param sort - Should the returning templates be sorted.
+     * @returns application template list.
      */
     public static getApplicationTemplates = (skipGrouping: boolean = false,
         useAPI: boolean = false,
@@ -160,7 +159,7 @@ export class ApplicationTemplateManagementUtils {
 
                 return Promise.resolve();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
@@ -185,13 +184,13 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Build supported technologies list for UI from the given technology types.
      *
-     * @param {string[]} technologies - Set of supported technologies.
+     * @param technologies - Set of supported technologies.
      *
-     * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
+     * @returns Set of Technologies compatible for `TemplateCard`.
      */
     public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
 
-        const _technologies = technologies?.map((technology: string) => {
+        const _technologies: any = technologies?.map((technology: string) => {
 
             // If the technology is already resolved, return that istead of trying to resolve again.
             if (typeof technology !== "string") {
@@ -206,7 +205,7 @@ export class ApplicationTemplateManagementUtils {
                 return null;
             }
 
-            let logo = null;
+            let logo: any = null;
 
             for (const [ key, value ] of Object.entries(getTechnologyLogos())) {
                 if (key === technology) {
@@ -229,16 +228,16 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Sort the application templates based on display order.
      *
-     * @param {ApplicationTemplateInterface[]} templates - App templates.
-     * @return {ApplicationTemplateInterface[]}
+     * @param templates - App templates.
+     * @returns Sorted templates.
      */
     private static sortApplicationTemplates(
         templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] {
 
-        const applicationTemplates = [ ...templates ];
+        const applicationTemplates: ApplicationTemplateInterface[] = [ ...templates ];
 
         // Sort templates based  on displayOrder.
-        applicationTemplates.sort((a, b) =>
+        applicationTemplates.sort((a: ApplicationTemplateInterface, b:ApplicationTemplateInterface) =>
             (a.displayOrder !== -1 ? a.displayOrder : Infinity) - (b.displayOrder !== -1 ? b.displayOrder : Infinity));
 
         return applicationTemplates;
@@ -247,9 +246,9 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Append any custom templates to the existing templates list.
      *
-     * @param {ApplicationTemplateInterface[]} existingTemplates - Existing templates list.
-     * @param {ApplicationTemplateInterface[]} customTemplates - Set of custom templates to add.
-     * @return {ApplicationTemplateInterface[]}
+     * @param existingTemplates - Existing templates list.
+     * @param customTemplates - Set of custom templates to add.
+     * @returns Updated templates list.
      */
     private static addCustomTemplates(existingTemplates: ApplicationTemplateInterface[],
         customTemplates: ApplicationTemplateInterface[]) {
@@ -260,8 +259,8 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Group the application templates.
      *
-     * @param {ApplicationTemplateInterface[]} templates - Application templates.
-     * @return {ApplicationTemplateInterface[]}
+     * @param templates - Application templates.
+     * @returns grouped templates.
      */
     private static groupTemplates = async (
         templates: ApplicationTemplateInterface[]): Promise<ApplicationTemplateInterface[]> => {
@@ -288,10 +287,10 @@ export class ApplicationTemplateManagementUtils {
                         return;
                     }
 
-                    if (groupedTemplates.some((groupedTemplate) =>
+                    if (groupedTemplates.some((groupedTemplate: ApplicationTemplateInterface) =>
                         groupedTemplate.id === template.templateGroup)) {
 
-                        groupedTemplates.forEach((editingTemplate, index) => {
+                        groupedTemplates.forEach((editingTemplate: ApplicationTemplateInterface, index: number) => {
                             if (editingTemplate.id === template.templateGroup) {
                                 groupedTemplates[ index ] = {
                                     ...group,
@@ -318,8 +317,8 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Categorize the application templates.
      *
-     * @param {ApplicationTemplateInterface[]} templates - Templates list.
-     * @return {Promise<void | ApplicationTemplateCategoryInterface[]>}
+     * @param templates - Templates list.
+     * @returns Categorized templates.
      */
     public static categorizeTemplates(
         templates: ApplicationTemplateInterface[]): Promise<void | ApplicationTemplateCategoryInterface[]> {
@@ -349,7 +348,7 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Loads local file based application templates.
      *
-     * @return {Promise<(ApplicationTemplateInterface | Promise<ApplicationTemplateInterface>)[]>}
+     * @returns loaded templates.
      */
     private static async loadLocalFileBasedTemplates(): Promise<(ApplicationTemplateInterface
         | Promise<ApplicationTemplateInterface>)[]> {
@@ -373,7 +372,6 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Loads local file based application template groups.
      *
-     * @return {Promise<(ApplicationTemplateGroupInterface | Promise<ApplicationTemplateGroupInterface>)[]>}
      */
     private static async loadLocalFileBasedTemplateGroups(): Promise<(ApplicationTemplateGroupInterface
             | Promise<ApplicationTemplateGroupInterface>)[]> {
@@ -397,7 +395,6 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Loads local file based application template categories.
      *
-     * @return {Promise<(ApplicationTemplateCategoryInterface | Promise<ApplicationTemplateCategoryInterface>)[]>}
      */
     private static async loadLocalFileBasedTemplateCategories(): Promise<(ApplicationTemplateCategoryInterface
         | Promise<ApplicationTemplateCategoryInterface>)[]> {
@@ -423,13 +420,13 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Resolves the help content for the respective template.
      *
-     * @param {ApplicationTemplateInterface[]} templates - Input templates.
-     * @return {ApplicationTemplateInterface[]}
-     */
+     * @param templates - Input templates.
+\]     */
     private static resolveHelpContent(templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] {
 
         templates.map((template: ApplicationTemplateInterface) => {
-            const config = getApplicationTemplatesConfig().templates
+            const config: TemplateConfigInterface<ApplicationTemplateInterface> = 
+            getApplicationTemplatesConfig().templates
                 .find((config: TemplateConfigInterface<ApplicationTemplateInterface>) => {
                     return config.id === template.id;
                 });

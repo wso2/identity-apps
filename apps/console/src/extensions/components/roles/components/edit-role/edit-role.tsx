@@ -39,7 +39,7 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
 /**
  * Component which will allow editing of a selected role.
  *
- * @param props contains role details to be edited.
+ * @param props - contains role details to be edited.
  */
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
@@ -79,7 +79,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     }, [ roleObject ]);
 
     const resolveResourcePanes = () => {
-        const panes = [
+        const panes: any[] = [
             {
                 menuItem: "General",
                 render: () => (

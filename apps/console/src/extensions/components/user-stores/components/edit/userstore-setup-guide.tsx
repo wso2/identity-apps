@@ -26,7 +26,7 @@ import {
     Heading,
     Message,
     Text,
-    useDocumentation,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -103,10 +103,11 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
     const fetchAgentConnectionList = () => {
         setIsAgentConnectionsRequestLoading(true);
         getAgentConnections(userStoreId)
-            .then((response) => {
+            .then((response: any) => {
                 response.map((connection: AgentConnectionInterface) => {
                     if (connection.agent && connection.connected) {
                         setConnectionStatus(connection.connected);
+
                         return;
                     }
                 });
@@ -121,11 +122,11 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
      */
     const handleGenerateToken = () => {
 
-        const userStoreID = userStoreId.split("#")[0];
-        const data = { userStoreId: userStoreID }
+        const userStoreID: string = userStoreId.split("#")[0];
+        const data: any = { userStoreId: userStoreID };
 
         generateToken(data)
-            .then((response) => {
+            .then((response: any) => {
                 setAccessToken(response.token);
             });
     };
@@ -143,8 +144,9 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
                 color="orange"
                 onClick={ () => {
                     window.open(
-                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl + RemoteUserStoreMeta.userStoreAgent.artifact, "_blank",
-                    "noopener, noreferrer"
+                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl +
+                        RemoteUserStoreMeta.userStoreAgent.artifact, "_blank",
+                        "noopener, noreferrer"
                     );
                 } }
             >
@@ -338,8 +340,8 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
                             <Heading as="h3">
                                 Connect the remote user store
                                 <Heading subHeading as="h6">
-                                    Follow the steps given below to configure the user store agent, which connects the remote user
-                                    store to Asgardeo
+                                    Follow the steps given below to configure the user store agent, 
+                                    which connects the remote user store to Asgardeo
                                 </Heading>
                             </Heading>
                             <Divider hidden/>

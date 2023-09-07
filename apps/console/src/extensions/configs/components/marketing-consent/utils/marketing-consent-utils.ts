@@ -28,7 +28,7 @@ import { MarketingConsentConstants } from "../constants";
  * @returns whether the user has interacted with the marketing consent modal or not.
  */
 export const getMarketingConsentStatusFromLocalStorage = (uuid: string): boolean => {
-    const marketingConsentData = JSON.parse(LocalStorageUtils
+    const marketingConsentData: any = JSON.parse(LocalStorageUtils
         .getValueFromLocalStorage(MarketingConsentConstants.LOCAL_STORAGE_KEY));
     const isMarketingConsentGiven: boolean = get(marketingConsentData, uuid, false);
 

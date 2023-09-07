@@ -38,8 +38,8 @@ const initialState: ApplicationReducerStateInterface = {
 /**
  * Reducer to handle the state of application related actions.
  *
- * @param {ApplicationReducerStateInterface} state - Previous state
- * @param {ApplicationActions} action - Action type.
+ * @param state - Previous state
+ * @param action - Action type.
  * @returns The new state
  */
 export const applicationReducer = (state: ApplicationReducerStateInterface = initialState,

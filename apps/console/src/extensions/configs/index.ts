@@ -27,5 +27,4 @@ export * from "./scim";
 export * from "./userstores";
 export * from "./user";
 export * from "./organization";
-export * from "./authenticator"
-
+export * from "./authenticator";

@@ -41,7 +41,7 @@ interface AddConsumerUserGroupPropsInterface {
 /**
  * Consumer groups component.
  *
- * @return {ReactElement}
+ * @returns add consumer user groups component.
  */
 export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface> = (
     props: AddConsumerUserGroupPropsInterface): ReactElement => {
@@ -73,14 +73,14 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
      * @param e - Click event.
      * @param value - Input value of the field
      */
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleUnselectedListSearch = ({ value }: any) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: any[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.initialGroupList && initialValues.initialGroupList.map((group) => {
+            initialValues.initialGroupList && initialValues.initialGroupList.map((group: any) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -111,8 +111,8 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group) => {
-        const checkedGroups = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (group: any) => {
+        const checkedGroups: RolesInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -148,8 +148,9 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
                         + "emptyPlaceholders.default") }
                 >
                     {
-                        initialValues?.groupList?.map((group, index)=> {
-                            const groupName = group?.displayName?.split("/");
+                        initialValues?.groupList?.map((group: any, index: number)=> {
+                            const groupName: string = group?.displayName?.split("/");
+
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }

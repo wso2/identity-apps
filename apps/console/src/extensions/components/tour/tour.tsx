@@ -18,17 +18,11 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { GenericIcon, Heading, LinkButton, PrimaryButton, Text } from "@wso2is/react-components";
+import { GenericIcon, Heading, PrimaryButton, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import Tour, { ReactourStep } from "reactour";
 import { AppConstants } from "../../../features/core/constants";
 import { history } from "../../../features/core/helpers";
-import {
-    ReactComponent as AsgardioTourApplicationIllustration
-} from "../../assets/illustrations/asgardio-tour-application-illustration.svg";
-import {
-    ReactComponent as AsgardioTourGetStartedIllustration
-} from "../../assets/illustrations/asgardio-tour-get-started-illustration.svg";
 import {
     ReactComponent as AsgardioTourWelcomeIllustration
 } from "../../assets/illustrations/asgardio-tour-welcome-illustration.svg";
@@ -54,7 +48,7 @@ const MiniLogo = () => (
     </div>
 );
 
-const steps: ReactourStep[] = [{
+const steps: ReactourStep[] = [ {
     content: () => {
         return (
             <>
@@ -77,7 +71,7 @@ const steps: ReactourStep[] = [{
     },
     position: "center",
     selector: "[data-tut=\"tour-get-started-step\"]"
-}];
+} ];
 
 /**
  * Proptypes for the tour page component.
@@ -89,9 +83,9 @@ const WELCOME_TOUR_SHOWN_LOCALSTORAGE_KEY: string = "is_welcome_tour_shown";
 /**
  * Console app tour page.
  *
- * @param {TourPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the console app tour page.
  */
 const TourPage: FunctionComponent<TourPageInterface> = (
     props: TourPageInterface
@@ -102,7 +96,7 @@ const TourPage: FunctionComponent<TourPageInterface> = (
     } = props;
 
     const [ isTourOpen, setIsTourOpen ] = useState<boolean>(true);
-    const [ currentStep, setCurrentStep ] = useState<number>(undefined);
+    const [ , setCurrentStep ] = useState<number>(undefined);
     const [ welcomeTourDoneState, setWelcomeTourDoneState ] = useState<boolean>(false);
 
     const getWelcomeTourState = () => {
@@ -142,10 +136,9 @@ const TourPage: FunctionComponent<TourPageInterface> = (
                     showNavigationNumber={ false }
                     showNavigation={ false }
                     onRequestClose={ () => {
-                            setIsTourOpen(false);
-                            handleGetStartedFlow();
-                        }
-                    }
+                        setIsTourOpen(false);
+                        handleGetStartedFlow();
+                    } }
                     closeWithMask = { false }
                     nextButton={
                         <PrimaryButton className="m-0">Next</PrimaryButton>

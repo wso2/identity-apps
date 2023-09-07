@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { OutboundUserStoreResourceEndpointsInterface } from "../models";
 import { Config } from "../../../../features/core";
+import { OutboundUserStoreResourceEndpointsInterface } from "../models";
 
 /**
  * Get the resource endpoints for the outbound User Store Management feature.
  *
- * @return {OutboundUserStoreResourceEndpointsInterface} - Outbound user store endpoints
+ * @returns - Outbound user store endpoints
  */
 export const getOutboundUserStoreResourceEndpoints = (): OutboundUserStoreResourceEndpointsInterface => {
     return {

@@ -46,9 +46,9 @@ interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface 
 /**
  * Invitee role selection component.
  *
- * @param {InviteeRoleSelectionPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns invitee role selection component.
  */
 export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsInterface> = (
     props: InviteeRoleSelectionPropsInterface
@@ -80,7 +80,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
 
         setRoleListRequestLoading(true);
         getRolesList(null)
-            .then((response) => {
+            .then((response: any) => {
                 response.data.Resources.map((role: RolesInterface) => {
                     if (role.displayName !== "system" &&
                         role.displayName !== "everyone" &&
@@ -113,7 +113,8 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
     useEffect(() => {
         if (isAllRoleListSelected) {
             const selectedRoleList: string[] = [ ...invitee?.roles ];
-            roleList.map((role) => {
+
+            roleList.map((role: RolesInterface) => {
                 selectedRoleList.push(role.displayName);
             });
             setSelectedRoles(selectedRoleList);
@@ -126,7 +127,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
      * Handle the role selection checkbox change.
      */
     const handleRoleSelection = (roleName: string) => {
-        const checkedRoles = [];
+        const checkedRoles: string[] = [];
 
         checkedRoles.push(roleName);
         setSelectedRoles(checkedRoles);
@@ -155,8 +156,9 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                     <Form.Group>
                         <Divider hidden />
                         {
-                            roleList?.map((role, index) => {
+                            roleList?.map((role: RolesInterface, index: number) => {
                                 const roleName: string[] = role?.displayName?.split("/");
+
                                 if (
                                     roleName?.length >= 1 &&
                                     !roleName.includes("everyone") &&
@@ -202,7 +204,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { !readOnly &&
+                            { !readOnly && (
                                 <PrimaryButton
                                     data-testid="group-mgt-update-roles-modal-save-button"
                                     floated="right"
@@ -213,6 +215,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                                 >
                                     { t("common:save") }
                                 </PrimaryButton>
+                            )
                             }
                         </Grid.Column>
                     </Grid.Row>

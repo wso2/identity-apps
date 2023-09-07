@@ -33,9 +33,9 @@ type SIWEAuthenticationProviderCreateWizardHelpPropsInterface = IdentifiableComp
 /**
  * Help content for the Sign In with Ethereum IDP template creation wizard.
  *
- * @param {SIWEAuthenticationProviderCreateWizardHelpPropsInterface} props - Props injected into the component.
+ * @param props - Props injected into the component.
  *
- * @return {React.ReactElement}
+ * @returns siwe idp template creation wizard help.
  */
 const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
     SIWEAuthenticationProviderCreateWizardHelpPropsInterface> = (

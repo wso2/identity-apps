@@ -18,4 +18,4 @@
 
 import EnterpriseIdentityProviderTemplate from "./templates/enterprise-identity-provider.json";
 
-export const EnterpriseIdentityProviderTemplateExtension = EnterpriseIdentityProviderTemplate;
+export const EnterpriseIdentityProviderTemplateExtension: any = EnterpriseIdentityProviderTemplate;

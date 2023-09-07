@@ -20,7 +20,6 @@
  * Enum for Deployment Regions.
  *
  * @readonly
- * @enum {string}
  */
 export enum Region {
     US = "US",
