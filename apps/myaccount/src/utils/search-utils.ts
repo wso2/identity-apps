@@ -16,11 +16,15 @@
  * under the License.
  */
 
+interface SupportedOperatorAliasesInterface {
+    [ key: string ]: string[];
+}
+
 /**
  * Supported operator aliases.
  *
  */
-const SUPPORTED_OPERATOR_ALIASES: any = {
+const SUPPORTED_OPERATOR_ALIASES: SupportedOperatorAliasesInterface = {
     co: [ "contain", "contains" ],
     eq: [ "equal", "equals" ],
     ew: [ "end with", "ends with" ],
