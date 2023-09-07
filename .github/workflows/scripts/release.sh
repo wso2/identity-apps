@@ -93,7 +93,7 @@ process_java_apps_package() {
 
     goToRootDirectory &&
         cd "identity-apps-core" || exit 1 &&
-        echo "Releasing myaccount version: $releaseVersion"
+        echo "Releasing java_apps version: $releaseVersion"
 
     mvn -Dresume=false \
         -Darguments='-Dadditionalparam=-Xdoclint:none' \
