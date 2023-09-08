@@ -80,3 +80,14 @@ h6.ui.header .sub.header {
         }
     }
 }
+
+.is-header {
+    &.oxygen-header .oxygen-brand-logo {
+        max-width: 150px;
+    }
+
+    &.oxygen-header .oxygen-brand-portal-name {
+        font-size: 13px;
+        margin-top: -2px;
+    }
+}

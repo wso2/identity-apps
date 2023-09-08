@@ -771,3 +771,20 @@
         }
     }
 }
+
+/*********************************************
+        Trusted Token Issuer Modal
+*********************************************/
+
+.ui.modal.trusted-token-issuer-modal {
+    & >.content {
+        padding: 30px !important;
+        line-height: 30px;
+        overflow: auto;
+        width: 100%;
+    }
+
+     >.actions {
+        padding: 14px !important;
+    }
+}

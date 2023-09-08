@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -175,6 +175,7 @@ export class ApplicationManagementConstants {
     public static readonly IWA_NTLM: string = "iwa:ntlm";
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
+    public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -205,7 +206,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -214,7 +216,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -222,7 +225,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ]
     };
 
@@ -241,14 +245,16 @@ export class ApplicationManagementConstants {
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 3 ],
             [ ApplicationManagementConstants.PASSWORD, 4 ],
             [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ],
+            [ ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE, 5 ]
         ]),
         [ "custom-application" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 3 ],
             [ ApplicationManagementConstants.PASSWORD, 4 ],
             [ ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT, 1 ],
-            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
+            [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ],
+            [ ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE, 5 ]
         ])
     };
 
@@ -335,15 +341,16 @@ export class ApplicationManagementConstants {
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
     ];
 
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
     ];
@@ -416,6 +423,10 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";
+
+    public static readonly CHOREO_APP_TEMPLATE_ID: string = "choreo-apim-application-oidc";
+
+    public static readonly IS_CHOREO_APP_SP_PROPERTY: string = "isChoreoApp";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([

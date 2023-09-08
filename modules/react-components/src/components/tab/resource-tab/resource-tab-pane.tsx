@@ -32,7 +32,7 @@ export interface ResourceTabPanePropsInterface extends TabPaneProps, Identifiabl
      */
     className?: string;
     /**
-     * Is the content segmentation handled from outside. 
+     * Is the content segmentation handled from outside.
      */
     controlledSegmentation?: boolean;
 }

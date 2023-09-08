@@ -1,6 +1,7 @@
 {
+    "private": true,
     "name": "@wso2is/nx",
-    "version": "1.6.374",
+    "version": "2.0.0",
     "description": "Nx plugin for WSO2 Identity Server apps.",
     "keywords": [
         "WSO2",
@@ -13,7 +14,6 @@
     ],
     "author": "WSO2",
     "license": "Apache-2.0",
-    "main": "dist/src/index.js",
     "generators": "./generators.json",
     "executors": "./executors.json",
     "scripts": {
@@ -22,9 +22,9 @@
         "test": "pnpm nx run nx:test"
     },
     "devDependencies": {
-        "@nrwl/devkit": "14.4.2",
-        "@nrwl/nx-plugin": "14.4.2",
-        "@nrwl/workspace": "14.4.2",
+        "@nrwl/devkit": "14.8.8",
+        "@nrwl/nx-plugin": "14.8.8",
+        "@nrwl/workspace": "14.8.8",
         "@testing-library/react": "^13.4.0",
         "babel-polyfill": "^6.26.0",
         "rimraf": "^3.0.2",

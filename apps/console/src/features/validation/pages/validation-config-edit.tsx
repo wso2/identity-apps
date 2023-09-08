@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ import { Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import { ServerConfigurationsConstants } from "../../server-configurations";
-import { getConfiguration } from "../../users";
+import { getConfiguration } from "../../users/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import { ValidationFormInterface } from "../models";
@@ -161,13 +161,9 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            ValidationConfigStatusFetchRequestError.response &&
-            ValidationConfigStatusFetchRequestError.response.data &&
-            ValidationConfigStatusFetchRequestError.response.data.description
-        ) {
+        if (ValidationConfigStatusFetchRequestError?.response?.data?.description) {
             if (
-                ValidationConfigStatusFetchRequestError.response.status === 404
+                ValidationConfigStatusFetchRequestError?.response?.status === 404
             ) {
                 return;
             }
@@ -189,12 +185,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            passwordHistoryCountError.response &&
-            passwordHistoryCountError.response.data &&
-            passwordHistoryCountError.response.data.description
-        ) {
-            if (passwordHistoryCountError.response.status === 404) {
+        if (passwordHistoryCountError?.response?.data?.description) {
+            if (passwordHistoryCountError?.response?.status === 404) {
                 return;
             }
             dispatch(
@@ -215,10 +207,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             return;
         }
 
-        if (
-            passwordExpiryError?.response?.data?.description
-        ) {
-            if (passwordExpiryError.response.status === 404) {
+        if (passwordExpiryError?.response?.data?.description) {
+            if (passwordExpiryError?.response?.status === 404) {
                 return;
             }
             dispatch(

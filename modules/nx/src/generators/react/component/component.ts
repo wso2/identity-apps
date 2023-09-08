@@ -33,7 +33,7 @@ import { runTasksInSerial } from "@nrwl/workspace/src/utilities/run-tasks-in-ser
 import * as ts from "typescript";
 import { SourceFile } from "typescript";
 import { Schema } from "./schema";
-import { addImport } from "../../../utils";
+import { addImport } from "../../../utils/ast-utils";
 
 /**
  * Interface extending the schema with the properties that are needed for the component generator.

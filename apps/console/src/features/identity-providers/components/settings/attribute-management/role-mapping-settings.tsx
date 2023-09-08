@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,18 +15,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DynamicField, Heading, Hint } from "@wso2is/react-components";
+import { DynamicField, Heading, Hint, KeyValue } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState } from "../../../../core";
 import { getOrganizationRoles } from "../../../../organizations/api";
-import { OrganizationRoleListItemInterface } from "../../../../organizations/models";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface
+} from "../../../../organizations/models";
 import { OrganizationUtils } from "../../../../organizations/utils";
-import { getRolesList } from "../../../../roles";
+import { getRolesList } from "../../../../roles/api/roles";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";
@@ -59,14 +63,15 @@ interface RoleMappingSettingsPropsInterface extends TestableComponentInterface {
 /**
  *  Identity Provider and advance settings component.
  *
- * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Role mapping settings component.
  */
 export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization);
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>();
 
     const {
@@ -84,11 +89,11 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      */
     const getFilteredRoles = () => {
         const filterRole: RolesInterface[] | OrganizationRoleListItemInterface[] = roleList.filter(
-            (role) => {
+            (role: RolesInterface) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
 
-        return filterRole.map(role => {
+        return filterRole.map((role: OrganizationRoleListItemInterface) => {
             return {
                 id: role.displayName,
                 value: role.displayName
@@ -99,19 +104,19 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     useEffect(() => {
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getRolesList(null)
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     if (response.status === 200) {
                         const allRole: RoleListInterface = response.data;
 
                         setRoleList(allRole.Resources);
                     }
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     handleGetRoleListError(error);
                 });
         } else {
             getOrganizationRoles(currentOrganization.id, null, null, null)
-                .then((response) => {
+                .then((response: OrganizationRoleListResponseInterface) => {
                     setRoleList(response.Resources);
                 });
         }
@@ -121,9 +126,9 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     /**
      * Prepends `Internal/` to the role name if it does not have a domain prepended already.
      *
-     * @param {string} role The role name as received from the API response.
+     * @param role - The role name as received from the API response.
      *
-     * @returns {string}
+     * @returns Resolved role name.
      */
     const resolveRoleName = (role: string): string => {
         if (role.split("/").length === 1) {
@@ -136,9 +141,9 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     /**
      * Removes `Internal/` part from the role name if it is present.
      *
-     * @param {string} role The role name as received from the API response.
+     * @param role - The role name as received from the API response.
      *
-     * @returns {string}
+     * @returns Resolved role display name.
      */
     const resolveRoleDisplayName = (role: string): string => {
         const roleParts: string[] = role.split("/");
@@ -163,7 +168,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         bottomMargin={ false }
                         data={
                             initialRoleMappings ?
-                                initialRoleMappings.map(mapping => {
+                                initialRoleMappings.map((mapping: IdentityProviderRoleMappingInterface) => {
                                     return {
                                         key: resolveRoleDisplayName(mapping.localRole),
                                         value: mapping.idpRole
@@ -181,14 +186,15 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         duplicateKeyErrorMsg={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
-                        listen={ (data) => {
+                        listen={ (data: KeyValue[]) => {
                             if (data.length > 0) {
-                                const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
-                                    return {
-                                        idpRole: mapping.value,
-                                        localRole: resolveRoleName(mapping.key)
-                                    };
-                                });
+                                const finalData: IdentityProviderRoleMappingInterface[] = data.map(
+                                    (mapping: KeyValue) => {
+                                        return {
+                                            idpRole: mapping.value,
+                                            localRole: resolveRoleName(mapping.key)
+                                        };
+                                    });
 
                                 onSubmit(finalData);
                             } else {

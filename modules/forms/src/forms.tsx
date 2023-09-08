@@ -39,7 +39,8 @@ interface FormPropsInterface {
 }
 
 /**
- * This is a Forms component
+ * This is a Forms component.
+ * @deprecated This module is deprecated. Use `@wso2is/form` instead.
  */
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
     React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {

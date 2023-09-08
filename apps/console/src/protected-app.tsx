@@ -31,7 +31,6 @@ import {
     CommonConstants as CommonConstantsCore,
     TokenConstants
 } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     IdentifiableComponentInterface,
     RouteInterface,
@@ -58,24 +57,21 @@ import {
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
-import camelCase from "lodash-es/camelCase";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     LazyExoticComponent,
-    MutableRefObject,
     ReactElement,
     lazy,
     useCallback,
     useEffect,
-    useRef,
     useState
 } from "react";
-import { I18nextProvider, useTranslation } from "react-i18next";
+import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
+import { commonConfig, organizationConfigs } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -89,31 +85,21 @@ import {
     HttpUtils,
     PreLoader,
     UIConfigInterface,
-    getAdminViewRoutes,
-    getDeveloperViewRoutes,
-    getSidePanelIcons,
+    getAppViewRoutes,
     setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
-    setFilteredManageRoutes,
     setGetOrganizationLoading,
     setIsFirstLevelOrganization,
-    setManageVisibility,
     setOrganization,
     setOrganizationType,
     setSanitizedDevelopRoutes,
-    setSanitizedManageRoutes,
     store
 } from "./features/core";
 import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationUtils } from "./features/organizations/utils";
-import {
-    GovernanceConnectorCategoryInterface, GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    ServerConfigurationsConstants
-} from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
@@ -142,8 +128,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const { t } = useTranslation();
-
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
 
@@ -153,23 +137,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
-    let governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
-        (state: AppState) => state.governanceConnector.categories
-    );
-    const filteredManageRoutes: RouteInterface[] = useSelector(
-        (state: AppState) => state.routes.manageRoutes.filteredRoutes
-    );
-    const sanitizedManageRoutes: RouteInterface[] = useSelector(
-        (state: AppState) => state.routes.manageRoutes.sanitizedRoutes
-    );
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
     const isPrivilegedUser: boolean = useSelector(
         (state: AppState) => state?.auth?.isPrivilegedUser
     );
-
-    const governanceConnectorsLoaded: MutableRefObject<boolean> = useRef(false);
 
     const [ tenant, setTenant ] = useState<string>("");
 
@@ -182,11 +155,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
 
-    useEffect(() => {
-        dispatch(setFilteredDevelopRoutes(getDeveloperViewRoutes()));
-        dispatch(setFilteredManageRoutes(getAdminViewRoutes()));
-        dispatch(setSanitizedDevelopRoutes(getDeveloperViewRoutes()));
-        dispatch(setSanitizedManageRoutes(getAdminViewRoutes()));
+    useEffect(() => {        
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -391,8 +362,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     let serverHost: string = splitted.slice(0, -2).join("/");
 
                     if (orgType === OrganizationType.SUBORGANIZATION) {
-                        serverHost = Config.getDeploymentConfig().serverOrigin +
-                        Config.getDeploymentConfig().appBaseName;
+                        serverHost = `${ Config.getDeploymentConfig().serverOrigin
+                        }/${ window[ "AppUtils" ].getConfig().organizationPrefix
+                        }/${ window[ "AppUtils" ].getConfig().organizationName }`;
                     }
 
                     window[ "AppUtils" ].updateCustomServerHost(serverHost);
@@ -556,11 +528,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         AppConstants.getAppLoginPath() ||
                             AuthenticationCallbackUrl ===
                             `${AppConstants.getAppLoginPath()}/`) ||
-                        (window[ "AppUtils" ].getConfig().organizationName &&
                             AuthenticationCallbackUrl ===
                             `${ window[ "AppUtils" ].getConfig()
                                 .appBaseWithTenant
-                            }/`) ||
+                            }/` ||
                         AppUtils.isAuthCallbackURLFromAnotherTenant(
                             AuthenticationCallbackUrl, CommonAuthenticateUtils.deriveTenantDomainFromSubject(
                                 idToken.sub))
@@ -583,9 +554,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         AppConstants.getAppLoginPath() ||
                             AuthenticationCallbackUrl ===
                             `${AppConstants.getAppLoginPath()}/`) ||
-                    (window[ "AppUtils" ].getConfig().organizationName &&
                         AuthenticationCallbackUrl ===
-                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/`) ||
+                        `${ window[ "AppUtils" ].getConfig().appBaseWithTenant }/` ||
                     AppUtils.isAuthCallbackURLFromAnotherTenant(
                         AuthenticationCallbackUrl,
                         CommonAuthenticateUtils.deriveTenantDomainFromSubject(idToken.sub)
@@ -607,21 +577,27 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
 
         const [
-            devRoutes,
-            sanitizedDevRoutes
+            appRoutes,
+            sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getDeveloperViewRoutes(),
+            getAppViewRoutes(),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled && !isPrivilegedUser
+            isOrganizationManagementEnabled
                 ? (OrganizationUtils.isCurrentOrganizationRoot() &&
                     AppConstants.getSuperTenant() === tenant) ||
                     isFirstLevelOrg
-                    ? [
-                        ...AppUtils.getHiddenRoutes(),
-                        ...AppConstants.ORGANIZATION_ONLY_ROUTES
-                    ]
+                    ? isPrivilegedUser
+                        ? [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ONLY_ROUTES,
+                            ...AppConstants.ORGANIZATION_ROUTES
+                        ]
+                        : [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...AppConstants.ORGANIZATION_ONLY_ROUTES
+                        ]
                     : window[ "AppUtils" ].getConfig().organizationName
                         ? organizationConfigs.canCreateOrganization()
                             ? AppUtils.getHiddenRoutes()
@@ -639,73 +615,29 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AppConstants.ORGANIZATION_ENABLED_ROUTES
         );
 
-        const [
-            manageRoutes,
-            sanitizedManageRoutes
-        ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAdminViewRoutes(),
-            featureConfig,
-            allowedScopes,
-            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled && !isPrivilegedUser
-                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
-                    AppConstants.getSuperTenant() === tenant) ||
-                    isFirstLevelOrg
-                    ? [
-                        ...AppUtils.getHiddenRoutes(),
-                        ...AppConstants.ORGANIZATION_ONLY_ROUTES
-                    ]
-                    : window[ "AppUtils" ].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
-                        : [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...AppConstants.ORGANIZATION_ROUTES
-                        ]
-                : [
-                    ...AppUtils.getHiddenRoutes(),
-                    ...AppConstants.ORGANIZATION_ROUTES
-                ],
-            !OrganizationUtils.isCurrentOrganizationRoot() &&
-            !isFirstLevelOrg &&
-            AppConstants.ORGANIZATION_ENABLED_ROUTES,
-            (route: RouteInterface) => {
-                if (route.id === "organization-roles") {
-                    route.name = "Roles";
-                }
-            }
-        );
-
         // TODO : Remove this logic once getting started pages are removed.
         if (
-            devRoutes.length === 2 &&
-            devRoutes.filter(
+            appRoutes.length === 2 &&
+            appRoutes.filter(
                 (route: RouteInterface) =>
                     route.id ===
                     AccessControlUtils.DEVELOP_GETTING_STARTED_ID ||
                     route.id === "404"
             ).length === 2
         ) {
-            devRoutes[ 0 ] = devRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
+            appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
-        dispatch(setFilteredDevelopRoutes(devRoutes));
-        dispatch(setFilteredManageRoutes(manageRoutes));
-        dispatch(setSanitizedDevelopRoutes(sanitizedDevRoutes));
-        dispatch(setSanitizedManageRoutes(sanitizedManageRoutes));
+        dispatch(setFilteredDevelopRoutes(appRoutes));        
+        dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 
         setRoutesFiltered(true);
 
-        if (sanitizedManageRoutes.length < 1) {
-            dispatch(setManageVisibility(false));
-        }
-
-        if (sanitizedDevRoutes.length < 1) {
+        if (sanitizedAppRoutes.length < 1) {
             dispatch(setDeveloperVisibility(false));
         }
 
-        if (sanitizedDevRoutes.length < 1 && sanitizedManageRoutes.length < 1) {
+        if (sanitizedAppRoutes.length < 1) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search:
@@ -721,118 +653,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         filterRoutes();
     }, [ filterRoutes, isAuthenticated ]);
-
-    useEffect(() => {
-        if (
-            !governanceConnectorCategories ||
-            governanceConnectorCategories.length === 0 ||
-            governanceConnectorsLoaded.current
-        ) {
-            return;
-        }
-
-        const manageRoutes: RouteInterface[] = [ ...filteredManageRoutes ];
-        const sanitizedRoutes: RouteInterface[] = [ ...sanitizedManageRoutes ];
-
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            governanceConnectorCategories = AppConstants.filterGoverananceConnectors(
-                governanceConnectorCategories
-            );
-        }
-
-        serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-            governanceConnectorCategories?.map(
-                (
-                    category: GovernanceConnectorCategoryInterface,
-                    index: number
-                ) => {
-                    let subCategoryExists: boolean = false;
-
-                    category.connectors?.map((connector: GovernanceConnectorInterface) => {
-                        if (connector.subCategory !== "DEFAULT") {
-                            subCategoryExists = true;
-
-                            return;
-                        }
-                    });
-                    if (subCategoryExists) {
-                        // TODO: Implement sub category handling logic here.
-                    }
-
-                    const categoryName: string =
-                        t(
-                            `console:manage.features.sidePanel.${ camelCase(
-                                category.name
-                            ) }`
-                        ) ?? category.name;
-
-                    const route: RouteInterface = {
-                        category:
-                            "console:manage.features.sidePanel.categories.configurations",
-                        component: lazy(() =>
-                            import(
-                                "./features/server-configurations/pages/governance-connectors"
-                            )
-                        ),
-                        exact: true,
-                        icon: {
-                            icon:
-                                getSidePanelIcons().connectors[ category.id ] ??
-                                getSidePanelIcons().connectors.default
-                        },
-                        id: category.id,
-                        name: categoryName,
-                        order:
-                            category.id ===
-                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                ? manageRoutes.length +
-                                governanceConnectorCategories.length
-                                : manageRoutes.length + index,
-                        path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTORS")
-                            .replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    };
-
-                    manageRoutes.unshift(route);
-                    sanitizedRoutes.unshift(route);
-                }
-            );
-
-        dispatch(setFilteredManageRoutes(manageRoutes));
-        dispatch(setSanitizedManageRoutes(sanitizedRoutes));
-        governanceConnectorsLoaded.current = true;
-    }, [
-        governanceConnectorCategories,
-        filteredManageRoutes,
-        sanitizedManageRoutes
-    ]);
-
-    useEffect(() => {
-        if (!allowedScopes) {
-            return;
-        }
-
-        if (
-            !(
-                governanceConnectorCategories !== undefined &&
-                governanceConnectorCategories.length > 0
-            )
-        ) {
-            if (
-                featureConfig?.governanceConnectors?.enabled &&
-                serverConfigurationConfig.showConnectorsOnTheSidePanel &&
-                hasRequiredScopes(
-                    featureConfig.governanceConnectors,
-                    featureConfig.governanceConnectors.scopes.read,
-                    allowedScopes
-                )
-            ) {
-                GovernanceConnectorUtils.getGovernanceConnectors();
-            }
-        }
-    }, [ governanceConnectorCategories, featureConfig, allowedScopes ]);
 
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(

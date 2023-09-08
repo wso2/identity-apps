@@ -67,7 +67,7 @@ DefaultSection.story = {
  */
 export const SectionWithAction = (): ReactElement => (
     <Section
-        description="Download all your profile data including personal data, security questions, and consents."
+        description="Download all your profile data including personal data, and linked accounts."
         header="Export profile"
         contentPadding={ false }
         icon={ ProfileExportIllustration }

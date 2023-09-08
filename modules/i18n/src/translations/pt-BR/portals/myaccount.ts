@@ -827,7 +827,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "restante"
             },
             fido: {
-                description: "Você pode usar uma chave <1>Passkey</1>, <1>De Segurança FIDO2</1> ou " + 
+                description: "Você pode usar uma chave <1>Passkey</1>, <1>De Segurança FIDO2</1> ou " +
                     "<1>Biometria</1> em seu dispositivo para fazer login em sua conta.",
                 form: {
                     label: "Chave de segurança/biometria",
@@ -1765,8 +1765,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 export: "Baixe o perfil"
             },
-            description: "Faça o download de todos os dados do seu perfil, incluindo dados pessoais, perguntas de " +
-                "segurança e consentimentos",
+            description: "Baixe todos os dados do seu perfil, incluindo dados pessoais e contas vinculadas",
             heading: "Exportar Perfil"
         },
         userSessions: {

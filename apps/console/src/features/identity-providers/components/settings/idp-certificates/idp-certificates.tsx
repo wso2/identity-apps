@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import Grid from "@oxygen-ui/react/Grid";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -33,14 +36,17 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { commonConfig } from "../../../../../extensions/configs";
+import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { updateIDPCertificate } from "../../../api";
-import { IdentityProviderInterface } from "../../../models";
+import { IdentityProviderConstants } from "../../../constants";
+import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";
 
 /**
  * Props interface of {@link IdpCertificates}
@@ -57,6 +63,10 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
      * Is Cert uploading enabled?
      */
     isPEMEnabled?: boolean;
+    /**
+     * Is the IDP a trusted token issuer
+     */
+    isTrustedTokenIssuer?: boolean;
 }
 
 export type CertificateConfigurationMode = "jwks" | "certificates";
@@ -121,7 +131,8 @@ const FORM_ID: string = "idp-certificate-jwks-input-form";
  * @param props - Props injected to the component.
  * @returns Functional component.
  */
-export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props): ReactElement => {
+export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props: IdpCertificatesV2Props)
+    : ReactElement => {
 
     const {
         [ "data-componentid" ]: testId,
@@ -129,8 +140,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         onUpdate,
         isReadOnly,
         isJWKSEnabled,
-        isPEMEnabled
+        isPEMEnabled,
+        isTrustedTokenIssuer
     } = props;
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
@@ -139,7 +153,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     const [ jwksValue, setJwksValue ] = useState<string>();
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         setInitialModeOfConfiguration();
@@ -156,7 +170,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             } else {
                 // Even if editingIDP?.certificate?.jwksUri?.trim() empty or not
                 // if above is not configured it's always JWKS.
-                setJwksValue(editingIDP?.certificate?.jwksUri ?? EMPTY_STRING);
+                setJwksValue(editingIDP?.certificate?.jwksUri ?? "");
                 setSelectedConfigurationMode("jwks");
             }
         } else {
@@ -184,12 +198,15 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
-        const operation = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
-        const PATCH_OBJECT = [ {
-            "operation": operation,
-            "path": "/certificate/jwksUri",
-            "value": values.jwks_endpoint
-        } ];
+        const operation: string = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
+
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+            {
+                "operation": operation,
+                "path": "/certificate/jwksUri",
+                "value": values.jwks_endpoint
+            } 
+        ];
 
         setIsSubmitting(true);
 
@@ -205,7 +222,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             onUpdate(editingIDP.id);
         };
 
-        const ifTheresAnyError = (error) => {
+        const ifTheresAnyError = (error: IdentityAppsApiException) => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,
@@ -240,8 +257,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             id={ FORM_ID }
             uncontrolledForm={ true }
             initialValues={ { jwks_endpoint: editingIDP?.certificate?.jwksUri } }
-            onSubmit={ onJWKSFormSubmit }>
-
+            onSubmit={ onJWKSFormSubmit }
+        > 
             <Field.Input
                 required
                 hint={ (
@@ -273,16 +290,21 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 } }
                 listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
-                maxLength={ JWKS_MAX_LENGTH }
-                minLength={ JWKS_MIN_LENGTH }
+                maxLength={ IdentityProviderConstants.JWKS_URL_MAX_LENGTH }
+                minLength={ IdentityProviderConstants.JWKS_URL_MIN_LENGTH }
                 name="jwks_endpoint"
             />
 
             <Show when={ AccessControlConstants.IDP_EDIT }>
-                <PrimaryButton
-                    type="submit"
+                <Field.Button
+                    form={ FORM_ID }
                     data-testid={ `${ testId }-save-button` }
                     loading={ isSubmitting }
+                    ariaLabel="JWKS Enpoint"
+                    name="jwks_enpoint"
+                    size="small"
+                    buttonType="primary_btn"
+                    label={ t("common:update") }
                     disabled={
                         (
                             !jwksValue ||
@@ -290,9 +312,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                             jwksValue === editingIDP?.certificate?.jwksUri
                         ) ||
                         isSubmitting
-                    }>
-                    { t("common:update") }
-                </PrimaryButton>
+                    }
+                />
             </Show>
 
         </Form>
@@ -303,33 +324,33 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             { !editingIDP?.certificate?.certificates?.length
                 ? (
                     <EmptyCertificatesPlaceholder
-                        onAddCertificateClicked={ openAddCertificatesWizard }/>
+                        onAddCertificateClicked={ openAddCertificatesWizard }
+                    />
                 )
                 : (
                     <Segment>
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column width={ 16 }>
-                                    <Show when={ AccessControlConstants.IDP_EDIT }>
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ openAddCertificatesWizard }
-                                            data-testid={ `${ testId }-add-certificate-button` }>
-                                            <Icon name="add"/>
-                                            { t("console:develop.features.authenticationProvider" +
-                                                ".buttons.addCertificate") }
-                                        </PrimaryButton>
-                                    </Show>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column width={ 16 }>
-                                    <IdpCertificatesList
-                                        isReadOnly={ isReadOnly }
-                                        currentlyEditingIdP={ editingIDP }
-                                        refreshIdP={ onUpdate }/>
-                                </Grid.Column>
-                            </Grid.Row>
+                        <Grid direction="column" container spacing={ 2 }>
+                            <Grid xs={ 12 }>
+                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ openAddCertificatesWizard }
+                                        data-testid={ `${ testId }-add-certificate-button` }
+                                    >
+                                        <Icon name="add" />
+                                        { t("console:develop.features.authenticationProvider" +
+                                            ".buttons.addCertificate") }
+                                    </PrimaryButton>
+                                </Show>
+                            </Grid>
+                            <Grid xs={ 12 }>
+                                <IdpCertificatesList
+                                    isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                                    isReadOnly={ isReadOnly }
+                                    currentlyEditingIdP={ editingIDP }
+                                    refreshIdP={ onUpdate }
+                                />
+                            </Grid>
                         </Grid>
                     </Segment>
                 )
@@ -338,7 +359,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     );
 
     const supportedMimes = () => {
-        return CertFileStrategy.DEFAULT_MIMES.map((m, i) => (
+        return CertFileStrategy.DEFAULT_MIMES.map((m: string, i: number) => (
             <span key={ m }>
                 <Code>{ m }</Code>
                 { (i !== CertFileStrategy.DEFAULT_MIMES.length - 1) && (<>&nbsp;</>) }
@@ -346,41 +367,55 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         ));
     };
 
+    /**
+     * Checks if the IDP is a trusted token issuer and has no certificates to display an alert.
+     * 
+     * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
+     */
+    const shouldShowNoCertificatesAlert = (): boolean => isTrustedTokenIssuer && !editingIDP?.certificate;
+
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;
     }
 
     return (
         <EmphasizedSegment padded="very">
-            <Grid>
-                { isJWKSEnabled && isPEMEnabled && (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
-                            <React.Fragment>
-                                <Switcher
-                                    widths={ "two" }
-                                    compact
-                                    data-testid={ `${ testId }-switcher` }
-                                    selectedValue={ selectedConfigurationMode }
-                                    onChange={ onSelectionChange }
-                                    options={ [
-                                        {
-                                            label: "Use JWKS Endpoint",
-                                            value: ("jwks" as CertificateConfigurationMode)
-                                        },
-                                        {
-                                            label: "Provide Certificates",
-                                            value: ("certificates" as CertificateConfigurationMode)
-                                        }
-                                    ] }
-                                />
-                                <Divider hidden/>
-                            </React.Fragment>
-                        </Grid.Column>
-                    </Grid.Row>
-                ) }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column computer={ 8 } mobile={ 16 } widescreen={ 8 } tablet={ 16 }>
+            <Grid direction="column" container spacing={ 4 }>
+                {
+                    shouldShowNoCertificatesAlert() && (
+                        <Grid xs={ 12 }>
+                            <Alert severity="error">
+                                { t("console:develop.features.authenticationProvider.forms.certificateSection." + 
+                                    "noCertificateAlert", { productName: config.ui.productName } ) }
+                            </Alert>
+                        </Grid>
+                    )
+                }
+                <Grid direction="column" container spacing={ 3 } xs={ 12 }>
+                    { isJWKSEnabled && isPEMEnabled && (
+                        <Grid md={ 12 } lg={ 6 }>
+                            <Switcher
+                                widths={ "two" }
+                                compact
+                                data-testid={ `${ testId }-switcher` }
+                                selectedValue={ selectedConfigurationMode }
+                                onChange={ onSelectionChange }
+                                options={ [
+                                    {
+                                        label: t("console:develop.features.authenticationProvider.forms." + 
+                                            "certificateSection.certificateEditSwitch.jwks"),
+                                        value: ("jwks" as CertificateConfigurationMode)
+                                    },
+                                    {
+                                        label: t("console:develop.features.authenticationProvider.forms." + 
+                                            "certificateSection.certificateEditSwitch.pem"),
+                                        value: ("certificates" as CertificateConfigurationMode)
+                                    }
+                                ] }
+                            />
+                        </Grid>
+                    ) }
+                    <Grid md={ 12 } lg={ 6 }>
                         { selectedConfigurationMode === "jwks"
                             ? jwksInputForm
                             : (
@@ -394,8 +429,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 </React.Fragment>
                             )
                         }
-                    </Grid.Column>
-                </Grid.Row>
+                    </Grid>
+                </Grid>
             </Grid>
             { isPEMEnabled && (
                 <AddIdpCertificateModal
@@ -418,9 +453,3 @@ IdpCertificates.defaultProps = {
     isJWKSEnabled: true,
     isPEMEnabled: true
 };
-
-// Component constants.
-
-const JWKS_MAX_LENGTH = 2048;
-const JWKS_MIN_LENGTH = 10;
-const EMPTY_STRING = "";

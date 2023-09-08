@@ -1638,7 +1638,7 @@ export const myAccount: MyAccountNS = {
             "actionTitles": {
                 "export": "Descarga el perfil"
             },
-            "description": "Descargue todos los datos de su perfil, incluidos los datos personales, las preguntas de seguridad y los consentimientos.",
+            "description": "Descargue todos los datos de su perfil, incluidos los datos personales y las cuentas vinculadas.",
             "heading": "Perfil de exportación"
         },
         "userSessions": {

@@ -1,0 +1,11 @@
+/*******************************
+       Divider Variables
+*******************************/
+
+/*----------------------------------------
+      Vertical divider with no border
+------------------------------------------*/
+
+@verticalDividerWithNoBordersFontSize: 24px;
+@verticalDividerWithNoBordersFontWeight: 500;
+@verticalDividerWithNoBordersFontColor: #A59898;

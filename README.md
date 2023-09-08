@@ -114,8 +114,18 @@ regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount
 
 Clone or download the Identity Apps repository and run the following commands from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies.
 
+#### Console & My Account
+
 ```shell
 # From project root.
+pnpm install && pnpm build
+```
+
+(Optional) If you need to build jsp apps (authentication portal, recovery portal, etc),
+```shell
+# From project root.
+cd identity-apps-core
+
 mvn clean install
 ```
 

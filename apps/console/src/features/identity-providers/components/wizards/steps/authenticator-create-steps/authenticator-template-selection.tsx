@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@ import { Heading, Hint, ResourceGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { getIdPIcons } from "../../../../configs";
+import { getIdPIcons } from "../../../../configs/ui";
 import {
     FederatedAuthenticatorMetaDataInterface,
     IdentityProviderInterface,
@@ -47,8 +47,8 @@ interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends Identif
 /**
  * Authenticator Selection Component.
  *
- * @param {AuthenticatorTemplateSelectionWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Authenticator Selection Component.
  */
 export const AuthenticatorTemplateSelection: FunctionComponent<
     AuthenticatorTemplateSelectionWizardFormPropsInterface
@@ -73,7 +73,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
     /**
      * Handles template selection.
      *
-     * @param {IdentityProviderInterface} template - Selected protocol.
+     * @param template - Selected protocol.
      */
     const handleTemplateSelection = (template: IdentityProviderInterface): void => {
         setSelectedTemplate(template);
@@ -86,7 +86,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
      *
      * @param option - Selected manual mode option.
      */
-    const handleManualModeOptionSelection = (option): void => {
+    const handleManualModeOptionSelection = (option: FederatedAuthenticatorMetaDataInterface): void => {
         setSelectedManualModeOption(option);
         onTemplateSelect(option);
         setSelectedTemplate(undefined);

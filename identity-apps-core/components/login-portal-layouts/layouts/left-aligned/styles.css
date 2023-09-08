@@ -1,0 +1,57 @@
+/**
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.login-portal.layout .page-wrapper.layout-file .slogan-container {
+    margin-left: 70px;
+    min-width: 540px;
+    text-align: right;
+    margin-right: 0;
+}
+
+.login-portal.layout .page-wrapper.layout-file .slogan-container .tag-line-text {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.login-portal.layout .page-wrapper.layout-file .slogan-container .tag-line-text > p {
+  font-size: 1.3rem;
+  max-width: 300px;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment .ui.container > .theme-icon.product-logo.portal-logo {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment:not(.landing-segment) .slogan-container {
+    min-width: 32em;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment:not(.landing-segment) .slogan-container {
+    min-width: 25em;
+  }
+}
+
+@media only screen and (max-width: 933px) {
+  .login-portal.layout .page-wrapper.layout-file .center-segment .ui.container > .theme-icon.product-logo.portal-logo {
+    display: block;
+  }
+}

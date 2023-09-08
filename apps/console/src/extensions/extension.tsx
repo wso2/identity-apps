@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,16 +17,15 @@
  */
 
 import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
-import React, { ErrorInfo, ReactElement, Suspense, lazy, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import { ExtensionsManager } from "./extensions-manager";
-import { AppUtils, EventPublisher, getEmptyPlaceholderIllustrations } from "../features/core";
+import { AppUtils, getEmptyPlaceholderIllustrations } from "../features/core";
 
 /**
  * Extension Interface.
  *
- * @interface ExtensionInterface - Component placeholder properties.
  */
 interface ExtensionInterface {
     section: "feedback-button" | "tenant-dropdown";
@@ -36,8 +35,8 @@ interface ExtensionInterface {
 /**
  * Extended Component.
  *
- * @param {ExtensionInterface} props
- * @returns {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns component placeholder.
  */
 export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement => {
 
@@ -47,9 +46,7 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
 
     const [ Component, setComponent ] = useState<JSX.Element|any>(null);
 
-    const fragment = ExtensionsManager.getConfig()?.sections[ type + "s" ]?.[ section ];
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const fragment: any = ExtensionsManager.getConfig()?.sections[ type + "s" ]?.[ section ];
 
     useEffect(() => {
 

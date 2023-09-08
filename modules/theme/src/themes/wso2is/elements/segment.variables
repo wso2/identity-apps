@@ -1,0 +1,13 @@
+/*******************************
+        Segment Variables
+*******************************/
+
+/*-------------------------------
+      Cookie Consent Banner
+--------------------------------*/
+
+@cookieConsentBannerBottom: 40px;
+
+// Inverted Mode
+@cookieConsentBannerInvertedBackground: @asgardeoBlack;
+@cookieConsentBannerInvertedBorder: @fixedElementBorderColor;

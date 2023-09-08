@@ -52,12 +52,12 @@ export interface CommonConfig {
                 regenerateWarning: string;
                 showRegenerateConfirmation: boolean;
             };
-        }
+        };
     };
     personalInfoPage: {
         externalLogins: {
             disableExternalLoginsOnEmpty: boolean;
-        }
+        };
     };
     utils: {
         isManageConsentAllowedForUser: (userstore: string) => boolean;
@@ -65,5 +65,5 @@ export interface CommonConfig {
         isConsoleNavigationAllowed: (userstore: string) => boolean;
         isFIDOEnabled: (userstore: string) => boolean;
         isSchemaNameSkippableforProfileCompletion: (schema: ProfileSchema) => boolean;
-    }
+    };
 }

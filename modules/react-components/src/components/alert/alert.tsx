@@ -199,7 +199,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
     }, [ alert ]);
 
     return (
-        <div 
+        <div
             /**
              * onMouseEnter will set the dissmissal value to 0 so untill mouse is left, the notification will
              * be shown.
@@ -209,8 +209,8 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
              * onMouseLeave will reset the value to initial value passed via props and will dissmiss the
              * notification once the time is hit.
              */
-            onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) } 
-            className={ `alert-wrapper ${ classes }` } 
+            onMouseLeave={ () => setIntermediateDissmissInterval(dismissInterval) }
+            className={ `alert-wrapper ${ classes }` }
             data-componentid={ componentId }
             data-testid={ testId }
         >

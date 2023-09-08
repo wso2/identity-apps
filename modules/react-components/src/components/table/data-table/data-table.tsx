@@ -50,6 +50,7 @@ import { Avatar } from "../../avatar";
 import { GenericIconProps } from "../../icon";
 import { Media } from "../../media";
 import { Popup } from "../../popup";
+import { EmphasizedSegment } from "../../section";
 
 /**
  * Interface for the Data Table sub components.
@@ -648,11 +649,9 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
         }
 
         return (
-            <DataTable.Row className="no-hover">
-                <DataTable.Cell>
-                    { externalPlaceholders }
-                </DataTable.Cell>
-            </DataTable.Row>
+            <EmphasizedSegment>
+                { externalPlaceholders }
+            </EmphasizedSegment>
         );
     };
 
@@ -667,36 +666,34 @@ export const DataTable = <T extends Record<string, any> = Record<string, any>>(
 
         for (let i = 0; i < loadingStateOptions?.count; i++) {
             placeholders.push(
-                <DataTable.Row key={ i }>
-                    <DataTable.Cell>
-                        <Header as="h6" image>
-                            {
-                                loadingStateOptions?.imageType && (
-                                    <Avatar
-                                        image={ (
-                                            <Placeholder style={ { height: 35, width: 35 } }>
-                                                <Placeholder.Image />
-                                            </Placeholder>
-                                        ) }
-                                        shape={ loadingStateOptions?.imageType }
-                                        isLoading={ true }
-                                        avatarType={ loadingStateOptions?.imageType === "circular" ? "user" : "app" }
-                                        size="mini"
-                                        floated="left"
-                                    />
-                                )
-                            }
-                            <Header.Content>
-                                <Placeholder style={ { width: "300px" } }>
-                                    <Placeholder.Header>
-                                        <Placeholder.Line />
-                                        <Placeholder.Line />
-                                    </Placeholder.Header>
-                                </Placeholder>
-                            </Header.Content>
-                        </Header>
-                    </DataTable.Cell>
-                </DataTable.Row>
+                <EmphasizedSegment key={ i } className="placeholder-segment">
+                    <Header as="h6" image>
+                        {
+                            loadingStateOptions?.imageType && (
+                                <Avatar
+                                    image={ (
+                                        <Placeholder style={ { height: 35, width: 35 } }>
+                                            <Placeholder.Image />
+                                        </Placeholder>
+                                    ) }
+                                    shape={ loadingStateOptions?.imageType }
+                                    isLoading={ true }
+                                    avatarType={ loadingStateOptions?.imageType === "circular" ? "user" : "app" }
+                                    size="mini"
+                                    floated="left"
+                                />
+                            )
+                        }
+                        <Header.Content>
+                            <Placeholder style={ { width: "300px" } }>
+                                <Placeholder.Header>
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                </Placeholder.Header>
+                            </Placeholder>
+                        </Header.Content>
+                    </Header>
+                </EmphasizedSegment>
             );
         }
 

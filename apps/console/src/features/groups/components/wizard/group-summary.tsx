@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { CONSUMER_USERSTORE } from "../../../userstores";
+import { CONSUMER_USERSTORE } from "../../../userstores/constants/user-store-constants";
+
+/**
+ * Interface to capture current wizard state
+ */
+interface WizardStateInterface {
+    [ key: string ]: any;
+}
 
 interface AddUserWizardSummaryProps extends TestableComponentInterface {
-    summary: any;
+    summary: WizardStateInterface;
     triggerSubmit: boolean;
     onSubmit: (application: any) => void;
 }
@@ -32,7 +38,7 @@ interface AddUserWizardSummaryProps extends TestableComponentInterface {
 /**
  * Component to create a summary of the role which will be created.
  *
- * @param props props containing summary data for the view.
+ * @param props - props containing summary data for the view.
  */
 export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
@@ -95,7 +101,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                             >
                                 {
                                     t("console:manage.features.roles.addRoleWizard.summary.labels.roleName",
-                                            { type: "Group" })
+                                        { type: "Group" })
                                 }
                             </div>
                         </Grid.Column>
@@ -128,7 +134,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                 <Label.Group>
                                     {
                                         summary.PermissionList
-                                            .map((perm, index) => (
+                                            .map((perm: any, index: number) => (
                                                 <Label
                                                     data-testid={
                                                         `${ testId }-permissions-${ index }-label`
@@ -163,8 +169,10 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
+                                        //TODO: [Fix Type] Type of `GroupUserList` 
+                                        //is not defined in `WizardStateInterface`.
                                         summary.GroupUserList
-                                            .map((user, index) => (
+                                            .map((user: any, index: number) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar
                                                         name={ user.userName }

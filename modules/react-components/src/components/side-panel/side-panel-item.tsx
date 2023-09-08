@@ -88,7 +88,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
             "ellipsis": showEllipsis
         }
     );
-    
+
     const featureStatusLabelClasses = classNames(
         "feature-status-label",
         {
@@ -220,7 +220,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             open={ validateOpenState(route.open, selected, route.children) }
                             sidePanelItemHeight={ sidePanelItemHeight }
                             translationHook={ translationHook }
-                            allowedScopes={ allowedScopes } 
+                            allowedScopes={ allowedScopes }
                         />
                     )
                     : null

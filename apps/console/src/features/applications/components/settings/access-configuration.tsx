@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,7 +48,7 @@ import {
     updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
-import { getInboundProtocolLogos } from "../../configs";
+import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
@@ -65,7 +64,7 @@ import {
     SupportedAuthProtocolTypes
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
 

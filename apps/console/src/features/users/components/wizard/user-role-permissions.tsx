@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Icon, Segment } from "semantic-ui-react";
-import { PermissionList, getRoleById } from "../../../roles";
+import { getRoleById } from "../../../roles/api/roles";
+import { PermissionList } from "../../../roles/components/wizard/role-permission";
 
 /**
  * Proptypes for the role permission component.
@@ -35,8 +36,8 @@ interface RolePermissionsInterface extends TestableComponentInterface {
 /**
  *  Roles permission component.
  *
- * @param {RolePermissionsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Roles permission component.
  */
 export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
@@ -65,7 +66,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
         if (roleId) {
             getRoleById(roleId)
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     setRoleCheck(false);
                     setRole(response.data);
                 });
@@ -110,7 +111,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                         <PermissionList emphasize={ false } isReadOnly isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Segment>
-             </>
+            </>
         )
     );
 };

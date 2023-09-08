@@ -1,0 +1,142 @@
+<!--
+ ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ ~
+ ~ WSO2 LLC. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<project name="login-portal-layouts" basedir=".">
+
+    <!-- Copy layouts to the authentication-portal -->
+    <target name="check-authentication-portal-includes-layouts-dir">
+        <available
+            property="authentication-portal.includes.layouts.dir.exists"
+            file="../../apps/authentication-portal/src/main/webapp/includes/layouts"
+            type="dir"
+        />
+    </target>
+
+    <target
+        name="create-authentication-portal-includes-layouts-dir"
+        depends="check-authentication-portal-includes-layouts-dir"
+        unless="${authentication-portal.includes.layouts.dir.exists}"
+    >
+        <mkdir dir="../../apps/authentication-portal/src/main/webapp/includes/layouts"/>
+    </target>
+
+    <target name="copy-predefined-layout-into-authentication-portal" depends="create-authentication-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to Authentication Portal ---"/>
+        <copy todir="../../apps/authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
+            <fileset dir="target/layouts/"/>
+        </copy>
+    </target>
+
+    <target
+        name="copy-layouts-into-authentication-portal"
+        depends="copy-predefined-layout-into-authentication-portal"
+    />
+
+    <!-- Copy layouts to the recovery-portal -->
+    <target name="check-recovery-portal-includes-layouts-dir">
+        <available
+            property="recovery-portal.includes.layouts.dir.exists"
+            file="../../apps/recovery-portal/src/main/webapp/includes/layouts"
+            type="dir"
+        />
+    </target>
+
+    <target
+        name="create-recovery-portal-includes-layouts-dir"
+        depends="check-recovery-portal-includes-layouts-dir"
+        unless="${recovery-portal.includes.layouts.dir.exists}"
+    >
+        <mkdir dir="../../apps/recovery-portal/src/main/webapp/includes/layouts"/>
+    </target>
+
+    <target name="copy-predefined-layout-into-recovery-portal" depends="create-recovery-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to Recovery Portal ---"/>
+        <copy todir="../../apps/recovery-portal/src/main/webapp/includes/layouts/" overwrite="true">
+            <fileset dir="target/layouts/"/>
+        </copy>
+    </target>
+
+    <target
+        name="copy-layouts-into-recovery-portal"
+        depends="copy-predefined-layout-into-recovery-portal"
+    />
+
+    <!-- Copy layouts to the x509-certificate-authentication-portal -->
+    <target name="check-x509-certificate-authentication-portal-includes-layouts-dir">
+        <available
+            property="x509-certificate-authentication-portal.includes.layouts.dir.exists"
+            file="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts"
+            type="dir"
+        />
+    </target>
+
+    <target
+        name="create-x509-certificate-authentication-portal-includes-layouts-dir"
+        depends="check-x509-certificate-authentication-portal-includes-layouts-dir"
+        unless="${x509-certificate-authentication-portal.includes.layouts.dir.exists}"
+    >
+        <mkdir dir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts"/>
+    </target>
+
+    <target name="copy-predefined-layout-into-x509-certificate-authentication-portal" depends="create-x509-certificate-authentication-portal-includes-layouts-dir">
+        <echo message="--- copying predefined layout to X509 Certificate Authentication Portal ---"/>
+        <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/includes/layouts/" overwrite="true">
+            <fileset dir="target/layouts/"/>
+        </copy>
+    </target>
+
+    <target
+        name="copy-layouts-into-x509-certificate-authentication-portal"
+        depends="copy-predefined-layout-into-x509-certificate-authentication-portal"
+    />
+
+    <!-- Copy layouts to the console -->
+    <target name="check-console-layout-dir">
+        <available 
+            property="console.layouts.dir.exists" 
+            file="../../../apps/console/src/login-portal-layouts" 
+            type="dir"
+        />
+    </target>
+
+    <target 
+        name="create-console-layouts-dir" 
+        depends="check-console-layout-dir" 
+        unless="check-console-layout-dir"
+    >
+        <mkdir dir="../../../apps/console/src/login-portal-layouts"/>
+    </target>
+
+    <target name="copy-layouts-into-console" depends="create-console-layouts-dir">
+        <echo message="--- copying layouts to Console ---"/>
+        <copy todir="../../../apps/console/src/login-portal-layouts/" overwrite="true">
+            <fileset dir="target/layouts/">
+                <exclude name="**/body.ser"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target
+        name="move-layouts"
+        depends="
+            copy-layouts-into-authentication-portal,
+            copy-layouts-into-recovery-portal,
+            copy-layouts-into-x509-certificate-authentication-portal,
+            copy-layouts-into-console"
+    />
+</project>

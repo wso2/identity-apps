@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" id="status-shield-danger" class="icon status-shield danger" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 162.7px; height: 200px;" viewBox="0 0 162.7 200">
+    <defs>
+        <linearGradient id="linear-gradient" x2="0.855" y2="1.094" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#f3f3f3"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1="0.5" x2="1.138" y2="0.263" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#e7e7e7"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1="1.374" y1="1.423" x2="-0.036" y2="0.147"
+                        gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-4" x1="0.23" y1="0.381" x2="0.937" y2="1.085"
+                        gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#da3a3a"/>
+            <stop offset="1" stop-color="#981919"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-5" x1="0.61" y1="0.43" x2="-0.436" y2="0.187"
+                        xlink:href="#linear-gradient-3"/>
+        <linearGradient id="linear-gradient-6" x1="1.028" y1="0.689" x2="-0.929" y2="0.789"
+                        xlink:href="#linear-gradient-3"/>
+        <linearGradient id="linear-gradient-7" x1="0.39" y1="0.43" x2="1.436" y2="0.187"
+                        xlink:href="#linear-gradient-3"/>
+    </defs>
+    <g id="danger" transform="translate(0.1)">
+        <path id="Path_2242" data-name="Path 2242"
+              d="M162.6,31.3C162.7,31.3,83.3.8,81.3,0,79.8.6-.2,31.3-.1,31.3V88.8c0,39.8,11.4,91.9,81.3,111.2,69.7-19.4,81.1-72.4,81.1-111.2C162.6,69.1,162.6,31.3,162.6,31.3Z"
+              fill="url(#linear-gradient)"/>
+        <path id="Path_2243" data-name="Path 2243"
+              d="M0,88.8C0,128.6,11.4,180.7,81.3,200V0C78.3,1.1,0,31.3,0,31.3S-.1,88.8,0,88.8Z" opacity="0.1"
+              fill="url(#linear-gradient-2)"/>
+        <path id="Path_2244" data-name="Path 2244"
+              d="M146.8,42c.2,0-63.9-25.8-65.6-26.4-1.4.5-65.8,25.3-65.6,25.2V89c0,33.4,6.5,79.1,65.6,95.3,58.9-16.3,65.6-62.6,65.6-95.3C146.9,72.5,146.9,42,146.8,42Z"
+              fill="url(#linear-gradient-3)"/>
+        <path id="Path_2258" data-name="Path 2258"
+              d="M129.084,38.435c.173,0-55.272-22.316-56.742-22.835-1.211.432-56.915,21.884-56.742,21.8V79.089c0,28.89,5.622,68.42,56.742,82.432,50.947-14.1,56.742-54.147,56.742-82.432C129.17,64.817,129.17,38.435,129.084,38.435Z"
+              transform="translate(8.863 11.396)" fill="url(#linear-gradient-4)"/>
+        <path id="Path_2246" data-name="Path 2246"
+              d="M96.9,99.9l15.7-15.7a5.434,5.434,0,0,0,0-7.8l-7.8-7.9a5.434,5.434,0,0,0-7.8,0L81.3,84.2,65.6,68.6a5.553,5.553,0,0,0-7.9,0l-7.9,7.8a5.553,5.553,0,0,0,0,7.9L65.4,100,49.8,115.6a5.434,5.434,0,0,0,0,7.8l7.8,7.9a5.434,5.434,0,0,0,7.8,0L81,115.7l15.8,15.8a5.553,5.553,0,0,0,7.9,0l7.8-7.8a5.553,5.553,0,0,0,0-7.9Z"
+              fill="#fff"/>
+        <path id="Path_2260" data-name="Path 2260"
+              d="M96.9,99.9l15.7-15.7a5.434,5.434,0,0,0,0-7.8l-3.907-3.957L81.048,99.9l27.634,27.618L112.5,123.7a5.553,5.553,0,0,0,0-7.9Z"
+              fill="url(#linear-gradient-5)"/>
+        <path id="Path_2261" data-name="Path 2261"
+              d="M96.687,99.847,112.6,84.2a5.434,5.434,0,0,0,0-7.8l-3.907-3.957-27.516,27.4,27.5,27.671L112.5,123.7a5.553,5.553,0,0,0,0-7.9Z"
+              transform="translate(180.926 18.759) rotate(90)" fill="url(#linear-gradient-6)"/>
+        <path id="Path_2262" data-name="Path 2262"
+              d="M98.4,99.9,82.7,84.2a5.434,5.434,0,0,1,0-7.8L86.6,72.443,114.25,99.9,86.616,127.518,82.8,123.7a5.553,5.553,0,0,1,0-7.9Z"
+              transform="translate(-32.948 0.057)" fill="url(#linear-gradient-7)"/>
+    </g>
+</svg>

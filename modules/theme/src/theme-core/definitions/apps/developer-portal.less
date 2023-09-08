@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -127,9 +127,6 @@
                     margin: 0 auto;
                 }
             }
-        }
-        .flow-options-column {
-
         }
     }
 
@@ -350,6 +347,12 @@
 
                 &-text {
                     margin-left: 20px;
+
+                    .heading {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
                 }
             }
 
@@ -1068,13 +1071,17 @@
    Basic Feature Tour Styles
 --------------------------------*/
 
+.__floater.__floater__open {
+    z-index: 9999 !important;
+}
+
 .react-joyride__tooltip {
     [data-action="primary"] {
         min-height: 1em;
         outline: none;
         border: none !important;
         vertical-align: baseline;
-        background: @primaryColor !important;
+        background: @primaryColorGradient !important;
         color: @white !important;
         font-family: inherit;
         font-size: 1rem !important;
@@ -1082,12 +1089,12 @@
         padding: .78571429em 1.5em .78571429em !important;
         text-transform: none;
         text-shadow: none;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 1em !important;
         font-style: normal;
         text-align: center;
         text-decoration: none;
-        border-radius: @defaultBorderRadius !important;
+        border-radius: @buttonBorderRadius !important;
     }
 
     [data-action="back"] {
@@ -1183,11 +1190,9 @@
     display: flex;
     align-items: center;
     padding: 5px 0px;
-    border-left: 1px solid #000000;
     margin-left: 5px;
 
     .organization-breadcrumb {
-        margin-left: 36px; 
         cursor: pointer;
 
         .organization-breadcrumb-label {
@@ -1205,7 +1210,7 @@
 
         .organization-breadcrumb-item {
             color: #000000;
-            min-height: 15px; 
+            min-height: 15px;
             margin: -3px 0;
             text-decoration: none;
 
@@ -1224,12 +1229,384 @@
     .organization-name {
         min-height: 15px;
     }
+
+    // Only add spacing and left formatting if the hamburger is present.
+    &.show-hamburger {
+        .tenant-dropdown-wrapper {
+            padding-left: @tenantDropdownWrapperSpacingLeft;
+
+            .tenant-dropdown {
+                margin-left: 5px;
+
+                &:before {
+                    content: '';
+                    width: 5px;
+                    height: 100%;
+                    position: absolute;
+                    left: -@tenantDropdownWrapperSpacingLeft;
+                }
+            }
+        }
+    }
+}
+
+.tenant-dropdown-wrapper,
+.contained-trigger-wrapper {
+    padding-left: 0;
+
+    .tenant-dropdown {
+        border-radius: @tenantDropdownTriggerBorderRadius !important;
+
+        .tenant-dropdown-links-category-header {
+            text-transform: none;
+            border-bottom: none !important;
+            font-weight: 500;
+            color: @lightFontColor;
+            padding: 0 20px !important;
+            margin-bottom: 8px;
+        }
+
+        .tenant-dropdown-trigger {
+            display: contents;
+
+            .tenant-dropdown-trigger-display-name {
+                max-width: @tenantDropdownTriggerDisplayNameMaxWidth;
+                line-height: initial;
+                margin-top: -3px;
+            }
+
+            .theme-icon {
+                svg {
+                    >path {
+                        fill: @tenantDropdownTriggerTextColor;
+                    }
+                }
+            }
+        }
+
+        .ui.items {
+            margin: 0;
+        }
+
+        i.dropdown.icon {
+            display: none;
+        }
+    }
+}
+
+.tenant-dropdown {
+    .divider {
+        margin: 0;
+    }
+
+    .tenant-dropdown-menu {
+        padding: 0.3rem 0rem !important;
+    }
+
+    .current-tenant {
+        .name {
+            max-width: 150px;
+        }
+
+        .org-id {
+            max-width: 130px;
+            font-weight: 400;
+            font-size: 11px;
+            margin-right: 5px;
+            color: #565656;
+        }
+
+        .org-id-copy-btn {
+            padding: 0px;
+            box-shadow: none;
+        }
+
+        .org-id-copy-btn:hover, .org-id-copy-btn:focus {
+            box-shadow: none;
+        }
+
+        .spaced-right {
+            padding-right: 5px;
+        }
+    }
+
+    .menu {
+        min-width: @tenantDropdownMinWidth !important;
+        padding: @tenantDropdownPadding;
+
+        .header {
+            border-bottom: 1px solid @defaultBorderColor;
+
+            .content {
+                padding-left: 15px;
+
+                .description {
+                    margin-top: 0;
+
+                    .name {
+                        font-weight: bold;
+                        min-width: 100px;
+                    }
+
+                    .default-button {
+                        min-width: 60px;
+                        padding: 0.4em 1em;
+                        font-size: 0.8em;
+
+                        &.active {
+                            box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonBorderColor inset !important;
+                            background-color: @tenantDropdownDefaultButtonBackground !important;
+
+                            &:hover {
+                                box-shadow: 0 0 0 1px @tenantDropdownDefaultButtonHoverBorderColor inset !important;
+                            }
+                        }
+
+                        &.disabled {
+                            box-shadow: 0 0 0 1px @tenantDropdownDefaultLabelBorderColor inset !important;
+                            background-color: @tenantDropdownDefaultLabelBackground !important;
+                            color: @black !important;
+
+                            &.loading {
+                                color: transparent !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .sub-org-header {
+            border-bottom: none;
+            padding-bottom: 5px;
+        }
+
+        .back-button-wrapper {
+            padding-left: 20px !important;
+        }
+
+        .search-bar {
+            padding: 12px 0;
+            margin: 0;
+
+            &.tenant {
+                padding: 12px 15px !important;
+            }
+        }
+
+        .tenant-pagination {
+            display: flex;
+            justify-content: flex-end;
+
+            &.organizations {
+                margin-top: 1em;
+            }
+
+            button {
+                &:first-child {
+                    margin-left: 8px;
+                }
+            }
+        }
+
+        .tenants-list {
+            max-height: 210px;
+            overflow: auto;
+            padding: 5px 0px;
+
+            .tenant-account {
+                border-radius: @defaultBorderRadius !important;
+                padding: @tenantDropdownTenantPadding !important;
+                border: none;
+                transition: none !important;
+                margin: 0;
+
+                .tenant-list-item-content {
+                    display: flex !important;
+                    align-items: center;
+                }
+
+                .theme-icon {
+                    margin-top: 0 !important;
+                    padding: 8px;
+                }
+
+                .description {
+                    margin-top: 0;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background: darken(@whiteSmoke, 2);
+                }
+
+                .name {
+                    font-weight: 400;
+                }
+
+                .email {
+                    color: @nobel;
+                }
+            }
+
+            .empty-list {
+                margin: 8px 0;
+                padding: 5px 10px !important;
+
+                .message {
+                    color: @nobel;
+                    height: 30px;
+                    padding-top: 5px;
+                    text-align: center;
+                }
+            }
+        }
+
+        .action-panel {
+            border: none;
+            margin: @tenantDropdownLinkMargin;
+            min-height: @tenantDropdownLinkMinHeight;
+            line-height: 0 ! important;
+            border-radius: @defaultBorderRadius;
+            padding: 6px 16px !important;
+            display: flex !important;
+            align-items: center;
+
+            svg {
+                margin-right: 1em;
+            }
+
+            &.no-hover {
+                &:hover {
+                    background: transparent !important;
+                }
+            }
+
+            .link-icon {
+                color: @textColor;
+            }
+
+            .link-text {
+                color: @textColor;
+                text-decoration: none;
+            }
+
+            .action-button {
+                background: #f8f8f8;
+                border: 1px solid #c6c6c6;
+                line-height: 28px;
+                padding: 6px 20px;
+                color: #666;
+
+                &,
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+.ui.dropdown.item.tenant-dropdown .menu .item.tenant-account {
+    &,
+    &:not(.filtered) {
+        display: flex;
+        padding: @relativeMini @relativeLarge;
+    }
+}
+
+.ui.dropdown.item.tenant-dropdown .menu .item.header {
+    &,
+    &:not(.filtered) {
+        display: flex;
+        padding: @relativeMini @relativeLarge;
+    }
+
+    .ui.divider {
+        margin: 0.5rem 0rem;
+    }
 }
 
 .share-organization-placeholder {
     height: 291px;
 }
 
+// Removing min-width from tenant dropdown search bar
+.advanced-search-wrapper {
+    &.tenant-dropdown-search {
+        .ui.input.advanced-search {
+            width: 100%;
+            min-width: unset;
+        }
+    }
+}
+
+// Fix for the unstackable list item images getting weird sizes on mobile.
+@media only screen and (max-width: @tabletBreakpoint) {
+    .tenant-dropdown {
+        .current-tenant {
+            .ui.image.tenant-image.x60 {
+                width: 60px !important;
+            }
+
+            .name {
+                max-width: 200px;
+            }
+        }
+    }
+
+    // Fix for username and avatar in the header being pushed right to the right edge in tablet view
+    &:not(.fluid-header) {
+        .tenant-dropdown {
+            padding-right: 0.92857143em;
+        }
+    }
+}
+
+// If hamburger should not be shown, only hide the tenant dropdown separator in tablet and mobile views.
+@media only screen and (min-width: @tabletBreakpoint) {
+    // Only add spacing and left formatting if the hamburger is present.
+    &:not(.show-hamburger) {
+        .tenant-dropdown-wrapper {
+            padding-left: @tenantDropdownWrapperSpacingLeft;
+
+            .tenant-dropdown {
+                margin-left: 5px;
+
+                &:before {
+                    content: '';
+                    width: 5px;
+                    height: 100%;
+                    position: absolute;
+                    border-left: 1px solid @tenantDropdownSeparatorBorderColor;
+                    left: -@tenantDropdownWrapperSpacingLeft;
+                }
+            }
+        }
+    }
+}
+
+.ui.menu {
+
+    &.organization-breadcrumb,
+    .organization-breadcrumb {
+        background: @tenantDropdownTriggerBackground;
+    }
+
+    .item {
+        &.breadcrumb {
+            >span {
+                &.super {
+                    padding: 7px 10px;
+                }
+            }
+        }
+
+        &.contained-trigger-wrapper {
+            padding: 0 !important;
+        }
+    }
+}
 
 /*-------------------------------
     OIDC User attribute table
@@ -1296,4 +1673,257 @@
     .ui.button {
         margin-top: 23px;
     }
+}
+
+/*----------------------------------------
+      Connections page
+------------------------------------------*/
+
+.ui.button.setup-guide-button {
+    background: none;
+    border: none;
+    color: #808080;
+    font-size:14px;
+    height: 36px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: 14px;
+    margin-right: 9px;
+    padding: 0px 14px;
+    float:right;
+}
+
+.ui.button.idp-create-button {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 54px;
+    color: #ff7300;
+}
+
+/*-------------------------------------------
+            Organization Insights Graphs 
+---------------------------------------------*/
+.org-insights-container {
+    margin-top: -2%;
+}
+
+.org-insights-comparison-checkbox {
+    margin-top: 0;
+}
+
+.org-insights-graph-placeholder {
+    height: 375px;
+}
+
+.org-insights-graph-container {
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.org-insights-graph-tooltip {
+    background-color: #3d3d3d;
+    color: white; 
+    width: 170%; 
+    padding: 20% 0% 20% 20%; 
+    border-radius: 10px;
+}
+
+.org-insights-graph-tooltip > p {
+    margin: 0;
+}
+
+.org-insights-tooltip-date-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.org-insights-current-period-indicator {
+    height: 10px;
+    width: 10px;
+    background-color: orange;
+    border-radius: 50%;
+}
+
+.org-insights-tooltip-date {
+    margin: 0; 
+    margin-left: 5%;
+}
+
+.org-insights-last-fetched-warning {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end; 
+    margin-top: 4%; 
+    margin-right: 0.1%;
+}
+
+.org-insights-duration-notice-container {
+    display: flex; 
+    flex-direction: row; 
+    padding: 1% 0 0.5% 0;
+    margin: 1% 0%; 
+    background: transparent;
+    align-items: center;
+    height: '7vh'
+}
+
+.org-insights-graph-total-count {
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.org-insights-mau-tooltip {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.org-insights-filter-container {
+    background-color: transparent;
+    width: 100%;
+    padding: 0%;
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-items: center;
+}
+
+.org-insights-filter-container-advanced-filtering-enabled {
+    background-color: white;
+    padding: 0.1%;      
+    border-radius: 8px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    align-items: center;  
+}
+
+.org-insights-filter-container > .oxygen-text-field {
+    width: 100%
+}
+
+.org-insights-advanced-filter-trigger {
+    cursor: pointer; 
+    pointer-events: auto;
+    border-radius: 8px;
+    margin-left: 24px;
+    padding: 0.5% 0.5% 0.3% 0.5%;
+    background: lightgray;
+}
+
+.org-insights-filter-submit-btn {
+    margin-top: 4%;
+    margin-left: auto;
+}
+
+.org-insights-advanced-filter-clear-button {
+    margin-left: 1%; 
+    margin-top: 0;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.org-insights-dropdown {
+    background: #F8F8FB;
+    margin-right: 2px;
+    box-shadow: none;
+    border-radius: 8px;
+    
+    .MuiOutlinedInput-notchedOutline { 
+        border: 0 !important;
+    }
+
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+        border: 0 !important;
+    }
+
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border: 0 !important;
+    }
+}
+
+.org-insights-advanced-filter-container {
+    padding: 4%; 
+    width: 400px; 
+    z-index: 1000;
+}
+
+.org-insights-advanced-filter-container > p {
+    margin: 0;
+}
+
+.org-insights-filter-condition-container {
+    margin-top: 4%;
+}
+
+.org-insights-tab-view {
+    background-color: rgb(249,248,247) !important; 
+    box-shadow: 0 0 !important; 
+    padding: 0 !important; 
+    border: 0 !important;
+}
+
+.org-insights-helper-text {
+    margin: 0;
+    padding: 0;
+}
+
+.org-insights-filter-chip {
+    padding: 1% 0% 1% 0% !important;
+
+    .MuiChip-label {
+        text-transform: none !important;
+    }
+}
+
+.org-insights-filter-icon {
+    padding: 0;
+}
+
+.org-insights-duration-dropdown {
+    border-radius: 8px;
+}
+
+/*-------------------------------
+    Trusted Token Issuer Modal
+--------------------------------*/
+
+.required-certificate-label {
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.required-certificate-label::after {
+    margin-left: 0.2em;
+    content: "*";
+    color: #E53535;
+}
+
+.switcher-grid {
+    width: 93.75% !important;
+}
+
+/*-------------------------------
+            Oxygen UI
+--------------------------------*/
+
+.oxygen-brand-portal-name {
+    margin-top: 4.6px;
+}
+
+.oxygen-button {
+    padding: 8px 16px;
+}
+
+.user-dropdown-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
 }

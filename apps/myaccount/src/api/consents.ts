@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,37 +16,56 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import {
+    AsgardeoSPAClient,
+    HttpError,
+    HttpInstance,
+    HttpRequestConfig,
+    HttpResponse
+} from "@asgardeo/auth-react";
+import { AxiosRequestConfig } from "axios";
 import {
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
     HttpMethods,
+    PIICategory,
+    PurposeInterface,
     PurposeModel,
     PurposeModelPartial,
+    ServiceInterface,
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
+const httpClientAll: (
+    config: HttpRequestConfig[]
+) => Promise<
+    HttpResponse[] | undefined
+> = AsgardeoSPAClient.getInstance().httpRequestAll.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns - A promise containing the response.
  */
-export const fetchConsentedApps = async (state: ConsentState, username: string): Promise<ConsentInterface[]> => {
-
-    const requestConfig = {
+export const fetchConsentedApps = async (
+    state: ConsentState,
+    username: string
+): Promise<ConsentInterface[]> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -54,14 +73,15 @@ export const fetchConsentedApps = async (state: ConsentState, username: string):
             piiPrincipalId: username,
             state
         },
-        url: store.getState().config.endpoints.consentManagement.consent.listAllConsents
+        url: store.getState().config.endpoints.consentManagement.consent
+            .listAllConsents
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse<ConsentInterface[]>) => {
             return response.data;
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -69,31 +89,36 @@ export const fetchConsentedApps = async (state: ConsentState, username: string):
 /**
  * Fetch the consent receipt.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns - A promise containing the response.
  */
-export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
-    const requestConfig = {
+export const fetchConsentReceipt = (
+    receiptId: string
+): Promise<ConsentReceiptInterface> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.consentManagement.consent.consentReceipt + `/${receiptId}`
+        url:
+            store.getState().config.endpoints.consentManagement.consent
+                .consentReceipt + `/${receiptId}`
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            return response.data as ConsentReceiptInterface;
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
+            return response.data;
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
 
 /**
  * Fetches all the purposes available in the system. The response
- * {@link PurposeModelPartial[]} will not contain the specific piiCategory information
+ * {@link PurposeModelPartial} will not contain the specific piiCategory information
  * of each of the purposes. Instead it's only returns the basic/partial information of
  * all the purpose in the system.
  *
@@ -103,26 +128,32 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
  * - {@link offset} will defaults to 0 if not provided. If the offset is zero
  * server will start searching the records starting from zero.
  *
- * @param {number | 0} limit Number of search results
- * @param {number | 0} offset Start index of the search
- * @return {Promise<PurposeModelPartial[]>} response data
+ * @param limit - Number of search results
+ * @param offset - Start index of the search
+ * @returns - Response data
  */
-export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): Promise<PurposeModelPartial[]> => {
-
+export const fetchAllPurposes = async (
+    limit: number = 0,
+    offset: number = 0
+): Promise<PurposeModelPartial[]> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: { "limit": limit, "offset": offset },
+        params: { limit: limit, offset: offset },
         url: store.getState().config.endpoints.consentManagement.purpose.list
     };
 
     try {
-        const response: AxiosResponse = await httpClient(requestConfig);
+        const response: HttpResponse<PurposeModelPartial[]> = await httpClient(
+            requestConfig
+        );
 
-        return Promise.resolve<PurposeModelPartial[]>(response.data as PurposeModelPartial[]);
+        return Promise.resolve<PurposeModelPartial[]>(
+            response.data as PurposeModelPartial[]
+        );
     } catch (error) {
         return Promise.reject(error);
     }
@@ -145,40 +176,46 @@ export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): P
  * granted or denied that claim.
  *
  * However, now you will run into a limitation where {@link ConsentReceiptInterface}
- * only contains the granted claims in its: {@code receipt.services.each(purposes.
- * each(purpose.piiCategory))} array. In this case you have to use this method to get
+ * only contains the granted claims in its: `receipt.services.each(purposes.each(purpose.piiCategory))`
+ * array. In this case you have to use this method to get
  * detailed info about each of its purposes.
  *
  * Usage: -
- * This service method will accept multiple {@code purposeIDs} and aggregate
- * them to make concurrent requests for each ID. You can pass an {@code number[]}
+ * This service method will accept multiple `purposeIDs` and aggregate
+ * them to make concurrent requests for each ID. You can pass an `number[]`
  * argument which contains only one purposeID as well.
  *
- * @param {Iterable[]} purposeIDs
- * @return {PurposeModel[]} response data
+ * @param purposeIDs -
+ * @returns - response data
  */
-export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<PurposeModel[]> => {
-
+export const fetchPurposesByIDs = async (
+    purposeIDs: Iterable<number>
+): Promise<PurposeModel[]> => {
     const requestConfigurations: AxiosRequestConfig[] = [];
-    const url = store.getState().config.endpoints.consentManagement.purpose.getPurpose;
+    const url: string = store.getState().config.endpoints.consentManagement
+        .purpose.getPurpose;
 
     for (const purposeID of purposeIDs) {
         const requestConfiguration: AxiosRequestConfig = {
             headers: {
-                "Accept": "application/json",
+                Accept: "application/json",
                 "Content-Type": "application/json"
             },
             method: HttpMethods.GET,
             /* Contains a additional path parameter :purposeId */
-            url: `${ url }/${ purposeID }`
+            url: `${url}/${purposeID}`
         };
 
         requestConfigurations.push(requestConfiguration);
     }
 
     try {
-        const response: AxiosResponse[] = await httpClientAll(requestConfigurations);
-        const models = response.map(res => res.data as PurposeModel);
+        const response: HttpResponse[] = await httpClientAll(
+            requestConfigurations
+        );
+        const models: PurposeModel[] = response.map(
+            (res: HttpResponse<PurposeModel>) => res.data
+        );
 
         return Promise.resolve<PurposeModel[]>(models);
     } catch (error) {
@@ -189,23 +226,27 @@ export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<
 /**
  * Revoke the consent given to an application.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @returns - A promise containing the response.
  */
-export const revokeConsentedApp = (appId: string): Promise<any> => {
-    const requestConfig = {
+export const revokeConsentedApp = (
+    appId: string
+): Promise<ConsentReceiptInterface> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             Accept: "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.consentManagement.consent.consentReceipt + `/${appId}`
+        url:
+            store.getState().config.endpoints.consentManagement.consent
+                .consentReceipt + `/${appId}`
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             // TODO: change the return type
-            return response.data as ConsentReceiptInterface;
+            return response.data;
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -213,22 +254,26 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
 /**
  * Intercepts and handles actions of type `UPDATE_CONSENTED_CLAIMS`.
  *
- * @param {any} dispatch - `dispatch` function from redux.
- * @returns {(next) => (action) => any} Passes the action to the next middleware
+ * @param dispatch - `dispatch` function from redux.
+ * @returns - Passes the action to the next middleware
  */
-export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise<any> => {
+export const updateConsentedClaims = (
+    receipt: ConsentReceiptInterface
+): Promise<any> => {
     const body: UpdateReceiptInterface = {
         collectionMethod: "Web Form - My Account",
         jurisdiction: receipt.jurisdiction,
         language: receipt.language,
         policyURL: receipt.policyUrl,
-        services: receipt.services.map((service) => ({
-            purposes: service.purposes.map((purpose) => ({
+        services: receipt.services.map((service: ServiceInterface) => ({
+            purposes: service.purposes.map((purpose: PurposeInterface) => ({
                 consentType: purpose.consentType,
-                piiCategory: purpose.piiCategory.map((category) => ({
-                    piiCategoryId: category.piiCategoryId,
-                    validity: category.validity
-                })),
+                piiCategory: purpose.piiCategory.map(
+                    (category: PIICategory) => ({
+                        piiCategoryId: category.piiCategoryId,
+                        validity: category.validity
+                    })
+                ),
                 primaryPurpose: purpose.primaryPurpose,
                 purposeCategoryId: [ 1 ],
                 purposeId: purpose.purposeId,
@@ -243,21 +288,22 @@ export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise
         }))
     };
 
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: body,
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.consentManagement.consent.addConsent
+        url: store.getState().config.endpoints.consentManagement.consent
+            .addConsent
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
-            return response.data as ConsentReceiptInterface;
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
+            return response.data;
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

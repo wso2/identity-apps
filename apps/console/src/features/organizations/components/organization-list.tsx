@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -75,6 +75,10 @@ export interface OrganizationListPropsInterface
      */
     list: OrganizationListInterface;
     /**
+     * Authorized Organization list.
+     */
+    authorizedList?: OrganizationListInterface;
+    /**
      * On organization delete callback.
      */
     onOrganizationDelete?: () => void;
@@ -130,6 +134,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         defaultListItemLimit,
         isLoading,
         list,
+        authorizedList,
         onOrganizationDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
@@ -264,7 +269,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     /**
      * The following function handles the organization switch.
-     * 
+     *
      * @param organization - Organization to be switch.
      */
     const handleOrganizationSwitch = (
@@ -323,7 +328,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             data-componentid={ `${ componentId }-item-heading` }
                         >
                             <GenericIcon
-                                bordered
                                 defaultIcon
                                 relaxed="very"
                                 size="micro"
@@ -409,15 +413,23 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             },
             {
                 "data-componentid": `${ componentId }-item-switch-button`,
-                hidden: (): boolean =>
-                    !isFeatureEnabled(
+                hidden: (organization: OrganizationInterface): boolean => {
+                    let isAuthorized: boolean = false;
+                    authorizedList?.organizations?.map((org) => {
+                        if (org.id === organization.id) {
+                            isAuthorized = true;
+                        }
+                    });
+
+                    return !isFeatureEnabled(
                         featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-                    ),
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")) || !isAuthorized;
+                },
                 icon: (): SemanticICONS => "exchange",
                 onClick: (event: SyntheticEvent, organization: OrganizationInterface) => {
                     event.stopPropagation();
-                    handleOrganizationSwitch && handleOrganizationSwitch(organization); },
+                    handleOrganizationSwitch && handleOrganizationSwitch(organization);
+                },
                 popupText: (): string => t("common:switch"),
                 renderer: "semantic-icon"
             },
@@ -428,23 +440,37 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         featureConfig?.organizations,
                         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
                     ),
-                icon: (): SemanticICONS => {
+                icon: (organization: OrganizationInterface): SemanticICONS => {
+                    let isAuthorized: boolean = false;
+                    authorizedList?.organizations?.map((org) => {
+                        if (org.id === organization.id) {
+                            isAuthorized = true;
+                        }
+                    });
+
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
                         featureConfig?.organizations?.scopes?.update,
                         allowedScopes
-                    )
+                    ) || !isAuthorized
                         ? "eye"
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
                     handleOrganizationEdit(organization.id),
-                popupText: (): string => {
+                popupText: (organization: OrganizationInterface ): string => {
+                    let isAuthorized: boolean = false;
+                    authorizedList?.organizations?.map((org) => {
+                        if (org.id === organization.id) {
+                            isAuthorized = true;
+                        }
+                    });
+
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
                         featureConfig?.organizations?.scopes?.update,
                         allowedScopes
-                    )
+                    ) || !isAuthorized
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -452,12 +478,19 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: () => {
+                hidden: (organization: OrganizationInterface): boolean => {
+                    let isAuthorized: boolean = false;
+                    authorizedList?.organizations?.map((org) => {
+                        if (org.id === organization.id) {
+                            isAuthorized = true;
+                        }
+                    });
+
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
                         featureConfig?.organizations?.scopes?.delete,
                         allowedScopes
-                    );
+                    ) || !isAuthorized;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {
@@ -504,7 +537,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         if (isEmpty(list) || list?.organizations?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    className={ !isRenderedOnPortal ? "list-placeholder" : "" }
+                    className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
                         (onEmptyListPlaceholderActionClick && organizationConfigs.canCreateOrganization()) && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +19,10 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Grid, Modal } from "semantic-ui-react";
-import { AttributeMappingListItem } from "./attribute-mapping-list-item";
+import { useTranslation } from "react-i18next";
+import { Grid, Modal, Table } from "semantic-ui-react";
+import { AttributeMappingAddItem } from "./attribute-mapping-add-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
-import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AddAttributeSelectionModalProps extends TestableComponentInterface {
@@ -38,8 +38,7 @@ interface AddAttributeSelectionModalProps extends TestableComponentInterface {
  * which aren't already selected. Then It will render a list inside modal
  * once keeps adding.
  *
- * @param props {AddAttributeSelectionModalProps}
- * @constructor
+ * @param props - AddAttributeSelectionModalProps
  */
 export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelectionModalProps> = (
     props: AddAttributeSelectionModalProps
@@ -52,6 +51,8 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         onClose,
         onSave
     } = props;
+
+    const { t } = useTranslation();
 
     /**
      * The claims that user picks. All the selecting ones will be
@@ -85,13 +86,30 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         setShowPlaceholder(claimsToBeAdded.length === 0);
     }, [ claimsToBeAdded ]);
 
-    const onAttributeMappingAdd = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
-        const newClaimsToBeAdded = [ ...claimsToBeAdded, mapping ];
-        const idsToHide = newClaimsToBeAdded.reduce((acc, value) => acc.add(value.claim.id), new Set<string>());
+    const onAttributeMappingAdd = (
+        mapping: IdentityProviderCommonClaimMappingInterface
+    ): void => {
+        const newClaimsToBeAdded: IdentityProviderCommonClaimMappingInterface[] = [
+            ...claimsToBeAdded,
+            mapping
+        ];
+
+        const idsToHide: Set<string> = newClaimsToBeAdded.reduce(
+            (
+                acc: Set<string>,
+                value: IdentityProviderCommonClaimMappingInterface
+            ) => acc.add(value?.claim?.id),
+            new Set<string>()
+        );
+
         // Records to be added.
         setClaimsToBeAdded(newClaimsToBeAdded);
         // Remove the added attribute from the attribute list.
-        setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }) => !idsToHide.has(id)) ]);
+        setCopyOfAttributes([
+            ...copyOfAttributes.filter(
+                (attr: IdentityProviderClaimInterface) => !idsToHide.has(attr.id)
+            )
+        ]);
         // Now reinitialize the already mapped attributes list.
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes,
@@ -99,17 +117,25 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         ]);
     };
 
-    const onMappingDeleted = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
-        const filtered = claimsToBeAdded.filter((m) => (
-            m.claim.id !== mapping.claim.id
-        ));
+    const onMappingDeleted = (
+        mapping: IdentityProviderCommonClaimMappingInterface
+    ): void => {
+        const filtered: IdentityProviderCommonClaimMappingInterface[] =
+            claimsToBeAdded.filter(
+                (m: IdentityProviderCommonClaimMappingInterface) =>
+                    m.claim.id !== mapping.claim.id
+            );
+
         setClaimsToBeAdded([ ...filtered ]);
         setCopyOfAttributes([ ...copyOfAttributes, mapping.claim ]);
         setAlreadyLocallyMappedAttributes([
-            ...alreadyLocallyMappedAttributes
-                .filter(e => e?.claim?.id === mapping?.claim.id)
+            ...alreadyLocallyMappedAttributes.filter(
+                (e: IdentityProviderCommonClaimMappingInterface) =>
+                    e?.claim?.id === mapping?.claim.id
+            )
         ]);
     };
+
 
     const onMappingEdited = (
         oldMapping: IdentityProviderCommonClaimMappingInterface,
@@ -118,13 +144,17 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         // If user changed the local mapping of this. Then first
         // go and remove it from {@link claimsToBeAdded} array.
         setClaimsToBeAdded([
-            ...claimsToBeAdded
-                .filter(({ claim }) => (claim.id !== oldMapping.claim.id)),
+            ...claimsToBeAdded.filter(
+                (e: IdentityProviderCommonClaimMappingInterface) =>
+                    e.claim.id !== oldMapping.claim.id
+            ),
             newMapping
         ]);
         setAlreadyLocallyMappedAttributes([
-            ...alreadyLocallyMappedAttributes
-                .filter(e => e?.claim?.id === oldMapping?.claim.id),
+            ...alreadyLocallyMappedAttributes.filter(
+                (e: IdentityProviderCommonClaimMappingInterface) =>
+                    e?.claim?.id === oldMapping?.claim.id
+            ),
             newMapping
         ]);
     };
@@ -132,15 +162,17 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
     const _placeholder = (): ReactElement => {
         return (
             <EmptyPlaceholder
-                title={ "You haven't selected any attributes" }
+                title={ t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                        "modal.placeholder.title") }
                 subtitle={
                     [
                         <p key={ "empty-attributes-mapping" }>
-                            Map attributes and click <strong>Add Attribute Mapping</strong> to get started.
+                            { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                "modal.placeholder.subtitle") }
                         </p>
                     ]
                 }
-                image={ getEmptyPlaceholderIllustrations().emptyList }
+                image={ null }
                 imageSize="tiny"
             />
         );
@@ -154,31 +186,63 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
             size="small"
             closeOnDimmerClick={ false }>
             <Modal.Header>
-                Add Attribute Mappings
+                { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                    "modal.header") }
             </Modal.Header>
             <Modal.Content scrolling className="edit-attribute-mapping">
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            <AttributeMappingListItem
+                            <AttributeMappingAddItem
                                 availableAttributeList={ copyOfAttributes }
                                 alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
                                 onSubmit={ onAttributeMappingAdd }
                             />
                         </Grid.Column>
-                        <Grid.Column width={ 16 }>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 } >
                             { !showPlaceholder ? (
-                                <React.Fragment>
-                                    <Divider hidden/>
-                                    <AttributeMappingList
-                                        key="attribute-mapping-working-list"
-                                        alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
-                                        onMappingDeleted={ onMappingDeleted }
-                                        onMappingEdited={ onMappingEdited }
-                                        attributeMappingsListToShow={ claimsToBeAdded }
-                                        availableAttributesList={ copyOfAttributes }
-                                    />
-                                </React.Fragment>
+                                <Table
+                                    singleLine
+                                    compact
+                                    fixed
+                                >
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.HeaderCell width="7">
+                                                <strong>
+                                                    {
+                                                        t("console:develop.features.idp.forms.attributeSettings." +
+                                                            "attributeMapping.attributeMapTable." +
+                                                            "externalAttributeColumnHeader")
+                                                    }
+                                                </strong>
+                                            </Table.HeaderCell>
+                                            <Table.HeaderCell width="7">
+                                                <strong>
+                                                    {
+                                                        t("console:develop.features.idp.forms.attributeSettings." +
+                                                            "attributeMapping.attributeMapTable." +
+                                                            "mappedAttributeColumnHeader")
+                                                    }
+                                                </strong>
+                                            </Table.HeaderCell>
+                                            <Table.HeaderCell width="2">
+                                            </Table.HeaderCell>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        <AttributeMappingList
+                                            key="attribute-mapping-working-list"
+                                            alreadyMappedAttributesList={ alreadyLocallyMappedAttributes }
+                                            onMappingDeleted={ onMappingDeleted }
+                                            onMappingEdited={ onMappingEdited }
+                                            attributeMappingsListToShow={ claimsToBeAdded }
+                                            availableAttributesList={ copyOfAttributes }
+                                        />
+                                    </Table.Body>
+                                </Table>
                             ) : _placeholder() }
                         </Grid.Column>
                     </Grid.Row>
@@ -186,11 +250,13 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton onClick={ onClose }>
-                    Cancel
+                    { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
                     disabled={ claimsToBeAdded?.length === 0 }
-                    onClick={ () => onSave([ ...claimsToBeAdded ]) }>Save
+                    onClick={ () => onSave([ ...claimsToBeAdded ]) }
+                >
+                    { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>

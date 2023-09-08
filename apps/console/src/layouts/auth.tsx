@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,8 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { StaticContext } from "react-router";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PreLoader } from "../features/core";
 import { ProtectedRoute } from "../features/core/components";
 import { getAuthLayoutRoutes } from "../features/core/configs";
@@ -39,9 +40,9 @@ interface AuthLayoutPropsInterface {
  * Implementation of the Auth layout skeleton.
  * Used to render the authentication related components.
  *
- * @param {AuthLayoutPropsInterface} props - Props injected to the component.
+ * @param AuthLayoutPropsInterface - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns a React.ReactElement.
  */
 export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
     props: AuthLayoutPropsInterface
@@ -63,9 +64,9 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
             <Suspense fallback={ <PreLoader /> }>
                 <Switch>
                     {
-                        authLayoutRoutes.map((route, index) => (
+                        authLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo } />
+                                ? <Redirect key={ index } to={ route.redirectTo } />
                                 : route.protected
                                     ? (
                                         <ProtectedRoute
@@ -78,7 +79,9 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
+                                            render={ (renderProps: RouteComponentProps<{
+                                                [x: string]: string;
+                                            }, StaticContext, unknown>) =>
                                                 route.component
                                                     ? <route.component { ...renderProps } />
                                                     : null

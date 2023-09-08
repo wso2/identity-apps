@@ -24,7 +24,7 @@ type ValidationFunction = (value: string) => boolean;
 /**
  * This validates email addresses. Returns true if valid. False if not valid.
  * Doesn't check for the validity of the top level domain.
- * 
+ *
  * @param value - string to be validated.
  */
 export const email: ValidationFunction = (value: string): boolean => {
@@ -42,7 +42,7 @@ export const email: ValidationFunction = (value: string): boolean => {
 /**
  * This validates mobile numbers. Returns true if valid. False if not valid.
  * Checks if the mobile number input has only numbers, '-', and '+'.
- * 
+ *
  * @param value - string to be validated.
  */
 export const mobileNumber: ValidationFunction = (value: string): boolean => {
@@ -60,7 +60,7 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
 /**
  * This validates URLs. Returns true if valid. False if not valid.
  * Check is the satisfies RFC 3986 specifications.
- * 
+ *
  * @param value - string to be validated.
  */
 export const url: ValidationFunction = (value: string): boolean => {
@@ -77,7 +77,7 @@ export const url: ValidationFunction = (value: string): boolean => {
 
 /**
  * Checks if the image url is valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const imageUrl = async (value: string): Promise<boolean> => {
@@ -100,7 +100,7 @@ export const imageUrl = async (value: string): Promise<boolean> => {
 
 /**
  * This validates identifiers. Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const identifier: ValidationFunction = (value: string): boolean => {
@@ -118,7 +118,7 @@ export const identifier: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates resource names. Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  * @deprecated please use {@link isValidResourceName}
  */
@@ -135,9 +135,9 @@ export const resourceName: ValidationFunction = (value: string): boolean => {
 };
 
 /**
- * This validates if OpenID Connect scopes contains openid value. 
+ * This validates if OpenID Connect scopes contains openid value.
  * Returns true if valid. False if not valid.
- * 
+ *
  * @param value - string to be validated.
  */
 export const scopes: ValidationFunction = (value: string): boolean => {
@@ -154,7 +154,7 @@ export const scopes: ValidationFunction = (value: string): boolean => {
 
 /**
  * Validates if the length of the value is less than the character limit.
- * 
+ *
  * @param value - string to be validated.
  * @param limit - max length.
  */

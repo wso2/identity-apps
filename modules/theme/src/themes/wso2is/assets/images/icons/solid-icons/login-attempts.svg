@@ -1,0 +1,23 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14" viewBox="0 0 11.803 14">
+    <path id="login-attempts" class="path fill primary"
+          d="M5.9,14a.422.422,0,0,1-.168-.036,17.784,17.784,0,0,1-2.819-1.651A9.746,9.746,0,0,1,.946,10.489,3.9,3.9,0,0,1,0,8.1V2.057a.408.408,0,0,1,.292-.392L5.784.017A.417.417,0,0,1,5.9,0,.424.424,0,0,1,6.02.017l5.491,1.648a.408.408,0,0,1,.293.392V8.1a3.9,3.9,0,0,1-.945,2.39,9.778,9.778,0,0,1-1.97,1.825,17.777,17.777,0,0,1-2.817,1.65A.423.423,0,0,1,5.9,14Zm0-4.9a.3.3,0,1,0,.3.3A.3.3,0,0,0,5.9,9.1ZM5.6,3.5v5h.6v-5Z"
+          transform="translate(0 0)" fill="#464646"/>
+</svg>

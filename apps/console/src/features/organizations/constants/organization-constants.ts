@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,6 +56,14 @@ export class OrganizationManagementConstants {
         "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
+
+    public static readonly ERROR_SUB_ORGANIZATION_EXIST: IdentityAppsError = new IdentityAppsError(
+        "ORG-60076",
+        "console:develop.features.suborganizations.notifications.duplicateOrgError.description",
+        "console:develop.features.suborganizations.notifications.duplicateOrgError.message",
+        "cdaefcee-ecdb-47af-8538-174ec13292db"
+    );
+    
 }
 
 export enum ORGANIZATION_TYPE {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -62,15 +62,13 @@ import {
     getConnectorCategory,
     getServerConfigs
 } from "../../server-configurations";
-import {
-    CONSUMER_USERSTORE,
-    UserStoreListItem,
-    UserStorePostData,
-    UserStoreProperty
-} from "../../userstores";
 import { getUserStoreList } from "../../userstores/api";
+import { CONSUMER_USERSTORE } from "../../userstores/constants/user-store-constants";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList } from "../api";
-import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
+import { UsersList } from "../components/users-list";
+import { UsersListOptionsComponent } from "../components/users-list-options";
+import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 

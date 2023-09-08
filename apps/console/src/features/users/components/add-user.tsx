@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,36 +15,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { AxiosResponse } from "axios";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import PasswordStrengthBar from "react-password-strength-bar";
 import {
+    DropdownItemProps,
     Grid,
     Message
 } from "semantic-ui-react";
-import { store } from "../../core";
 import { SharedUserStoreUtils } from "../../core/utils";
 import { RootOnlyComponent } from "../../organizations/components";
 import { OrganizationUtils } from "../../organizations/utils";
+import { getUserStoreList } from "../../userstores/api";
 import {
     CONSUMER_USERSTORE,
     PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES,
-    UserStoreListItem
-} from "../../userstores";
-import { getUserStoreList } from "../../userstores/api";
+    USERSTORE_REGEX_PROPERTIES
+} from "../../userstores/constants/user-store-constants";
+import { UserStoreListItem } from "../../userstores/models/user-stores";
 import { getUsersList } from "../api";
-import { BasicUserDetailsInterface } from "../models";
+import { BasicUserDetailsInterface, UserListInterface } from "../models";
 import { generatePassword } from "../utils";
 
 /**
  * import pass strength bat dynamically.
  */
-const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
+const PasswordMeter: React.LazyExoticComponent<typeof PasswordStrengthBar> = React.lazy(
+    () => import("react-password-strength-bar"));
 
 /**
  * Proptypes for the add user component.
@@ -59,7 +61,7 @@ interface AddUserProps {
 /**
  * Add user page.
  *
- * @return {ReactElement}
+ * @returns Add User page.
  */
 export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserProps): ReactElement => {
 
@@ -81,7 +83,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
-    const confirmPasswordRef = useRef<HTMLDivElement>();
+    const confirmPasswordRef: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
 
@@ -118,7 +120,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         }
     }, []);
 
-    const passwordOptions = [
+    const passwordOptions: {
+        "data-testid": string;
+        label: string;
+        value: string;
+    }[] = [
         {
             "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
             label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
@@ -134,7 +140,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     /**
      * The following function handles the change of the userstore.
      *
-     * @param values
+     * @param values - Form values.
      */
     const handleUserStoreChange = (values: Map<string, FormValue>): void => {
         const domain: string = values.get("domain").toString();
@@ -149,13 +155,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     /**
      * The following function set the username regEx to the state.
      *
-     * @param userstore
+     * @param userstore - Selected user store.
      */
     const setUserStoreRegEx = async (userstore: string): Promise<void> => {
         if (userstore !== "primary") {
             // Set the username regEx of the secondary user store.
             await SharedUserStoreUtils.getUserStoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setUsernameRegExLoading(true);
                     setUsernameRegEx(response);
                 });
@@ -168,7 +174,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     /**
      * The following function handles the change of the password.
      *
-     * @param values
+     * @param values - Form values.
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
@@ -190,29 +196,29 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = (): void => {
-        const storeOptions = [
+        const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
             }
         ];
-        let storeOption =
+        let storeOption: DropdownItemProps =
             {
                 key: null,
                 text: "",
                 value: ""
             };
 
-        setUserStore(storeOptions[ 0 ].value);
+        setUserStore(storeOptions[ 0 ].value as string);
 
         if (OrganizationUtils.isCurrentOrganizationRoot()) {
             getUserStoreList()
-                .then((response) => {
+                .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
-                    response.data.map((store: UserStoreListItem, index) => {
+                    response.data.map((store: UserStoreListItem, index: number) => {
                         if (store.name !== CONSUMER_USERSTORE) {
                             if (store.enabled) {
                                 storeOption = {
@@ -251,7 +257,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const triggerConfirmPasswordInputValidation = (): void => {
 
-        const confirmInput = confirmPasswordRef?.
+        const confirmInput: HTMLInputElement = confirmPasswordRef?.
             current?.
             children[ 0 ]?.
             children[ 1 ]?.
@@ -293,7 +299,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
                                     triggerConfirmPasswordInputValidation();
 
-                                    let passwordRegex = "";
+                                    let passwordRegex: string = "";
 
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
                                         // Set the username regEx of the secondary user store.
@@ -363,20 +369,22 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.confirmPassword }
-                                validation={ (value: string, validation: Validation, formValues) => {
-                                    if (formValues.get("newPassword") !== value) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            t("console:manage.features.user.forms.addUserForm.inputs" +
+                                validation={ 
+                                    (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
+                                        if (formValues.get("newPassword") !== value) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
 
-                                        return;
-                                    }
+                                            return;
+                                        }
 
-                                    validation.isValid = true;
-                                    validation.errorMessages.push(null);
-                                    triggerConfirmPasswordInputValidation();
-                                } }
+                                        validation.isValid = true;
+                                        validation.errorMessages.push(null);
+                                        triggerConfirmPasswordInputValidation();
+                                    } 
+                                }
                                 tabIndex={ 7 }
                                 enableReinitialize={ true }
                             />
@@ -409,7 +417,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const addUserBasicForm = () => (
         <Forms
             data-testid="user-mgt-add-user-form"
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>) => {
 
                 triggerConfirmPasswordInputValidation();
 
@@ -463,7 +471,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         validation={ async (value: string, validation: Validation) => {
                             try {
                                 if (value) {
-                                    const usersList
+                                    const usersList: UserListInterface
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
 
                                     if (usersList?.totalResults > 0) {
@@ -577,7 +585,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 label={ t("console:manage.features.user.forms.addUserForm.buttons.radioButton.label") }
                                 name="passwordOption"
                                 default="create-password"
-                                listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
+                                listen={ (values: Map<string, FormValue>) => { 
+                                    setPasswordOption(values.get("passwordOption").toString()); 
+                                } }
                                 children={ passwordOptions }
                                 value={ initialValues?.passwordOption ?? "create-password" }
                                 tabIndex={ 6 }

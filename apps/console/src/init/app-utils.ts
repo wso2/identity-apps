@@ -16,8 +16,8 @@
  * under the License.
  */
 
-function loadUserConfig(configFile, callback) {
-    const request = new XMLHttpRequest();
+function loadUserConfig(configFile: string, callback: (response: string) => void) {
+    const request: XMLHttpRequest = new XMLHttpRequest();
 
     request.overrideMimeType("application/json");
     request.open("GET", configFile, false);
@@ -40,10 +40,10 @@ function loadUserConfig(configFile, callback) {
     }
 }
 
-function extend(...args) {
+function extend(...args: any) {
     args = args || [];
 
-    for (let i = 1; i < args.length; i++) {
+    for (let i: number = 1; i < args.length; i++) {
         if (!args[i])
             continue;
 
@@ -57,24 +57,24 @@ function extend(...args) {
     return args;
 }
 
-export const AppUtils = (function() {
+export const AppUtils: any = (function() {
     let _args: any = {},
         _default: any = {},
         _config: any = {};
 
-    const superTenantFallback = "carbon.super";
-    const tenantPrefixFallback = "t";
-    const orgPrefixFallback = "o";
-    const fallbackServerOrigin = "https://localhost:9443";
-    const appBaseForHistoryAPIFallback = "/";
-    const urlPathForSuperTenantOriginsFallback = "";
-    const isSaasFallback = true;
-    const tenantResolutionStrategyFallback = "id_token";
+    const superTenantFallback: string = "carbon.super";
+    const tenantPrefixFallback: string = "t";
+    const orgPrefixFallback: string = "o";
+    const fallbackServerOrigin: string = "https://localhost:9443";
+    const appBaseForHistoryAPIFallback: string = "/";
+    const urlPathForSuperTenantOriginsFallback: string = "";
+    const isSaasFallback: boolean = true;
+    const tenantResolutionStrategyFallback: string = "id_token";
 
-    const SERVER_ORIGIN_IDP_URL_PLACEHOLDER = "${serverOrigin}";
-    const TENANT_PREFIX_IDP_URL_PLACEHOLDER = "${tenantPrefix}";
-    const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER = "${userTenantDomain}";
-    const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER = "${superTenantDomain}";
+    const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
+    const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
+    const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
+    const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${superTenantDomain}";
 
     return {
         /**
@@ -100,7 +100,7 @@ export const AppUtils = (function() {
          * @param path - Path to be constructed.
          * @returns App paths.
          */
-        constructAppPaths: function(path) {
+        constructAppPaths: function(path: string) {
             if (!this.isSaas()) {
                 return this.getAppBaseWithOrganization() + path;
             }
@@ -115,7 +115,7 @@ export const AppUtils = (function() {
          * @param url - URL to be constructed.
          * @returns Redirect URLs.
          */
-        constructRedirectURLs: function(url) {
+        constructRedirectURLs: function(url: string) {
             if (!this.isSaas()) {
                 return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
@@ -130,8 +130,8 @@ export const AppUtils = (function() {
          * @returns App base.
          */
         getAppBase: function() {
-            const path = this.getLocationPathWithoutTenant();
-            const pathChunks = path.split("/");
+            const path: string = this.getLocationPathWithoutTenant();
+            const pathChunks: string[] = path.split("/");
 
             if (pathChunks.length <= 1) {
                 return "/";
@@ -192,19 +192,19 @@ export const AppUtils = (function() {
                 _config.accountAppOrigin = _config.accountApp.origin;
             }
 
-            let skipTenant = false;
+            let skipTenant: boolean = false;
 
             if (_config.accountApp.skipTenant) {
                 skipTenant = true;
             }
 
-            let commonPostLogoutUrl = false;
+            let commonPostLogoutUrl: boolean = false;
 
             if (_config.accountApp.useCommonPostLogoutUrl) {
                 commonPostLogoutUrl = true;
             }
 
-            let allowMultipleAppProtocol = false;
+            let allowMultipleAppProtocol: boolean = false;
 
             if (_config.allowMultipleAppProtocols) {
                 allowMultipleAppProtocol = true;
@@ -221,9 +221,9 @@ export const AppUtils = (function() {
                         : _config.accountApp.path)
                 },
                 adminApp: {
-                    basePath: this.constructAppPaths(_config.adminApp.basePath),
+                    basePath: this.constructAppPaths(""),
                     displayName: _config.adminApp.displayName,
-                    path: this.constructAppPaths(_config.adminApp.path)
+                    path: this.constructAppPaths("")
                 },
                 allowMultipleAppProtocols: allowMultipleAppProtocol,
                 appBase: _config.appBaseName,
@@ -237,9 +237,9 @@ export const AppUtils = (function() {
                 customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 developerApp: {
-                    basePath: this.constructAppPaths(_config.developerApp.basePath),
+                    basePath: this.constructAppPaths(""),
                     displayName: _config.developerApp.displayName,
-                    path: this.constructAppPaths(_config.developerApp.path)
+                    path: this.constructAppPaths("")
                 },
                 docSiteUrl: _config.docSiteUrl,
                 documentation: _config.documentation,
@@ -250,6 +250,7 @@ export const AppUtils = (function() {
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
+                organizationPrefix: this.getOrganizationPrefix(),
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -274,8 +275,8 @@ export const AppUtils = (function() {
          * @returns Location without the tenant.
          */
         getLocationPathWithoutTenant: function() {
-            const path = window.location.pathname;
-            const pathChunks = path.split("/");
+            const path: string = window.location.pathname;
+            const pathChunks: string[] = path.split("/");
 
             if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName(true)) ) {
                 pathChunks.splice(1, 2);
@@ -295,8 +296,8 @@ export const AppUtils = (function() {
          * @returns Organization name.
          */
         getOrganizationName: function () {
-            const path = window.location.pathname;
-            const pathChunks = path.split("/");
+            const path: string = window.location.pathname;
+            const pathChunks: string[] = path.split("/");
 
             const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
 
@@ -351,16 +352,16 @@ export const AppUtils = (function() {
          * @param fromLocation - Flag to determine if resolution should be done using URL location.
          * @returns Tenant name.
          */
-        getTenantName: function(fromLocation = this.getTenantResolutionStrategy() === "location") {
+        getTenantName: function(fromLocation: boolean = this.getTenantResolutionStrategy() === "location") {
             if (!fromLocation && this.getTenantResolutionStrategy() === "id_token" && _config.tenant) {
                 return _config.tenant;
             }
 
-            const paths = window.location.pathname.split("/");
-            const tenantIndex = paths.indexOf(this.getTenantPrefix());
+            const paths: string[] = window.location.pathname.split("/");
+            const tenantIndex: number = paths.indexOf(this.getTenantPrefix());
 
             if (tenantIndex > 0) {
-                const tenantName = paths[tenantIndex + 1];
+                const tenantName: string = paths[tenantIndex + 1];
 
                 return (tenantName) ? tenantName : "";
             } else {
@@ -375,7 +376,7 @@ export const AppUtils = (function() {
          * @param skipSuperTenant - Flag to skip super tenant.
          * @returns Tenant path.
          */
-        getTenantPath: function (skipSuperTenant = false) {
+        getTenantPath: function (skipSuperTenant: boolean = false) {
             if (this.getOrganizationName()) {
                 return "";
             }
@@ -412,7 +413,7 @@ export const AppUtils = (function() {
          *
          * @returns Tenant qualified account app path.
          */
-        getTenantQualifiedAccountAppPath: function(pathname) {
+        getTenantQualifiedAccountAppPath: function(pathname: string) {
             return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
                 _config.accountAppOrigin +
                 "/" + this.getTenantPrefix() +
@@ -435,7 +436,7 @@ export const AppUtils = (function() {
          *
          * @param Args - Arguments passed to the instance.
          */
-        init: function(Args) {
+        init: function (Args: any) {
             _args = Args;
 
             _default = {
@@ -447,10 +448,10 @@ export const AppUtils = (function() {
 
             _config = _default;
 
-            const userConfigFile = _config.contextPath + "deployment.config.json";
+            const userConfigFile: string = _config.contextPath + "deployment.config.json";
 
-            loadUserConfig(userConfigFile, function(response) {
-                const configResponse = JSON.parse(response);
+            loadUserConfig(userConfigFile, function(response: string) {
+                const configResponse: any = JSON.parse(response);
 
                 if (!{}.hasOwnProperty.call(configResponse, "accountApp"))
                     throw "'accountApp' config is missing in " + _args.deploymentConfigFile;
@@ -591,7 +592,7 @@ export const AppUtils = (function() {
          *
          * @param customServerHost - server host.
          */
-        updateCustomServerHost: function(customServerHost) {
+        updateCustomServerHost: function(customServerHost: string) {
             _config.customServerHost = customServerHost;
         },
 
@@ -600,7 +601,7 @@ export const AppUtils = (function() {
          *
          * @param tenant - new Tenant.
          */
-        updateTenantQualifiedBaseName: function(tenant) {
+        updateTenantQualifiedBaseName: function(tenant: string) {
             _config.tenant = tenant;
             _config.tenantPath = this.getTenantPath();
 

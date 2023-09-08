@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -523,31 +523,38 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     </Grid>
                 </EmphasizedSegment>
                 <Divider hidden />
-                <Header>Manage Attributes</Header>
+                {
+                    OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)
+                        ? <Header>{ t("console:manage.features.oidcScopes.viewAttributes") }</Header>
+                        : <Header>{ t("console:manage.features.oidcScopes.manageAttributes") }</Header>
+                }
                 <EmphasizedSegment className="padded">
                     <ListLayout
-                        rightActionPanel={
-                            (<Show when={ AccessControlConstants.SCOPE_WRITE }>
-                                <PrimaryButton
-                                    data-testid="user-mgt-roles-list-update-button"
-                                    size="medium"
-                                    icon={ <Icon name="add" /> }
-                                    floated="right"
-                                    onClick={ () => setTriggerAttributeModal() }
-                                >
-                                    <Icon name="add" />
-                                    { t("console:manage.features.oidcScopes.editScope." + "claimList.addClaim") }
-                                </PrimaryButton>
-                            </Show>)
+                        rightActionPanel={ !OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name) 
+                            && (
+                                <Show when={ AccessControlConstants.SCOPE_WRITE }>
+                                    <PrimaryButton
+                                        data-testid="user-mgt-roles-list-update-button"
+                                        size="medium"
+                                        icon={ <Icon name="add" /> }
+                                        floated="right"
+                                        onClick={ () => setTriggerAttributeModal() }
+                                    >
+                                        <Icon name="add" />
+                                        { t("console:manage.features.oidcScopes.editScope." +
+                                                "claimList.addClaim") }
+                                    </PrimaryButton>
+                                </Show>
+                            ) 
                         }
-                        showTopActionPanel={ isScopeRequestLoading || !(scope.claims?.length == 0) }
+                        showTopActionPanel={ !isScopeRequestLoading || !(scope.claims?.length == 0) }
                         listItemLimit={ listItemLimit }
                         showPagination={ false }
                         onPageChange={ () => null }
                         totalPages={ Math.ceil(scope.claims?.length / listItemLimit) }
                         data-testid={ `${ testId }-list-layout` }
-                        leftActionPanel={
-                            (<div className="advanced-search-wrapper aligned-left fill-default">
+                        leftActionPanel={ (
+                            <div className="advanced-search-wrapper aligned-left fill-default">
                                 <Input
                                     className="advanced-search with-add-on"
                                     data-testid={ `${ testId }-list-search-input` }
@@ -560,8 +567,8 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                                     size="small"
                                     value={ attributeSearchQuery }
                                 />
-                            </div>)
-                        }
+                            </div>
+                        ) }
                         onSortOrderChange={ handleSortOrderChange }
                         sortOptions={ SORT_BY }
                         sortStrategy={ sortBy }

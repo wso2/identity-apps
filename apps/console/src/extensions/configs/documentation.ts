@@ -16,26 +16,295 @@
  * under the License.
  */
 
-import { DocumentationLinksExtensionInterface } from "./models";
+import { DocumentationLinksExtensionInterface } from "./models/documentation";
+import { Config } from "../../features/core/configs/app";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
-    const documentationBaseUrl: string = "https://is.docs.wso2.com/en/6.0.0";
+    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
 
     return {
+        common: {
+            docsHomePage: documentationBaseUrl
+        },
         develop: {
-            applications: {
-                editApplication: {
-                    signInMethod: {
-                        fido: `${documentationBaseUrl}/learn/multi-factor-authentication-using-fido/`
+            apiResources: {
+                addAPIResource: {
+                    rbacInfoBox: {
+                        learnMore: undefined
+                    },
+                    requiredAuthorization: {
+                        learnMore: undefined
                     }
+                },
+                learnMore: undefined
+            },
+            applications: {
+                apiAuthorization: {
+                    learnMore: undefined,
+                    policies: {
+                        noPolicy: {
+                            learnMore: undefined
+                        },
+                        rbac: {
+                            learnMore: undefined
+                        }
+                    }
+                },
+                editApplication: {
+                    asgardeoTryitApplication: {
+                        general: {
+                            learnMore: undefined
+                        }
+                    },
+                    attributeManagement: {
+                        manageOIDCScopes: undefined
+                    },
+                    common: {
+                        signInMethod: {
+                            conditionalAuthenticaion: {
+                                apiReference: undefined,
+                                learnMore: undefined,
+                                template: {
+                                    deviceBased: {
+                                        learnMore: undefined
+                                    },
+                                    groupBased: {
+                                        learnMore: undefined
+                                    },
+                                    ipBased: {
+                                        learnMore: undefined
+                                    },
+                                    userAgeBased: {
+                                        learnMore: undefined
+                                    }
+                                }
+                            },
+                            learnMore: undefined
+                        }
+                    },
+                    oidcApplication: {
+                        advanced: {
+                            learnMore: undefined
+                        },
+                        attributes: {
+                            learnMore: undefined
+                        },
+                        info: {
+                            learnMore: undefined
+                        },
+                        protocol: {
+                            learnMore: undefined
+                        },
+                        quickStart: {
+                            applicationScopes: {
+                                learnMore: undefined
+                            },
+                            customConfig: {
+                                learnMore: undefined
+                            },
+                            mobileApp: {
+                                learnMore: undefined
+                            }
+                        }
+                    },
+                    samlApplication: {
+                        advanced: {
+                            learnMore: undefined
+                        },
+                        attributes: {
+                            learnMore: undefined
+                        },
+                        info: {
+                            learnMore: undefined
+                        },
+                        protocol: {
+                            learnMore: undefined
+                        },
+                        quickStart: {
+                            customConfig: {
+                                learnMore: undefined
+                            }
+                        }
+                    },
+                    signInMethod: {
+                        fido: undefined
+                    },
+                    singlePageApplication: {
+                        info: {
+                            learnMore: undefined
+                        },
+                        quickStart: {
+                            customConfig: {
+                                learnMore: undefined
+                            }
+                        }
+                    },
+                    standardBasedApplication: {
+                        oauth2OIDC: {
+                            protocol: {
+                                learnMore: undefined
+                            }
+                        },
+                        saml: {
+                            protocol: {
+                                learnMore: undefined
+                            }
+                        }
+                    }
+                },
+                learnMore: undefined,
+                managementApplication: {
+                    learnMore: undefined,
+                    selfServicePortal: undefined
+                },
+                myaccount: {
+                    learnMore: undefined,
+                    smsOtp: undefined
+                },
+                newApplication: {
+                    mobileApplication: {
+                        learnMore: undefined
+                    },
+                    oidcApplication: {
+                        learnMore: undefined
+                    },
+                    samlApplication: {
+                        learnMore: undefined
+                    },
+                    singlePageApplication: {
+                        learnMore: undefined
+                    }
+                },
+                roles: {
+                    learnMore: undefined
                 }
+            },
+            branding: {
+                learnMore: undefined
             },
             connections: {
                 edit: {
                     advancedSettings: {
-                        jit: `${documentationBaseUrl
-                        }/learn/configuring-just-in-time-provisioning-for-an-identity-provider/`
+                        jit: undefined
+                    },
+                    quickStart: {
+                        fido: {
+                            learnMore: undefined
+                        }
                     }
+                },
+                learnMore: undefined,
+                newConnection: {
+                    apple: {
+                        learnMore: undefined
+                    },
+                    enterprise: {
+                        oidcLearnMore: undefined,
+                        samlLearnMore: undefined
+                    },
+                    facebook: {
+                        learnMore: undefined
+                    },
+                    github: {
+                        learnMore: undefined
+                    },
+                    google: {
+                        learnMore: undefined
+                    },
+                    hypr: {
+                        learnMore: undefined
+                    },
+                    learnMore: undefined,
+                    microsoft: {
+                        learnMore: undefined
+                    },
+                    siwe: {
+                        learnMore: undefined
+                    }
+                }
+            },
+            emailCustomization: {
+                form: {
+                    emailBody: {
+                        learnMore: undefined
+                    }
+                },
+                learnMore: undefined
+            },
+            eventPublishing: {
+                learnMore: undefined
+            }
+        },
+        manage: {
+            accountRecovery: {
+                passwordRecovery: {
+                    learnMore: undefined
+                }
+            },
+            attributes: {
+                attributes: {
+                    learnMore: undefined
+                },
+                oidcAttributes: {
+                    learnMore: undefined
+                },
+                scimAttributes: {
+                    learnMore: undefined
+                }
+            },
+            groups: {
+                learnMore: undefined,
+                roles: {
+                    learnMore: undefined
+                }
+            },
+            organizations: {
+                learnMore: undefined
+            },
+            privateKeyJWT: {
+                learnMore: undefined
+            },
+            selfRegistration: {
+                learnMore: undefined
+            },
+            userStores: {
+                attributeMappings: {
+                    learnMore: undefined
+                },
+                createUserStore: {
+                    learnMore: undefined
+                },
+                highAvailability: {
+                    learnMore: undefined
+                },
+                userStoreProperties: {
+                    learnMore: undefined
+                },
+                userStoresList: {
+                    learnMore: undefined
+                }
+            },
+            users: {
+                allUsers: {
+                    learnMore: undefined
+                },
+                collaboratorAccounts: {
+                    adminSettingsLearnMore: undefined,
+                    learnMore: undefined,
+                    roles: {
+                        learnMore: undefined
+                    }
+                },
+                customerAccounts: {
+                    learnMore: undefined
+                },
+                newCollaboratorUser: {
+                    learnMore: undefined
+                }
+            },
+            validation: {
+                passwordValidation: {
+                    learnMore: undefined
                 }
             }
         }

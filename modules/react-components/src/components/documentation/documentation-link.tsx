@@ -75,7 +75,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
     } = props;
 
     const { getLink } = useDocumentation();
-    
+
     if (link === undefined) {
         return null;
     }
@@ -104,6 +104,6 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
 DocumentationLink.defaultProps = {
     "data-componentid": "documentation-link",
     showEmptyLink: true,
-    showIcon: true,
+    showIcon: false,
     target: "_blank"
 };

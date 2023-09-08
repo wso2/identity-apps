@@ -50,7 +50,7 @@ export const TabPageLayout: FunctionComponent<PropsWithChildren<TabPageLayoutPro
 
     if (isLoading) {
         return (
-            <PageLayout 
+            <PageLayout
                 isLoading={ true }
                 { ...rest }
             >

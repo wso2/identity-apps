@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,9 @@ import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
-    RolesInterface
+    RoleListInterface,
+    RolesInterface,
+    RolesMemberInterface
 } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -34,17 +36,23 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid, Icon, Input, Label, Modal, Table } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Input, InputOnChangeData, Label, Modal, Table } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
-import { RolePermissions } from "./wizard";
+import { RolePermissions } from "./wizard/user-role-permissions";
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getOrganizationRoles } from "../../organizations/api";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface
+} from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getRolesList } from "../../roles/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../roles/constants";
@@ -102,10 +110,13 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const { t } = useTranslation();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
-    const [ roleList, setRoleList ] = useState<any>([]);
-    const [ selectedRoleList, setSelectedRoleList ] = useState([]);
+    const [ roleList, setRoleList ] = useState<(RolesInterface | OrganizationRoleListItemInterface)[]>([]);
+    const [ selectedRoleList, setSelectedRoleList ] = useState<
+        (RolesInterface | OrganizationRoleListItemInterface)[]>([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
-    const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
+    const [ primaryRoles, setPrimaryRoles ] = useState<
+        RolesInterface[] | OrganizationRoleListItemInterface[]
+    >(undefined);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -117,18 +128,19 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
     // The following constant are used to persist the state of the unassigned roles permissions.
     const [ viewRolePermissions, setViewRolePermissions ] = useState(false);
-    const [ roleId, setRoleId ] = useState();
+    const [ roleId, setRoleId ] = useState<string>();
     const [ isSelected, setSelection ] = useState(false);
 
     // The following constant is used to persist the state whether user's assigned roles are still loading or finished.
     const [ isPrimaryRolesLoading, setPrimaryRolesLoading ] = useState<boolean>(false);
 
-    const [ assignedRoles, setAssignedRoles ] = useState([]);
+    const [ assignedRoles, setAssignedRoles ] = useState<RolesMemberInterface[]>([]);
     const [ displayedRoles, setDisplayedRoles ] = useState([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization);
+    const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
@@ -169,7 +181,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
             return;
         }
-        setDisplayedRoles(user.roles.filter((role) =>
+        setDisplayedRoles(user.roles.filter((role: RolesMemberInterface) =>
             (role.display?.split("/").length !== 2) && (role.display?.split("/")[0] !== "Application")));
         mapUserRoles();
         resolveUserRoles();
@@ -188,8 +200,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (isRootOrganization) {
             // Get Roles from SCIM API
             getRolesList(null)
-                .then((response) => {
-                    const roleResources = response.data.Resources;
+                .then((response: AxiosResponse<RoleListInterface>) => {
+                    const roleResources: RolesInterface[] = response.data.Resources;
 
                     if (hideApplicationRoles) {
                         if (roleResources && roleResources instanceof Array) {
@@ -210,8 +222,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         } else {
             // Get Roles from Organization API
             getOrganizationRoles(currentOrganization.id, null, 100, null)
-                .then((response) => {
-                    const roleResources = response.Resources;
+                .then((response: OrganizationRoleListResponseInterface) => {
+                    const roleResources: OrganizationRoleListItemInterface[] = response.Resources;
 
                     if (hideApplicationRoles) {
                         if (roleResources && roleResources instanceof Array) {
@@ -238,10 +250,10 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (isGroupAndRoleSeparationEnabled) {
             setAssignedRoles(hideApplicationRoles? displayedRoles : user?.roles);
         } else {
-            const userRoles = [];
+            const userRoles: RolesMemberInterface[] = [];
 
-            user?.groups?.map((group) => {
-                const displayName = group?.display?.split("/");
+            user?.groups?.map((group: any) => {
+                const displayName: string[] = group?.display?.split("/");
 
                 if(displayName?.length > 1
                     && (displayName[0] == APPLICATION_DOMAIN || displayName[0] == INTERNAL_DOMAIN)) {
@@ -257,13 +269,15 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     };
 
     const setInitialLists = () => {
-        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
-        const addedRoles = [];
+        const roleListCopy: (RolesInterface | OrganizationRoleListItemInterface)[] = primaryRoles 
+            ? [ ...primaryRoles ] 
+            : [];
+        const addedRoles: (RolesInterface | OrganizationRoleListItemInterface)[] = [];
 
         if (roleListCopy && primaryRolesList) {
-            const primaryRolesValues = Array.from(primaryRolesList?.values());
+            const primaryRolesValues: unknown[] = Array.from(primaryRolesList?.values());
 
-            forEachRight(roleListCopy, (role) => {
+            forEachRight(roleListCopy, (role: RolesInterface | OrganizationRoleListItemInterface) => {
                 if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
                 }
@@ -281,14 +295,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * object differs from Users endpoint to Groups endpoint.
      */
     const mapUserRoles = () => {
-        const rolesMap = new Map<string, string> ();
+        const rolesMap: Map<string, string> = new Map<string, string>();
 
         if(!isGroupAndRoleSeparationEnabled) {
-            const groupsMap = new Map<string, string> ();
+            const groupsMap: Map<string, string> = new Map<string, string>();
 
             if (user.groups && user.groups instanceof Array) {
-                forEachRight (user.groups, (group) => {
-                    const groupName = group?.display?.split("/");
+                forEachRight (user.groups, (group: any) => {
+                    const groupName: string[] = group?.display?.split("/");
 
                     if (groupName?.length >= 1) {
                         if (hideApplicationRoles && group[0] === "Application" && group.length === 2) {
@@ -304,8 +318,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
 
         if (user.roles && user.roles instanceof Array) {
-            forEachRight (user.roles, (roles) => {
-                const role = roles?.display?.split("/");
+            forEachRight (user.roles, (roles: RolesMemberInterface) => {
+                const role: string[] = roles?.display?.split("/");
 
                 if (role?.length >= 1 && roles?.value) {
                     if (hideApplicationRoles && role[0] === "Application" && role.length === 2) {
@@ -325,10 +339,10 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     /**
      * This function handles updating the roles of the user.
      */
-    const updateUserRole = (user: any, roles: any) => {
-        const roleIds = [];
+    const updateUserRole = (user: any, roles: (RolesInterface | OrganizationRoleListItemInterface)[]) => {
+        const roleIds: string[] = [];
 
-        roles.map((role) => {
+        roles.map((role: RolesInterface | OrganizationRoleListItemInterface) => {
             roleIds.push(role.id);
         });
 
@@ -338,7 +352,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        let removeOperation = {
+        let removeOperation: {
+            data: {
+                Operations: {
+                    op: string;
+                    path: string;
+                }[];
+                schemas: string[];
+            };
+            method: string;
+        } = {
             data: {
                 "Operations": [ {
                     "op": "remove",
@@ -349,7 +372,20 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             method: "PATCH"
         };
 
-        let addOperation = {
+        let addOperation: {
+            data: {
+                Operations: {
+                    op: string;
+                    value: {
+                        users: {
+                            value: any;
+                        }[];
+                    };
+                }[];
+                schemas: string[];
+            };
+            method: string;
+        } = {
             data: {
                 "Operations": [ {
                     "op": "add",
@@ -364,17 +400,39 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             method: "PATCH"
         };
 
-        const removeOperations = [];
-        const addOperations = [];
-        let removedIds = [];
-        const addedIds = [];
+        const removeOperations: {
+            data: {
+                Operations: {
+                    op: string;
+                    path: string;
+                }[];
+                schemas: string[];
+            };
+            method: string;
+        }[] = [];
+        const addOperations: {
+            data: {
+                Operations: {
+                    op: string;
+                    value: {
+                        users: {
+                            value: any;
+                        }[];
+                    };
+                }[];
+                schemas: string[];
+            };
+            method: string;
+        }[] = [];
+        let removedIds: string[] = [];
+        const addedIds: string[] = [];
 
         if (primaryRolesList) {
             removedIds = [ ...primaryRolesList.values() ];
         }
 
         if (roleIds?.length > 0) {
-            roleIds.map((roleId) => {
+            roleIds.map((roleId: string) => {
                 if (removedIds?.includes(roleId)) {
                     removedIds.splice(removedIds.indexOf(roleId), 1);
                 } else {
@@ -384,7 +442,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
 
         if (removedIds && removedIds?.length > 0) {
-            removedIds.map((id) => {
+            removedIds.map((id: string) => {
                 removeOperation = {
                     ...removeOperation,
                     ...{ path: "/Roles/" + id }
@@ -392,13 +450,22 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 removeOperations.push(removeOperation);
             });
 
-            removeOperations.map((operation) => {
+            removeOperations.map((operation: {
+                data: {
+                    Operations: {
+                        op: string;
+                        path: string;
+                    }[];
+                    schemas: string[];
+                };
+                method: string;
+            }) => {
                 bulkData.Operations.push(operation);
             });
         }
 
         if (addedIds && addedIds?.length > 0) {
-            addedIds.map((id) => {
+            addedIds.map((id: string) => {
                 addOperation = {
                     ...addOperation,
                     ...{ path: "/Roles/" + id }
@@ -406,7 +473,20 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 addOperations.push(addOperation);
             });
 
-            addOperations.map((operation) => {
+            addOperations.map((operation: {
+                data: {
+                    Operations: {
+                        op: string;
+                        value: {
+                            users: {
+                                value: any;
+                            }[];
+                        };
+                    }[];
+                    schemas: string[];
+                };
+                method: string;
+            }) => {
                 bulkData.Operations.push(operation);
             });
         }
@@ -429,7 +509,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 handelAddNewRoleModalClose();
                 handleUserUpdate(user.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.status === 404) {
                     return;
                 }
@@ -464,14 +544,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleUnselectedListSearch = (
+        e: React.FormEvent<HTMLInputElement>,
+        { value }: { value: string; }
+    ) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: (RolesInterface | OrganizationRoleListItemInterface)[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            roleList && roleList.map((role) => {
+            roleList && roleList.map((role: RolesInterface | OrganizationRoleListItemInterface) => {
                 isMatch = re.test(role.displayName);
                 if (!showDomain && role.displayName.split("/").length > 1) {
                     isMatch = re.test(role.displayName.split("/")[1]);
@@ -490,9 +573,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (role) => {
+    const handleUnassignedItemCheckboxChange = (role: RolesInterface | OrganizationRoleListItemInterface) => {
 
-        const checkedRoles = [ ...selectedRoleList ];
+        const checkedRoles: (RolesInterface | OrganizationRoleListItemInterface)[] = [ ...selectedRoleList ];
 
         if (checkedRoles?.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -532,7 +615,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * @param roleName - Name of the role.
      */
     const createItemLabel = (roleName: string) => {
-        const role = roleName?.split("/");
+        const role: string[] = roleName?.split("/");
 
         if (role?.length > 0) {
             if (role[0] == "Application") {
@@ -556,7 +639,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         setSelection(false);
     };
 
-    const handleRoleIdSet = (roleId) => {
+    const handleRoleIdSet = (roleId: string) => {
         setRoleId(roleId);
         setSelection(true);
     };
@@ -615,8 +698,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
-                                            roleList?.map((role, index) => {
-                                                const roleName = role?.displayName?.split("/");
+                                            roleList?.map((
+                                                role: RolesInterface | OrganizationRoleListItemInterface,
+                                                index: number
+                                            ) => {
+                                                const roleName: string[] = role?.displayName?.split("/");
 
                                                 if (roleName?.length >= 1) {
                                                     return (
@@ -676,15 +762,15 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedRoleListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleAssignedRoleListSearch = (e: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: RolesMemberInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            assignedRoles && assignedRoles?.map((role) => {
-                const groupName = role?.display?.split("/");
+            assignedRoles && assignedRoles?.map((role: RolesMemberInterface) => {
+                const groupName: string[] = role?.display?.split("/");
 
                 if (groupName?.length >= 1) {
                     isMatch = re.test(role.display);
@@ -800,8 +886,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group, index: number) => {
-                                                        const userRole = group?.display?.split("/");
+                                                    assignedRoles?.map((group: RolesMemberInterface, index: number) => {
+                                                        const userRole: string[] = group?.display?.split("/");
 
                                                         if (userRole?.length >= 1 && group?.value) {
                                                             return (

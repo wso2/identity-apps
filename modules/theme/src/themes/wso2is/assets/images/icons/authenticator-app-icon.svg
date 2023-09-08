@@ -1,0 +1,30 @@
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+<svg class="icon" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="icon" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" xml:space="preserve" viewBox="0 0 1024 1024" y="0px" x="0px" height="14" width="14">
+    <g id="Layer 1">
+        <path class="path fill primary" d="M107.418+42L594.176+42C605.792+42+615.21+52.5716+615.21+65.6124L615.21+961.066C615.21+974.107+605.792+984.679+594.176+984.679L107.418+984.679C95.8011+984.679+86.3839+974.107+86.3839+961.066L86.3839+65.6124C86.3839+52.5716+95.8011+42+107.418+42Z" stroke-linecap="round" opacity="1" stroke-linejoin="round"></path>
+        <path class="path fill white"  stroke-width="0.1" d="M86.3839+42L615.21+42L86.3839+841.679L86.3839+42Z" stroke-linecap="round" fill-opacity="0.127251" opacity="1" stroke-linejoin="round"></path>
+        <path class="path stroke secondary" stroke="#535353" stroke-width="74.95" d="M107.418+42L594.176+42C605.792+42+615.21+52.5716+615.21+65.6124L615.21+961.066C615.21+974.107+605.792+984.679+594.176+984.679L107.418+984.679C95.8011+984.679+86.3839+974.107+86.3839+961.066L86.3839+65.6124C86.3839+52.5716+95.8011+42+107.418+42Z" fill="none" stroke-linecap="round" opacity="1" stroke-linejoin="round"></path>
+        <path class="path stroke secondary" stroke="#535353" stroke-width="38.01" d="M24+419.728L677.593+419.728L677.593+566.911L24+566.911L24+419.728Z" fill="#ffffff" stroke-linecap="round" opacity="1" stroke-linejoin="round"></path>
+        <path class="path fill secondary" stroke="#535353" stroke-width="0.1" d="M350.797+14L350.797+14C376.49+14+397.318+34.8282+397.318+60.5211L397.318+60.5211C397.318+86.2141+376.49+107.042+350.797+107.042L350.797+107.042C325.104+107.042+304.276+86.2141+304.276+60.5211L304.276+60.5211C304.276+34.8282+325.104+14+350.797+14Z" fill="#535353" stroke-linecap="round" opacity="1" stroke-linejoin="round"></path>
+        <path class="path fill secondary" d="M316.05+881.313L385.543+881.313C392.36+881.313+397.886+886.839+397.886+893.657L397.886+893.657C397.886+900.474+392.36+906+385.543+906L316.05+906C309.233+906+303.707+900.474+303.707+893.657L303.707+893.657C303.707+886.839+309.233+881.313+316.05+881.313Z" opacity="1" fill="#535353"></path>
+        <path class="path fill secondary" d="M98.1897+498.176L68.8667+489.864L74.3765+472.962L103.419+484.635L101.552+452.043L119.855+452.043L117.987+485.289L146.283+473.802L151.793+490.892L121.91+499.203L141.52+524.043L126.672+534.596L109.676+507.327L92.8667+533.662L78.0185+523.576L98.1897+498.176ZM184.851+498.176L155.528+489.864L161.038+472.962L190.081+484.635L188.213+452.043L206.517+452.043L204.649+485.289L232.945+473.802L238.454+490.892L208.571+499.203L228.182+524.043L213.334+534.596L196.338+507.327L179.528+533.662L164.68+523.576L184.851+498.176ZM271.513+498.176L242.19+489.864L247.699+472.962L276.742+484.635L274.875+452.043L293.178+452.043L291.31+485.289L319.606+473.802L325.116+490.892L295.232+499.203L314.843+524.043L299.995+534.596L282.999+507.327L266.19+533.662L251.341+523.576L271.513+498.176ZM405.801+498.176L376.478+489.864L381.987+472.962L411.03+484.635L409.162+452.043L427.466+452.043L425.598+485.289L453.894+473.802L459.404+490.892L429.52+499.203L449.131+524.043L434.283+534.596L417.287+507.327L400.478+533.662L385.629+523.576L405.801+498.176ZM492.462+498.176L463.139+489.864L468.649+472.962L497.692+484.635L495.824+452.043L514.127+452.043L512.26+485.289L540.555+473.802L546.065+490.892L516.182+499.203L535.793+524.043L520.945+534.596L503.948+507.327L487.139+533.662L472.291+523.576L492.462+498.176ZM579.124+498.176L549.801+489.864L555.31+472.962L584.353+484.635L582.485+452.043L600.789+452.043L598.921+485.289L627.217+473.802L632.727+490.892L602.843+499.203L622.454+524.043L607.606+534.596L590.61+507.327L573.801+533.662L558.952+523.576L579.124+498.176Z" opacity="1" fill="#535353"></path>
+    </g>
+</svg>

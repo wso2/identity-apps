@@ -296,7 +296,7 @@ export const Sortable = (): ReactElement => {
     const handleListSorting = (order: DataTableSortOrder, column: TableColumnInterface) => {
         const orderedList: DataTableDemoDataInterface[] = orderBy(cloneDeep(list), [ column.dataIndex ],
             [ order === "ascending" ? "asc" : "desc" ]);
-        
+
         setList(orderedList);
     };
 

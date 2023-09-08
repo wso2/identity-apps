@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,11 +14,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import isEmpty from "lodash-es/isEmpty";
+import { commonConfig } from "../extensions";
+import { SCIMConfigs } from "../extensions/configs/scim";
 import {
     BasicProfileInterface,
     MultiValue,
@@ -29,17 +30,15 @@ import {
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
-import { SCIMConfigs } from "../extensions/configs/scim";
-import { commonConfig } from "../extensions";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
  * The returned iterable will have all the schema attributes in a flat structure so that
  * you can just iterate through them to display them.
  *
- * @param {ProfileSchema[]} schemas - Array of Profile schemas
- * @param {string} parentSchemaName - Name of the parent attribute.
- * @return {ProfileSchema[]}
+ * @param schemas - Array of Profile schemas
+ * @param parentSchemaName - Name of the parent attribute.
+ * @returns - Flattened array of schemas.
  */
 export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
     const tempSchemas: ProfileSchema[] = [];
@@ -57,7 +56,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
                 tempSchemas.push(schema);
             }
         } else {
-            const tempSchema = { ...schema };
+            const tempSchema: any = { ...schema };
 
             if (parentSchemaName) {
                 tempSchema.name = parentSchemaName + "." + schema.name;
@@ -74,7 +73,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
  * Type Guard to check if the passed in attribute is of type `MultiValue`.
  *
  * @param attribute - Profile attribute.
- * @return {attribute is MultiValue}
+ * @returns - `True` if the attribute is of type `MultiValue`.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
@@ -85,10 +84,9 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
  * Modifies the profile info object in to a flat level.
  *
  * @param profileInfo - Profile information.
- * @param {string} parentAttributeName - Name of the parent attribute.
- * @return {any[]}
+ * @param parentAttributeName - Name of the parent attribute.
+ * @returns - Flattened profile info.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
     const tempProfile = [];
     let mutatedProfileInfo = { ...profileInfo };

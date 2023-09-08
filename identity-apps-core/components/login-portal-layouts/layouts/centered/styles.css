@@ -1,0 +1,48 @@
+/**
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.login-portal.layout .page-wrapper.layout-file .center-segment>.ui.container>.ui.segment .ui.header:first-child {
+  text-align: center;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment {
+  flex-direction: column;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer {
+  border-top: 0;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer .ui.menu {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.login-portal.layout .page-wrapper.layout-file .footer .ui.menu:not(.vertical) .right.item, .ui.menu:not(.vertical) .right.menu {
+  margin-left: 0 !important;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-portal.layout .page-wrapper.layout-file .center-segment>.ui.container {
+  margin-bottom: 10px;
+}

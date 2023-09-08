@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Worker API Mocks.
  *
  * @remarks If you had to mock a certain Worker API,
  * document the reason and any references clearly in this file.
@@ -31,14 +30,14 @@
  * Mock Reference @see {@link https://github.com/facebook/jest/issues/3449#issuecomment-347337666}
  */
 class WorkerMock {
-    constructor(stringUrl) {
+    constructor(stringUrl: string) {
         // @ts-ignore
         this.url = stringUrl;
         // @ts-ignore
         this.onmessage = () => { };
     }
 
-    postMessage(msg) {
+    postMessage(msg: any) {
         // @ts-ignore
         this.onmessage(msg);
     }

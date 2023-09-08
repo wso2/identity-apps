@@ -1779,7 +1779,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 export: "Download the profile"
             },
-            description: "Download all your profile data including personal data, security questions, and consents",
+            description: "Download all your profile data including personal data, and linked accounts",
             heading: "Export Profile"
         },
         userSessions: {

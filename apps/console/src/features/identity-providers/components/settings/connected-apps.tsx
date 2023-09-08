@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -59,7 +58,7 @@ import {
     ApplicationListItemInterface, 
     ApplicationTemplateListItemInterface 
 } from "../../../applications/models";
-import { ApplicationTemplateManagementUtils } from "../../../applications/utils";
+import { ApplicationTemplateManagementUtils } from "../../../applications/utils/application-template-management-utils";
 import {  
     AppConstants,
     AppState, 
@@ -409,7 +408,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         if (connectedAppsCount === 0) {
             return (
                 <EmptyPlaceholder
-                    className={ !isRenderedOnPortal ? "list-placeholder" : "" }
+                    className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [

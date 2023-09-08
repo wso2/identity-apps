@@ -21,7 +21,7 @@ import { FormField } from "../models";
 
 /**
  * This component renders Form elements based on the provided `type` prop.
- * 
+ *
  * @param props - The form field.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,7 +39,7 @@ interface GroupFieldsPropsInterface {
 
 /**
  * This component groups form elements together.
- * 
+ *
  * @param props - The children to be grouped.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

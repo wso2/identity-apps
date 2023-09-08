@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,10 +26,28 @@ export interface RouteInterface extends StaticRouteInterface {
 }
 
 /**
+ * Interface for the Navbar route categories.
+ */
+export interface NavCategory {
+    id: string;
+    order: number;
+}
+
+/**
+ * Interface for the Navbar routes.
+ */
+export interface NavRouteInterface extends RouteInterface {
+    navCategory?: NavCategory;
+    parent?: NavRouteInterface;
+    items?: NavRouteInterface[];
+    [ key: string ]: any;
+}
+
+/**
  * Interface for categorized routes.
  */
 export interface CategorizedRouteInterface {
-    [ key: string ]: RouteInterface[];
+    [ key: string ]: NavRouteInterface[];
 }
 
 /**
@@ -96,6 +114,10 @@ export interface StaticRouteInterface {
      * Should the side panel item be clickable.
      */
     isFeatureEnabled?: boolean;
+    /**
+     * Feature gate ids to disable/enable features from routes.
+     */
+    featureGateIds?: string[];
 }
 
 /**

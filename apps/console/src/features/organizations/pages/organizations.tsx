@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,8 +48,8 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { organizationConfigs } from "../../../extensions";
-import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
-import { getOrganization, getOrganizations } from "../api";
+import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, store, UIConstants } from "../../core";
+import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
     OrganizationInterface,
@@ -265,6 +265,58 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     }, [ listItemLimit, getOrganizationLists, filterQuery ]);
 
     /**
+     * Retrieves the list of authorized organizations.
+     */
+    const {
+        data: authorizedOrganizationList,
+        isLoading: isAuthorizedOrganizationListRequestLoading,
+        error: authorizedListFetchRequestError,
+        mutate: updateAuthorizedList
+    } = useAuthorizedOrganizationsList(filterQuery, listItemLimit, null, null, false);
+
+    /**
+     * Handles the authorized list fetch request error.
+     */
+    useEffect(() => {
+        if (!authorizedListFetchRequestError) {
+            return;
+        }
+
+        handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
+    }, [ authorizedListFetchRequestError ]);
+
+    const handleGetAuthoriziedListCallError = (error) => {
+        if (error?.response?.data?.description) {
+            dispatch(
+                addAlert({
+                    description: error.description,
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.notifications." +
+                        "getOrganizationList.error.message"
+                    )
+                })
+            );
+
+            return;
+        }
+        dispatch(
+            addAlert({
+                description: t(
+                    "console:manage.features.organizations.notifications.getOrganizationList" +
+                    ".genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "console:manage.features.organizations.notifications." +
+                    "getOrganizationList.genericError.message"
+                )
+            })
+        );
+        return;
+    };
+
+    /**
      * Sets the list sorting strategy.
      *
      * @param event - The event.
@@ -344,6 +396,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleOrganizationListUpdate = (): void => {
         getOrganizationLists(listItemLimit, filterQuery, after, before);
+        updateAuthorizedList();
     };
 
     /**
@@ -390,7 +443,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         <>
             <PageLayout
                 action={
-                    !isOrganizationListRequestLoading &&
+                    !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
                         organizationConfigs.canCreateOrganization() && (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
@@ -410,7 +463,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     )
 
                 }
-                pageTitle="Organizations"
+                pageTitle={ t("console:manage.pages.organizations.title") }
                 title={
                     isOrganizationListRequestLoading
                         ? null
@@ -530,6 +583,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 >
                     <OrganizationList
                         list={ organizationList }
+                        authorizedList={ authorizedOrganizationList }
                         onOrganizationDelete={ handleOrganizationDelete }
                         onEmptyListPlaceholderActionClick={ () => {
                             setShowWizard(true);

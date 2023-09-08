@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -29,7 +28,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import { applicationConfig, commonConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
-import { getAvailableNameIDFormats } from "../../../identity-providers";
+import { getAvailableNameIDFormats } from "../../../identity-providers/components/utils/saml-idp-utils";
 import {
     ApplicationInterface,
     CertificateInterface,

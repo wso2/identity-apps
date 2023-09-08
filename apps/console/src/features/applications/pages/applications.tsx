@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import Chip from "@oxygen-ui/react/Chip";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -50,7 +50,6 @@ import {
     DropdownProps,
     Grid,
     Icon,
-    Label,
     List,
     PaginationProps
 } from "semantic-ui-react";
@@ -69,7 +68,8 @@ import {
 import { OrganizationType } from "../../organizations/constants";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountStatus } from "../api";
-import { ApplicationList, MinimalAppCreateWizard } from "../components";
+import { ApplicationList } from "../components/application-list";
+import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -361,9 +361,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
-                                    <Label size="tiny" className="preview-label ml-2">
-                                        { t("common:preview") }
-                                    </Label>
+                                    <Chip label={ t("common:preview") } className="oxygen-chip-beta ml-2" />
                                     <Icon
                                         color={ isMyAccountEnabled ? "green":"grey" }
                                         name={ isMyAccountEnabled ? "check circle" : "minus circle" }
@@ -448,7 +446,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </Show>
             ) }
             title={ t("console:develop.pages.applications.title") }
-            description={ orgType !== OrganizationType.SUBORGANIZATION 
+            description={ orgType !== OrganizationType.SUBORGANIZATION
                 ? (
                     <p>
                         { t("console:develop.pages.applications.subTitle") }
@@ -458,7 +456,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </p>
-                ) 
+                )
                 : (
                     <p>
                         { t("console:develop.pages.applications.alternateSubTitle") }

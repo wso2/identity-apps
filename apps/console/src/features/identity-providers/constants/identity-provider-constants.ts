@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,6 +72,43 @@ export class IdentityProviderConstants {
     public static readonly JIT_PROVISIONING_TAB_ID: string  = "jit-provisioning";
     public static readonly OUTBOUND_PROVISIONING_TAB_ID: string  = "outbound-provisioning";
     public static readonly SETTINGS_TAB_ID: string  = "settings";
+    public static readonly IDENTITY_PROVIDER_GROUPS_TAB_ID: string  = "identity-provider-groups";
+    public static readonly CLAIM_APP_ROLE: string  = "http://wso2.org/claims/groups";
+    public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
+    public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
+
+    public static readonly CLAIM_CONFIG_FIELD_MAX_LENGTH: number  = 100;
+    public static readonly CLAIM_CONFIG_FIELD_MIN_LENGTH: number  = 1;
+
+    /**
+     * Maximum length of the IdP name.
+     */
+    public static readonly IDP_NAME_MAX_LENGTH: number = 120;
+
+    /**
+     * Minimum length of the IdP name.
+     */
+    public static readonly IDP_NAME_MIN_LENGTH: number = 3;
+
+    /**
+     * Maximum length of the IdP description.
+     */
+    public static readonly IDP_DESCRIPTION_MAX_LENGTH: number = 300;
+
+    /**
+     * Minimum length of the IdP description.
+     */
+    public static readonly IDP_DESCRIPTION_MIN_LENGTH: number = 3;
+
+    /**
+     * Maximum length of the JWKS URL.
+     */
+    public static readonly JWKS_URL_MAX_LENGTH: number = 2048;
+
+    /**
+     * Minimum length of the JWKS URL.
+     */
+    public static readonly JWKS_URL_MIN_LENGTH: number = 10;
 
 }
 

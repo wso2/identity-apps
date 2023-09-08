@@ -851,7 +851,7 @@ export const myAccount: MyAccountNS = {
                 remaining: "restant"
             },
             fido: {
-                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " + 
+                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " +
                     "<1>Des Données Biométriques</1> dans votre appareil pour vous connecter à votre compte.",
                 form: {
                     label: "Clé de sécurité/Biométrie",
@@ -1832,8 +1832,7 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 export: "Téléchargez le profil"
             },
-            description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, " +
-                "questions de sécurité et consentements",
+            description: "Téléchargez toutes les données de votre profil, y compris les données personnelles et les comptes liés",
             heading: "Télécharger mon profil"
         },
         userSessions: {

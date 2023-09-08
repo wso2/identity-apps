@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getAuthenticatorIcons, getConnectorIcons } from "../../configs/ui";
 
-import { getAuthenticatorIcons, getConnectorIcons } from "../../configs";
-
-export const OutboundConnectors = [
+export const OutboundConnectors: {
+    connectorId: string;
+    displayName: string;
+    icon: any;
+    name: string;
+    self: string;
+}[] = [
     {
         connectorId: "Z29vZ2xlYXBwcw",
         displayName: "Google",
@@ -33,7 +38,7 @@ export const OutboundConnectors = [
         name: "salesforce",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
     },
-   {
+    {
         connectorId: "c2NpbQ",
         displayName: "SCIM",
         icon: getConnectorIcons().scim,

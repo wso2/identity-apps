@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,6 +66,7 @@ export interface ServiceResourceEndpointsInterface {
     associations: string;
     authorize: string;
     backupCode: string;
+    brandingPreference: string;
     challenges: string;
     challengeAnswers: string;
     federatedAssociations: string;
@@ -135,10 +136,6 @@ export interface AuthenticatorAppInterface {
  * Dev portal UI config interface.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface {
-    /**
-     * Branding store URL.
-     */
-    brandingStoreURL: string;
     /**
      * Copyright text for the footer.
      */

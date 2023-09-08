@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -30,7 +29,7 @@ import {
     OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 
 /**
  * Proptypes for the applications help panel overview component.
@@ -45,9 +44,9 @@ interface HelpPanelOverviewPropsInterface extends TestableComponentInterface {
 /**
  * Applications Help Panel Overview Component.
  *
- * @param {HelpPanelOverviewPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Help Panel Overview Component.
  */
 export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterface> = (
     props: HelpPanelOverviewPropsInterface
@@ -71,7 +70,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
         }
 
         if (inboundProtocols.length > 0) {
-            inboundProtocols.map((protocol) => {
+            inboundProtocols.map((protocol: InboundProtocolListItemInterface) => {
                 if (protocol.type == "oauth2") {
                     setIsOIDC(true);
                 } else if (protocol.type == "samlsso") {

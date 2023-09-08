@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" id="user-info-icon" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" xml:space="preserve">
+  <path id="Path_272" data-name="Path 272" d="M55.5,60H4.5A4.505,4.505,0,0,1,0,55.5V4.5A4.505,4.505,0,0,1,4.5,0h51A4.505,4.505,0,0,1,60,4.5v51A4.505,4.505,0,0,1,55.5,60ZM4.5,2A2.5,2.5,0,0,0,2,4.5v51A2.5,2.5,0,0,0,4.5,58h51A2.5,2.5,0,0,0,58,55.5V4.5A2.5,2.5,0,0,0,55.5,2Z"/>
+  <path id="Path_273" data-name="Path 273" d="M9,10H5A1,1,0,0,1,4,9V5A1,1,0,0,1,5,4H9a1,1,0,0,1,1,1V9A1,1,0,0,1,9,10ZM6,8H8V6H6Z"/>
+  <path id="Path_274" data-name="Path 274" d="M17,10H13a1,1,0,0,1-1-1V5a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1V9A1,1,0,0,1,17,10ZM14,8h2V6H14Z"/>
+  <path id="Path_275" data-name="Path 275" d="M25,10H21a1,1,0,0,1-1-1V5a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1V9A1,1,0,0,1,25,10ZM22,8h2V6H22Z"/>
+  <path id="Path_276" data-name="Path 276" d="M59,14H1a1,1,0,0,1-1-1V4.5A4.505,4.505,0,0,1,4.5,0h51A4.505,4.505,0,0,1,60,4.5V13A1,1,0,0,1,59,14ZM2,12H58V4.5A2.5,2.5,0,0,0,55.5,2H4.5A2.5,2.5,0,0,0,2,4.5Z"/>
+  <path id="Path_277" data-name="Path 277" d="M27,38H5a1,1,0,0,1-1-1V17a1,1,0,0,1,1-1H27a1,1,0,0,1,1,1V37A1,1,0,0,1,27,38ZM6,36H26V18H6Z"/>
+  <path id="Path_279" data-name="Path 279" d="M12,28a4,4,0,1,1,4-4A4,4,0,0,1,12,28Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,22Z" transform="translate(4 1)"/>
+  <path id="Path_281" data-name="Path 281" d="M55,56H33a1,1,0,0,1-1-1V35a1,1,0,0,1,1-1H55a1,1,0,0,1,1,1V55A1,1,0,0,1,55,56ZM34,54H54V36H34Z"/>
+  <path id="Path_282" data-name="Path 282" d="M44,56a1,1,0,0,1-.707-.293L38,50.414l-4.293,4.293a1,1,0,0,1-1.414-1.414l5-5a1,1,0,0,1,1.414,0l6,6A1,1,0,0,1,44,56Z"/>
+  <path id="Path_283" data-name="Path 283" d="M40,46a4,4,0,1,1,4-4A4,4,0,0,1,40,46Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,40,40Z"/>
+  <path id="Path_284" data-name="Path 284" d="M55,54a1,1,0,0,1-.707-.293l-6.262-6.262-5.506,6A1,1,0,0,1,41.051,52.1l6.211-6.771A1,1,0,0,1,47.977,45a.989.989,0,0,1,.729.293l7,7A1,1,0,0,1,55,54Z"/>
+  <path id="Path_285" data-name="Path 285" d="M49,22H33a1,1,0,0,1,0-2H49a1,1,0,0,1,0,2Z"/>
+  <path id="Path_286" data-name="Path 286" d="M55,22H53a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/>
+  <path id="Path_287" data-name="Path 287" d="M49,30H33a1,1,0,0,1,0-2H49a1,1,0,0,1,0,2Z"/>
+  <path id="Path_288" data-name="Path 288" d="M55,30H53a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/>
+  <path id="Path_289" data-name="Path 289" d="M55,26H39a1,1,0,0,1,0-2H55a1,1,0,0,1,0,2Z"/>
+  <path id="Path_290" data-name="Path 290" d="M35,26H33a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/>
+  <path id="Path_291" data-name="Path 291" d="M21,44H5a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z"/>
+  <path id="Path_292" data-name="Path 292" d="M27,44H25a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/>
+  <path id="Path_293" data-name="Path 293" d="M21,52H5a1,1,0,0,1,0-2H21a1,1,0,0,1,0,2Z"/>
+  <path id="Path_294" data-name="Path 294" d="M27,52H25a1,1,0,0,1,0-2h2a1,1,0,0,1,0,2Z"/>
+  <path id="Path_295" data-name="Path 295" d="M27,48H11a1,1,0,0,1,0-2H27a1,1,0,0,1,0,2Z"/>
+  <path id="Path_296" data-name="Path 296" d="M7,48H5a1,1,0,0,1,0-2H7a1,1,0,0,1,0,2Z"/>
+  <g id="user_1_" data-name="user (1)" transform="translate(-215.554 -98.13)">
+    <path id="Path_298" data-name="Path 298" d="M47.222,320.222h-12.3c-.262,0-.473-.29-.473-.649V315.1a2.2,2.2,0,0,1,.652-1.646,8.963,8.963,0,0,1,11.945,0,2.2,2.2,0,0,1,.653,1.646v4.468C47.695,319.931,47.483,320.222,47.222,320.222Zm-11.83-1.3H46.749V315.1a.73.73,0,0,0-.207-.545,8.214,8.214,0,0,0-10.943,0,.729.729,0,0,0-.207.544Z" transform="translate(190 -184.373)" stroke="#000" stroke-width="1"/>
+  </g>
+</svg>

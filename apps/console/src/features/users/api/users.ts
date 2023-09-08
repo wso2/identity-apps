@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,29 +16,31 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
+import { PatchRoleDataInterface } from "../../roles/models";
 import { UserManagementConstants } from "../constants";
-import { UserListInterface, UserSessionsInterface } from "../models";
+import { UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve the list of users that are currently in the system.
  *
- * @returns {Promise<UserListInterface>} a promise containing the user list.
+ * @returns a promise containing the user list.
  */
 export const getUsersList = (
     count: number, 
@@ -49,7 +51,7 @@ export const getUsersList = (
     excludedAttributes?: string
 ):
     Promise<UserListInterface> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -67,10 +69,10 @@ export const getUsersList = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as UserListInterface);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -78,13 +80,13 @@ export const getUsersList = (
 /**
  * Hook to get the users list with limit and offset.
  *
- * @param {number} count - The number of users to be returned. 
- * @param {number} startIndex - The index of the first user to be returned.
- * @param {string} filter - The filter to be applied to the users.
- * @param {string} attributes - The attributes to be returned. 
- * @param {string} domain - The domain of the users.
- * @param {string} excludedAttributes - The attributes to be excluded. 
- * @returns {RequestResultInterface<Data, Error>}
+ * @param count - The number of users to be returned. 
+ * @param startIndex - The index of the first user to be returned.
+ * @param filter - The filter to be applied to the users.
+ * @param attributes - The attributes to be returned. 
+ * @param domain - The domain of the users.
+ * @param excludedAttributes - The attributes to be excluded. 
+ * @returns users list.
  */
 export const useUsersList = (
     count: number, 
@@ -132,13 +134,12 @@ export const useUsersList = (
 /**
  * Add new user.
  *
- * @param data request payload
+ * @param data - request payload
  *
- * @returns {Promise<any>} a promise containing the response.
+ * @returns a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const addUser = (data: object): Promise<any> => {
-    const requestConfig = {
+export const addUser = (data: UserDetailsInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -149,10 +150,10 @@ export const addUser = (data: object): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -160,13 +161,13 @@ export const addUser = (data: object): Promise<any> => {
 /**
  * Delete user.
  *
- * @param user id
+ * @param user - id
  *
- * @returns {Promise<any>} a promise containing the response.
+ * @returns a promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteUser = (userId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
@@ -176,10 +177,10 @@ export const deleteUser = (userId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -187,13 +188,12 @@ export const deleteUser = (userId: string): Promise<any> => {
 /**
  * Add role to new user.
  *
- * @param {string} groupId - Group ID.
- * @param {object} data - Request payload
- * @returns {Promise<any>} a promise containing the response.
+ * @param groupId - Group ID.
+ * @param data - Request payload
+ * @returns a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addUserRole = (data: object, groupId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Content-Type": "application/json"
@@ -203,10 +203,10 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -214,10 +214,10 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
 /**
  * Retrieve the user information through user id.
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns a promise containing the response.
  */
 export const getUserDetails = (id: string, attributes: string): Promise<ProfileInfoInterface> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -230,10 +230,10 @@ export const getUserDetails = (id: string, attributes: string): Promise<ProfileI
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as ProfileInfoInterface);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(`Failed to retrieve user information - ${error}`);
         });
 };
@@ -241,14 +241,12 @@ export const getUserDetails = (id: string, attributes: string): Promise<ProfileI
 /**
  * Update the required details of the user profile.
  *
- * @param {string} userId - User ID.
- * @param {object} data - Data to be updated.
- * @return {Promise<ProfileInfoInterface>} a promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @param userId - User ID.
+ * @param data - Data to be updated.
+ * @returns a promise containing the response.
  */
-export const updateUserInfo = (userId: string, data: object): Promise<ProfileInfoInterface> => {
-
-    const requestConfig = {
+export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Promise<ProfileInfoInterface> => {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -259,10 +257,10 @@ export const updateUserInfo = (userId: string, data: object): Promise<ProfileInf
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as ProfileInfoInterface);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.USER_INFO_UPDATE_ERROR,
                 error.stack,
@@ -276,13 +274,11 @@ export const updateUserInfo = (userId: string, data: object): Promise<ProfileInf
 /**
  * Retrieves information related to the active sessions of a user identified by the user-id.
  *
- * @param {string} userId - User ID.
- * @return {Promise<AxiosResponse<UserSessionsInterface>>} a promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @param userId - User ID.
+ * @returns a promise containing the response.
  */
 export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessionsInterface>> => {
-
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -319,14 +315,12 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
 /**
  * Terminates a specific user session of a user.
  *
- * @param {string} userId - User ID.
- * @param {string} sessionId - ID of the session.
- * @return {Promise<AxiosResponse>} a promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @param userId - User ID.
+ * @param sessionId - ID of the session.
+ * @returns a promise containing the response.
  */
 export const terminateUserSession = (userId: string, sessionId: string): Promise<AxiosResponse> => {
-
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -363,13 +357,11 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
 /**
  * Terminates all the user session of a user.
  *
- * @param {string} userId - User ID.
- * @return {Promise<AxiosResponse>} a promise containing the response.
- * @throws {IdentityAppsApiException}
+ * @param userId - User ID.
+ * @returns a promise containing the response.
  */
 export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse> => {
-
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"

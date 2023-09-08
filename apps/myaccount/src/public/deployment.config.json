@@ -1,21 +1,10 @@
 {
-    "appBaseName": "myaccount",
-    "appBaseNameForHistoryAPI": "/",
-    "clientID": "MY_ACCOUNT",
-    "debug": false,
-    "idpConfigs": {
-        "enablePKCE": true,
-        "clockTolerance": 300,
-        "responseMode": "query",
-        "scope": ["SYSTEM"],
-        "serverOrigin": "https://localhost:9443",
-        "storage": "webWorker",
-        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
-        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
-        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/checksession"
+    "consoleApp": {
+        "path": "/getting-started",
+        "origin": "https://localhost:9000"
     },
-    "i18nResourcePath": "",
-    "isSaas": true,
+    "appBaseName": "",
+    "clientID": "MY_ACCOUNT",
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
     "serverOrigin": "https://localhost:9443",
@@ -24,24 +13,41 @@
         "login": "",
         "logout": "/logout"
     },
-    "session": {
-        "userIdleTimeOut": 600,
-        "userIdleWarningTimeOut": 580,
-        "sessionRefreshTimeOut": 300,
-        "checkSessionInterval": 3
+    "extensions": {
+        "applicationInsightsCookieDomain": "",
+        "applicationInsightsCookiePostfix": "",
+        "applicationInsightsEnabled": "false",
+        "applicationInsightsInstrumentationKey": "",
+        "applicationInsightsProxyEndpoint": ""
     },
-    "tenantResolutionStrategy": "id_token",
+    "superTenantProxy": "",
+    "idpConfigs": {
+        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/logout",
+        "clockTolerance": 300,
+        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oauth2/authorize",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/checksession",
+        "serverOrigin": "https://localhost:9443",
+        "responseMode": "query"
+    },
+    "session": {
+        "userIdleWarningTimeOut": 1740,
+        "sessionRefreshTimeOut": 28800,
+        "userIdleTimeOut": 1800,
+        "checkSessionInterval": 5
+    },
     "ui": {
-        "appCopyright": "WSO2 Identity Server ${copyright} ${year}",
-        "appTitle": "My Account | WSO2 Identity Server",
-        "appName": "My Account",
-        "appLogoPath": "/assets/images/branding/logo.svg",
-        "authenticatorApp": [],
-        "brandingStoreURL": "${host}/extensions/branding/${tenantDomain}/branding-preference_${locale}.json",
-        "disableMFAforSuperTenantUser": false,
-        "enableMFAUserWise": false,
-        "disableMFAForFederatedUsers": false,
-        "forceBackupCode": false,
+        "announcements": [],
+        "appCopyright": "${copyright} ${year} WSO2 LLC.",
+        "appTitle": "IS Account",
+        "appName": "Account",
+        "appLogoPath": "/assets/images/branding/logo-dark.svg",
+        "enableMFAUserWise": true,
+        "disableMFAForFederatedUsers": true,
+        "forceBackupCode": true,
+        "showAppSwitchButton": "true",
+        "authenticatorApp": {
+            "enabled": true
+        },
         "features": {
             "applications": {
                 "disabledFeatures": [],
@@ -49,6 +55,16 @@
                 "scopes": {
                     "create": [],
                     "read": [],
+                    "update": [],
+                    "delete": []
+                }
+            },
+            "operations": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": ["internal_humantask_view"],
                     "update": [],
                     "delete": []
                 }
@@ -64,7 +80,10 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": ["profileInfo.mobileVerification"],
+                "disabledFeatures": [
+                    "profileInfo.mobileVerification",
+                    "profileInfo.linkedAccounts"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -74,7 +93,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": ["security.loginVerifyData.typingDNA"],
+                "disabledFeatures": ["security.mfa.sms", "security.loginVerifyData.typingDNA"],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -84,24 +103,21 @@
                 }
             }
         },
+        "isCookieConsentBannerEnabled": false,
+        "isHeaderAvatarLabelAllowed": false,
         "i18nConfigs": {
             "showLanguageSwitcher": true,
-            "langAutoDetectEnabled": false
+            "langAutoDetectEnabled": true
         },
-        "isCookieConsentBannerEnabled": true,
-        "isHeaderAvatarLabelAllowed": true,
-        "privacyPolicyConfigs": {
-            "visibleOnFooter": true
-        },
-        "productName": "WSO2 Identity Server",
+        "privacyPolicyConfigs": {},
+        "isProfileUsernameReadonly": true,
+        "productName": "Asgardeo",
         "productVersionConfig": {
-            "allowSnapshot": true,
-            "textCase": "uppercase",
-            "labelColor": "primary"
+            "versionOverride": "",
+            "productVersion": "PREVIEW"
         },
-        "isProfileUsernameReadonly": false,
         "theme": {
-            "name": "default"
+            "name": "wso2is"
         }
     }
 }

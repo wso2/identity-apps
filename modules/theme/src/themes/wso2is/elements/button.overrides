@@ -1,0 +1,25 @@
+/*******************************
+      Button Overrides
+*******************************/
+
+/*----------------------------------------
+      Choreo themed button
+------------------------------------------*/
+
+.ui.button.primary:not(.basic).navigate-to-choreo-button {
+    background: @ChoreoThemeColorPrimary !important;
+
+    &:visited, &:focus, &:hover, &:active { 
+        background: @ChoreoThemeColorSecondary;
+    }
+}
+
+/*----------------------------------------
+      Quickstart link button
+------------------------------------------*/
+
+.ui.button.basic.link-button.tech-card-options {
+    color: #2e2e2e !important;
+    font-size: 12px;
+    font-weight: 600;
+}

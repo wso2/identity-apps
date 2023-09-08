@@ -1,0 +1,29 @@
+{{^isPolicyPage}}
+<div class="page-wrapper layout-file {{#isErrorResponse}}error-page{{/isErrorResponse}} {{#isSuccessResponse}}success-page{{/isSuccessResponse}}">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            {{{ProductHeader}}}
+            {{{MainSection}}}
+        </div>
+        <div class="slogan-container">
+          {{{ProductHeader}}}
+          <div class="tag-line-text">
+            <p>{{productTagLine}}</p>
+          </div>
+        </div>
+    </main>
+    {{{ProductFooter}}}
+</div>
+{{/isPolicyPage}}
+
+{{#isPolicyPage}}
+<div class="page-wrapper layout-file {{#isErrorResponse}}error-page{{/isErrorResponse}} {{#isSuccessResponse}}success-page{{/isSuccessResponse}}">
+  <main class="center-segment">
+      <div class="ui container aligned middle">
+          {{{ProductHeader}}}
+          {{{MainSection}}}
+      </div>
+      {{{ProductFooter}}}
+  </main>
+</div>
+{{/isPolicyPage}}

@@ -29,7 +29,7 @@ interface InnerGroupFieldsPropsInterface {
 
 /**
  * This function generates a Group component.
- * 
+ *
  * @param props - The children to be grouped.
  */
 export const InnerGroupFields = (props: React.PropsWithChildren<InnerGroupFieldsPropsInterface>): JSX.Element => {

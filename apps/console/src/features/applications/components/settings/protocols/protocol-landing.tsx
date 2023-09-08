@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -25,9 +24,9 @@ import { useTranslation } from "react-i18next";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../../core";
 import { ProtocolCard } from "../../../../core/components";
-import { getInboundProtocolLogos } from "../../../configs";
+import { getInboundProtocolLogos } from "../../../configs/ui";
 import { SAMLConfigModes, SupportedAuthProtocolTypes } from "../../../models";
-import { ApplicationManagementUtils } from "../../../utils";
+import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 /**
  * Proptypes for the sign in methods landing component.

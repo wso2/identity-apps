@@ -26,7 +26,7 @@ import DeploymentConfig from "../public/deployment.config.json";
  */
 const getTheme = () => {
     const _theme = DeploymentConfig.theme;
-    
+
     delete _theme.name;
     _theme.brandTitle = _theme.brandTitle.replace("${version}", Manifest.version);
 

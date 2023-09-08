@@ -1,6 +1,7 @@
 {
+    "private": true,
     "name": "@wso2is/access-control",
-    "version": "1.6.374",
+    "version": "2.0.0",
     "description": "Access control module for WSO2 Identity Server front end applications",
     "main": "dist/src/index.js",
     "types": "dist/types/index.d.ts",
@@ -32,15 +33,15 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.6.374",
+        "@wso2is/core": "^2.0.0",
         "jest": "^26.4.2",
         "react-access-control": "^1.0.1",
         "ts-jest": "^26.4.0"
     },
     "devDependencies": {
         "@types/react": "^18.0.18",
-        "@typescript-eslint/eslint-plugin": "^4.17.0",
-        "@typescript-eslint/parser": "^4.17.0",
+        "@typescript-eslint/eslint-plugin": "^4.32.0",
+        "@typescript-eslint/parser": "^4.32.0",
         "eslint": "^7.20.0",
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-react": "^7.18.3",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,9 +46,10 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch as ReduxDispatch } from "redux";
 import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
-import { UserBasicInterface } from "../../../users";
+import { UserBasicInterface } from "../../../users/models/user";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
 
@@ -76,7 +77,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: ReduxDispatch = useDispatch();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -117,7 +118,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         const filteredRoleList: UserBasicInterface[] = [];
 
         if (!isEmpty(query)) {
-            const regExp = new RegExp(escapeRegExp(query), "i");
+            const regExp: RegExp = new RegExp(escapeRegExp(query), "i");
 
             list && list.map((user: UserBasicInterface) => {
                 isMatch = regExp.test(user.userName);
@@ -137,8 +138,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         return;
     };
 
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = !isEmpty(newlySelectedUsers)
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
+        const checkedRoles: UserBasicInterface[] = !isEmpty(newlySelectedUsers)
             ? [ ...newlySelectedUsers ]
             : [];
 
@@ -153,8 +154,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         setIsSelectAllUsers(addModalUserList?.length === checkedRoles?.length);
     };
 
-    const deleteGroupUser = (user) => {
-        const selectedUsers = !isEmpty(selectedUserList)
+    const deleteGroupUser = (user: UserBasicInterface) => {
+        const selectedUsers: UserBasicInterface[] = !isEmpty(selectedUserList)
             ? [ ...selectedUserList ]
             : [];
 

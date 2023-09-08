@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,8 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { authenticatorConfig } from "../../../extensions/configs/authenticator";
+import TrustedTokenIssuerTemplate from
+    "../../../extensions/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
@@ -97,6 +99,7 @@ export class IdentityProviderManagementConstants {
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
+        TRUSTED_TOKEN_ISSUER: string;
     } = {
         APPLE: AppleIdPTemplate.id,
         ENTERPRISE: EnterpriseIdPTemplate.id,
@@ -108,7 +111,8 @@ export class IdentityProviderManagementConstants {
         MICROSOFT: MicrosoftIDPTemplate.id,
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
-        SAML: EnterpriseSAMLIdPTemplate.id
+        SAML: EnterpriseSAMLIdPTemplate.id,
+        TRUSTED_TOKEN_ISSUER: TrustedTokenIssuerTemplate.id
     };
 
     /**
@@ -376,19 +380,19 @@ export class IdentityProviderManagementConstants {
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while fetching identity provider template.";
+        "invalid status code while fetching connection template.";
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
-        "the required identity provider template.";
+        "the required connection template.";
 
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while fetching identity provider templates list.";
+        "invalid status code while fetching connection templates list.";
 
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
-        "the required identity provider templates list.";
+        "the required connection templates list.";
 
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
-        " updating the JIT provisioning configurations of the identity provider.";
+        " updating the JIT provisioning configurations of the connection.";
 
     public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching local authenticators.";
@@ -430,10 +434,10 @@ export class IdentityProviderManagementConstants {
         "and federated authenticators.";
 
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
-        "configurations of the identity provider.";
+        "configurations of the connection.";
 
     public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
-        "the certificate of the identity provider.";
+        "the certificate of the connection.";
 
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";

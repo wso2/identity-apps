@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,12 +20,11 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../models";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
@@ -51,7 +50,6 @@ export interface AttributeSelectionUIPropsInterface {
 /**
  * Attribute selection component.
  *
- * @param props AttributeSelectionPropsInterface
  * @deprecated Please use {@link AttributesSelectionV2}
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
@@ -69,12 +67,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const { t } = useTranslation();
 
-    const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
+    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
 
-    const [searchFilter, setSearchFilter] = useState<string>("");
+    const [ searchFilter, setSearchFilter ] = useState<string>("");
 
-    const handleSearch = (event) => {
-        const changedValue = event.target.value;
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+        const changedValue: string = event.target.value;
+
         setSearchFilter(changedValue);
     };
 
@@ -98,7 +97,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const updateAttributeMapping = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
         setSelectedAttributesWithMapping(
             [
-                ...selectedAttributesWithMapping.filter(element => element.claim.uri !== mapping.claim.uri),
+                ...selectedAttributesWithMapping.filter(
+                    (element: IdentityProviderCommonClaimMappingInterface) => element.claim.uri !== mapping.claim.uri),
                 mapping
             ]
         );
@@ -164,30 +164,34 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     </Table.Header>
                     <Table.Body>
                         {
-                            selectedAttributesWithMapping?.filter((mapping) =>
-                                isEmpty(searchFilter)
-                                    ? true
-                                    : mapping?.claim?.displayName?.startsWith(searchFilter)
-                            )?.sort((a, b) => a.claim.displayName.localeCompare(b.claim.displayName)
-                            )?.map((mapping) => {
-                                    return (
-                                        <AttributeListItem
-                                            key={ mapping?.claim.id }
-                                            attribute={ mapping?.claim }
-                                            placeholder={
-                                                uiProps.attributeMapInputPlaceholderPrefix
-                                                + mapping?.claim.displayName
-                                            }
-                                            updateMapping={ updateAttributeMapping }
-                                            mapping={ mapping?.mappedValue }
-                                            data-testid={
-                                                `${ testId }-attribute-list-item-${
-                                                    mapping?.claim.id }`
-                                            }
-                                            isReadOnly={ isReadOnly }
-                                        />
-                                    );
-                                }
+                            selectedAttributesWithMapping?.filter(
+                                (mapping:IdentityProviderCommonClaimMappingInterface) =>
+                                    isEmpty(searchFilter)
+                                        ? true
+                                        : mapping?.claim?.displayName?.startsWith(searchFilter)
+                            )?.sort((
+                                a:IdentityProviderCommonClaimMappingInterface,
+                                b:IdentityProviderCommonClaimMappingInterface
+                            ) => a.claim.displayName.localeCompare(b.claim.displayName)
+                            )?.map((mapping: IdentityProviderCommonClaimMappingInterface) => {
+                                return (
+                                    <AttributeListItem
+                                        key={ mapping?.claim.id }
+                                        attribute={ mapping?.claim }
+                                        placeholder={
+                                            uiProps.attributeMapInputPlaceholderPrefix
+                                            + mapping?.claim.displayName
+                                        }
+                                        updateMapping={ updateAttributeMapping }
+                                        mapping={ mapping?.mappedValue }
+                                        data-testid={
+                                            `${ testId }-attribute-list-item-${
+                                                mapping?.claim.id }`
+                                        }
+                                        isReadOnly={ isReadOnly }
+                                    />
+                                );
+                            }
                             )
                         }
                     </Table.Body>
@@ -224,16 +228,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         "placeHolders.noAttributes." +
                                                         "subtitles.0")
                                                 ] }
-                                                action={
+                                                action={ (
                                                     <Show when={ AccessControlConstants.IDP_EDIT }>
                                                         <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
                                                             { t("console:develop.features.authenticationProvider." +
                                                                 "buttons.addAttribute") }
                                                         </PrimaryButton>
                                                     </Show>
-                                                }
-                                                image={ getEmptyPlaceholderIllustrations().emptyList }
-                                                imageSize="tiny"
+                                                ) }
                                                 data-testid={ `${ testId }-empty-placeholder` }
                                             />
                                         </Segment>

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Extended MSW Server Handlers.
  *
  * @remarks Put all the extension handlers here with proper documentation.
  */
@@ -26,4 +25,4 @@
  * Extended MSW Request Handlers.
  * @see {@link https://mswjs.io/docs/basics/request-handler}
  */
-export const handlers = [ ];
+export const handlers: any = [ ];

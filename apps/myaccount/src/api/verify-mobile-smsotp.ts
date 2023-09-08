@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,23 +16,22 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { HttpMethods } from "../models";
+import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { HttpMethods, SMSOTPProperty } from "../models";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Validate the user-entered verification code.
- * @param code The verification code
+ *
+ * @param code - The verification code
  */
 export const validateSMSOTPCode = (code: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             code: code,
             properties: []
@@ -45,14 +44,14 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status == 202) {
                 return true;
             }
 
             return Promise.reject(`An error occurred. The server returned ${response.status}`);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -61,14 +60,15 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
  * Resend SMS OTP verification code for the authenticated user.
  */
 export const resendSMSOTPCode = (): Promise<any> => {
-    const properties = [];
-    const propertyData = {
-        "key": "RecoveryScenario",
-        "value": "MOBILE_VERIFICATION_ON_UPDATE"
+    const properties: SMSOTPProperty[] = [];
+
+    const propertyData: SMSOTPProperty = {
+        key: "RecoveryScenario",
+        value: "MOBILE_VERIFICATION_ON_UPDATE"
     };
 
     properties.push(propertyData);
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             properties: properties
         },
@@ -80,14 +80,14 @@ export const resendSMSOTPCode = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             } else {
                 return Promise.resolve(response);
             }
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

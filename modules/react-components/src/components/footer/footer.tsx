@@ -119,13 +119,13 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
     );
 
     return (
-        <Menu 
-            stackable 
-            id="app-footer" 
-            className={ classes } 
-            fixed={ fixed } 
-            fluid={ fluid } 
-            borderless 
+        <Menu
+            stackable
+            id="app-footer"
+            className={ classes }
+            fixed={ fixed }
+            fluid={ fluid }
+            borderless
             data-componentid={ componentId }
             data-testid={ testId }
         >

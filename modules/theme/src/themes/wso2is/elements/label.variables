@@ -1,0 +1,6 @@
+/*----------------------------
+      Choreo Label
+------------------------------*/
+
+@ChoreoThemeColorPrimary: #5567D5;
+@ChoreoThemeColorLightest: #F0F1FB;
