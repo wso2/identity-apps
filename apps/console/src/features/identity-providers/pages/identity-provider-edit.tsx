@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -52,7 +51,8 @@ import {
     history
 } from "../../core";
 import { getIdentityProviderDetail, getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api";
-import { EditIdentityProvider, EditMultiFactorAuthenticator } from "../components";
+import { EditMultiFactorAuthenticator } from "../components/edit-multi-factor-authenticator";
+import { EditIdentityProvider } from "../components/identity-provider-edit";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
@@ -182,9 +182,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
     useEffect(() => {
         const tabName: string =  location.state as string;
 
-        if (tabName === undefined) {
-            return;
-        } else {
+        if (tabName !== undefined) {
             setIsAutomaticTabRedirectionEnabled(true);
             setTabIdentifier(tabName);
         }
@@ -276,7 +274,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         setConnectorDetailFetchRequestLoading(true);
 
         getIdentityProviderDetail(id)
-            .then((response: any) => {
+            .then((response: IdentityProviderInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => 
+            {
                 setConnector(response);
             })
             .catch((error: IdentityAppsApiException) => {

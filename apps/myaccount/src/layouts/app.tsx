@@ -28,7 +28,7 @@ import {
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "../components";
 import { getAppLayoutRoutes } from "../configs/routes";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
@@ -82,9 +82,9 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
                         {
-                            appRoutes.map((route, index) => (
+                            appRoutes.map((route: RouteInterface, index: number) => (
                                 route.redirectTo
-                                    ? <Redirect to={ route.redirectTo } />
+                                    ? <Redirect to={ route.redirectTo } key={ index } />
                                     : route.protected
                                         ? (
                                             <ProtectedRoute
@@ -97,7 +97,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps) =>
+                                                render={ (renderProps: RouteComponentProps) =>
                                                     route.component
                                                         ? <route.component { ...renderProps } />
                                                         : null

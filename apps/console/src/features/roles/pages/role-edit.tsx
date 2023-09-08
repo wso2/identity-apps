@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,11 +18,12 @@
 
 import { RolesInterface } from "@wso2is/core/models";
 import { TabPageLayout } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { EditRole } from "../../roles";
+import { EditRole } from "../../roles/components/edit-role/edit-role";
 import { getRoleById } from "../api";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
@@ -39,7 +40,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
         setIsRoleDetailsRequestLoading(true);
 
         getRoleById(roleId)
-            .then(response => {
+            .then((response: AxiosResponse) => {
                 if (response.status === 200) {
                     setRoleObject(response.data);
                 }
@@ -59,8 +60,8 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
      * Get Role data from URL id
      */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const roleId = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname.split("/");
+        const roleId: string = path[ path.length - 1 ];
 
         setRoleId(roleId);
         getRoleDetails(roleId);

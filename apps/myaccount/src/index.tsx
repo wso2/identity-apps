@@ -30,8 +30,6 @@ import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { ProtectedApp } from "./protected-app";
 import { store } from "./store";
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import { getAuthInitializeConfig } from "./utils";
 
 // Set the runtime config in the context.

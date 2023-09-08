@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -43,8 +42,8 @@ import {
     getTechnologyLogos,
     history
 } from "../../core";
-import { MinimalAppCreateWizard } from "../components";
-import { getApplicationTemplateIllustrations } from "../configs";
+import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
+import { getApplicationTemplateIllustrations } from "../configs/ui";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
@@ -53,11 +52,10 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
-import { ApplicationTemplateManagementUtils } from "../utils";
+import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
 /**
  * Template filter types.
- * @type {{text: string; value: string; key: string}[]}
  */
 const TEMPLATE_FILTER_TYPES: DropdownItemProps[] = [
     {
@@ -80,9 +78,9 @@ type ApplicationTemplateSelectPageInterface = TestableComponentInterface;
 /**
  * Choose the application template from this page.
  *
- * @param {ApplicationTemplateSelectPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Application template select page.
  */
 const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = (
     props: ApplicationTemplateSelectPageInterface
@@ -157,7 +155,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 .includes(template.category as ApplicationTemplateCategories)) {
 
                 template.types.forEach((type: string) => {
-                    const isAvailable = filterTypes.some((filterType: DropdownItemProps) => filterType.value === type);
+                    const isAvailable: boolean = filterTypes.some(
+                        (filterType: DropdownItemProps) => filterType.value === type);
                     
                     if (isAvailable) {
                         return;
@@ -202,8 +201,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Handles template selection.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Id of the template.
+     * @param e - Click event.
+     * @param id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
@@ -212,7 +211,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         }
 
         let selected: ApplicationTemplateListItemInterface = applicationTemplates
-            .find((template) => template.id === id);
+            .find((template: ApplicationTemplateListItemInterface) => template.id === id);
 
         if (!selected) {
             return;
@@ -233,12 +232,12 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Handles the template search.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} value - Search value.
+     * @param e - Click event.
+     * @param value - Search value.
      */
     const handleTemplateSearch = (e: SyntheticEvent, { value }: { value: string }): void => {
         if (value.length > 0) {
-            setFilteredTemplateList(applicationTemplates.filter((item) =>
+            setFilteredTemplateList(applicationTemplates.filter((item: ApplicationTemplateListItemInterface) =>
                 item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1));
         } else {
             setFilteredTemplateList(applicationTemplates);
@@ -248,15 +247,16 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Handles the template type change.
      *
-     * @param event
-     * @param data
+     * @param event - Click event.
+     * @param data - Dropdown data.
      */
     const handleTemplateTypeChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         if (data.value === "all") {
             setFilteredTemplateList(applicationTemplates);
         } else {
-            const filtered = applicationTemplates.filter((template: ApplicationTemplateListItemInterface) =>
-                template.types?.includes(data.value));
+            const filtered: ApplicationTemplateListItemInterface[] = applicationTemplates.filter(
+                (template: ApplicationTemplateListItemInterface) =>
+                    template.types?.includes(data.value));
 
             setFilteredTemplateList(filtered);
         }
@@ -265,12 +265,12 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Generic function to render the template grid.
      *
-     * @param {ApplicationTemplateInterface[]} templates - Set of templates to be displayed.
-     * @param {object} additionalProps - Additional props for the `TemplateGrid` component.
-     * @param {React.ReactElement} placeholder - Empty placeholder for the grid.
-     * @param {ApplicationTemplateInterface[]} templatesOverrides - Template array which will get precedence.
-     * @param {boolean} isSearchView - Is the requested view search ro not.
-     * @return {React.ReactElement}
+     * @param templates - Set of templates to be displayed.
+     * @param additionalProps - Additional props for the `TemplateGrid` component.
+     * @param placeholder - Empty placeholder for the grid.
+     * @param templatesOverrides - Template array which will get precedence.
+     * @param isSearchView - Is the requested view search ro not.
+     * @returns Template grid.
      */
     const renderTemplateGrid = (templates: ApplicationTemplateInterface[],
         additionalProps: Record<string, unknown>,
@@ -320,8 +320,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     /**
      * Renders the template grid based on the passed in view.
      *
-     * @param {"CATEGORIZED" | "SEARCH_RESULTS"} view - Render view.
-     * @return {React.ReactElement}
+     * @param view - Render view.
+     * @returns Template grids.
      */
     const renderTemplateGrids = (view: "CATEGORIZED" | "SEARCH_RESULTS"): ReactElement => {
 

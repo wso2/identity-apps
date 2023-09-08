@@ -19,7 +19,7 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { getErrorLayoutRoutes } from "../configs";
 import { AppConstants } from "../constants";
@@ -62,9 +62,9 @@ export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsIn
             <Suspense fallback={ <ContentLoader dimmer/> }>
                 <Switch>
                     {
-                        errorLayoutRoutes.map((route, index) => (
+                        errorLayoutRoutes.map((route: RouteInterface, index: number) => (
                             route.redirectTo
-                                ? <Redirect to={ route.redirectTo } />
+                                ? <Redirect to={ route.redirectTo } key={ index } />
                                 : route.protected
                                     ? (
                                         <ProtectedRoute
@@ -76,7 +76,7 @@ export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsIn
                                     : (
                                         <Route
                                             path={ route.path }
-                                            render={ (renderProps) =>
+                                            render={ (renderProps: RouteComponentProps) =>
                                                 (<route.component { ...renderProps } />)
                                             }
                                             key={ index }

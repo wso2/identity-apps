@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
@@ -39,6 +39,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface
 } from "../../models";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { GeneralDetailsForm } from "../forms";
 
 /**
@@ -329,23 +330,63 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         closeOnDimmerClick={ false }
                         primaryActionLoading={ isDeletionInProgress }
                     >
-                        <ConfirmationModal.Header
-                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
-                        >
-                            { t("console:develop.features.applications.confirmations.deleteApplication.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            attached
-                            negative
-                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
-                        >
-                            { t("console:develop.features.applications.confirmations.deleteApplication.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content
-                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
-                        >
-                            { t("console:develop.features.applications.confirmations.deleteApplication.content") }
-                        </ConfirmationModal.Content>
+                        
+                        {
+                            ApplicationManagementUtils.isChoreoApplication(application)
+                                ? ( 
+                                    <>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.header") }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.message") }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                                        >
+                                            <Trans 
+                                                i18nKey= { "console:develop.features.applications.confirmations." + 
+                                                "deleteChoreoApplication.content" }>
+                                                Deleting this application will break the authentication flows and cause 
+                                                the associated Choreo application to be unusable with its credentials.
+                                                <b>Proceed at your own risk.</b>
+                                            </Trans>
+                                        </ConfirmationModal.Content>
+                                    </> 
+                                )
+                                : ( 
+                                    <>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.header") }
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            negative
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.message") }
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                                        >
+                                            { t("console:develop.features.applications.confirmations." + 
+                                                "deleteApplication.content") }
+                                        </ConfirmationModal.Content>
+                                    </> 
+                                )
+                        }
                     </ConfirmationModal>
                 </>
             ) :

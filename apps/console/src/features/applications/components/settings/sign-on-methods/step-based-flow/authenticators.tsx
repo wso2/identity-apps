@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -23,15 +22,17 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
+import { 
+    IdentityProviderManagementConstants
+} from "../../../../../identity-providers/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
-    AuthenticatorMeta,
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants
-} from "../../../../../identity-providers";
+    GenericAuthenticatorInterface
+} from "../../../../../identity-providers/models/identity-provider";
 import { AuthenticationStepInterface } from "../../../../models";
-import { SignInMethodUtils } from "../../../../utils";
+import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
 /**
  * Proptypes for the authenticators component.
@@ -361,6 +362,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                     inline: true
                                 } }
                                 data-testid={ `${ testId }-authenticator-${ authenticator.name }` }
+                                showCardAction={ false }
+                                showSetupGuideButton={ false }
                             />)
                         }
                     />)

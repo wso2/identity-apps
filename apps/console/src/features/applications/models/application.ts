@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,7 +22,7 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { GenericAuthenticatorInterface } from "../../identity-providers";
+import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -70,6 +69,15 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
+    appRoleConfigurations?: IdpRoleMappingInterface[];
+}
+
+/**
+ * Interface for Idp role mappings.
+ */
+export interface IdpRoleMappingInterface {
+    idp: string;
+    useAppRoleMappings: boolean;
 }
 
 /**
@@ -737,6 +745,7 @@ export enum LoginFlowTypes {
     SECOND_FACTOR_SMS_OTP = "SECOND_FACTOR_SMS_OTP",
     FIDO_LOGIN = "FIDO_LOGIN",
     MAGIC_LINK = "MAGIC_LINK",
+    EMAIL_OTP = "EMAIL_OTP",
     DEFAULT = "DEFAULT"
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { 
     AlertInterface,
@@ -34,10 +33,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
-import { CreateRoleWizard, RoleList } from "../../roles";
 import { getRolesList } from "../../roles/api";
+import { CreateRoleWizard } from "../../roles/components/wizard/create-role-wizard";
 import { getUserStoreList } from "../../userstores/api";
 import { deleteRoleById, searchRoleList } from "../api";
+import { RoleList } from "../components/role-list";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
 import { SearchRoleInterface } from "../models";
 

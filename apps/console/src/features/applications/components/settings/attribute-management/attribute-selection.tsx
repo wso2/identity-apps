@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -172,12 +172,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
                 !filterSelectedExternalClaims.find(
-                    (selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                    (selectedExternalClaim: ExtendedExternalClaimInterface) =>
                         selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 )
             ) {
                 const availableExternalClaim: ExtendedExternalClaimInterface = availableExternalClaims.find(
-                    (availableClaim: ExtendedExternalClaimInterface) => 
+                    (availableClaim: ExtendedExternalClaimInterface) =>
                         availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
 
@@ -454,7 +454,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         initialAvailableClaims.push(claim);
                     }
                 });
-            const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = 
+            const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] =
             [ ...filterSelectedExternalClaims ];
 
             claimConfigurations?.claimMappings?.map((claimMapping: ClaimMappingInterface) => {
@@ -470,7 +470,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             requested: claim.requested
                         };
 
-                        if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                        if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) =>
                             selectedExternalClaim?.mappedLocalClaimURI === claimMapping.localClaim.uri)){
                             initialSelectedClaims.push(option);
                         }
@@ -588,7 +588,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 removeMapping(claimURI);
             }
         } else {
-            const removing: ExtendedExternalClaimInterface = 
+            const removing: ExtendedExternalClaimInterface =
             selectedExternalClaims.find(
                 (claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI === claimURI
             );
@@ -599,7 +599,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             setFilterSelectedExternalClaims(filterSelectedExternalClaims
                 .filter((claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI !== claimURI)
             );
-            const externalClaim: ExtendedExternalClaimInterface = 
+            const externalClaim: ExtendedExternalClaimInterface =
             externalClaims.find(
                 (claim: ExtendedExternalClaimInterface) => claim.mappedLocalClaimURI === claimURI
             );
@@ -632,7 +632,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     const removeAttributeModal = () => {
-        const defaultSubjectClaim: ExtendedClaimInterface = 
+        const defaultSubjectClaim: ExtendedClaimInterface =
         claims.find((claim: ExtendedClaimInterface) => claim.claimURI === defaultSubjectAttribute);
 
         return (
@@ -772,7 +772,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         (
                                                             <Table.Cell textAlign="right">
                                                                 <Checkbox
-                                                                    slider
+                                                                    toggle
                                                                     checked={ claimMappingOn }
                                                                     onChange={ () => {
                                                                         if (!claimMappingOn) {
@@ -812,13 +812,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             </Table>
                                         </Grid.Row>
                                         { duplicatedMappingValues.length > 0 && (
-                                            <Message 
+                                            <Message
                                                 type="error"
                                                 content={
-                                                    t("console:develop.features.applications.notifications." + 
-                                                    "updateClaimConfig.error.description") 
+                                                    t("console:develop.features.applications.notifications." +
+                                                    "updateClaimConfig.error.description")
                                                 }
-                                            />) 
+                                            />)
                                         }
                                         <Segment className="user-role-edit-header-segment attributes">
                                             <Grid.Row>
@@ -952,7 +952,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     }
                                                                                     updateMapping={ updateClaimMapping }
                                                                                     addToMapping={ addToClaimMapping }
-                                                                                    mapping={ 
+                                                                                    mapping={
                                                                                         getCurrentMapping(
                                                                                             claim.claimURI
                                                                                         )
@@ -970,8 +970,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     selectMandatory={ updateMandatory }
                                                                                     selectRequested={ updateRequested }
                                                                                     claimMappingOn={ claimMappingOn }
-                                                                                    claimMappingError={ 
-                                                                                        claimMappingError 
+                                                                                    claimMappingError={
+                                                                                        claimMappingError
                                                                                     }
                                                                                     readOnly={ readOnly }
                                                                                     subject={
@@ -984,7 +984,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                         );
                                                                                     } }
                                                                                     duplicatedMappingValues={
-                                                                                        duplicatedMappingValues 
+                                                                                        duplicatedMappingValues
                                                                                     }
                                                                                     data-testid={ claim.claimURI }
                                                                                 />
@@ -1050,8 +1050,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                                     key={ claim.id }
                                                                                     claimURI={ claim.claimURI }
                                                                                     displayName={ claim.claimURI }
-                                                                                    mappedURI={ 
-                                                                                        claim.mappedLocalClaimURI 
+                                                                                    mappedURI={
+                                                                                        claim.mappedLocalClaimURI
                                                                                     }
                                                                                     localDialect={
                                                                                         selectedDialect.localDialect

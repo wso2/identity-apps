@@ -17,10 +17,11 @@
  */
 
 import {
-    AsgardeoSPAClient
+    AsgardeoSPAClient, BasicUserInfo, DecodedIDTokenPayload
 } from "@asgardeo/auth-react";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppAvatar, Popup } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
@@ -42,6 +43,7 @@ interface FederatedAssociationsPropsInterface extends TestableComponentInterface
     onAlertFired: (alert: AlertInterface) => void;
     disableExternalLoginsOnEmpty?: boolean;
     isNonLocalCredentialUser?: boolean;
+    sourceIdp: string;
 }
 
 /**
@@ -55,7 +57,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const {
         onAlertFired,
         disableExternalLoginsOnEmpty,
-        isNonLocalCredentialUser,
+        sourceIdp,
         ["data-testid"]: testId
     } = props;
 
@@ -66,7 +68,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     const [ showExternalLogins, setShowExternalLogins ] = useState<boolean>(true);
     const [ currentIDP, setCurrentIDP ] = useState<string>();
     const [ linkedAttribute, setLinkedAttribute ] = useState<string>();
-    const auth = AsgardeoSPAClient.getInstance();
+    const auth: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
     /**
      * This calls the `getFederatedAssociations` api call
@@ -76,7 +78,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
             .then((response: FederatedAssociation[]) => {
                 setFederatedAssociations(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 onAlertFired({
                     description:
                         t("myAccount:components.federatedAssociations.notifications.getFederatedAssociations."
@@ -109,8 +111,8 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
      * This temporary one checks for authenticated IDP.
      */
     useEffect(() => {
-        auth.getDecodedIDToken().then((response)=>{
-            for (let i = 0; i < response.amr.length; i++) {
+        auth.getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
+            for (let i: number = 0; i < response.amr.length; i++) {
                 if (response.amr[i].includes("Google")) {
                     setCurrentIDP("Google");
                 }
@@ -126,7 +128,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
 
     //Todo : Update with relevant linked attribute
     useEffect(() => {
-        auth.getBasicUserInfo().then((response)=> {
+        auth.getBasicUserInfo().then((response: BasicUserInfo)=> {
             /* For the time being, lets have Gmail/Github primary Email (at the time of mapping)
             as the linked attribute. But sooner we have to display the linking attribute. */
             setLinkedAttribute(response.email);
@@ -163,7 +165,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                         + ".removeFederatedAssociation.success.message")
                 });
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 onAlertFired({
                     description: t("myAccount:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.error.description",
@@ -257,9 +259,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                                     </List.Content>
                                                 </div>
                                             </Grid.Column>
-                                            { !isNonLocalCredentialUser &&
-                                                !(currentIDP==federatedAssociation.idp.name ||
-                                                currentIDP==federatedAssociation.idp.displayName) ?
+                                            { !(currentIDP === federatedAssociation.idp.name ||
+                                                currentIDP === federatedAssociation.idp.displayName) &&
+                                                !(sourceIdp === federatedAssociation.idp.name ||
+                                                sourceIdp === federatedAssociation.idp.displayName) ?
                                                 (<Grid.Column width={ 5 } className="last-column">
                                                     <List.Content floated="right">
                                                         <Popup

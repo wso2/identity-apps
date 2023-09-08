@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { 
-    IdentifiableComponentInterface, 
-    LoadingStateOptionsInterface, 
-    TestableComponentInterface 
+import {
+    IdentifiableComponentInterface,
+    LoadingStateOptionsInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import inRange from "lodash-es/inRange";
@@ -144,7 +144,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         }
 
         const tabIndex: number | string = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
-        
+
         if (inRange(tabIndex,  0, panes.length)) {
             if (tabIndex === activeIndex) {
                 return;
@@ -152,7 +152,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             setActiveIndex(tabIndex);
         } else {
             setActiveIndex(defaultActiveIndex);
-        }       
+        }
     }, [ defaultActiveIndex ]);
 
     /**

@@ -147,7 +147,7 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                         description,
                                                         ...appRest
                                                     } = app;
-                                                    
+
                                                     if (!enabled) {
                                                         return null;
                                                     }
@@ -193,7 +193,7 @@ export const AppSwitcher: FunctionComponent<AppSwitcherPropsInterface> = (
                                                                                 }-description`
                                                                             }
                                                                             data-testid={
-                                                                                `${ 
+                                                                                `${
                                                                                     appRest[ "data-testid" ]
                                                                                 }-description`
                                                                             }

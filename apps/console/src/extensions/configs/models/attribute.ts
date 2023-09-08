@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,11 +62,11 @@ export interface AttributeConfig {
     localAttributes: {
         createWizard: {
             showPrimaryUserStore: boolean;
+            showOnlyMandatory: boolean;
             customWIzard: boolean;
             checkOIDCAvailability: boolean;
             checkSCIMAvailability: boolean;
             showDisplayOrder: boolean;
-            showOnlyMandatory: boolean;
             showRegularExpression: boolean;
             showReadOnlyAttribute: boolean;
             showSummary: boolean;
@@ -81,8 +81,12 @@ export interface AttributeConfig {
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
     }
+    defaultScimMapping: {
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": Map<string, string>;
+        "urn:ietf:params:scim:schemas:core:2.0:User": Map<string, string>;
+        "urn:ietf:params:scim:schemas:core:2.0": Map<string, string>;
+    },
     systemClaims: string[];
-    defaultScimMapping: Object;
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;
     isSCIMEditable: boolean;

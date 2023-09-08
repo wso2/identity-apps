@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,8 @@ import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { OrganizationManagementConstants } from "../../../organizations/constants";
-import { UserBasicInterface, UserListInterface, getUsersList } from "../../../users";
+import { getUsersList } from "../../../users/api/users";
+import { UserBasicInterface, UserListInterface } from "../../../users/models/user";
 
 /**
  * Proptypes for the role user list component.

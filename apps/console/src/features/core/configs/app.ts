@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,24 +19,25 @@
 import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
-import { getApplicationsResourceEndpoints } from "../../applications/configs";
+import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
-import { getClaimResourceEndpoints } from "../../claims";
+import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
-import { getIDPResourceEndpoints } from "../../identity-providers";
-import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
+import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
+import { getInsightsResourceEndpoints } from "../../org-insights/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
-import { getRolesResourceEndpoints } from "../../roles";
+import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
-import { getUsersResourceEndpoints } from "../../users";
-import { getUserstoreResourceEndpoints } from "../../userstores";
+import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
+import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../validation/configs";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
@@ -68,6 +69,24 @@ export class Config {
         } else {
             return `${
                 window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
+            }`;
+        }
+    }
+
+    /**
+     * This method adds organization path (t/org_uuid) to the server host if a sub-org is selected.
+     *
+     * @param enforceOrgPath - Enforces the organization path
+     *
+     * @returns Server host.
+     */
+    public static resolveServerHostforFG(enforceOrgPath?: boolean): string {
+        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+            || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
+            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+        } else {
+            return `${
+                window[ "AppUtils" ]?.getConfig()?.serverOrigin }/t/${ store.getState().organization.organization.id
             }`;
         }
     }
@@ -192,7 +211,6 @@ export class Config {
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
-            ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
             ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
@@ -206,6 +224,8 @@ export class Config {
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
+            ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
@@ -242,6 +262,7 @@ export class Config {
             isCookieConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCookieConsentBannerEnabled,
             isDefaultDialectEditingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDialectAddingEnabled,
+            isFeatureGateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isFeatureGateEnabled,
             isGroupAndRoleSeparationEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isGroupAndRoleSeparationEnabled,
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
             isLeftNavigationCategorized: window[ "AppUtils" ]?.getConfig()?.ui?.isLeftNavigationCategorized,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,7 +32,7 @@ import {
     ORGANIZATION_DESCRIPTION_MIN_LENGTH,
     ORGANIZATION_NAME_MAX_LENGTH,
     ORGANIZATION_NAME_MIN_LENGTH,
-    ORGANIZATION_TYPE, 
+    ORGANIZATION_TYPE,
     OrganizationManagementConstants
 } from "../constants";
 import { AddOrganizationInterface, GenericOrganization, OrganizationResponseInterface } from "../models";
@@ -56,6 +56,7 @@ export interface AddOrganizationModalPropsInterface extends IdentifiableComponen
 }
 
 const FORM_ID: string = "organization-add-modal-form";
+const SUB_ORG_LEVELS_EXCEEDED_ERROR: string = "sub organization levels";
 
 /**
  * An app creation wizard with only the minimal features.
@@ -78,9 +79,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const submitForm: any = useRef<() => void>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
-        state.organization.organization);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state.organization.organization);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+    const [ orgLevelReachedError, setOrgLevelReachedError ] = useState<boolean>(false);
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
         const organization: AddOrganizationInterface = {
@@ -121,7 +123,17 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             .catch((error: any) => {
                 if (error?.description) {
                     if (error.code === OrganizationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                        if (error.description.includes(SUB_ORG_LEVELS_EXCEEDED_ERROR)) {
+                            setOrgLevelReachedError(true);
+                        }
                         setOpenLimitReachedModal(true);
+                    } else if (error.code ===
+                        OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorCode()) {
+                        setError(t(OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorMessage(),
+                            {
+                                description: error.description
+                            }
+                        ));
                     } else {
                         setError(t(
                             "console:manage.features.organizations.notifications." +
@@ -155,6 +167,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      */
     const handleLimitReachedModalClose = (): void => {
         setOpenLimitReachedModal(false);
+        setOrgLevelReachedError(false);
         handleWizardClose();
     };
 
@@ -162,22 +175,42 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         <>
             { openLimitReachedModal && (
                 <TierLimitReachErrorModal
-                    actionLabel={ t(
-                        "console:develop.features.suborganizations.notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.action"
-                    ) }
+                    actionLabel={
+                        orgLevelReachedError
+                            ?
+                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                        "emptyPlaceholder.action")
+                            :
+                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                        "emptyPlaceholder.action")
+                    }
                     handleModalClose={ handleLimitReachedModalClose }
-                    header={ t(
-                        "console:develop.features.suborganizations.notifications.tierLimitReachedError.heading"
-                    ) }
-                    description={ t(
-                        "console:develop.features.suborganizations.notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.subtitles"
-                    ) }
-                    message={ t(
-                        "console:develop.features.suborganizations.notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.title"
-                    ) }
+                    header={
+                        orgLevelReachedError
+                            ?
+                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                        "heading")
+                            :
+                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError.heading")
+                    }
+                    description={
+                        orgLevelReachedError
+                            ?
+                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                        "emptyPlaceholder.subtitles")
+                            :
+                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                        "emptyPlaceholder.subtitles")
+                    }
+                    message={
+                        orgLevelReachedError
+                            ?
+                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                        "emptyPlaceholder.title")
+                            :
+                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                        "emptyPlaceholder.title")
+                    }
                     openModal={ openLimitReachedModal }
                 />
             ) }

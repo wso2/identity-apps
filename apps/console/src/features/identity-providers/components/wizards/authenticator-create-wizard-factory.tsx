@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,9 +34,9 @@ import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-pr
 import {
     OrganizationEnterpriseAuthenticationProviderCreateWizard
 } from "./organization-enterprise/organization-enterprise-authentication-provider-create-wizard";
+import { TrustedTokenIssuerCreateWizard } from "./trusted-token-issuer/trusted-token-issuer-create-wizard";
 import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
-import { ConfigReducerStateInterface } from "../../../core/models";
-import { AppState } from "../../../core/store";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getIdentityProviderList, getIdentityProviderTemplate } from "../../api";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
@@ -211,7 +211,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                         setSelectedTemplate(response as IdentityProviderTemplateInterface);
                     }
                 })
-                .catch((error: IdentityAppsApiException) => {
+                .catch((error: AxiosError) => {
                     handleGetIDPTemplateAPICallError(error);
                 });
         } else {
@@ -436,6 +436,26 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                     <HyprAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                )
+                : null;
+        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER:
+            return showWizard && !isEmpty(selectedTemplateWithUniqueName)
+                ? (
+                    <TrustedTokenIssuerCreateWizard
+                        title= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                            "addWizard.title") }
+                        subTitle= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                            "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { 
-    IdentifiableComponentInterface, 
-    LoadingStateOptionsInterface, 
-    TestableComponentInterface 
+import {
+    IdentifiableComponentInterface,
+    LoadingStateOptionsInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";

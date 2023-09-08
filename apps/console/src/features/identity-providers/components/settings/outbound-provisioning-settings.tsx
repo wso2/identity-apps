@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,9 +27,11 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../core";
@@ -43,8 +44,10 @@ import {
 } from "../../api";
 import {
     AuthenticatorSettingsFormModes,
+    FederatedAuthenticatorInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaInterface,
     OutboundProvisioningConnectorWithMetaInterface,
     OutboundProvisioningConnectorsInterface
 } from "../../models";
@@ -53,7 +56,7 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../utils";
-import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
+import { OutboundProvisioningConnectorCreateWizard } from "../wizards/outbound-provisioning-connector-create-wizard";
 
 /**
  * Proptypes for the provisioning settings component.
@@ -89,8 +92,8 @@ interface ProvisioningSettingsPropsInterface extends TestableComponentInterface 
 /**
  * Identity Provider provisioning settings component.
  *
- * @param { ProvisioningSettingsPropsInterface } props - Props injected to the component.
- * @return { ReactElement }
+ * @param props - Props injected to the component.
+ * @returns Outbound provisioning settings component.
  */
 export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
     props: ProvisioningSettingsPropsInterface
@@ -102,11 +105,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         isLoading,
         onUpdate,
         isReadOnly,
-        loader: Loader,
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -127,33 +129,33 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     useEffect(() => {
         setAvailableConnectors([]);
         fetchConnectors()
-            .then((res) => {
-                setAvailableConnectors(res);
+            .then((response: OutboundProvisioningConnectorWithMetaInterface[]) => {
+                setAvailableConnectors(response);
             });
     }, [ identityProvider ]);
 
     /**
      * Fetch data and metadata of a given connector id and return a promise.
      *
-     * @param connectorId ID of the connector.
+     * @param connectorId - ID of the connector.
      */
     const fetchConnector = (connectorId: string) => {
-        return new Promise(resolve => {
+        return new Promise((resolve: (value: unknown) => void) => {
             getOutboundProvisioningConnector(identityProvider.id, connectorId)
-                .then(data => {
+                .then((data: OutboundProvisioningConnectorInterface) => {
                     getOutboundProvisioningConnectorMetadata(connectorId)
-                        .then(meta => {
+                        .then((meta: OutboundProvisioningConnectorMetaInterface) => {
                             resolve({
                                 data: data,
                                 id: connectorId,
                                 meta: meta
                             });
                         })
-                        .catch(error => {
+                        .catch((error: AxiosError) => {
                             handleGetOutboundProvisioningConnectorMetadataError(error);
                         });
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: t("console:develop.features.authenticationProvider.notifications." +
@@ -182,7 +184,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      * Asynchronous function to Loop through outbound provisioning connectors, fetch data and metadata and
      * return an array of available connectors.
      *
-     * @return {OutboundProvisioningConnectorWithMetaInterface[]}
+     * @returns An array of available connectors.
      */
     async function fetchConnectors() {
         const connectors: OutboundProvisioningConnectorWithMetaInterface[] = [];
@@ -214,7 +216,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleUpdateOutboundProvisioningConnectorError(error);
             });
     };
@@ -224,16 +226,19 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      */
     const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface): void => {
 
-        const EMPTY_STRING = "";
-        const connectorList = [];
+        const EMPTY_STRING: string = "";
+        const connectorList: FederatedAuthenticatorInterface[] = [];
 
-        availableConnectors.map((connector) => {
+        availableConnectors.map((connector: OutboundProvisioningConnectorWithMetaInterface) => {
             if (connector.id !== deletingConnector.id) {
                 connectorList.push(connector.data);
             }
         });
 
-        const data = {
+        const data: {
+            connectors: FederatedAuthenticatorInterface[];
+            defaultConnectorId: string;
+        } = {
             connectors: connectorList,
             defaultConnectorId: EMPTY_STRING
         };
@@ -252,7 +257,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -283,15 +288,16 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Handles connector delete button on click action.
      *
-     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} id - Id of the connector.
+     * @param e - Click event.
+     * @param id - Id of the connector.
      */
     const handleAuthenticatorDeleteOnClick = (e: React.MouseEvent<HTMLDivElement>, id: string): void => {
         if (!id) {
             return;
         }
 
-        const deletingConnector = availableConnectors.find((connector) => connector.id == id);
+        const deletingConnector: OutboundProvisioningConnectorWithMetaInterface = availableConnectors.find(
+            (connector: OutboundProvisioningConnectorWithMetaInterface) => connector.id == id);
 
         if (!deletingConnector) {
             return;
@@ -304,12 +310,13 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Handles connector enable toggle.
      *
-     * @param {React.FormEvent<HTMLInputElement>} e - Event.
-     * @param {CheckboxProps} data - Checkbox data.
-     * @param {string} id - Id of the connector.
+     * @param e - Event.
+     * @param data - Checkbox data.
+     * @param id - Id of the connector.
      */
     const handleConnectorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        const connector = availableConnectors.find(connector => (connector.id === id)).data;
+        const connector: FederatedAuthenticatorInterface = availableConnectors.find(
+            (connector: OutboundProvisioningConnectorWithMetaInterface) => (connector.id === id)).data;
 
         connector.isEnabled = data.checked;
         handleConnectorConfigFormSubmit(connector);
@@ -335,8 +342,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Handles accordion title click.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} data - Clicked title.
+     * @param e - Click event.
+     * @param data - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>, data: AccordionTitleProps): void => {
         if (!data) {
@@ -388,7 +395,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                     <Grid.Row>
                                         <Grid.Column>
                                             {
-                                                availableConnectors.map((connector, index) => {
+                                                availableConnectors.map((
+                                                    connector: OutboundProvisioningConnectorWithMetaInterface,
+                                                    index: number
+                                                ) => {
                                                     return (
                                                         <AuthenticatorAccordion
                                                             key={ index }

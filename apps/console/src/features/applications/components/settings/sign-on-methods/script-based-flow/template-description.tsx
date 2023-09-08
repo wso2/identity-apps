@@ -265,7 +265,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             <Message
                                 type="info"
                                 content={
-                                    (<a target="_blank" href={ template.helpLink } rel="noreferrer">
+                                    (<a target="_blank" href={ template.helpLink } rel="noopener noreferrer">
                                         { template.helpLink }
                                     </a>)
                                 }

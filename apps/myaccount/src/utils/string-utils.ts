@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,20 +14,19 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 /**
  * Transforms a string to sentence case.
  *
- * @param {string} raw - Raw string.
- * @return {string}
+ * @param raw - Raw string.
+ * @returns - Sentence cased string.
  */
 export const toSentenceCase = (raw: string): string => {
-    const parts = raw.split(" ");
-    let newStr = "";
+    const parts: string[] = raw.split(" ");
+    let newStr: string = "";
 
-    parts.forEach((part, index) => {
+    parts.forEach((part: string, index: number) => {
         part = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
 
         if (index === 0) {
@@ -49,7 +48,7 @@ export const toSentenceCase = (raw: string): string => {
  * value (case-insensitive). If no matches are found then, value
  * itself is cast-ed to a truthy/falsy boolean.
  *
- * @param value {string | boolean | any} parsing value.
+ * @param value - parsing value.
  */
 export const toBoolean = (value: string | boolean | any): boolean => {
 

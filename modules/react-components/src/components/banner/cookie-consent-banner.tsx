@@ -139,7 +139,7 @@ export const CookieConsentBanner: FunctionComponent<PropsWithChildren<CookieCons
     /**
      * Checks if the cookie consent is shown.
      *
-     * @returns a boolean 
+     * @returns a boolean
      */
     const isCookieConsentShown = (): boolean => {
 

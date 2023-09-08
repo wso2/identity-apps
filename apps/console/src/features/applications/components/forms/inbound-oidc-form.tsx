@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -59,7 +58,7 @@ import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getSharedOrganizations } from "../../../organizations/api";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
-import { getGeneralIcons } from "../../configs";
+import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
@@ -86,7 +85,7 @@ import {
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 /**
@@ -178,9 +177,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
         state.organization.organization);
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state.organization.isFirstLevelOrganization
-    );
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
@@ -324,7 +320,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     useEffect(() => {
-        if (sharedOrganizationsList || !isFirstLevelOrg) {
+        if (sharedOrganizationsList) {
             return;
         }
 

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,27 +16,35 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import {
+    AsgardeoSPAClient,
+    HttpError,
+    HttpInstance,
+    HttpRequestConfig,
+    HttpResponse
+} from "@asgardeo/auth-react";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
+import { FIDODevice } from "../models/fido-authenticator";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Retrieve FIDO meta data
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
-export const getMetaData = (): Promise<any> => {
-    const requestConfig = {
+export const getMetaData = (): Promise<FIDODevice[]> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
@@ -44,34 +52,46 @@ export const getMetaData = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse<FIDODevice[]>) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed get meta info from: ${store.getState().config.endpoints.fidoMetaData}`)
+                    new Error(
+                        `Failed get meta info from: ${
+                            store.getState().config.endpoints.fidoMetaData
+                        }`
+                    )
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response.data);
         })
-        .catch((error) => {
-            return Promise.reject(`Failed to retrieve FIDO metadata - ${error}`);
+        .catch((error: HttpError) => {
+            return Promise.reject(
+                `Failed to retrieve FIDO metadata - ${error}`
+            );
         });
 };
 
 /**
  * Updates FIDO device name
- * @param credentialId
- * @param deviceName
+ * @param credentialId - credential id
+ * @param deviceName - device name
  */
-export const updateDeviceName = (credentialId: string, deviceName: string): Promise<any> => {
-    const requestConfig = {
-        data: [ {
-            operation: "REPLACE",
-            path: "/displayName",
-            value: deviceName
-        } ],
+export const updateDeviceName = (
+    credentialId: string,
+    deviceName: string
+): Promise<any> => {
+    const requestConfig: HttpRequestConfig = {
+        data: [
+            {
+                operation: "REPLACE",
+                path: "/displayName",
+                value: deviceName
+            }
+        ],
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -79,40 +99,47 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed update device name from: ${store.getState().config.endpoints.fidoMetaData}`)
+                    new Error(
+                        `Failed update device name from: ${
+                            store.getState().config.endpoints.fidoMetaData
+                        }`
+                    )
                 );
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
-            return Promise.reject(`Failed to update FIDO device name - ${error}`);
+        .catch((error: HttpError) => {
+            return Promise.reject(
+                `Failed to update FIDO device name - ${error}`
+            );
         });
 };
 
 /**
  * Delete the FIDO device
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
 export const deleteDevice = (credentialId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost
         },
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpRequestConfig) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to delete FIDO device - ${error}`);
         });
 };
@@ -122,13 +149,13 @@ export const deleteDevice = (credentialId: string): Promise<any> => {
  * and convert the values of the attributes of response object
  * from byte array to base64url format.
  *
- * @param {object} response
+ * @param response - response from connect to device
  */
-const responseToObject = (response): Record<string, any> => {
+const responseToObject = (response: any): Record<string, any> => {
     if (response.u2fResponse) {
         return response;
     } else {
-        let clientExtensionResults = {};
+        let clientExtensionResults: any = {};
 
         try {
             clientExtensionResults = response.getClientExtensionResults();
@@ -144,7 +171,9 @@ const responseToObject = (response): Record<string, any> => {
                 clientExtensionResults,
                 id: response.id,
                 response: {
-                    attestationObject: Encode(response.response.attestationObject),
+                    attestationObject: Encode(
+                        response.response.attestationObject
+                    ),
                     clientDataJSON: Encode(response.response.clientDataJSON)
                 },
                 type: response.type
@@ -155,10 +184,14 @@ const responseToObject = (response): Record<string, any> => {
                 clientExtensionResults,
                 id: response.id,
                 response: {
-                    authenticatorData: Encode(response.response.authenticatorData),
+                    authenticatorData: Encode(
+                        response.response.authenticatorData
+                    ),
                     clientDataJSON: Encode(response.response.clientDataJSON),
                     signature: Encode(response.response.signature),
-                    userHandle: response.response.userHandle && Encode(response.response.userHandle)
+                    userHandle:
+                        response.response.userHandle &&
+                        Encode(response.response.userHandle)
                 },
                 type: response.type
             };
@@ -169,14 +202,15 @@ const responseToObject = (response): Record<string, any> => {
 /**
  * Finish registration flow of the FIDO device
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
 export const endFidoFlow = (clientResponse: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: clientResponse,
         headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -184,17 +218,23 @@ export const endFidoFlow = (clientResponse: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to end registration flow at: ${store.getState().config.endpoints.fidoEnd}`)
+                    new Error(
+                        `Failed to end registration flow at: ${
+                            store.getState().config.endpoints.fidoEnd
+                        }`
+                    )
                 );
             }
 
             return Promise.resolve(response);
         })
-        .catch((error) => {
-            return Promise.reject(`Failed to finish the FIDO registration - ${error}`);
+        .catch((error: HttpError) => {
+            return Promise.reject(
+                `Failed to finish the FIDO registration - ${error}`
+            );
         });
 };
 
@@ -202,16 +242,22 @@ export const endFidoFlow = (clientResponse: string): Promise<any> => {
  * This function stores the credentialCreationOptions received from the registration endpoint
  * to the credential store as a publicKey.
  *
- * @param requestId
- * @param credentialCreationOptions
+ * @param requestId - request id
+ * @param credentialCreationOptions - credential creation options
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
-export const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
+export const connectToDevice = (
+    requestId: string,
+    credentialCreationOptions: PublicKeyCredentialCreationOptions
+): Promise<any> => {
     return navigator.credentials
         .create({ publicKey: credentialCreationOptions })
-        .then((credential) => {
-            const payload = {
+        .then((credential: Credential) => {
+            const payload: {
+                credential: Record<string, any>;
+                requestId: string;
+            } = {
                 credential: {},
                 requestId: ""
             };
@@ -220,14 +266,14 @@ export const connectToDevice = (requestId, credentialCreationOptions): Promise<a
             payload.credential = responseToObject(credential);
 
             return endFidoFlow(JSON.stringify(payload))
-                .then((response) => {
+                .then((response: HttpResponse) => {
                     return Promise.resolve(response);
                 })
-                .catch((error) => {
+                .catch((error: HttpError) => {
                     return Promise.reject(error);
                 });
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };
@@ -236,14 +282,18 @@ export const connectToDevice = (requestId, credentialCreationOptions): Promise<a
  * This function receives the response from start-registration endpoint and converts the user attributes
  * and the challenge attribute from base64url to a buffer array.
  *
- * @param request
+ * @param request -
  *
- * @return {object} excludeCredentials
+ * @returns - excludeCredentials
  */
-export const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
-    const excludeCredentials = request.excludeCredentials.map((credential) => {
-        return { ...credential, id: Decode(credential.id) };
-    });
+export const decodePublicKeyCredentialCreationOptions = (
+    request: PublicKeyCredentialCreationOptions
+): PublicKeyCredentialCreationOptions => {
+    const excludeCredentials: PublicKeyCredentialDescriptor[] = request.excludeCredentials.map(
+        (credential: PublicKeyCredentialDescriptor) => {
+            return { ...credential, id: Decode(credential.id) };
+        }
+    );
 
     return {
         ...request,
@@ -260,17 +310,18 @@ export const decodePublicKeyCredentialCreationOptions = (request): Record<string
 /**
  * Start registration flow of the FIDO device
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
 export const startFidoFlow = (): Promise<any> => {
     const data: URLSearchParams = new URLSearchParams();
 
     data.append("appId", window.location.origin);
 
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: data.toString(),
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
@@ -278,16 +329,20 @@ export const startFidoFlow = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to start registration flow at: ${store.getState().config.endpoints.fidoStart}`)
+                    new Error(
+                        `Failed to start registration flow at: ${
+                            store.getState().config.endpoints.fidoStart
+                        }`
+                    )
                 );
             }
 
             return Promise.resolve(response?.data);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);
         });
 };
@@ -295,17 +350,18 @@ export const startFidoFlow = (): Promise<any> => {
 /**
  * Start registration flow of the FIDO device which supports usernameless flow
  *
- * @return {Promise<any>} a promise containing the response.
+ * @returns - a promise containing the response.
  */
 export const startFidoUsernamelessFlow = (): Promise<any> => {
     const data: URLSearchParams = new URLSearchParams();
 
     data.append("appId", window.location.origin);
 
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: data.toString(),
         headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState()?.config?.deployment
+                ?.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
@@ -313,7 +369,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error(`Failed to start registration flow at:
@@ -323,7 +379,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
 
             return Promise.resolve(response?.data);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`FIDO connection terminated - ${error}`);
         });
 };

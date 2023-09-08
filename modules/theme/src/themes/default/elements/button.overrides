@@ -17,7 +17,25 @@
  *
  */
 
+.ui.button {
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+    border-radius: @buttonBorderRadius;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 14px 24px;
+
+    &.primary:not(.basic) {
+        background: linear-gradient(77.74deg, @gradientStop1 11.16%, @gradientStop2 99.55%) !important;
+
+        &:hover, &:focus, &:active {
+            filter: brightness(0.95);
+        }   
+    }
+}
+
 .ui.button.basic {
+    border-radius: @buttonBorderRadius;
+
     &.link-button {
         // Remove outline.
         box-shadow: none !important;
@@ -176,7 +194,6 @@
     }
     &.input-add-on {
         box-shadow: none;
-        padding-right: 0.4em;
         border: @inputAddOnBorder;
         border-left: 0;
 
@@ -339,7 +356,6 @@
           }
           .protocol-change-title {
                 float: left;
-                fontSize: medium;
           }
     }
 }

@@ -545,7 +545,7 @@ body {
                 border-radius: @listLayoutActionPanelBorderRadius;
 
                 .row {
-                    padding: @listLayoutActionPanelPadding;
+                    padding: 2px 0;
                 }
             }
             .actions {
@@ -555,7 +555,7 @@ body {
                     float: right;
                 }
                 &.left-aligned {
-                    float: left;
+                    flex: 1;
                 }
 
                 > div, > button {
@@ -594,7 +594,8 @@ body {
                     }
 
                     .ui.button {
-                        margin: 0;
+                        margin: 0 0 0 5px;
+                        box-shadow: none;
                         background: @listLayoutActionPanelDropdownAddonBackground;
                         border-radius: @listLayoutActionPanelDropdownWithSortAddonBorderRadius;
                     }
@@ -625,7 +626,7 @@ body {
 
     &.grid-layout {
         .search-input-wrapper {
-            max-width: @advancedSearchWidth;
+            width: 100%
         }
 
         .pagination-loader-container {
@@ -645,7 +646,7 @@ body {
 @iconMiniVeryPadding: 15px;
 
 .theme-icon {
-    background-color: @iconWrapperBgColor;
+    background-color: @primaryGradientColor;
     overflow: hidden;
     display: flex;
     text-align: center;
@@ -1402,6 +1403,7 @@ body {
 
     &.aligned-left {
         text-align: left;
+        width: 100%;
     }
     &.aligned-right {
         text-align: right;
@@ -1412,7 +1414,7 @@ body {
 
     .ui.input {
         &.advanced-search {
-            min-width: @advancedSearchWidth;
+            width: 100%;
             border: @advancedSearchBorder;
             border-radius: @borderRadius;
 
@@ -1421,7 +1423,7 @@ body {
 
                 input {
                     border: @advancedSearchInputBorder;
-                    background: @advancedSearchInputBackgroundColor;
+                    background: white;
 
                     &:focus {
                         border-right-color: transparent !important;
@@ -1430,7 +1432,7 @@ body {
 
                 .input-add-on {
                     border: @advancedSearchAddonButtonBorder;
-                    background: @advancedSearchAddonButtonBackgroundColor !important;
+                    background: white;
 
                     &:active {
                         background: @advancedSearchAddonButtonActiveBackgroundColor;

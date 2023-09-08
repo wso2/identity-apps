@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,8 +42,8 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
-import { UserStorePostData } from "../../userstores";
 import { getUserStoreList } from "../../userstores/api";
+import { UserStorePostData } from "../../userstores/models/user-stores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";

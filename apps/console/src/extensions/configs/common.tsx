@@ -16,42 +16,31 @@
  * under the License.
  */
 
-import { HeaderExtension, HeaderLinkCategoryInterface } from "@wso2is/react-components";
-import { ReactElement } from "react";
 import { CommonConfig } from "./models";
-import { HeaderSubPanelItemInterface } from "../../features/core/components";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
-        enableQuerySearch: true
+        enableQuerySearch: false
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
     enableOrganizationAssociations: false,
     footer: {
-        customClassName: ""
+        customClassName: "console-footer"
     },
     header: {
-        getHeaderExtensions: (
-            _tenantDomain: string,
-            _associatedTenants: any[]
-        ): Promise<HeaderExtension[]> => Promise.resolve([]),
-        getHeaderSubPanelExtensions: (): HeaderSubPanelItemInterface[] => [],
-        getUserDropdownFooterExtensions: (): ReactElement => null,
-        getUserDropdownLinkExtensions: (
-            _tenantDomain: string,
-            _associatedTenants: any[]): Promise<HeaderLinkCategoryInterface[]> => Promise.resolve([]),
-        headerQuickstartMenuItem: "",
+        headerQuickstartMenuItem: "QUICKSTART",
         renderAppSwitcherAsDropdown: false
     },
     leftNavigation: {
         isLeftNavigationCategorized: {
-            develop: true,
+            develop: false,
             manage: true
         }
     },
+    primaryUserstoreOnly: true,
     userEditSection: {
-        isGuestUser: false,
+        isGuestUser: true,
         showEmail: true
     }
 };

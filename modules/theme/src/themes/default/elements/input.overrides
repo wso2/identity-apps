@@ -28,6 +28,10 @@
     }
 }
 
+.ui.input {
+    border-radius: @defaultBorderRadius;
+}
+
 /*******************************
     Claim Search Variation
 *******************************/

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="user-icon" class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14 3C14 4.10457 13.1046 5 12 5C10.8954 5 10 4.10457 10 3C10 1.89543 10.8954 1 12 1C13.1046 1 14 1.89543 14 3ZM13 3C13 3.55228 12.5523 4 12 4C11.4477 4 11 3.55228 11 3C11 2.44772 11.4477 2 12 2C12.5523 2 13 2.44772 13 3Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 8C7.65685 8 9 6.65685 9 5C9 3.34315 7.65685 2 6 2C4.34315 2 3 3.34315 3 5C3 6.65685 4.34315 8 6 8ZM6 7C7.10457 7 8 6.10457 8 5C8 3.89543 7.10457 3 6 3C4.89543 3 4 3.89543 4 5C4 6.10457 4.89543 7 6 7Z" fill="black"/>
+<path d="M9.8795 7.52555C10.432 6.88148 11.1842 6.5 11.9997 6.5C13.4599 6.5 14.759 7.75679 14.9701 9.5H11.9997C11.7236 9.5 11.4997 9.72386 11.4997 10C11.4997 10.2761 11.7236 10.5 11.9997 10.5H16V10C16 7.57948 14.2696 5.5 11.9997 5.5C10.8569 5.5 9.83854 6.03743 9.1205 6.87445C8.94071 7.08404 8.96486 7.3997 9.17445 7.5795C9.38404 7.75929 9.6997 7.73514 9.8795 7.52555Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.9392 15C11.9793 15.3264 12 15.6601 12 15.9995L0 16C2.08698e-05 15.6607 0.020739 15.3264 0.0607619 15C0.476673 11.6077 2.97731 9 6 9C9.02269 9 11.5233 11.6077 11.9392 15ZM1.06785 15C1.4732 12.0588 3.63727 10 6 10C8.36273 10 10.5268 12.0588 10.9322 15H1.06785Z" fill="black"/>
+</svg>

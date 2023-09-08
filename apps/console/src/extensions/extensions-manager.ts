@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,20 +41,18 @@ import {
  */
 export class ExtensionsManager {
 
-    private static instance = new ExtensionsManager();
+    private static instance: ExtensionsManager = new ExtensionsManager();
 
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
-     * Returns an instance of the class.
      *
-     * @return {ExtensionsManager}
+     * @returns an instance of the class.
      */
     public static getInstance(): ExtensionsManager {
 
@@ -62,9 +60,8 @@ export class ExtensionsManager {
     }
 
     /**
-     * Returns the extensions config.
      *
-     * @return {ExtensionsConfigInterface}
+     * @returns the extensions config.
      */
     public static getConfig(): ExtensionsConfigInterface {
 
@@ -74,7 +71,7 @@ export class ExtensionsManager {
     /**
      * Builds and returns the application template config.
      *
-     * @return {ApplicationTemplateExtensionsConfigInterface}
+     * @returns the application template config.
      */
     public getApplicationTemplatesConfig(): ApplicationTemplateExtensionsConfigInterface {
 
@@ -120,7 +117,7 @@ export class ExtensionsManager {
     /**
      * Builds and returns the IDP template config.
      *
-     * @return {IdentityProviderTemplateExtensionsConfigInterface}
+     * @returns the IDP template config.
      */
     public getIdentityProviderTemplatesConfig(): IdentityProviderTemplateExtensionsConfigInterface {
 
@@ -148,7 +145,8 @@ export class ExtensionsManager {
         if (config.groups && Array.isArray(config.groups) && config.groups.length > 0) {
             config.groups = config.groups
                 .map((group: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>) => {
-                    return ExtensionsManager.lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(group);
+                    return ExtensionsManager.
+                        lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(group);
                 });
         }
 
@@ -156,7 +154,8 @@ export class ExtensionsManager {
         if (config.templates && Array.isArray(config.templates) && config.templates.length > 0) {
             config.templates = config.templates
                 .map((template: TemplateConfigInterface<IdentityProviderTemplateListItemInterface>) => {
-                    return ExtensionsManager.lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(template);
+                    return ExtensionsManager.
+                        lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(template);
                 });
         }
 
@@ -166,9 +165,10 @@ export class ExtensionsManager {
     /**
      * Tries to resolve the template resources, lazy loading whenever necessary.
      *
-     * @param {TemplateConfigInterface<T>} templateConfig - Template config.
-     * @return {TemplateConfigInterface<T>}
+     * @param templateConfig - Template config.
+     * @returns the resolved template config.
      */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     private static lazyLoadTemplateResources<T = {}>(
         templateConfig: TemplateConfigInterface<T>): TemplateConfigInterface<T> {
 
@@ -187,13 +187,13 @@ export class ExtensionsManager {
         };
 
         // Lazy loads the resource.
-        const loadResource = (resource) => {
+        const loadResource = (resource: any) => {
 
             if (typeof resource !== "string") {
                 return resource;
             }
 
-            return import(`${ resource }`).then(module => module.default);
+            return import(`${ resource }`).then((module: any) => module.default);
         };
 
         return {

@@ -313,7 +313,6 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         data-testid={ `${ testId }-item-heading` }
                     >
                         <GenericIcon
-                            bordered
                             defaultIcon
                             relaxed="very"
                             size="micro"

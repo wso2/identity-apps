@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../../extensions/configs";
+import { Config } from "../../../features/core/configs/app";
 import {
     AppConstants,
     AppState,
@@ -46,8 +47,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { AuthenticatorCreateWizardFactory } from "../components/wizards";
-import { getIdPIcons } from "../configs";
+import { AuthenticatorCreateWizardFactory } from "../components/wizards/authenticator-create-wizard-factory";
+import { getIdPIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants, ORG_ENTERPRISE_IDP_ID } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
@@ -113,6 +114,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -487,6 +489,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        resourceDocumentationLink={ 
+                                                            documentationBaseUrl + template.docLink 
+                                                        }
                                                         resourceImage={
                                                             IdentityProviderManagementUtils
                                                                 .resolveTemplateImage(template.image, getIdPIcons())
@@ -495,7 +500,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                         } }
-                                                        showTooltips={ { description: true, header: false } }
+                                                        showTooltips={ 
+                                                            { 
+                                                                description: true, 
+                                                                header: false 
+                                                            } 
+                                                        }
                                                         data-testid={ `${ testId }-${ template.name }` }
                                                     />
                                                 );

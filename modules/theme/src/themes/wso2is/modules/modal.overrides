@@ -1,0 +1,59 @@
+/*********************************************
+                    Wizards
+*********************************************/
+
+.ui.modal {
+    &.wizard {
+        &.add-tenant-wizard {
+            .content-container {
+                &:not(.height-auto) {
+                    height: @wizardContentHeight;
+                }
+                .valid-tenant {
+                    color: #54AB47;
+                }
+                .invalid-tenant {
+                    color: #f50d0d;
+                }
+                .placeholder-uri {
+                    color: #a9a9a9;
+                }
+                .placeholder-uri-bold {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+.login-playground-wizard {
+    .modal-content {
+        .context {
+            margin-top:50px !important;
+        }
+        .row {
+            padding-bottom: 0 !important;
+        }
+        .text-typography {
+            color: rgba(0,0,0,.87);
+            font-size: 14px;
+            margin: 0 0 .5em;
+        }
+    }
+    .content-row {
+        text-align: center;
+        font-size: 18px;
+    }
+    .loading-modal {
+        height: 450px;
+    }
+    .loader-text {
+        color: black;
+    }
+    .modal-loader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

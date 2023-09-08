@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,13 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import flatten from "lodash-es/flatten";
 import {
+    IdentityProviderManagementConstants
+} from "../../identity-providers/constants/identity-provider-management-constants";
+import {
     GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants,
     ProvisioningInterface
-} from "../../identity-providers";
+} from "../../identity-providers/models/identity-provider";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AuthenticationStepInterface,

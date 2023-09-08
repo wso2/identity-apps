@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -63,8 +63,8 @@ import {
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
     getConnectorDetails } from "../../../../server-configurations";
-import { getUsernameConfiguration } from "../../../../users";
 import { getProfileSchemas } from "../../../../users/api";
+import { getUsernameConfiguration } from "../../../../users/utils/user-management-utils";
 import { useValidationConfigData } from "../../../../validation/api";
 import { ValidationFormInterface } from "../../../../validation/models";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
@@ -85,6 +85,13 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
 }
 
 const FORM_ID: string = "local-claim-basic-details-form";
+
+// Claims used by the system and will be readonly.
+const READONLY_CLAIM_CONFIGS: string[] = [
+    ClaimManagementConstants.GROUPS_CLAIM_URI,
+    ClaimManagementConstants.ROLES_CLAIM_URI,
+    ClaimManagementConstants.APPLICATION_ROLES_CLAIM_URI
+];
 
 /**
  * This component renders the Basic Details pane of the edit local claim screen
@@ -528,7 +535,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             />
                         )
                     }
-                    { mappingChecked
+                    { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) &&  mappingChecked
                         ? (
                             !hideSpecialClaims &&
                             (<Grid.Row columns={ 1 } >
@@ -566,7 +573,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id, username and groups claims
-                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                        claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && !hideSpecialClaims && mappingChecked &&
@@ -601,7 +609,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        attributeConfig.editAttributes.showDisplayOrderInput && isShowDisplayOrder
+                        attributeConfig.editAttributes.showDisplayOrderInput 
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && isShowDisplayOrder
                         && !hideSpecialClaims
                         && (
                             <Field.Input
@@ -626,7 +636,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        claim && attributeConfig.editAttributes.showRequiredCheckBox
+                        claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && attributeConfig.editAttributes.showRequiredCheckBox
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && !hideSpecialClaims && mappingChecked && (
                             <Field.Checkbox
@@ -662,6 +673,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         accountVerificationEnabled
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                         && selfRegistrationEnabled
                         && usernameConfig?.enableValidator === "true"
                         && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
@@ -674,7 +686,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         //Hides on user_id, username and groups claims
-                        claim && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
+                        claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI
                             && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
@@ -722,6 +735,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             <Divider hidden />
             {
                 attributeConfig.editAttributes.showDangerZone
+                && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                 && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
                 && (

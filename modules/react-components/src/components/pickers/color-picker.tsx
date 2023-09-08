@@ -67,7 +67,7 @@ export const ColorPicker: FunctionComponent<PropsWithChildren<ColorPickerPropsIn
         popup,
         ...rest
     } = props;
-    
+
     const [ show, setShow ] = useState(controlledShow);
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
@@ -24,10 +23,12 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
+import { AuthenticationFlowProvider } from "./providers/authentication-flow-provider";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
 import { SignInMethodLanding } from "./sign-in-method-landing";
 import AppleLoginSequenceTemplate from "./templates/apple-login-sequence.json";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import EmailOTPSequenceTemplate from "./templates/email-otp-sequence.json";
 import FacebookLoginSequenceTemplate from "./templates/facebook-login-sequence.json";
 import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json";
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
@@ -39,14 +40,20 @@ import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-seq
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
-    AuthenticatorCreateWizardFactory,
-    GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants,
-    IdentityProviderManagementUtils,
-    IdentityProviderTemplateInterface
-} from "../../../../identity-providers";
+    AuthenticatorCreateWizardFactory
+} from "../../../../identity-providers/components/wizards/authenticator-create-wizard-factory";
+import {
+    IdentityProviderManagementConstants
+} from "../../../../identity-providers/constants/identity-provider-management-constants";
 // eslint-disable-next-line max-len
 import MicrosoftIDPTemplate from "../../../../identity-providers/data/identity-provider-templates/templates/microsoft/microsoft.json";
+import {
+    GenericAuthenticatorInterface,
+    IdentityProviderTemplateInterface
+} from "../../../../identity-providers/models/identity-provider";
+import {
+    IdentityProviderManagementUtils
+} from "../../../../identity-providers/utils/identity-provider-management-utils";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,
@@ -54,7 +61,7 @@ import {
     AuthenticationSequenceType, AuthenticatorInterface,
     LoginFlowTypes
 } from "../../../models";
-import { AdaptiveScriptUtils } from "../../../utils";
+import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 
 /**
  * Proptypes for the sign on methods component.
@@ -508,6 +515,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...authenticationSequence,
                 ...cloneDeep(MagicLinkSequenceTemplate)
             });
+        } else if (loginFlow === LoginFlowTypes.EMAIL_OTP) {
+            eventPublisher.publish(
+                "application-sign-in-method-click-add", 
+                { type: "email-otp-login" }
+            );
+
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(EmailOTPSequenceTemplate)
+            });
         }
 
         setLoginFlow(loginFlow);
@@ -826,26 +843,26 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     return (
-        <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
-            {
-                !(isLoading || isAuthenticatorsFetchRequestLoading) ?
-                    ((!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                        ? (
-                            <SignInMethodLanding
-                                readOnly={ readOnly }
-                                clientId={ clientId }
-                                onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                    handleLoginFlowSelect(type,
-                                        googleAuthenticators,
-                                        gitHubAuthenticators,
-                                        facebookAuthenticators,
-                                        microsoftAuthenticators,
-                                        appleAuthenticators);
-                                } }
-                                data-testid={ `${testId}-landing` }
-                            />
-                        ) : (
-                            <>
+        <AuthenticationFlowProvider>
+            <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
+                {
+                    !(isLoading || isAuthenticatorsFetchRequestLoading) ?
+                        ((!readOnly && !loginFlow && isDefaultFlowConfiguration())
+                            ? (
+                                <SignInMethodLanding
+                                    readOnly={ readOnly }
+                                    clientId={ clientId }
+                                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                                        handleLoginFlowSelect(type,
+                                            googleAuthenticators,
+                                            gitHubAuthenticators,
+                                            facebookAuthenticators,
+                                            microsoftAuthenticators,
+                                            appleAuthenticators);
+                                    } }
+                                    data-testid={ `${testId}-landing` }
+                                />
+                            ) : (
                                 <SignInMethodCustomization
                                     refreshAuthenticators={ refreshAuthenticators }
                                     appId={ appId }
@@ -867,14 +884,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
                                     readOnly={ readOnly }
                                 />
-                            </>
-                        )
-                    ) : <ContentLoader inline="centered" active />
-            }
-            { showIDPCreateWizard && renderIDPCreateWizard() }
-            { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
-            { showDuplicateSocialAuthenticatorSelectionModal && renderDuplicateSocialAuthenticatorSelectionModal() }
-        </EmphasizedSegment>
+                            )
+                        ) : <ContentLoader inline="centered" active />
+                }
+                { showIDPCreateWizard && renderIDPCreateWizard() }
+                { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
+                { showDuplicateSocialAuthenticatorSelectionModal 
+                    && renderDuplicateSocialAuthenticatorSelectionModal()
+                }
+            </EmphasizedSegment>
+        </AuthenticationFlowProvider>
     );
 };
 

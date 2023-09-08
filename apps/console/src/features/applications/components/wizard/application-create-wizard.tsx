@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import has from "lodash-es/has";
@@ -27,9 +27,11 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
 import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
@@ -48,13 +50,14 @@ import {
     getAuthProtocolMetadata,
     updateAuthProtocolConfig
 } from "../../api";
-import { getApplicationWizardStepIcons } from "../../configs";
+import { getApplicationWizardStepIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
+    AuthProtocolMetaInterface,
     DefaultProtocolTemplate,
     MainApplicationInterface,
     OIDCDataInterface,
@@ -113,7 +116,6 @@ interface WizardStepInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     PROTOCOL_SELECTION = "protocolSelection",
@@ -125,8 +127,8 @@ enum WizardStepsFormTypes {
 /**
  * Application creation wizard component.
  *
- * @param {ApplicationCreateWizardPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Application creation wizard component.
  */
 export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = (
     props: ApplicationCreateWizardPropsInterface
@@ -147,7 +149,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const { t } = useTranslation();
 
-    const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
+    const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
+        (state: AppState) => state.application.meta.protocolMeta);
 
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
@@ -155,7 +158,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(undefined);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitOAuth, setSubmitOauth ] = useTrigger();
@@ -183,10 +186,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             setTemplateSettings(PassiveStsProtocolTemplate.application);
         } else {
             getApplicationTemplateData(id)
-                .then((response) => {
+                .then((response: ApplicationTemplateInterface) => {
                     setTemplateSettings((response as ApplicationTemplateInterface).application);
                 })
-                .catch((error) => {
+                .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
                             description: error.response.data.description,
@@ -211,11 +214,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     /**
      * Creates a new application.
      *
-     * @param {MainApplicationInterface} application - The application to be created.
+     * @param application - The application to be created.
      */
     const createNewApplication = (application: MainApplicationInterface): void => {
 
-        let submittingApplication = application;
+        let submittingApplication: MainApplicationInterface = application;
 
         // Add template mapping.
         submittingApplication = {
@@ -226,7 +229,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         setIsSubmitting(true);
 
         createApplication(submittingApplication)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.addApplication.success" +
                         ".description"),
@@ -237,8 +240,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     let defaultTabIndex: number = 0;
 
@@ -259,7 +262,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 // Fallback to applications page, if the location header is not present.
                 history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -304,7 +307,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 onUpdate(appId);
                 handleWizardClose();
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -321,7 +324,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.updateProtocol.error.message")
                 });
-            }).finally(() => {
+            })
+            .finally(() => {
                 setIsSubmitting(false);
             });
     };
@@ -329,7 +333,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     /**
      * The following function creates a custom application.
      *
-     * @param values
+     * @param values - Form values.
      */
     const handleCustomAppWizardFinish = (values: any): void => {
 
@@ -382,7 +386,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes): void => {
         if (formType === WizardStepsFormTypes.PROTOCOL_SELECTION) {
@@ -415,7 +419,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         let summary: any = {};
 
         if (addProtocol) {
-            let configName = selectedTemplate.authenticationProtocol;
+            let configName: string = selectedTemplate.authenticationProtocol;
 
             if (configName === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 configName = "passiveSts";
@@ -475,7 +479,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     /**
      * Resolves the step content.
      *
-     * @return {React.ReactElement} Step content.
+     * @returns Step content.
      */
     const resolveStepContent = (): ReactElement => {
         switch (wizardSteps[currentWizardStep]?.name) {
@@ -483,8 +487,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 return (
                     <ProtocolSelectionWizardForm
                         initialSelectedTemplate={ selectedTemplate }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardStepsFormTypes.PROTOCOL_SELECTION) }
+                        onSubmit={ (
+                            values: ApplicationTemplateListItemInterface
+                        ): void => handleWizardFormSubmit(values, WizardStepsFormTypes.PROTOCOL_SELECTION) }
                         defaultTemplates={ [
                             PassiveStsProtocolTemplateItem,
                             OAuthProtocolTemplateItem,
@@ -502,7 +507,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
                             initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
-                            onSubmit={ (values): void => {
+                            //TODO: [Type fix] Define the type of `values` in form component.
+                            onSubmit={ (values: any): void => {
                                 handleCustomAppWizardFinish(values);
                             } }
                             templateValues={ templateSettings }
@@ -514,7 +520,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
                             initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
-                            onSubmit={ (values): void => handleWizardFormSubmit(values,
+                            //TODO: [Type fix] Define the type of `values` in form component.
+                            onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                 WizardStepsFormTypes.GENERAL_SETTINGS) }
                             templateValues={ templateSettings }
                             data-testid={ `${ testId }-general-settings-form` }
@@ -531,7 +538,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 protocolName={ selectedTemplate.id }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 metadata={ authProtocolMeta[selectedTemplate.id] }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                //TODO: [Type fix] Define the type of `values` in form component.
+                                onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-custom-protocol-settings-form` }
                             />
@@ -547,7 +555,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 fields={ [ "callbackURLs" ] }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                //TODO: [Type fix] Define the type of `values` in form component.
+                                onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 // TODO remove if not needed
                                 showCallbackURL={ true }
@@ -568,7 +577,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                         templateValues={ templateSettings }
                                         fields={ [ "issuer", "assertionConsumerURLs" ] }
                                         hideFieldHints={ true }
-                                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                        //TODO: [Type fix] Define the type of `values` in form component.
+                                        onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                             WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                         data-testid={ `${ testId }-saml-protocol-all-settings-form` }
                                     />
@@ -580,7 +590,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ]
                                         }
                                         templateValues={ templateSettings }
-                                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                        //TODO: [Type fix] Define the type of `values` in form component.
+                                        onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                             WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                         data-testid={ `${ testId }-saml-protocol-settings-form` }
                                     />
@@ -593,7 +604,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 triggerSubmit={ submitOAuth }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                //TODO: [Type fix] Define the type of `values` in form component.
+                                onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-ws-trust-protocol-settings-form` }
                             />
@@ -605,7 +617,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 triggerSubmit={ submitOAuth }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                //TODO: [Type fix] Define the type of `values` in form component.
+                                onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
                             />
@@ -680,14 +693,14 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
         if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedTemplate.authenticationProtocol)) {
             getAuthProtocolMetadata(selectedTemplate.authenticationProtocol)
-                .then((response) => {
+                .then((response: unknown) => {
                     dispatch(
                         setAuthProtocolMeta(
                             selectedTemplate.authenticationProtocol as SupportedAuthProtocolMetaTypes, response
                         )
                     );
                 })
-                .catch((error) => {
+                .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
                             description: error.response.data.description,
@@ -777,7 +790,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     </Modal.Header>
                     <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                         <Steps.Group current={ currentWizardStep }>
-                            { wizardSteps.map((step, index) => (
+                            { wizardSteps.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step
                                     key={ index }
                                     icon={ step.icon }

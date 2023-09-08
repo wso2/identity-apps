@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,16 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { useTranslation } from "react-i18next";
 import { Checkbox, Icon, Input, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
+import { ClaimManagementConstants } from "../../../../claims/constants/claim-management-constants";
+
+const READONLY_CLAIM_CONFIGS: string[] = [
+    ClaimManagementConstants.GROUPS_CLAIM_NAME,
+    ClaimManagementConstants.ROLES_CLAIM_NAME,
+    ClaimManagementConstants.APPLICATION_ROLES_CLAIM_NAME,
+    ClaimManagementConstants.GROUPS_CLAIM_URI,
+    ClaimManagementConstants.ROLES_CLAIM_URI,
+    ClaimManagementConstants.APPLICATION_ROLES_CLAIM_URI
+];
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
@@ -194,6 +204,18 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         }
     }, [ claimMappingOn ]);
 
+    /**
+     * This function will resolve whether the mandatory checkbox should be read only or not.
+     */
+    const isMandatoryCheckboxReadOnly = (): boolean => {
+        // Mandatory checkbox should be read only if the claims are following.
+        if (claimURI && READONLY_CLAIM_CONFIGS.includes(claimURI)) {
+            return true;
+        }
+
+        return subject || readOnly || isOIDCMapping;
+    };
+
     return (
         <Table.Row data-testid={ testId }>
             {
@@ -287,9 +309,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             >
                 <Checkbox
                     checked={ initialMandatory || mandatory || subject }
-                    onClick={ !readOnly && handleMandatoryCheckChange }
+                    onClick={ !isMandatoryCheckboxReadOnly() ? handleMandatoryCheckChange : () => null }
                     disabled={ mappingOn ? !requested : false }
-                    readOnly={ subject || readOnly || isOIDCMapping }
+                    readOnly={ isMandatoryCheckboxReadOnly() }
                 />
             </Table.Cell>
             { (!readOnly || isOIDCMapping) && deleteAttribute ? (

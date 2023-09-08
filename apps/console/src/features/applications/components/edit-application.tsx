@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -72,7 +71,7 @@ import {
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**
  * Proptypes for the applications edit component.
@@ -394,7 +393,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 },
                 template: template
             },
-            featureConfig
+            featureConfig,
+            tenantDomain
         );
 
         setTabPaneExtensions(extensions);

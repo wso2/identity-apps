@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -59,16 +58,20 @@ import {
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
 import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
+import { getIdPIcons } from "../../../../../identity-providers/configs/ui";
+import {
+    IdentityProviderManagementConstants
+} from "../../../../../identity-providers/constants/identity-provider-management-constants";
 import {
     GenericAuthenticatorInterface,
-    IdentityProviderManagementConstants,
-    IdentityProviderManagementUtils,
     IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateInterface,
-    getIdPIcons
-} from "../../../../../identity-providers";
+    IdentityProviderTemplateInterface
+} from "../../../../../identity-providers/models/identity-provider";
+import {
+    IdentityProviderManagementUtils
+} from "../../../../../identity-providers/utils/identity-provider-management-utils";
 import { OrganizationType } from "../../../../../organizations/constants";
-import { getGeneralIcons } from "../../../../configs";
+import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";
 
 /**

@@ -2,8 +2,10 @@
         Avatar Variables
 *******************************/
 
-@avatarDefaultBackground: @dustyGray;
-@avatarInitialsColor: @white;
+@avatarDefaultBackground: @primaryGradientColor;
+@avatarInitialsColor: @black;
+@avatarInitialsFontWeight: 500;
+@avatarMiniInitialsFontSize: 1rem;
 @avatarEditableCursor: pointer;
 
 @avatarHoverableCursor: pointer;

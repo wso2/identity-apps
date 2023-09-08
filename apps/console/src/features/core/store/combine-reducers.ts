@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ import {
     commonRequestLoadersReducer
 } from "@wso2is/core/store";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { combineReducers } from "redux";
+import { Reducer, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import {
     accessControlReducer,
@@ -44,7 +44,6 @@ import { routeReducer } from "./reducers/routes";
 import { applicationReducer } from "../../applications/store";
 import { commonAuthenticateReducerInitialState } from "../../authentication/store";
 import { identityProviderReducer } from "../../identity-providers/store";
-import { governanceConnectorReducer } from "../../server-configurations";
 import {
     AuthReducerStateInterface,
     DeploymentConfigInterface,
@@ -55,10 +54,8 @@ import {
 
 /**
  * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
-export const reducers = combineReducers({
+export const reducers: Reducer = combineReducers({
     accessControl: accessControlReducer,
     application: applicationReducer,
     auth: commonAuthenticateReducer<
@@ -73,7 +70,6 @@ export const reducers = combineReducers({
         >(commonConfigReducerInitialState),
     form: formReducer,
     global: globalReducer,
-    governanceConnector: governanceConnectorReducer,
     helpPanel: helpPanelReducer,
     identityProvider: identityProviderReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),

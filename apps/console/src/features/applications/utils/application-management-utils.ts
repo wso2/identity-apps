@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 /* eslint-disable @typescript-eslint/typedef */
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,10 +37,12 @@ import {
 } from "../components/meta";
 import { ApplicationManagementConstants } from "../constants";
 import {
+    ApplicationListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
+    additionalSpProperty,
     emptySAMLAppConfiguration
 } from "../models";
 import {
@@ -413,5 +416,27 @@ export class ApplicationManagementUtils {
         }
 
         return protocolName;
+    }
+
+    /**
+     * Check whether the application is a Choreo application or not.
+     *
+     * @param application - application.
+     * @returns true if the application is a Choreo application.
+     */
+    public static isChoreoApplication(application: ApplicationListItemInterface): boolean {
+        // Check whether `isChoreoApp` SP property is available.
+        const additionalSpProperties: additionalSpProperty[] = 
+            application?.advancedConfigurations?.additionalSpProperties;
+
+        const choreoSpProperty: additionalSpProperty = additionalSpProperties?.find(
+            (spProperty: additionalSpProperty) => 
+                spProperty.name === ApplicationManagementConstants.IS_CHOREO_APP_SP_PROPERTY 
+                && spProperty.value === "true"
+        );
+
+        // Check whether the application is a choreo app using choreo app template ID or `isChoreoApp` SP property.
+        return application?.templateId === ApplicationManagementConstants.CHOREO_APP_TEMPLATE_ID
+            || choreoSpProperty?.name === ApplicationManagementConstants.IS_CHOREO_APP_SP_PROPERTY;
     }
 }

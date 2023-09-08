@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,55 +26,46 @@ import {
  * Enum for application action types.
  *
  * @readonly
- * @enum {string}
  */
 export enum ApplicationActionTypes {
     /**
      * Action type to set the list of available inbound authentication protocols.
      *
-     * @type {string}
      */
     SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META = "SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META",
     /**
      * Action type to set the list of available custom inbound authentication protocols.
      *
-     * @type {string}
      */
     SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META = "SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META",
     /**
      * Action type to set  if available custom inbound authentication protocols set or not.
      *
-     * @type {string}
      */
     CHECK_CUSTOM_INBOUND_AUTH_PROTOCOL_META = "CHECK_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META",
     /**
      * Action type to set metadata related to auth protocol.
      *
-     * @type {string}
      */
     SET_AUTH_PROTOCOL_META = "SET_AUTH_PROTOCOL_META",
     /**
      * Action type to set application templates.
      *
-     * @type {string}
      */
     SET_APPLICATION_TEMPLATES = "SET_APPLICATION_TEMPLATES",
     /**
      * Action type to set grouped application templates.
      *
-     * @type {string}
      */
     SET_GROUPED_APPLICATION_TEMPLATES = "SET_GROUPED_APPLICATION_TEMPLATES",
     /**
      * Action type to set oidc application configurations.
      *
-     * @type {string}
      */
     SET_OIDC_APPLICATION_CONFIGURATIONS = "SET_OIDC_APPLICATION_CONFIGURATIONS",
     /**
      * Action type to set saml application configurations.
      *
-     * @type {string}
      */
     SET_SAML_APPLICATION_CONFIGURATIONS = "SET_SAML_APPLICATION_CONFIGURATIONS"
 

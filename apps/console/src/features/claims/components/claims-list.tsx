@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,12 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    AttributeMapping,
     Claim,
     ClaimDialect,
     ExternalClaim,
@@ -48,6 +48,7 @@ import isEqual from "lodash-es/isEqual";
 import React,{
     Dispatch,
     FunctionComponent,
+    MutableRefObject,
     ReactElement,
     ReactNode,
     SetStateAction,
@@ -58,6 +59,7 @@ import React,{
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
 import { Header, Icon, ItemHeader, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
 import { attributeConfig } from "../../../extensions";
@@ -70,7 +72,8 @@ import {
     history
 } from "../../core";
 import { getProfileSchemas } from "../../users/api";
-import { UserStoreListItem, getUserStores } from "../../userstores";
+import { getUserStores } from "../../userstores/api/user-stores";
+import { UserStoreListItem } from "../../userstores/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
@@ -223,37 +226,42 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
-    const claimURIText = useRef([]);
-    const copyButton = useRef([]);
+    //TODO: [Type Fix] Check the usage of following refs and fix the types.
+    const claimURIText: MutableRefObject<any[]> = useRef([]);
+    const copyButton: MutableRefObject<any[]> = useRef([]);
 
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
-    const OIDC = "oidc";
+    const OIDC: string = "oidc";
 
-    list?.forEach((element, index) => {
+    list?.forEach((_element: Claim | ExternalClaim | ClaimDialect | AddExternalClaim, index: number) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
         copyButton.current.push(copyButton.current[ index ] || React.createRef());
     });
 
     useEffect(() => {
         if (isLocalClaim(list)) {
-            getUserStores(null).then(response => {
-                setUserStores(response);
-            }).catch(error => {
-                dispatch(addAlert({
-                    description: error?.description
-                        ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
-                            ".description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
-                }));
-            });
+            getUserStores(null)
+                .then((response: UserStoreListItem[]) => {
+                    setUserStores(response);
+                })
+                //TODO: [Type Fix] Throw proper generic error from API function.
+                .catch((error: any) => {
+                    dispatch(addAlert({
+                        description: error?.description
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                                ".description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            ?? t("console:manage.features.userstores.notifications." + 
+                            "fetchUserstores.genericError.message")
+                    }));
+                });
         }
     }, [ JSON.stringify(list) ]);
 
@@ -265,15 +273,15 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @returns The array of userstore names without a mapped attribute.
      */
     const checkUserStoreMapping = (claim: Claim): string[] => {
-        const userStoresNotSet = [];
+        const userStoresNotSet: string[] = [];
 
-        userStores?.forEach(userStore => {
-            claim?.attributeMapping?.find(attribute => {
+        userStores?.forEach((userStore: UserStoreListItem) => {
+            claim?.attributeMapping?.find((attribute: AttributeMapping) => {
                 return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
             }) ?? userStoresNotSet.push(userStore.name);
         });
 
-        claim?.attributeMapping?.find(attribute => {
+        claim?.attributeMapping?.find((attribute: AttributeMapping) => {
             return attribute.userstore === "PRIMARY";
         }) ?? userStoresNotSet.push("Primary");
 
@@ -336,29 +344,33 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @param id - Local claim id
      */
     const deleteLocalClaim = (id: string) => {
-        deleteAClaim(id).then(() => {
-            update();
-            closeDeleteConfirm();
-            updateMappedClaims(true);
-            dispatch(addAlert(
-                {
-                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
-                        "description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
-                }
-            ));
-        }).catch(error => {
-            dispatch(setAlert(
-                {
-                    description: error?.description
-                        || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
-                }
-            ));
-        });
+        deleteAClaim(id)
+            .then(() => {
+                update();
+                closeDeleteConfirm();
+                updateMappedClaims(true);
+                dispatch(addAlert(
+                    {
+                        description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
+                            "description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
+                    }
+                ));
+            })
+            //TODO: [Type Fix] Throw proper generic error from API function.
+            .catch((error: any) => {
+                dispatch(setAlert(
+                    {
+                        description: error?.description
+                            || t("console:manage.features.claims.local." + 
+                            "notifications.deleteClaim.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("console:manage.features.claims.local.notifications.deleteClaim.genericError.message")
+                    }
+                ));
+            });
     };
 
     /**
@@ -367,36 +379,39 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @param claim - The claim to be deleted.
      */
     const deleteExternalClaim = (dialectID: string, claim: ExternalClaim) => {
-        deleteAnExternalClaim(dialectID, claim.id).then(() => {
-            update();
-            attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(() => {
-                fetchUpdatedSchemaList();
-            });
+        deleteAnExternalClaim(dialectID, claim.id)
+            .then(() => {
+                update();
+                attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(() => {
+                    fetchUpdatedSchemaList();
+                });
 
-            updateMappedClaims(true);
-            closeDeleteConfirm();
-            dispatch(addAlert(
-                {
-                    description: t("console:manage.features.claims.external.notifications." +
-                        "deleteExternalClaim.success.description", { type: claim.claimURI }),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.claims.external.notifications." +
-                        "deleteExternalClaim.success.message")
-                }
-            ));
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("console:manage.features.claims.external.notifications." +
-                            "deleteExternalClaim.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("console:manage.features.claims.external.notifications." +
-                            "deleteExternalClaim.genericError.message")
-                }
-            ));
-        });
+                updateMappedClaims(true);
+                closeDeleteConfirm();
+                dispatch(addAlert(
+                    {
+                        description: t("console:manage.features.claims.external.notifications." +
+                            "deleteExternalClaim.success.description", { type: claim.claimURI }),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.claims.external.notifications." +
+                            "deleteExternalClaim.success.message")
+                    }
+                ));
+            })
+            //TODO: [Type Fix] Throw proper generic error from API function.
+            .catch((error: any) => {
+                dispatch(addAlert(
+                    {
+                        description: error?.description
+                            || t("console:manage.features.claims.external.notifications." +
+                                "deleteExternalClaim.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("console:manage.features.claims.external.notifications." +
+                                "deleteExternalClaim.genericError.message")
+                    }
+                ));
+            });
     };
 
     /**
@@ -441,31 +456,35 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @param dialectID - to delete
      */
     const deleteDialect = (dialectID: string) => {
-        deleteADialect(dialectID).then(() => {
-            update();
-            closeDeleteConfirm();
-            dispatch(addAlert(
-                {
-                    description: t("console:manage.features.claims.dialects.notifications." +
-                        "deleteDialect.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.claims.dialects.notifications." +
-                        "deleteDialect.success.message")
-                }
-            ));
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("console:manage.features.claims.dialects.notifications." +
-                            "deleteDialect.genericError.message")
-                }
-            ));
-        });
+        deleteADialect(dialectID)
+            .then(() => {
+                update();
+                closeDeleteConfirm();
+                dispatch(addAlert(
+                    {
+                        description: t("console:manage.features.claims.dialects.notifications." +
+                            "deleteDialect.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.claims.dialects.notifications." +
+                            "deleteDialect.success.message")
+                    }
+                ));
+            })
+            .catch((error: any) => {
+                dispatch(addAlert(
+                    {
+                        //TODO: [Type Fix] Description attribute does not exist on 
+                        //AxiosError or IdentityAppsApiException.
+                        description: error?.description
+                            || t("console:manage.features.claims.dialects.notifications." +
+                                "deleteDialect.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("console:manage.features.claims.dialects.notifications." +
+                                "deleteDialect.genericError.message")
+                    }
+                ));
+            });
     };
 
     /**
@@ -645,7 +664,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
      * @returns The last word.
      */
     const generateInitialLetter = (claim: Claim): string => {
-        const parts = claim.claimURI.split("/");
+        const parts: string[] = claim.claimURI.split("/");
 
         return parts[ parts.length - 1 ];
     };
@@ -664,8 +683,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     id: "displayName",
                     key: "displayName",
                     render: (claim: Claim) => {
-                        const userStoresNotMapped = checkUserStoreMapping(claim);
-                        const showWarning = userStoresNotMapped.length > 0;
+                        const userStoresNotMapped: string[] = checkUserStoreMapping(claim);
+                        const showWarning: boolean = userStoresNotMapped.length > 0;
 
                         return (
                             <Header as="h6" image>
@@ -792,7 +811,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
              * @returns should render actions column or hide
              */
             const shouldRenderActionsColumn = (): boolean => {
-                const showEditAction =
+                const showEditAction: boolean =
                     attributeConfig.externalAttributes.showActions(dialectID) &&
                     attributeConfig.externalAttributes.isAttributeEditable &&
                     hasRequiredScopes(
@@ -800,7 +819,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         featureConfig?.attributeDialects?.scopes?.create,
                         allowedScopes
                     );
-                const showDeleteAction =
+                const showDeleteAction: boolean =
                     attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) &&
                     hasRequiredScopes(
                         featureConfig?.attributeDialects,

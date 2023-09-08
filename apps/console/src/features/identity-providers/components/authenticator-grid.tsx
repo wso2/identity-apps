@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -367,17 +367,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         eventPublisher.compute(() => {
                                             eventPublisher.publish("connections-click-template-setup", { type:
-                                                isIdP 
+                                                isIdP
                                                     ? AuthenticatorMeta.getAuthenticatorTemplateName(
                                                         (authenticator as IdentityProviderInterface)
                                                             .federatedAuthenticators?.defaultAuthenticatorId)
                                                         ? AuthenticatorMeta.getAuthenticatorTemplateName(
                                                             (authenticator as IdentityProviderInterface)
-                                                                .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                                .federatedAuthenticators?.defaultAuthenticatorId)
                                                         : "other"
                                                     : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
                                                         ? AuthenticatorMeta.
-                                                            getAuthenticatorTemplateName(authenticator.id) 
+                                                            getAuthenticatorTemplateName(authenticator.id)
                                                         : ""
                                             });
                                         });
@@ -417,6 +417,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                 ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
                                                 : ""
                                     }
+                                    resourceDocumentationLink = { null }
                                     resourceImage={
                                         authenticator.image ?? AuthenticatorMeta.getAuthenticatorIcon(authenticator.id)
                                     }
@@ -427,6 +428,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                             : (authenticator as AuthenticatorInterface).tags
                                     }
                                     data-testid={ `${ testId }-${ authenticator.name }` }
+                                    showResourceAction={ false }
+                                    showSetupGuideButton={ false }
                                 />
                             </Fragment>
                         );

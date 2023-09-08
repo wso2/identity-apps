@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="cog-wheel-icon" height="14px" width="14px" xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 38.73 38.73">
+    <g id="interface" transform="translate(0 0)">
+        <g id="Group_528" transform="translate(4.085 0)">
+            <g id="Group_527">
+                <path id="Path_98" class="path fill primary"
+                      d="M88.263.1a.756.756,0,0,0-.76.006L73.641,8.3a.756.756,0,0,0,.77,1.3l9.946-5.881L65.831,22.945l-9.214-2.819,12.025-7.11a.756.756,0,0,0-.77-1.3L54.371,19.7a.756.756,0,0,0,.164,1.375l11,3.366,4.855,8.836a.179.179,0,0,0,.016.024.754.754,0,0,0,1.176.153L77.167,28l10.5,3.212a.756.756,0,0,0,.978-.723V.756A.756.756,0,0,0,88.263.1ZM70.434,24.9a.757.757,0,0,0-.135.431v4.627l-3.315-6.034L81.654,8.708Zm1.378,6.209V26.357l3.706,1.134Zm15.319-1.651L72.268,24.914,87.131,3.457Z"
+                      transform="translate(-53.999 0)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_530" transform="translate(4.085 26.07)">
+            <g id="Group_529">
+                <path id="Path_99" class="path fill secondary"
+                      d="M62.352,344.87a.757.757,0,0,0-1.07,0l-7.061,7.061a.756.756,0,0,0,1.07,1.07l7.061-7.061A.756.756,0,0,0,62.352,344.87Z"
+                      transform="translate(-53.999 -344.648)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_532" transform="translate(0 35.477)">
+            <g id="Group_531" transform="translate(0)">
+                <path id="Path_100" class="path fill secondary"
+                      d="M3.031,469.222a.757.757,0,0,0-1.07,0l-1.74,1.74a.756.756,0,1,0,1.07,1.07l1.74-1.74A.757.757,0,0,0,3.031,469.222Z"
+                      transform="translate(0 -469.001)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_534" transform="translate(9.5 37.172)">
+            <g id="Group_533">
+                <path id="Path_101" class="path fill secondary"
+                      d="M126.871,491.632a.756.756,0,1,0,.222.535A.762.762,0,0,0,126.871,491.632Z"
+                      transform="translate(-125.58 -491.41)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_536" transform="translate(11.387 31.544)">
+            <g id="Group_535">
+                <path id="Path_102" class="path fill secondary"
+                      d="M155.566,417.228a.756.756,0,0,0-1.07,0l-3.74,3.74a.756.756,0,1,0,1.07,1.07l3.74-3.74A.756.756,0,0,0,155.566,417.228Z"
+                      transform="translate(-150.534 -417.006)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_538" transform="translate(24.286 31.256)">
+            <g id="Group_537">
+                <path id="Path_103" class="path fill secondary"
+                      d="M326.095,413.432a.757.757,0,0,0-1.07,0l-3.75,3.75a.756.756,0,1,0,1.07,1.07l3.75-3.75A.757.757,0,0,0,326.095,413.432Z"
+                      transform="translate(-321.053 -413.211)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_540" transform="translate(20.154 10.089)">
+            <g id="Group_539">
+                <path id="Path_104" class="path fill secondary"
+                      d="M267.721,133.6a.756.756,0,1,0,.222.536A.762.762,0,0,0,267.721,133.6Z"
+                      transform="translate(-266.43 -133.38)" fill="#464646"/>
+            </g>
+        </g>
+    </g>
+</svg>

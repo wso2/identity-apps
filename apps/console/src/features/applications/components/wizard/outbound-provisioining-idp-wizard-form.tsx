@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,14 +15,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getIdentityProviderDetail } from "../../../identity-providers";
+import { getIdentityProviderDetail } from "../../../identity-providers/api/identity-provider";
+import {
+    IdentityProviderInterface,
+    OutboundProvisioningConnectorInterface
+} from "../../../identity-providers/models/identity-provider";
 
 /**
  * Proptypes for the outbound provisioning IDP form component.
@@ -30,7 +33,7 @@ import { getIdentityProviderDetail } from "../../../identity-providers";
 interface OutboundProvisioningIdpWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
-    idpList: any;
+    idpList: IdentityProviderInterface[];
     onSubmit: (values: any) => void;
     isEdit?: boolean;
     /**
@@ -52,9 +55,9 @@ interface DropdownOptionsInterface {
 /**
  * General settings wizard form component.
  *
- * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Outbound provisioning IDP form component.
  */
 export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvisioningIdpWizardFormPropsInterface> = (
     props: OutboundProvisioningIdpWizardFormPropsInterface
@@ -88,7 +91,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         }
 
         if (initialValues?.idp) {
-            const idp = idpList?.find(idp => idp.name === initialValues?.idp);
+            const idp: IdentityProviderInterface = idpList?.find(
+                (idp: IdentityProviderInterface) => idp.name === initialValues?.idp);
 
             setSelectedIdp(idp.id);
         }
@@ -109,7 +113,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             value: ""
         };
 
-        idpList.map((idp, index) => {
+        idpList.map((idp: IdentityProviderInterface, index: number) => {
             idpOption = {
                 key: index,
                 text: idp.name,
@@ -136,18 +140,19 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         };
 
         getIdentityProviderDetail(selectedIdp)
-            .then((response) => {
-                response.provisioning.outboundConnectors.connectors.map((connector, index) => {
+            .then((response: IdentityProviderInterface) => {
+                response.provisioning.outboundConnectors.connectors.map(
+                    (connector: OutboundProvisioningConnectorInterface, index: number) => {
                     // Check enabled connectors
-                    if (connector.isEnabled) {
-                        connectorOption = {
-                            key: index,
-                            text: connector.name,
-                            value: connector.name
-                        };
-                        connectorOptions.push(connectorOption);
-                    }
-                });
+                        if (connector.isEnabled) {
+                            connectorOption = {
+                                key: index,
+                                text: connector.name,
+                                value: connector.name
+                            };
+                            connectorOptions.push(connectorOption);
+                        }
+                    });
                 setConnectorListOptions(connectorOptions);
             });
     }, [ selectedIdp ]);
@@ -155,7 +160,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     /**
      * The following function handles the change of the IDP.
      *
-     * @param values
+     * @param values - Form values.
      */
     const handleIdpChange = (values: Map<string, FormValue>): void => {
         setSelectedIdp(values.get("idp").toString());
@@ -165,10 +170,11 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {Record<string, unknown>} Prepared values.
+     * @returns Prepared values.
      */
     const getFormValues = (values: any): Record<string, unknown> => {
-        const idpName = (idpListOptions.find(idp => idp.value === selectedIdp)).text;
+        const idpName: string = (idpListOptions.find(
+            (idp: DropdownOptionsInterface) => idp.value === selectedIdp)).text;
 
         return {
             blocking: isBlockingChecked ? isBlockingChecked : !!values.get("blocking").includes("blocking"),
@@ -181,7 +187,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
 
     return (
         <Forms
-            onSubmit={ (values) => onSubmit(getFormValues(values)) }
+            onSubmit={ (values: Map<string, FormValue>) => onSubmit(getFormValues(values)) }
             submitState={ triggerSubmit && triggerSubmit }
         >
             <Grid>
@@ -237,7 +243,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             required={ true }
                             value={ initialValues?.connector }
                             listen={
-                                (values) => {
+                                (values: Map<string, FormValue>) => {
                                     setConnector(values.get("connector").toString());
                                 }
                             }
@@ -269,7 +275,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             ] }
                             value={ initialValues?.rules ? [ "rules" ] : [] }
                             listen={
-                                (values) => {
+                                (values: Map<string, FormValue>) => {
                                     setIsRulesChecked(values.get("rules").includes("rules"));
                                 }
                             }
@@ -298,7 +304,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             readOnly={ readOnly }
                             value={ initialValues?.blocking ? [ "blocking" ] : [] }
                             listen={
-                                (values) => {
+                                (values: Map<string, FormValue>) => {
                                     setIsBlockingChecked(values.get("blocking").includes("blocking"));
                                 }
                             }
@@ -326,7 +332,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             ] }
                             value={ initialValues?.jit ? [ "jit" ] : [] }
                             listen={
-                                (values) => {
+                                (values: Map<string, FormValue>) => {
                                     setIsJITChecked(values.get("jit").includes("jit"));
                                 }
                             }

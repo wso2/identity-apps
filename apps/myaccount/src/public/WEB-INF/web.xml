@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- ~
- ~ WSO2 Inc. licenses this file to you under the Apache License,
- ~ Version 2.0 (the "License"); you may not use this file except
- ~ in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~      http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing, software
- ~ distributed under the License is distributed on an "AS IS" BASIS,
- ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- ~ See the License for the specific language governing permissions and
- ~ limitations under the License.
- -->
+~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
+~
+~    This software is the property of WSO2 Inc. and its suppliers, if any.
+~    Dissemination of any information or reproduction of any material contained
+~    herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+~    You may not alter or remove any copyright or other notice from copies of this content."
+-->
 
-<web-app
-    xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
     version="2.4"
 >
 
-    <display-name>console</display-name>
+    <display-name>myaccount</display-name>
 
     <error-page>
         <error-code>404</error-code>
@@ -46,15 +38,10 @@
         <servlet-name>home</servlet-name>
         <jsp-file>/home.jsp</jsp-file>
     </servlet>
-
+    
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/libs/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/extensions/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -95,6 +82,11 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/rpIFrame.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/robots.txt</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

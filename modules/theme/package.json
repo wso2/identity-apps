@@ -1,6 +1,7 @@
 {
+    "private": true,
     "name": "@wso2is/theme",
-    "version": "1.6.374",
+    "version": "2.0.0",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -34,8 +35,8 @@
         "@babel/core": "^7.11.4",
         "@babel/register": "^7.8.6",
         "@types/jest": "^26.0.14",
-        "@typescript-eslint/eslint-plugin": "^4.17.0",
-        "@typescript-eslint/parser": "^4.17.0",
+        "@typescript-eslint/eslint-plugin": "^4.32.0",
+        "@typescript-eslint/parser": "^4.32.0",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
         "eslint": "^7.20.0",

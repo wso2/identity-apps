@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     CertificateValidity,
@@ -27,6 +28,7 @@ import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Form } from "@wso2is/form";
 import {
+    ConfirmationModal,
     Popup,
     ResourceList,
     ResourceListActionInterface,
@@ -35,12 +37,14 @@ import {
 } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
+import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { updateIDPCertificate } from "../../../api";
-import { IdentityProviderInterface } from "../../../models";
+import { CertificatePatchRequestInterface, IdentityProviderInterface } from "../../../models";
 
 /**
  * Props interface of {@link IdpCertificatesList}
@@ -49,6 +53,10 @@ export interface IdpCertificatesListProps extends IdentifiableComponentInterface
     currentlyEditingIdP: IdentityProviderInterface;
     refreshIdP: (id: string) => void;
     isReadOnly: boolean;
+    /**
+     * Is the IDP a trusted token issuer.
+     */
+    isTrustedTokenIssuer?: boolean;
 }
 
 const FORM_ID: string = "idp-certificates-list-form";
@@ -67,11 +75,13 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
         [ "data-componentid" ]: testId,
         currentlyEditingIdP,
         refreshIdP,
-        isReadOnly
+        isReadOnly,
+        isTrustedTokenIssuer
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * @see {@link deleteCertificate} function's doc comment. Enforcing this in components
@@ -82,6 +92,9 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const [ displayingCertificates, setDisplayingCertificates ] = useState<ReadonlyArray<DisplayCertificate>>();
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
     const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const [ showPEMCertificateDeleteConfirmationModal, setShowPEMCertificateDeleteConfirmationModal ] =
+        useState<boolean>(false);
+    const [ deletingCertificateIndex, setDeletingCertificateIndex ] = useState<number>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
@@ -113,7 +126,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
         if (currentlyEditingIdP?.certificate?.certificates?.length > 0) {
             const certificatesList: DisplayCertificate[] = [];
 
-            currentlyEditingIdP?.certificate?.certificates?.map((certificate) => {
+            currentlyEditingIdP?.certificate?.certificates?.map((certificate: string) => {
                 if (CertificateManagementUtils.canSafelyParseCertificate(certificate)) {
                     certificatesList?.push(CertificateManagementUtils.displayCertificate(null, certificate));
                 } else {
@@ -121,6 +134,21 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 }
             });
             setDisplayingCertificates([ ...certificatesList ]);
+        }
+    };
+
+    /**
+     * Handles the deletion of a certificate.
+     * 
+     * @param certificateIndex - Index of the certificate to be deleted.
+     */
+    const handleDeletePEMCertificate = async (certificateIndex: number): Promise<void> => {
+        setDeletingCertificateIndex(certificateIndex);
+
+        if (isTrustedTokenIssuer && displayingCertificates.length === 1 && !currentlyEditingIdP?.certificate?.jwksUri) {
+            setShowPEMCertificateDeleteConfirmationModal(true);
+        } else {
+            await deleteCertificate(certificateIndex);
         }
     };
 
@@ -133,15 +161,19 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
      *
      * @param certificateIndex - Cert index.
      */
-    const deleteCertificate = async (certificateIndex: number) => {
+    const deleteCertificate = async (certificateIndex?: number) => {
 
         setIsLoading(true);
 
-        const PATCH_OBJECT = [ {
-            "operation": "REMOVE",
-            "path": "/certificate/certificates/" + certificateIndex,
-            "value": null
-        } ];
+        const index: number = certificateIndex ?? deletingCertificateIndex;
+
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+            {
+                "operation": "REMOVE",
+                "path": "/certificate/certificates/" + index,
+                "value": null
+            } 
+        ];
 
         const doOnSuccess = () => {
             dispatch(addAlert({
@@ -152,10 +184,9 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                     ".notifications.deleteCertificate.success.message")
             }));
             refreshIdP(currentlyEditingIdP.id);
-            setIsLoading(false);
         };
 
-        const ifTheresAnyError = (error) => {
+        const ifTheresAnyError = (error: IdentityAppsApiException) => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,
@@ -163,7 +194,6 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                     message: t("console:develop.features.authenticationProvider" +
                         ".notifications.deleteCertificate.error.message")
                 }));
-                setIsLoading(false);
 
                 return;
             }
@@ -174,12 +204,15 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 message: t("console:develop.features.authenticationProvider.notifications" +
                     ".deleteCertificate.genericError.message")
             }));
-            setIsLoading(false);
         };
 
         await updateIDPCertificate(currentlyEditingIdP?.id, PATCH_OBJECT)
             .then(doOnSuccess)
-            .catch(ifTheresAnyError);
+            .catch(ifTheresAnyError)
+            .finally(() => {
+                setIsLoading(false);
+                showPEMCertificateDeleteConfirmationModal && setShowPEMCertificateDeleteConfirmationModal(false);
+            });
 
     };
 
@@ -200,7 +233,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate = moment(validTill);
+        const expiryDate: moment.Moment = moment(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({
@@ -301,7 +334,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
             {
                 "data-componentid": `${ testId }-delete-cert-${ index }-button`,
                 icon: "trash alternate",
-                onClick: () => deleteCertificate(index),
+                onClick: () => handleDeletePEMCertificate(index),
                 popupText: "Delete",
                 type: "button"
             }
@@ -347,7 +380,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                             } }
                             readOnly={ isReadOnly }>
                             {
-                                displayingCertificates?.map((certificate, index) => (
+                                displayingCertificates?.map((certificate: DisplayCertificate, index: number) => (
                                     <ResourceListItem
                                         key={ index }
                                         actionsColumnWidth={ 3 }
@@ -380,7 +413,46 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
             <ShowCertificateModal
                 show={ showCertificateModal }
                 certificateToDisplay={ certificateDisplay }
-                onCloseClicked={ () => setShowCertificateModal(false) }/>
+                onCloseClicked={ (): void => setShowCertificateModal(false) }
+            /> 
+            <ConfirmationModal
+                primaryActionLoading={ isLoading }
+                onClose={ (): void => setShowPEMCertificateDeleteConfirmationModal(false) }
+                type="negative"
+                open={ showPEMCertificateDeleteConfirmationModal }
+                assertionType="checkbox"
+                assertionHint={ t("console:develop.features.authenticationProvider."+
+                    "confirmations.deleteCertificate.assertionHint") }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => setShowPEMCertificateDeleteConfirmationModal(false) }
+                onPrimaryActionClick={ (): Promise<void> => deleteCertificate() }
+                data-componentid={ `${ testId }-delete-certificate-confirmation` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-componentid={ `${ testId }-delete-certificate-confirmation-header` }>
+                    { t("console:develop.features.authenticationProvider.confirmations.deleteCertificate.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    negative
+                    data-componentid={ `${ testId }-delete-certificate-confirmation` }
+                >
+                    { t("console:develop.features.authenticationProvider.confirmations.deleteCertificate.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-componentid={ `${ testId }-delete-certificate-confirmation-content` }>
+                    <Trans 
+                        i18nKey= { 
+                            "console:develop.features.authenticationProvider.confirmations.deleteCertificate." + 
+                            "content"
+                        }
+                        values={ { productName: config.ui.productName } }
+                    >
+                        If this certificate is deleted, productName will no longer be able to validate  
+                        tokens issued from this issuer.<b> Proceed with caution.</b>
+                    </Trans>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         </Form>
     );
 

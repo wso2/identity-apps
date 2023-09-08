@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import Chip from "@oxygen-ui/react/Chip";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -35,6 +35,11 @@ import {
     Tooltip,
     useDocumentation
 } from "@wso2is/react-components";
+import {
+    useCheckFeatureStatus,
+    useCheckFeatureTags
+} from "apps/console/src/extensions/components/feature-gate/controller/featureGate-util";
+import { FeatureStatus, FeatureTags } from "apps/console/src/extensions/components/feature-gate/models/feature-gate";
 import { AxiosError, AxiosResponse } from "axios";
 import * as codemirror from "codemirror";
 import beautify from "js-beautify";
@@ -73,7 +78,8 @@ import {
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
-import { AdaptiveScriptUtils } from "../../../../utils";
+import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
+import UseAuthenticationFlow from "../hooks/use-authentication-flow";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -95,10 +101,6 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
-    /**
-     * Toggle the accordion.
-     */
-    isMinimized?: boolean;
     /**
      * Delegates the event to the parent component. Once
      * called the resetting event will be notified to it
@@ -140,7 +142,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         authenticationSteps,
         isDefaultScript,
-        isMinimized,
         onAdaptiveScriptReset,
         ["data-testid"]: testId
     } = props;
@@ -167,11 +168,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isNewlyAddedScriptTemplate, setIsNewlyAddedScriptTemplate ] = useState<boolean>(false);
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
     const [ showScriptTemplateChangeWarning, setShowScriptTemplateChangeWarning ] = useState<boolean>(false);
-    const [ showConditionalAuthContent, setShowConditionalAuthContent ] = useState<boolean>(isMinimized);
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
     const [ isSecretsDropdownOpen, setIsSecretsDropdownOpen ] = useState<boolean>(false);
+    const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
+    const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
+    const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
 
     /**
      * List of secrets for the selected `secretType`. It can hold secrets of
@@ -185,6 +188,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isSecretListLoading, setIsSecretListLoading ] = useState<boolean>(true);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
+
+    const { isConditionalAuthenticationEnabled, onConditionalAuthenticationToggle } = UseAuthenticationFlow();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -233,6 +238,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
+     * Check if the feature is a premium.
+     */
+    useEffect(() => {
+        if(adaptiveFeatureStatus === FeatureStatus.ENABLED 
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {           
+            setIsPremiumFeature(true);
+        }
+    }, []);
+
+    /**
      * Calls method to load secrets to refresh secret list.
      */
     const refreshSecretList = () => {
@@ -245,7 +260,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @param secret - Secret
      */
     const addSecretToScript = (secret:SecretModel): void => {
-        const doc: codemirror.Doc = editorInstance.getDoc();
+        const doc: codemirror.Doc = editorInstance?.getDoc();
         const secretNameString: string = `"${ secret.secretName }"`;
 
         //If a code segment is selected, the selected text is replaced with secret name as a string.
@@ -357,7 +372,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         // If the user has read only access, show the script editor.
         if (readOnly) {
-            setShowConditionalAuthContent(true);
+            onConditionalAuthenticationToggle(true);
 
             return;
         }
@@ -369,12 +384,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             authenticationSequence?.steps?.length
         )) {
 
-            setShowConditionalAuthContent(true);
+            onConditionalAuthenticationToggle(true);
 
             return;
         }
 
-        setShowConditionalAuthContent(false);
+        onConditionalAuthenticationToggle(false);
     }, [ authenticationSequence ]);
 
     /**
@@ -475,7 +490,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
-        setShowConditionalAuthContent(false);
+        onConditionalAuthenticationToggle(false);
     };
 
     /**
@@ -510,14 +525,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const handleConditionalAuthToggleChange = (): void => {
 
-        if (showConditionalAuthContent) {
+        if (isConditionalAuthenticationEnabled) {
             setShowScriptResetWarning(true);
 
             return;
         }
 
         eventPublisher.publish("application-sign-in-method-enable-conditional-authentication");
-        setShowConditionalAuthContent(true);
+        onConditionalAuthenticationToggle(true);
     };
 
     /**
@@ -540,15 +555,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * back to where it was originally.
      */
     const preserveStateOnFullScreenChange = (): void => {
-
         const _modifiedScript: string = AdaptiveScriptUtils.sourceToString(internalScript);
         const _editorSourceCode: string = AdaptiveScriptUtils.sourceToString(sourceCode);
 
         if (_modifiedScript !== _editorSourceCode) {
-            const cur: codemirror.Pos = editorInstance.doc.getCursor();
+            const cur: codemirror.Pos = editorInstance?.doc.getCursor();
 
             setSourceCode(_modifiedScript.split(ApplicationManagementConstants.LINE_BREAK));
-            editorInstance.doc.setCursor(cur);
+            editorInstance?.doc.setCursor(cur);
         }
 
     };
@@ -646,7 +660,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     const shouldConditionalAuthTourOpen = (): boolean => {
 
-        if (!showConditionalAuthContent) {
+        if (!isConditionalAuthenticationEnabled) {
             return false;
         }
 
@@ -1154,7 +1168,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 >
                     <SegmentedAccordion.Title
                         data-testid={ `${ testId }-accordion-title` }
-                        active={ showConditionalAuthContent }
+                        active={ isConditionalAuthenticationEnabled }
                         content={ (
                             <>
                                 <div className="conditional-auth-accordion-title">
@@ -1164,17 +1178,41 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 toggle
                                                 data-tourid="conditional-auth"
                                                 onChange={ handleConditionalAuthToggleChange }
-                                                checked={ showConditionalAuthContent }
+                                                checked={ isConditionalAuthenticationEnabled }
                                                 className="conditional-auth-accordion-toggle"
                                             />
                                         )
                                     }
                                     <div className="conditional-auth-accordion-title-text">
-                                        <Heading as="h5" compact>
+                                        <Heading as="h5" compact  className="heading">
                                             {
                                                 t("console:develop.features.applications.edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
                                                     "title.heading")
+                                            }
+                                            {
+                                                isPremiumFeature && (
+                                                    <Popup
+                                                        basic
+                                                        inverted
+                                                        position="top center"
+                                                        content={
+                                                            (<p>
+                                                                {
+                                                                    t("console:featureGate.enabledFeatures.tags." +
+                                                                    "premium.warning")
+                                                                }
+                                                            </p>)
+                                                        }
+                                                        trigger={ (
+                                                            <Chip
+                                                                label="PREMIUM"
+                                                                className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                                style={ { height: "fit-content" } }
+                                                            />
+                                                        ) }
+                                                    />
+                                                )
                                             }
                                         </Heading>
                                         <Text muted compact>
@@ -1198,7 +1236,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         hideChevron={ true }
                     />
                     <SegmentedAccordion.Content
-                        active={ showConditionalAuthContent }
+                        active={ isConditionalAuthenticationEnabled }
                         className="conditional-auth-accordion-content"
                         data-testid={ `${ testId }-accordion-content` }
                     >
@@ -1314,7 +1352,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             ) }
                                         </Menu.Menu>
                                     </Menu>
-
                                     <div className="code-editor-wrapper">
                                         <CodeEditor
                                             editorDidMount={ (editor: codemirror.Editor) => {
@@ -1329,7 +1366,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             options={ {
                                                 lineWrapping: true
                                             } }
-                                            onChange={ (editor: codemirror.Editor, data: codemirror.EditorChange,
+                                            onChange={ (editor: codemirror.Editor,
+                                                data: codemirror.EditorChange,
                                                 value: string) => {
                                                 setInternalScript(value);
                                                 onScriptChange(value);
@@ -1366,6 +1404,5 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
  * Default props for the script based flow component.
  */
 ScriptBasedFlow.defaultProps = {
-    "data-testid": "script-based-flow",
-    isMinimized: true
+    "data-testid": "script-based-flow"
 };

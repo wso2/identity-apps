@@ -29,17 +29,18 @@ import {
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
-import { ClaimResourceEndpointsInterface } from "../../claims";
+import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
-import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
+import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
+import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
 import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
-import { RolesResourceEndpointsInterface } from "../../roles";
+import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
-import { UsersResourceEndpointsInterface } from "../../users";
-import { UserstoreResourceEndpointsInterface } from "../../userstores";
+import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
+import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
 
 export type ConfigInterface = CommonConfigInterface<
@@ -53,6 +54,10 @@ export type ConfigInterface = CommonConfigInterface<
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
+    /**
+     * Admin user management feature.
+     */
+    administrators?: FeatureAccessConfigInterface;
     /**
      * Application management feature.
      */
@@ -69,6 +74,10 @@ export interface FeatureConfigInterface {
      * Certificates configurations feature.
      */
     certificates?: FeatureAccessConfigInterface;
+    /**
+     * Email providers feature.
+     */
+    emailProviders?: FeatureAccessConfigInterface;
     /**
      * Email templates feature.
      */
@@ -90,9 +99,9 @@ export interface FeatureConfigInterface {
      */
     identityProviders?: FeatureAccessConfigInterface;
     /**
-     * Identity verification provider management feature.
+     * Identity provider groups feature.
      */
-    identityVerificationProviders?: FeatureAccessConfigInterface;
+    identityProviderGroups?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */
@@ -133,6 +142,10 @@ export interface FeatureConfigInterface {
      * Event Management feature
      */
     eventPublishing?: FeatureAccessConfigInterface;
+    /**
+     * Organization insights feature
+     */
+    insights?: FeatureAccessConfigInterface
 }
 
 /**
@@ -231,6 +244,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;
+    /**
+     * Flag to check if the feature gate should be enabled.
+     */
+    isFeatureGateEnabled?: boolean;
     /**
      * Enable roles and groups separation.
      */

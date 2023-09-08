@@ -18,7 +18,7 @@
 
 import React, { ReactElement } from "react";
 // eslint-disable-next-line no-restricted-imports
-import { PopupContentProps, PopupHeaderProps, PopupProps, Popup as SemanticPopup } from "semantic-ui-react";
+import { PopupProps, Popup as SemanticPopup } from "semantic-ui-react";
 
 /**
  * A wrapper for the semantic Popup component.
@@ -27,11 +27,7 @@ import { PopupContentProps, PopupHeaderProps, PopupProps, Popup as SemanticPopup
  *
  * @returns
  */
-export const Popup: {
-    (props: PopupProps): ReactElement;
-    Content: React.FC<PopupContentProps>;
-    Header: React.FC<PopupHeaderProps>;
-} = (props: PopupProps): ReactElement => {
+export const Popup = (props: PopupProps): ReactElement => {
     return (
         <SemanticPopup
             popper={ <div style={ { filter: "none" } }></div> }

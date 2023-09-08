@@ -16,43 +16,35 @@
  * under the License.
  */
 
-import { AlertInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import OxygenAlert, { AlertProps } from "@oxygen-ui/react/Alert";
+import AppShell from "@oxygen-ui/react/AppShell";
+import Container from "@oxygen-ui/react/Container";
+import Navbar from "@oxygen-ui/react/Navbar";
+import Snackbar from "@oxygen-ui/react/Snackbar";
+import { AlertInterface, AnnouncementBannerInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils, RouteUtils } from "@wso2is/core/utils";
-import {
-    Alert,
-    ContentLoader,
-    DashboardLayout as DashboardLayoutSkeleton,
-    EmptyPlaceholder,
-    ErrorBoundary,
-    LinkButton,
-    Media,
-    SidePanel,
-    TopLoadingBar,
-    useMediaContext,
-    useUIElementSizes
-} from "@wso2is/react-components";
+import { RouteUtils as CommonRouteUtils, CommonUtils, CookieStorageUtils, RouteUtils } from "@wso2is/core/utils";
+import { I18n, LanguageChangeException } from "@wso2is/i18n";
+import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
+import kebabCase from "lodash-es/kebabCase";
+import moment from "moment";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
+import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { Segment } from "semantic-ui-react";
 import { fetchApplications } from "../api";
-import {
-    Footer,
-    Header,
-    ProtectedRoute
-} from "../components";
+import { Header, ProtectedRoute } from "../components";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
-import { ApplicationList, ConfigReducerStateInterface } from "../models";
+import { Application, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { toggleApplicationsPageVisibility } from "../store/actions";
-import { AppUtils, filterRoutes } from "../utils";
+import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../utils";
 
 /**
  * Dashboard page layout component Prop types.
@@ -73,31 +65,85 @@ export interface DashboardLayoutPropsInterface {
 export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
     props: PropsWithChildren<DashboardLayoutPropsInterface & RouteComponentProps>
 ): ReactElement => {
-
     const { location } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isMobileViewport } = useMediaContext();
-    const { headerHeight, footerHeight } = useUIElementSizes({
-        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
-        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
-        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
-    });
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
-    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
 
-    const [
-        selectedRoute,
-        setSelectedRoute
-    ] = useState<RouteInterface | ChildRouteInterface>(getDashboardLayoutRoutes()[ 0 ]);
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(
+        getDashboardLayoutRoutes()[ 0 ]
+    );
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(true);
+    const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
+
+    const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+
+    /**
+     * Callback for side panel hamburger click.
+     */
+    const handleSidePanelToggleClick = (): void => {
+        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
+    };
+
+    useEffect(() => {
+        const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
+
+        if (localeCookie) {
+            handleLanguageSwitch(localeCookie.replace("_", "-"));
+        }
+    }, []);
+
+    /**
+     * Handles language switch action.
+     * @param language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        moment.locale(language ?? "en");
+        I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
+            throw new LanguageChangeException(language, error);
+        });
+
+        const cookieSupportedLanguage: string = language.replace("-", "_");
+        const domain: string = ";domain=" + extractDomainFromHost();
+        const cookieExpiryTime: number = 30;
+        const expires: string = "; expires=" + new Date().setTime(cookieExpiryTime * 24 * 60 * 60 * 1000);
+        const cookieString: string = "ui_lang=" + (cookieSupportedLanguage || "") + expires + domain + "; path=/";
+
+        CookieStorageUtils.setItem(cookieString);
+    };
+
+    /**
+     * Extracts the domain from the hostname.
+     * If parsing fails, undefined will be returned.
+     *
+     * @returns current domain
+     */
+    const extractDomainFromHost = (): string => {
+        let domain: string = undefined;
+
+        /**
+         * Extract the domain from the hostname.
+         * Ex: If console.wso2-is.com is parsed, `wso2-is.com` will be set as the domain.
+         */
+        try {
+            const hostnameTokens: string[] = window.location.hostname.split(".");
+
+            if (hostnameTokens.length > 1) {
+                domain = hostnameTokens.slice(hostnameTokens.length - 2, hostnameTokens.length).join(".");
+            }
+        } catch (e) {
+            // Couldn't parse the hostname. Log the error in debug mode.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        return domain;
+    };
 
     /**
      * Performs pre-requisites for the side panel items visibility.
@@ -110,7 +156,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         // Fetches the list of applications to see if the list is empty.
         // If it is empty, hides the side panel item.
         fetchApplications(null, null, null)
-            .then((response: ApplicationList) => {
+            .then((response: { applications: Application[]; }) => {
                 if (isEmpty(response.applications)) {
                     dispatch(toggleApplicationsPageVisibility(false));
 
@@ -132,14 +178,13 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             return;
         }
 
-        const routes: RouteInterface[] = getDashboardLayoutRoutes()
-            .filter((route: RouteInterface) => {
-                if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
-                    return false;
-                }
+        const routes: RouteInterface[] = getDashboardLayoutRoutes().filter((route: RouteInterface) => {
+            if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
+                return false;
+            }
 
-                return route;
-            });
+            return route;
+        });
 
         setDashboardLayoutRoutes(filterRoutes(routes, config.ui?.features));
     }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible ]);
@@ -156,38 +201,6 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     }, [ location.pathname, dashboardLayoutRoutes ]);
 
     /**
-     * Callback for side panel hamburger click.
-     */
-    const handleSidePanelToggleClick = (): void => {
-        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
-    };
-
-    /**
-     * Callback for side panel pusher click.
-     */
-    const handleSidePanelPusherClick = (): void => {
-        setMobileSidePanelVisibility(false);
-    };
-
-    /**
-     * Handles side panel item click event.
-     *
-     * @param route - Clicked on route.
-     */
-    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
-        if (!route.path) {
-            return;
-        }
-
-        setSelectedRoute(route);
-        history.push(route.path);
-
-        if (isMobileViewport) {
-            setMobileSidePanelVisibility(false);
-        }
-    };
-
-    /**
      * Handles alert system initialize action.
      *
      * @param system - Alert system instance.
@@ -196,112 +209,136 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         dispatch(initializeAlertSystem(system));
     };
 
-    const Loader = () => (
-        <div className="lazy-content-loader">
-            <Segment padded basic>
-                <ContentLoader inline="centered" active/>
-            </Segment>
-        </div>
-    );
+    useEffect(() => {
+        if (isEmpty(config)) {
+            return;
+        }
+
+        if (
+            !config?.ui?.announcements ||
+            !(config?.ui?.announcements instanceof Array) ||
+            config?.ui?.announcements.length < 1
+        ) {
+            return;
+        }
+
+        setAnnouncement(
+            CommonUtils.getValidAnnouncement(config.ui.announcements, MyAccountCommonUtils.getSeenAnnouncements())
+        );
+    }, [ config ]);
+
+    const handleAnnouncementDismiss = () => {
+        setShowAnnouncement(false);
+    };
 
     return (
-        <DashboardLayoutSkeleton
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
-            topLoadingBar={ (
-                <TopLoadingBar
-                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ isAJAXTopLoaderVisible }
-                />
-            ) }
-            header={ (
-                <Header
-                    fluid={ false }
-                    onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
-            ) }
-            sidePanel={ (
-                <SidePanel
-                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                    fluid={ false }
-                    footerHeight={ footerHeight }
-                    headerHeight={ headerHeight }
-                    hoverType="background"
-                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                    onSidePanelItemClick={ handleSidePanelItemClick }
-                    onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(dashboardLayoutRoutes, []) }
-                    selected={ selectedRoute }
-                    translationHook={ t }
-                    allowedScopes={ allowedScopes }
-                />
-            ) }
-            footer={ (
-                <Media greaterThan="mobile">
-                    <Footer fluid={ false } />
-                </Media>
-            ) }
-        >
-            <ErrorBoundary
-                onChunkLoadError={ AppUtils.onChunkLoadError }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("myAccount:placeholders.genericError.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().genericError }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("myAccount:placeholders.genericError.subtitles.0"),
-                            t("myAccount:placeholders.genericError.subtitles.1")
+        <>
+            <Alert
+                dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                alertsPosition="br"
+                alertSystem={ alertSystem }
+                alert={ alert }
+                onAlertSystemInitialize={ handleAlertSystemInitialize }
+                withIcon={ true }
+            />
+            { announcement ? (
+                <Snackbar
+                    open={ showAnnouncement }
+                    anchorOrigin={ { horizontal: "center", vertical: "top" } }
+                    onClose={ handleAnnouncementDismiss }
+                >
+                    <OxygenAlert
+                        severity={ announcement.color as AlertProps[ "severity" ] }
+                        onClose={ handleAnnouncementDismiss }
+                    >
+                        { announcement.message }
+                    </OxygenAlert>
+                </Snackbar>
+            ) : null }
+            <AppShell
+                header={ <Header handleSidePanelToggleClick={ handleSidePanelToggleClick } /> }
+                navigation={ (
+                    <Navbar
+                        items={ [
+                            {
+                                id: "myaccount-navbar",
+                                items: RouteUtils.sanitizeForUI(dashboardLayoutRoutes, []).map(
+                                    (route: RouteInterface) => {
+                                        return {
+                                            "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
+                                            "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
+                                            icon: route.icon,
+                                            label: t(route.name),
+                                            onClick: () => history.push(route.path),
+                                            selected: selectedRoute?.path === route.path
+                                        };
+                                    }
+                                ),
+                                label: ""
+                            }
                         ] }
-                        title={ t("myAccount:placeholders.genericError.title") }
+                        fill={ "solid" }
+                        open={ mobileSidePanelVisibility }
+                        collapsible={ false }
                     />
                 ) }
             >
-                <Suspense fallback={ <Loader /> }>
-                    <Switch>
-                        {
-                            dashboardLayoutRoutes.map((route: RouteInterface, index: number) => (
-                                route.redirectTo
-                                    ? <Redirect to={ route.redirectTo } />
-                                    : route.protected
+                <Container maxWidth="lg">
+                    <ErrorBoundary
+                        onChunkLoadError={ AppUtils.onChunkLoadError }
+                        fallback={ (
+                            <EmptyPlaceholder
+                                action={
+                                    (<LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                        { t("myAccount:placeholders.genericError.action") }
+                                    </LinkButton>)
+                                }
+                                image={ getEmptyPlaceholderIllustrations().genericError }
+                                imageSize="tiny"
+                                subtitle={ [
+                                    t("myAccount:placeholders.genericError.subtitles.0"),
+                                    t("myAccount:placeholders.genericError.subtitles.1")
+                                ] }
+                                title={ t("myAccount:placeholders.genericError.title") }
+                            />
+                        ) }
+                    >
+                        <Suspense fallback={ <ContentLoader /> }>
+                            <Switch>
+                                { dashboardLayoutRoutes.map((route: RouteInterface, index: number) =>
+                                    route.redirectTo 
                                         ? (
+                                            <Redirect to={ route.redirectTo } key={ index } />
+                                        ) : route.protected ? (
                                             <ProtectedRoute
                                                 component={ route.component ? route.component : null }
                                                 path={ route.path }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />
-                                        )
-                                        : (
+                                        ) : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps: RouteComponentProps) =>
-                                                    route.component
-                                                        ? <route.component { ...renderProps } />
-                                                        : null
-                                                }
+                                                render={ (
+                                                    renderProps: RouteComponentProps<
+                                                    {
+                                                        [ x: string ]: string;
+                                                    },
+                                                    StaticContext,
+                                                    unknown
+                                                >
+                                                ) => (route.component ? <route.component { ...renderProps } /> : null) }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />
                                         )
-                            ))
-                        }
-                    </Switch>
-                </Suspense>
-            </ErrorBoundary>
-        </DashboardLayoutSkeleton>
+                                ) }
+                            </Switch>
+                        </Suspense>
+                    </ErrorBoundary>
+                </Container>
+            </AppShell>
+        </>
     );
 };
 

@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
@@ -24,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";
 import { store } from "../../../core";
-import { getHelpPanelIcons } from "../../configs";
+import { getHelpPanelIcons } from "../../configs/ui";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 
 /**
@@ -37,9 +36,9 @@ interface SAMLConfigurationsPropsInterface extends TestableComponentInterface {
 /**
  * OIDC application configurations Component.
  *
- * @param {SAMLConfigurationsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Help panel OIDC application configurations component.
  */
 export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterface> = (
     props: SAMLConfigurationsPropsInterface
@@ -53,7 +52,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
     const tenantName: string = store.getState().config.deployment.tenant;
 
     const exportMetadataFile = () => {
-        const blob = new Blob([ samlConfigurations?.metadata ], {
+        const blob: Blob = new Blob([ samlConfigurations?.metadata ], {
             type: "text/xml"
         });
 

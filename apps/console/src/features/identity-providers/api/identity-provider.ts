@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -36,6 +35,7 @@ import {
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderClaimsInterface,
+    IdentityProviderGroupInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
@@ -54,8 +54,10 @@ import {
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClientAll: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequestAll.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Creates Identity Provider.
@@ -63,7 +65,7 @@ const httpClientAll = AsgardeoSPAClient.getInstance().httpRequestAll.bind(Asgard
  * @param identityProvider - Identity provider settings data.
  */
 export const createIdentityProvider = <T = Record<string, unknown>> (identityProvider: T): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: identityProvider,
         headers: {
             "Accept": "application/json",
@@ -75,13 +77,13 @@ export const createIdentityProvider = <T = Record<string, unknown>> (identityPro
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -104,7 +106,7 @@ export const getIdentityProviderList = (
     requiredAttributes?: string
 ): Promise<IdentityProviderListResponseInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -121,13 +123,13 @@ export const getIdentityProviderList = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get IdP list from: "));
             }
 
             return Promise.resolve(response.data as IdentityProviderListResponseInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -182,7 +184,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const getIdentityProviderDetail = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -193,13 +195,13 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
             }
 
             return Promise.resolve(response.data as IdentityProviderResponseInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -208,7 +210,7 @@ export const getAllIdentityProvidersDetail = (
     ids: Set<string>
 ): Promise<IdentityProviderResponseInterface[]> => {
 
-    const requests = [];
+    const requests: any = [];
 
     for (const id of ids) {
         requests.push({
@@ -226,7 +228,7 @@ export const getAllIdentityProvidersDetail = (
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "Failed to get Identity Providers details.",
+                    "Failed to get connection details.",
                     null,
                     response.status,
                     response.request,
@@ -237,7 +239,7 @@ export const getAllIdentityProvidersDetail = (
             return Promise.resolve(response.data as IdentityProviderResponseInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                "Failed to get Identity Providers details.",
+                "Failed to get connection details.",
                 error.stack,
                 error.code,
                 error.request,
@@ -254,7 +256,7 @@ export const getAllIdentityProvidersDetail = (
  * @returns A promise containing the response.
  */
 export const deleteIdentityProvider = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -265,13 +267,13 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
-                return Promise.reject(new Error("Failed to delete the identity provider."));
+                return Promise.reject(new Error("Failed to delete the connection."));
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -285,7 +287,7 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
 export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): Promise<any> => {
 
     const { id, ...rest } = idp;
-    const replaceOps = [];
+    const replaceOps: any[] = [];
 
     for (const key in rest) {
         if(rest[key] !== undefined) {
@@ -298,7 +300,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
     }
 
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: replaceOps,
         headers: {
             "Accept": "application/json",
@@ -310,13 +312,13 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + id));
+                return Promise.reject(new Error("Failed to update connection: " + id));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -335,7 +337,7 @@ export const updateFederatedAuthenticator = (
 
     const { authenticatorId, ...rest } = authenticator;
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: rest,
         headers: {
             "Accept": "application/json",
@@ -348,13 +350,13 @@ export const updateFederatedAuthenticator = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -368,7 +370,7 @@ export const updateFederatedAuthenticator = (
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -380,7 +382,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get federated authenticator details for: " + authenticatorId)
@@ -388,7 +390,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorListItemInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -401,7 +403,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
  */
 export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -412,13 +414,13 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -430,7 +432,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
  */
 export const getFederatedAuthenticatorsList = (): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -441,13 +443,13 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -455,13 +457,12 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
 /**
  * Get federated authenticator metadata.
  *
- * @param idpId - ID of the Identity Provider.
  * @param authenticatorId - ID of the Federated Authenticator.
  * @returns A promise containing the response.
  */
 export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -473,14 +474,14 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
                     + authenticatorId));
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -493,7 +494,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
  */
 export const getOutboundProvisioningConnectorMetadata = (connectorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -505,14 +506,14 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector metadata for: "
                     + connectorId));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorMetaInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -526,7 +527,7 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
  */
 export const getOutboundProvisioningConnector = (idpId: string, connectorId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -538,14 +539,14 @@ export const getOutboundProvisioningConnector = (idpId: string, connectorId: str
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector for: "
                     + connectorId));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -564,7 +565,7 @@ export const updateOutboundProvisioningConnector = (
 
     const { connectorId, ...rest } = connector;
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: rest,
         headers: {
             "Accept": "application/json",
@@ -577,13 +578,13 @@ export const updateOutboundProvisioningConnector = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -600,7 +601,7 @@ export const updateJITProvisioningConfigs = (
     configs: JITProvisioningResponseInterface
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: configs,
         headers: {
             "Accept": "application/json",
@@ -613,7 +614,7 @@ export const updateJITProvisioningConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update jit configuration: " + idpId));
             }
@@ -635,7 +636,7 @@ export const getJITProvisioningConfigs = (
     idpId: string
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -646,7 +647,7 @@ export const getJITProvisioningConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get jit configuration: " + idpId));
             }
@@ -677,7 +678,7 @@ export const updateClaimsConfigs = (
     configs: IdentityProviderClaimsInterface
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: configs,
         headers: {
             "Accept": "application/json",
@@ -689,9 +690,9 @@ export const updateClaimsConfigs = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
@@ -707,6 +708,34 @@ export const updateClaimsConfigs = (
 };
 
 /**
+ * Get claims configurations.
+ *
+ * @returns the claim configurations of the identity provider.
+ */
+export const useClaimConfigs = <Data = IdentityProviderClaimsInterface, Error = RequestErrorInterface>
+    (idpId: string): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/claims"
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
  * Gets the identity provider template list with limit and offset.
  *
  * @param limit - Maximum Limit of the identity provider template List.
@@ -717,7 +746,7 @@ export const updateClaimsConfigs = (
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -764,7 +793,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
  * @returns A promise containing the response.
  */
 export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateInterface> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -811,7 +840,7 @@ export const updateIDPRoleMappings = (
     mappings: IdentityProviderRolesInterface
 ): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: mappings,
         headers: {
             "Accept": "application/json",
@@ -823,13 +852,13 @@ export const updateIDPRoleMappings = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -842,7 +871,7 @@ export const updateIDPRoleMappings = (
  */
 export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -885,7 +914,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
  */
 export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -929,7 +958,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
  */
 export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): Promise<AuthenticatorInterface[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -987,7 +1016,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
  */
 export const getAuthenticatorTags = (): Promise<string[]> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1030,7 +1059,7 @@ export const getAuthenticatorTags = (): Promise<string[]> => {
  */
 export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFactorAuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1077,7 +1106,7 @@ export const updateMultiFactorAuthenticatorDetails = (
     payload: MultiFactorAuthenticatorInterface
 ): Promise<MultiFactorAuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: {
             operation: "UPDATE",
             properties: payload.properties
@@ -1121,7 +1150,7 @@ export const updateMultiFactorAuthenticatorDetails = (
  * @returns A promise containing the response.
  */
 export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1132,13 +1161,13 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1155,7 +1184,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
     data: T
 ): Promise<IdentityProviderInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Accept": "application/json",
@@ -1167,9 +1196,9 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
@@ -1196,7 +1225,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
     idpId: string
 ): Promise<OutboundProvisioningConnectorListItemInterface> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: connectorList,
         headers: {
             "Accept": "application/json",
@@ -1208,13 +1237,13 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1222,7 +1251,7 @@ export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList -
+ * @param authenticatorList - List of Authenticators
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
@@ -1231,7 +1260,7 @@ export const updateFederatedAuthenticators = (
     idpId: string
 ): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: authenticatorList,
         headers: {
             "Accept": "application/json",
@@ -1243,13 +1272,13 @@ export const updateFederatedAuthenticators = (
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+                return Promise.reject(new Error("Failed to update connection: " + idpId));
             }
 
             return Promise.resolve(response.data as IdentityProviderInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -1262,7 +1291,7 @@ export const updateFederatedAuthenticators = (
  */
 export const getIDPConnectedApps = (idpId: string): Promise<any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -1273,7 +1302,7 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get connected apps for the IDP: " + idpId)
@@ -1281,7 +1310,65 @@ export const getIDPConnectedApps = (idpId: string): Promise<any> => {
             }
 
             return Promise.resolve(response.data as ConnectedAppsInterface);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get identity provider groups list.
+ *
+ * @returns the groups list of the identity provider.
+ */
+export const useIdentityProviderGroups = <Data = IdentityProviderGroupInterface[], Error = RequestErrorInterface>
+    (idpId: string): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups/"
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Update identity provider groups list.
+ *
+ * @returns the updated identity provider groups.
+ */
+export const updateIdentityProviderGroup = (idpId: string, idpGroups: IdentityProviderGroupInterface[]):
+    Promise<IdentityProviderGroupInterface[]> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: idpGroups,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/groups/"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to add connection group"));
+            }
+
+            return Promise.resolve(response.data as IdentityProviderGroupInterface[]);
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };

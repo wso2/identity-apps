@@ -1,0 +1,16 @@
+{
+    "routes": [
+        {
+            "route": "/app*",
+            "serve": "/app/index.html",
+            "statusCode": 200
+        },
+        {
+            "route": "/o/*",
+            "rewrite": "/app/index.html"
+        }
+    ],
+    "navigationFallback": {
+        "rewrite": "index.html"
+    }
+}

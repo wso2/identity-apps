@@ -21,7 +21,7 @@ import { useState } from "react";
 /**
  * This is a custom React Hook that returns a function that toggles the state and
  * thereby triggers either a reset or a submit event.
- * 
+ *
  * @param useState - Call the React useState hook.
  * @returns The state, A function that can be called to trigger a reset or submit event.
  */

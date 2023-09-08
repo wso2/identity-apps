@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,32 +15,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
 import { identityProviderConfig } from "../../../../extensions/configs";
 import { AppState, ModalWithSidePanel } from "../../../core";
 import {
     createIdentityProvider,
-    getFederatedAuthenticatorMetadata,
-    getOutboundProvisioningConnectorMetadata
+    getFederatedAuthenticatorMetadata
 } from "../../api";
-import { getIdentityProviderWizardStepIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
+    CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
+    FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface,
@@ -48,11 +50,7 @@ import {
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
 } from "../../models";
-import { IdentityProviderManagementUtils } from "../../utils";
-import {
-    handleGetFederatedAuthenticatorMetadataAPICallError,
-    handleGetOutboundProvisioningConnectorMetadataError
-} from "../utils";
+import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -64,7 +62,6 @@ interface IdentityProviderCreateWizardPropsInterface extends TestableComponentIn
  * Enum for wizard.
  *
  * @readonly
- * @enum {string}
  */
 enum WizardConstants {
     IDENTITY_PROVIDER = "identityProvider"
@@ -102,8 +99,8 @@ interface WizardStepInterface {
 /**
  * Identity provider creation wizard component.
  *
- * @param {IdentityProviderCreateWizardPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Identity provider creation wizard component.
  */
 export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCreateWizardPropsInterface> = (
     props: IdentityProviderCreateWizardPropsInterface
@@ -121,8 +118,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
-    const [ isSelectionHidden, setIsSelectionHidden ] = useState<boolean>(false);
-    const [ wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
+    //TODO: Check the usage of this state variable and remove if not needed.
+    const [ isSelectionHidden ] = useState<boolean>(false);
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata ] =
@@ -131,10 +129,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const availableAuthenticators = useSelector((state: AppState) =>
+    const availableAuthenticators: FederatedAuthenticatorListItemInterface[] = useSelector((state: AppState) =>
         state.identityProvider.meta.authenticators);
 
     // Triggers for each wizard step.
@@ -148,7 +146,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Creates a new identity provider.
      *
-     * @param identityProvider Identity provider object.
+     * @param identityProvider - Identity provider object.
      */
     const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
 
@@ -156,7 +154,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         setIsSubmitting(true);
 
         createIdentityProvider(identityProvider)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 dispatch(addAlert({
                     description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
@@ -168,8 +166,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     onIDPCreate(createdIdpID);
 
@@ -179,10 +177,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
-                ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
-                : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
+                    ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
+                    : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
@@ -207,7 +205,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     setAlert({
                         description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
-                            { description: error.response.data.description }),
+                        { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
@@ -233,7 +231,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Navigates to the next wizard step.
      */
     const navigateToNext = (): void => {
-        let step = currentWizardStep;
+        let step: number = currentWizardStep;
 
         if (isSelectionHidden) {
             step = currentWizardStep + 1;
@@ -242,15 +240,19 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         switch (wizardSteps[step]?.name) {
             case WizardSteps.GENERAL_DETAILS:
                 setSubmitGeneralSettings();
+
                 break;
             case WizardSteps.AUTHENTICATOR_SETTINGS:
                 setSubmitAuthenticator();
+
                 break;
             case WizardSteps.OUTBOUND_PROVISIONING_SETTINGS:
                 setSubmitOutboundProvisioningSettings();
+
                 break;
             case WizardSteps.SUMMARY:
                 setFinishSubmit();
+
                 break;
             default:
                 break;
@@ -268,7 +270,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardConstants} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
         !isEnterpriseMode() && setCurrentWizardStep(currentWizardStep + 1);
@@ -333,7 +335,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Returns if the wizard is in the expert mode.
      *
-     * @return {boolean} isEnterpriseMode - True if it's the expert mode.
+     * @returns isEnterpriseMode - True if it's the expert mode.
      */
     const isEnterpriseMode = (): boolean => {
         return template?.id === "enterprise-idp";
@@ -342,10 +344,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Resolves the step content.
      *
-     * @return {React.ReactElement} Step content.
+     * @returns Step content.
      */
     const resolveStepContent = (currentStep: number): ReactElement => {
-        let step = currentStep;
+        let step: number = currentStep;
 
         if (isSelectionHidden) {
             step = currentStep + 1;
@@ -357,7 +359,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     <GeneralSettings
                         triggerSubmit={ submitGeneralSettings }
                         initialValues={ wizardState && wizardState[WizardConstants.IDENTITY_PROVIDER] }
-                        onSubmit={ (values): void => {
+                        onSubmit={ (values: IdentityProviderInterface): void => {
                             handleWizardFormSubmit(values,
                                 WizardConstants.IDENTITY_PROVIDER);
 
@@ -375,7 +377,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     <AuthenticatorSettings
                         metadata={ defaultAuthenticatorMetadata }
                         initialValues={ wizardState[WizardConstants.IDENTITY_PROVIDER] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(
+                        onSubmit={ (values: IdentityProviderInterface): void => handleWizardFormSubmit(
                             values, WizardConstants.IDENTITY_PROVIDER) }
                         triggerSubmit={ submitAuthenticator }
                         data-testid={ `${ testId }-authenticator-settings` }
@@ -387,7 +389,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     <OutboundProvisioningSettings
                         metadata={ defaultOutboundProvisioningConnectorMetadata }
                         initialValues={ wizardState[WizardConstants.IDENTITY_PROVIDER] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(
+                        onSubmit={ (values: IdentityProviderInterface): void => handleWizardFormSubmit(
                             values, WizardConstants.IDENTITY_PROVIDER) }
                         triggerSubmit={ submitOutboundProvisioningSettings }
                         data-testid={ `${ testId }-outbound-provisioning-settings` }
@@ -413,17 +415,13 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Loads the identity provider authenticators on initial component load.
      */
     useEffect(() => {
-        let isWaiting = false;
+        let isWaiting: boolean = false;
+
         if (isAuthenticatorSettingsStepAvailable() && isEmpty(availableAuthenticators)) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const status = IdentityProviderManagementUtils.getAuthenticators();
             isWaiting = true;
         }
 
         if (isOutboundProvisioningSettingsStepAvailable()) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const status = getProvisioningConnectorMetadata(template?.idp?.provisioning.outboundConnectors
-                .defaultConnectorId);
             isWaiting = true;
         }
 
@@ -436,30 +434,15 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Gets the authenticator meta data.
      *
-     * @param authenticatorId
+     * @param authenticatorId - ID of the authenticator.
      */
     const setAuthenticatorMetadata = (authenticatorId: string) => {
         getFederatedAuthenticatorMetadata(authenticatorId)
-            .then((response) => {
+            .then((response: FederatedAuthenticatorMetaInterface) => {
                 setDefaultAuthenticatorMetadata(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleGetFederatedAuthenticatorMetadataAPICallError(error);
-            });
-    };
-
-    /**
-     * Gets the outbound authenticator meta data.
-     *
-     * @param connectorId ID of the outbound provisioning connector.
-     */
-    const getProvisioningConnectorMetadata = (connectorId: string): Promise<void> => {
-        return getOutboundProvisioningConnectorMetadata(connectorId)
-            .then((response) => {
-                setDefaultOutboundProvisioningConnectorMetadata(response);
-            })
-            .catch((error) => {
-                handleGetOutboundProvisioningConnectorMetadataError(error);
             });
     };
 
@@ -467,46 +450,58 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Called when `availableAuthenticators` are changed.
      */
     useEffect(() => {
-        if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
-            template?.idp?.federatedAuthenticators?.defaultAuthenticatorId)) {
+        if (availableAuthenticators?.find((
+            eachAuthenticator: FederatedAuthenticatorListItemInterface
+        ) => eachAuthenticator.authenticatorId === template?.idp?.federatedAuthenticators?.defaultAuthenticatorId)) {
             setAuthenticatorMetadata(template?.idp?.federatedAuthenticators?.defaultAuthenticatorId);
         }
-    }, [availableAuthenticators]);
+    }, [ availableAuthenticators ]);
 
     /**
      * Update initial elements with a matching element form the source elements, if exists. Matching is done via the
      * provided `key` attribute.
      *
-     * @param initial Initial elements array.
-     * @param source Source elements array.
-     * @param key String attribute which is used to match elements.
-     * @return Updated initial elements array, with the matching elements in the source elements array.
+     * @param initial - Initial elements array.
+     * @param source - Source elements array.
+     * @param key - String attribute which is used to match elements.
+     * @returns Updated initial elements array, with the matching elements in the source elements array.
      */
-    const getUpdatedElementsByKey = (initial: any[], source: any[], key: string) => {
-        return initial?.map(eachInitialElement => {
-            const match = source.find(eachSourceElement => eachSourceElement[key] === eachInitialElement[key]);
-            return match ? match : eachInitialElement;
-        });
+    const getUpdatedElementsByKey = (
+        initial: AuthenticatorPropertyInterface[] | CommonPluggableComponentPropertyInterface[],
+        source: CommonPluggableComponentPropertyInterface[],
+        key: string
+    ) => {
+        return initial?.map(
+            (eachInitialElement: AuthenticatorPropertyInterface | CommonPluggableComponentPropertyInterface) => {
+                const match: CommonPluggableComponentPropertyInterface = source.find(
+                    (eachSourceElement: CommonPluggableComponentPropertyInterface) => eachSourceElement[key] === 
+                        eachInitialElement[key]);
+
+                return match ? match : eachInitialElement;
+            });
     };
 
     /**
      * Validate and get federate authenticators.
      */
     const getValidatedAuthenticators = () => {
-        const defaultAuthenticatorPropertiesFromMetadata = defaultAuthenticatorMetadata?.properties.map(
-            (eachProp): AuthenticatorPropertyInterface => {
-                return {
-                    key: eachProp?.key,
-                    value: eachProp?.defaultValue
-                };
-            });
+        const defaultAuthenticatorPropertiesFromMetadata: AuthenticatorPropertyInterface[] = 
+            defaultAuthenticatorMetadata?.properties.map(
+                (eachProp: CommonPluggableComponentMetaPropertyInterface): AuthenticatorPropertyInterface => {
+                    return {
+                        key: eachProp?.key,
+                        value: eachProp?.defaultValue
+                    };
+                });
 
         // For the default authenticator, update values of it's properties with the corresponding value from the
         // template, if any.
         // todo Need to do the same for rest of the configured authenticators in the template.
-        const authenticatorsInTemplate = template?.idp?.federatedAuthenticators.authenticators;
+        const authenticatorsInTemplate: FederatedAuthenticatorListItemInterface[] = template?.
+            idp?.federatedAuthenticators.authenticators;
+
         return {
-            authenticators: authenticatorsInTemplate.map((authenticator) => {
+            authenticators: authenticatorsInTemplate.map((authenticator: FederatedAuthenticatorListItemInterface) => {
                 return authenticator.authenticatorId === template?.idp?.federatedAuthenticators.defaultAuthenticatorId ?
                     {
                         ...authenticator,
@@ -523,20 +518,24 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Validate and get outbound provisioning connectors.
      */
     const getValidatedOutboundProvisioningConnectors = () => {
-        const defaultConnectorPropertiesFromMetadata = defaultOutboundProvisioningConnectorMetadata?.properties.map(
-            (eachProp): CommonPluggableComponentPropertyInterface => {
-                return {
-                    key: eachProp?.key,
-                    value: eachProp?.defaultValue
-                };
-            });
+        const defaultConnectorPropertiesFromMetadata: CommonPluggableComponentPropertyInterface[] = 
+            defaultOutboundProvisioningConnectorMetadata?.properties.map(
+                // eslint-disable-next-line max-len
+                (eachProp: CommonPluggableComponentMetaPropertyInterface): CommonPluggableComponentPropertyInterface => {
+                    return {
+                        key: eachProp?.key,
+                        value: eachProp?.defaultValue
+                    };
+                });
 
         // For the default connector, update values of it's properties with the corresponding value from the
         // template, if any.
         // todo Need to do the same for rest of the configured authenticators in the template.
-        const connectorsInTemplate = template?.idp?.provisioning.outboundConnectors.connectors;
+        const connectorsInTemplate: OutboundProvisioningConnectorInterface[] = template?.
+            idp?.provisioning.outboundConnectors.connectors;
+
         return {
-            connectors: connectorsInTemplate.map((templateConnector) => {
+            connectors: connectorsInTemplate.map((templateConnector: OutboundProvisioningConnectorInterface) => {
                 return templateConnector.connectorId === template?.idp?.provisioning.outboundConnectors
                     .defaultConnectorId ?
                     {
@@ -612,7 +611,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const initializeWizard = () => {
         // Each of the IdP attributes which require validation or any modification prior initializing, are stored in
         // this object.
-        let validatedIdpAttributes = {} as IdentityProviderInterface;
+        let validatedIdpAttributes: IdentityProviderInterface = {} as IdentityProviderInterface;
 
         if (isAuthenticatorSettingsStepAvailable()) {
             validatedIdpAttributes = {
@@ -651,7 +650,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         initializeWizard();
 
         setInitWizard(false);
-    }, [initWizard]);
+    }, [ initWizard ]);
 
     const isAuthenticatorSettingsStepReady =
         (authenticatorMetadata: FederatedAuthenticatorMetaInterface): boolean => {
@@ -676,7 +675,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         if (isWizardReady()) {
             setInitWizard(true);
         }
-    }, [defaultAuthenticatorMetadata, defaultOutboundProvisioningConnectorMetadata]);
+    }, [ defaultAuthenticatorMetadata, defaultOutboundProvisioningConnectorMetadata ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -688,21 +687,25 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         }
         setCurrentWizardStep(currentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
-    }, [partiallyCompletedStep]);
+    }, [ partiallyCompletedStep ]);
 
     const renderModalActions = (): ReactElement => {
         return (
             <Grid>
                 <Grid.Row column={ 1 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                        <LinkButton floated="left" onClick={ handleWizardClose }
+                        <LinkButton
+                            floated="left"
+                            onClick={ handleWizardClose }
                             data-testid={ `${ testId }-modal-cancel-button` }>
                             { t("common:cancel") }
                         </LinkButton>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                         { currentWizardStep < wizardSteps.length - 1 && (
-                            <PrimaryButton floated="right" onClick={ navigateToNext }
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ navigateToNext }
                                 data-testid={ `${ testId }-modal-next-button` }>
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 <Icon name="arrow right" />
@@ -719,7 +722,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                             </PrimaryButton>
                         ) }
                         { currentWizardStep > 0 && (
-                            <LinkButton floated="right" onClick={ navigateToPrevious }
+                            <LinkButton
+                                floated="right"
+                                onClick={ navigateToPrevious }
                                 data-testid={ `${ testId }-modal-previous-button` }>
                                 <Icon name="arrow left" />
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
@@ -734,7 +739,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     /**
      * Renders the help panel containing wizard help.
      *
-     * @return {React.ReactElement}
+     * @returns Help panel component.
      */
     const renderHelpPanel = (): ReactElement => {
 
@@ -766,7 +771,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     return (
         (
             wizardSteps ?
-                <ModalWithSidePanel
+                (<ModalWithSidePanel
                     open={ true }
                     className="wizard identity-provider-create-wizard"
                     dimmer="blurring"
@@ -792,7 +797,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         </ModalWithSidePanel.Actions>
                     </ModalWithSidePanel.MainPanel>
                     { renderHelpPanel() }
-                </ModalWithSidePanel> : null
+                </ModalWithSidePanel>) : null
         )
     );
 };

@@ -77,7 +77,7 @@ export interface AvatarPropsInterface extends IdentifiableComponentInterface, Te
     /**
      * Color of the avatar initials.
      */
-    initialsColor?: "white" | "primary";
+    initialsColor?: "black" | "white" | "primary";
     /**
      * If the avatar is in a loading state.
      */
@@ -469,7 +469,7 @@ Avatar.defaultProps = {
     "data-componentid": "avatar",
     "data-testid": "avatar",
     editIconSize: "micro",
-    initialsColor: "white",
+    initialsColor: "black",
     inline: true,
     isLoading: false,
     label: null,

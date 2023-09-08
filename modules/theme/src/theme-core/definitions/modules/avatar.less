@@ -75,9 +75,16 @@
     }
 
     &.initials-color {
+
         &-white {
             .initials {
                 color: @white !important;
+            }
+        }
+
+        &-black {
+            .initials {
+                color: @black !important;
             }
         }
 
@@ -94,6 +101,7 @@
     }
     
     .inner-content {
+        height: 100%;
         // Stretch out non square images to fill the spaces. 
         .inner-image {
             position: absolute;
@@ -129,17 +137,19 @@
 --------------------------------*/
 
 .ui-avatar {
+
     &.circular {
         text-align: @circularAvatarTextAlign;
-        background: @circularAvatarBackground;
+        background: @primaryGradientColor;
 
         &.mini {
             width: @miniWidth;
             height: @miniWidth;
 
             .initials {
-                font-size: 1.5em;
+                font-size: @avatarMiniInitialsFontSize;
                 line-height: @miniWidth;
+                font-weight: @avatarInitialsFontWeight;
             }
         }
 
@@ -270,14 +280,16 @@
 .ui-avatar {
     &.square {
         text-align: center;
+        background: @primaryGradientColor;
 
         &.mini {
             width: @miniWidth !important;
             height: @miniWidth !important;
 
             .initials {
-                font-size: 1.5em;
+                font-size: @avatarMiniInitialsFontSize;
                 line-height: @miniWidth;
+                font-weight: @avatarInitialsFontWeight;
             }
         }
 

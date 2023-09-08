@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,8 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../core";
-import { UserBasicInterface } from "../../../users";
+import { GroupsInterface } from "../../../groups/models/groups";
+import { UserBasicInterface } from "../../../users/models/user";
 
 /**
  * Captures props needed for the assign roles and users component.
@@ -31,10 +32,10 @@ interface AssignGroupsUsersPropsInterface extends TestableComponentInterface {
     selectedUserStore: string;
     initialUsersList: any;
     initialGroupList: any;
-    handleGroupListChange: (groups) => void;
-    handleAddedGroupListChange: (groups) => void;
-    handleAddedGroupInitialListChange: (groups) => void;
-    handleInitialGroupListChange: (groups) => void;
+    handleGroupListChange: (groups: GroupsInterface[]) => void;
+    handleAddedGroupListChange: (groups: GroupsInterface[]) => void;
+    handleAddedGroupInitialListChange: (groups: GroupsInterface[]) => void;
+    handleInitialGroupListChange: (groups: GroupsInterface[]) => void;
     /**
      * Fired when a user is removed from the list.
      */
@@ -44,9 +45,9 @@ interface AssignGroupsUsersPropsInterface extends TestableComponentInterface {
 /**
  * Component which will allow to assign roles to groups and users.
  *
- * @param {AssignGroupsUsersPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Assgin groups and users component.
  */
 export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterface> = (
     props: AssignGroupsUsersPropsInterface
@@ -74,10 +75,12 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AssignGroups
                         initialValues={ initialGroupList }
-                        handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                        handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
-                        handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                        handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                        handleGroupListChange={ (groups: GroupsInterface[]) => handleGroupListChange(groups) }
+                        handleTempListChange={ (groups: GroupsInterface[]) => handleAddedGroupListChange(groups) }
+                        handleInitialTempListChange={ 
+                            (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups) }
+                        handleInitialGroupListChange={ 
+                            (groups: GroupsInterface[]) => handleInitialGroupListChange(groups) }
                     />
                 </ResourceTab.Pane>
             )

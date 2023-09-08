@@ -1,7 +1,7 @@
 <!--
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.org) All Rights Reserved.
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,9 +16,6 @@
  * under the License.
 -->
 
-<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14.002" viewBox="0 0 14 14.002">
-  <g id="home-outline" transform="translate(-12841 1863)">
-    <rect id="Rectangle_766" data-name="Rectangle 766" width="14" height="14" transform="translate(12841 -1863)" fill="#fff" opacity="0"/>
-    <path id="Path_2512" data-name="Path 2512" d="M7.958,14.165a.41.41,0,0,1-.41-.41v-.023a.431.431,0,0,1-.02-.128V9.634H5.216V13.6a.39.39,0,0,1-.023.135c0,.006,0,.012,0,.017a.41.41,0,0,1-.406.41H.5a.4.4,0,0,1-.4-.485A.433.433,0,0,1,.095,13.6V5.223a.408.408,0,0,1,.144-.311.408.408,0,0,1,.084-.088L6.106.263A.408.408,0,0,1,6.319.169h0l.015,0h.086l.012,0h0l.014,0h0l.012,0h0l.015,0h0a.408.408,0,0,1,.143.076L12.42,4.823a.408.408,0,0,1,.085.09.409.409,0,0,1,.143.311V13.6a.412.412,0,0,1-.007.075.41.41,0,0,1-.4.486Zm-.02-5.351a.41.41,0,0,1,.409.41v4.121h3.48V5.4L6.371,1.1.914,5.4v7.945H4.394V9.224a.41.41,0,0,1,.412-.41H7.938Z" transform="translate(12841.605 -1863.164)"/>
-  </g>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.4 16C1.07452 16 0 15.1047 0 14.0002V6.133C0 5.56056 0.2944 5.01557 0.808658 4.63601L6.40866 0.502817C7.317 -0.167606 8.683 -0.167606 9.59134 0.502817L15.1913 4.63601C15.7056 5.01557 16 5.56056 16 6.133V14.0002C16 15.1047 14.9255 16 13.6 16H2.4ZM1.60433 5.3845L7.20433 1.25131C7.6585 0.9161 8.3415 0.9161 8.79567 1.25131L14.3957 5.3845C14.6528 5.57428 14.8 5.84678 14.8 6.133V14.0002C14.8 14.5524 14.2627 15.0001 13.6 15.0001L10.8 15.0001V10.3339C10.8 9.4135 9.90457 8.66738 8.8 8.66738H7.2C6.09543 8.66738 5.2 9.4135 5.2 10.3339V15.0001L2.4 15.0001C1.73726 15.0001 1.2 14.5524 1.2 14.0002V6.133C1.2 5.84678 1.3472 5.57428 1.60433 5.3845ZM6.4 15.0001H9.6V10.3339C9.6 9.96573 9.24183 9.66728 8.8 9.66728H7.2C6.75817 9.66728 6.4 9.96573 6.4 10.3339V15.0001Z" fill="black"/>
 </svg>

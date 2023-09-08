@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,11 +18,10 @@
 
 import { FunctionComponent, ReactNode } from "react";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
-import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
-    ReactComponent as BlockedMagnifierIcon
-} from "../../../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
-import { ReactComponent as BriefcaseIcon } from "../../../themes/default/assets/images/icons/briefcase-icon.svg";
+    ReactComponent as ApplicationRolesIcon
+} from "../../../themes/default/assets/images/icons/application-roles.svg";
+import { ReactComponent as ArrowRight } from "../../../themes/default/assets/images/icons/arrow-right-icon.svg";
 import { ReactComponent as CaretLeftIcon } from "../../../themes/default/assets/images/icons/caret-left-icon.svg";
 import { ReactComponent as CaretRightIcon } from "../../../themes/default/assets/images/icons/caret-right-icon.svg";
 import {
@@ -30,7 +29,6 @@ import {
 } from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
 import { ReactComponent as CertificateIcon } from "../../../themes/default/assets/images/icons/certificate-icon.svg";
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
-import { ReactComponent as CloseIcon } from "../../../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import { ReactComponent as ConnectionIcon } from "../../../themes/default/assets/images/icons/connection.svg";
 import ConsoleIcon from "../../../themes/default/assets/images/icons/console-icon.svg";
@@ -38,28 +36,39 @@ import { ReactComponent as CrossIcon } from "../../../themes/default/assets/imag
 import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/images/icons/database-icon.svg";
 import { ReactComponent as DragSquaresIcon } from "../../../themes/default/assets/images/icons/drag-squares-icon.svg";
+import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as ForbiddenIcon } from "../../../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import LogoutIcon from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../../../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../../../themes/default/assets/images/icons/minimize-icon.svg";
 import MyAccountIcon from "../../../themes/default/assets/images/icons/myaccount-icon.svg";
 import {
+    ReactComponent as OrganizationRolesIcon
+} from "../../../themes/default/assets/images/icons/organization-roles.svg";
+import {
     ReactComponent as AccountManagementOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
 import {
+    ReactComponent as AnalyticsIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/analytics.svg";
+import {
     ReactComponent as ApplicationsOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/application-outline.svg";
+import {
+    ReactComponent as BriefcaseIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/briefcase-outline.svg";
 import { ReactComponent as HomeIcon } from "../../../themes/default/assets/images/icons/outline-icons/home-outline.svg";
 import {
     ReactComponent as IDPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
 import {
-    ReactComponent as IDVPOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/idvp-outline.svg";
-import {
     ReactComponent as KeyOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/key-outline.svg";
+import {
+    ReactComponent as LDAPOutlineLegacyIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/ldap-outline-legacy.svg";
 import {
     ReactComponent as LDAPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/ldap-outline.svg";
@@ -75,7 +84,6 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
-import { ReactComponent as PaperRocketIcon } from "../../../themes/default/assets/images/icons/paper-rocket-icon.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
@@ -119,6 +127,9 @@ import {
 import {
     ReactComponent as EmptySearchResultsIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/empty-search-illustration.svg";
+import {
+    ReactComponent as PageNotFoundIllustration
+} from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
@@ -204,6 +215,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
  * Typed interface of {@link getSidePanelIcons}
  */
 export type GetSidePanelIconsInterface = {
+    applicationRoles: FunctionComponent | ReactNode,
     appLogs: FunctionComponent | ReactNode,
     applications: FunctionComponent | ReactNode,
     approvals: FunctionComponent | ReactNode,
@@ -214,18 +226,21 @@ export type GetSidePanelIconsInterface = {
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
+    home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
-    identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
+    organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
+    organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
     secrets: FunctionComponent | ReactNode,
     serverConfigurations: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
-    users: FunctionComponent | ReactNode
+    users: FunctionComponent | ReactNode,
+    insights: FunctionComponent | ReactNode
 };
 
 /**
@@ -237,6 +252,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
 
     return {
         appLogs: IDPMetadataIcon,
+        applicationRoles: ApplicationRolesIcon,
         applications: ApplicationsOutlineIcon,
         approvals: ApprovalsIcon,
         certificate: CertificateIcon,
@@ -253,12 +269,15 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             [ ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID ]: OtherSettingsOutlineIcon,
             default: PlugIcon
         },
-        emailTemplates: PaperRocketIcon,
+        emailTemplates: EmailIcon,
         groups: UserGroupIcon,
+        home: HomeIcon,
         identityProviders: IDPOutlineIcon,
-        identityVerificationProviders: IDVPOutlineIcon ,
+        insights: AnalyticsIcon,
         jwtKey: JWTKey,
         organization: LDAPOutlineIcon,
+        organizationLegacy: LDAPOutlineLegacyIcon,
+        organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
         roles: BriefcaseIcon,
@@ -339,10 +358,10 @@ export const getEmptyPlaceholderIllustrations = (): GetEmptyPlaceholderIllustrat
         emptyList: EmptyListIllustration,
         emptySearch: EmptySearchResultsIllustration,
         fileUpload: FileUploadIllustration,
-        genericError: CloseIcon,
+        genericError: BrokenPageIllustration,
         loginError: ForbiddenIcon,
         newList: EmptyListIllustration,
-        pageNotFound: BlockedMagnifierIcon,
+        pageNotFound: PageNotFoundIllustration,
         search: EmptySearchResultsIllustration
     };
 };
@@ -454,7 +473,8 @@ export const getSecretManagementIllustrations = (): GetSecretManagementIllustrat
  * Typed interface of {@link getMiscellaneousIcons}
  */
 export type GetMiscellaneousIconsInterface = {
-    tenantIcon: FunctionComponent | ReactNode
+    tenantIcon: FunctionComponent | ReactNode,
+    tenantLegacyIcon: FunctionComponent | ReactNode
 };
 
 /**
@@ -465,7 +485,8 @@ export type GetMiscellaneousIconsInterface = {
 export const getMiscellaneousIcons = (): GetMiscellaneousIconsInterface => {
 
     return {
-        tenantIcon: LDAPOutlineIcon
+        tenantIcon: LDAPOutlineIcon,
+        tenantLegacyIcon: LDAPOutlineLegacyIcon
     };
 };
 
@@ -474,6 +495,7 @@ export const getMiscellaneousIcons = (): GetMiscellaneousIconsInterface => {
  */
 export type GetAppSwitcherIconsInterface = {
     console: string,
+    logout: string,
     myAccount: string
 };
 
@@ -486,6 +508,7 @@ export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
 
     return {
         console: ConsoleIcon,
+        logout: LogoutIcon,
         myAccount: MyAccountIcon
     };
 };

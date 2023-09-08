@@ -39,6 +39,7 @@ export interface CommonNS {
     authentication: string;
     authenticator_plural: string;
     back: string;
+    beta: string;
     browser: string;
     cancel: string;
     challengeQuestionNumber: string;
