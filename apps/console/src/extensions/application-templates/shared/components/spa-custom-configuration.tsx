@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     GenericIconProps,
     Heading,
@@ -232,13 +233,12 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                         }
                     >
                         You can implement login using 
-                        <a
-                            href={ documentationLink }
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <DocumentationLink
+                            link={ documentationLink }
+                            showEmptyLinkText
                         >
                             Authorization Code flow with PKCE
-                        </a> with Asgardeo for any SPA technology.
+                        </DocumentationLink> with Asgardeo for any SPA technology.
                     </Trans>
                 </Text>  
             </Card.Content>
