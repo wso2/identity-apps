@@ -18,11 +18,11 @@
 #
 # --------------------------------------------------------------------------------------
 
-name: Release Workflow
+name: Release
 
 on:
     push:
-        branches: [improve-release-workflow]
+        branches: [ master ]
         paths-ignore:
             - "LICENSE"
         workflow_dispatch:
