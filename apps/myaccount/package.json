@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "@asgardeo/myaccount",
+    "name": "@wso2is/myaccount",
     "version": "2.0.0",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
