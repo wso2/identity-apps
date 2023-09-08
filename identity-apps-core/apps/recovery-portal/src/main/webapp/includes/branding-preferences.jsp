@@ -44,7 +44,7 @@
     String supportEmail = "contact@wso2.com";
     String logoURL = "";
     String logoAlt = "";
-    String faviconURL = "libs/themes/asgardio/assets/images/branding/favicon.ico";
+    String faviconURL = "libs/themes/wso2is/assets/images/branding/favicon.ico";
     String privacyPolicyURL = "/authenticationendpoint/privacy_policy.do";
     String termsOfUseURL = "";
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
@@ -57,9 +57,9 @@
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
     String productURL = "https://wso2.com/identity-server";
-    String productLogoURL = "libs/themes/asgardio/assets/images/branding/logo.svg";
+    String productLogoURL = "libs/themes/wso2is/assets/images/branding/logo.svg";
     String productLogoAlt = "WSO2 Identity Server Logo";
-    String productWhiteLogoURL = "libs/themes/asgardio/assets/images/branding/logo-white.svg";
+    String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
 
     // Constants used to create full custom layout name
