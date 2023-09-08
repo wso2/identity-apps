@@ -33,7 +33,7 @@ export const SCIMConfigs: SCIMConfigInterface = {
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
     scimDialectID: {
-        customEnterpriseSchema: "dXJuOnNjaW06d3NvMjpzY2hlbWE",
+        customEnterpriseSchema: "dXJuOnNjaW06d3NvMjpzY2hlbWE"
     },
     scimEnterpriseUserClaimUri: {
         accountDisabled: "urn:scim:wso2:schema.accountDisabled",

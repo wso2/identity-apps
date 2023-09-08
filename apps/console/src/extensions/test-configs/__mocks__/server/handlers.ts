@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Extended MSW Server Handlers.
  *
  * @remarks Put all the extension handlers here with proper documentation.
  */
@@ -26,4 +25,4 @@
  * Extended MSW Request Handlers.
  * @see {@link https://mswjs.io/docs/basics/request-handler}
  */
-export const handlers = [ ];
+export const handlers: any = [ ];
