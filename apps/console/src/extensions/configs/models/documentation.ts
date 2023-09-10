@@ -222,6 +222,10 @@ interface ConnectionsDocumentationLinksInterface {
     newConnection: {
         learnMore: string;
         apple: {
+            help: {
+                configureSignIn: string;
+                developerConsole: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
@@ -236,26 +240,49 @@ interface ConnectionsDocumentationLinksInterface {
             };
         };
         facebook: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
         github: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
         google: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
         hypr: {
+            help: {
+                developerConsole: string;
+                token: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
         microsoft: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
             setupGuide: string;
         };
         siwe: {
+            help: {
+                configureOIDC: string;
+            };
             learnMore: string;
             setupGuide: string;
         };

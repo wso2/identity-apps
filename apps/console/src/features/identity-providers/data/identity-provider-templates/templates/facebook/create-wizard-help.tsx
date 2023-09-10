@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -48,6 +48,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
         } = props;
 
         const { t } = useTranslation();
+        const { getLink } = useDocumentation();
 
         const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -82,12 +83,10 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                         "wizardHelp.preRequisites.getCredentials"
                                     }
                                 >
-                                Before you begin, create an <strong>application</strong> <a
-                                        href="https://developers.facebook.com/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                on Facebook Developer Console
-                                    </a>, and obtain a <strong>App ID & secret</strong>.
+                                    Before you begin, create an <strong>application</strong> <DocumentationLink
+                                        link={ getLink("develop.connections.newConnection.facebook.help.developerConsole")}
+                                        showEmptyLinkText
+                                    >on Facebook Developer Console</DocumentationLink>, and obtain a <strong>App ID & secret</strong>.
                                 </Trans>
                             </p>
                             <p>
@@ -121,15 +120,15 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                     value={ config?.deployment?.customServerHost + "/commonauth" }
                                 />
     
-                                <a
-                                    href="https://developers.facebook.com/docs/development/create-an-app"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
+                                <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.facebook.help.configureOAuth") }
+                                    showEmptyLinkText
+                                >
                                     {
                                         t("console:develop.features.authenticationProvider.templates.facebook" +
-                                        ".wizardHelp.preRequisites.configureOAuthApps")
+                                            ".wizardHelp.preRequisites.configureOAuthApps")
                                     }
-                                </a>
+                                </DocumentationLink>
                             </p>
                         </>)
                     }

@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -45,6 +45,7 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -79,11 +80,10 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                     "preRequisites.getCredentials"
                                 }
                             >
-                                Before you begin, create an <strong>OAuth credential</strong> on the <a
-                                    href="https://portal.azure.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                > Azure Active Directory</a>, and obtain a <strong>Client ID & secret</strong>.
+                                Before you begin, create an <strong>OAuth credential</strong> on the <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.microsoft.help.developerConsole") }
+                                    showEmptyLinkText
+                                >on Microsoft</DocumentationLink>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -102,16 +102,15 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 value={ config?.deployment?.customServerHost + "/commonauth" }
                             />
 
-                            <a
-                                href={ "https://learn.microsoft.com/en-us/azure/active-directory/saas-apps"
-                                +"/openidoauth-tutorial?source=recommendations" }
-                                target="_blank"
-                                rel="noopener noreferrer">
+                            <DocumentationLink
+                                link={ getLink("develop.connections.newConnection.microsoft.help.configureOAuth") }
+                                showEmptyLinkText
+                            >
                                 {
                                     t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
                                         ".preRequisites.configureOAuthApps")
                                 }
-                            </a>
+                            </DocumentationLink>
                         </p>
                     </>)
                 }

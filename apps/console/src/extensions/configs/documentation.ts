@@ -196,6 +196,10 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 learnMore: undefined,
                 newConnection: {
                     apple: {
+                        help: {
+                            configureSignIn: undefined,
+                            developerConsole: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
@@ -210,27 +214,50 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         }
                     },
                     facebook: {
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
                     github: {
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
                     google: {
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
                     hypr: {
+                        help: {
+                            developerConsole: undefined,
+                            token: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
                     learnMore: undefined,
                     microsoft: {
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     },
                     siwe: {
+                        help: {
+                            configureOIDC: undefined
+                        },
                         learnMore: undefined,
                         setupGuide: undefined
                     }

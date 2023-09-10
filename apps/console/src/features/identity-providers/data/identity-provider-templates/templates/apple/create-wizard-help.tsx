@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -47,6 +47,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -82,12 +83,10 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                 }
                             >
                                 Before you begin, create a <strong>Sign in With Apple</strong> enabled 
-                                application on <a
-                                    href="https://developer.apple.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer">
-                                Apple Developer Portal
-                                </a> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
+                                application on <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.apple.help.developerConsole") }
+                                    showEmptyLinkText
+                                >Apple Developer Portal</DocumentationLink> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
                             </Trans>
                         </p>
                         <p>
@@ -117,18 +116,15 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                 className="copy-input-dark spaced"
                                 value={ config?.deployment?.customServerHost + "/commonauth" }
                             />
-                            <a
-                                href={
-                                    "https://developer.apple.com/documentation/sign_in_with_apple" + 
-                                    "/configuring_your_environment_for_sign_in_with_apple"
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer">
+                            <DocumentationLink
+                                link={ getLink("develop.connections.newConnection.apple.help.configureSignIn") }
+                                showEmptyLinkText
+                            >
                                 {
                                     t("console:develop.features.authenticationProvider.templates.apple" +
                                     ".wizardHelp.preRequisites.configureAppleSignIn")
                                 }
-                            </a>
+                            </DocumentationLink>
                         </p>
                     </>)
                 }
