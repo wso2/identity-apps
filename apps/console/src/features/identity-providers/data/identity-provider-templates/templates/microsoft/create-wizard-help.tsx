@@ -81,7 +81,9 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 }
                             >
                                 Before you begin, create an <strong>OAuth credential</strong> on the <DocumentationLink
-                                    link={ getLink("develop.connections.newConnection.microsoft.help.developerConsole") }
+                                    link={
+                                        getLink("develop.connections.newConnection.microsoft.help.developerConsole")
+                                    }
                                     showEmptyLinkText
                                 >on Microsoft</DocumentationLink>, and obtain a <strong>Client ID & secret</strong>.
                             </Trans>

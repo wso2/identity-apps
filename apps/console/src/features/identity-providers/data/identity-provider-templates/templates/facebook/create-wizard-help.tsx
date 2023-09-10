@@ -84,9 +84,12 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                     }
                                 >
                                     Before you begin, create an <strong>application</strong> <DocumentationLink
-                                        link={ getLink("develop.connections.newConnection.facebook.help.developerConsole")}
+                                        link={
+                                            getLink("develop.connections.newConnection.facebook.help.developerConsole")
+                                        }
                                         showEmptyLinkText
-                                    >on Facebook Developer Console</DocumentationLink>, and obtain a <strong>App ID & secret</strong>.
+                                    >on Facebook Developer Console</DocumentationLink>, and obtain a <strong
+                                    >App ID & secret</strong>.
                                 </Trans>
                             </p>
                             <p>

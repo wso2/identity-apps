@@ -86,7 +86,8 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                 application on <DocumentationLink
                                     link={ getLink("develop.connections.newConnection.apple.help.developerConsole") }
                                     showEmptyLinkText
-                                >Apple Developer Portal</DocumentationLink> with a <strong>Services ID</strong> and a <strong>Private Key</strong>.
+                                >Apple Developer Portal</DocumentationLink> with a <strong
+                                >Services ID</strong> and a <strong>Private Key</strong>.
                             </Trans>
                         </p>
                         <p>

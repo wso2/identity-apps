@@ -84,7 +84,9 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                                     }
                                 >
                                     Before you begin, create an <strong>OAuth application</strong> <DocumentationLink
-                                        link={ getLink("develop.connections.newConnection.github.help.developerConsole") }
+                                        link={ 
+                                            getLink("develop.connections.newConnection.github.help.developerConsole")
+                                        }
                                         showEmptyLinkText
                                     >on GitHub</DocumentationLink>, and obtain a <strong>client ID & secret</strong>.
                                 </Trans>
