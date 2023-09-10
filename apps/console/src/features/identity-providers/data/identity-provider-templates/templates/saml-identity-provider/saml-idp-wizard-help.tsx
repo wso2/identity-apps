@@ -35,8 +35,7 @@ type Props = TestableComponentInterface;
 
 /**
  * Wizard help panel for manual configuration mode.
- * @param props {Props}
- * @constructor
+ * @param props - Props injected to the component.
  */
 const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
@@ -53,7 +52,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                 size="tiny"
                 type="info"
                 content={
-                    <>
+                    (<>
                         <Trans
                             i18nKey={
                                 "console:develop.features.authenticationProvider.templates.enterprise.saml." +
@@ -85,7 +84,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                                     "preRequisites.configureIdp")
                             }
                         </DocumentationLink>
-                    </>
+                    </>)
                 }
             />
             <Heading as="h5">Service provider entity ID</Heading>
