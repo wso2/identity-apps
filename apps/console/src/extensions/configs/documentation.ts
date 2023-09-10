@@ -102,6 +102,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             customConfig: {
                                 learnMore: undefined
                             },
+                            mavenDownload: undefined,
                             mobileApp: {
                                 learnMore: undefined
                             }
@@ -123,7 +124,8 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         quickStart: {
                             customConfig: {
                                 learnMore: undefined
-                            }
+                            },
+                            mavenDownload: undefined
                         }
                     },
                     signInMethod: {
@@ -136,7 +138,8 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         quickStart: {
                             customConfig: {
                                 learnMore: undefined
-                            }
+                            },
+                            nodejsDownload: undefined
                         }
                     },
                     standardBasedApplication: {

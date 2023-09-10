@@ -108,6 +108,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                mavenDownload: string;
                 mobileApp: {
                     learnMore: string;
                 };
@@ -130,6 +131,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                mavenDownload: string;
             };
         },
         signInMethod: {
@@ -140,6 +142,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                nodejsDownload: string;
             };
             info: {
                 learnMore: string;

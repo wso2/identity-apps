@@ -17,7 +17,15 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CodeEditor, GenericIcon, Hint, Message, Text } from "@wso2is/react-components";
+import {
+    CodeEditor,
+    DocumentationLink,
+    GenericIcon,
+    Hint,
+    Message,
+    Text,
+    useDocumentation
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
@@ -74,8 +82,11 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const { getLink } = useDocumentation();
+
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
+
     const [ SDKInitConfig, setSDKInitConfig ] = useState<SAMLIntegrateSDKConfigInterface>(undefined);
     const [ appContextPath, setAppContextPath ] = useState<string>(null);
     const [ isValidAppContextPath, setIsValidAppContextPath ] = useState<boolean>(true);
@@ -428,13 +439,11 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
                     </p>
 
                     <Text className="message-info-text">To download the latest <strong>Apache Maven</strong>,
-                        navigate to the official
-                    <a
-                        href="https://maven.apache.org/download.cgi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link external"
-                    > downloads</a> page.
+                        navigate to the official <DocumentationLink
+                        link={ getLink("develop.applications.editApplication." +
+                            "samlApplication.quickStart.mavenDownload") }
+                        showEmptyLinkText
+                    >downloads</DocumentationLink> page.
                     </Text>
                 </>
             );

@@ -18,7 +18,15 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils, URLUtils } from "@wso2is/core/utils";
-import { CodeEditor, GenericIcon, Hint, Message, Text } from "@wso2is/react-components";
+import {
+    CodeEditor,
+    DocumentationLink,
+    GenericIcon,
+    Hint,
+    Message,
+    Text,
+    useDocumentation
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
@@ -101,6 +109,7 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
 
     const [ SDKInitConfig, setSDKInitConfig ] = useState(undefined);
     const [ configuredCallbacks, setConfiguredCallbacks ] = useState<DropdownItemProps[]>([]);
@@ -766,13 +775,11 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
                         </p>
 
                         <Text className="message-info-text">To download the latest <strong>Apache Maven</strong>,
-                            navigate to the official
-                        <a
-                            href="https://maven.apache.org/download.cgi"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="link external"
-                        > downloads</a> page.
+                            navigate to the official <DocumentationLink
+                            link={ getLink("develop.applications.editApplication." +
+                                "oidcApplication.quickStart.mavenDownload") }
+                            showEmptyLinkText
+                        >downloads</DocumentationLink> page.
                         </Text>
                     </>
                 );

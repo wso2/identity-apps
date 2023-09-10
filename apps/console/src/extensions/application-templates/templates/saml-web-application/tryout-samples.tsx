@@ -18,7 +18,7 @@
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CodeEditor, GenericIcon, Message, Text } from "@wso2is/react-components";
+import { CodeEditor, DocumentationLink, GenericIcon, Message, Text, useDocumentation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useState } from "react";
@@ -70,9 +70,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
 
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
+
     const [ acsURLsUpdated, setACSURLsUpdated ] = useState<boolean>(false);
     const [ userTomcatHost, setUserTomcatHost ] = useState<string>("http://localhost:8080");
     const [ isValidSampleServerHost, setIsValidSampleServerHost ] = useState<boolean>(true);
@@ -354,12 +356,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                         You will need to have <strong>Apache Tomcat</strong> installed on
                         your environment to try out the sample.
                     </Text>
-                    <Text>To download <strong>Apache Tomcat</strong>, navigate to the official <a
-                        href="https://tomcat.apache.org/download-10.cgi"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link external"
-                    >downloads</a> page.
+                    <Text>To download <strong>Apache Tomcat</strong>, navigate to the official <DocumentationLink
+                        link={ getLink("develop.applications.editApplication." +
+                            "samlApplication.quickStart.mavenDownload") }
+                        showEmptyLinkText
+                    >downloads</DocumentationLink> page.
                     </Text>
                 </>
             );

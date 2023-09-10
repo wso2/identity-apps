@@ -18,7 +18,7 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
-import { CodeEditor, GenericIcon, Message, Text } from "@wso2is/react-components";
+import { CodeEditor, DocumentationLink, GenericIcon, Message, Text, useDocumentation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
@@ -77,6 +77,7 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
 
     const [ authConfig, setAuthConfig ] = useState(undefined);
     const [ callbacksUpdated, setCallbacksUpdated ] = useState<boolean>(false);
@@ -565,12 +566,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                             your environment to try out the sample.
                         </Text>
                         <Text className={ "message-info-text" }>To download <strong>Apache Tomcat</strong>,
-                            navigate to the official <a
-                            href="https://tomcat.apache.org/download-90.cgi"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="link external"
-                        >downloads</a> page.
+                            navigate to the official <DocumentationLink
+                            link={ getLink("develop.applications.editApplication." +
+                                "oidcApplication.quickStart.mavenDownload") }
+                            showEmptyLinkText
+                        >downloads</DocumentationLink> page.
                         </Text>
                     </>
                 );
