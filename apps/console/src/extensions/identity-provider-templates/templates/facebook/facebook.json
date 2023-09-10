@@ -2,7 +2,7 @@
     "id": "facebook-idp",
     "name": "Facebook",
     "description": "Login users with existing Facebook accounts.",
-    "docLink": "/guides/authentication/social-login/add-facebook-login/",
+    "docLink": "develop.connections.newConnection.facebook.setupGuide",
     "image": "facebook",
     "category": "DEFAULT",
     "displayOrder": 2,

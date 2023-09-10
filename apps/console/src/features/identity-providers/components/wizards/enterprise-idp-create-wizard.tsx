@@ -906,11 +906,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         let docLink: string = undefined;
 
         if (selectedProtocol === AuthProtocolTypes.SAML) {
-            docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
+            docLink = getLink("develop.connections.newConnection.enterprise.saml.learnMore");
         }
 
         if (selectedProtocol === AuthProtocolTypes.OIDC) {
-            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
+            docLink = getLink("develop.connections.newConnection.enterprise.oidc.learnMore");
         }
 
         return (

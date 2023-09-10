@@ -2,7 +2,7 @@
     "id": "apple-idp",
     "name": "Apple",
     "description": "Login users with their Apple IDs.",
-    "docLink": "/guides/authentication/social-login/add-apple-login/",
+    "docLink": "develop.connections.newConnection.apple.setupGuide",
     "image": "apple",
     "category": "DEFAULT",
     "displayOrder": 4,

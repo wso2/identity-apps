@@ -223,28 +223,41 @@ interface ConnectionsDocumentationLinksInterface {
         learnMore: string;
         apple: {
             learnMore: string;
+            setupGuide: string;
         };
         enterprise: {
-            oidcLearnMore: string;
-            samlLearnMore: string;
+            oidc: {
+                learnMore: string;
+                setupGuide: string;
+            };
+            saml: {
+                learnMore: string;
+                setupGuide: string;
+            };
         };
         facebook: {
             learnMore: string;
+            setupGuide: string;
         };
         github: {
             learnMore: string;
+            setupGuide: string;
         };
         google: {
             learnMore: string;
+            setupGuide: string;
         };
         hypr: {
             learnMore: string;
+            setupGuide: string;
         };
         microsoft: {
             learnMore: string;
+            setupGuide: string;
         };
         siwe: {
             learnMore: string;
+            setupGuide: string;
         };
     };
     edit: {

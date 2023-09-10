@@ -73,12 +73,12 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                                 productName: config.ui.productName
                             })
                         }
-                        { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                        { getLink("develop.connections.newConnection.enterprise.saml.learnMore") === undefined
                             ? null
                             : <Divider hidden/>
                         }
                         <DocumentationLink
-                            link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                            link={ getLink("develop.connections.newConnection.enterprise.saml.learnMore") }
                         >
                             {
                                 t("console:develop.features.authenticationProvider.templates.enterprise.saml." +

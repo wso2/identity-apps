@@ -20,7 +20,7 @@ import { DocumentationLinksExtensionInterface } from "./models/documentation";
 import { Config } from "../../features/core/configs/app";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
-    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
+    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
 
     return {
         common: {
@@ -196,30 +196,43 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 learnMore: undefined,
                 newConnection: {
                     apple: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     enterprise: {
-                        oidcLearnMore: undefined,
-                        samlLearnMore: undefined
+                        oidc: {
+                            learnMore: undefined,
+                            setupGuide: undefined
+                        },
+                        saml: {
+                            learnMore: undefined,
+                            setupGuide: undefined
+                        }
                     },
                     facebook: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     github: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     google: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     hypr: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     learnMore: undefined,
                     microsoft: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     siwe: {
-                        learnMore: undefined
+                        learnMore: undefined,
+                        setupGuide: undefined
                     }
                 }
             },

@@ -2,7 +2,7 @@
     "id": "hypr-idp",
     "name": "HYPR",
     "description": "Enable login for users with existing HYPR accounts.",
-    "docLink": "/guides/authentication/#manage-connections",
+    "docLink": "develop.connections.newConnection.hypr.setupGuide",
     "image": "hypr",
     "category": "DEFAULT",
     "displayOrder": 4,
