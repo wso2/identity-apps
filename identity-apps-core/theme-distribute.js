@@ -30,5 +30,6 @@ apps.forEach((app) => {
         .catch((error) => {
             // eslint-disable-next-line no-console
             console.error(error);
+            throw new Error("Error while copying theme files.");
         });
 });
