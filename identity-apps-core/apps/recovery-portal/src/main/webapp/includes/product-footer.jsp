@@ -57,7 +57,7 @@
 <%
     if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
 %>
-        <jsp:include page="extensions/cookie-consent-banner.jsp"/>
+        <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
 <%
     }
 %>
