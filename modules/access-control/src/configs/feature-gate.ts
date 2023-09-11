@@ -16,19 +16,23 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "../../models/feature-gate";
-import { FeatureGateActionTypes, SetTierFeaturesActionInterface } from "../feature-gate";
+import { FeatureGateInterface, FeatureStatus } from "../models/feature-gate";
 
-/**
- * This action sets features of an organization in the redux store based on tier information.
- *
- * @param organization - An organization object.
- *
- * @returns - A set of features for the organization.
- */
-export const setTierFeatuers = (featureGate: FeatureGateInterface): SetTierFeaturesActionInterface => {
-    return {
-        payload: featureGate,
-        type: FeatureGateActionTypes.SET_FEATURE_STATE
-    };
+export const featureGateConfig: FeatureGateInterface  = {
+    console:  {
+        application: {
+            signIn: {
+                adaptiveAuth : {
+                    status: FeatureStatus.DEFAULT,
+                    tags: []
+                },
+                status: FeatureStatus.DEFAULT
+            },
+            status: FeatureStatus.DEFAULT
+        },
+        saasFeatures: {
+            status: FeatureStatus.DEFAULT
+        },
+        status: FeatureStatus.DEFAULT
+    }
 };

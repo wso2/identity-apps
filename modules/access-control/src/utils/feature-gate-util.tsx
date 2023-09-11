@@ -20,8 +20,8 @@ import get from "lodash-es/get";
 import  {
     useContext
 } from "react";
-import { FeatureGateContext } from "../context/feature-gate";
-import { FeatureGateContextInterface, FeatureStatus } from "../models/feature-gate";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextInterface, FeatureStatus } from "../models";
 
 
 export const useCheckIfEnabled = (path: string): boolean => {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { AccessControlConstants, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
@@ -57,9 +57,6 @@ import { AppViewExtensionTypes } from "../../../configs";
 import { TryItApplicationConstants } from "../../application/constants";
 import { getTryItClientId } from "../../application/utils/try-it-utils";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../feature-gate/controller/featureGate-util";
-import { ShowFeature } from "../../feature-gate/controller/show-feature";
-import { FeatureStatus } from "../../feature-gate/models/feature-gate";
 import { DynamicApplicationContextCard } from "../components/dynamic-application-context-card";
 import { getGettingStartedCardIllustrations } from "../configs";
 
@@ -521,11 +518,12 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                             </Grid.Row>
                             {
                                 orgType !== OrganizationType.SUBORGANIZATION && (
-                                    <ShowFeature ifAllowed={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                                            { featureConfig.tryIt?.enabled && renderTryItCard() }
-                                        </Show>
-                                    </ShowFeature>
+                                    <Show
+                                        when={ AccessControlConstants.APPLICATION_WRITE }
+                                        featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
+                                    >
+                                        { featureConfig.tryIt?.enabled && renderTryItCard() }
+                                    </Show>
                                 )
                             }
                         </Grid>

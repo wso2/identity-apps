@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AllFeatureInterface } from "@wso2is/access-control";
 import { HttpMethods } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
 import useRequest, {
@@ -23,7 +24,6 @@ import useRequest, {
     RequestResultInterface
 } from "../../../../features/core/hooks/use-request";
 import { AppState, store } from "../../../../features/core/store";
-import { AllFeatureInterface } from "../models/feature-gate";
 
 /**
  * Hook to get the all features of the organization.

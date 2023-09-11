@@ -16,15 +16,22 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "../models/feature-gate";
+import {
+    FeatureGateActionTypes,
+    FeatureGateInterface,
+    SetTierFeaturesActionInterface
+} from "../../models/feature-gate";
 
-export enum FeatureGateActionTypes {
-    SET_FEATURE_STATE = "SET_FEATURE_STATE",
-}
-
-export interface SetTierFeaturesActionInterface {
-    payload: FeatureGateInterface; // we rely on this payload and update all actions bases
-    type: FeatureGateActionTypes.SET_FEATURE_STATE;
-}
-
-export type FeatureGateAction = SetTierFeaturesActionInterface
+/**
+ * This action sets features of an organization in the redux store based on tier information.
+ *
+ * @param organization - An organization object.
+ *
+ * @returns - A set of features for the organization.
+ */
+export const setTierFeatuers = (featureGate: FeatureGateInterface): SetTierFeaturesActionInterface => {
+    return {
+        payload: featureGate,
+        type: FeatureGateActionTypes.SET_FEATURE_STATE
+    };
+};

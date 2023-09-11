@@ -16,9 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
 import { AccessProvider } from "react-access-control";
 import { AccessControlContext } from "./access-control-context-provider";
+import { featureGateConfig } from "./configs/feature-gate";
+import { FeatureGateContext } from "./context/feature-gate";
+import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "./models/feature-gate";
 
 /**
  * Interface to store Access Control Provider props
@@ -26,7 +29,20 @@ import { AccessControlContext } from "./access-control-context-provider";
 export interface AccessControlProviderInterface {
     featureConfig: any; // TODO : Properly map FeatureConfigInterface type
     allowedScopes: string;
+    features: FeatureGateInterface;
 }
+
+export const featureGateReducer = (
+    state: FeatureGateInterface,
+    action: FeatureGateAction
+): FeatureGateInterface => {
+    switch (action.type) {
+        case FeatureGateActionTypes.SET_FEATURE_STATE:
+            return { ...state, ...action.payload };
+        default:
+            return state;
+    }
+};
 
 /**
  * This will wrap all children passed to it with access control provider
@@ -42,15 +58,24 @@ export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessCo
     const {
         allowedScopes,
         children,
-        featureConfig
+        featureConfig,
+        features
     } = props;
+
+    const defaultFeatureGateConfig: FeatureGateInterface  = { ...featureGateConfig };
+    const [ , dispatch ] = useReducer(featureGateReducer, defaultFeatureGateConfig);
+
+    useEffect (() => {
+        dispatch({ payload: features, type: FeatureGateActionTypes.SET_FEATURE_STATE });
+    }, [ features ]);
 
     return (
         <AccessProvider>
-            <AccessControlContext allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
-                { children }
-            </AccessControlContext>
+            <FeatureGateContext.Provider value={ { dispatch, features } }>
+                <AccessControlContext allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
+                    { children }
+                </AccessControlContext>
+            </FeatureGateContext.Provider>
         </AccessProvider>
     );
-
 };

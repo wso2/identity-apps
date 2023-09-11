@@ -17,3 +17,4 @@
  */
 
 export * from "./access-control-util";
+export * from "./feature-gate-util";

@@ -25,7 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AccessControlUtils } from "@wso2is/access-control";
+import { AccessControlUtils, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
@@ -73,8 +73,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs } from "./extensions";
 import { FeatureGateConstants } from "./extensions/components/feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "./extensions/components/feature-gate/controller/featureGate-util";
-import { FeatureStatus } from "./extensions/components/feature-gate/models/feature-gate";
 import {
     AuthenticateUtils,
     getProfileInformation

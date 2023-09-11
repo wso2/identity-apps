@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { AccessControlConstants, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -74,8 +74,6 @@ import { UserManagementUtils } from "../../../../features/users/utils";
 import { administratorConfig } from "../../../configs/administrator";
 import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../feature-gate/controller/featureGate-util";
-import { FeatureStatus } from "../../feature-gate/models/feature-gate";
 import { TenantInfo } from "../../tenants/models";
 import { getAssociationType } from "../../tenants/utils/tenants";
 import { getAgentConnections } from "../../user-stores/api";

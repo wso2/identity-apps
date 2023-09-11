@@ -20,6 +20,7 @@ import OxygenAlert, { AlertProps } from "@oxygen-ui/react/Alert";
 import AppShell from "@oxygen-ui/react/AppShell";
 import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -62,8 +63,6 @@ import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 import { applicationConfig } from "../extensions";
 import { FeatureGateConstants } from "../extensions/components/feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../extensions/components/feature-gate/controller/featureGate-util";
-import { FeatureStatus } from "../extensions/components/feature-gate/models/feature-gate";
 import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
