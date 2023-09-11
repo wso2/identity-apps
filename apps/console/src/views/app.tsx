@@ -130,9 +130,11 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
         (state: AppState) => state.routes.developeRoutes.sanitizedRoutes
     );
 
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
-    >(getAppViewRoutes()[ 0 ]);
+    >(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)[ 0 ]);
 
     const { isMobileViewport } = useMediaContext();
 
@@ -146,7 +148,6 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
 
     const initLoad: MutableRefObject<boolean> = useRef(true);
 
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const sanitizedRoutes: RouteInterface[] = useMemo(() => {        
         return [

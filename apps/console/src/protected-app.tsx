@@ -72,6 +72,9 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs } from "./extensions";
+import { FeatureGateConstants } from "./extensions/components/feature-gate/constants/feature-gate";
+import { useCheckFeatureStatus } from "./extensions/components/feature-gate/controller/featureGate-util";
+import { FeatureStatus } from "./extensions/components/feature-gate/models/feature-gate";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -131,6 +134,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
 
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
     const allowedScopes: string = useSelector(
         (state: AppState) => state?.auth?.allowedScopes
     );
@@ -156,8 +161,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -580,7 +585,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(),
+            getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
