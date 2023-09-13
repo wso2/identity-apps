@@ -268,8 +268,13 @@
         }
     }
 
-    String purposes = selfRegistrationMgtClient.getPurposes(tenantDomain, consentPurposeGroupName,
+    String purposes;
+    try {
+        purposes = selfRegistrationMgtClient.getPurposes(tenantDomain, consentPurposeGroupName,
             consentPurposeGroupType);
+    } catch (SelfRegistrationMgtClientException e) {
+        purposes = null;
+    }
     boolean hasPurposes = StringUtils.isNotEmpty(purposes);
     Claim[] claims = new Claim[0];
 
@@ -652,6 +657,9 @@
                                 </div>
                             </div>
                         </div>
+                        <input id="username" name="username" type="hidden"
+                            <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                        <% if (emailPII != null) { %>
                         <div id="usernameField"
                             <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
                                 class="field required"
@@ -673,8 +681,6 @@
                                     <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) {%> required <%}%>
                                 />
                                 <i aria-hidden="true" class="envelope outline icon"></i>
-                                <input id="username" name="username" type="hidden"
-                                    <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                             </div>
                             <div class="mt-1" id="username-error-msg" hidden="hidden">
                                 <div class="ui grid">
@@ -686,6 +692,7 @@
                             </div>
                             <div class="ui divider hidden"></div>
                         </div>
+                        <% } %>
                         <div id="passwordField" class="field required">
                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%></label>
                             <div class="ui fluid left icon input addon-wrapper">
@@ -888,8 +895,7 @@
                                             String claimErrorMsgText = claimName + "_error_text";
                                 %>
                                     <div  id= "<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
-                                    <% if (claim.getRequired()) { %> class="field form-group required" <%}
-                                                else {%> class="field"<%}%>  >
+                                        <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                         </label>
@@ -1727,7 +1733,11 @@
             var username_error_msg = $("#username-error-msg");
             var server_error_msg = $("#server-error-msg");
             var username_error_msg_text = $("#username-error-msg-text");
-            var emailRequired = <%=emailPII.getRequired()%>;
+            <% if (emailPII != null) { %>
+                var emailRequired = <%=emailPII.getRequired()%>;
+            <% } else { %>
+                var emailRequired = false;
+            <% } %>
 
             if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
                 username_error_msg.hide();
