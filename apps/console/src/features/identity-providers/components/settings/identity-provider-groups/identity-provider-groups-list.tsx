@@ -222,45 +222,51 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         }
 
         if (groupsList?.length === 0) {
-            if (hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)) {
-                return (
-                    <EmptyPlaceholder
-                        data-testid={ `${ componentId }-empty-list-empty-placeholder` }
-                        action={ (
-                            <PrimaryButton
-                                data-testid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
-                                onClick={ () => setShowWizard(true) }
-                            >
-                                <Icon name="add"/>
-                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                    { type: "Group" }) }
-                            </PrimaryButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        title={ t("extensions:console.applicationRoles.connectorGroups.placeholder.title") }
-                        subtitle={
-                            [
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.0"),
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.1")
-                            ]
-                        }
-                    />
-                );
-            } else {
-                return (
-                    <EmptyPlaceholder
-                        data-testid={ `${ componentId }-empty-list-empty-placeholder` }
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        title={ t("extensions:console.identityProviderGroups.groupsList.noGroupsAvailable") }
-                        subtitle={ [
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                                { type: "groups" })
-                        ] }
-                    />
-                );
-            }
+            return (
+                <>
+                    <Show
+                        when={ AccessControlConstants.GROUP_WRITE }
+                    >          
+                        <EmptyPlaceholder
+                            data-testid={ `${ componentId }-empty-list-empty-placeholder` }
+                            action={ (
+                                <PrimaryButton
+                                    data-testid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
+                                    onClick={ () => setShowWizard(true) }
+                                >
+                                    <Icon name="add"/>
+                                    { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                        { type: "Group" }) }
+                                </PrimaryButton>
+                            ) }
+                            image={ getEmptyPlaceholderIllustrations().newList }
+                            imageSize="tiny"
+                            title={ t("extensions:console.applicationRoles.connectorGroups.placeholder.title") }
+                            subtitle={
+                                [
+                                    t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.0"),
+                                    t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.1")
+                                ]
+                            }
+                        />
+                    </Show>
+                    <Show
+                        when={ [] }
+                        notWhen={ AccessControlConstants.GROUP_WRITE }
+                    >    
+                        <EmptyPlaceholder
+                            data-testid={ `${ componentId }-empty-list-empty-placeholder` }
+                            image={ getEmptyPlaceholderIllustrations().newList }
+                            imageSize="tiny"
+                            title={ t("extensions:console.identityProviderGroups.groupsList.noGroupsAvailable") }
+                            subtitle={ [
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                    { type: "groups" })
+                            ] }
+                        />
+                    </Show>
+                </>
+            );
         }
 
         return null;

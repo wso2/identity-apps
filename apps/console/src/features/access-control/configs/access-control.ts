@@ -28,6 +28,17 @@ export class AccessControlUtils {
         allowedScopes: string
     ): PermissionsInterface => {
         return ({
+            [ AccessControlConstants.API_RESOURCES ] : hasRequiredScopes(featureConfig?.apiResources,
+                featureConfig?.apiResources?.scopes?.feature, allowedScopes),
+            [ AccessControlConstants.API_RESOURCES_READ ] : hasRequiredScopes(featureConfig?.apiResources,
+                featureConfig?.apiResources?.scopes?.read, allowedScopes),
+            [ AccessControlConstants.API_RESOURCES_WRITE ] : hasRequiredScopes(featureConfig?.apiResources,
+                featureConfig?.apiResources?.scopes?.create, allowedScopes),
+            [ AccessControlConstants.API_RESOURCES_EDIT ] : hasRequiredScopes(featureConfig?.apiResources,
+                featureConfig?.apiResources?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.API_RESOURCES_DELETE ] : hasRequiredScopes(featureConfig?.apiResources,
+                featureConfig?.apiResources?.scopes?.delete, allowedScopes),
+
             [ AccessControlConstants.APPLICATION ] : hasRequiredScopes(featureConfig?.applications,
                 featureConfig?.applications?.scopes?.feature, allowedScopes),
             [ AccessControlConstants.APPLICATION_READ ] : hasRequiredScopes(featureConfig?.applications,
@@ -70,6 +81,34 @@ export class AccessControlUtils {
                 featureConfig?.branding,
                 featureConfig?.branding?.scopes?.delete,
                 allowedScopes),
+            
+            [ AccessControlConstants.CERTIFICATES ] : hasRequiredScopes(featureConfig?.certificates,
+                featureConfig?.certificates?.scopes?.feature, allowedScopes),
+            [ AccessControlConstants.CERTIFICATES_READ ] : hasRequiredScopes(featureConfig?.certificates,
+                featureConfig?.certificates?.scopes?.read, allowedScopes),
+            [ AccessControlConstants.CERTIFICATES_WRITE ] : hasRequiredScopes(featureConfig?.certificates,
+                featureConfig?.certificates?.scopes?.create, allowedScopes),
+            [ AccessControlConstants.CERTIFICATES_EDIT ] : hasRequiredScopes(featureConfig?.certificates,
+                featureConfig?.certificates?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.CERTIFICATES_DELETE ] : hasRequiredScopes(featureConfig?.certificates,
+                featureConfig?.certificates?.scopes?.delete, allowedScopes),
+
+            [ AccessControlConstants.EVENT_CONFIG_READ ] : hasRequiredScopes(
+                featureConfig?.eventConfiguration,
+                featureConfig?.eventConfiguration?.scopes?.read,
+                allowedScopes),
+            [ AccessControlConstants.EVENT_CONFIG_WRITE ] : hasRequiredScopes(
+                featureConfig?.eventConfiguration,
+                featureConfig?.eventConfiguration?.scopes?.create,
+                allowedScopes),
+            [ AccessControlConstants.EVENT_CONFIG_EDIT ] : hasRequiredScopes(
+                featureConfig?.eventConfiguration,
+                featureConfig?.eventConfiguration?.scopes?.update,
+                allowedScopes),
+            [ AccessControlConstants.EVENT_CONFIG_DELETE ] : hasRequiredScopes(
+                featureConfig?.eventConfiguration,
+                featureConfig?.eventConfiguration?.scopes?.delete,
+                allowedScopes),
 
             [ AccessControlConstants.GROUP ] : hasRequiredScopes(featureConfig?.groups,
                 featureConfig?.groups?.scopes?.feature, allowedScopes),
@@ -82,6 +121,17 @@ export class AccessControlUtils {
             [ AccessControlConstants.GROUP_DELETE ] : hasRequiredScopes(featureConfig?.groups,
                 featureConfig?.groups?.scopes?.delete, allowedScopes),
 
+            [ AccessControlConstants.IDP ] : hasRequiredScopes(featureConfig?.identityProviders,
+                featureConfig?.identityProviders?.scopes?.feature, allowedScopes),
+            [ AccessControlConstants.IDP_READ ] : hasRequiredScopes(featureConfig?.identityProviders,
+                featureConfig?.identityProviders?.scopes?.read, allowedScopes),
+            [ AccessControlConstants.IDP_WRITE ] : hasRequiredScopes(featureConfig?.identityProviders,
+                featureConfig?.identityProviders?.scopes?.create, allowedScopes),
+            [ AccessControlConstants.IDP_EDIT ] : hasRequiredScopes(featureConfig?.identityProviders,
+                featureConfig?.identityProviders?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.IDP_DELETE ] : hasRequiredScopes(featureConfig?.identityProviders,
+                featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
+            
             [ AccessControlConstants.ROLE ]: hasRequiredScopes(featureConfig?.roles,
                 featureConfig?.roles?.scopes?.feature, allowedScopes),
             [ AccessControlConstants.ROLE_READ ]: hasRequiredScopes(featureConfig?.roles,
@@ -93,17 +143,6 @@ export class AccessControlUtils {
             [ AccessControlConstants.ROLE_DELETE ]: hasRequiredScopes(featureConfig?.roles,
                 featureConfig?.roles?.scopes?.delete, allowedScopes),
 
-            [ AccessControlConstants.IDP ] : hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.feature, allowedScopes),
-            [ AccessControlConstants.IDP_READ ] : hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.read, allowedScopes),
-            [ AccessControlConstants.IDP_WRITE ] : hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.create, allowedScopes),
-            [ AccessControlConstants.IDP_EDIT ] : hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.update, allowedScopes),
-            [ AccessControlConstants.IDP_DELETE ] : hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
-
             [ AccessControlConstants.SCOPE ] : hasRequiredScopes(featureConfig?.oidcScopes,
                 featureConfig?.oidcScopes?.scopes?.feature, allowedScopes),
             [ AccessControlConstants.SCOPE_READ ] : hasRequiredScopes(featureConfig?.oidcScopes,
@@ -114,17 +153,6 @@ export class AccessControlUtils {
                 featureConfig?.oidcScopes?.scopes?.update, allowedScopes),
             [ AccessControlConstants.SCOPE_DELETE ] : hasRequiredScopes(featureConfig?.oidcScopes,
                 featureConfig?.oidcScopes?.scopes?.delete, allowedScopes),
-
-            [ AccessControlConstants.USER ] : hasRequiredScopes(featureConfig?.users,
-                featureConfig?.users?.scopes?.feature, allowedScopes),
-            [ AccessControlConstants.USER_READ ] : hasRequiredScopes(featureConfig?.users,
-                featureConfig?.users?.scopes?.read, allowedScopes),
-            [ AccessControlConstants.USER_WRITE ] : hasRequiredScopes(featureConfig?.users,
-                featureConfig?.users?.scopes?.create, allowedScopes),
-            [ AccessControlConstants.USER_EDIT ] : hasRequiredScopes(featureConfig?.users,
-                featureConfig?.users?.scopes?.update, allowedScopes),
-            [ AccessControlConstants.USER_DELETE ] : hasRequiredScopes(featureConfig?.users,
-                featureConfig?.users?.scopes?.delete, allowedScopes),
 
             [AccessControlConstants.SECRET_WRITE]: hasRequiredScopes(
                 featureConfig?.secretsManagement,
@@ -198,22 +226,28 @@ export class AccessControlUtils {
                 featureConfig?.organizationsRoles?.scopes?.create,
                 allowedScopes
             ),
-            [ AccessControlConstants.EVENT_CONFIG_READ ] : hasRequiredScopes(
-                featureConfig?.eventConfiguration,
-                featureConfig?.eventConfiguration?.scopes?.read,
-                allowedScopes),
-            [ AccessControlConstants.EVENT_CONFIG_WRITE ] : hasRequiredScopes(
-                featureConfig?.eventConfiguration,
-                featureConfig?.eventConfiguration?.scopes?.create,
-                allowedScopes),
-            [ AccessControlConstants.EVENT_CONFIG_EDIT ] : hasRequiredScopes(
-                featureConfig?.eventConfiguration,
-                featureConfig?.eventConfiguration?.scopes?.update,
-                allowedScopes),
-            [ AccessControlConstants.EVENT_CONFIG_DELETE ] : hasRequiredScopes(
-                featureConfig?.eventConfiguration,
-                featureConfig?.eventConfiguration?.scopes?.delete,
-                allowedScopes)
+
+            [ AccessControlConstants.USER ] : hasRequiredScopes(featureConfig?.users,
+                featureConfig?.users?.scopes?.feature, allowedScopes),
+            [ AccessControlConstants.USER_READ ] : hasRequiredScopes(featureConfig?.users,
+                featureConfig?.users?.scopes?.read, allowedScopes),
+            [ AccessControlConstants.USER_WRITE ] : hasRequiredScopes(featureConfig?.users,
+                featureConfig?.users?.scopes?.create, allowedScopes),
+            [ AccessControlConstants.USER_EDIT ] : hasRequiredScopes(featureConfig?.users,
+                featureConfig?.users?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.USER_DELETE ] : hasRequiredScopes(featureConfig?.users,
+                featureConfig?.users?.scopes?.delete, allowedScopes),
+
+            [ AccessControlConstants.USER_STORE ] : hasRequiredScopes(featureConfig?.userStores,
+                featureConfig?.userStores?.scopes?.feature, allowedScopes),
+            [ AccessControlConstants.USER_STORE_READ ] : hasRequiredScopes(featureConfig?.userStores,
+                featureConfig?.userStores?.scopes?.read, allowedScopes),
+            [ AccessControlConstants.USER_STORE_WRITE ] : hasRequiredScopes(featureConfig?.userStores,
+                featureConfig?.userStores?.scopes?.create, allowedScopes),
+            [ AccessControlConstants.USER_STORE_EDIT ] : hasRequiredScopes(featureConfig?.userStores,
+                featureConfig?.userStores?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.USER_STORE_DELETE ] : hasRequiredScopes(featureConfig?.userStores,
+                featureConfig?.userStores?.scopes?.delete, allowedScopes)
         });
     }
 }

@@ -59,6 +59,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * API resources feature.
+     */
+    apiResources?: FeatureAccessConfigInterface;
+    /**
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;

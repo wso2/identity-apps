@@ -32,9 +32,34 @@ export class AccessControlConstants {
     private constructor() { }
 
     /**
+     * API Resources Feature permisison
+     */
+    public static readonly API_RESOURCES: string = "api_resources";
+
+    /**
+     * API Resources read permission
+     */
+    public static readonly API_RESOURCES_READ: string = "api_resources:read";
+
+    /**
+     * API Resources write permission
+     */
+    public static readonly API_RESOURCES_WRITE: string = "api_resources:write";
+
+    /**
+     * API Resources edit permission
+     */
+    public static readonly API_RESOURCES_EDIT: string = "api_resources:edit";
+
+    /**
+     * API Resources delete permission
+     */
+    public static readonly API_RESOURCES_DELETE: string = "api_resources:delete";
+
+    /**
      * Application Feature permisison
      */
-     public static readonly APPLICATION: string = "application";
+    public static readonly APPLICATION: string = "application";
 
     /**
      * Application read permission
@@ -55,6 +80,31 @@ export class AccessControlConstants {
      * Application delete permission
      */
     public static readonly APPLICATION_DELETE: string = "application:delete";
+
+    /**
+     * Certificates Feature permisison
+     */
+    public static readonly CERTIFICATES: string = "certificates";
+
+    /**
+     * Certificates read permission
+     */
+    public static readonly CERTIFICATES_READ: string = "certificates:read";
+
+    /**
+     * Certificates write permission
+     */
+    public static readonly CERTIFICATES_WRITE: string = "certificates:write";
+
+    /**
+     * Certificates edit permission
+     */
+    public static readonly CERTIFICATES_EDIT: string = "certificates:edit";
+
+    /**
+     * Certificates delete permission
+     */
+    public static readonly CERTIFICATES_DELETE: string = "certificates:delete";
 
     /**
      * Identity provider feature permission

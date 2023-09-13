@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
@@ -72,7 +73,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ filteredScopeList, setFilteredScopeList ] = useState<OIDCScopesListInterface[]>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -176,11 +176,11 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         <PageLayout
             pageTitle="Scopes"
             action={
-                hasRequiredScopes(
-                    featureConfig?.applications, featureConfig?.applications?.scopes?.create,
-                    allowedScopes
-                ) && !isScopeListFetchRequestLoading
-                    ? (
+                !isScopeListFetchRequestLoading &&
+                (
+                    <Show
+                        when={ AccessControlConstants.APPLICATION_WRITE }
+                    >
                         <PrimaryButton
                             disabled={ isScopeListFetchRequestLoading }
                             loading={ isScopeListFetchRequestLoading }
@@ -190,8 +190,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             <Icon name="add"/>
                             { t("console:manage.features.oidcScopes.buttons.addScope") }
                         </PrimaryButton>
-                    )
-                    : null
+                    </Show>
+                )
             }
             title={ t("console:manage.pages.oidcScopes.title") }
             description={ t("console:manage.pages.oidcScopes.subTitle") }
