@@ -658,7 +658,7 @@
                             </div>
                         </div>
                         <input id="username" name="username" type="hidden"
-                                    <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                            <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         <% if (emailPII != null) { %>
                         <div id="usernameField"
                             <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
