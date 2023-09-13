@@ -4,7 +4,7 @@ name: PR Builder
 
 on:
   pull_request:
-    branches: [ master, new-ui ]
+    branches: [ master ]
     paths-ignore:
       - "**.md"
       - "LICENSE"
@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ latest ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -82,7 +82,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ latest ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -136,12 +136,13 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: ${{ false }} # disable temporarily (https://github.com/wso2/product-is/issues/16619)
     # needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ latest ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -194,7 +195,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    # needs: [ lint, typecheck, test ]
+    needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:

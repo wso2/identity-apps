@@ -92,7 +92,7 @@
 <%
     if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
 %>
-        <jsp:include page="extensions/planned-downtime-banner.jsp"/>
+        <jsp:include page="/extensions/planned-downtime-banner.jsp"/>
 <%
     }
 %>
