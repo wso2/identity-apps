@@ -2,7 +2,7 @@
     "id": "microsoft-idp",
     "name": "Microsoft",
     "description": "Enable login for users with existing Microsoft accounts.",
-    "docLink": "/guides/authentication/social-login/add-microsoft-login/",
+    "docLink": "develop.connections.newConnection.microsoft.setupGuide",
     "image": "microsoft",
     "category": "DEFAULT",
     "displayOrder": 1,

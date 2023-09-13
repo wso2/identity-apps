@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers"
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, useDocumentation } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -84,6 +84,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const { handleSidePanelToggleClick } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const profileInfo: ProfileInfoInterface = useSelector(
         (state: AppState) => state.profile.profileInfo
@@ -429,7 +430,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     <Box key="footer" className="user-dropdown-footer">
                         <Link
                             variant="body3"
-                            href="https://wso2.com/asgardeo/privacy-policy"
+                            href={ getLink("common.privacyPolicy") }
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -437,7 +438,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Link>
                         <Link
                             variant="body3"
-                            href="https://asgardeo.io/cookie-policy"
+                            href={ getLink("common.cookiePolicy") }
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -445,7 +446,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Link>
                         <Link
                             variant="body3"
-                            href="https://wso2.com/asgardeo/terms-of-use/"
+                            href={ getLink("common.termsOfService") }
                             target="_blank"
                             rel="noreferrer"
                         >

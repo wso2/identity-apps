@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -48,6 +48,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
         } = props;
 
         const { t } = useTranslation();
+        const { getLink } = useDocumentation();
 
         const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -82,12 +83,12 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                                         "preRequisites.getCredentials"
                                     }
                                 >
-                                    Before you begin, create an <strong>OAuth application</strong> <a
-                                        href="https://github.com/"
-                                        target="_blank"
-                                        rel="noopener noreferrer">
-                                    on GitHub
-                                    </a>, and obtain a <strong>client ID & secret</strong>.
+                                    Before you begin, create an <strong>OAuth application</strong> <DocumentationLink
+                                        link={ 
+                                            getLink("develop.connections.newConnection.github.help.developerConsole")
+                                        }
+                                        showEmptyLinkText
+                                    >on GitHub</DocumentationLink>, and obtain a <strong>client ID & secret</strong>.
                                 </Trans>
                             </p>
                             <p>
@@ -121,16 +122,15 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                                     value={ config?.deployment?.customServerHost + "/commonauth" }
                                 />
 
-                                <a
-                                    href={ "https://docs.github.com/en/developers/" 
-                                    +"apps/building-oauth-apps/creating-an-oauth-app" }
-                                    target="_blank"
-                                    rel="noopener noreferrer">
+                                <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.google.help.configureOAuth") }
+                                    showEmptyLinkText
+                                >
                                     {
                                         t("console:develop.features.authenticationProvider.templates.github." +
                                             "wizardHelp.preRequisites.configureOAuthApps")
                                     }
-                                </a>
+                                </DocumentationLink>
                             </p>
                         </>)
                     }

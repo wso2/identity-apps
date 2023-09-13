@@ -38,7 +38,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../../extensions/configs";
-import { Config } from "../../../features/core/configs/app";
 import {
     AppConstants,
     AppState,
@@ -114,7 +113,6 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
 
     /**
      * Checks if the listing view defined in the config is the new connections view.
@@ -489,8 +487,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={ 
-                                                            documentationBaseUrl + template.docLink 
+                                                            getLink(template.docLink)
                                                         }
                                                         resourceImage={
                                                             IdentityProviderManagementUtils

@@ -19,10 +19,20 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
-import { Code, CodeEditor, CodeEditorProps, GenericIcon, Message, Popup, Text } from "@wso2is/react-components";
+import {
+    Code,
+    CodeEditor,
+    CodeEditorProps,
+    DocumentationLink,
+    GenericIcon,
+    Message,
+    Popup,
+    Text,
+    useDocumentation
+} from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Icon } from "semantic-ui-react";
@@ -79,6 +89,8 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
+    const { t } = useTranslation();
 
     const [ authConfig, setAuthConfig ] = useState(undefined);
 
@@ -260,19 +272,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                         <Icon name="github" className="ml-2" />
                     </Button>
                     <div className="mt-3">
-                        <Trans i18nKey="extensions:develop.applications.quickstart.spa.samples.exploreMoreSamples">
-                            Explore <a
-                                href={ SDKMeta.react.samples.root }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="link external"
-                                onClick={ () => {
-                                    eventPublisher.publish("application-quick-start-click-explore-more-samples", {
-                                        type: "react"
-                                    });
-                                } }
-                            >more samples <Icon name="external"/></a> like this.
-                        </Trans>
+                        <DocumentationLink
+                            link={ SDKMeta.react.samples.root }
+                        >
+                            { t("extensions:develop.applications.quickstart.spa.samples.exploreMoreSamples") }
+                        </DocumentationLink>
                     </div>
                 </>
             );
@@ -314,19 +318,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                         <Icon name="github" className="ml-2" />
                     </Button>
                     <div className="mt-3">
-                        <Trans i18nKey="extensions:develop.applications.quickstart.spa.samples.exploreMoreSamples">
-                            Explore <a
-                                href={ SDKMeta.javascript.samples.root }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="link external"
-                                onClick={ () => {
-                                    eventPublisher.publish("application-quick-start-click-explore-more-samples", {
-                                        type: "javascript"
-                                    });
-                                } }
-                            >more samples <Icon name="external"/></a> like this.
-                        </Trans>
+                        <DocumentationLink
+                            link={ SDKMeta.javascript.samples.root }
+                        >
+                            { t("extensions:develop.applications.quickstart.spa.samples.exploreMoreSamples") }
+                        </DocumentationLink>
                     </div>
                 </>
             );
@@ -449,14 +445,12 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
     const spaSampleAppRepoLinkJSX = (link: string): ReactElement => {
         return (
             <div className="mt-3">
-                To learn more, go to our <a
-                    href={ link }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="clickable-link"
+                To learn more, go to our <DocumentationLink
+                    link={ link }
+                    showEmptyLinkText
                 >
                     <Icon name="github"/>GitHub repository
-                </a>
+                </DocumentationLink>
             </div>
         );
     };
@@ -565,14 +559,11 @@ export const TryoutSamples: FunctionComponent<TryoutSamplesPropsInterface> = (
                             environment to try out the SDK.
 
                             To download the Long Term Support (LTS) version of <strong>Node.js </strong> (which includes
-                            <strong> npm</strong>), navigate to the official <a
-                                href="https://nodejs.org/en/download/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="link external"
-                            >
-                                downloads
-                            </a> page.
+                            <strong> npm</strong>), navigate to the official <DocumentationLink
+                                link={ getLink("develop.applications.editApplication." + 
+                                    "singlePageApplication.quickStart.nodejsDownload") }
+                                showEmptyLinkText
+                            >downloads</DocumentationLink> page.
                         </Text>
                     ) }
                 />
