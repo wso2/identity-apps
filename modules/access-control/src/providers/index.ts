@@ -16,5 +16,8 @@
  * under the License.
  */
 
-export { default as FeatureGateContext } from "./feature-gate-context";
-export * from "./feature-gate-context";
+export { default as AccessControlContext } from "./access-control-context-provider";
+export * from "./access-control-context-provider";
+
+export { default as AccessControlProvider } from "./access-control-provider";
+export * from "./access-control-provider";

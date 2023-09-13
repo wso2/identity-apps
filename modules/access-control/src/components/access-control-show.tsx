@@ -27,8 +27,8 @@ import React, {
     useContext
 } from "react";
 import { useAccess } from "react-access-control";
-import { FeatureGateContext } from "./context/feature-gate";
-import { FeatureGateContextInterface, FeatureStatus } from "./models/feature-gate";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
 
 /**
  * Interface for show component.
@@ -78,7 +78,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
     } = props;
 
     const featureStatusPath: string = `${ featureId }.status`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
     const isFeatureEnabledForThisPath:boolean = get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
 
     const show = hasPermission(when, { resource });

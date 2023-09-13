@@ -16,5 +16,18 @@
  * under the License.
  */
 
-export { default as FeatureGateContext } from "./feature-gate-context";
-export * from "./feature-gate-context";
+import get from "lodash-es/get";
+import  {
+    useContext
+} from "react";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface } from "../models";
+
+const useCheckFeatureTags = (path: string): string[] => {
+    const featureTagsPath: string = `${ path }.tags`;
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
+
+    return get(features?.features, featureTagsPath);
+};
+
+export default useCheckFeatureTags;

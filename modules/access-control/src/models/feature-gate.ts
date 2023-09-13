@@ -27,7 +27,7 @@ export interface SetTierFeaturesActionInterface {
 
 export type FeatureGateAction = SetTierFeaturesActionInterface
 
-export interface FeatureGateContextInterface {
+export interface FeatureGateContextPropsInterface {
     features: FeatureGateInterface;
     dispatch: React.Dispatch<FeatureGateAction>;
 }

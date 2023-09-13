@@ -18,10 +18,10 @@
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
 import { AccessProvider } from "react-access-control";
-import { AccessControlContext } from "./access-control-context-provider";
-import { FeatureGateContext } from "./context/feature-gate";
-import { PermissionsInterface } from "./models";
-import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "./models/feature-gate";
+import AccessControlContext  from "./access-control-context-provider";
+import { FeatureGateContext } from "../context";
+import { PermissionsInterface } from "../models";
+import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "../models/feature-gate";
 
 /**
  * Interface to store Access Control Provider props
@@ -51,7 +51,7 @@ export const featureGateReducer = (
  * @param props - Props injected to the component.
  * @returns Access Control Provider component.
  */
-export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlProviderInterface>> = (
+const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessControlProviderInterface>> = (
     props: PropsWithChildren<AccessControlProviderInterface>
 ): ReactElement => {
 
@@ -81,3 +81,5 @@ export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessCo
         </AccessProvider>
     );
 };
+
+export default AccessControlProvider;

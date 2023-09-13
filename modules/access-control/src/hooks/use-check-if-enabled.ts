@@ -16,5 +16,19 @@
  * under the License.
  */
 
-export { default as FeatureGateContext } from "./feature-gate-context";
-export * from "./feature-gate-context";
+import get from "lodash-es/get";
+import  {
+    useContext
+} from "react";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models";
+
+const useCheckIfEnabled = (path: string): boolean => {
+    const featureStatusPath: string = `${ path }.status`;
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
+    // obtain the status path and see if the value is enabled.
+
+    return get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
+};
+
+export default useCheckIfEnabled;

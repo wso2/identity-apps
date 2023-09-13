@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export { default as FeatureGateContext } from "./feature-gate-context";
-export * from "./feature-gate-context";
+export * from "./access-control-show";

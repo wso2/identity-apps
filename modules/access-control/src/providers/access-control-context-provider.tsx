@@ -19,7 +19,7 @@
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect } from "react";
 import { useAccess } from "react-access-control";
-import { PermissionsInterface } from "./models";
+import { PermissionsInterface } from "../models";
 
 /**
  * Interface to store Access Control Context props
@@ -36,7 +36,7 @@ export interface AccessControlContextInterface {
  * @param props - component props
  * @returns
  */
-export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
+const AccessControlContext: FunctionComponent<PropsWithChildren<AccessControlContextInterface>> = (
     props: PropsWithChildren<AccessControlContextInterface>
 ): ReactElement => {
 
@@ -65,3 +65,5 @@ export const AccessControlContext: FunctionComponent<PropsWithChildren<AccessCon
 
     return (<> { children } </>);
 };
+
+export default AccessControlContext;

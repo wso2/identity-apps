@@ -18,7 +18,7 @@
 
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { AccessControlConstants } from "../access-control-constants";
+import { AccessControlConstants } from "../constants/access-control-constants";
 
 /**
  * A class to contain util functions related to access control

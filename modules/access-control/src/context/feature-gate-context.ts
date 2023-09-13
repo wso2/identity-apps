@@ -16,5 +16,17 @@
  * under the License.
  */
 
-export { default as FeatureGateContext } from "./feature-gate-context";
-export * from "./feature-gate-context";
+import { Context, createContext } from "react";
+import { featureGateConfig } from "../configs/feature-gate";
+import { FeatureGateContextPropsInterface } from "../models/feature-gate";
+
+/**
+ * Context object for feature gate configurations.
+ */
+const FeatureGateContext: Context<FeatureGateContextPropsInterface>  =
+    createContext<FeatureGateContextPropsInterface>({
+        dispatch: () => null,
+        features: featureGateConfig
+    });
+
+export default FeatureGateContext;

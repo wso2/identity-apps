@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
-import { featureGateConfig } from "../configs/feature-gate";
-import { FeatureGateContextInterface } from "../models/feature-gate";
+export { default as useCheckFeatureStatus } from "./use-check-feature-status";
+export * from "./use-check-feature-status";
 
-export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({
-    dispatch: () => null,
-    features: featureGateConfig
-});
+export { default as useCheckFeatureTags } from "./use-check-feature-tags";
+export * from "./use-check-feature-tags";
+
+export { default as useCheckIfEnabled } from "./use-check-if-enabled";
+export * from "./use-check-if-enabled";
