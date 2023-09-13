@@ -133,7 +133,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
 
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
-    >(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)[ 0 ]);
+    >(getAppViewRoutes()[ 0 ]);
 
     const { isMobileViewport } = useMediaContext();
 

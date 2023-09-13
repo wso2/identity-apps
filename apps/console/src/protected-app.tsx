@@ -159,8 +159,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED)));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -583,7 +583,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(saasFeatureStatus === FeatureStatus.ENABLED),
+            getAppViewRoutes(),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,

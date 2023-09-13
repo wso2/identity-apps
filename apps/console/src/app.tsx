@@ -102,22 +102,19 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     useEffect(() => {
         if(state.isAuthenticated) {
-
             if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)
             || store.getState().organization.isFirstLevelOrganization) {
                 getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
                     const orgName: string = response.org_name;
                     // Set org_name instead of org_uuid as the API expects org_name
                     // as it resolves tenant uuid from it.
-    
+
                     setOrgId(orgName);
                 });
             } else {
                 // Set the sub org id to the current organization id.
-
                 setOrgId(store.getState().organization.organization.id);
             }
-            
         }
     }, [ state ]);
 

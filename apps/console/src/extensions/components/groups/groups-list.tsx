@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -169,47 +170,53 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (groupList?.length === 0) {
-            if (hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)) {
-                return (
-                    <EmptyPlaceholder
-                        data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                        action={ (selectedUserStoreOption === CONSUMER_USERSTORE
-                            || selectedUserStoreOption === GroupConstants.ALL_GROUPS)
-                            && (
-                                <PrimaryButton
-                                    data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
-                                    onClick={ onEmptyListPlaceholderActionClick }
-                                >
-                                    <Icon name="add"/>
-                                    { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                        { type: "Group" }) }
-                                </PrimaryButton>
-                            )
-                        }
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        title={ "No groups available" }
-                        subtitle={ [
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                                { type: "groups" })
-                        ] }
-                    />
-                );
-            } else {
-                return (
-                    <EmptyPlaceholder
-                        data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        title={ "No groups available" }
-                        subtitle={ [
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                                { type: "groups" })
-                        ] }
-                    />
-                );
-            }
+        if (groupList?.length !== 0) {
+            return (
+                <>
+                    <Show
+                        when={ AccessControlConstants.GROUP_WRITE }
+                    >
+                        <EmptyPlaceholder
+                            data-testid={ `${ testId }-empty-list-empty-placeholder` }
+                            action={ (selectedUserStoreOption === CONSUMER_USERSTORE
+                                || selectedUserStoreOption === GroupConstants.ALL_GROUPS)
+                                && (
+                                    <PrimaryButton
+                                        data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
+                                        onClick={ onEmptyListPlaceholderActionClick }
+                                    >
+                                        <Icon name="add"/>
+                                        { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                            { type: "Group" }) }
+                                    </PrimaryButton>
+                                )
+                            }
+                            image={ getEmptyPlaceholderIllustrations().newList }
+                            imageSize="tiny"
+                            title={ "No groups available" }
+                            subtitle={ [
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                    { type: "groups" })
+                            ] }
+                        />
+                    </Show>
+                    <Show
+                        when={ [] }
+                        notWhen={ AccessControlConstants.GROUP_WRITE }
+                    >
+                        <EmptyPlaceholder
+                            data-testid={ `${ testId }-empty-list-empty-placeholder` }
+                            image={ getEmptyPlaceholderIllustrations().newList }
+                            imageSize="tiny"
+                            title={ "No groups available" }
+                            subtitle={ [
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                    { type: "groups" })
+                            ] }
+                        />
+                    </Show>
+                </>
+            );
         }
 
         return null;
