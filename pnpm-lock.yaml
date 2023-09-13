@@ -527,10 +527,10 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.0
+        specifier: ^2.0.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.0.1
+        specifier: ^2.0.2
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.0
@@ -849,10 +849,10 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.0
+        specifier: ^2.0.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.0.1
+        specifier: ^2.0.2
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.0
@@ -23225,6 +23225,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
 
   /pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
