@@ -895,7 +895,7 @@
                                             String claimErrorMsgText = claimName + "_error_text";
                                 %>
                                     <div  id= "<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
-                                            <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
+                                        <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                         </label>
