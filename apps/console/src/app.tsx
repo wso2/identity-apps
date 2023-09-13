@@ -48,6 +48,7 @@ import { Dispatch } from "redux";
 import { commonConfig } from "./extensions";
 import { useGetAllFeatures } from "./extensions/components/feature-gate/api/feature-gate";
 import { featureGateConfig } from "./extensions/components/feature-gate/configs/feature-gate";
+import { AccessControlUtils } from "./features/access-control/configs/access-control";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";
 import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
@@ -337,8 +338,8 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                         <MediaContextProvider>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
-                                featureConfig={ featureConfig }
                                 features={ featureGateConfigData }
+                                permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
                             >
                                 <SessionManagementProvider
                                     onSessionTimeoutAbort={ handleSessionTimeoutAbort }

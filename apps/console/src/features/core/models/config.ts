@@ -71,6 +71,10 @@ export interface FeatureConfigInterface {
      */
     attributeDialects?: FeatureAccessConfigInterface;
     /**
+     * Branding configurations feature.
+     */
+    branding?: FeatureAccessConfigInterface;
+    /**
      * Certificates configurations feature.
      */
     certificates?: FeatureAccessConfigInterface;
@@ -146,6 +150,10 @@ export interface FeatureConfigInterface {
      * Organization insights feature
      */
     insights?: FeatureAccessConfigInterface
+    /**
+     * Event Configurations feature
+     */
+    eventConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**

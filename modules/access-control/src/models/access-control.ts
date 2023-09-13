@@ -16,5 +16,10 @@
  * under the License.
  */
 
-export * from "./access-control";
-export * from "./feature-gate";
+export interface AccessControlConfigInterface {
+    permissions: PermissionsInterface
+}
+
+export interface PermissionsInterface {
+    [key: string]: boolean;
+}

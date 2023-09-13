@@ -19,17 +19,17 @@
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useReducer } from "react";
 import { AccessProvider } from "react-access-control";
 import { AccessControlContext } from "./access-control-context-provider";
-import { featureGateConfig } from "./configs/feature-gate";
 import { FeatureGateContext } from "./context/feature-gate";
+import { PermissionsInterface } from "./models";
 import { FeatureGateAction, FeatureGateActionTypes, FeatureGateInterface } from "./models/feature-gate";
 
 /**
  * Interface to store Access Control Provider props
  */
 export interface AccessControlProviderInterface {
-    featureConfig: any; // TODO : Properly map FeatureConfigInterface type
     allowedScopes: string;
     features: FeatureGateInterface;
+    permissions: PermissionsInterface
 }
 
 export const featureGateReducer = (
@@ -58,12 +58,11 @@ export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessCo
     const {
         allowedScopes,
         children,
-        featureConfig,
-        features
+        features,
+        permissions
     } = props;
 
-    const defaultFeatureGateConfig: FeatureGateInterface  = { ...featureGateConfig };
-    const [ , dispatch ] = useReducer(featureGateReducer, defaultFeatureGateConfig);
+    const [ , dispatch ] = useReducer(featureGateReducer, features);
 
     useEffect (() => {
         dispatch({ payload: features, type: FeatureGateActionTypes.SET_FEATURE_STATE });
@@ -72,7 +71,10 @@ export const AccessControlProvider: FunctionComponent<PropsWithChildren<AccessCo
     return (
         <AccessProvider>
             <FeatureGateContext.Provider value={ { dispatch, features } }>
-                <AccessControlContext allowedScopes={ allowedScopes } featureConfig={ featureConfig }>
+                <AccessControlContext
+                    allowedScopes={ allowedScopes }
+                    permissions={ permissions }
+                >
                     { children }
                 </AccessControlContext>
             </FeatureGateContext.Provider>
