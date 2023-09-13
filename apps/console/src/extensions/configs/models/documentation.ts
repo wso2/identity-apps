@@ -214,7 +214,10 @@ interface BrandingDocumentationLinksInterface {
  * Interface for the common documentation structure.
  */
 interface CommonDocumentationLinksInterface {
+    cookiePolicy: string;
     docsHomePage: string;
+    privacyPolicy: string;
+    termsOfService: string;
 }
 
 /**

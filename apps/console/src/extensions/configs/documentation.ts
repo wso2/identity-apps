@@ -24,7 +24,10 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
 
     return {
         common: {
-            docsHomePage: documentationBaseUrl
+            cookiePolicy: "https://wso2.com/cookie-policy",
+            docsHomePage: documentationBaseUrl,
+            privacyPolicy: "https://wso2.com/privacy-policy",
+            termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
             apiResources: {
