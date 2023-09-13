@@ -1,7 +1,7 @@
 {
     "category": "DEFAULT",
     "description": "Configure a new enterprise identity provider with OpenID Connect",
-    "docLink": "/guides/authentication/enterprise-login/",
+    "docLink": "develop.connections.newConnection.oidc.setupGuide",
     "templateGroup": "enterprise-protocols",
     "displayOrder": 5,
     "id": "enterprise-oidc-idp",

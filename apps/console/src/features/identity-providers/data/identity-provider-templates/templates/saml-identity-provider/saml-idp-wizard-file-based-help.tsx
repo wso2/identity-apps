@@ -39,8 +39,7 @@ type Props = TestableComponentInterface;
 
 /**
  * Help panel content for SAML file based configuration mode.
- * @param props {Props}
- * @constructor
+ * @param props - Props injected to the component.
  */
 const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): ReactElement => {
 
@@ -57,7 +56,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                 size="tiny"
                 type="info"
                 content={
-                    <>
+                    (<>
                         <Trans
                             i18nKey={
                                 "console:develop.features.authenticationProvider.templates.enterprise.saml." +
@@ -77,19 +76,19 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                                 productName: config.ui.productName
                             })
                         }
-                        { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+                        { getLink("develop.connections.newConnection.enterprise.saml.learnMore") === undefined
                             ? null
                             : <Divider hidden/>
                         }
                         <DocumentationLink
-                            link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+                            link={ getLink("develop.connections.newConnection.enterprise.saml.learnMore") }
                         >
                             {
                                 t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
                                     "preRequisites.configureIdp")
                             }
                         </DocumentationLink>
-                    </>
+                    </>)
                 }
             />
             <Heading as="h5">Service provider entity ID</Heading>

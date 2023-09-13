@@ -1237,7 +1237,7 @@ export const extensions: Extensions = {
                         }
                     },
                     samples: {
-                        exploreMoreSamples: "Explorez <1>plus d'échantillons <1></1></1> comme celui-ci."
+                        exploreMoreSamples: "Explorez plus d'échantillons."
                     }
                 },
                 twa: {

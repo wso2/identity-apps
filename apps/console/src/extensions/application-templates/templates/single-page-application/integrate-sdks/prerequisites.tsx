@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, Link, Message, Text } from "@wso2is/react-components";
+import { Code, DocumentationLink, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { SupportedSPATechnologyTypes } from "../models";
@@ -36,8 +36,8 @@ interface PrerequisitesPropsInterface extends IdentifiableComponentInterface {
 /**
  * Integrate SDKs common Prerequisites step.
  * 
- * @param {PrerequisitesPropsInterface} props - Props injected into the component.
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns Prerequisites component.
  */
 export const Prerequisites: FunctionComponent<PrerequisitesPropsInterface> = (
     props: PrerequisitesPropsInterface
@@ -47,6 +47,8 @@ export const Prerequisites: FunctionComponent<PrerequisitesPropsInterface> = (
         technology,
         [ "data-componentid" ]: componentId
     } = props;
+
+    const { getLink } = useDocumentation();
 
     return (
         <div data-componentid={ componentId } className="mt-3 mb-6">
@@ -62,8 +64,11 @@ export const Prerequisites: FunctionComponent<PrerequisitesPropsInterface> = (
                             your environment to try out the SDK.
 
                             To download the Long Term Support (LTS) version of <strong>Node.js </strong>
-                            (which includes <strong>npm</strong>), navigate to the official <Link
-                            link="https://nodejs.org/en/download/">downloads</Link> page.
+                            (which includes <strong>npm</strong>), navigate to the official <DocumentationLink
+                                link={ getLink("develop.applications.editApplication." + 
+                                    "singlePageApplication.quickStart.nodejsDownload") }
+                                showEmptyLinkText
+                            >downloads</DocumentationLink> page.
                         </Trans>
                     </Text>
                 ) }

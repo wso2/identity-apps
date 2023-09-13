@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, CodeEditor, Heading, Link, Message, Text } from "@wso2is/react-components";
+import { Code, CodeEditor, DocumentationLink, Heading, Message, Text } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode } from "react";
 import { Divider } from "semantic-ui-react";
 import {
@@ -191,7 +191,10 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
                 </div>
 
                 <Text spaced="top">
-                    Go to our <Link link={ SDKMeta.react.links.authClientConfig }>documentation</Link> to learn{ " " }
+                    Go to our <DocumentationLink
+                        link={ SDKMeta.react.links.authClientConfig }
+                        showEmptyLinkText
+                    >documentation</DocumentationLink> to learn{ " " }
                     more about other configurations supported by the SDK.
                 </Text>
             </>
@@ -297,7 +300,10 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
                 <Divider hidden/>
 
                 <Text spaced="top">
-                    Go to our <Link link={ SDKMeta.react.links.useContextDocumentation }>documentation</Link>{ " " }
+                    Go to our <DocumentationLink
+                        link={ SDKMeta.react.links.useContextDocumentation }
+                        showEmptyLinkText
+                    >documentation</DocumentationLink>{ " " }
                     to read more about all the available states and methods of the <Code>useAuthContext()</Code>{ " " }
                     hook API.
                 </Text>
@@ -319,9 +325,11 @@ export const ReactSDKIntegrateSteps: FunctionComponent<ReactSDKIntegrateStepsPro
                     This component allows you to easily secure your routes with Asgardeo.
                 </Text>
                 <Text>
-                    For more information, read our <Link
-                        link={ SDKMeta.react.links.secureRoute }>documentation</Link>. And also checkout the <Link
-                        link={ SDKMeta.react.samples.routing.repository }>sample</Link>{ " " }
+                    For more information, read our <DocumentationLink
+                        link={ SDKMeta.react.links.secureRoute }
+                        showEmptyLinkText>documentation</DocumentationLink>. And also checkout the <DocumentationLink
+                        link={ SDKMeta.react.samples.routing.repository }
+                        showEmptyLinkText>sample</DocumentationLink>{ " " }
                     and go through the source code.
                 </Text>
             </>

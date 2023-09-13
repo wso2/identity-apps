@@ -21,6 +21,7 @@ import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
     Code,
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     GenericIconProps,
     Heading,
@@ -332,13 +333,12 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                         }
                     >
                         Follow 
-                        <a
-                            href={ documentationLink }
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <DocumentationLink
+                            link={ documentationLink }
+                            showEmptyLinkText
                         >
                             this guide
-                        </a> to learn the OIDC Authorization Code Flow with PKCE 
+                        </DocumentationLink> to learn the OIDC Authorization Code Flow with PKCE 
                         and use below details to configure any third-party OIDC SDK 
                         for mobile applications.
                     </Trans>

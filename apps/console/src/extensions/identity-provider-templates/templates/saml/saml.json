@@ -2,7 +2,7 @@
     "templateGroup": "enterprise-protocols",
     "category": "DEFAULT",
     "description": "Configure a new enterprise identity provider with SAML 2.0",
-    "docLink": "/guides/authentication/enterprise-login/",
+    "docLink": "develop.connections.newConnection.saml.setupGuide",
     "displayOrder": 6,
     "id": "enterprise-saml-idp",
     "tags": [ "SAML" ],

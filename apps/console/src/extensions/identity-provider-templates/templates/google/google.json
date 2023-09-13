@@ -2,7 +2,7 @@
     "id": "google-idp",
     "name": "Google",
     "description": "Login users with existing Google accounts.",
-    "docLink": "/guides/authentication/social-login/add-google-login/",
+    "docLink": "develop.connections.newConnection.google.setupGuide",
     "image": "google",
     "category": "DEFAULT",
     "displayOrder": 1,

@@ -17,7 +17,15 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import {
+    Code,
+    CodeEditor,
+    CopyInputField,
+    DocumentationLink,
+    Heading,
+    Message,
+    useDocumentation
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
@@ -47,6 +55,7 @@ const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
         } = props;
 
         const { t } = useTranslation();
+        const { getLink } = useDocumentation();
 
         const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
@@ -100,16 +109,15 @@ const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
                                     value={ IdentityProviderManagementUtils.getCommonAuthEndpoint() }
                                 />
                             </p>
-                            <a
-                                href={ SIWEConstants.SIWE_CLIENT_REGISTRATION_DOCS_URL }
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <DocumentationLink
+                                link={ getLink("develop.connections.newConnection.siwe.help.configureOIDC") }
+                                showEmptyLinkText
                             >
                                 {
                                     t("extensions:develop.identityProviders.siwe.wizardHelp" +
                                     ".preRequisites.clientRegistrationDocs")
                                 }
-                            </a>
+                            </DocumentationLink>
                             <p>
                                 <Trans
                                     i18nKey={

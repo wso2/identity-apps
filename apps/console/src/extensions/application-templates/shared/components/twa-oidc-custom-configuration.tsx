@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     GenericIconProps,
     Heading,
@@ -238,13 +239,12 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                         }
                     >
                         You can implement login using 
-                        <a
-                            href={ documentationLink }
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <DocumentationLink
+                            link={ documentationLink }
+                            showEmptyLinkText
                         >
                             Authorization Code flow
-                        </a> with Asgardeo for any traditional web application.
+                        </DocumentationLink> with Asgardeo for any traditional web application.
                     </Trans>
                 </Text>  
             </Card.Content>

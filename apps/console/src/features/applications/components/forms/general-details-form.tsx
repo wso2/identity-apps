@@ -289,7 +289,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
-            { getLink("develop.connections.newConnection.enterprise.samlLearnMore") === undefined
+            { getLink("develop.connections.newConnection.enterprise.saml.learnMore") === undefined
                 ? null
                 : <Divider hidden/>
             }

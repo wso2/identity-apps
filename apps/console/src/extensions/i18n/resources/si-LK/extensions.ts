@@ -1220,7 +1220,7 @@ export const extensions: Extensions = {
                         }
                     },
                     samples: {
-                        exploreMoreSamples: "මේ ආකාරයට <1>තවත් සාම්පල <1></1></1> ගවේෂණය කරන්න."
+                        exploreMoreSamples: "තවත් සාම්පල ගවේෂණය කරන්න."
                     }
                 },
                 twa: {
