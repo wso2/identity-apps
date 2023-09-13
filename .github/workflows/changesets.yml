@@ -1,0 +1,119 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# --------------------------------------------------------------------------------------
+
+# This workflow will check if a submitted PR has changesets.
+
+name: 🦋 Check for Changeset 
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+env:
+  GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+  BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 💬 Remove Existing Changeset Comment
+        id: remove-comment
+        run: |
+          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
+          REPO_OWNER=$(echo "${{ github.repository_owner }}")
+          REPO_NAME=$(echo "${{ github.repository }}")
+
+          GITHUB_API="https://api.github.com"
+          COMMENTS_URL="$GITHUB_API/repos/$REPO_NAME/issues/$PR_NUMBER/comments"
+
+          echo COMMENTS_URL: "$COMMENTS_URL"
+
+          # Get all comments on the pull request
+          COMMENTS=$(curl -s -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
+            "$COMMENTS_URL")
+
+          echo COMMENTS: "$COMMENTS"
+
+          # Loop through each comment to find the changeset comment and delete it
+          for row in $(echo "${COMMENTS}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${row} | base64 --decode | jq -r ${1}
+            }
+            body=$(_jq '.body')
+            user_name=$(_jq '.user.login')
+
+            echo COMMENT_OWNER: $user_name
+            
+            # Identify the changeset comment by its content or any unique identifier
+            if [[ $user_name == "${{ env.BOT_USERNAME }}" ]]; then
+              comment_id=$(_jq '.id')
+
+              echo COMMENT_ID_TO_DELETE: $comment_id
+              
+              # Remove the changeset comment using the comment ID
+              curl -s -X DELETE -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
+                "$GITHUB_API/repos/$REPO_NAME/issues/comments/$comment_id"
+            fi
+          done
+
+      - name: 💬 Add Changeset Comment
+        id: add-comment
+        run: |
+          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
+          REPO_OWNER=$(echo "${{ github.repository_owner }}")
+          REPO_NAME=$(echo "${{ github.repository }}")
+          PR_HEAD_SHA=$(echo "${{ github.event.pull_request.head.sha }}")
+
+          CHANGED_FILES=$(curl -s -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
+            "https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files" \
+            | jq -r '.[].filename')
+
+          echo CHANGED_FILES_URL: "https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files"
+          echo CHANGED_FILES: $CHANGED_FILES
+
+          CHANGES_COUNT=$(echo "$CHANGED_FILES" | grep -c "^\.changeset/.*\.md$" || true)
+
+          echo CHANGES_COUNT: $CHANGES_COUNT
+
+          if [[ $CHANGES_COUNT -gt 0 ]]; then
+            COMMENT="<h3>🦋 Changeset detected</h3><p>Latest commit: $PR_HEAD_SHA</p><p><b>The changes in this PR will be included in the next version bump.</b></p><p>Not sure what this means? <a href="https://github.com/changesets/changesets/blob/master/docs/adding-a-changeset.md">Click here to learn what changesets are</a>.</p>"
+          else
+            COMMENT="<h3>⚠️ No Changeset found</h3><p>Latest commit: $PR_HEAD_SHA</p>Merging this PR will not cause a version bump for any packages. If these changes should not result in a new version, you're good to go.</p><p><b>If these changes should result in a version bump, you need to add a changeset.</b></p><a href="https://github.com/changesets/changesets/blob/master/docs/adding-a-changeset.md">Click here to learn what changesets are, and how to add one</a>"
+          fi
+
+          GITHUB_API="https://api.github.com"
+          COMMENTS_URL="$GITHUB_API/repos/$REPO_NAME/issues/$PR_NUMBER/comments"
+
+          echo COMMENTS_URL: "$COMMENTS_URL"
+
+          COMMENT_BODY=$(jq --null-input --arg body "$COMMENT" '{"body": $body}')
+          curl -s -H "Authorization: Bearer ${{ env.GH_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            -d "$COMMENT_BODY" \
+            "$COMMENTS_URL"
