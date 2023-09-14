@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
+import { AccessControlConstants } from "../../../access-control/constants/access-control";
 import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
@@ -250,33 +252,31 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)
-            && !application?.advancedConfigurations?.fragment) {
+        if (!application?.advancedConfigurations?.fragment) {
             return (
-                <DangerZoneGroup sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }>
-                    {
-                        hasRequiredScopes(
-                            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes) &&
-                        (
-                            <DangerZone
-                                actionTitle={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
-                                        ".actionTitle")
-                                }
-                                header={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
-                                }
-                                subheader={
-                                    t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
-                                        ".subheader")
-                                }
-                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                                data-testid={ `${ testId }-danger-zone` }
-                            />
-                        )
-                    }
-                </DangerZoneGroup>
+                <Show
+                    when={ AccessControlConstants.APPLICATION_DELETE }
+                >
+                    <DangerZoneGroup
+                        sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+                    >
+                        <DangerZone
+                            actionTitle={
+                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                    ".actionTitle")
+                            }
+                            header={
+                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication.header")
+                            }
+                            subheader={
+                                t("console:develop.features.applications.dangerZoneGroup.deleteApplication" +
+                                    ".subheader")
+                            }
+                            onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                            data-testid={ `${ testId }-danger-zone` }
+                        />
+                    </DangerZoneGroup>
+                </Show>
             );
         }
 

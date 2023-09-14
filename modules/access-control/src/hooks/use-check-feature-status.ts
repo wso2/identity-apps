@@ -16,15 +16,19 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "../models/feature-gate";
+import get from "lodash-es/get";
+import  {
+    useContext
+} from "react";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models";
 
-export enum FeatureGateActionTypes {
-    SET_FEATURE_STATE = "SET_FEATURE_STATE",
-}
+const useCheckFeatureStatus = (path: string): FeatureStatus => {
+    const featureStatusPath: string = `${ path }.status`;
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
+    // obtain the status path and return the status.
 
-export interface SetTierFeaturesActionInterface {
-    payload: FeatureGateInterface; // we rely on this payload and update all actions bases
-    type: FeatureGateActionTypes.SET_FEATURE_STATE;
-}
+    return get(features?.features, featureStatusPath);
+};
 
-export type FeatureGateAction = SetTierFeaturesActionInterface
+export default useCheckFeatureStatus;

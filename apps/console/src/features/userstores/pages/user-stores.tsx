@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -84,7 +85,6 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -228,18 +228,20 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             action={
                 (isLoading || !(!searchQuery && filteredUserStores?.length <= 0))
                 && userstoresConfig.userstoreList.allowAddingUserstores
-                && hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
-                    allowedScopes)
                 && (
-                    <PrimaryButton
-                        onClick={ () => {
-                            history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
+                    <Show
+                        when={ AccessControlConstants.USER_STORE_WRITE }
                     >
-                        <Icon name="add"/>
-                        { t("console:manage.features.userstores.pageLayout.list.primaryAction") }
-                    </PrimaryButton>
+                        <PrimaryButton
+                            onClick={ () => {
+                                history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.userstores.pageLayout.list.primaryAction") }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             isLoading={ isLoading }

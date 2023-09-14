@@ -16,20 +16,17 @@
  * under the License.
  */
 
-import { FeatureGateEndpoints } from "@wso2is/access-control";
-
+import { Context, createContext } from "react";
+import { featureGateConfig } from "../configs/feature-gate";
+import { FeatureGateContextPropsInterface } from "../models/feature-gate";
 
 /**
- * Get the resource endpoints for the Feature-Gate feature.
- *
- * @param serverHost - Server Host.
- * @returns The resource endpoints for the Feature Gate.
+ * Context object for feature gate configurations.
  */
-export const getFeatureGateResourceEndpoints = (
-    serverHostWithOrgPath: string
-): FeatureGateEndpoints => {
-    return {
-        allFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allFeatures`,
-        allowedFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allowedFeatures`
-    };
-};
+const FeatureGateContext: Context<FeatureGateContextPropsInterface>  =
+    createContext<FeatureGateContextPropsInterface>({
+        dispatch: () => null,
+        features: featureGateConfig
+    });
+
+export default FeatureGateContext;

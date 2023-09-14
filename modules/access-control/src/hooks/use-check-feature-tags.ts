@@ -16,20 +16,18 @@
  * under the License.
  */
 
-import { FeatureGateEndpoints } from "@wso2is/access-control";
+import get from "lodash-es/get";
+import  {
+    useContext
+} from "react";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface } from "../models";
 
+const useCheckFeatureTags = (path: string): string[] => {
+    const featureTagsPath: string = `${ path }.tags`;
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
 
-/**
- * Get the resource endpoints for the Feature-Gate feature.
- *
- * @param serverHost - Server Host.
- * @returns The resource endpoints for the Feature Gate.
- */
-export const getFeatureGateResourceEndpoints = (
-    serverHostWithOrgPath: string
-): FeatureGateEndpoints => {
-    return {
-        allFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allFeatures`,
-        allowedFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allowedFeatures`
-    };
+    return get(features?.features, featureTagsPath);
 };
+
+export default useCheckFeatureTags;

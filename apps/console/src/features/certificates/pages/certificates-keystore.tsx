@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -24,7 +25,9 @@ import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -44,9 +47,9 @@ type CertificatesKeystorePageInterface = TestableComponentInterface
 /**
  * This renders the Certificates Keystore page.
  *
- * @param {CertificatesKeystorePageInterface} props - Props injected to the component.
+ * @param  props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns certificate keystore page component.
  */
 const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface> = (
     props: CertificatesKeystorePageInterface
@@ -61,7 +64,11 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
         {
             key: 0,
             text: t("console:manage.features.certificates.keystore.attributes.alias"),
@@ -83,11 +90,10 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
@@ -103,11 +109,11 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     const fetchCertificatesKeystore = () => {
         setIsLoading(true);
         listCertificateAliases()
-            .then(response => {
+            .then((response: Certificate[]) => {
                 setCertificatesKeystore(response);
                 setFilteredCertificatesKeystore(response);
             })
-            .catch(error => {
+            .catch((error: IdentityAppsError)=> {
                 setIsLoading(false);
                 dispatch(addAlert(
                     {
@@ -137,11 +143,11 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * This slices and returns a portion of the list.
      *
-     * @param {number} list.
-     * @param {number} limit.
-     * @param {number} offset.
+     * @param list - List of certificates.
+     * @param limit - Items per page.
+     * @param offset - Offset.
      *
-     * @return {Certificate[]} Paginated list.
+     * @returns Paginated list.
      */
     const paginate = (list: Certificate[], limit: number, offset: number): Certificate[] => {
         return list?.slice(offset, offset + limit);
@@ -150,8 +156,8 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * Handles the change in the number of items to display.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - React.MouseEvent<HTMLAnchorElement>.
+     * @param data - Dropdown data.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
@@ -160,8 +166,8 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * This paginates.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {PaginationProps} data.
+     * @param event - React.MouseEvent<HTMLAnchorElement>.
+     * @param data - Pagination props.
      */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
@@ -170,7 +176,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * Handles sort order change.
      *
-     * @param {boolean} isAscending.
+     * @param isAscending - Flag to determine the order.
      */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -179,17 +185,17 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     /**
      * Handle sort strategy change.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - Dropdown event.
+     * @param  data - Dropdown data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: DropdownProps) => option.value === data.value)[ 0 ]);
     };
 
     /**
      * Handles the `onFilter` callback action from the search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleKeystoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
@@ -225,18 +231,20 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
             <PageLayout
                 action={
                     (isLoading || !(!searchQuery && certificatesKeystore?.length <= 0))
-                    && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.create,
-                        allowedScopes)
                     && !isSuper && (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setOpenModal(true);
-                            } }
-                            data-testid={ `${ testId }-list-layout-upload-button` }
+                        <Show
+                            when={ AccessControlConstants.CERTIFICATES_WRITE }
                         >
-                            <Icon name="cloud upload" />
-                            { t("console:manage.features.certificates.keystore.pageLayout.primaryAction") }
-                        </PrimaryButton>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setOpenModal(true);
+                                } }
+                                data-testid={ `${ testId }-list-layout-upload-button` }
+                            >
+                                <Icon name="cloud upload" />
+                                { t("console:manage.features.certificates.keystore.pageLayout.primaryAction") }
+                            </PrimaryButton>
+                        </Show>
                     )
                 }
                 isLoading={ isLoading }

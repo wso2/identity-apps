@@ -20,29 +20,15 @@ import get from "lodash-es/get";
 import  {
     useContext
 } from "react";
-import { FeatureGateContext } from "../context/feature-gate";
-import { FeatureGateContextInterface, FeatureStatus } from "../models/feature-gate";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models";
 
-
-export const useCheckIfEnabled = (path: string): boolean => {
+const useCheckIfEnabled = (path: string): boolean => {
     const featureStatusPath: string = `${ path }.status`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
     // obtain the status path and see if the value is enabled.
 
     return get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
 };
 
-export const useCheckFeatureStatus = (path: string): FeatureStatus => {
-    const featureStatusPath: string = `${ path }.status`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
-    // obtain the status path and return the status.
-
-    return get(features?.features, featureStatusPath);
-};
-
-export const useCheckFeatureTags = (path: string): string[] => {
-    const featureTagsPath: string = `${ path }.tags`;
-    const features: FeatureGateContextInterface = useContext(FeatureGateContext);
-
-    return get(features?.features, featureTagsPath);
-};
+export default useCheckIfEnabled;

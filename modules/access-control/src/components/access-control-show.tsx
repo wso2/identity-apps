@@ -16,14 +16,19 @@
  * under the License.
  */
 
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     Fragment,
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
-    ReactNode
+    ReactNode,
+    useContext
 } from "react";
 import { useAccess } from "react-access-control";
+import { FeatureGateContext } from "../context";
+import { FeatureGateContextPropsInterface, FeatureStatus } from "../models/feature-gate";
 
 /**
  * Interface for show component.
@@ -45,6 +50,10 @@ export interface AccessControlShowInterface {
      * Granular level resource permissions.
      */
     resource?: Record<string, any>;
+    /**
+     * Feature ID of the feature which is used to check the feature status.
+     */
+    featureId?: string;
 }
 
 /**
@@ -63,9 +72,14 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         when,
         notWhen,
         fallback,
+        featureId,
         resource,
         children
     } = props;
+
+    const featureStatusPath: string = `${ featureId }.status`;
+    const features: FeatureGateContextPropsInterface = useContext(FeatureGateContext);
+    const isFeatureEnabledForThisPath:boolean = get(features?.features, featureStatusPath) === FeatureStatus.ENABLED;
 
     const show = hasPermission(when, { resource });
     let hideOn = false;
@@ -74,8 +88,7 @@ export const Show: FunctionComponent<PropsWithChildren<AccessControlShowInterfac
         hideOn = hasPermission(notWhen, { resource });
     }
 
-    if (show) {
-
+    if ((isEmpty(featureId) || isFeatureEnabledForThisPath) && show) {
         if (hideOn) {
             return null;
         } else {

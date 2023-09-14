@@ -16,16 +16,18 @@
  * under the License.
  */
 
-import { FeatureGateAction } from "../actions/feature-gate";
-
-export interface FeatureGateShowInterface {
-    /**
-     * Permissions needed to render child elements
-     */
-    ifAllowed: string;
+export enum FeatureGateActionTypes {
+    SET_FEATURE_STATE = "SET_FEATURE_STATE",
 }
 
-export interface FeatureGateContextInterface {
+export interface SetTierFeaturesActionInterface {
+    payload: FeatureGateInterface; // we rely on this payload and update all actions bases
+    type: FeatureGateActionTypes.SET_FEATURE_STATE;
+}
+
+export type FeatureGateAction = SetTierFeaturesActionInterface
+
+export interface FeatureGateContextPropsInterface {
     features: FeatureGateInterface;
     dispatch: React.Dispatch<FeatureGateAction>;
 }

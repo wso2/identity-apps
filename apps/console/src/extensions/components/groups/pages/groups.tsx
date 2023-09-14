@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -36,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { AccessControlConstants } from "../../../../features/access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -101,8 +102,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
     const [ paginatedFilteredGroups, setPaginatedFilteredGroups ] = useState<GroupsInterface[]>([]);
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
     const excludeMembers: string = "members";
@@ -446,24 +445,27 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         <PageLayout
             pageTitle="Groups"
             action={
-                hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)
-                && !isGroupListFetchRequestLoading
+                !isGroupListFetchRequestLoading
                 && (
                     userStoreOption === CONSUMER_USERSTORE
                     || userStoreOption === GroupConstants.ALL_GROUPS
                 )
                 && originalGroupList.totalResults > 0
                 && (
-                    <PrimaryButton
-                        data-testid="group-mgt-groups-list-add-button"
-                        onClick={ () => {
-                            eventPublisher.publish("manage-groups-click-create-new-group");
-                            setShowWizard(true);
-                        } }
+                    <Show
+                        when={ AccessControlConstants.GROUP_WRITE }
                     >
-                        <Icon name="add"/>
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
-                    </PrimaryButton>
+                        <PrimaryButton
+                            data-testid="group-mgt-groups-list-add-button"
+                            onClick={ () => {
+                                eventPublisher.publish("manage-groups-click-create-new-group");
+                                setShowWizard(true);
+                            } }
+                        >
+                            <Icon name="add"/>
+                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                        </PrimaryButton>
+                    </Show>
                 )
             }
             title={ t("extensions:manage.groups.heading") }

@@ -59,6 +59,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * API resources feature.
+     */
+    apiResources?: FeatureAccessConfigInterface;
+    /**
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
@@ -70,6 +74,10 @@ export interface FeatureConfigInterface {
      * Attribute dialects(Claim dialects) feature.
      */
     attributeDialects?: FeatureAccessConfigInterface;
+    /**
+     * Branding configurations feature.
+     */
+    branding?: FeatureAccessConfigInterface;
     /**
      * Certificates configurations feature.
      */
@@ -146,6 +154,10 @@ export interface FeatureConfigInterface {
      * Organization insights feature
      */
     insights?: FeatureAccessConfigInterface
+    /**
+     * Event Configurations feature
+     */
+    eventConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**

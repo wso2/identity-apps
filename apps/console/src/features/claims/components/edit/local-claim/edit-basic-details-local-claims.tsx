@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -57,6 +57,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
+import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import {
     ConnectorPropertyInterface,
@@ -712,22 +713,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             )
                     }
                     {
-                        hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.update,
-                            allowedScopes
-                        ) && !hideSpecialClaims &&
+                        !hideSpecialClaims &&
                         (
-                            <Field.Button
-                                form={ FORM_ID }
-                                ariaLabel="submit"
-                                size="small"
-                                buttonType="primary_btn"
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                                label={ t("common:update") }
-                                name="submit"
-                            />
+                            <Show
+                                when={ AccessControlConstants.ATTRIBUTE_EDIT }
+                            >
+                                <Field.Button
+                                    form={ FORM_ID }
+                                    ariaLabel="submit"
+                                    size="small"
+                                    buttonType="primary_btn"
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                    label={ t("common:update") }
+                                    name="submit"
+                                />
+                            </Show>
                         )
                     }
                 </Form>

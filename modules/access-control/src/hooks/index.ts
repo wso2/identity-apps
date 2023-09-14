@@ -16,19 +16,11 @@
  * under the License.
  */
 
-import { FeatureGateInterface } from "../../models/feature-gate";
-import { FeatureGateActionTypes, SetTierFeaturesActionInterface } from "../feature-gate";
+export { default as useCheckFeatureStatus } from "./use-check-feature-status";
+export * from "./use-check-feature-status";
 
-/**
- * This action sets features of an organization in the redux store based on tier information.
- *
- * @param organization - An organization object.
- *
- * @returns - A set of features for the organization.
- */
-export const setTierFeatuers = (featureGate: FeatureGateInterface): SetTierFeaturesActionInterface => {
-    return {
-        payload: featureGate,
-        type: FeatureGateActionTypes.SET_FEATURE_STATE
-    };
-};
+export { default as useCheckFeatureTags } from "./use-check-feature-tags";
+export * from "./use-check-feature-tags";
+
+export { default as useCheckIfEnabled } from "./use-check-if-enabled";
+export * from "./use-check-if-enabled";

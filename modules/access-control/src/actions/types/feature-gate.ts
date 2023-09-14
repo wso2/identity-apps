@@ -16,11 +16,22 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
-import { featureGateConfig } from "../configs/feature-gate";
-import { FeatureGateContextInterface } from "../models/feature-gate";
+import {
+    FeatureGateActionTypes,
+    FeatureGateInterface,
+    SetTierFeaturesActionInterface
+} from "../../models/feature-gate";
 
-export const FeatureGateContext: Context<FeatureGateContextInterface>  = createContext<FeatureGateContextInterface>({
-    dispatch: () => null,
-    features: featureGateConfig
-});
+/**
+ * This action sets features of an organization in the redux store based on tier information.
+ *
+ * @param organization - An organization object.
+ *
+ * @returns - A set of features for the organization.
+ */
+export const setTierFeatuers = (featureGate: FeatureGateInterface): SetTierFeaturesActionInterface => {
+    return {
+        payload: featureGate,
+        type: FeatureGateActionTypes.SET_FEATURE_STATE
+    };
+};

@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -55,12 +55,12 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
+import { AccessControlConstants } from "../../../access-control/constants/access-control";
 import {
     AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
-    FeatureConfigInterface,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -154,8 +154,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
@@ -1053,30 +1051,32 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         (isOrganizationManagementEnabled
                             && applicationConfig.editApplication.showApplicationShare
                             && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                            && hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update, allowedScopes)
                             && orgType !== OrganizationType.SUBORGANIZATION) && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    <div className="pt-0 mt-0">
-                                        <Checkbox 
-                                            onChange={ (
-                                                event: React.FormEvent<HTMLInputElement>, 
-                                                data: CheckboxProps
-                                            ) => {
-                                                setIsAppSharingEnabled(data.checked);
-                                                setIsApplicationSharingEnabled;
-                                            } }
-                                            label={ t("console:develop.features.applications.forms.generalDetails" +
-                                                ".fields.isSharingEnabled.label") }
-                                        />
-                                        <Hint inline popup>
-                                            { t("console:develop.features.applications.forms.generalDetails" +
-                                                ".fields.isSharingEnabled.hint") }
-                                        </Hint>
-                                    </div>
-                                </Grid.Column>
-                            </Grid.Row>
+                            <Show
+                                when={ AccessControlConstants.APPLICATION_EDIT }
+                            >
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                        <div className="pt-0 mt-0">
+                                            <Checkbox 
+                                                onChange={ (
+                                                    event: React.FormEvent<HTMLInputElement>, 
+                                                    data: CheckboxProps
+                                                ) => {
+                                                    setIsAppSharingEnabled(data.checked);
+                                                    setIsApplicationSharingEnabled;
+                                                } }
+                                                label={ t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.isSharingEnabled.label") }
+                                            />
+                                            <Hint inline popup>
+                                                { t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.isSharingEnabled.hint") }
+                                            </Hint>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Show>
                         )
                     }
                 </Grid>

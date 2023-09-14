@@ -26,6 +26,7 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
@@ -44,9 +45,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../../extensions/components/feature-gate/controller/featureGate-util";
-import { ShowFeature } from "../../../extensions/components/feature-gate/controller/show-feature";
-import { FeatureStatus } from "../../../extensions/components/feature-gate/models/feature-gate";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -333,7 +331,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             billingPortalURL && !isPrivilegedUser &&
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
-                <ShowFeature ifAllowed={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <a 
                         href={ upgradeButtonURL } 
                         target="_blank" 
@@ -351,7 +349,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         </Button>
                     </a>
-                </ShowFeature>
+                </Show>
             )
         ];
     };
@@ -457,7 +455,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 menuItems: [
                     billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl && 
                     !isPrivilegedUser && (
-                        <ShowFeature ifAllowed={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem
                                 color="inherit"
                                 onClick={ () => {
@@ -474,7 +472,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     ) }
                                 </ListItemText>
                             </MenuItem>
-                        </ShowFeature>
+                        </Show>
                     ),
                     showAppSwitchButton ? (
                         <MenuItem

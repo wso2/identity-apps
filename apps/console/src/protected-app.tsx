@@ -25,7 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AccessControlUtils } from "@wso2is/access-control";
+import { AccessControlUtils, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
@@ -72,6 +72,7 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs } from "./extensions";
+import { FeatureGateConstants } from "./extensions/components/feature-gate/constants/feature-gate";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -130,6 +131,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const allowedScopes: string = useSelector(
         (state: AppState) => state?.auth?.allowedScopes

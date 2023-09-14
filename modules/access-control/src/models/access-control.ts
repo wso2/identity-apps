@@ -16,20 +16,10 @@
  * under the License.
  */
 
-import { FeatureGateEndpoints } from "@wso2is/access-control";
+export interface AccessControlConfigInterface {
+    permissions: PermissionsInterface
+}
 
-
-/**
- * Get the resource endpoints for the Feature-Gate feature.
- *
- * @param serverHost - Server Host.
- * @returns The resource endpoints for the Feature Gate.
- */
-export const getFeatureGateResourceEndpoints = (
-    serverHostWithOrgPath: string
-): FeatureGateEndpoints => {
-    return {
-        allFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allFeatures`,
-        allowedFeatures: `${serverHostWithOrgPath}/api/asgardeo/feature-gate/{org-uuid}/allowedFeatures`
-    };
-};
+export interface PermissionsInterface {
+    [key: string]: boolean;
+}

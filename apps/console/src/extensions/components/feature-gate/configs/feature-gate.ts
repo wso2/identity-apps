@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureGateInterface, FeatureStatus } from "../models/feature-gate";
+import { FeatureGateInterface, FeatureStatus } from "@wso2is/access-control";
 
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
