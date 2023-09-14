@@ -91,9 +91,9 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >

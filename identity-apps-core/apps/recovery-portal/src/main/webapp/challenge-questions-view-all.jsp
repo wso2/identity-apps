@@ -175,19 +175,19 @@
         }
         $(document).ready(function () {
             $("#securityQuestionForm").submit(function (e) {
-            <%
-                if (reCaptchaEnabled) {
-            %>
-            if (!grecaptcha.getResponse()) {
-                e.preventDefault();
-                grecaptcha.execute();
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                if (!grecaptcha.getResponse()) {
+                    e.preventDefault();
+                    grecaptcha.execute();
 
-                return true;
-            }
-            <%
+                    return true;
                 }
-            %>
-            return true;
+                <%
+                    }
+                %>
+                return true;
             });
         });
 
