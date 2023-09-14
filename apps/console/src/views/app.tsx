@@ -129,7 +129,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
         (state: AppState) => state.routes.developeRoutes.sanitizedRoutes
     );
 
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
