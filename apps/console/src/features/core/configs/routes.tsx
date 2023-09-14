@@ -190,50 +190,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() =>
-                                    import("../../../extensions/components/" + "users/pages/guest-user-edit")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
-                                },
-                                id: "collaborator-user-edit",
-                                name: "Collaborator Users Edit",
-                                path: UsersConstants.getPaths().get("COLLABORATOR_USER_EDIT_PATH"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import("../../../extensions/components/users" + "/pages/administrator-settings")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "administrator-settings-edit",
-                                name: "administrator-settings-edit",
-                                path: UsersConstants.getPaths().get("COLLABORATOR_SETTINGS_EDIT_PATH"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../../extensions/components/users/pages/administrators")),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
-                        },
-                        id: "administrators",
-                        name: "Administrators",
-                        order: 5,
-                        path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
-                            {
                                 component: lazy(() => import("../../roles/pages/role-edit")),
                                 exact: true,
                                 icon: {
@@ -915,6 +871,50 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 children: [
                     {
                         component: lazy(() =>
+                            import("../../../extensions/components/" + "users/pages/guest-user-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
+                        },
+                        id: "collaborator-user-edit",
+                        name: "Collaborator Users Edit",
+                        path: UsersConstants.getPaths().get("COLLABORATOR_USER_EDIT_PATH"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/users" + "/pages/administrator-settings")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "administrator-settings-edit",
+                        name: "administrator-settings-edit",
+                        path: UsersConstants.getPaths().get("COLLABORATOR_SETTINGS_EDIT_PATH"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/components/users/pages/administrators")),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
+                },
+                id: "administrators",
+                name: "Administrators",
+                order: 5,
+                path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
                             import("../../../extensions/components/" + "groups/pages/groups-edit")
                         ),
                         exact: true,
@@ -1031,6 +1031,50 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 name: "console:manage.features.sidePanel.users",
                 order: 4,
                 path: AppConstants.getPaths().get("USERS"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../users/pages/user-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
+                        },
+                        id: "collaborator-user-edit",
+                        name: "Collaborator Users Edit",
+                        path: UsersConstants.getPaths().get("COLLABORATOR_USER_EDIT_PATH"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/users" + "/pages/administrator-settings")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "administrator-settings-edit",
+                        name: "administrator-settings-edit",
+                        path: UsersConstants.getPaths().get("COLLABORATOR_SETTINGS_EDIT_PATH"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../../extensions/components/users/pages/administrators")),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/admin-icon.svg")
+                },
+                id: "administrators",
+                name: "Administrators",
+                order: 5,
+                path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
                 protected: true,
                 showOnSidePanel: true
             },
