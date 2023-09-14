@@ -28,6 +28,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -43,7 +44,7 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
     Map<String, List<ChallengeQuestionDTO>> challengeQuestionSets = new HashMap<String, List<ChallengeQuestionDTO>>();
-    String username = session.getAttribute("username");
+    String username = (String) session.getAttribute("username");
 
     if (!StringUtils.isBlank(username)) {
         UserIdentityManagementAdminServiceClient userIdentityManagementAdminServiceClient = new
@@ -70,35 +71,9 @@
     }
 %>
 
-    <html lang="en-US">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <%-- title --%>
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:include page="includes/title.jsp"/>
-        <% } %>
-
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
-    <%-- header --%>
+<!doctype html>
+<html lang="en-US">
+<head>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
@@ -107,88 +82,100 @@
     <% } else { %>
             <jsp:include page="includes/header.jsp"/>
     <% } %>
-
-    <%-- page content --%>
-    <div class="container-fluid body-wrapper">
-
-        <div class="row">
-            <%-- content --%>
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-                <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
+</head>
+<body class="login-portal layout recovery-layout">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader">
+            <%-- product-title --%>
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component componentName="MainSection" >
+            <div class="ui segment">
+                <%-- page content --%>
+                <h3 class="ui header m-0" data-testid="add-security-question-page-header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Update.security.question")%>
-                </h2>
-
-                <div class="clearfix"></div>
-                <div class="boarder-all ">
-
-                    <% if (error) { %>
-                    <div class="alert alert-danger" id="server-error-msg">
-                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                    </div>
-                    <% } %>
-                    <div class="alert alert-danger" id="error-msg" hidden="hidden"></div>
-
-                    <div class="padding-double">
-                        <form method="post" action="completeregistration.do" id="securityQuestionsForm">
-                            <% for (Map.Entry<String, List<ChallengeQuestionDTO>> entry : challengeQuestionSets
-                                    .entrySet()) {
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <select name=<%="Q-" + Encode.forHtmlAttribute(entry.getKey())%>>
-                                    <%
-                                        for (ChallengeQuestionDTO challengeQuestionDTO : entry.getValue()) {
-                                    %>
-                                    <option value="<%=Encode.forHtmlAttribute(challengeQuestionDTO.getQuestion())%>">
-                                        <%=Encode.forHtml(challengeQuestionDTO.getQuestion())%>
-                                    </option>
-                                    <%} %>
-                                </select>
-
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                                <label class="control-label">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Your.answer")%>
-                                </label>
-                                <input type="text" name="<%="A-" + Encode.forHtmlAttribute(entry.getKey())%>"
-                                       class="form-control"
-                                       required/>
-                            </div>
-                            <%
-                                }
-                            %>
-
-                            <div class="form-actions">
-                                <table width="100%" class="styledLeft">
-                                    <tbody>
-                                    <tr class="buttonRow">
-                                        <td>
-                                            <button id="securityQuestionSubmit"
-                                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                    "Update")%>
-                                            </button>
-                                        </td>
-                                        <td>&nbsp;&nbsp;</td>
-                                        <td>
-                                            <button id="securityQuestionSkip"
-                                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                                    onclick="location.href='../accountrecoveryendpoint/completeregistration.do?skip=true';">
-                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Skip")%>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
+                </h3>
+                <% if (error) { %>
+                <div class="ui visible negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-            <%-- /content/body --%>
+                <% } %>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-        </div>
-    </div>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="completeregistration.do"
+                            id="securityQuestionForm">
+                        <% for (Map.Entry<String, List<ChallengeQuestionDTO>> entry : challengeQuestionSets
+                                .entrySet()) {
+                        %>
+                        <div class="field">
+                            <select
+                                class="ui fluid dropdown"
+                                name="<%="Q-" + Encode.forHtmlAttribute(entry.getKey())%>"
+                                required
+                            >
+                                <%
+                                    for (ChallengeQuestionDTO challengeQuestionDTO : entry.getValue()) {
+                                %>
+                                <option value="<%=Encode.forHtmlAttribute(challengeQuestionDTO.getQuestion())%>">
+                                    <%=Encode.forHtml(challengeQuestionDTO.getQuestion())%>
+                                </option>
+                                <%  } %>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <div class="ui fluid input">
+                                <input
+                                    name="<%="A-" + Encode.forHtmlAttribute(entry.getKey())%>"
+                                    type="text"
+                                    tabindex="0"
+                                    placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Your.answer")%>"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        <div class="ui divider hidden"></div>
+                        <%
+                            }
+                        %>
+                        <div class="mt-4">
+                            <button id="securityQuestionSubmit"
+                                    class="ui primary button large fluid"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Update")%>
+                            </button>
+                        </div>
+                        <div class="mt-1 align-center">
+                            <button id="securityQuestionSkip"
+                                    class="ui secondary button large fluid"
+                                    onclick="location.href='../accountrecoveryendpoint/completeregistration.do?skip=true';">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Skip")%>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </layout:component>
+        <layout:component componentName="ProductFooter">
+            <%-- product-footer --%>
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+    </layout:main>
 
     <%-- footer --%>
     <%
@@ -200,7 +187,8 @@
             <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-    </body>
-    </html>
+    <script>
+        $('select.dropdown').dropdown();
+    </script>
+</body>
+</html>
