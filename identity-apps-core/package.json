@@ -1,11 +1,12 @@
 {
     "name": "@wso2is/identity-apps-core",
-    "version": "2.0.0",
+    "version": "2.0.2",
+    "private": true,
     "description": "WSO2 Identity Server Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "node theme-distribute.js",
+        "build": "pnpm nx run theme:build && node theme-distribute.js",
         "clean": "pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:node-modules",
         "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
         "clean:maven-folders": "pnpm rimraf target",

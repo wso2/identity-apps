@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     GenericIconProps,
     Heading,
@@ -227,13 +228,12 @@ export const TraditionalSAMLWebApplicationCustomConfiguration: FC<TWASAMLCustomC
                         }
                     >
                         You can discover  
-                        <a
-                            href={ documentationLink }
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <DocumentationLink
+                            link={ documentationLink }
+                            showEmptyLinkText
                         >
                             SAML configurations
-                        </a> to integrate Asgardeo with any traditional web application.
+                        </DocumentationLink> to integrate Asgardeo with any traditional web application.
                     </Trans>
                 </Text>  
             </Card.Content>

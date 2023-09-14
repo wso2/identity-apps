@@ -32,7 +32,7 @@
     },
     "dependencies": {
         "@wso2is/core": "^2.0.0",
-        "@wso2is/react-components": "^2.0.0",
+        "@wso2is/react-components": "^2.0.1",
         "@wso2is/validation": "^2.0.0",
         "final-form": "^4.20.2",
         "joi": "^17.4.0",

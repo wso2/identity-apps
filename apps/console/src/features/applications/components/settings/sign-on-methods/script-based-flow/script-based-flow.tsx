@@ -16,6 +16,7 @@
  * under the License.
  */
 import Chip from "@oxygen-ui/react/Chip";
+import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -35,11 +36,6 @@ import {
     Tooltip,
     useDocumentation
 } from "@wso2is/react-components";
-import {
-    useCheckFeatureStatus,
-    useCheckFeatureTags
-} from "apps/console/src/extensions/components/feature-gate/controller/featureGate-util";
-import { FeatureStatus, FeatureTags } from "apps/console/src/extensions/components/feature-gate/models/feature-gate";
 import { AxiosError, AxiosResponse } from "axios";
 import * as codemirror from "codemirror";
 import beautify from "js-beautify";

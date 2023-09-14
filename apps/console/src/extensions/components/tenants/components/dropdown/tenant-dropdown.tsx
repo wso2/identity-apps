@@ -18,6 +18,7 @@
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
 import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     AlertInterface,
     AlertLevels,
@@ -53,8 +54,6 @@ import { AppState } from "../../../../../features/core/store";
 import { OrganizationType } from "../../../../../features/organizations/constants";
 import { useGetOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../../feature-gate/controller/featureGate-util";
-import { FeatureStatus } from "../../../feature-gate/models/feature-gate";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";

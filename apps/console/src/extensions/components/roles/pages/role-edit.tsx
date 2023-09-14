@@ -39,7 +39,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
         setIsRoleDetailsRequestLoading(true);
 
         getRoleById(roleId)
-            .then(response => {
+            .then((response: any) => {
                 if (response.status === 200) {
                     setRoleObject(response.data);
                 }
@@ -59,8 +59,8 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
      * Get Role data from URL id
      */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const roleId = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname.split("/");
+        const roleId: string = path[ path.length - 1 ];
 
         setRoleId(roleId);
         getRoleDetails(roleId);

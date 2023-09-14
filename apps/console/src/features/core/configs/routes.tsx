@@ -1039,7 +1039,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 children: [
                     {
                         component: lazy(() =>
-                            import("../../../extensions/components/" + "groups/pages/groups-edit")
+                            import("../../groups/pages/group-edit")
                         ),
                         exact: true,
                         icon: {
@@ -1052,7 +1052,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     }
                 ],
-                component: lazy(() => import("../../../extensions/components/groups/pages/groups")),
+                component: lazy(() => import("../../groups/pages/groups")),
                 exact: true,
                 icon: {
                     icon: <UserGroupIcon className="icon" fill="black" />

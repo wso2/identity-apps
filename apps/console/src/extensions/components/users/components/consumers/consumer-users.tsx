@@ -29,6 +29,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { UsersList } from "./consumer-users-list";
 import {
@@ -82,7 +83,7 @@ const ConsumerUsersPage: FunctionComponent<ConsumerUsersPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);

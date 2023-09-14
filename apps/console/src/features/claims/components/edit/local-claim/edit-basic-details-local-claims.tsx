@@ -1,13 +1,22 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -48,6 +57,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
+import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
 import {
     ConnectorPropertyInterface,
@@ -703,22 +713,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             )
                     }
                     {
-                        hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.update,
-                            allowedScopes
-                        ) && !hideSpecialClaims &&
+                        !hideSpecialClaims &&
                         (
-                            <Field.Button
-                                form={ FORM_ID }
-                                ariaLabel="submit"
-                                size="small"
-                                buttonType="primary_btn"
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                                label={ t("common:update") }
-                                name="submit"
-                            />
+                            <Show
+                                when={ AccessControlConstants.ATTRIBUTE_EDIT }
+                            >
+                                <Field.Button
+                                    form={ FORM_ID }
+                                    ariaLabel="submit"
+                                    size="small"
+                                    buttonType="primary_btn"
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                    label={ t("common:update") }
+                                    name="submit"
+                                />
+                            </Show>
                         )
                     }
                 </Form>

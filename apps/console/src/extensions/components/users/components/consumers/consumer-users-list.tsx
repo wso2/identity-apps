@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -39,6 +40,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { AccessControlConstants } from "../../../../../features/access-control/constants/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -468,11 +470,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
-                    action={
-                        hasRequiredScopes (
-                            featureConfig?.users,
-                            featureConfig?.users?.scopes?.create, allowedScopes)
-                        && (
+                    action={ (
+                        <Show
+                            when={ AccessControlConstants.USER_WRITE }
+                        >
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }
@@ -481,8 +482,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
                                 { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton",
                                     { type: "User" }) }
                             </PrimaryButton>
-                        )
-                    }
+                        </Show>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.placeholders.emptyList.title") }

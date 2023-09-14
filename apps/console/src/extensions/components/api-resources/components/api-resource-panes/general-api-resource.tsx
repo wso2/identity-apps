@@ -17,7 +17,8 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -29,12 +30,12 @@ import {
     DangerZoneGroup,
     EmphasizedSegment
 } from "@wso2is/react-components";
-import { AppState, history } from "apps/console/src/features/core";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { AccessControlConstants } from "../../../../../features/access-control/constants/access-control";
+import { history } from "../../../../../features/core";
 import { ExtendedFeatureConfigInterface } from "../../../../configs/models";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
@@ -64,7 +65,6 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 ): ReactElement => {
 
     const {
-        featureConfig,
         isReadOnly,
         isManagedByChoreo,
         isSubmitting,
@@ -76,7 +76,6 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isFormValidationError, setIsFormValidationError ] = useState<boolean>(true);
     const [ deleteAPIResourceLoading, setDeleteAPIResourceLoading ] = useState<boolean>(false);
@@ -152,29 +151,32 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
     const resolveDangerActions = (): ReactElement => {
         return (
             <>
-                {
-                    (hasRequiredScopes(featureConfig?.apiResources, 
-                        featureConfig?.apiResources?.scopes?.delete, allowedScopes) && !isReadOnly) &&
+                { !isReadOnly &&
                     (
-                        <DangerZoneGroup
-                            sectionHeader={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup.header") }
+                        <Show
+                            when={ AccessControlConstants.API_RESOURCES_DELETE }
                         >
-                            <DangerZone
-                                data-testid={ `${componentId}-danger-zone` }
-                                actionTitle={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                    ".deleteApiResource.button") }
-                                header={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                    ".deleteApiResource.header") }
-                                subheader={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                    ".deleteApiResource.subHeading")
-                                }
-                                onActionClick={ (): void => {
-                                    setShowDeleteConfirmationModal(true);
-                                    setDeletingAPIResource(apiResourceData);
-                                } }
-                                isButtonDisabled={ false }
-                            />
-                        </DangerZoneGroup>
+                            <DangerZoneGroup
+                                sectionHeader={
+                                    t("extensions:develop.apiResource.tabs.general.dangerZoneGroup.header") }
+                            >
+                                <DangerZone
+                                    data-testid={ `${componentId}-danger-zone` }
+                                    actionTitle={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                                        ".deleteApiResource.button") }
+                                    header={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                                        ".deleteApiResource.header") }
+                                    subheader={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                                        ".deleteApiResource.subHeading")
+                                    }
+                                    onActionClick={ (): void => {
+                                        setShowDeleteConfirmationModal(true);
+                                        setDeletingAPIResource(apiResourceData);
+                                    } }
+                                    isButtonDisabled={ false }
+                                />
+                            </DangerZoneGroup>
+                        </Show>
                     )
                 }
             </>

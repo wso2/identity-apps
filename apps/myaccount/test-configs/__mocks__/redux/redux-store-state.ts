@@ -17,12 +17,11 @@
  */
 
 /**
- * @fileoverview Mocks the Redux store state.
  * @remarks If you add new attributes to the reducers, you will need to add them to this file.
  */
 
 /* eslint-disable sort-keys, max-len */
-const ReduxStoreStateMock = {
+const ReduxStoreStateMock: any = {
     authenticationInformation: {
         displayName: "admin@carbon.super",
         emails: "admin@wso2.com",

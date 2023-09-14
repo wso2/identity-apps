@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, Message } from "@wso2is/react-components";
+import { Code, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
@@ -36,13 +36,8 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
         ["data-componentid"]: testId
     } = props;
 
-    const hyprControlCentreDocUrl: string = 
-        "https://docs.hypr.com/installinghypr/docs/getting-started-with-fido-control-center";
-
-    const hyprTokenDocUrl: string = 
-        "https://docs.hypr.com/installinghypr/docs/access-token";
-
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
 
@@ -75,11 +70,10 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                                     "preRequisites.rpDescription"
                                 }
                             >
-                                Before you begin, create a RP application in <a
-                                    href={ hyprControlCentreDocUrl }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                > HYPR control centre</a>, and obtain the application ID.
+                                Before you begin, create a RP application in <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.hypr.help.developerConsole") }
+                                    showEmptyLinkText
+                                >HYPR control centre</DocumentationLink>, and obtain the application ID.
                             </Trans>
                         </p>
                         <p>
@@ -89,11 +83,10 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                                     "preRequisites.tokenDescription"
                                 }
                             >
-                                You also have to obtain an <a
-                                    href={ hyprTokenDocUrl }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                > API Token</a> for the application you have created.
+                                You also have to obtain an <DocumentationLink
+                                    link={ getLink("develop.connections.newConnection.hypr.help.token") }
+                                    showEmptyLinkText
+                                >API Token</DocumentationLink> for the application you have created.
                             </Trans>
                         </p>
                     </>)

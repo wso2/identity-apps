@@ -108,6 +108,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                mavenDownload: string;
                 mobileApp: {
                     learnMore: string;
                 };
@@ -130,6 +131,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                mavenDownload: string;
             };
         },
         signInMethod: {
@@ -140,6 +142,7 @@ interface ApplicationsDocumentationLinksInterface {
                 customConfig: {
                     learnMore: string;
                 };
+                nodejsDownload: string;
             };
             info: {
                 learnMore: string;
@@ -211,7 +214,10 @@ interface BrandingDocumentationLinksInterface {
  * Interface for the common documentation structure.
  */
 interface CommonDocumentationLinksInterface {
+    cookiePolicy: string;
     docsHomePage: string;
+    privacyPolicy: string;
+    termsOfService: string;
 }
 
 /**
@@ -222,29 +228,69 @@ interface ConnectionsDocumentationLinksInterface {
     newConnection: {
         learnMore: string;
         apple: {
+            help: {
+                configureSignIn: string;
+                developerConsole: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         enterprise: {
-            oidcLearnMore: string;
-            samlLearnMore: string;
+            oidc: {
+                learnMore: string;
+                setupGuide: string;
+            };
+            saml: {
+                learnMore: string;
+                setupGuide: string;
+            };
         };
         facebook: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         github: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         google: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         hypr: {
+            help: {
+                developerConsole: string;
+                token: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         microsoft: {
+            help: {
+                configureOAuth: string;
+                developerConsole: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
         siwe: {
+            help: {
+                configureOIDC: string;
+            };
             learnMore: string;
+            setupGuide: string;
         };
     };
     edit: {

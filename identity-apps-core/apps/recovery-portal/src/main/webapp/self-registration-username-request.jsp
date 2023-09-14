@@ -268,8 +268,13 @@
         }
     }
 
-    String purposes = selfRegistrationMgtClient.getPurposes(tenantDomain, consentPurposeGroupName,
+    String purposes;
+    try {
+        purposes = selfRegistrationMgtClient.getPurposes(tenantDomain, consentPurposeGroupName,
             consentPurposeGroupType);
+    } catch (SelfRegistrationMgtClientException e) {
+        purposes = null;
+    }
     boolean hasPurposes = StringUtils.isNotEmpty(purposes);
     Claim[] claims = new Claim[0];
 
@@ -445,7 +450,7 @@
                         String type = (String)federatedAuthenticator.get("type");
                         String displayName = name;
 
-                        String imageURL = "libs/themes/asgardio/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                        String imageURL = "libs/themes/wso2is/assets/images/identity-providers/enterprise-idp-illustration.svg";
                         try {
                             IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
                             imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, name);
@@ -473,7 +478,7 @@
                             >
                             <img 
                                 class="ui image" 
-                                src="libs/themes/asgardio/assets/images/identity-providers/google-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/google-idp-illustration.svg"
                                 alt="Google sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
@@ -495,7 +500,7 @@
                             >
                             <img 
                                 class="ui image" 
-                                src="libs/themes/asgardio/assets/images/identity-providers/github-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/github-idp-illustration.svg"
                                 alt="Github sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
@@ -517,7 +522,7 @@
                             >
                             <img
                                 class="ui image"
-                                src="libs/themes/asgardio/assets/images/identity-providers/facebook-idp-illustration.svg"
+                                src="libs/themes/wso2is/assets/images/identity-providers/facebook-idp-illustration.svg"
                                 alt="Facebook sign-up logo"
                                 role="presentation">
                             <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
@@ -652,6 +657,9 @@
                                 </div>
                             </div>
                         </div>
+                        <input id="username" name="username" type="hidden"
+                            <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                        <% if (emailPII != null) { %>
                         <div id="usernameField"
                             <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
                                 class="field required"
@@ -673,8 +681,6 @@
                                     <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) {%> required <%}%>
                                 />
                                 <i aria-hidden="true" class="envelope outline icon"></i>
-                                <input id="username" name="username" type="hidden"
-                                    <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                             </div>
                             <div class="mt-1" id="username-error-msg" hidden="hidden">
                                 <div class="ui grid">
@@ -686,6 +692,7 @@
                             </div>
                             <div class="ui divider hidden"></div>
                         </div>
+                        <% } %>
                         <div id="passwordField" class="field required">
                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%></label>
                             <div class="ui fluid left icon input addon-wrapper">
@@ -888,8 +895,7 @@
                                             String claimErrorMsgText = claimName + "_error_text";
                                 %>
                                     <div  id= "<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
-                                    <% if (claim.getRequired()) { %> class="field form-group required" <%}
-                                                else {%> class="field"<%}%>  >
+                                        <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                         </label>
@@ -1727,7 +1733,11 @@
             var username_error_msg = $("#username-error-msg");
             var server_error_msg = $("#server-error-msg");
             var username_error_msg_text = $("#username-error-msg-text");
-            var emailRequired = <%=emailPII.getRequired()%>;
+            <% if (emailPII != null) { %>
+                var emailRequired = <%=emailPII.getRequired()%>;
+            <% } else { %>
+                var emailRequired = false;
+            <% } %>
 
             if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
                 username_error_msg.hide();

@@ -171,7 +171,7 @@ export class AppInsights {
                 };
 
                 if (envelope.baseType === "ExceptionData") {
-                    const errMsg = envelope.baseData.properties?.message; 
+                    const errMsg: any = envelope.baseData.properties?.message; 
                 
                     envelope.data = {
                         ...envelope.data,
@@ -188,8 +188,8 @@ export class AppInsights {
             this.externalAppInsightsInstance.trackPageView();
 
             // toogle cookie enabled option based on "cookie-pref-change" event
-            window.addEventListener("cookie-pref-change",function (e){
-                const updatedPreferences = e["pref"];
+            window.addEventListener("cookie-pref-change",function (e: any){
+                const updatedPreferences: any = e["pref"];
 
                 if (updatedPreferences.includes("C0002")){
                     this.externalAppInsightsInstance.getCookieMgr().setEnabled(true);

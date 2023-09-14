@@ -16,16 +16,20 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { getAllLocalClaims } from "../../claims/api";
 import {
     AdvancedSearchWithBasicFilters,
@@ -48,9 +52,9 @@ type LocalClaimsPageInterface = TestableComponentInterface;
 /**
  * This returns the list of local claims.
  *
- * @param {LocalClaimsPageInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns local claims page.
  */
 const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     props: LocalClaimsPageInterface
@@ -66,7 +70,11 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     /**
      * Sets the attributes by which the list can be sorted
      */
-    const SORT_BY = [
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -80,7 +88,6 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -96,18 +103,18 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
-    const initialRender = useRef(true);
+    const initialRender: MutableRefObject<boolean> = useRef(true);
 
 
     /**
  * Fetches all the local claims.
  *
- * @param {number} limit.
- * @param {number} offset.
- * @param {string} sort.
- * @param {string} filter.
+ * @param limit - Maximum Limit.
+ * @param offset - Offset.
+ * @param sort - Sort Order.
+ * @param filter - Search Filter.
  */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
         excludeIdentity?: boolean) => {
@@ -120,10 +127,10 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             sort: sort || null
         };
 
-        getAllLocalClaims(params).then(response => {
+        getAllLocalClaims(params).then((response: Claim[]) => {
             setClaims(response);
             setFilteredClaims(sortList(response, sortBy.value as string, sortOrder));
-        }).catch(error => {
+        }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
@@ -148,9 +155,9 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 
     useEffect(() => {
         getLocalClaims(null, null, null, null, attributeConfig.attributes.excludeIdentityClaims);
-        getADialect("local").then((response) => {
+        getADialect("local").then((response: any) => {
             setClaimURIBase(response.dialectURI);
-        }).catch(error => {
+        }).catch((error: IdentityAppsError) => {
             dispatch(addAlert(
                 {
                     description: error?.description
@@ -166,50 +173,50 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     /**
  * This slices a portion of the list to display.
      *
- * @param {ClaimDialect[]} list.
- * @param {number} limit.
- * @param {number} offset.
+ * @param list - List of claims.
+ * @param limit - Maximum Limit.
+ * @param offset - Offset.
      *
- * @return {ClaimDialect[]} Paginated List.
+ * @returns Paginated List.
  */
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
     };
 
     /**
- * Handles change in the number of items to show.
+     * Handles the change in the number of items to display.
      *
- * @param {React.MouseEvent<HTMLAnchorElement>} event.
- * @param {data} data.
- */
+     * @param event - React.MouseEvent<HTMLAnchorElement>.
+     * @param data - Dropdown data.
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
     /**
- * Paginates.
- *
- * @param {React.MouseEvent<HTMLAnchorElement>} event.
- * @param {PaginationProps} data.
- */
+     * This paginates.
+     *
+     * @param event - React.MouseEvent<HTMLAnchorElement>.
+     * @param data - Pagination props.
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
- * Handle sort strategy change.
+     * Handle sort strategy change.
      *
- * @param {React.SyntheticEvent<HTMLElement>} event.
- * @param {DropdownProps} data.
- */
+     * @param event - Dropdown event.
+     * @param  data - Dropdown data.
+     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: DropdownProps) => option.value === data.value)[ 0 ]);
     };
 
     /**
  * Handles sort order change.
  *
- * @param {boolean} isAscending.
+ * @param isAscending - Flag to determine the order.
  */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -219,10 +226,10 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
      * Handles the `onFilter` callback action from the
      * advanced search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleLocalClaimsFilter = (query: string): void => {
-        const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
+        const filteredClaims: Claim[] = filterList(claims, query, sortBy.value as string, sortOrder);
 
         setFilteredClaims(filteredClaims);
         setSearchQuery(buildSearchQuery(query));
@@ -294,18 +301,20 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             <PageLayout
                 action={
                     (isLoading || !(!searchQuery && filteredClaims?.length <= 0))
-                    && hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes)
                     && attributeConfig.attributes.addAttribute && (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setOpenModal(true);
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
+                        <Show
+                            when={ AccessControlConstants.ATTRIBUTE_WRITE }
                         >
-                            <Icon name="add" />
-                            { t("console:manage.features.claims.local.pageLayout.local.action") }
-                        </PrimaryButton>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setOpenModal(true);
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                { t("console:manage.features.claims.local.pageLayout.local.action") }
+                            </PrimaryButton>
+                        </Show>
                     )
                 }
                 isLoading={ isLoading }

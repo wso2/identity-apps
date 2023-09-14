@@ -108,7 +108,7 @@
         "community": "https://discord.gg/Xa5VubmThw",
         "feedbackEndPoint": "",
         "authzServiceHost": "",
-        "defaultBrandedLoginScreenFavicon": "https://dev.accounts.asgardeo.io/authenticationendpoint/libs/themes/asgardio/assets/images/branding/asgardeo-trifacta.svg",
+        "defaultBrandedLoginScreenFavicon": "",
         "userStoreAgentUrl": "",
         "helpCenterUrl": "",
         "supportEmail": "",
@@ -822,7 +822,7 @@
             "My Account"
         ],
         "theme": {
-            "name": "asgardio"
+            "name": "wso2is"
         }
     }
 }

@@ -32,7 +32,7 @@
 
 <!-- Extract the name of the stylesheet-->
 <%
-    String themeName = "asgardio";
+    String themeName = "wso2is";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
         + "/" + "libs/themes/" + themeName + "/");
     String[] fileNames = themeDir.list();
@@ -53,7 +53,7 @@
 <link rel="icon" href="<%= StringEscapeUtils.escapeHtml4(faviconURL) %>" type="image/x-icon"/>
 
 <%-- Load the base theme --%>
-<link href="libs/themes/asgardio/<%= themeFileName %>" rel="stylesheet">
+<link href="libs/themes/wso2is/<%= themeFileName %>" rel="stylesheet">
 
 <%-- Load Default Theme Skeleton --%>
 <jsp:include page="theme-skeleton.jsp"/>
@@ -92,7 +92,7 @@
 <%
     if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
 %>
-        <jsp:include page="extensions/planned-downtime-banner.jsp"/>
+        <jsp:include page="/extensions/planned-downtime-banner.jsp"/>
 <%
     }
 %>

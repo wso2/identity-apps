@@ -1,13 +1,22 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -46,12 +55,12 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
+import { AccessControlConstants } from "../../../access-control/constants/access-control";
 import {
     AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
-    FeatureConfigInterface,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -145,8 +154,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
@@ -1044,30 +1051,32 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         (isOrganizationManagementEnabled
                             && applicationConfig.editApplication.showApplicationShare
                             && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                            && hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update, allowedScopes)
                             && orgType !== OrganizationType.SUBORGANIZATION) && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                    <div className="pt-0 mt-0">
-                                        <Checkbox 
-                                            onChange={ (
-                                                event: React.FormEvent<HTMLInputElement>, 
-                                                data: CheckboxProps
-                                            ) => {
-                                                setIsAppSharingEnabled(data.checked);
-                                                setIsApplicationSharingEnabled;
-                                            } }
-                                            label={ t("console:develop.features.applications.forms.generalDetails" +
-                                                ".fields.isSharingEnabled.label") }
-                                        />
-                                        <Hint inline popup>
-                                            { t("console:develop.features.applications.forms.generalDetails" +
-                                                ".fields.isSharingEnabled.hint") }
-                                        </Hint>
-                                    </div>
-                                </Grid.Column>
-                            </Grid.Row>
+                            <Show
+                                when={ AccessControlConstants.APPLICATION_EDIT }
+                            >
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                        <div className="pt-0 mt-0">
+                                            <Checkbox 
+                                                onChange={ (
+                                                    event: React.FormEvent<HTMLInputElement>, 
+                                                    data: CheckboxProps
+                                                ) => {
+                                                    setIsAppSharingEnabled(data.checked);
+                                                    setIsApplicationSharingEnabled;
+                                                } }
+                                                label={ t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.isSharingEnabled.label") }
+                                            />
+                                            <Hint inline popup>
+                                                { t("console:develop.features.applications.forms.generalDetails" +
+                                                    ".fields.isSharingEnabled.hint") }
+                                            </Hint>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Show>
                         )
                     }
                 </Grid>

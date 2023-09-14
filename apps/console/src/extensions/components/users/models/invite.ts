@@ -32,7 +32,6 @@ export interface UserInviteInterface {
  * Enum for Invite User Status.
  *
  * @readonly
- * @enum {string}
  */
 export enum InviteUserStatus {
     PENDING = "PENDING",
@@ -56,7 +55,6 @@ export interface InviteValidationResponseInterface {
  * Enum for Invite Validation Status.
  *
  * @readonly
- * @enum {string}
  */
 export enum InviteValidationStatus {
     ACCEPTED = "ACCEPTED",
@@ -74,7 +72,6 @@ export interface InviteResourceEndpointsInterface {
  * Enum for invitation status types.
  *
  * @readonly
- * @enum {string}
  */
 export enum InvitationStatus {
     ACCEPTED = "Accepted",

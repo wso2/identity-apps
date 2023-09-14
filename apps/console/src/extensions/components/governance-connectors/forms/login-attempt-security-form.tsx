@@ -179,7 +179,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values) => {
+    const getUpdatedConfigurations = (values: any) => {
         const data: any = {
             "account.lock.handler.On.Failure.Max.Attempts": values.maxFailedAttempts !== undefined
                 ? values.maxFailedAttempts
@@ -291,7 +291,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
         if (!accordionTitleProps) {
             return;
         }
-        const newIndex = accordionActiveIndex === accordionTitleProps.index
+        const newIndex: any = accordionActiveIndex === accordionTitleProps.index
             ? -1
             : accordionTitleProps.index;
 
@@ -402,7 +402,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: any) => onSubmit(getUpdatedConfigurations(values)) }
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >
@@ -423,7 +423,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ true }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.maxFailedAttempts.placeholder") }
-                    listen={ (value) => value
+                    listen={ (value: any) => value
                         ? setMaxAttempts(value)
                         : setMaxAttempts(initialConnectorValues.maxFailedAttempts) }
                     maxLength={
@@ -461,7 +461,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ true }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.accountLockTime.placeholder") }
-                    listen={ (value) => value
+                    listen={ (value: any) => value
                         ? setLockDuration(value)
                         : setLockDuration(initialConnectorValues.accountLockTime) }
                     maxLength={
@@ -505,7 +505,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ false }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.accountLockIncrementFactor.placeholder") }
-                    listen={ (value) => value
+                    listen={ (value: any) => value
                         ? setLockIncrementRatio(value)
                         : setLockIncrementRatio(initialConnectorValues.accountLockIncrementFactor) }
                     maxLength={

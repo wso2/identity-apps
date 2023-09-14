@@ -18,6 +18,9 @@
 
 import { FunctionComponent, SVGProps } from "react";
 import {
+    ReactComponent as TryItAppIllustration
+} from "../../../assets/illustrations/asgardeo-rafiki-illustration.svg";
+import {
     ReactComponent as OnboardUsersIllustration
 } from "../../../assets/images/illustrations/onboard-users-illustration.svg";
 import {
@@ -26,9 +29,6 @@ import {
 import {
     ReactComponent as SetupSocialConnections
 } from "../../../assets/images/illustrations/setup-social-connections-illustration.svg";
-import {
-    ReactComponent as TryItAppIllustration
-} from "../../../assets/illustrations/asgardeo-rafiki-illustration.svg";
 
 export const getGettingStartedCardIllustrations = (): {
     onboardApplications: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -43,4 +43,4 @@ export const getGettingStartedCardIllustrations = (): {
         setupSocialConnections: SetupSocialConnections,
         tryItApplication: TryItAppIllustration
     };
-}
+};

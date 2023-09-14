@@ -567,7 +567,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
      */
     const resolveDocumentationLink = (): ReactElement => (
         <DocumentationLink
-            link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+            link={ getLink("develop.connections.newConnection.enterprise.saml.learnMore") }
         >
             { t("common:learnMore") }
         </DocumentationLink>

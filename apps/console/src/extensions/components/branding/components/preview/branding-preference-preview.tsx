@@ -37,7 +37,7 @@ import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
 import { AppState } from "../../../../../features/core/store";
 import { ReactComponent as CustomLayoutWarningImg } from
-    "../../../../../themes/asgardio/assets/images/branding/custom-layout-warning.svg";
+    "../../../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";

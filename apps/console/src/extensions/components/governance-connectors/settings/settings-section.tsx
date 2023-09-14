@@ -80,7 +80,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
 
     const { isGreaterThanOrEqualComputerViewport } = useMediaContext();
 
-    const classes = classNames({
+    const classes: string = classNames({
         "with-top-action-bar": topActionBar !== undefined
     }, className);
 

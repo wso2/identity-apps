@@ -24,6 +24,7 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Card, Grid, Icon } from "semantic-ui-react";
 import { AppState } from "../../../../../features/core";
 import { updateUserConsent } from "../api";
@@ -60,7 +61,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
         ["data-componentid"]: componentId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);

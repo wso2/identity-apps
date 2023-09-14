@@ -53,7 +53,7 @@ export const getInvitedUserList = (): Promise<any> => {
 /**
  * Hook to get the invited users list.
  * 
- * @returns {RequestResultInterface<Data, Error>}
+ * @returns invited users list.
  */
 export const useInvitedUsersList = <Data = UserInviteInterface[],
     Error = RequestErrorInterface>(

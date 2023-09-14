@@ -16,27 +16,28 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../features/core";
 
 /**
  * Initialize an axios Http client.
- * @type { AxiosHttpClientInstance }
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Save user feedback
  *
- * @param data feedback request payload
- * @returns {Promise<>} a promise containing the response.
+ * @param data - feedback request payload
+ * @returns a promise containing the response.
  */
 
-export const sendFeedback = (data: object): Promise<any> => {
-    const requestConfig = {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const sendFeedback = (data: any): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
         data: data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -47,13 +48,14 @@ export const sendFeedback = (data: object): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(new Error("Failed to add feedback"));
             }
+
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };

@@ -35,7 +35,7 @@ interface AddUserWizardSummaryProps extends TestableComponentInterface {
 /**
  * Component to create a summary of the role which will be created.
  * 
- * @param props props containing summary data for the view.
+ * @param props - props containing summary data for the view.
  */
 export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
@@ -61,8 +61,10 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
             setDefaultExpandKeys( [ permissionTree[0].key.toString() ] );
 
             if (summary && summary.PermissionList) {
-                const permissions = summary.PermissionList;
-                setSelectedPermissions([...selectedPermissions, ...permissions.map( permission => permission.key )]);
+                const permissions: any = summary.PermissionList;
+                
+                setSelectedPermissions([ ...selectedPermissions, ...permissions.map(
+                    (permission: any) => permission.key ) ]);
             }
         });
     }, [ permissions.length > 0 ]);
@@ -84,10 +86,11 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
      * the tree nodes.
      * @param eventObject - event object
      */
-    const switcherIcon = eventObject => {
+    const switcherIcon = (eventObject: any) => {
         if (eventObject.isLeaf) {
             return null;
         }
+
         return (
             <div className="tree-arrow-wrap">
                 <span className={ `tree-arrow ${ !eventObject.expanded ? "active" : "" }` }>
@@ -132,7 +135,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                 summary?.PermissionList &&
                 summary.PermissionList instanceof Array &&
                 summary.PermissionList.length > 0 &&
-                     (
+                    (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div
@@ -179,7 +182,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary?.UserList
-                                            .map((user, index) => (
+                                            .map((user: any, index: number) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar
                                                         name={ user.userName }
@@ -214,7 +217,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary?.GroupList
-                                            .map((group, index) => (
+                                            .map((group: any, index: number) => (
                                                 <Label
                                                     data-testid={
                                                         `${ testId }-permissions-${ index }-label`

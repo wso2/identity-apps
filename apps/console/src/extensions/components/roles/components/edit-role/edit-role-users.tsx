@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { updateRoleDetails } from "../../../../../features/roles/api";
 import { PRIMARY_DOMAIN } from "../../../../../features/roles/constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../../../../features/roles/models";
@@ -37,7 +38,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     props: RoleUserDetailsProps
 ): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         roleObject,
@@ -53,7 +54,8 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             return;
         }
 
-        const roleName = roleObject.displayName;
+        const roleName: string = roleObject.displayName;
+        
         if (roleName.indexOf("/") !== -1) {
             setCurrentUserStore(roleName.split("/")[0]);
         } else {
@@ -64,7 +66,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
@@ -80,12 +82,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         }
 
         const roleData: PatchRoleDataInterface = {
-            Operations: [{
+            Operations: [ {
                 "op": "replace",
                 "path": "users",
                 "value": newUsers
-            }],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         updateRoleDetails(roleObject.id, roleData)
@@ -97,12 +99,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
                 });
                 onRoleUpdate();
             }).catch(() => {
-            handleAlerts({
-                description: t("console:manage.features.roles.notifications.updateRole.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                });
             });
-        });
     };
 
     return (

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Show } from "@wso2is/access-control";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
@@ -52,6 +53,7 @@ import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
 import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
 import { administratorConfig } from "../../../extensions/configs/administrator";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
@@ -1062,99 +1064,102 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return (
             <>
                 {
-                    (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
-                    && (!isReadOnly || allowDeleteOnly)
+                    ((!isReadOnly || allowDeleteOnly)
                     && ((adminUserType === AdminAccountTypes.INTERNAL && !isPrivilegedUser)
                         || (!(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
                                     resolveUsernameOrDefaultEmail(user, false) === "admin")
                         && !authenticatedUser.includes(resolveUsernameOrDefaultEmail(user, false))))) && (
-                        <DangerZoneGroup
-                            sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
+                        <Show
+                            when={ AccessControlConstants.USER_DELETE }
                         >
-                            {
-                                !allowDeleteOnly && configSettings?.accountDisable === "true" && (
-                                    <DangerZone
-                                        data-testid={ `${ testId }-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "disableUserZone.actionTitle") }
-                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "disableUserZone.header") }
-                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "disableUserZone.subheader") }
-                                        onActionClick={ undefined }
-                                        toggle={ {
-                                            checked: accountDisabled,
-                                            id: "accountDisabled",
-                                            onChange: handleDangerZoneToggles
-                                        } }
-                                    />
-                                )
-                            }
-                            {
-                                !allowDeleteOnly && configSettings?.accountLock === "true" && (
-                                    <DangerZone
-                                        data-testid={ `${ testId }-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "lockUserZone.actionTitle") }
-                                        header={
-                                            t("console:manage.features.user.editUser.dangerZoneGroup.lockUserZone." +
-                                                "header")
-                                        }
-                                        subheader={
-                                            t("console:manage.features.user.editUser.dangerZoneGroup.lockUserZone." +
-                                                "subheader")
-                                        }
-                                        onActionClick={ undefined }
-                                        toggle={ {
-                                            checked: accountLocked,
-                                            id: "accountLocked",
-                                            onChange: handleDangerZoneToggles
-                                        } }
-                                    />
-                                )
-                            }
-                            {
-                                !isPrivilegedUser && 
-                                adminUserType === AdminAccountTypes.INTERNAL && 
-                                associationType !== GUEST_ADMIN_ASSOCIATION_TYPE && 
-                                (
-                                    <DangerZone
-                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                        "deleteAdminPriviledgeZone.actionTitle") }
-                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                        "deleteAdminPriviledgeZone.header") }
-                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                        "deleteAdminPriviledgeZone.subheader") }
-                                        onActionClick={ (): void => {
-                                            setShowAdminRevokeConfirmationModal(true);
-                                            setDeletingUser(user);
-                                        } }
-                                    />
-                                )
-                            }
-                            <DangerZone
-                                data-testid={ `${ testId }-danger-zone` }
-                                actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.actionTitle") }
-                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.header") }
-                                subheader={ commonConfig.userEditSection.isGuestUser
-                                    ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone.subheader")
-                                    : t("console:manage.features.user.editUser.dangerZoneGroup.deleteUserZone." +
-                                        "subheader")
+                            <DangerZoneGroup
+                                sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
+                            >
+                                {
+                                    !allowDeleteOnly && configSettings?.accountDisable === "true" && (
+                                        <DangerZone
+                                            data-testid={ `${ testId }-danger-zone` }
+                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                "disableUserZone.actionTitle") }
+                                            header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                "disableUserZone.header") }
+                                            subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                "disableUserZone.subheader") }
+                                            onActionClick={ undefined }
+                                            toggle={ {
+                                                checked: accountDisabled,
+                                                id: "accountDisabled",
+                                                onChange: handleDangerZoneToggles
+                                            } }
+                                        />
+                                    )
                                 }
-                                onActionClick={ (): void => {
-                                    setShowDeleteConfirmationModal(true);
-                                    setDeletingUser(user);
-                                } }
-                                isButtonDisabled={ adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
-                                buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.buttonDisableHint") }
-                            />
-                        </DangerZoneGroup>
-                    )
-                }
+                                {
+                                    !allowDeleteOnly && configSettings?.accountLock === "true" && (
+                                        <DangerZone
+                                            data-testid={ `${ testId }-danger-zone` }
+                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                "lockUserZone.actionTitle") }
+                                            header={
+                                                t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "lockUserZone.header")
+                                            }
+                                            subheader={
+                                                t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "lockUserZone.subheader")
+                                            }
+                                            onActionClick={ undefined }
+                                            toggle={ {
+                                                checked: accountLocked,
+                                                id: "accountLocked",
+                                                onChange: handleDangerZoneToggles
+                                            } }
+                                        />
+                                    )
+                                }
+                                {
+                                    !isPrivilegedUser && 
+                                    adminUserType === AdminAccountTypes.INTERNAL && 
+                                    associationType !== GUEST_ADMIN_ASSOCIATION_TYPE && 
+                                    (
+                                        <DangerZone
+                                            data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteAdminPriviledgeZone.actionTitle") }
+                                            header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteAdminPriviledgeZone.header") }
+                                            subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteAdminPriviledgeZone.subheader") }
+                                            onActionClick={ (): void => {
+                                                setShowAdminRevokeConfirmationModal(true);
+                                                setDeletingUser(user);
+                                            } }
+                                        />
+                                    )
+                                }
+                                <DangerZone
+                                    data-testid={ `${ testId }-danger-zone` }
+                                    actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteUserZone.actionTitle") }
+                                    header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteUserZone.header") }
+                                    subheader={ commonConfig.userEditSection.isGuestUser
+                                        ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone.subheader")
+                                        : t("console:manage.features.user.editUser.dangerZoneGroup.deleteUserZone." +
+                                            "subheader")
+                                    }
+                                    onActionClick={ (): void => {
+                                        setShowDeleteConfirmationModal(true);
+                                        setDeletingUser(user);
+                                    } }
+                                    isButtonDisabled={
+                                        adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
+                                    buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                        "deleteUserZone.buttonDisableHint") }
+                                />
+                            </DangerZoneGroup>
+                        </Show>
+                    ) }
             </>
         );
     };
@@ -1358,19 +1363,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         <Grid.Row>
                             <Grid.Column>
                                 {
-                                    (hasRequiredScopes(featureConfig?.users,
-                                        featureConfig?.users?.scopes?.update, allowedScopes) &&
-                                        !isReadOnly && resolveUsernameOrDefaultEmail(user, false) !== "admin" &&
+                                    (!isReadOnly && resolveUsernameOrDefaultEmail(user, false) !== "admin" &&
                                         adminUserType === "None") && (
-                                        <Button
-                                            basic
-                                            color="orange"
-                                            onClick={ () => setOpenChangePasswordModal(true) }
-                                            floated="right"
+                                        <Show
+                                            when={ AccessControlConstants.USER_EDIT }
                                         >
-                                            <Icon name="redo" />
-                                            { t("console:manage.features.user.modals.changePasswordModal.button") }
-                                        </Button>
+                                            <Button
+                                                basic
+                                                color="orange"
+                                                onClick={ () => setOpenChangePasswordModal(true) }
+                                                floated="right"
+                                            >
+                                                <Icon name="redo" />
+                                                { t("console:manage.features.user.modals.changePasswordModal.button") }
+                                            </Button>
+                                        </Show>
                                     )
                                 }
                             </Grid.Column>

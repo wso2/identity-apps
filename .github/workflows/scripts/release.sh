@@ -93,7 +93,7 @@ process_java_apps_package() {
 
     goToRootDirectory &&
         cd "identity-apps-core" || exit 1 &&
-        echo "Releasing java_apps version: $releaseVersion"
+        echo "Releasing identity-apps-core version: $releaseVersion"
 
     mvn -Dresume=false \
         -Darguments='-Dadditionalparam=-Xdoclint:none' \
@@ -130,7 +130,7 @@ for package in $(echo "$PACKAGES" | jq -c '.[]'); do
     "@wso2is/myaccount")
         process_myaccount_package "$version"
         ;;
-    "@wso2is/java-apps")
+    "@wso2is/identity-apps-core")
         process_java_apps_package "$version"
         ;;
     *)

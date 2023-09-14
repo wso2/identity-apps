@@ -16,18 +16,22 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../../../../features/core";
-import useRequest, { RequestResultInterface } from "../../../../../features/core/hooks/use-request";
+import useRequest, { 
+    RequestConfigInterface,
+    RequestResultInterface 
+} from "../../../../../features/core/hooks/use-request";
 import { getMarketingConsentEndpoints } from "../configs";
 import { ConsentResponseInterface, ConsentTypes } from "../models";
 
 /**
  * Initialize an axios Http client.
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
+    httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Hook to get the consent list of the logged in user.
@@ -38,7 +42,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
 export const useUserConsentList = <Data = ConsentResponseInterface[], Error = AxiosError>(
     shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {
-    const requestConfig = shouldFetch 
+    const requestConfig: RequestConfigInterface = shouldFetch 
         ? {
             headers: {
                 "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -68,7 +72,7 @@ export const useUserConsentList = <Data = ConsentResponseInterface[], Error = Ax
  * @throws an AxiosError.
  */
 export const updateUserConsent = (isSubscribed: boolean): Promise<AxiosResponse> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: [
             {
                 "consentType": ConsentTypes.MARKETING,

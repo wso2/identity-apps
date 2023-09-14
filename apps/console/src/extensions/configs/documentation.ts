@@ -20,11 +20,14 @@ import { DocumentationLinksExtensionInterface } from "./models/documentation";
 import { Config } from "../../features/core/configs/app";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
-    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL || "https://wso2.com/asgardeo/docs";
+    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
 
     return {
         common: {
-            docsHomePage: documentationBaseUrl
+            cookiePolicy: "https://wso2.com/cookie-policy",
+            docsHomePage: documentationBaseUrl,
+            privacyPolicy: "https://wso2.com/privacy-policy",
+            termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
             apiResources: {
@@ -102,6 +105,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             customConfig: {
                                 learnMore: undefined
                             },
+                            mavenDownload: undefined,
                             mobileApp: {
                                 learnMore: undefined
                             }
@@ -123,7 +127,8 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         quickStart: {
                             customConfig: {
                                 learnMore: undefined
-                            }
+                            },
+                            mavenDownload: undefined
                         }
                     },
                     signInMethod: {
@@ -136,7 +141,8 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         quickStart: {
                             customConfig: {
                                 learnMore: undefined
-                            }
+                            },
+                            nodejsDownload: undefined
                         }
                     },
                     standardBasedApplication: {
@@ -196,30 +202,70 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 learnMore: undefined,
                 newConnection: {
                     apple: {
-                        learnMore: undefined
+                        help: {
+                            configureSignIn: undefined,
+                            developerConsole: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     enterprise: {
-                        oidcLearnMore: undefined,
-                        samlLearnMore: undefined
+                        oidc: {
+                            learnMore: undefined,
+                            setupGuide: undefined
+                        },
+                        saml: {
+                            learnMore: undefined,
+                            setupGuide: undefined
+                        }
                     },
                     facebook: {
-                        learnMore: undefined
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     github: {
-                        learnMore: undefined
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     google: {
-                        learnMore: undefined
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     hypr: {
-                        learnMore: undefined
+                        help: {
+                            developerConsole: undefined,
+                            token: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     learnMore: undefined,
                     microsoft: {
-                        learnMore: undefined
+                        help: {
+                            configureOAuth: undefined,
+                            developerConsole: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     },
                     siwe: {
-                        learnMore: undefined
+                        help: {
+                            configureOIDC: undefined
+                        },
+                        learnMore: undefined,
+                        setupGuide: undefined
                     }
                 }
             },

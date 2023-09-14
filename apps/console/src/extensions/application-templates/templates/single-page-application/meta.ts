@@ -25,13 +25,13 @@ export const SDKMeta: SDKMetaInterface = {
         cdn: "https://unpkg.com/@asgardeo/auth-spa@latest/dist/asgardeo-spa.production.min.js",
         npmInstallCommand: "npm install @asgardeo/auth-spa --save",
         readme: "https://github.com/asgardeo/asgardeo-auth-spa-sdk/blob/main/README.md",
-        repository: "https://github.com/asgardeo/asgardeo-auth-spa-sdk",
+        repository: undefined,
         samples: {
             javascript: {
                 artifact:
                     "https://github.com/asgardeo/asgardeo-auth-spa-sdk/releases/download/v1.0.2/" +
                     "asgardeo-html-js-app.zip",
-                repository: "https://github.com/asgardeo/asgardeo-auth-spa-sdk/tree/main/samples/asgardeo-html-js-app"
+                repository: undefined
             },
             react: {
                 artifact:
@@ -44,28 +44,26 @@ export const SDKMeta: SDKMetaInterface = {
     },
     react: {
         links: {
-            authClientConfig: "https://github.com/asgardeo/asgardeo-auth-react-sdk#authclientconfigconfig",
-            secureRoute: "https://github.com/asgardeo/asgardeo-auth-react-sdk#secureroute",
-            useContextDocumentation: "https://github.com/asgardeo/asgardeo-auth-react-sdk#useAuthContext"
+            authClientConfig: undefined,
+            secureRoute: undefined,
+            useContextDocumentation: undefined
         },
         npmInstallCommand: "npm install @asgardeo/auth-react react-router-dom --save",
         readme: "https://github.com/asgardeo/asgardeo-auth-react-sdk/blob/main/README.md",
-        repository: "https://github.com/asgardeo/asgardeo-auth-react-sdk",
+        repository: undefined,
         samples: {
             basicUsage: {
                 artifact:
                     "https://github.com/asgardeo/asgardeo-auth-react-sdk/releases/download/v2.0.5/" +
                     "asgardeo-react-app.zip",
-                repository:
-                    "https://github.com/asgardeo/asgardeo-auth-react-sdk/tree/main/samples/asgardeo-react-app"
+                repository: undefined
             },
-            root: "https://github.com/asgardeo/asgardeo-auth-react-sdk/tree/main/samples",
+            root: undefined,
             routing: {
                 artifact:
                     "https://github.com/asgardeo/asgardeo-auth-react-sdk/releases/download/v2.0.5/" +
                     "asgardeo-react-app.zip",
-                repository:
-                    "https://github.com/asgardeo/asgardeo-auth-react-sdk/tree/main/samples/asgardeo-react-app"
+                repository: undefined
             }
         }
     }

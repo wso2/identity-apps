@@ -22,7 +22,7 @@ import { TenantResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Tenant related features.
  *
- * @return {TenantResourceEndpointsInterface}
+ * @returns tenant resource endpoints.
  */
 export const getTenantResourceEndpoints = (): TenantResourceEndpointsInterface => {
     return {

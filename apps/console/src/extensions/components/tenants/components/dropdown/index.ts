@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from './tenant-dropdown';
+export * from "./tenant-dropdown";

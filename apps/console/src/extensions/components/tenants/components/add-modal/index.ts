@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from './add-tenant';
+export * from "./add-tenant";

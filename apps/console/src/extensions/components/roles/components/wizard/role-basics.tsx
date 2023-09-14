@@ -29,9 +29,6 @@ import { ConfigReducerStateInterface } from "../../../../../features/core/models
 import { AppState } from "../../../../../features/core/store";
 import { SharedUserStoreUtils } from "../../../../../features/core/utils";
 import { searchRoleList } from "../../../../../features/roles/api";
-import {
-    PRIMARY_DOMAIN
-} from "../../../../../features/roles/constants";
 import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../features/roles/models";
 import { getUserStoreList } from "../../../../../features/userstores/api";
 import { CONSUMER_USERSTORE } from "../../../users/constants";
@@ -50,7 +47,7 @@ interface RoleBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  *
- * @param props Role Basic prop types
+ * @param props - Role Basic prop types
  */
 export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicProps): ReactElement => {
 
@@ -66,9 +63,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
+    const [ , setUserStoresList ] = useState([]);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ permissions, setPermissions ] = useState<TreeNode[]>([]);
 
@@ -82,16 +77,18 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * @param roleName - User input role name
      */
     const validateRoleNamePattern = async (): Promise<string> => {
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
+
         await SharedUserStoreUtils.getUserStoreRegEx(CONSUMER_USERSTORE,
             SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-            .then((response) => {
+            .then((response: string) => {
                 setRegExLoading(true);
                 userStoreRegEx = response;
             });
 
         setRegExLoading(false);
-        return new Promise((resolve, reject) => {
+
+        return new Promise((resolve: any, reject: any) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
             } else {
@@ -105,31 +102,33 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [
-                {
-                    key: -1,
-                    text: "Primary",
-                    value: "primary"
-                }
-            ];
-        let storeOption = {
+        const storeOptions: any = [
+            {
+                key: -1,
+                text: "Primary",
+                value: "primary"
+            }
+        ];
+
+        let storeOption: any = {
             key: null,
             text: "",
             value: ""
         };
+
         getUserStoreList()
-            .then((response) => {
+            .then((response: any) => {
                 if (storeOptions.length === 0) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                response.data.map((store: any, index: number) => {
+                    storeOption = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+                    storeOptions.push(storeOption);
+                }
                 );
                 setUserStoresList(storeOptions);
             });
@@ -152,7 +151,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         <>
             <Forms
                 data-testid={ testId }
-                onSubmit={ (values) => {
+                onSubmit={ (values: any) => {
                     onSubmit({
                         basic: getFormValues(values),
                         permissions
@@ -189,7 +188,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                         ],
                                         startIndex: 1
                                     };
-                                    const response = await searchRoleList(searchData);
+                                    const response: any = await searchRoleList(searchData);
 
                                     if (response?.data?.totalResults > 0) {
                                         validation.isValid = false;
@@ -199,9 +198,11 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                         );
                                     }
 
-                                    let isRoleNamePatternValid = true;
-                                    await validateRoleNamePattern().then(regex => {
-                                        isRoleNamePatternValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
+                                    let isRoleNamePatternValid: boolean = true;
+                                    
+                                    await validateRoleNamePattern().then((regex: string) => {
+                                        isRoleNamePatternValid = SharedUserStoreUtils.
+                                            validateInputAgainstRegEx(value, regex);
                                     });
 
                                     if (!isRoleNamePatternValid) {

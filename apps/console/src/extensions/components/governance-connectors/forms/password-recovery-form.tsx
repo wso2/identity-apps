@@ -187,7 +187,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values) => {
+    const getUpdatedConfigurations = (values: any) => {
         const data: any = {
             "Recovery.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
@@ -209,7 +209,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: any) => onSubmit(getUpdatedConfigurations(values)) }
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >

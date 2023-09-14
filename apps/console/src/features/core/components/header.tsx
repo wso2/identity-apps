@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,11 +26,12 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, useDocumentation } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -44,18 +45,15 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
-import { useCheckFeatureStatus } from "../../../extensions/components/feature-gate/controller/featureGate-util";
-import { ShowFeature } from "../../../extensions/components/feature-gate/controller/show-feature";
-import { FeatureStatus } from "../../../extensions/components/feature-gate/models/feature-gate";
-import { ReactComponent as AskHelpIcon } from "../../../themes/asgardio/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../../themes/asgardio/assets/images/icons/community-icon.svg";
-import {
-    ReactComponent as ContactSupportIcon
-} from "../../../themes/asgardio/assets/images/icons/contact-support-icon.svg";
-import { ReactComponent as DocsIcon } from "../../../themes/asgardio/assets/images/icons/docs-icon.svg";
-import { ReactComponent as BillingPortalIcon } from "../../../themes/asgardio/assets/images/icons/dollar-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
+import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
+import { ReactComponent as CommunityIcon } from "../../../themes/wso2is/assets/images/icons/community-icon.svg";
+import {
+    ReactComponent as ContactSupportIcon
+} from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
+import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
+import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
@@ -84,6 +82,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const { handleSidePanelToggleClick } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const profileInfo: ProfileInfoInterface = useSelector(
         (state: AppState) => state.profile.profileInfo
@@ -332,7 +331,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             billingPortalURL && !isPrivilegedUser &&
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
-                <ShowFeature ifAllowed={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <a 
                         href={ upgradeButtonURL } 
                         target="_blank" 
@@ -350,7 +349,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             }
                         </Button>
                     </a>
-                </ShowFeature>
+                </Show>
             )
         ];
     };
@@ -429,7 +428,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     <Box key="footer" className="user-dropdown-footer">
                         <Link
                             variant="body3"
-                            href="https://wso2.com/asgardeo/privacy-policy"
+                            href={ getLink("common.privacyPolicy") }
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -437,7 +436,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Link>
                         <Link
                             variant="body3"
-                            href="https://asgardeo.io/cookie-policy"
+                            href={ getLink("common.cookiePolicy") }
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -445,7 +444,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Link>
                         <Link
                             variant="body3"
-                            href="https://wso2.com/asgardeo/terms-of-use/"
+                            href={ getLink("common.termsOfService") }
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -456,7 +455,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 menuItems: [
                     billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl && 
                     !isPrivilegedUser && (
-                        <ShowFeature ifAllowed={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem
                                 color="inherit"
                                 onClick={ () => {
@@ -473,7 +472,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     ) }
                                 </ListItemText>
                             </MenuItem>
-                        </ShowFeature>
+                        </Show>
                     ),
                     showAppSwitchButton ? (
                         <MenuItem

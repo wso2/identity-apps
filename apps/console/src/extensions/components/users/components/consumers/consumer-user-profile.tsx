@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
@@ -57,6 +57,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./change-password";
+import { AccessControlConstants } from "../../../../../features/access-control/constants/access-control";
 import { AppState, FeatureConfigInterface, history } from "../../../../../features/core";
 import {
     OperationValueInterface,
@@ -925,9 +926,10 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         )
                     }
                     {
-                        (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
-                            allowedScopes) && user.userName !== ADMIN_USER_NAME) && (
-                            <>
+                        user.userName !== ADMIN_USER_NAME && (
+                            <Show
+                                when={ AccessControlConstants.USER_DELETE }
+                            >
                                 {
                                     !isReadOnly && configSettings?.accountDisable === "true" && (
                                         <Show when={ AccessControlConstants.USER_EDIT }>
@@ -954,23 +956,27 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                     )
                                 }
                                 { lockConsumerAccountDangerAction() }
-                                { (<Show when={ AccessControlConstants.USER_DELETE }><DangerZone
-                                    data-testid={ `${ testId }-danger-zone` }
-                                    actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.actionTitle") }
-                                    header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.header") }
-                                    subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.subheader") }
-                                    onActionClick={ (): void => {
-                                        setShowDeleteConfirmationModal(true);
-                                        setDeletingUser(user);
-                                    } }
-                                    isButtonDisabled={ isReadOnlyUserStore }
-                                    buttonDisableHint={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                    "deleteUserZone.buttonDisableHint") }
-                                /></Show>) }
-                            </>
+                                { (
+                                    <Show when={ AccessControlConstants.USER_DELETE }>
+                                        <DangerZone
+                                            data-testid={ `${ testId }-danger-zone` }
+                                            actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteUserZone.actionTitle") }
+                                            header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteUserZone.header") }
+                                            subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "deleteUserZone.subheader") }
+                                            onActionClick={ (): void => {
+                                                setShowDeleteConfirmationModal(true);
+                                                setDeletingUser(user);
+                                            } }
+                                            isButtonDisabled={ isReadOnlyUserStore }
+                                            buttonDisableHint={ t("console:manage.features.user.editUser." +
+                                            "dangerZoneGroup.deleteUserZone.buttonDisableHint") }
+                                        />
+                                    </Show>
+                                ) }
+                            </Show>
                         )
                     }
                 </DangerZoneGroup>

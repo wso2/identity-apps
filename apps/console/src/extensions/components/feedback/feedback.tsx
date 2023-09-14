@@ -16,17 +16,19 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector} from "react-redux";
-import { Button, Grid, Icon, Modal, Divider } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Button, Divider, Grid, Icon, Modal } from "semantic-ui-react";
 import { sendFeedback } from "./feedback-api";
-import { AlertLevels } from "@wso2is/core/models";
 import { AppState, store } from "../../../features/core";
-import { addAlert } from "@wso2is/core/store";
 import { ReactComponent as FeedBackIcon } from "../../assets/images/icons/feedback-outline.svg";
 
 export default (): ReactElement => {
@@ -39,33 +41,24 @@ export default (): ReactElement => {
 
     const userId: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const userEmail: any = useSelector((state: AppState) => state.profile.profileInfo.emails[0]);
-    const tenantName = store.getState().config.deployment.tenant;
+    const tenantName: string = store.getState().config.deployment.tenant;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const [submit, setSubmit] = useTrigger();
-
-    const feedbackOptions = [
-        { label: "Suggestion", value: "suggestion" },
-        { label: "Complement", value: "complement" },
-        { label: "Report a Bug", value: "bugReport" },
-        { label: "Need Help", value: "helpRequest" },
-        { label: "Contact Us", value: "contactUs" },
-        { label: "Other", value: "other" }
-    ];
+    const dispatch: Dispatch = useDispatch();
+    const [ submit, setSubmit ] = useTrigger();
 
     const closeWizard = () => {
         setShowFeedback(false);
         setCurrentWizardStep(0);
         setContactAllowed(false);
         setFeedbackOption("suggestion");
-    }
+    };
 
     /**
      * Handles form value change.
      *
-     * @param {boolean} isPure - Is the form pure.
-     * @param {Map<string, FormValue>} values - Form values
+     * @param isPure - Is the form pure.
+     * @param values - Form values
      */
     const handleFormValuesOnChange = (isPure: boolean, values: Map<string, FormValue>) => {
         if (feedbackOption === "suggestion" || feedbackOption === "complement" || feedbackOption === "bugReport") {
@@ -88,7 +81,8 @@ export default (): ReactElement => {
                                 placeholder="Enter your email address"
                                 required={ true }
                                 disabled
-                                requiredErrorMessage="Email cannot be empty if you want us to contact you regarding this feedback"
+                                requiredErrorMessage={ "Email cannot be empty if you want us " +
+                                    "to contact you regarding this feedback" }
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.email(value)) {
                                         validation.isValid = false;
@@ -153,7 +147,8 @@ export default (): ReactElement => {
                             placeholder="Enter your email address"
                             required={ isContactAllowed }
                             disabled={ isContactAllowed }
-                            requiredErrorMessage= "Email cannot be empty if you are okay with us contacting you regarding this feedback"
+                            requiredErrorMessage={ "Email cannot be empty if you are okay with us " +
+                                "contacting you regarding this feedback" }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.email(value)) {
                                     validation.isValid = false;
@@ -220,13 +215,13 @@ export default (): ReactElement => {
         }
     };
 
-    const STEPS = [
+    const STEPS: any[] = [
         {
             content: (
                 <>
                     <Forms
                         onSubmit={
-                            (formValue) => submitFeedback(formValue)
+                            (formValue: Map<string, FormValue>) => submitFeedback(formValue)
                         }
                         submitState={ submit }
                         onChange={ handleFormValuesOnChange }
@@ -235,70 +230,100 @@ export default (): ReactElement => {
                             <label>Please select your feedback category below</label>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <input type='radio' value='suggestion' name='feedbackOption' id='suggestion' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='suggestion'>
+                                    <input
+                                        type="radio"
+                                        value="suggestion"
+                                        name="feedbackOption"
+                                        id="suggestion"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="suggestion">
                                         <Icon name="lightbulb"/> Suggestion
                                     </label>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <input type='radio' value='complement' name='feedbackOption' id='complement' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='complement'>
+                                    <input
+                                        type="radio"
+                                        value="complement"
+                                        name="feedbackOption"
+                                        id="complement"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="complement">
                                         <Icon name="thumbs up"/> Complement
                                     </label>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <input type='radio' value='bugReport' name='feedbackOption' id='bugReport' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='bugReport'>
+                                    <input
+                                        type="radio"
+                                        value="bugReport"
+                                        name="feedbackOption"
+                                        id="bugReport"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="bugReport">
                                         <Icon name="bug"/> Report a Bug
                                     </label>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <input type='radio' value='helpRequest' name='feedbackOption' id='helpRequest' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='helpRequest'>
+                                    <input
+                                        type="radio"
+                                        value="helpRequest"
+                                        name="feedbackOption"
+                                        id="helpRequest"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="helpRequest">
                                         <Icon name="question circle"/> Need Help
                                     </label>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <input type='radio' value='contactUs' name='feedbackOption' id='contactUs' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='contactUs'>
+                                    <input
+                                        type="radio"
+                                        value="contactUs"
+                                        name="feedbackOption"
+                                        id="contactUs"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="contactUs">
                                         <Icon name="comments"/> Contact Us
                                     </label>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <input type='radio' value='other' name='feedbackOption' id='other' onChange={
-                                        (values) => {
-                                            setFeedbackOption(
-                                                values.currentTarget.value.toString());
-                                        }
-                                    }/>
-                                    <label htmlFor='other'>
+                                    <input
+                                        type="radio"
+                                        value="other"
+                                        name="feedbackOption"
+                                        id="other"
+                                        onChange={
+                                            (values: any) => {
+                                                setFeedbackOption(
+                                                    values.currentTarget.value.toString());
+                                            }
+                                        }/>
+                                    <label htmlFor="other">
                                         <Icon name="comment alternate"/> Other
                                     </label>
                                 </Grid.Column>
@@ -343,9 +368,10 @@ export default (): ReactElement => {
      */
     const submitFeedback = (data: Map<string, FormValue>) => {
 
-        const tags = [];
+        const tags: string[] = [];
+
         tags.push(feedbackOption);
-        const feedbackData = {
+        const feedbackData: any = {
             "contactNo": data.get("contactNo"),
             "email": data.get("email"),
             "message": data.get("message"),
@@ -365,7 +391,7 @@ export default (): ReactElement => {
                     message: "Feedback submitted successfully"
                 }
             ));
-        }).catch(error => {
+        }).catch((error: IdentityAppsError) => {
             closeWizard();
             dispatch(addAlert(
                 {
@@ -386,7 +412,7 @@ export default (): ReactElement => {
             </Button>
             {
                 showFeedback &&
-                <Modal
+                (<Modal
                     open={ true }
                     dimmer="inverted"
                     size="small"
@@ -425,7 +451,7 @@ export default (): ReactElement => {
                             </Grid>
                         </Modal.Actions>
                     ) }
-                </Modal>
+                </Modal>)
             }
         </>
     );

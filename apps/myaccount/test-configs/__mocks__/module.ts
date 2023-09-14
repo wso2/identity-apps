@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Mocks of NPM Modules.
  *
  * @remarks If you had to mock a certain npm module,
  * document the reason and any references clearly in this file.
@@ -29,8 +28,8 @@
  */
 jest.mock("react-i18next", () => ({
     // this mock makes sure any components using the translate hook can use it without a warning being shown
-    Trans: ({ children }) => children,
+    Trans: ({ children }: any) => children,
     useTranslation: () => ({
-        t: key => key
+        t: (key: any) => key
     })
 }));

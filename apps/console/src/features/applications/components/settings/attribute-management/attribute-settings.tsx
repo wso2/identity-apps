@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -45,6 +46,7 @@ import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
+import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
@@ -1271,22 +1273,23 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             ) }
                             {
                                 !readOnly
-                                && hasRequiredScopes(featureConfig?.applications,
-                                    featureConfig?.applications?.scopes?.update,
-                                    allowedScopes)
                                 && (
-                                    <Grid.Row>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Button
-                                                primary
-                                                size="small"
-                                                onClick={ updateValues }
-                                                data-testid={ `${ testId }-submit-button` }
-                                            >
-                                                { t("common:update") }
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
+                                    <Show
+                                        when={ AccessControlConstants.APPLICATION_EDIT }
+                                    >
+                                        <Grid.Row>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Button
+                                                    primary
+                                                    size="small"
+                                                    onClick={ updateValues }
+                                                    data-testid={ `${ testId }-submit-button` }
+                                                >
+                                                    { t("common:update") }
+                                                </Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Show>
                                 )
                             }
                         </Grid>

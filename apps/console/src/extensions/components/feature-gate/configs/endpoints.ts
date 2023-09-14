@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureGateEndpoints } from "../models/feature-gate";
+import { FeatureGateEndpoints } from "@wso2is/access-control";
 
 
 /**
