@@ -17,6 +17,9 @@
  */
 
 import { FunctionComponent, ReactNode } from "react";
+import {
+    ReactComponent as AdminAdvisoryBannerIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/admin-advisory-outline.svg";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
 import {
     ReactComponent as ApplicationRolesIcon
@@ -215,6 +218,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
  * Typed interface of {@link getSidePanelIcons}
  */
 export type GetSidePanelIconsInterface = {
+    adminAdvisoryBanner: FunctionComponent | ReactNode,
     applicationRoles: FunctionComponent | ReactNode,
     appLogs: FunctionComponent | ReactNode,
     applications: FunctionComponent | ReactNode,
@@ -251,6 +255,7 @@ export type GetSidePanelIconsInterface = {
 export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
 
     return {
+        adminAdvisoryBanner: AdminAdvisoryBannerIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,
         applications: ApplicationsOutlineIcon,

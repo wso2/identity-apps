@@ -78,6 +78,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             tenantPrefix: ""
         },
         endpoints: {
+            adminAdvisoryBanner: "",
             CORSOrigins: "",
             accountDisabling: "",
             accountLocking: "",

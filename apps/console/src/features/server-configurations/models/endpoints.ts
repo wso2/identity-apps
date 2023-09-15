@@ -20,6 +20,7 @@
  * Interface for the Server Configurations feature resource endpoints.
  */
 export interface ServerConfigurationsResourceEndpointsInterface {
+    adminAdvisoryBanner: string;
     accountDisabling: string;
     accountLocking: string;
     accountRecovery: string;

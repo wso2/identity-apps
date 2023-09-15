@@ -702,6 +702,38 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        category: "extensions:manage.sidePanel.categories.AccountManagement",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import("../../server-configurations/pages/admin-session-advisory-banner-edit-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "admin-session-advisory-banner-edit",
+                                name: "Admin Session Advisory Banner",
+                                path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() =>
+                            import("../../server-configurations/pages/admin-advisory-banner-page")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().adminAdvisoryBanner
+                        },
+                        id: "adminAdvisoryBanner",
+                        name: "Admin Advisory Banner",
+                        order: 22,
+                        path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../../extensions/components/logs/pages/logs")),
                         exact: true,
