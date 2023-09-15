@@ -116,7 +116,7 @@
     Map<String, Claim> uniquePIIs = null;
 
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain);
 
     ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
     try {

@@ -148,7 +148,7 @@
         application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
 
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain);
 
     if (StringUtils.isEmpty(username)) {
         request.setAttribute("error", true);

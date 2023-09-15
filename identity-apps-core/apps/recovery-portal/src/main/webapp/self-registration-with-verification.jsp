@@ -106,7 +106,7 @@
         tenantDomain = srtenantDomain;
     }
 
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain);
 
     if (skipSignUpEnableCheck) {
         consentPurposeGroupName = "JIT";
