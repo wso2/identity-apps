@@ -18,6 +18,9 @@
 
 import { FunctionComponent, ReactNode } from "react";
 import {
+    ReactComponent as AccountManagementOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
+import {
     ReactComponent as AdminAdvisoryBannerIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/admin-advisory-outline.svg";
 import { ReactComponent as AlertIcon } from "../../../themes/default/assets/images/icons/alert-icon.svg";
@@ -50,9 +53,6 @@ import MyAccountIcon from "../../../themes/default/assets/images/icons/myaccount
 import {
     ReactComponent as OrganizationRolesIcon
 } from "../../../themes/default/assets/images/icons/organization-roles.svg";
-import {
-    ReactComponent as AccountManagementOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/account-management-outline.svg";
 import {
     ReactComponent as AnalyticsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/analytics.svg";

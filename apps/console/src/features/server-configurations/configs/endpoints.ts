@@ -30,10 +30,10 @@ export const getServerConfigurationsResourceEndpoints = (
 ): ServerConfigurationsResourceEndpointsInterface => {
 
     return {
-        adminAdvisoryBanner: `${ serverHost }/api/server/v1/admin-advisory-management/banner`,
         accountDisabling: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+        adminAdvisoryBanner: `${ serverHost }/api/server/v1/admin-advisory-management/banner`,
         accountLocking: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,

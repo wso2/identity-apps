@@ -19,11 +19,11 @@
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
-import { SettingsSection } from "../../../extensions/components/governance-connectors/settings";
 import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { SettingsSection } from "../../../extensions/components/governance-connectors/settings";
 import { AppConstants, history } from "../../core";
 import { useAdminAdvisoryBannerConfigs } from "../api";
 
@@ -31,17 +31,6 @@ import { useAdminAdvisoryBannerConfigs } from "../api";
  * Props for the Admin Advisory page.
  */
 type AdminAdvisoryBannerPageInterface = IdentifiableComponentInterface;
-
-interface AdminAdvisoryConfigurationInterface {
-    /**
-     * Flag to enable the banner.
-     */
-    enableBanner: boolean;
-    /**
-     * Banner content.
-     */
-    bannerContent: string;
-}
 
 /**
  * Admin Advisory page.
@@ -61,7 +50,7 @@ export const AdminAdvisoryBannerPage: FC<AdminAdvisoryBannerPageInterface> = (
     const {
         data: adminAdvisoryConfigs,
         isLoading: isAdminAdvisoryConfigsGetRequestLoading,
-        error: adminAdvisoryConfigsGetRequestError,
+        error: adminAdvisoryConfigsGetRequestError
     } = useAdminAdvisoryBannerConfigs();
 
     /**
@@ -94,7 +83,8 @@ export const AdminAdvisoryBannerPage: FC<AdminAdvisoryBannerPageInterface> = (
         >
             <SettingsSection
                 data-testid={ `${ componentId }-settings-section` }
-                description={ t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.description") }
+                description={ t("console:manage.features.serverConfigs.adminAdvisory." +
+                    "configurationSection.description") }
                 header={ t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.heading") }
                 onPrimaryActionClick={ handleAdminAdvisoryBannerConfiguration }
                 primaryAction={ t("common:configure") }
@@ -103,7 +93,7 @@ export const AdminAdvisoryBannerPage: FC<AdminAdvisoryBannerPageInterface> = (
             </SettingsSection>
         </PageLayout>
     );
-}
+};
 
 /**
  * Default props for the component.

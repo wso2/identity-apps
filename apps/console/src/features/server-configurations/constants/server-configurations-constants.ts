@@ -298,8 +298,8 @@ export class ServerConfigurationsConstants {
 	public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
 
-    public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating " +
-		"the admin advisory banner configurations.";
+    public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
+		"while updating the admin advisory banner configurations.";
 
 	public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR: string = "An invalid input value " +
 		"in the request.";
