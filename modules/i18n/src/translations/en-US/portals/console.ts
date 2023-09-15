@@ -9354,6 +9354,86 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
+                adminAdvisory: {  
+                    configurationEditSection: {
+                        backButtonLabel: "Go back to Admin Advisory Banner",
+                        pageHeading: "Admin Advisory Banner",
+                        pageSubheading: "Configure and customize the admin advisory banner to be displayed on the login page.",
+                        form: {
+                            bannerContent: {
+                                label: "Banner content",
+                                hint: "This is the content that will be displayed in the banner on the login page.",
+                                placeholder: "Warning - unauthorized use of this tool is strictly prohibited."
+                            }
+                        }
+                    },
+                    configurationSection: {
+                        disabled: "Disabled",
+                        description: "Enable and configure the admin advisory banner.",
+                        enabled: "Enabled",
+                        heading: "Admin Advisory Banner"
+                    },   
+                    notifications: {
+                        disbleAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Error disabling admin advisory banner."
+                            },
+                            genericError: {
+                                description: "An error occurred while disabling admin advisory banner.",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Successfully disabled the admin advisory banner.",
+                                message: "Disabled the admin advisory banner"
+                            }
+                        },
+                        enableAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Error enabling admin advisory banner."
+                            },
+                            genericError: {
+                                description: "An error occurred while enabling admin advisory banner.",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Successfully enabled the admin advisory banner.",
+                                message: "Enabled the admin advisory banner"
+                            }
+                        },
+                        getConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Error retrieving admin advisory banner configurations."
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving admin advisory banner configurations.",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "",
+                                message: ""
+                            }
+                        },
+                        updateConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Error updating admin advisory banner configurations."
+                            },
+                            genericError: {
+                                description: "An error occurred while updating admin advisory banner configurations.",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Successfully updated the admin advisory banner configurations.",
+                                message: "Banner updated successfully"
+                            }
+                        }
+                    },     
+                    pageHeading: "Admin Advisory Banner",
+                    pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "More"
