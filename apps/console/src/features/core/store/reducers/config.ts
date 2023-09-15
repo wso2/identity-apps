@@ -80,9 +80,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         endpoints: {
             CORSOrigins: "",
             accountDisabling: "",
-            adminAdvisoryBanner: "",
             accountLocking: "",
             accountRecovery: "",
+            adminAdvisoryBanner: "",
             applications: "",
             authenticatorTags: "",
             authenticators: "",
