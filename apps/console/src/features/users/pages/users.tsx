@@ -140,7 +140,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return;
         }
 
-        if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
+        if (CommonHelpers.lookupKey(tenantSettings, username) !== null) {
             const userSettings: Record<string, any> = CommonHelpers.lookupKey(tenantSettings, username);
             const userPreferences: Record<string, any> = userSettings[1];
             const tempColumns: Map<string, string> = new Map<string, string> ();
@@ -195,7 +195,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     }, [ emailVerificationEnabled ]);
 
-    const getReadOnlyUserStoresList = () => {
+    const getReadOnlyUserStoresList = (): void => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
             setReadOnlyUserStoresList(response);
         });
