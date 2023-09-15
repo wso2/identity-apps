@@ -17,6 +17,8 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { administratorConfig } from "../../../extensions/configs/administrator";
+import { UserRoleInterface } from "../../core/models";
 import { 
     ValidationConfInterface,
     ValidationDataInterface,
@@ -44,6 +46,15 @@ export class UserManagementUtils {
         }
 
         return getUserNameWithoutDomain(username) === authenticatedUsername;
+    };
+
+    /**
+     * Checks whether administrator role is present in the user roles.
+     */
+    public static isAdminUser = (roles: UserRoleInterface[]): boolean => {
+        return roles.some((role: UserRoleInterface) => 
+            role.display === administratorConfig.adminRoleName
+        );
     };
 }
 

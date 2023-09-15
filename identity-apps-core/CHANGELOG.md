@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.3
+
+### Patch Changes
+
+- [#4097](https://github.com/wso2/identity-apps/pull/4097) [`f026aab76d`](https://github.com/wso2/identity-apps/commit/f026aab76dbb9427a3c3e9b5df27c51e7bf3b48f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Transform the Bootstrap pages within the recovery portal into Semantic themed pages
+
 ## 2.0.2
 
 ### Patch Changes

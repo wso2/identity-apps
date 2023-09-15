@@ -623,7 +623,7 @@ export const applicationConfig: ApplicationConfig = {
                 "urn:ietf:params:oauth:grant-type:token-exchange",
                 "urn:ietf:params:oauth:grant-type:jwt-bearer"
             ],
-            "custom-application": [ "urn:ietf:params:oauth:grant-type:device_code" ]
+            "custom-application": []
         },
         shouldValidateCertificate: true,
         showBackChannelLogout: false,

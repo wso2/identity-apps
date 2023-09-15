@@ -132,6 +132,75 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
 
+    /**
+     * Fetch the list of available userstores.
+     */
+    useEffect(() => {
+        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+            return;
+        }
+
+        if (CommonHelpers.lookupKey(tenantSettings, username) !== null) {
+            const userSettings: Record<string, any> = CommonHelpers.lookupKey(tenantSettings, username);
+            const userPreferences: Record<string, any> = userSettings[1];
+            const tempColumns: Map<string, string> = new Map<string, string> ();
+
+            if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
+                const metaColumns: string[] = UserManagementConstants.DEFAULT_USER_LIST_ATTRIBUTES;
+
+                setUserMetaColumns(metaColumns);
+                metaColumns.map((column: string) => {
+                    if (column === "id") {
+                        tempColumns.set(column, "");
+                    } else {
+                        tempColumns.set(column, column);
+                    }
+                });
+                setUserListMetaContent(tempColumns);
+            }
+            userPreferences.identityAppsSettings.userPreferences.userListColumns.map((column: any) => {
+                tempColumns.set(column, column);
+            });
+            setUserListMetaContent(tempColumns);
+        }
+
+        getUserStores();
+        getReadOnlyUserStoresList();
+        getAdminUser();
+    }, []);
+
+    useEffect(() => {
+        const attributes: string = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
+
+        getList(listItemLimit, listOffset, null, attributes, userStore);
+    }, [ listItemLimit, listOffset, userStore ]);
+
+    useEffect(() => {
+        if (!isListUpdated) {
+            return;
+        }
+        const attributes: string = generateAttributesString(userListMetaContent?.values());
+
+        getList(listItemLimit, listOffset, null, attributes, userStore);
+        setListUpdated(false);
+    }, [ isListUpdated ]);
+
+    useEffect(() => {
+        if (init.current) {
+            init.current = false;
+        } else {
+            if (emailVerificationEnabled !== undefined) {
+                setShowWizard(true);
+            }
+        }
+    }, [ emailVerificationEnabled ]);
+
+    const getReadOnlyUserStoresList = (): void => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
+            setReadOnlyUserStoresList(response);
+        });
+    };
+
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         setUserListRequestLoading(true);
 
@@ -205,52 +274,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 setUserListRequestLoading(false);
             });
     };
-
-    useEffect(() => {
-        if (init.current) {
-            init.current = false;
-        } else {
-            if (emailVerificationEnabled !== undefined) {
-                setShowWizard(true);
-            }
-        }
-    }, [ emailVerificationEnabled ]);
-
-    useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            return;
-        }
-
-        SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
-            setReadOnlyUserStoresList(response);
-        });
-    }, [ userStore ]);
-
-    useEffect(() => {
-        if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
-            const userSettings: Record<string, any> = CommonHelpers.lookupKey(tenantSettings, username);
-            const userPreferences: Record<string, any> = userSettings[1];
-            const tempColumns: Map<string, string> = new Map<string, string> ();
-
-            if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
-                const metaColumns: string[] = UserManagementConstants.DEFAULT_USER_LIST_ATTRIBUTES;
-
-                setUserMetaColumns(metaColumns);
-                metaColumns.map((column: string) => {
-                    if (column === "id") {
-                        tempColumns.set(column, "");
-                    } else {
-                        tempColumns.set(column, column);
-                    }
-                });
-                setUserListMetaContent(tempColumns);
-            }
-            userPreferences.identityAppsSettings.userPreferences.userListColumns.map((column: any) => {
-                tempColumns.set(column, column);
-            });
-            setUserListMetaContent(tempColumns);
-        }
-    }, []);
 
     /**
      * Returns a moderated users list.
@@ -363,42 +386,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 setRealmConfigs(response?.realmConfig);
             });
     };
-
-    /**
-     * Fetch the list of available userstores.
-     */
-    useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            return;
-        }
-
-        getUserStores();
-        getAdminUser();
-    }, []);
-
-    useEffect(() => {
-        const attributes: string = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
-
-        getList(listItemLimit, listOffset, null, attributes, userStore);
-    }, [ userStore ]);
-
-    useEffect(() => {
-        if (userListMetaContent) {
-            const attributes: string = generateAttributesString(userListMetaContent?.values());
-
-            getList(listItemLimit, listOffset, null, attributes, userStore);
-        }
-    }, [ listOffset, listItemLimit ]);
-
-    useEffect(() => {
-        if (!isListUpdated) {
-            return;
-        }
-        const attributes: string = generateAttributesString(userListMetaContent?.values());
-
-        getList(listItemLimit, listOffset, null, attributes, userStore);
-        setListUpdated(false);
-    }, [ isListUpdated ]);
 
     /**
      * The following method set the user preferred columns to the local storage.

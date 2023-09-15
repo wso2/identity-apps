@@ -145,7 +145,11 @@ const UserEditPage = (): ReactElement => {
     };
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.getPaths().get("USERS"));
+        if (UserManagementUtils.isAdminUser(user?.roles)) {
+            history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
+        } else {
+            history.push(AppConstants.getPaths().get("USERS"));
+        }
     };
 
     /**

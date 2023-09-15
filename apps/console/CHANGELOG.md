@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4098](https://github.com/wso2/identity-apps/pull/4098) [`34cc5d654b`](https://github.com/wso2/identity-apps/commit/34cc5d654bbd0b0a4877c8f04ed09d7a442381ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues reported in the console
+
 ## 2.0.3
 
 ### Patch Changes
