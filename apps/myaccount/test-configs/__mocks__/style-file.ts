@@ -17,6 +17,7 @@
  */
 
 /**
+ * @fileoverview Mocks style files such as .css, .less, etc.
  */
 
 module.exports = {};

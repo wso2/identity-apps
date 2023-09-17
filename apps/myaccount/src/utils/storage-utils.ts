@@ -19,8 +19,8 @@
 /**
  * Set a value in local storage.
  *
- * @param key - Key to set the value under.
- * @param value - Value to be set.
+ * @param {string} key - Key to set the value under.
+ * @param {string} value - Value to be set.
  */
 export const setValueInLocalStorage = (key: string, value: string): void => {
     localStorage.setItem(key, value);
@@ -29,8 +29,8 @@ export const setValueInLocalStorage = (key: string, value: string): void => {
 /**
  * Get a value from local storage.
  *
- * @param key - Key to retrieve the value.
- * @returns Value or null.
+ * @param {string} key - Key to retrieve the value.
+ * @returns {string} Value or null.
  */
 export const getValueFromLocalStorage = (key: string): string => {
     return localStorage.getItem(key);

@@ -18,8 +18,6 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import isEmpty from "lodash-es/isEmpty";
-import { commonConfig } from "../extensions";
-import { SCIMConfigs } from "../extensions/configs/scim";
 import {
     BasicProfileInterface,
     MultiValue,
@@ -30,15 +28,17 @@ import {
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
+import { SCIMConfigs } from "../extensions/configs/scim";
+import { commonConfig } from "../extensions";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
  * The returned iterable will have all the schema attributes in a flat structure so that
  * you can just iterate through them to display them.
  *
- * @param schemas - Array of Profile schemas
- * @param parentSchemaName - Name of the parent attribute.
- * @returns - Flattened array of schemas.
+ * @param {ProfileSchema[]} schemas - Array of Profile schemas
+ * @param {string} parentSchemaName - Name of the parent attribute.
+ * @returns {ProfileSchema[]} - Flattened array of schemas.
  */
 export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
     const tempSchemas: ProfileSchema[] = [];
@@ -56,7 +56,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
                 tempSchemas.push(schema);
             }
         } else {
-            const tempSchema: any = { ...schema };
+            const tempSchema: ProfileSchema = { ...schema };
 
             if (parentSchemaName) {
                 tempSchema.name = parentSchemaName + "." + schema.name;
@@ -84,9 +84,10 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
  * Modifies the profile info object in to a flat level.
  *
  * @param profileInfo - Profile information.
- * @param parentAttributeName - Name of the parent attribute.
- * @returns - Flattened profile info.
+ * @param {string} parentAttributeName - Name of the parent attribute.
+ * @returns {any[]} - Flattened profile info.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
     const tempProfile = [];
     let mutatedProfileInfo = { ...profileInfo };

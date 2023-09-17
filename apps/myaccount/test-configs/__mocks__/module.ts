@@ -17,6 +17,7 @@
  */
 
 /**
+ * @fileoverview Mocks of NPM Modules.
  *
  * @remarks If you had to mock a certain npm module,
  * document the reason and any references clearly in this file.

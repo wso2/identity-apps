@@ -17,6 +17,7 @@
  */
 
 /**
+ * @fileoverview Mocks of Global objects.
  *
  * @remarks If you had to mock a certain global object,
  * document the reason and any references clearly in this file.

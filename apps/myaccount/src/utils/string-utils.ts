@@ -19,8 +19,8 @@
 /**
  * Transforms a string to sentence case.
  *
- * @param raw - Raw string.
- * @returns - Sentence cased string.
+ * @param {string} raw - Raw string.
+ * @returns  {string} - Sentence cased string.
  */
 export const toSentenceCase = (raw: string): string => {
     const parts: string[] = raw.split(" ");
@@ -48,7 +48,7 @@ export const toSentenceCase = (raw: string): string => {
  * value (case-insensitive). If no matches are found then, value
  * itself is cast-ed to a truthy/falsy boolean.
  *
- * @param value - parsing value.
+ * @param value {string | boolean | any} - parsing value.
  */
 export const toBoolean = (value: string | boolean | any): boolean => {
 

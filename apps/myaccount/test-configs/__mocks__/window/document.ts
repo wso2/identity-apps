@@ -17,6 +17,7 @@
  */
 
 /**
+ * @fileoverview window.document Mocks.
  *
  * @remarks If you had to mock a certain document object,
  * document the reason and any references clearly in this file.
