@@ -116,8 +116,7 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  + "/" 
-                        + "<%= htmlWebpackPlugin.options.basename %>",
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  + "/<%= htmlWebpackPlugin.options.basename %>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
@@ -125,11 +124,11 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/common/oauth2/authorize") : getApiPath("/t/carbon.super/common/oauth2/authorize"),
+                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/oauth2/authorize") : getApiPath("/t/carbon.super/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/logout") : getApiPath("/t/carbon.super/common/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/checksession") : getApiPath("/t/carbon.super/common/oidc/checksession"),
+                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/logout") : getApiPath("/t/carbon.super/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/checksession") : getApiPath("/t/carbon.super/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },

@@ -113,16 +113,16 @@
                         storage: "webWorker",
                         endpoints: {
                             authorizationEndpoint: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oauth2/authorize")
-                                : getApiPath("/t/a/common/oauth2/authorize"),
+                                ? getApiPath("/t/" + userTenant + "/oauth2/authorize")
+                                : getApiPath("/t/carbon.super/oauth2/authorize"),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
                             logoutEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oidc/logout")
-                                : getApiPath("/t/a/common/oidc/logout"),
+                                ? getApiPath("/t/" + userTenant + "/oidc/logout")
+                                : getApiPath("/t/carbon.super/oidc/logout"),
                             oidcSessionIFrameEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oidc/checksession")
-                                : getApiPath("/t/a/common/oidc/checksession"),
+                                ? getApiPath("/t/" + userTenant + "/oidc/checksession")
+                                : getApiPath("/t/carbon.super/oidc/checksession"),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined,
                         },
