@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Dispatch } from "redux";
 import {
     OrganizationActionTypes,
     SetCurrentOrganizationActionInterface,
@@ -27,7 +28,6 @@ import {
 } from "./types";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../organizations/models";
-import { Dispatch } from "redux";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
 
 /**
@@ -109,6 +109,7 @@ export const getServerConfigurations = () => (dispatch: Dispatch): void => {
     getServerConfigs()
         .then((response: ServerConfigurationsInterface) => {
             const adminUser: string = response?.realmConfig.adminUser;
+            
             dispatch(setSuperAdmin(adminUser));
         });
 };

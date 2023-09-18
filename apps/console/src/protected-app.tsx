@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -132,8 +132,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
-
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const allowedScopes: string = useSelector(
         (state: AppState) => state?.auth?.allowedScopes
@@ -589,12 +587,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
         
         const resolveHiddenRoutes = (): string[] => {
-            const commonHiddenRoutes = [ 
+            const commonHiddenRoutes: string[] = [ 
                 ...AppUtils.getHiddenRoutes(), 
                 ...AppConstants.ORGANIZATION_ONLY_ROUTES 
             ];
             
-            const additionalRoutes = isOrganizationManagementEnabled ? (
+            const additionalRoutes: string[] = isOrganizationManagementEnabled ? (
                 (OrganizationUtils.isCurrentOrganizationRoot() 
                 && AppConstants.getSuperTenant() === tenant) || isFirstLevelOrg
                     ? isPrivilegedUser
