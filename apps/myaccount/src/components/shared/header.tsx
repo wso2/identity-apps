@@ -129,6 +129,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) =>
             state.authenticationInformation.profileInfo.isReadOnly
     );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
     const { theme } = useBrandingPreference();
@@ -213,7 +214,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const resolveOrganizationLabel = (): ReactElement => {
         const organization: string =
             tenantName == "carbon.super"
-                ? commonConfig.header.organization
+                ? commonConfig.header.organization.replace("{{productName}}", productName)
                 : tenantName;
 
         return (
