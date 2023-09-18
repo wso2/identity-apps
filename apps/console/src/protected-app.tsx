@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AccessControlUtils, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { AccessControlUtils } from "@wso2is/access-control";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
@@ -72,7 +72,6 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs } from "./extensions";
-import { FeatureGateConstants } from "./extensions/components/feature-gate/constants/feature-gate";
 import {
     AuthenticateUtils,
     getProfileInformation
