@@ -22,8 +22,6 @@ interface SupportedOperatorAliasesInterface {
 
 /**
  * Supported operator aliases.
- *
- * @type {{ew: string[]; sw: string[]; co: string[]; eq: string[]}}
  */
 const SUPPORTED_OPERATOR_ALIASES: SupportedOperatorAliasesInterface = {
     co: [ "contain", "contains" ],
@@ -35,8 +33,8 @@ const SUPPORTED_OPERATOR_ALIASES: SupportedOperatorAliasesInterface = {
 /**
  * Builds a search query once a raw search string is passed in.
  *
- * @param {string} raw - Raw search string.
- * @returns  {string} - Built search query.
+ * @param raw - Raw search string.
+ * @returns - Built search query.
  */
 export const buildSearchQuery = (raw: string): string => {
     const parts: string[] = raw.split(" ");

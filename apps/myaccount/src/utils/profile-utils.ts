@@ -18,6 +18,8 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import isEmpty from "lodash-es/isEmpty";
+import { commonConfig } from "../extensions";
+import { SCIMConfigs } from "../extensions/configs/scim";
 import {
     BasicProfileInterface,
     MultiValue,
@@ -28,17 +30,15 @@ import {
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
-import { SCIMConfigs } from "../extensions/configs/scim";
-import { commonConfig } from "../extensions";
 
 /**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
  * The returned iterable will have all the schema attributes in a flat structure so that
  * you can just iterate through them to display them.
  *
- * @param {ProfileSchema[]} schemas - Array of Profile schemas
- * @param {string} parentSchemaName - Name of the parent attribute.
- * @returns {ProfileSchema[]} - Flattened array of schemas.
+ * @param schemas - Array of Profile schemas
+ * @param parentSchemaName - Name of the parent attribute.
+ * @returns - Flattened array of schemas.
  */
 export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
     const tempSchemas: ProfileSchema[] = [];
@@ -75,7 +75,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
  * @param attribute - Profile attribute.
  * @returns - `True` if the attribute is of type `MultiValue`.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
     return attribute.type !== undefined;
 };
@@ -84,13 +84,13 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
  * Modifies the profile info object in to a flat level.
  *
  * @param profileInfo - Profile information.
- * @param {string} parentAttributeName - Name of the parent attribute.
- * @returns {any[]} - Flattened profile info.
+ * @param parentAttributeName - Name of the parent attribute.
+ * @returns - Flattened profile info.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
-    const tempProfile = [];
-    let mutatedProfileInfo = { ...profileInfo };
+    const tempProfile: Partial<BasicProfileInterface>[] = [];
+    let mutatedProfileInfo: BasicProfileInterface = { ...profileInfo };
 
     if (profileInfo[ SCIMConfigs.scim.customEnterpriseSchema ]) {
         mutatedProfileInfo = { ...profileInfo, ...profileInfo[SCIMConfigs.scim.customEnterpriseSchema] };
@@ -98,7 +98,7 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
     }
 
     for (let key in mutatedProfileInfo) {
-        const value = mutatedProfileInfo[key];
+        const value: any = mutatedProfileInfo[key];
 
         // Skip `associations`, `responseStatus` & `roles`.
         if (key === "associations" || key === "responseStatus" || value == undefined || key === "roles") {
@@ -166,9 +166,9 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
 /**
  * Returns `True` if profile image exists.
  * Returns `False` if the profile image doesn't exist.
- * @param {string} name Name of the schema
- * @param {BasicProfileInterface} profileInfo ProfileInfo from the store
- * @returns {boolean} Boolean
+ * @param name - Name of the schema
+ * @param profileInfo - ProfileInfo from the store
+ * @returns Boolean
  */
 const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface): boolean => {
     return !(isEmpty(profileInfo.profileUrl) && isEmpty(profileInfo.userImage));
@@ -177,10 +177,10 @@ const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface
 /**
  * Calculates the profile completion.
  *
- * @param {BasicProfileInterface} profileInfo - Profile information.
- * @param {ProfileSchema[]} profileSchemas - Profile schemas.
- * @param {boolean} isReadOnlyUser - Whether the user is read only.
- * @return {ProfileCompletion}
+ * @param profileInfo - Profile information.
+ * @param profileSchemas - Profile schemas.
+ * @param isReadOnlyUser - Whether the user is read only.
+ * @returns ProfileCompletion
  */
 export const getProfileCompletion = (
     profileInfo: BasicProfileInterface,
@@ -188,9 +188,9 @@ export const getProfileCompletion = (
     isReadOnlyUser: boolean
 ): ProfileCompletion => {
     const completion: ProfileCompletion = emptyProfileCompletion();
-    const skippedAttributed = [];
+    const skippedAttributed: string[] = [];
 
-    for (const schema of flattenSchemas([...profileSchemas])) {
+    for (const schema of flattenSchemas([ ...profileSchemas ])) {
         // Skip `Roles` & 'Local Credential Exists'
         if (commonConfig.utils.isSchemaNameSkippableforProfileCompletion(schema)) {
             continue;
@@ -202,7 +202,7 @@ export const getProfileCompletion = (
             name: schema.name
         };
 
-        let isMapped = false;
+        let isMapped: boolean = false;
 
         if (schema.required) {
             completion.required.totalCount++;
@@ -211,7 +211,7 @@ export const getProfileCompletion = (
         }
 
         for (const info of flattenProfileInfo(profileInfo)) {
-            for (const [key, value] of Object.entries(info)) {
+            for (const [ key, value ] of Object.entries(info)) {
                 if (schema.name === key) {
                     if (!value && (schema.mutability === ProfileConstants.READONLY_SCHEMA || isReadOnlyUser)) {
                         if (!skippedAttributed.includes(attribute.name)) {
@@ -222,6 +222,7 @@ export const getProfileCompletion = (
                             }
                         }
                         skippedAttributed.push(attribute.name);
+
                         continue;
                     }
                     if (schema.required) {
@@ -262,6 +263,7 @@ export const getProfileCompletion = (
                     }
                 }
                 skippedAttributed.push(attribute.name);
+
                 continue;
             }
             if (schema.required) {

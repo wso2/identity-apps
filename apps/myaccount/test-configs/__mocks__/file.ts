@@ -17,7 +17,6 @@
  */
 
 /**
- * @fileoverview Stubs files such as .jpg, .png, etc.
  *
  * @see {@link jest.config.ts} for more file types that uses this stub.
  */
