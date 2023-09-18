@@ -34,6 +34,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
@@ -149,7 +150,7 @@
         }
     }
 
-    String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
+    String identityServerEndpointContextParam = IdentityUtil.getServerURL("/", true, true);
     if (!StringUtils.equals(tenantDomain, "carbon.super")) {
         identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build()
                 .getAbsolutePublicURL();
