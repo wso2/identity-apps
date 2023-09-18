@@ -274,6 +274,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     return (
         <OxygenHeader
+            className="is-header"
             brand={ {
                 logo: {
                     desktop: (
