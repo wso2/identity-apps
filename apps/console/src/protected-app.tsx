@@ -87,6 +87,7 @@ import {
     PreLoader,
     UIConfigInterface,
     getAppViewRoutes,
+    getServerConfigurations,
     setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
@@ -146,6 +147,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const isPrivilegedUser: boolean = useSelector(
         (state: AppState) => state?.auth?.isPrivilegedUser
     );
+    const isSuperAdmin: string = useSelector(
+        (state: AppState) => state.organization.superAdmin
+    );
+    const loggedUserName: string = store.getState().profile.profileInfo.userName;
 
     const [ tenant, setTenant ] = useState<string>("");
 
@@ -504,6 +509,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 )
             );
 
+            if (isFirstLevelOrg) {
+                await dispatch(getServerConfigurations());
+            }
+
             loginSuccessRedirect(idToken);
         });
     }, []);
@@ -578,6 +587,48 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         ) {
             return;
         }
+        
+        const resolveHiddenRoutes = (): string[] => {
+            const commonHiddenRoutes = [ 
+                ...AppUtils.getHiddenRoutes(), 
+                ...AppConstants.ORGANIZATION_ONLY_ROUTES 
+            ];
+            
+            const additionalRoutes = isOrganizationManagementEnabled ? (
+                (OrganizationUtils.isCurrentOrganizationRoot() 
+                && AppConstants.getSuperTenant() === tenant) || isFirstLevelOrg
+                    ? isPrivilegedUser
+                        ? loggedUserName === isSuperAdmin
+                            ? [ 
+                                ...commonHiddenRoutes, 
+                                ...AppConstants.ORGANIZATION_ROUTES 
+                            ]
+                            : [ 
+                                ...commonHiddenRoutes, 
+                                ...AppConstants.ORGANIZATION_ROUTES, 
+                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES 
+                            ]
+                        : loggedUserName === isSuperAdmin
+                            ? commonHiddenRoutes
+                            : [
+                                ...commonHiddenRoutes, 
+                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
+                            ]
+                    : window["AppUtils"].getConfig().organizationName
+                        ? organizationConfigs.canCreateOrganization()
+                            ? AppUtils.getHiddenRoutes()
+                            : [
+                                ...AppUtils.getHiddenRoutes(), 
+                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                            ]
+                        : [ 
+                            ...AppUtils.getHiddenRoutes(), 
+                            ...AppConstants.ORGANIZATION_ROUTES 
+                        ]
+            ) : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+
+            return [ ...additionalRoutes ];
+        };
 
         const [
             appRoutes,
@@ -587,32 +638,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            isOrganizationManagementEnabled
-                ? (OrganizationUtils.isCurrentOrganizationRoot() &&
-                    AppConstants.getSuperTenant() === tenant) ||
-                    isFirstLevelOrg
-                    ? isPrivilegedUser
-                        ? [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...AppConstants.ORGANIZATION_ONLY_ROUTES,
-                            ...AppConstants.ORGANIZATION_ROUTES
-                        ]
-                        : [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...AppConstants.ORGANIZATION_ONLY_ROUTES
-                        ]
-                    : window[ "AppUtils" ].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [ ...AppUtils.getHiddenRoutes(), OrganizationManagementConstants.ORGANIZATION_ROUTES ]
-                        : [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...AppConstants.ORGANIZATION_ROUTES
-                        ]
-                : [
-                    ...AppUtils.getHiddenRoutes(),
-                    ...AppConstants.ORGANIZATION_ROUTES
-                ],
+            resolveHiddenRoutes(),
             !OrganizationUtils.isCurrentOrganizationRoot() &&
             !isFirstLevelOrg &&
             AppConstants.ORGANIZATION_ENABLED_ROUTES
@@ -647,7 +673,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg ]);
+    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, isSuperAdmin ]);
 
     useEffect(() => {
         if (!isAuthenticated) {

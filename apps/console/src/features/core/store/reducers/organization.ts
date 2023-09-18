@@ -24,6 +24,7 @@ const initialState: OrganizationReducerStateInterface = {
     currentOrganization: "",
     getOrganizationLoading: true,
     isFirstLevelOrganization: false,
+    superAdmin: "",
     organization: {
         attributes: [],
         created: new Date().toString(),
@@ -66,6 +67,11 @@ export const organizationReducer = (
             return {
                 ...state,
                 isFirstLevelOrganization: action.payload
+            };
+        case OrganizationActionTypes.SET_SUPER_ADMIN:
+            return {
+                ...state,
+                superAdmin: action.payload
             };
         case OrganizationActionTypes.SET_ORGANIZATION_TYPE:
             return {

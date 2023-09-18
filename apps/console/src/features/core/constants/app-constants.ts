@@ -434,6 +434,13 @@ export class AppConstants {
     ]
 
     /**
+     * Route ids that are enabled in only for super admins.
+     */
+    public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
+        "adminAdvisoryBanner"
+    ] 
+
+    /**
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";

@@ -20,6 +20,7 @@ import { OrganizationType } from "../../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../../organizations/models";
 
 export enum OrganizationActionTypes {
+    SET_SUPER_ADMIN = "SET_SUPER_ADMIN",
     SET_ORGANIZATION = "SET_ORGANIZATION",
     SET_CURRENT_ORGANIZATION = "SET_CURRENT_ORGANIZATION",
     SET_GET_ORGANIZATION_LOADING = "SET_GET_ORGANIZATION_LOADING",
@@ -52,7 +53,13 @@ export interface SetOrganizationTypeInterface {
     type: OrganizationActionTypes.SET_ORGANIZATION_TYPE;
 }
 
+export interface SetSuperAdminTypeInterface {
+    payload: string;
+    type: OrganizationActionTypes.SET_SUPER_ADMIN;
+}
+
 export type OrganizationAction =
+    | SetSuperAdminTypeInterface
     | SetCurrentOrganizationActionInterface
     | SetOrganizationActionInterface
     | SetGetOrganizationLoadingActionInterface
