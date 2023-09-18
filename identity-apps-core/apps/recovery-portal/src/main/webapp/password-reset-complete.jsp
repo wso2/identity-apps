@@ -81,6 +81,12 @@
     String username = null;
     String tenantAwareUsername = null;
     String applicationName = null;
+
+    String tenantDomainFromQuery = request.getParameter("tenantDomainFromQuery");
+    if (StringUtils.isNotBlank(tenantDomainFromQuery)) {
+        tenantDomain = tenantDomainFromQuery;
+    }
+
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
 
