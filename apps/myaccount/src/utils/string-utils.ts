@@ -20,7 +20,7 @@
  * Transforms a string to sentence case.
  *
  * @param raw - Raw string.
- * @returns Sentence cased string.
+ * @returns - Sentence cased string.
  */
 export const toSentenceCase = (raw: string): string => {
     const parts: string[] = raw.split(" ");
