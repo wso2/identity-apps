@@ -89,4 +89,9 @@ export class ProfileConstants {
      * States if the SCIM schema is mutable.
      */
     public static readonly READONLY_SCHEMA: string = "READ_ONLY";
+
+    /**
+     * Default max length for a claim without a max length defined in schemas.
+     */
+    public static readonly CLAIM_VALUE_MAX_LENGTH: number = 255;
 }
