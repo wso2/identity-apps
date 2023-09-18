@@ -22,7 +22,7 @@ interface SupportedOperatorAliasesInterface {
 
 /**
  * Supported operator aliases.
- * 
+ *
  */
 const SUPPORTED_OPERATOR_ALIASES: SupportedOperatorAliasesInterface = {
     co: [ "contain", "contains" ],
