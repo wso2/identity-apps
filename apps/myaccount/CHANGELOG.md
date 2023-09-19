@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.0.3
+
+### Patch Changes
+
+- [#4108](https://github.com/wso2/identity-apps/pull/4108) [`cc28e9826c`](https://github.com/wso2/identity-apps/commit/cc28e9826c94e93af6aaefd02d597e32d4008103) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove nx module.
+
 ## 2.0.2
 
 ### Patch Changes
