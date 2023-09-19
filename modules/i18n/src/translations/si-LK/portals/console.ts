@@ -7496,6 +7496,86 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
+                adminAdvisory: {  
+                    configurationEditSection: {
+                        backButtonLabel: "පරිපාලක උපදේශන බැනරය වෙත ආපසු යන්න",
+                        pageHeading: "පරිපාලක උපදේශන බැනරය",
+                        pageSubheading: "පිවිසුම් පිටුවේ දර්ශනය වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කර අභිරුචිකරණය කරන්න.",
+                        form: {
+                            bannerContent: {
+                                label: "බැනර් අන්තර්ගතය",
+                                hint: "පිවිසුම් පිටුවේ බැනරයේ දර්ශනය වන අන්තර්ගතය මෙයයි.",
+                                placeholder: "අවවාදයයි - මෙම මෙවලම අනවසරයෙන් භාවිතා කිරීම දැඩි ලෙස තහනම්ය."
+                            }
+                        }
+                    },
+                    configurationSection: {
+                        disabled: "අක්‍රීයයි",
+                        description: "පරිපාලක උපදේශන බැනරය සක්‍රීය කර වින්‍යාස කරන්න.",
+                        enabled: "සක්‍රීයයි",
+                        heading: "පරිපාලක උපදේශන බැනරය"
+                    },   
+                    notifications: {
+                        disbleAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "පරිපාලක උපදේශන බැනරය අබල කිරීමේ දෝෂයකි."
+                            },
+                            genericError: {
+                                description: "පරිපාලක උපදේශන බැනරය අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            success: {
+                                description: "පරිපාලක උපදේශන බැනරය සාර්ථකව අබල කරන ලදී.",
+                                message: "පරිපාලක උපදේශන බැනරය අබල කර ඇත"
+                            }
+                        },
+                        enableAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "පරිපාලක උපදේශන බැනරය සබල කිරීමේ දෝෂයකි."
+                            },
+                            genericError: {
+                                description: "පරිපාලක උපදේශන බැනරය සබල කිරීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            success: {
+                                description: "පරිපාලක උපදේශන බැනරය සාර්ථකව සබල කරන ලදී.",
+                                message: "පරිපාලක උපදේශන බැනරය සබල කර ඇත"
+                            }
+                        },
+                        getConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "පරිපාලක උපදේශන බැනර් වින්‍යාසයන් ලබා ගැනීමේ දෝෂයකි."
+                            },
+                            genericError: {
+                                description: "පරිපාලක උපදේශන බැනර් වින්‍යාසයන් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            success: {
+                                description: "",
+                                message: ""
+                            }
+                        },
+                        updateConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "පරිපාලක උපදේශන බැනර් වින්‍යාස කිරීම් යාවත්කාලීන කිරීමේ දෝෂයකි."
+                            },
+                            genericError: {
+                                description: "පරිපාලක උපදේශන බැනර් වින්‍යාස කිරීම් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            success: {
+                                description: "පරිපාලක උපදේශන බැනර් වින්‍යාස කිරීම් සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                                message: "බැනරය සාර්ථකව යාවත්කාලීන කරන ලදී"
+                            }
+                        }
+                    },     
+                    pageHeading: "පරිපාලක උපදේශන බැනරය",
+                    pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "තව"

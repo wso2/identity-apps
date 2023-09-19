@@ -16,16 +16,19 @@
  * under the License.
  */
 
+import { Dispatch } from "redux";
 import {
     OrganizationActionTypes,
     SetCurrentOrganizationActionInterface,
     SetGetOrganizationLoadingActionInterface,
     SetIsFirstLevelOrganizationInterface,
     SetOrganizationActionInterface,
-    SetOrganizationTypeInterface
+    SetOrganizationTypeInterface,
+    SetSuperAdminTypeInterface
 } from "./types";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../organizations/models";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
 
 /**
  * This action sets an organization in the redux store.
@@ -93,4 +96,20 @@ export const setOrganizationType = (orgType: OrganizationType): SetOrganizationT
         payload: orgType,
         type: OrganizationActionTypes.SET_ORGANIZATION_TYPE
     };
+};
+
+export const setSuperAdmin = (admin: string): SetSuperAdminTypeInterface => {
+    return {
+        payload: admin,
+        type: OrganizationActionTypes.SET_SUPER_ADMIN
+    };
+};
+
+export const getServerConfigurations = () => (dispatch: Dispatch): void => {
+    getServerConfigs()
+        .then((response: ServerConfigurationsInterface) => {
+            const adminUser: string = response?.realmConfig.adminUser;
+
+            dispatch(setSuperAdmin(adminUser));
+        });
 };

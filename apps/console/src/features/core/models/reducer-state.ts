@@ -77,6 +77,7 @@ export interface AccessControlReducerStateInterface {
  * Organization Reducer State Interface.
  */
 export interface OrganizationReducerStateInterface { 
+    superAdmin: string;
     currentOrganization: string;
     organization?: OrganizationResponseInterface;
     getOrganizationLoading: boolean;

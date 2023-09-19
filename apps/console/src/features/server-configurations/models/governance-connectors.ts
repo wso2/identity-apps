@@ -82,3 +82,11 @@ export interface GovernanceConnectorForOrgsInterface {
 	name: string,
 	properties: string[]
 }
+
+/**
+ * Interface for the admin advisory banner configuration.
+ */
+export interface AdminAdvisoryBannerConfigurationInterface {
+    bannerContent: string;
+    enableBanner: boolean;
+}
