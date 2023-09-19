@@ -20,7 +20,6 @@
             "@wso2is/dynamic-forms": ["modules/dynamic-forms/src/index.ts"],
             "@wso2is/form": ["modules/form/src/index.ts"],
             "@wso2is/forms": ["modules/forms/src/index.ts"],
-            "@wso2is/nx": ["modules/nx/src/index.ts"],
             "@wso2is/react-components": [
                 "modules/react-components/src/index.ts"
             ]
