@@ -153,6 +153,10 @@ pnpm start
 
 Once the development server is live, you can access the application via [https://localhost:9000/myaccount](https://localhost:9000/myaccount).
 
+## Releases
+
+This repository uses [🦋 Changesets](https://github.com/changesets/changesets) to manage releases. Refer to [release documentation](docs/release/README.md) to learn more about the release process.
+
 ## Configuration
 
 The portals i.e. Console & My Account are configurable using the `deployment.toml` when they are hosted inside the Identity Server.
