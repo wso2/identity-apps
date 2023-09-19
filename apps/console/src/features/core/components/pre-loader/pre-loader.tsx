@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import Image from "@oxygen-ui/react/Image";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { commonConfig } from "../../../../extensions";
@@ -45,7 +48,28 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
         <div className="pre-loader-wrapper" data-componentid={ `${ componentId }-wrapper` }>
             {
                 commonConfig?.enableDefaultPreLoader ? (
-                    <ContentLoader dimmer data-componentid={ componentId }/>
+                    <>
+                        <Image
+                            className="pre-loader-logo"
+                            src={ resolveAppLogoFilePath(
+                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                `${ window[ "AppUtils" ].getConfig().clientOrigin
+                                }/` +
+                                `${ StringUtils.removeSlashesFromPath(
+                                    window[ "AppUtils" ].getConfig()
+                                        .appBase
+                                ) !== ""
+                                    ? StringUtils.removeSlashesFromPath(
+                                        window[ "AppUtils" ].getConfig()
+                                            .appBase
+                                    ) + "/"
+                                    : ""
+                                }libs/themes/wso2is`
+                            ) }
+                            alt="logo"
+                        />
+                        <ContentLoader data-componentid={ componentId }/>
+                    </>
                 ) : (
                     <div className="trifacta-pre-loader" data-componentid={ componentId }>
                         <svg
