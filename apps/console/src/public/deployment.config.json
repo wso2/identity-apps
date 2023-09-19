@@ -538,6 +538,23 @@
                 "enabled": true,
                 "scopes": {}
             },
+            "identityVerificationProviders": {
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_idvp_create"
+                    ],
+                    "read": [
+                        "internal_idvp_view"
+                    ],
+                    "update": [
+                        "internal_idvp_update"
+                    ],
+                    "delete": [
+                        "internal_idvp_delete"
+                    ]
+                }
+            },
             "oidcScopes": {
                 "disabledFeatures": [],
                 "enabled": true,

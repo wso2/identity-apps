@@ -21,7 +21,7 @@ import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { renderFormUIWithMetadata } from "./helpers";
+import { renderFormUIWithMetadata } from "./helpers/dynamic-ui-helper";
 import { IdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
 
 /**
@@ -108,4 +108,3 @@ export const ConfigurationSettingsForm: FunctionComponent<ConfigurationSettingsF
 ConfigurationSettingsForm.defaultProps = {
     "data-componentid": "idvp-edit-config-settings-form"
 };
-ß

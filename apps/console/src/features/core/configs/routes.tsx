@@ -187,7 +187,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+                        category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
                                 component: lazy(() =>
@@ -226,7 +226,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: { icon: getSidePanelIcons().identityVerificationProviders },
                         id: "identityVerificationProviders",
                         name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
-                        order: 3,
+                        order: 4,
                         path: AppConstants.getPaths().get("IDVP"),
                         protected: true,
                         showOnSidePanel: true
