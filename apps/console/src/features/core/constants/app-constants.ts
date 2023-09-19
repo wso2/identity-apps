@@ -299,6 +299,11 @@ export class AppConstants {
                     ? `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
                     : `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
             ],
+            [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
+            [ "IDVP_TEMPLATES",
+                `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
+            ],
+            [ "IDVP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/:id` ],
             [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],

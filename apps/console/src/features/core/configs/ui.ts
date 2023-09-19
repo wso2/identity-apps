@@ -64,6 +64,9 @@ import {
     ReactComponent as IDPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
 import {
+    ReactComponent as IDVPOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/idvp-outline.svg";
+import {
     ReactComponent as KeyOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/key-outline.svg";
 import {
@@ -228,6 +231,7 @@ export type GetSidePanelIconsInterface = {
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
+    identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
@@ -273,6 +277,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,
+        identityVerificationProviders: IDVPOutlineIcon ,
         insights: AnalyticsIcon,
         jwtKey: JWTKey,
         organization: LDAPOutlineIcon,
