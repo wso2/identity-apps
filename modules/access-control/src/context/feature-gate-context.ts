@@ -17,16 +17,12 @@
  */
 
 import { Context, createContext } from "react";
-import { featureGateConfig } from "../configs/feature-gate";
 import { FeatureGateContextPropsInterface } from "../models/feature-gate";
 
 /**
  * Context object for feature gate configurations.
  */
 const FeatureGateContext: Context<FeatureGateContextPropsInterface>  =
-    createContext<FeatureGateContextPropsInterface>({
-        dispatch: () => null,
-        features: featureGateConfig
-    });
+    createContext<FeatureGateContextPropsInterface>(undefined);
 
 export default FeatureGateContext;
