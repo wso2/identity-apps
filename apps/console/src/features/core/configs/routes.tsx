@@ -727,7 +727,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             icon: getSidePanelIcons().adminAdvisoryBanner
                         },
                         id: "adminAdvisoryBanner",
-                        name: "Admin Advisory Banner",
+                        name: "console:manage.features.serverConfigs.adminAdvisory.pageHeading",
                         order: 22,
                         path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
                         protected: true,
