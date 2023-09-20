@@ -102,6 +102,8 @@
         </script>
     </head>
     <script>
+        var SUPER_TENANT = "carbon.super";
+
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
@@ -124,11 +126,11 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/oauth2/authorize") : getApiPath("/t/carbon.super/oauth2/authorize"),
+                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/oauth2/authorize") : getApiPath("/t/" + SUPER_TENANT + "/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/logout") : getApiPath("/t/carbon.super/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/checksession") : getApiPath("/t/carbon.super/oidc/checksession"),
+                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/logout") : getApiPath("/t/" + SUPER_TENANT + "/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/checksession") : getApiPath("/t/" + SUPER_TENANT + "/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
