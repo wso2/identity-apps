@@ -8404,6 +8404,65 @@ export const console: ConsoleNS = {
                     pageSubheading: "Configurez la bannière d'avis d'administration à afficher " + 
                         "sur la page de connexion."
                 },
+                remoteLogPublishing: {
+                    title: "",
+                    pageTitle: "",
+                    description: "",
+                    fields: {
+                        logTypes: {
+                            label: "",
+                            values: {
+                                carbonLogs: "",
+                                auditLogs: "",
+                                allLogs: ""
+                            }
+                        },
+                        remoteURL: {
+                            label: ""
+                        },
+                        advanced: {
+                            title: "",
+                            connectionTimeout: {
+                                label: ""
+                            },
+                            verifyHostname: {
+                                label: ""
+                            },
+                            basicAuthConfig: {
+                                title: "",
+                                serverUsername: {
+                                    label: ""
+                                },
+                                serverPassword: {
+                                    label: ""
+                                }
+                            },
+                            sslConfig: {
+                                title: "",
+                                keystorePath: {
+                                    label: ""
+                                },
+                                keystorePassword: {
+                                    label: ""
+                                },
+                                truststorePath: {
+                                    label: ""
+                                },
+                                truststorePassword: {
+                                    label: ""
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "",
+                        header: "",
+                        subheader: ""
+                    },
+                    errors: {
+                        genericError: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance."
+                    }
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "Plus"

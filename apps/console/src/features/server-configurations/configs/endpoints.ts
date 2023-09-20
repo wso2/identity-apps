@@ -65,10 +65,11 @@ export const getServerConfigurationsResourceEndpoints = (
         passwordPolicy: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
+        remoteLogging: `${ serverHost }/api/server/v1/configs/remote-logging`,
         selfSignUp: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
         serverConfigurations: `${ serverHost }/api/server/v1/configs`,
-        serverSupportedSchemas: `${ serverHost }/api/server/v1/configs/schemas`
+        serverSupportedSchemas: `${ serverHost }/api/server/v1/configs/schemas`,
     };
 };

@@ -18,4 +18,5 @@
 
 export * from "./admin-advisory-banner-page";
 export * from "./admin-session-advisory-banner-edit-page";
+export * from "./remote-logging";
 export * from "./governance-connectors";

@@ -8213,6 +8213,65 @@ export const console: ConsoleNS = {
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
                 },
+                remoteLogPublishing: {
+                    title: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    description: "සංවිධානය සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
+                    fields: {
+                        logTypes: {
+                            label: "පළ කළ යුතු ලොග් වර්ග",
+                            values: {
+                                carbonLogs: "කාබන් ලොග්",
+                                auditLogs: "විගණන ලොග්",
+                                allLogs: "සියලුම ලොග්"
+                            }
+                        },
+                        remoteURL: {
+                            label: "ගමනාන්ත URL"
+                        },
+                        advanced: {
+                            title: "උසස් සැකසුම්",
+                            connectionTimeout: {
+                                label: "සම්බන්ධතා කාලය අවසන් වීම (මිලි)"
+                            },
+                            verifyHostname: {
+                                label: "සත්කාරක නාමය තහවුරු කරන්න"
+                            },
+                            basicAuthConfig: {
+                                title: "මූලික සත්‍යාපන වින්‍යාසය",
+                                serverUsername: {
+                                    label: "දුරස්ථ සේවාදායක පරිශීලක නාමය"
+                                },
+                                serverPassword: {
+                                    label: "දුරස්ථ සේවාදායක මුරපදය"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL වින්‍යාසය",
+                                keystorePath: {
+                                    label: "යතුරු ගබඩා ස්ථානය"
+                                },
+                                keystorePassword: {
+                                    label: "යතුරු ගබඩා මුරපදය"
+                                },
+                                truststorePath: {
+                                    label: "විශ්වාස ගබඩා ස්ථානය"
+                                },
+                                truststorePassword: {
+                                    label: "විශ්වාස ගබඩා මුරපදය"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        header: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        subheader: ""
+                    },
+                    errors: {
+                        genericError: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය."
+                    }
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "තව"

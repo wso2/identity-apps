@@ -10086,6 +10086,65 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                remoteLogPublishing: {
+                    title: "Remote Log Publishing",
+                    pageTitle: "Remote Log Publishing",
+                    description: "Configure remote logging settings for the organization.",
+                    fields: {
+                        logTypes: {
+                            label: "Log types to be published",
+                            values: {
+                                carbonLogs: "Carbon Logs",
+                                auditLogs: "Audit Logs",
+                                allLogs: "All Logs"
+                            }
+                        },
+                        remoteURL: {
+                            label: "Destination URL"
+                        },
+                        advanced: {
+                            title: "Advanced settings",
+                            connectionTimeout: {
+                                label: "Connection Timeout (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Verify the hostname"
+                            },
+                            basicAuthConfig: {
+                                title: "Basic Authentication Configuration",
+                                serverUsername: {
+                                    label: "Remote server username"
+                                },
+                                serverPassword: {
+                                    label: "Remote server password"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL Configuration",
+                                keystorePath: {
+                                    label: "Keystore location"
+                                },
+                                keystorePassword: {
+                                    label: "Keystore password"
+                                },
+                                truststorePath: {
+                                    label: "Truststore location"
+                                },
+                                truststorePassword: {
+                                    label: "Truststore password"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
+                        subheader: "This action will permanently delete the API Resource. Please be certain before you proceed."
+                    },
+                    errors: {
+                        genericError: "An error occurred while updating remote log publishing configuration."
+                    }
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "More"
