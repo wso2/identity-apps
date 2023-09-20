@@ -822,6 +822,7 @@
                     {% endif %}
                 }
             },
+            {% endif %}
             {% if console.secrets_management is defined %}
             "secretsManagement": {
                 "enabled": {{ console.secrets_management.enabled }},
