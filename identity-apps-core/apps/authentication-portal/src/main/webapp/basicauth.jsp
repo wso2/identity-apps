@@ -20,6 +20,7 @@
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
 <%@ page import="org.apache.http.HttpStatus" %>
+<%@ page import="org.json.JSONException" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
@@ -47,6 +48,7 @@
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AdminAdvisoryDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AdminAdvisoryDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
@@ -229,7 +231,7 @@
 %>
 
 <%
-    Boolean isAdminBannerAllowedInSP = CONSOLE.equals(request.getParameter("sp"));
+    Boolean isAdminBannerAllowedInSP = CONSOLE.equals(URLEncoder.encode(request.getParameter("sp")));
     Boolean isAdminAdvisoryBannerEnabledInTenant = false;
     String adminAdvisoryBannerContentOfTenant = "";
     
@@ -242,7 +244,7 @@
             isAdminAdvisoryBannerEnabledInTenant = adminAdvisoryBannerConfig.getBoolean("enableBanner");
             adminAdvisoryBannerContentOfTenant = adminAdvisoryBannerConfig.getString("bannerContent");
         }
-    } catch (Exception e) {
+    } catch (JSONException | AdminAdvisoryDataRetrievalClientException e) {
         log.error("Error in displaying admin advisory banner", e);
     }
 
@@ -418,7 +420,7 @@
     %>
 <% } %>
 
-<% if (isAdminBannerAllowedInSP && isAdminAdvisoryBannerEnabledInTenant) { %>
+<% if (isAdminAdvisoryBannerEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
         <%=Encode.forHtmlContent(adminAdvisoryBannerContentOfTenant)%>
     </div>
