@@ -20,6 +20,8 @@
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
 <%@ page import="org.apache.http.HttpStatus" %>
+<%@ page import="org.json.JSONException" %>
+<%@ page import="org.json.JSONObject" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -37,12 +39,16 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.logging.Log" %>
+<%@ page import="org.apache.commons.logging.LogFactory" %>
 <%@ page import="java.nio.charset.Charset" %>
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AdminAdvisoryDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AdminAdvisoryDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
@@ -220,8 +226,27 @@
     private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
     private static final String AUTHENTICATION_ENDPOINT_LOGIN = "/authenticationendpoint/login.do";
+    private static final String CONSOLE = "Console";
+    private Log log = LogFactory.getLog(this.getClass());
 %>
+
 <%
+    Boolean isAdminBannerAllowedInSP = CONSOLE.equals(Encode.forJava(request.getParameter("sp")));
+    Boolean isAdminAdvisoryBannerEnabledInTenant = false;
+    String adminAdvisoryBannerContentOfTenant = "";
+    
+    try {
+        if (isAdminBannerAllowedInSP) {
+            AdminAdvisoryDataRetrievalClient adminBannerPreferenceRetrievalClient =
+                new AdminAdvisoryDataRetrievalClient();
+            JSONObject adminAdvisoryBannerConfig = adminBannerPreferenceRetrievalClient
+                .getAdminAdvisoryBannerData(tenantDomain);
+            isAdminAdvisoryBannerEnabledInTenant = adminAdvisoryBannerConfig.getBoolean("enableBanner");
+            adminAdvisoryBannerContentOfTenant = adminAdvisoryBannerConfig.getString("bannerContent");
+        }
+    } catch (JSONException | AdminAdvisoryDataRetrievalClientException e) {
+        log.error("Error in displaying admin advisory banner", e);
+    }
 
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
@@ -393,6 +418,12 @@
     <%
         }
     %>
+<% } %>
+
+<% if (isAdminAdvisoryBannerEnabledInTenant) { %>
+    <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
+        <%=Encode.forHtmlContent(adminAdvisoryBannerContentOfTenant)%>
+    </div>
 <% } %>
 
 <form class="ui large form" action="<%= Encode.forHtmlAttribute(loginFormActionURL) %>" method="post" id="loginForm">

@@ -7914,6 +7914,99 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
+                adminAdvisory: {  
+                    configurationEditSection: {
+                        backButtonLabel: "Revenir à la bannière de conseils d'administration",
+                        pageHeading: "Bannière de conseil d'administration",
+                        pageSubheading: "Configurez et personnalisez la bannière d'avis d'administration " + 
+                            "à afficher sur la page de connexion.",
+                        form: {
+                            bannerContent: {
+                                label: "Contenu de la bannière",
+                                hint: "C'est le contenu qui sera affiché dans la bannière sur la page de connexion.",
+                                placeholder: "Attention : l'utilisation non autorisée de cet outil " + 
+                                    "est strictement interdite."
+                            }
+                        }
+                    },
+                    configurationSection: {
+                        disabled: "Désactivé",
+                        description: "Activez et configurez la bannière d'avis d'administration.",
+                        enabled: "Activé",
+                        heading: "Bannière de conseil d'administration"
+                    },  
+                    notifications: {
+                        disbleAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur lors de la désactivation de la bannière " +
+                                    "d'information de l'administrateur."
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la désactivation de" + 
+                                    "la bannière d'information de l'administrateur.",
+                                message: "Quelque chose s'est mal passé"
+                            },
+                            success: {
+                                description: "La bannière d'information de l'administrateur " +
+                                    "a été désactivée avec succès.",
+                                message: "Désactivé la bannière d'information de l'administrateur"
+                            }
+                        },
+                        enableAdminAdvisoryBanner: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur lors de l'activation de la bannière d'avis " +
+                                    "d'administration."
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de l'activation " + 
+                                    "de la bannière d'information de l'administrateur.",
+                                message: "Quelque chose s'est mal passé"
+                            },
+                            success: {
+                                description: "Activation réussie de la bannière de conseil d'administration.",
+                                message: "Activation de la bannière d'avis d'administration"
+                            }
+                        },
+                        getConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur lors de la récupération des configurations de la " + 
+                                    "bannière d'avis d'administration."
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des " + 
+                                    "configurations des bannières d'avis d'administration.",
+                                message: "Quelque chose s'est mal passé"
+                            },
+                            success: {
+                                description: "",
+                                message: ""
+                            }
+                        },
+                        updateConfigurations: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur lors de la mise à jour des configurations de la " + 
+                                "bannière d'avis d'administration."
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la mise à jour des " +
+                                    "configurations des bannières d'avis d'administration.",
+                                message: "Quelque chose s'est mal passé"
+                            },
+                            success: {
+                                description: "Mise à jour réussie des configurations de la bannière " +
+                                    "d'avis d'administration.",
+                                message: "Bannière mise à jour avec succès"
+                            }
+                        }
+                    },           
+                    pageHeading: "Bannière de conseil d'administration",
+                    pageSubheading: "Configurez la bannière d'avis d'administration à afficher " + 
+                        "sur la page de connexion."
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "Plus"

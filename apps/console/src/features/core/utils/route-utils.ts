@@ -414,6 +414,11 @@ export class RouteUtils {
                 parent: organizationalSettings
             },
             {
+                category: manage,
+                id: "adminAdvisoryBanner",
+                parent: organizationalSettings
+            },
+            {
                 category: settings,
                 id: "organizations",
                 order: 1

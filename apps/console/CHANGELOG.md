@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.0.6
+
+### Patch Changes
+
+- [#4103](https://github.com/wso2/identity-apps/pull/4103) [`95aceae92c`](https://github.com/wso2/identity-apps/commit/95aceae92c6cdd4e92ceed9268c72ff6b96810e4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix pre-loader and local pack errors
+
+* [#4101](https://github.com/wso2/identity-apps/pull/4101) [`0874d8af2a`](https://github.com/wso2/identity-apps/commit/0874d8af2a7657e77fbdcb0b514f77c12ba5de4e) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add Admin Advisory Banner Configuration UI in the Console
+
+* Updated dependencies [[`95aceae92c`](https://github.com/wso2/identity-apps/commit/95aceae92c6cdd4e92ceed9268c72ff6b96810e4)]:
+  - @wso2is/access-control@2.0.2
+  - @wso2is/theme@2.0.1
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4108](https://github.com/wso2/identity-apps/pull/4108) [`cc28e9826c`](https://github.com/wso2/identity-apps/commit/cc28e9826c94e93af6aaefd02d597e32d4008103) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove nx module.
+
 ## 2.0.4
 
 ### Patch Changes
