@@ -25,7 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { AccessControlUtils, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { AccessControlUtils } from "@wso2is/access-control";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
@@ -72,7 +72,6 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, organizationConfigs } from "./extensions";
-import { FeatureGateConstants } from "./extensions/components/feature-gate/constants/feature-gate";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -97,8 +96,9 @@ import {
     setSanitizedDevelopRoutes,
     store
 } from "./features/core";
-import { AppConstants, CommonConstants } from "./features/core/constants";
+import { AppConstants, CommonConstants, UIConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
+import { useIdentityVerificationProviderList } from "./features/identity-verification-providers/api";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationUtils } from "./features/organizations/utils";
 
@@ -132,8 +132,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
 
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-
     const allowedScopes: string = useSelector(
         (state: AppState) => state?.auth?.allowedScopes
     );
@@ -148,6 +146,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     );
 
     const [ tenant, setTenant ] = useState<string>("");
+
+    const {
+        data: idvpList
+    } = useIdentityVerificationProviderList(
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT, 0);
 
     useEffect(() => {
         dispatch(
@@ -618,6 +621,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AppConstants.ORGANIZATION_ENABLED_ROUTES
         );
 
+        let processedSanitizedAppRoutes: RouteInterface[] = sanitizedAppRoutes;
+
         // TODO : Remove this logic once getting started pages are removed.
         if (
             appRoutes.length === 2 &&
@@ -631,8 +636,13 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
+        if (idvpList?.totalResults <= 0) {
+            processedSanitizedAppRoutes = sanitizedAppRoutes
+                .filter((route: RouteInterface) => route.id !== "identityVerificationProviders");
+        }
+
         dispatch(setFilteredDevelopRoutes(appRoutes));        
-        dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
+        dispatch(setSanitizedDevelopRoutes(processedSanitizedAppRoutes));
 
         setRoutesFiltered(true);
 
@@ -647,7 +657,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg ]);
+    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, idvpList ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
