@@ -30,8 +30,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="referrer" content="no-referrer" />
 
-        <link href="/libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="/libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" />
+        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" data-react-helmet="true" />
 
         <%= htmlWebpackPlugin.options.cookieproEnabledCheck %>
              <!-- CookiePro Cookies Consent Notice start for asgardeo.io -->
@@ -138,7 +138,7 @@
         <%= htmlWebpackPlugin.options.cookieproEnabledCheckEnd %>
 
         <script>
-            var contextPathGlobal = "";
+            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";

@@ -71,6 +71,8 @@
             }
         </style>
         <script>
+            var SUPER_TENANT = "carbon.super";
+
             function onAuthScriptLoad() {
                 var applicationDomain = window.location.origin;
                 var userAccessedPath = window.location.href;
@@ -113,16 +115,16 @@
                         storage: "webWorker",
                         endpoints: {
                             authorizationEndpoint: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oauth2/authorize")
-                                : getApiPath("/t/a/common/oauth2/authorize"),
+                                ? getApiPath("/t/" + userTenant + "/oauth2/authorize")
+                                : getApiPath("/t/" + SUPER_TENANT + "/oauth2/authorize"),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
                             logoutEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oidc/logout")
-                                : getApiPath("/t/a/common/oidc/logout"),
+                                ? getApiPath("/t/" + userTenant + "/oidc/logout")
+                                : getApiPath("/t/" + SUPER_TENANT + "/oidc/logout"),
                             oidcSessionIFrameEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/common/oidc/checksession")
-                                : getApiPath("/t/a/common/oidc/checksession"),
+                                ? getApiPath("/t/" + userTenant + "/oidc/checksession")
+                                : getApiPath("/t/" + SUPER_TENANT + "/oidc/checksession"),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined,
                         },

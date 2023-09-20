@@ -689,7 +689,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     </Grid.Column>
                                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                                         <List.Content>
-                                            <List.Description>
+                                            <List.Description className="with-max-length">
                                                 {
                                                     isProfileInfoLoading || profileSchemaLoader
                                                         ? (
@@ -883,7 +883,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 : (
                                                                     schema.maxLength
                                                                         ? schema.maxLength
-                                                                        : 30
+                                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                                                                 )
                                                     }
                                                 />
@@ -949,7 +949,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
-                                <List.Description>
+                                <List.Description className="with-max-length">
                                     {
                                         isProfileInfoLoading || profileSchemaLoader
                                             ? (

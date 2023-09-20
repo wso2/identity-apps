@@ -82,12 +82,21 @@ h6.ui.header .sub.header {
 }
 
 .is-header {
+    &.oxygen-header .oxygen-brand {
+        width: calc(var(--oxygen-customComponents-Navbar-properties-width) - 45px);
+    }
+
     &.oxygen-header .oxygen-brand-logo {
-        max-width: 150px;
+        max-width: 300px;
+    }
+
+    &.oxygen-header .oxygen-brand-logo img {
+        width: 100%;
     }
 
     &.oxygen-header .oxygen-brand-portal-name {
-        font-size: 13px;
-        margin-top: -2px;
+        margin-bottom: 3px;
+        margin-top: 0px;
+        width: 100%;
     }
 }
