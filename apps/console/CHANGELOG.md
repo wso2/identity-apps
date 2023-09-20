@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4105](https://github.com/wso2/identity-apps/pull/4105) [`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify My Account app between Asgardeo and IS
+
+- Updated dependencies [[`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6)]:
+  - @wso2is/theme@2.0.2
+  - @wso2is/core@2.0.1
+
 ## 2.0.6
 
 ### Patch Changes
