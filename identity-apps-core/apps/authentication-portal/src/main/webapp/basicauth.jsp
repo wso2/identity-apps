@@ -231,7 +231,7 @@
 %>
 
 <%
-    Boolean isAdminBannerAllowedInSP = CONSOLE.equals(URLEncoder.encode(request.getParameter("sp")));
+    Boolean isAdminBannerAllowedInSP = CONSOLE.equals(Encode.forJava(request.getParameter("sp")));
     Boolean isAdminAdvisoryBannerEnabledInTenant = false;
     String adminAdvisoryBannerContentOfTenant = "";
     
