@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.0.5
+
+### Patch Changes
+
+- [#4122](https://github.com/wso2/identity-apps/pull/4122) [`43443daa55`](https://github.com/wso2/identity-apps/commit/43443daa5566e30b5fdcf8e44918af5457c28b65) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Bump myaccount theme version
+
 ## 2.0.4
 
 ### Patch Changes
