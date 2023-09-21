@@ -641,7 +641,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AppConstants.ORGANIZATION_ENABLED_ROUTES
         );
 
-
         // TODO : Remove this logic once getting started pages are removed.
         if (
             appRoutes.length === 2 &&
