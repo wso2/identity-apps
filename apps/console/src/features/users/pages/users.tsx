@@ -22,7 +22,8 @@ import {
     AlertInterface, 
     AlertLevels, 
     MultiValueAttributeInterface, 
-    TestableComponentInterface } from "@wso2is/core/models";
+    TestableComponentInterface,
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -69,6 +70,7 @@ import { getUsersList } from "../api";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
+import {BulkImportUserWizard} from "../components/wizard/bulk-import-user-wizard";
 import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
@@ -112,6 +114,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
@@ -124,13 +127,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ userStoreError, setUserStoreError ] = useState(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
-    const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
+    const [realmConfigs, setRealmConfigs] = useState<RealmConfigInterface>(undefined);
 
     const init : MutableRefObject<boolean> = useRef(true);
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
+    
 
     /**
      * Fetch the list of available userstores.
@@ -495,34 +499,38 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     /**
      * Handles the click event of the create new user button.
      */
-    const handleAddNewUserWizardClick = (): void => {
+    // const handleAddNewUserWizardClick = (): void => {
 
-        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-            .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
-                const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
-                    (connector: GovernanceConnectorInterface) => connector.id
-                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
-                );
+    //     getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+    //         .then((response: GovernanceConnectorCategoryInterface) => {
+    //             const connectors: GovernanceConnectorInterface[]  = response?.connectors;
+    //             const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
+    //                 (connector: GovernanceConnectorInterface) => connector.id
+    //                     === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
+    //             );
 
-                const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
-                    (property: ConnectorPropertyInterface) => 
-                        property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+    //             const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
+    //                 (property: ConnectorPropertyInterface) => 
+    //                     property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
-                setEmailVerificationEnabled(emailVerification.value === "true");
-            }).catch((error: AxiosError) => {
-                handleAlerts({
-                    description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.message"
-                    )
-                });
-            });
+    //             setEmailVerificationEnabled(emailVerification.value === "true");
+    //         }).catch((error: AxiosError) => {
+    //             handleAlerts({
+    //                 description: error?.response?.data?.description ?? t(
+    //                     "console:manage.features.governanceConnectors.notifications." +
+    //                     "getConnector.genericError.description"
+    //                 ),
+    //                 level: AlertLevels.ERROR,
+    //                 message: error?.response?.data?.message ?? t(
+    //                     "console:manage.features.governanceConnectors.notifications." +
+    //                     "getConnector.genericError.message"
+    //                 )
+    //             });
+    //         });
+    // };
+
+    const handleAddNewUserWizardClick = async (): Promise<void> => {
+        setShowBulkImportWizard(true);
     };
 
     return (
@@ -709,6 +717,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             updateList={ () => setListUpdated(true) }
                             rolesList={ rolesList }
                             emailVerificationEnabled={ emailVerificationEnabled }
+                        />
+                    )
+                }
+                {
+                    showBulkImportWizard && (
+                        <BulkImportUserWizard
+                            data-testid="user-mgt-add-user-wizard-modal"
+                            closeWizard={ () => {
+                                setShowBulkImportWizard(false);
+                            } }
                         />
                     )
                 }
