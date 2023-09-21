@@ -518,7 +518,7 @@ importers:
         specifier: ^2.0.2
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.0
+        specifier: ^2.0.1
         version: link:../../modules/core
       '@wso2is/form':
         specifier: ^2.0.0
@@ -533,7 +533,7 @@ importers:
         specifier: ^2.0.2
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.1
+        specifier: ^2.0.3
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -843,7 +843,7 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.0
+        specifier: ^2.0.1
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.0.0
@@ -855,7 +855,7 @@ importers:
         specifier: ^2.0.2
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.0
+        specifier: ^2.0.2
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0

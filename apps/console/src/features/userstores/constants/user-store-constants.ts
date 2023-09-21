@@ -2,7 +2,7 @@
  * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -27,18 +27,14 @@ export class UserStoreManagementConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
      * User store create limit reached error.
-     * @constant
-     * @type IdentityAppsError
-     * @default
      */
-    public static readonly ERROR_CREATE_LIMIT_REACHED = new IdentityAppsError(
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "SUS-60011",
         "console:manage.features.userstores.notifications.apiLimitReachedError.error.description",
         "console:manage.features.userstores.notifications.apiLimitReachedError.error.message",
@@ -54,16 +50,25 @@ export class UserStoreManagementConstants {
 /**
  * The ID of the userstore type JDBC.
  *
- * @constant
- *
- * @type {string}
  */
-export const JDBC = "JDBC";
-export const CONSUMER_USERSTORE_ID = "REVGQVVMVA";
-export const DEFAULT_USERSTORE_TYPE_IMAGE = "default";
-export const DEFAULT_DESCRIPTION_CUSTOM_USERSTORE = "This is a custom userstore manager implementation";
+export const JDBC: string = "JDBC";
+export const CONSUMER_USERSTORE_ID: string  = "REVGQVVMVA";
+export const DEFAULT_USERSTORE_TYPE_IMAGE: string  = "default";
+export const DEFAULT_DESCRIPTION_CUSTOM_USERSTORE: string  = "This is a custom userstore manager implementation";
 
-export const USER_STORE_TYPE_DESCRIPTIONS = {
+interface UserStoreTypeDescriptionsInterface {
+    ActiveDirectoryUserStoreManager: string;
+    CarbonRemoteUserStoreManger: string;
+    JDBCUserStoreManager: string;
+    ReadOnlyLDAPUserStoreManager: string;
+    ReadWriteLDAPUserStoreManager: string;
+    UniqueIDActiveDirectoryUserStoreManager: string;
+    UniqueIDJDBCUserStoreManager: string;
+    UniqueIDReadOnlyLDAPUserStoreManager: string;
+    UniqueIDReadWriteLDAPUserStoreManager: string;
+}
+
+export const USER_STORE_TYPE_DESCRIPTIONS: UserStoreTypeDescriptionsInterface = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",
     JDBCUserStoreManager: "Java Database Connectivity based userstore.",
@@ -77,7 +82,19 @@ export const USER_STORE_TYPE_DESCRIPTIONS = {
         "Lightweight Directory Access Protocol based userstore " + "which can both be read and written to"
 };
 
-export const USERSTORE_TYPE_DISPLAY_NAMES = {
+interface UserStoreTypeDisplayNamesInterface {
+    ActiveDirectoryUserStoreManager: string;
+    CarbonRemoteUserStoreManger: string;
+    JDBCUserStoreManager: string;
+    ReadOnlyLDAPUserStoreManager: string;
+    ReadWriteLDAPUserStoreManager: string;
+    UniqueIDActiveDirectoryUserStoreManager: string;
+    UniqueIDJDBCUserStoreManager: string;
+    UniqueIDReadOnlyLDAPUserStoreManager: string;
+    UniqueIDReadWriteLDAPUserStoreManager: string;
+}
+
+export const USERSTORE_TYPE_DISPLAY_NAMES: UserStoreTypeDisplayNamesInterface = {
     ActiveDirectoryUserStoreManager: "Active Directory",
     CarbonRemoteUserStoreManger: "Carbon Remote",
     JDBCUserStoreManager: "JDBC",
@@ -89,34 +106,58 @@ export const USERSTORE_TYPE_DISPLAY_NAMES = {
     UniqueIDReadWriteLDAPUserStoreManager: "Read Write LDAP"
 };
 
+interface UserStoreTypeImagesInterface {
+    ActiveDirectoryUserStoreManager: string;
+    CarbonRemoteUserStoreManger: string;
+    JDBCUserStoreManager: string;
+    ReadOnlyLDAPUserStoreManager: string;
+    ReadWriteLDAPUserStoreManager: string;
+    UniqueIDActiveDirectoryUserStoreManager: string;
+    UniqueIDJDBCUserStoreManager: string;
+    UniqueIDReadOnlyLDAPUserStoreManager: string;
+    UniqueIDReadWriteLDAPUserStoreManager: string;
+}
+
 /**
  * User store type to image mapping.
  */
-export const USERSTORE_TYPE_IMAGES = {
+export const USERSTORE_TYPE_IMAGES: UserStoreTypeImagesInterface = {
     ActiveDirectoryUserStoreManager: "ad",
     CarbonRemoteUserStoreManger: "default",
     JDBCUserStoreManager: "jdbc",
-    ReadOnlyLDAPUserStoreManager: "ldap",
+    ReadOnlyLDAPUserStoreManager: "ldapro",
     ReadWriteLDAPUserStoreManager: "ldap",
     UniqueIDActiveDirectoryUserStoreManager: "ad",
     UniqueIDJDBCUserStoreManager: "jdbc",
-    UniqueIDReadOnlyLDAPUserStoreManager: "ldap",
+    UniqueIDReadOnlyLDAPUserStoreManager: "ldapro",
     UniqueIDReadWriteLDAPUserStoreManager: "ldap"
 };
+
+interface PrimaryUserStorePropertyValuesInterface {
+    PasswordJavaScriptRegEx: string;
+    RolenameJavaScriptRegEx: string;
+    UsernameJavaScriptRegEx: string;
+}
 
 /**
  * Primary user store property values
  */
-export const PRIMARY_USERSTORE_PROPERTY_VALUES = {
+export const PRIMARY_USERSTORE_PROPERTY_VALUES: PrimaryUserStorePropertyValuesInterface = {
     PasswordJavaScriptRegEx: "^[\\S]{5,30}$",
     RolenameJavaScriptRegEx: "^[\\S]{3,30}$",
     UsernameJavaScriptRegEx: "^[\\S]{3,30}$"
 };
 
+interface UserStoreRegexPropertiesInterface {
+    PasswordRegEx: string;
+    RolenameRegEx: string;
+    UsernameRegEx: string;
+}
+
 /**
  * User store regEx properties
  */
-export const USERSTORE_REGEX_PROPERTIES = {
+export const USERSTORE_REGEX_PROPERTIES: UserStoreRegexPropertiesInterface = {
     PasswordRegEx: "PasswordJavaScriptRegEx",
     RolenameRegEx: "RolenameJavaScriptRegEx",
     UsernameRegEx: "UsernameJavaScriptRegEx"
@@ -124,21 +165,15 @@ export const USERSTORE_REGEX_PROPERTIES = {
 
 /**
  * Disabled property name.
- * @constant
- * @type {string}
  */
-export const DISABLED = "Disabled";
+export const DISABLED: string = "Disabled";
 
 /**
  * Name of the consumer userstore.
- * @constant
- * @type {string}
  */
-export const CONSUMER_USERSTORE = "DEFAULT";
+export const CONSUMER_USERSTORE: string = "DEFAULT";
 
 /**
  * Name of the primary userstore.
- * @constant
- * @type {string}
  */
-export const PRIMARY_USERSTORE = "PRIMARY";
+export const PRIMARY_USERSTORE: string = "PRIMARY";
