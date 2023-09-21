@@ -170,7 +170,7 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeTenantDomain: false,
             showIncludeUserstoreDomainRole: false,
             showIncludeUserstoreDomainSubject: false,
-            showRoleAttribute: false,
+            showRoleAttribute: true,
             showRoleMapping: false,
             showSubjectAttribute: false,
             showUseMappedLocalSubject: false
@@ -583,7 +583,7 @@ export const applicationConfig: ApplicationConfig = {
             // Hide delete button for Enterprise IDP Login Applications.
             return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
         },
-        showProvisioningSettings: false
+        showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
     excludeSubjectClaim: true,
@@ -638,9 +638,9 @@ export const applicationConfig: ApplicationConfig = {
     },
     inboundSAMLForm: {
         artifactBindingAllowed:false,
-        showApplicationQualifier: false,
+        showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: false,
-        showQueryRequestProfile: false
+        showQueryRequestProfile: true
     },
     marketingConsent: {
         getBannerComponent: (): ReactElement =>

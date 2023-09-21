@@ -314,6 +314,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 label: "HTTP Redirect",
                 readOnly: true,
                 value: "HTTP_REDIRECT"
+            },
+            {
+                label: "Artifact",
+                readOnly: false,
+                value: "ARTIFACT"
             }
         ];
 
