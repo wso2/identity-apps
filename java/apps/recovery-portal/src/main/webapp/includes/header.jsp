@@ -81,3 +81,10 @@
     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%>
 <% } %>
 </title>
+
+<script src='https://js.sentry-cdn.com/2c9b968dd9deefa7149155de8c807008.min.js' crossorigin="anonymous"></script>
+<script>
+    Sentry.init({
+        dsn: 'https://2c9b968dd9deefa7149155de8c807008@o4505695746064384.ingest.sentry.io/4505695909052416'
+    });
+</script>

@@ -541,6 +541,12 @@
                 <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.sentry</groupId>
+                <artifactId>sentry-log4j2</artifactId>
+                <version>6.27.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -593,6 +599,21 @@
                             <executable>pnpm</executable>
                             <arguments>
                                 <argument>build</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>sentry release</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>release</phase>
+                        <configuration>
+                            <executable>pnpx</executable>
+                            <arguments>
+                                <argument>@sentry/wizard@latest -i sourcemaps</argument>
                             </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>

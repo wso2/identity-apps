@@ -12,6 +12,7 @@ RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-fileupload_*.jar 
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-httpclient_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-io_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-lang_*.jar $WEB_APP_LIB
+RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-text_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-pool_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/compass_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/encoder_*.jar $WEB_APP_LIB
@@ -35,6 +36,7 @@ RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.base_*.ja
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.core_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.crypto.api_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.database.utils_*.jar $WEB_APP_LIB
+RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.identity.mgt*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.identity.application.common_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.identity.base_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.identity.template.mgt_*.jar $WEB_APP_LIB
@@ -89,19 +91,15 @@ RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.orbit.sun.xml.bi
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.extension.identity.authenticator.totp.connector_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/dropins/org.wso2.carbon.extension.identity.authenticator.smsotp.connector-*.jar $WEB_APP_LIB
 
-FROM ubuntu:latest AS build-stage
+FROM ubuntu:20.04 AS build-stage
 
-# Install Node.js LTS
+# Install packages
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt-get install -y nodejs
-
-# Install Maven
-RUN apt-get install -y maven
-
-# Install JDK 11
-RUN apt-get install -y openjdk-17-jdk
+    apt-get install -y nodejs maven openjdk-11-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
 RUN npm install -g pnpm@latest
@@ -122,7 +120,7 @@ ENV MAVEN_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.z
 RUN mvn clean install
 
 # Use the official Tomcat runtime as a base image
-FROM tomcat:9.0-jdk17-openjdk
+FROM tomcat:9.0.65-jdk11-openjdk
 
 # Set the working directory in the container
 WORKDIR /usr/local/tomcat/webapps/
@@ -131,13 +129,14 @@ ENV RUN_GROUP tomcat
 RUN groupadd -r ${RUN_GROUP} && useradd -g ${RUN_GROUP} -d ${CATALINA_HOME} -s /bin/bash ${RUN_USER}
 
 # Copy the built war file into the webapps directory of Tomcat
-RUN mkdir -p $CATALINA_HOME/authenticationendpoint
-WORKDIR /usr/local/tomcat/webapps/authenticationendpoint
+RUN mkdir -p $CATALINA_HOME/webapps/authenticationendpoint
+WORKDIR $CATALINA_HOME/webapps/authenticationendpoint
 COPY --from=build-stage /app/java/apps/authentication-portal/target/authenticationendpoint.war .
 RUN jar -xvf authenticationendpoint.war
 RUN rm -rf authenticationendpoint.war
 COPY --from=is-stage  /home/wso2carbon/webapp-lib/* WEB-INF/lib
-RUN chown -R tomcat:tomcat $CATALINA_HOME/authenticationendpoint
+RUN chown -R tomcat:tomcat $CATALINA_HOME/webapps/authenticationendpoint
+RUN curl -sL https://sentry.io/get-cli/ | bash
 # Make port 8080 available to the world outside the container
 EXPOSE 8080
 

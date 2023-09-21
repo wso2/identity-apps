@@ -33,6 +33,7 @@ RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.orbit.javax.xml.
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/axiom_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-httpclient_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-lang3_*.jar $WEB_APP_LIB
+RUN cp $WSO2_SERVER_HOME/repository/components/plugins/commons-text_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/javax.cache.wso2_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.eclipse.equinox.jsp.jasper_*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/repository/components/plugins/org.wso2.carbon.identity.application.common_*.jar $WEB_APP_LIB
@@ -77,19 +78,14 @@ RUN cp $WSO2_SERVER_HOME/lib/runtimes/cxf3/jersey-core-*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/lib/runtimes/cxf3/jersey-multipart-*.jar $WEB_APP_LIB
 RUN cp $WSO2_SERVER_HOME/lib/runtimes/cxf3/org.wso2.carbon.identity.application.authentication.endpoint.util-*.jar $WEB_APP_LIB
 
-FROM ubuntu:latest AS build-stage
-
-# Install Node.js LTS
+FROM ubuntu:20.04 AS build-stage
+# Install packages
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
-    apt-get install -y nodejs
-
-# Install Maven
-RUN apt-get install -y maven
-
-# Install JDK 11
-RUN apt-get install -y openjdk-17-jdk
+    apt-get install -y nodejs maven openjdk-11-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
 RUN npm install -g pnpm@latest
@@ -106,11 +102,11 @@ WORKDIR /app
 COPY . /app
 
 # Build the packages with Maven
-ENV MAVEN_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.zipfs.allowDotZipEntry=true"
+ENV MAVEN_OPTS="-Djdk.util.zip.disableZip64ExtraFieldValidation=true -Djdk.nio.zipfs.allowDotZipEntry=true -Dlog4j.configurationFile=log4j2.xml"
 RUN mvn clean install
 
 # Use the official Tomcat runtime as a base image
-FROM tomcat:9.0-jdk17-openjdk
+FROM tomcat:9.0.65-jdk11-openjdk
 
 # Set the working directory in the container
 WORKDIR /usr/local/tomcat/webapps/
@@ -119,16 +115,15 @@ ENV RUN_GROUP tomcat
 RUN groupadd -r ${RUN_GROUP} && useradd -g ${RUN_GROUP} -d ${CATALINA_HOME} -s /bin/bash ${RUN_USER}
 
 # Copy the built war file into the webapps directory of Tomcat
-RUN mkdir -p $CATALINA_HOME/accountrecoveryendpoint
-WORKDIR /usr/local/tomcat/webapps/accountrecoveryendpoint
+WORKDIR $CATALINA_HOME/webapps/accountrecoveryendpoint
 COPY --from=build-stage /app/java/apps/recovery-portal/target/accountrecoveryendpoint.war .
 RUN jar -xvf accountrecoveryendpoint.war
 RUN rm -rf accountrecoveryendpoint.war
 COPY --from=is-stage  /home/wso2carbon/webapp-lib/* WEB-INF/lib
-RUN chown -R tomcat:tomcat $CATALINA_HOME/accountrecoveryendpoint
+RUN chown -R tomcat:tomcat $CATALINA_HOME/webapps/accountrecoveryendpoint
 # Make port 8080 available to the world outside the container
+RUN curl -sL https://sentry.io/get-cli/ | bash
 EXPOSE 8080
-
 # Run Tomcat
 CMD ["catalina.sh", "run"]
 

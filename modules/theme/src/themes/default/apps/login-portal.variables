@@ -7,7 +7,7 @@
 ------------------------------*/
 
 @loginPortalBackgroundColor: @white;
-@loginPortalProductLogoHeight: 22px;
+@loginPortalProductLogoHeight: 80px;
 @loginPortalProductLogoMaxHeight: 85px;
 @loginPortalLoginCardBackground: @white;
 @loginPortalLoginCardPadding: 3rem;

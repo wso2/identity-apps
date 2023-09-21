@@ -50,42 +50,42 @@
     <!-- *************** End of Global configurations ********************** -->
 
     <!-- *************** Account Recovery Endpoint Context URL Configuration ********************** -->
-    <!--context-param>
+    <context-param>
        <param-name>IdentityManagementEndpointContextURL</param-name>
-       <param-value>https://localhost:9443/accountrecoveryendpoint</param-value>
-   </context-param-->
+       <param-value>https://auth-sys.elveris.com/accountrecoveryendpoint</param-value>
+   </context-param>
     <context-param>
        <param-name>AccountRecoveryRESTEndpointURL</param-name>
        <param-value>/t/tenant-domain/api/identity/user/v1.0/</param-value>
    </context-param>
-    <!--context-param>
+    <context-param>
         <param-name>EnableRecoveryEndpoint</param-name>
         <param-value>true</param-value>
-    </context-param-->
-    <!--context-param>
+    </context-param>
+    <context-param>
         <param-name>EnableSelfSignUpEndpoint</param-name>
         <param-value>true</param-value>
-    </context-param-->
-    <!--context-param>
+    </context-param>
+    <context-param>
         <param-name>AccountRegisterEndpointURL</param-name>
-        <param-value>https://localhost:9443/accountrecoveryendpoint/register.do</param-value>
-    </context-param-->
+        <param-value>https://auth-sys.elveris.com/accountrecoveryendpoint/register.do</param-value>
+    </context-param>
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
-    <!--context-param>
+    <context-param>
         <param-name>IdentityServerEndpointContextURL</param-name>
-        <param-value>https://localhost:9443</param-value>
-    </context-param-->
+        <param-value>https://auth-sys.elveris.com</param-value>
+    </context-param>
     <!-- *************** End of Identity Server Endpoint URL Configuration ********************** -->
-    <!--context-param>
+    <context-param>
         <param-name>EnableAuthenticationWithAuthenticationRESTAPI</param-name>
         <param-value>true</param-value>
-    </context-param-->
+    </context-param>
     <!-- *************** Authentication REST API URL Configuration ********************** -->
-    <!--context-param>
+    <context-param>
         <param-name>AuthenticationRESTEndpointURL</param-name>
-        <param-value>https://localhost:9443/api/identity/auth/v1.1/</param-value>
-    </context-param-->
+        <param-value>https://auth-sys.elveris.com/api/identity/auth/v1.1/</param-value>
+    </context-param>
     <!-- *************** End of Authentication REST API URL Configuration ********************** -->
 
     <!--Display scopes in the consent page.-->

@@ -257,6 +257,11 @@
             <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
             <version>1.4.34</version>
         </dependency>
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-log4j2</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -268,6 +273,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+                <version>3.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

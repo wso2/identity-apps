@@ -204,7 +204,8 @@
         "webpack-cli": "^4.5.0",
         "webpack-dev-server": "^3.11.2",
         "worker-loader": "^2.0.0",
-        "write-file-webpack-plugin": "^4.5.1"
+        "write-file-webpack-plugin": "^4.5.1",
+        "@sentry/wizard": "^3.9.1"
     },
     "pnpm": {
         "overrides": {

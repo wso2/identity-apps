@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" packages="org.apache.logging.log4j.core,io.sentry.log4j2">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <Sentry name="Sentry"
+                dsn="https://2c9b968dd9deefa7149155de8c807008@o4505695746064384.ingest.sentry.io/4505695909052416"
+                minimumBreadcrumbLevel="DEBUG"
+                minimumEventLevel="WARN"
+        />
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Sentry"/>
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
