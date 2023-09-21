@@ -25,6 +25,7 @@ import { store } from "../../core";
 import useRequest,
 { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
+import { AdminAdvisoryBannerConfigurationInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -100,4 +101,87 @@ export const useServerConfigs = <Data = ServerConfigurationsInterface,
         isValidating,
         mutate: mutate
     };
+};
+
+/**
+ * Hook to get the admin advisory banner configurations.
+ * 
+ * @returns admin advisory banner configurations.
+ */
+export const useAdminAdvisoryBannerConfigs = <Data = AdminAdvisoryBannerConfigurationInterface,
+    Error = RequestErrorInterface>(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.adminAdvisoryBanner
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Update admin advisory banner configurations.
+ *
+ * @returns a promise containing the server configurations.
+ */
+export const updateAdminAdvisoryBannerConfiguration = (
+    data: AdminAdvisoryBannerConfigurationInterface
+) : Promise<AxiosResponse> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.adminAdvisoryBanner
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+
+                if (response.status === 400) {
+                    throw new IdentityAppsApiException(
+                        ServerConfigurationsConstants.ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR,
+                        null,
+                        response.status,
+                        response.request,
+                        response,
+                        response.config);
+                }
+
+                throw new IdentityAppsApiException(
+                    ServerConfigurationsConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ServerConfigurationsConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+
 };

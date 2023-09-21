@@ -41,7 +41,7 @@ export const commonConfig: CommonConfig = {
         enableQuerySearch: false
     },
     header: {
-        organization: "Asgardeo",
+        organization: "{{productName}}",
         renderAppSwitcherAsDropdown: false
     },
     nonLocalCredentialUser: {

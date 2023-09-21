@@ -4662,6 +4662,34 @@ export interface ConsoleNS {
                 };
             };
             serverConfigs: {
+                adminAdvisory: {    
+                    configurationEditSection: {
+                        backButtonLabel: string;
+                        pageHeading: string;
+                        pageSubheading: string;
+                        form: {
+                            bannerContent: {
+                                label: string;
+                                hint: string;
+                                placeholder: string;
+                            };
+                        };
+                    };      
+                    configurationSection: {
+                        disabled: string;
+                        description: string;
+                        enabled: string;
+                        heading: string;
+                    };
+                    notifications: {
+                        disbleAdminAdvisoryBanner: Notification;
+                        enableAdminAdvisoryBanner: Notification;
+                        getConfigurations: Notification;
+                        updateConfigurations: Notification;
+                    };
+                    pageHeading: string;
+                    pageSubheading: string;
+                };
                 realmConfiguration: {
                     actionTitles: {
                         config: string;

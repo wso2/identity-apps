@@ -24,6 +24,7 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
+    enableDefaultPreLoader: true,
     enableOrganizationAssociations: false,
     footer: {
         customClassName: "console-footer"

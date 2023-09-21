@@ -222,6 +222,7 @@
             },
             {% endfor %}
             {% endif %}
+            {% if console.account_login is defined %}
             "accountLogin": {
                 "disabledFeatures": [
                     {% if console.account_login.disabled_features is defined %}
@@ -250,6 +251,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.administrators is defined %}
             "administrators": {
                 "disabledFeatures": [
                     {% if console.administrators.disabled_features is defined %}
@@ -278,6 +281,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.applications is defined %}
             "applications": {
                 "disabledFeatures": [
                     {% if console.applications.disabled_features is defined %}
@@ -304,6 +309,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.api_resources is defined %}
             "apiResources": {
                 "disabledFeatures": [
                     {% if console.api_resources.disabled_features is defined %}
@@ -332,6 +339,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.application_roles is defined %}
             "applicationRoles": {
                 "disabledFeatures": [
                     {% if console.application_roles.disabled_features is defined %}
@@ -360,6 +369,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.approvals is defined %}
             "approvals": {
                 "disabledFeatures": [
                     {% if console.approvals.disabled_features is defined %}
@@ -386,6 +397,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.attribute_dialects is defined %}
             "attributeDialects": {
                 "disabledFeatures": [
                     {% if console.attribute_dialects.disabled_features is defined %}
@@ -412,6 +425,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.branding is defined %}
             "branding": {
                 "disabledFeatures": [
                     {% if console.branding.disabled_features is defined %}
@@ -440,6 +455,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.certificates is defined %}
             "certificates": {
                 "disabledFeatures": [
                     {% if console.certificates.disabled_features is defined %}
@@ -466,6 +483,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.email_providers is defined %}
             "emailProviders": {
                 "disabledFeatures": [
                     {% if console.email_providers.disabled_features is defined %}
@@ -494,6 +513,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.email_templates is defined %}
             "emailTemplates": {
                 "disabledFeatures": [
                     {% if console.email_templates.disabled_features is defined %}
@@ -520,6 +541,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.event_publishing is defined %}
             "eventPublishing": {
                 "disabledFeatures": [
                     {% if console.event_publishing.disabled_features is defined %}
@@ -548,6 +571,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.governance_connectors is defined %}
             "governanceConnectors": {
                 "disabledFeatures": [
                     {% if console.governance_connectors.disabled_features is defined %}
@@ -574,6 +599,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.groups is defined %}
             "groups": {
                 "disabledFeatures": [
                     {% if console.groups.disabled_features is defined %}
@@ -600,6 +627,7 @@
                     {% endif %}
                 }
             },
+            {% endif %}
             {% if console.guest_user is defined %}
             "guestUser": {
                 "enabled": true,
@@ -628,6 +656,7 @@
                 }
             },
             {% endif %}
+            {% if console.identity_providers is defined %}
             "identityProviders": {
                 "disabledFeatures": [
                     {% if console.identity_providers.disabled_features is defined %}
@@ -654,6 +683,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.identity_provider_groups is defined %}
             "identityProviderGroups": {
                 "disabledFeatures": [
                     {% if console.identity_provider_groups.disabled_features is defined %}
@@ -682,6 +713,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.identity_verification_providers is defined %}
             "identityVerificationProviders": {
                 "enabled": {{ console.identity_verification_providers.enabled }},
                 "scopes": {
@@ -701,6 +734,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.insights is defined %}
             "insights": {
                 "disabledFeatures": [
                     {% if console.insights.disabled_features is defined %}
@@ -729,6 +764,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.my_account is defined %}
             "myAccount": {
                 "disabledFeatures": [
                     {% if console.my_account.disabled_features is defined %}
@@ -757,6 +794,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.oidc_scopes is defined %}
             "oidcScopes": {
                 "disabledFeatures": [
                     {% if console.oidc_scopes.disabled_features is defined %}
@@ -979,6 +1018,7 @@
                 }
             },
             {% endif %}
+            {% if console.remote_fetch is defined %}
             "remoteFetchConfig": {
                 "disabledFeatures": [
                     {% if console.remote_fetch.disabled_features is defined %}
@@ -1005,6 +1045,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.roles is defined %}
             "roles": {
                 "disabledFeatures": [
                     {% if console.roles.disabled_features is defined %}
@@ -1031,6 +1073,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.try_it is defined %}
             "tryIt": {
                 "disabledFeatures": [
                     {% if console.try_it.disabled_features is defined %}
@@ -1059,6 +1103,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.users is defined %}
             "users": {
                 "disabledFeatures": [
                     {% if console.users.disabled_features is defined %}
@@ -1085,6 +1131,8 @@
                     {% endif %}
                 }
             },
+            {% endif %}
+            {% if console.user_stores is defined %}
             "userStores": {
                 "disabledFeatures": [
                     {% if console.user_stores.disabled_features is defined %}
@@ -1111,6 +1159,7 @@
                     {% endif %}
                 }
             }
+            {% endif %}
         },
         "gravatarConfig": {
            {% if console.gravatar.configs is defined %}

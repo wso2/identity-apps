@@ -24,8 +24,6 @@ export class ProfileConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -39,25 +37,28 @@ export class ProfileConstants {
     // API errors
     public static readonly SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the profile schemas.";
+
     public static readonly SCHEMA_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the profile " +
         "schemas.";
+
     public static readonly PROFILE_INFO_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving profile info.";
+
     public static readonly PROFILE_INFO_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the profile " +
         "info.";
+
     public static readonly PROFILE_INFO_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while updating profile info.";
+
     public static readonly PROFILE_INFO_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
         "profile info.";
+
     public static readonly ACCOUNT_SWITCH_REQUEST_ERROR: string = "An error occurred while switching the account.";
     public static readonly GRAVATAR_IMAGE_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "gravatar.";
 
     /**
      * Set of SCIM2 schema names.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ACTIVE", "active")
@@ -89,4 +90,9 @@ export class ProfileConstants {
      * States if the SCIM schema is mutable.
      */
     public static readonly READONLY_SCHEMA: string = "READ_ONLY";
+
+    /**
+     * Default max length for a claim without a max length defined in schemas.
+     */
+    public static readonly CLAIM_VALUE_MAX_LENGTH: number = 255;
 }

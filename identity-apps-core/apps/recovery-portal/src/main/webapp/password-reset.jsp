@@ -223,7 +223,7 @@
                                             StringUtils.isNotBlank(tenantDomainFromQuery)) {
                             %>
                             <div>
-                                <input type="hidden" name="tenantdomainFromQuery" value="<%=Encode.forHtmlAttribute(tenantDomainFromQuery) %>"/>
+                                <input type="hidden" name="tenantDomainFromQuery" value="<%=Encode.forHtmlAttribute(tenantDomainFromQuery) %>"/>
                             </div>
                             <%
                                 }

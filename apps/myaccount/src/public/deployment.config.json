@@ -3,7 +3,7 @@
         "path": "/getting-started",
         "origin": "https://localhost:9000"
     },
-    "appBaseName": "",
+    "appBaseName": "myaccount",
     "clientID": "MY_ACCOUNT",
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
@@ -22,10 +22,10 @@
     },
     "superTenantProxy": "",
     "idpConfigs": {
-        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/logout",
+        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oidc/logout",
         "clockTolerance": 300,
-        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oauth2/authorize",
-        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/common/oidc/checksession",
+        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oauth2/authorize",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oidc/checksession",
         "serverOrigin": "https://localhost:9443",
         "responseMode": "query"
     },

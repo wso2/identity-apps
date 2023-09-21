@@ -1,5 +1,21 @@
 # @wso2is/myaccount
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4105](https://github.com/wso2/identity-apps/pull/4105) [`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify My Account app between Asgardeo and IS
+
+- Updated dependencies [[`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6)]:
+  - @wso2is/theme@2.0.2
+  - @wso2is/core@2.0.1
+
+## 2.0.3
+
+### Patch Changes
+
+- [#4108](https://github.com/wso2/identity-apps/pull/4108) [`cc28e9826c`](https://github.com/wso2/identity-apps/commit/cc28e9826c94e93af6aaefd02d597e32d4008103) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove nx module.
+
 ## 2.0.2
 
 ### Patch Changes

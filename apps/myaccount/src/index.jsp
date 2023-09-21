@@ -102,6 +102,8 @@
         </script>
     </head>
     <script>
+        var SUPER_TENANT = "carbon.super";
+
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
@@ -116,19 +118,19 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  + "/<%= htmlWebpackPlugin.options.basename %>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
-                    clientID: "MY_ACCOUNT",
+                    clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/common/oauth2/authorize") : getApiPath("/t/a/common/oauth2/authorize"),
+                        authorizationEndpoint: userTenant ? getApiPath("/t/"+userTenant+"/oauth2/authorize") : getApiPath("/t/" + SUPER_TENANT + "/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/logout") : getApiPath("/t/a/common/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/common/oidc/checksession") : getApiPath("/t/a/common/oidc/checksession"),
+                        logoutEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/logout") : getApiPath("/t/" + SUPER_TENANT + "/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/t/"+userTenant+"/oidc/checksession") : getApiPath("/t/" + SUPER_TENANT + "/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
@@ -144,7 +146,7 @@
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
 
-            authSPAJS.setAttribute("src", "/auth-spa-0.3.3.min.js");
+            authSPAJS.setAttribute("src", "/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js");
             authSPAJS.setAttribute("async", "false");
 
             let head = document.head;

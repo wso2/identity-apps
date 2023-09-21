@@ -356,7 +356,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     return (
         <OxygenHeader
-            className={ saasFeatureStatus === FeatureStatus.DISABLED ? "is-header" : "" }
+            className="is-header"
             brand={ {
                 logo: {
                     desktop: (
