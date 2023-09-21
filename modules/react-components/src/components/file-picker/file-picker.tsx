@@ -950,5 +950,125 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
             });
         });
     }
+}
 
+export interface CSVResult {
+    headers: string[];
+    items: string[][];
+}
+
+// TODO: As a improvement add a CSV validation logic.
+export class CSVFileStrategy implements PickerStrategy<CSVResult> {
+
+    static readonly ENCODING: string = "UTF-8";
+    static readonly DEFAULT_MIMES: string[] = [
+        "text/csv",
+        "application/csv"
+    ];
+
+    static readonly KILOBYTE: number = 1e+3;
+    static readonly MAX_FILE_SIZE: number = 300 * CSVFileStrategy.KILOBYTE;
+
+    mimeTypes: string[];
+
+    constructor(mimeTypes?: string[]) {
+        if (!mimeTypes || mimeTypes.length === 0)
+            this.mimeTypes = CSVFileStrategy.DEFAULT_MIMES;
+        else
+            this.mimeTypes = mimeTypes;
+    }
+
+    async serialize(data: File | string): Promise<CSVResult> {
+        return new Promise<CSVResult>((resolve, reject) => {
+            if (!data) {
+                reject({ valid: false });
+                return;
+            }
+
+            const processCSV = (csvContent: string) => {
+                // Split by lines
+                const lines = csvContent.split("\n");
+                // Split each line by comma to get items
+                const items = lines.map(line => line.split(","));
+                // First line is the header
+                const headers = items.shift();
+
+                resolve({ headers, items  });
+            };
+
+            if (data instanceof File) {
+                const reader = new FileReader();
+
+                reader.readAsText(data, CSVFileStrategy.ENCODING);
+                reader.onload = () => {
+                    processCSV(reader.result as string);
+                };
+            } else {
+                processCSV(data);
+            }
+        });
+    }
+
+    async validate(data: File | string): Promise<ValidationResult> {
+        return new Promise<ValidationResult>((resolve, reject) => {
+            if (data instanceof File) {
+                // Check MIME type
+                if (!this.mimeTypes.includes(data.type)) {
+                    reject({
+                        errorMessage: "Invalid file type. Only CSV files are allowed.",
+                        valid: false
+                    });
+
+                    return;
+                }
+    
+                // Check file size
+                if (data.size > CSVFileStrategy.MAX_FILE_SIZE) {
+                    reject({
+                        errorMessage: `File exceeds max size of 
+                        ${CSVFileStrategy.MAX_FILE_SIZE / CSVFileStrategy.KILOBYTE} KB`,
+                        valid: false
+                    });
+
+                    return;
+                }
+    
+                const reader = new FileReader();
+
+                reader.readAsText(data, CSVFileStrategy.ENCODING);
+                reader.onload = () => {
+                    try {
+                        const lines = (reader.result as string).split("\n");
+
+                        if (lines.length > 0 && lines[0].split(",").length > 0) {
+                            resolve({ valid: true });
+                        } else {
+                            throw "CSV file is empty or invalid";
+                        }
+                    } catch (error) {
+                        reject({
+                            errorMessage: error ?? "CSV file has errors",
+                            valid: false
+                        });
+                    }
+                };
+            } else {
+                try {
+                    const lines = data.split("\n");
+
+                    if (lines.length > 0 && lines[0].split(",").length > 0) {
+                        resolve({ valid: true });
+                    } else {
+                        throw "CSV string is empty or invalid";
+                    }
+                } catch (error) {
+                    reject({
+                        errorMessage: error ?? "CSV string has errors",
+                        valid: false
+                    });
+                }
+            }
+        });
+    }
+    
 }
