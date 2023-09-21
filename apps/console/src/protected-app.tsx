@@ -97,9 +97,8 @@ import {
     setSanitizedDevelopRoutes,
     store
 } from "./features/core";
-import { AppConstants, CommonConstants, UIConstants } from "./features/core/constants";
+import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { useIdentityVerificationProviderList } from "./features/identity-verification-providers/api";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationUtils } from "./features/organizations/utils";
 
@@ -151,11 +150,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const loggedUserName: string = store.getState().profile.profileInfo.userName;
 
     const [ tenant, setTenant ] = useState<string>("");
-
-    const {
-        data: idvpList
-    } = useIdentityVerificationProviderList(
-        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT, 0);
 
     useEffect(() => {
         dispatch(
@@ -647,7 +641,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             AppConstants.ORGANIZATION_ENABLED_ROUTES
         );
 
-        let processedSanitizedAppRoutes: RouteInterface[] = sanitizedAppRoutes;
 
         // TODO : Remove this logic once getting started pages are removed.
         if (
@@ -662,13 +655,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
-        if (idvpList?.totalResults <= 0) {
-            processedSanitizedAppRoutes = sanitizedAppRoutes
-                .filter((route: RouteInterface) => route.id !== "identityVerificationProviders");
-        }
-
         dispatch(setFilteredDevelopRoutes(appRoutes));        
-        dispatch(setSanitizedDevelopRoutes(processedSanitizedAppRoutes));
+        dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 
         setRoutesFiltered(true);
 
@@ -683,7 +671,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, isSuperAdmin, idvpList ]);
+    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, isSuperAdmin ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
