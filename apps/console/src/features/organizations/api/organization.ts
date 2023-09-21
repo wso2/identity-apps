@@ -35,8 +35,21 @@ import {
     OrganizationPatchData,
     OrganizationResponseInterface,
     ShareApplicationRequestInterface,
+    TenantRequestResponse,
     UpdateOrganizationInterface
 } from "../models";
+
+const getDomainQueryParam = (): string => {
+    const tenantDomain: string = store.getState().auth.tenantDomain;
+
+    return `?domain=${ tenantDomain }`;
+};
+
+const isPrivilegedUser = (): boolean => {
+    const isPrivileged: boolean = store.getState()?.auth?.isPrivilegedUser ?? false;
+
+    return isPrivileged;
+};
 
 /**
  * Get an axios instance.
@@ -483,4 +496,107 @@ export const unshareApplication = (
     return httpClient(requestConfig).catch((error: HttpError) => {
         return Promise.reject(error?.response?.data);
     });
+};
+
+/**
+ * Create new tenant.
+ *
+ * @param tenantName - new tenant name
+ */
+export const addNewTenant = (tenantName: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: {
+            domain: tenantName
+        },
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientOrigin,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.tenant + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Check whether the new tenant already exists in the system.
+ *
+ * @param tenantName - new tenant name
+ */
+export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientOrigin
+        },
+        method: HttpMethods.HEAD,
+        url: store.getState().config.endpoints.tenant + "/" + tenantName + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Make a tenant the user's default tenant.
+ *
+ * @param tenantName - new tenant name
+ */
+export const makeTenantDefault = (tenantName: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.tenant + "/default/" + tenantName + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get the tenants associated with the current user.
+ *
+ * @returns - A promise that resolves with the tenant request response object.
+ */
+export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
+    // If the user is a privileged user, return an empty response.
+    if (isPrivilegedUser()) {
+        return Promise.resolve({
+            associatedTenants: [],
+            count: 0,
+            startIndex: 0,
+            totalResults: 0
+        });
+    }
+
+    const requestConfig: AxiosRequestConfig = {
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.tenantAssociation + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error?.response?.data);
+        });
 };

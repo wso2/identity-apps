@@ -31,7 +31,7 @@ import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoi
 import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getInsightsResourceEndpoints } from "../../org-insights/config/org-insights";
-import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
+import { getOrganizationsResourceEndpoints, getTenantResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
@@ -228,6 +228,7 @@ export class Config {
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,

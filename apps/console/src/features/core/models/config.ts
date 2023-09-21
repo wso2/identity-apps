@@ -34,7 +34,7 @@ import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
-import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
+import { OrganizationResourceEndpointsInterface, TenantResourceEndpointsInterface } from "../../organizations/models";
 import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
@@ -369,6 +369,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
+    TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     JWTAuthenticationServiceEndpointsInterface {
 

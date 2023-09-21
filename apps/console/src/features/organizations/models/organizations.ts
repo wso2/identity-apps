@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { RolesInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { ScimOperationsInterface } from "../../roles/models/roles";
 
 export interface OrganizationInterface {
@@ -113,4 +113,35 @@ export type GenericOrganization = OrganizationInterface | OrganizationResponseIn
 export interface ShareApplicationRequestInterface {
     shareWithAllChildren: boolean;
     sharedOrganizations?: string[];
+}
+
+/**
+ * Interface to capture details of new tenant
+ */
+export interface NewTenantInfo {
+    domain: string;
+}
+
+/**
+ *  Interface of a tenant.
+ */
+export interface TenantInfo {
+    id: string;
+    domain: string;
+    associationType: string;
+    default: boolean;
+}
+
+/**
+ * Interface for the response returned by the get associated tenants request.
+ */
+export interface TenantRequestResponse {
+    totalResults: number;
+    startIndex: number;
+    count: number;
+    associatedTenants: TenantInfo[];
+}
+
+export interface TriggerPropTypesInterface extends IdentifiableComponentInterface {
+    currentTenant: string;
 }

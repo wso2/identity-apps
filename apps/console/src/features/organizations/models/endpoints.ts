@@ -16,9 +16,20 @@
  * under the License.
  */
 
+/**
+ * Interface for the Organization Management feature resource endpoints.
+ */
 export interface OrganizationResourceEndpointsInterface {
     organizations: string;
     rootOrganization: string;
     usersSuperOrganization: string;
     breadcrumb: string;
+}
+
+/**
+ * Interface for the Tenant Management feature resource endpoints.
+ */
+export interface TenantResourceEndpointsInterface {
+    tenantAssociation: string;
+    tenant: string;
 }

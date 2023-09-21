@@ -40,6 +40,7 @@ import {
     GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
+import TenantDropdown from "./organization-dropdown";
 
 /**
  * Interface for component dropdown.
@@ -385,10 +386,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             {
                 !organizationConfigs.showSwitcherInTenants
                     ? (
-                        <OrganizationSwitchDropdown
-                            handleOrganizationSwitch={ handleOrganizationSwitch }
-                            dropdownTrigger={ triggerOrganizationDropdown() }
-                        />
+                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } disable={ breadcrumbList?.length > 4 } />
                     ) : (
                         organizationConfigs.tenantSwitcher(triggerOrganizationDropdown(), breadcrumbList?.length > 4)
                     )

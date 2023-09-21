@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OrganizationResourceEndpointsInterface } from "../models";
+import { OrganizationResourceEndpointsInterface, TenantResourceEndpointsInterface } from "../models";
 
 /**
  * Get the resource endpoints for the Application Management feature.
@@ -34,5 +34,19 @@ export const getOrganizationsResourceEndpoints = (
         organizations: `${serverHostWithOrgPath}/api/server/v1`,
         rootOrganization: `${serverHost}/api/server/v1`,
         usersSuperOrganization: `${serverHostWithOrgPath}/api/users/v1/me/organizations/root`
+    };
+};
+
+/**
+ * Get the resource endpoints for the Tenant related features.
+ *
+ * @returns tenant resource endpoints.
+ */
+export const getTenantResourceEndpoints = (
+    serverHost: string
+): TenantResourceEndpointsInterface => {
+    return {
+        tenantAssociation: `${serverHost}/api/v1/tenant/me`,
+        tenant: `${serverHost}/api/v1/tenant`
     };
 };
