@@ -167,13 +167,13 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
-            showIncludeTenantDomain: false,
-            showIncludeUserstoreDomainRole: false,
-            showIncludeUserstoreDomainSubject: false,
+            showIncludeTenantDomain: true,
+            showIncludeUserstoreDomainRole: true,
+            showIncludeUserstoreDomainSubject: true,
             showRoleAttribute: true,
-            showRoleMapping: false,
-            showSubjectAttribute: false,
-            showUseMappedLocalSubject: false
+            showRoleMapping: true,
+            showSubjectAttribute: true,
+            showUseMappedLocalSubject: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -188,7 +188,7 @@ export const applicationConfig: ApplicationConfig = {
             }
         },
         makeSubjectMandatory: true,
-        roleMapping: false
+        roleMapping: true
     },
     customApplication: {
         allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
