@@ -33,6 +33,9 @@ import {
 import {
     ReactComponent as LDAPUserstoreIllustration
 } from "../../../themes/default/assets/images/illustrations/ldap-illustration.svg";
+import {
+    ReactComponent as LDAPReadOnlyUserstoreIllustration
+} from "../../../themes/default/assets/images/illustrations/ldap-readonly-illustration.svg";
 
 export const getAddUserstoreWizardStepIcons  = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -53,13 +56,15 @@ export const getUserstoreTemplateIllustrations = (): {
     default: FunctionComponent<SVGProps<SVGSVGElement>>;
     jdbc: FunctionComponent<SVGProps<SVGSVGElement>>;
     ldap: FunctionComponent<SVGProps<SVGSVGElement>>;
+    ldapro: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
 
     return {
         ad: ActiveDirectoryUserstoreIllustration,
         default: CustomApplicationTemplateIllustration,
         jdbc: JDBCUserstoreIllustration,
-        ldap: LDAPUserstoreIllustration
+        ldap: LDAPUserstoreIllustration,
+        ldapro: LDAPReadOnlyUserstoreIllustration
     };
 };
 
