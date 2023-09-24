@@ -233,6 +233,7 @@
 <%
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
+    layoutData.put("isPasswordResetCompletePage", true);
 %>
 
 <!doctype html>
@@ -272,6 +273,11 @@
                 <p class="portal-tagline-description">
                     <% if (RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
+                        <br/>
+                        <br/>
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
+                        <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                            applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
                     <% } %>

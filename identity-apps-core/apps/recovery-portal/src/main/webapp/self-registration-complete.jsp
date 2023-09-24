@@ -219,6 +219,7 @@
 <%
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
+    layoutData.put("isSelfRegistrationCompletePage", true);
 %>
 
 <!doctype html>

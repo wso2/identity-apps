@@ -44,6 +44,7 @@
 <%
     layoutData.put("isResponsePage", true);
     layoutData.put("isSuccessResponse", true);
+    layoutData.put("isPasswordResetSuccessPage", true);
 %>
 
 <!doctype html>
