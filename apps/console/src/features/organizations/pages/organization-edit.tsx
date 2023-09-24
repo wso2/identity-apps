@@ -176,7 +176,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     icon={ OrganizationIcon }
                 />
             ) }
-            backButton={ organizationConfigs.canCreateOrganization() && {
+            backButton={ {
                 "data-testid": "org-mgt-edit-org-back-button",
                 onClick: goBackToOrganizationList,
                 text: t("console:manage.features.organizations.edit.back")

@@ -1,0 +1,403 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import {
+    AlertInterface,
+    AlertLevels,
+    TenantAssociationsInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { addAlert, setTenants } from "@wso2is/core/store";
+import {
+    Button,
+    GenericIcon,
+    HeaderPropsInterface as ReusableHeaderPropsInterface
+} from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import {
+    Divider,
+    Dropdown,
+    Grid,
+    Icon,
+    Input,
+    Item,
+    Menu,
+    Placeholder,
+    SemanticICONS
+} from "semantic-ui-react";
+import { getMiscellaneousIcons } from "../../../core/configs";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers/history";
+import { AppState } from "../../../core/store";
+import { OrganizationType } from "../../constants";
+import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
+import { 
+    FeatureGateConstants 
+} from "../../../../extensions/components/feature-gate/constants/feature-gate";
+import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
+import { handleTenantSwitch } from "../../utils";
+
+/**
+ * Dashboard layout Prop types.
+ */
+interface TenantDropdownLinkInterface extends Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo"> {
+    /**
+     * Content of dropdown item.
+     */
+    content?: string;
+    /**
+     * Name of dropdown item.
+     */
+    name: string;
+    /**
+     * Icon of dropdown item.
+     */
+    icon: SemanticICONS | ReactNode;
+    /**
+     * Function called when dropdown item is clicked.
+     */
+    onClick: () => void;
+}
+
+/**
+ * Interface for tenant dropdown.
+ */
+interface TenantDropdownInterface extends TestableComponentInterface {
+    trigger?: FunctionComponent<TriggerPropTypesInterface>;
+    contained?: boolean;
+    dropdownTrigger?: ReactElement;
+    disable?: boolean;
+}
+
+const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: TenantDropdownInterface): ReactElement => {
+
+    const { dropdownTrigger, disable } = props;
+
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const username: string = useSelector((state: AppState) => state.auth.username);
+    const email: string = useSelector((state: AppState) => state.auth.email);
+    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
+    const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<string[]>(undefined);
+    const [ showTenantAddModal, setShowTenantAddModal ] = useState<boolean>(false);
+    const [ isSwitchTenantsSelected, setIsSwitchTenantsSelected ] = useState<boolean>(false);
+    const [ isSetDefaultTenantInProgress, setIsSetDefaultTenantInProgress ] = useState<boolean>(false);
+    const [ associatedTenants, setAssociatedTenants ] = useState<string[]>([]);
+    const [ defaultTenant, setDefaultTenant ] = useState<string>("");
+    const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
+    const [ organizationId, setOrganizationId ] = useState<string>("");
+    const [ organizationName, setOrganizationName ] = useState<string>("");
+    const [ isCopying, setIsCopying ] = useState<boolean>(false);
+
+    const orgType: OrganizationType = useGetOrganizationType();
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    useEffect(() => {
+        getOrganizationData();
+    }, []);
+
+    useEffect(() => {
+
+        const association: TenantAssociationsInterface = {
+            associatedTenants: associatedTenants,
+            currentTenant: tenantDomain,
+            defaultTenant: defaultTenant,
+            username: email ? email : username
+        };
+
+        if (Array.isArray(association.associatedTenants)) {
+            // Remove the current tenant from the associated tenants list.
+            const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
+
+            if (currentTenantIndex != -1) {
+                association.associatedTenants.splice(currentTenantIndex, 1);
+            }
+            setTempTenantAssociationsList(association.associatedTenants);
+        }
+        setTenantAssociations(association);
+    }, [ associatedTenants, defaultTenant, tenantDomain ]);
+
+    /**
+     * Stops the dropdown from closing on click.
+     *
+     * @param event - Click event.
+     */
+    const handleDropdownClick = (event: SyntheticEvent<HTMLElement>): void => {
+        event.stopPropagation();
+    };
+
+    /**
+     * This will copy the organization id to the clipboard.
+     */
+    const copyOrganizationId = () => {
+        setIsCopying(true);
+        navigator.clipboard.writeText(organizationId);
+        setTimeout(() => {
+            setIsCopying(false);
+        }, 1000);
+    };
+
+    /**
+     * Gets the organization id from the id token.
+     */
+    const getOrganizationData = () => {
+        AsgardeoSPAClient.getInstance().getDecodedIDToken()
+            .then((decodedToken: DecodedIDTokenPayload) => {
+                setOrganizationId(decodedToken?.org_id);
+                setOrganizationName(decodedToken?.org_name);
+            }).catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("extensions:console.organizationInfo." +
+                        "notifications.getConfiguration.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:console.organizationInfo." +
+                        "notifications.getConfiguration.error.message")
+                    })
+                );
+            });
+    };
+
+    const resolveAssociatedTenants = (): ReactElement => {
+        if (Array.isArray(tempTenantAssociationsList)) {
+            return (
+                <Item.Group
+                    className="tenants-list"
+                    unstackable
+                    data-testid={ "associated-tenants-container" }
+                >
+                    {
+                        tempTenantAssociationsList.length > 0 ?
+                            (
+                                tempTenantAssociationsList.map((association: string, index: number) => (
+                                    (association !== tenantAssociations.currentTenant)
+                                        ? (
+                                            <Item
+                                                className="tenant-account"
+                                                key={ index }
+                                                onClick={ () => handleTenantSwitch(association) }
+                                            >
+                                                <GenericIcon
+                                                    icon={ getMiscellaneousIcons().tenantIcon }
+                                                    inline
+                                                    size="x22"
+                                                    fill="white"
+                                                    className="mt-3"
+                                                />
+                                                <Item.Content className="tenant-list-item-content">
+                                                    <div
+                                                        className="name"
+                                                        data-testid={ `${ association }-tenant-la-name` }
+                                                    >
+                                                        { association }
+                                                    </div>
+                                                </Item.Content>
+                                            </Item>
+                                        )
+                                        : null
+                                ))
+                            )
+                            :
+                            (
+                                <Item
+                                    className="empty-list"
+                                >
+                                    <Item.Content verticalAlign="middle">
+                                        <Item.Description>
+                                            <div className="message">
+                                                { t("extensions:manage.features.tenant."
+                                                + "header.tenantSearch.emptyResultMessage") }
+                                            </div>
+                                        </Item.Description>
+                                    </Item.Content>
+                                </Item>
+                            )
+                    }
+                </Item.Group>
+            );
+        }
+    };
+
+    const tenantDropdownLinks: TenantDropdownLinkInterface[] = [
+        {
+            icon: <PlusIcon fill="black" />,
+            name: t("extensions:manage.features.tenant.header.tenantAddHeader"),
+            onClick: () => { setShowTenantAddModal(true); }
+        }
+    ];
+
+    /**
+     * Search the tenant list.
+     *
+     * @param event - Input event
+     */
+    const searchTenantList = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const changeValue: string = event.target.value;
+
+        if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
+            let result: string | string[];
+
+            if (changeValue.length > 0) {
+                result = tenantAssociations.associatedTenants.filter((item: string) =>
+                    item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            } else {
+                result = tenantAssociations.associatedTenants;
+            }
+            setTempTenantAssociationsList(result);
+        }
+    };
+
+    /**
+     * Resets the dropdown states.
+     */
+    const resetTenantDropdown = (): void => {
+        setIsSwitchTenantsSelected(false);
+        if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
+            setTempTenantAssociationsList(tenantAssociations.associatedTenants);
+        }
+    };
+
+    const handleTenantDropdown = (): void => {
+        if (!disable) {
+            setIsDropDownOpen(!isDropDownOpen);
+        }
+    };
+
+    const handleOrganizationsPageRoute = () => {
+        history.push(AppConstants.getPaths().get("ORGANIZATIONS"));
+        setIsDropDownOpen(!isDropDownOpen);
+    };
+
+    const tenantDropdownMenu: ReactElement = (
+        <Menu.Item
+            compact
+            className={ "contained-trigger-wrapper" }
+            key="tenant-dropdown"
+        >
+            <Dropdown
+                onClick={ handleTenantDropdown }
+                open={ isDropDownOpen }
+                onBlur={ () => {
+                    setIsDropDownOpen(false);
+                    resetTenantDropdown();
+                } }
+                item
+                floating
+                className="tenant-dropdown"
+                data-testid={ "tenant-dropdown" }
+                data-componentid={ "tenant-dropdown" }
+                trigger={ dropdownTrigger }
+            >
+                <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
+                    <Item.Group className="current-tenant" unstackable>
+                        <Item
+                            className={ isSubOrg ? "header sub-org-header" : "header" } 
+                            key={ "current-tenant" }
+                        >
+                            {
+                                <GenericIcon
+                                    transparent
+                                    inline
+                                    className="associated-tenant-icon"
+                                    data-testid="associated-tenant-icon"
+                                    icon={ getMiscellaneousIcons().tenantIcon }
+                                    size="mini"
+                                />
+                            }
+                            <Item.Content verticalAlign="middle">
+                                <Item.Description>
+                                    <div
+                                        className="name ellipsis"
+                                        data-testid={
+                                            "tenant-dropdown-display-name"
+                                        }
+                                    >
+                                        {
+                                            orgType === OrganizationType.SUBORGANIZATION
+                                                ? organizationName
+                                                : tenantAssociations
+                                                    ? tenantAssociations.currentTenant
+                                                    : (
+                                                        <Placeholder>
+                                                            <Placeholder.Line />
+                                                        </Placeholder>
+                                                    )
+                                        }
+                                    </div>
+                                    <Grid className="middle aligned content">
+                                        <Grid.Row>
+                                            <div
+                                                className="org-id ellipsis"
+                                                data-componentId={
+                                                    "tenant-dropdown-organization-id"
+                                                }
+                                            >
+                                                { organizationId }
+                                            </div>
+                                            <div>
+                                                <Button
+                                                    basic
+                                                    inline
+                                                    data-componentid="org-id-copy-icon"
+                                                    data-inverted
+                                                    data-tooltip={ isCopying
+                                                        ? t("extensions:manage.features.tenant." +
+                                                            "header.copied") 
+                                                        : t("extensions:manage.features.tenant." +
+                                                            "header.copyOrganizationId")
+                                                    }
+                                                    icon={ (
+                                                        <Icon
+                                                            name="copy outline"
+                                                            color="grey"
+                                                        />
+                                                    ) }
+                                                    className="org-id-copy-btn"
+                                                    onClick={ () => copyOrganizationId() }
+                                                />
+                                            </div>
+                                        </Grid.Row>
+                                    </Grid>
+                                </Item.Description>
+                            </Item.Content>
+                        </Item>
+                    </Item.Group>
+                </Dropdown.Menu>
+            </Dropdown>
+        </Menu.Item>
+    );
+
+    return (
+        <>
+            { !isPrivilegedUser && tenantDropdownMenu }
+        </>
+    );
+};
+
+export default TenantDropdown;

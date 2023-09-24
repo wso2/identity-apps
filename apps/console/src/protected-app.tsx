@@ -628,12 +628,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
                             ]
                     : window["AppUtils"].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [
+                        ? [
                                 ...AppUtils.getHiddenRoutes(), 
                                 ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                            ]
+                        ]
                         : [ 
                             ...AppUtils.getHiddenRoutes(), 
                             ...AppConstants.ORGANIZATION_ROUTES 

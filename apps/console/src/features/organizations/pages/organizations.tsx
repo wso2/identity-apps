@@ -445,7 +445,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 action={
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
-                        organizationConfigs.canCreateOrganization() && (
+                    (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
@@ -461,7 +461,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             </PrimaryButton>
                         </Show>
                     )
-
                 }
                 pageTitle={ t("console:manage.pages.organizations.title") }
                 title={

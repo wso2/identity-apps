@@ -16,17 +16,8 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
-import { BreadcrumbItem } from "../../../features/organizations/models";
-
 export interface OrganizationConfigs {
     allowNavigationInDropdown: boolean;
-    canCreateOrganization: () => boolean;
-    showOrganizationDropdown: boolean;
     showSwitcherInTenants: boolean;
-    superOrganizationBreadcrumb: (
-        breadcrumbItem: BreadcrumbItem,
-        onClick: (breadcrumbItem: BreadcrumbItem) => void
-    ) => ReactElement;
-    tenantSwitcher: (dropdownTrigger?: ReactElement, disable?: boolean) => ReactElement;
+    showOrganizationDropdown: boolean;
 }

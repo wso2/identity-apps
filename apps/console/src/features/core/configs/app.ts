@@ -31,13 +31,14 @@ import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoi
 import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getInsightsResourceEndpoints } from "../../org-insights/config/org-insights";
-import { getOrganizationsResourceEndpoints, getTenantResourceEndpoints } from "../../organizations/configs";
+import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
+import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../validation/configs";

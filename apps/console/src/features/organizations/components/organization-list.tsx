@@ -539,7 +539,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        (onEmptyListPlaceholderActionClick && organizationConfigs.canCreateOrganization()) && (
+                        onEmptyListPlaceholderActionClick && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }

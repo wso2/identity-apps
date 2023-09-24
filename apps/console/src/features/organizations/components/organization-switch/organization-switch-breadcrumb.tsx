@@ -40,7 +40,7 @@ import {
     GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
-import TenantDropdown from "./organization-dropdown";
+import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 
 /**
  * Interface for component dropdown.
@@ -331,26 +331,13 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         { breadcrumbList[ breadcrumbList?.length - 1 ].name }
                     </span>
                 </Breadcrumb.Section>
-                { organizationConfigs.canCreateOrganization() ? (
-                    <OrganizationSwitchDropdown
-                        triggerName={
-                            breadcrumbList[ breadcrumbList.length - 1 ].name
-                        }
-                        handleOrganizationSwitch={ handleOrganizationSwitch }
-                        isBreadcrumbItem={ true }
-                    />
-                ) : (
-                    <Breadcrumb.Section active>
-                        <span
-                            data-componentid={ `${
-                                componentId
-                            }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 1 ].name }` }
-                            className="un-clickable ellipsis"
-                        >
-                            { breadcrumbList[ breadcrumbList.length - 1 ].name }
-                        </span>
-                    </Breadcrumb.Section>
-                ) }
+                <OrganizationSwitchDropdown
+                    triggerName={
+                        breadcrumbList[ breadcrumbList.length - 1 ].name
+                    }
+                    handleOrganizationSwitch={ handleOrganizationSwitch }
+                    isBreadcrumbItem={ true }
+                />
             </>
         );
     };
@@ -386,9 +373,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             {
                 !organizationConfigs.showSwitcherInTenants
                     ? (
-                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } disable={ breadcrumbList?.length > 4 } />
+                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } />
                     ) : (
-                        organizationConfigs.tenantSwitcher(triggerOrganizationDropdown(), breadcrumbList?.length > 4)
+                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } disable={ breadcrumbList?.length > 4 } />
                     )
             }
         </>
