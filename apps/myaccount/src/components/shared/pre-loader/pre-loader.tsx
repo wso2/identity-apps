@@ -110,5 +110,5 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
  * Default props for the component.
  */
 PreLoader.defaultProps = {
-    "data-componentId": "pre-loader"
+    "data-componentid": "pre-loader"
 };
