@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.0.9
+
+### Patch Changes
+
+- [#4122](https://github.com/wso2/identity-apps/pull/4122) [`43443daa55`](https://github.com/wso2/identity-apps/commit/43443daa5566e30b5fdcf8e44918af5457c28b65) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the problem that occurs when editing a single claim within the WSO2 dialect results in an error page
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4119](https://github.com/wso2/identity-apps/pull/4119) [`b1f0f49a83`](https://github.com/wso2/identity-apps/commit/b1f0f49a83ee33a733b5e03af36348514ba53f7f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix j2 build issue
+
+- Updated dependencies [[`b1f0f49a83`](https://github.com/wso2/identity-apps/commit/b1f0f49a83ee33a733b5e03af36348514ba53f7f)]:
+  - @wso2is/theme@2.0.3
+
 ## 2.0.7
 
 ### Patch Changes

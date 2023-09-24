@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.3
+
+### Patch Changes
+
+- [#4119](https://github.com/wso2/identity-apps/pull/4119) [`b1f0f49a83`](https://github.com/wso2/identity-apps/commit/b1f0f49a83ee33a733b5e03af36348514ba53f7f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix j2 build issue
+
 ## 2.0.2
 
 ### Patch Changes
