@@ -22,6 +22,7 @@ export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
+    enableDefaultPreLoader: boolean;
     header: {
         organization: string;
         /**

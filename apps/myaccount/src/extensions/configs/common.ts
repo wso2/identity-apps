@@ -40,6 +40,7 @@ export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: false
     },
+    enableDefaultPreLoader: true,
     header: {
         organization: "{{productName}}",
         renderAppSwitcherAsDropdown: false
