@@ -156,7 +156,7 @@
                             : "/" + tenantPrefix + "/" + superTenantProxy + authorizePath),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/" + tenantPrefix "/" + superTenantProxy + logoutPath),
+                        logoutEndpointURL: getApiPath("/" + tenantPrefix + "/" + superTenantProxy + logoutPath),
                         oidcSessionIFrameEndpointURL: getApiPath("/" + tenantPrefix + "/" + superTenantProxy + checksessionPath),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
