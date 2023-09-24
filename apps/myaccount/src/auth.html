@@ -70,26 +70,29 @@
                 animation-iteration-count: infinite;
             }
         </style>
+        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
         <script>
-            var SUPER_TENANT = "carbon.super";
-
             function onAuthScriptLoad() {
                 var applicationDomain = window.location.origin;
                 var userAccessedPath = window.location.href;
                 var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-                var userTenant = userAccessedPath.split("/t/")[1]
-                    ? userAccessedPath.split("/t/")[1].split("/")[0]
+                var userTenant = userAccessedPath.split("/" + tenantPrefix + "/")[1]
+                    ? userAccessedPath.split("/" + tenantPrefix + "/")[1].split("/")[0]
                     : null;
 
                 userTenant = userTenant ?  userTenant.split("?")[0] : null;
 
                 if(isSignOutSuccess && userTenant) {
-                    window.location.href = applicationDomain+"/t/"+userTenant
+                    if (subdomainApplication) {
+                        window.location.href = applicationDomain + "/" + tenantPrefix + "/" + userTenant;
+                    } else {
+                        window.location.href = applicationDomain + "/" + tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    }
                 }
 
                 var urlParams = new URLSearchParams(window.location.search);
 
-                var serverOrigin = "https://dev.api.asgardeo.io";
+                var serverOrigin = serverUrl;
                 var authorizationCode = urlParams.get("code");
                 var authSessionState = urlParams.get("session_state");
                 var authIdPs = urlParams.get("AuthenticatedIdPs");
@@ -115,16 +118,16 @@
                         storage: "webWorker",
                         endpoints: {
                             authorizationEndpoint: userTenant
-                                ? getApiPath("/t/" + userTenant + "/oauth2/authorize")
-                                : getApiPath("/t/" + SUPER_TENANT + "/oauth2/authorize"),
+                                ? getApiPath("/" + tenantPrefix + "/" + userTenant + authorizePath)
+                                : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + authorizePath),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
                             logoutEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/oidc/logout")
-                                : getApiPath("/t/" + SUPER_TENANT + "/oidc/logout"),
+                                ? getApiPath("/" + tenantPrefix + "/" + userTenant + logoutPath)
+                                : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + logoutPath),
                             oidcSessionIFrameEndpointURL: userTenant
-                                ? getApiPath("/t/" + userTenant + "/oidc/checksession")
-                                : getApiPath("/t/" + SUPER_TENANT + "/oidc/checksession"),
+                                ? getApiPath("/" + tenantPrefix + "/" + userTenant + checksessionPath)
+                                : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + checksessionPath),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined,
                         },
