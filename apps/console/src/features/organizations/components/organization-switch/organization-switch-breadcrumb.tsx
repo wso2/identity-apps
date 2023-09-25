@@ -369,16 +369,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     return (
-        <>
-            {
-                !organizationConfigs.showSwitcherInTenants
-                    ? (
-                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } />
-                    ) : (
-                        <TenantDropdown dropdownTrigger={ triggerOrganizationDropdown() } disable={ breadcrumbList?.length > 4 } />
-                    )
-            }
-        </>
+        <TenantDropdown 
+            dropdownTrigger={ triggerOrganizationDropdown() } 
+            disable={ 
+                organizationConfigs.showSwitcherInTenants
+                    ? breadcrumbList?.length > 4
+                    : false
+            } 
+        />
     );
 };
 

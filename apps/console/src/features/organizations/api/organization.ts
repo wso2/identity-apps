@@ -35,21 +35,8 @@ import {
     OrganizationPatchData,
     OrganizationResponseInterface,
     ShareApplicationRequestInterface,
-    TenantRequestResponse,
     UpdateOrganizationInterface
 } from "../models";
-
-const getDomainQueryParam = (): string => {
-    const tenantDomain: string = store.getState().auth.tenantDomain;
-
-    return `?domain=${ tenantDomain }`;
-};
-
-const isPrivilegedUser = (): boolean => {
-    const isPrivileged: boolean = store.getState()?.auth?.isPrivilegedUser ?? false;
-
-    return isPrivileged;
-};
 
 /**
  * Get an axios instance.

@@ -25,11 +25,3 @@ export interface OrganizationResourceEndpointsInterface {
     usersSuperOrganization: string;
     breadcrumb: string;
 }
-
-/**
- * Interface for the Tenant Management feature resource endpoints.
- */
-export interface TenantResourceEndpointsInterface {
-    tenantAssociation: string;
-    tenant: string;
-}
