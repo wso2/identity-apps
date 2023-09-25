@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -99,7 +100,6 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Make the form read only.
      */
     readOnly?: boolean;
-    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -124,7 +124,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
-        refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -714,7 +713,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <StepBasedFlow
-                refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

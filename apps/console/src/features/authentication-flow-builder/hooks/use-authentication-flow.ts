@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,18 +25,17 @@ import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../
 export type UseAuthenticationFlowInterface = AuthenticationFlowContextProps;
 
 /**
- * Hook that provides access to the authentication flow context.
- * @returns An object containing authentication flow context.
+ * Hook that provides access to the branding preference context.
+ * @returns An object containing the current branding preference theme and raw API response.
  */
-const UseAuthenticationFlow = (): UseAuthenticationFlowInterface => {
-    
+const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
     const context: AuthenticationFlowContextProps = useContext(AuthenticationFlowContext);
 
-    if (!context) {
+    if (context === undefined) {
         throw new Error("UseAuthenticationFlow must be used within a AuthenticationFlowProvider");
     }
 
     return context;
 };
 
-export default UseAuthenticationFlow;
+export default useAuthenticationFlow;

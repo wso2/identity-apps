@@ -1,0 +1,22 @@
+{
+    "steps": [
+        {
+            "id": 1,
+            "options": [
+                {
+                    "authenticator": "BasicAuthenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "options": [
+                {
+                    "authenticator": "sms-otp-authenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        }
+    ]
+}
