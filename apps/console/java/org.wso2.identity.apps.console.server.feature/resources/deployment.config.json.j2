@@ -231,8 +231,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.account_login.scopes is defined %} {{ console.account_login.enabled }},
-                {% else %} false,
+                "enabled": {% if console.account_login.enabled is defined %} {{ console.account_login.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.account_login.scopes is defined %}
@@ -261,8 +261,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.administrators.scopes is defined %} {{ console.administrators.enabled }},
-                {% else %} false,
+                "enabled": {% if console.administrators.enabled is defined %} {{ console.administrators.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.administrators.scopes is defined %}
@@ -291,7 +291,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.applications.enabled }},
+                "enabled": {% if console.applications.enabled is defined %} {{ console.applications.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.applications.scopes is defined %}
                     {% for operation, scopes in console.applications.scopes.items() %}
@@ -319,8 +321,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.api_resources.scopes is defined %} {{ console.api_resources.enabled }},
-                {% else %} false,
+                "enabled": {% if console.api_resources.enabled is defined %} {{ console.api_resources.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.api_resources.scopes is defined %}
@@ -349,8 +351,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.application_roles.scopes is defined %} {{ console.application_roles.enabled }},
-                {% else %} false,
+                "enabled": {% if console.application_roles.enabled is defined %} {{ console.application_roles.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.application_roles.scopes is defined %}
@@ -379,7 +381,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.approvals.enabled }},
+                "enabled": {% if console.approvals.enabled is defined %} {{ console.approvals.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.approvals.scopes is defined %}
                     {% for operation, scopes in console.approvals.scopes.items() %}
@@ -407,7 +411,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.attribute_dialects.enabled }},
+                "enabled": {% if console.attribute_dialects.enabled is defined %} {{ console.attribute_dialects.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.attribute_dialects.scopes is defined %}
                     {% for operation, scopes in console.attribute_dialects.scopes.items() %}
@@ -435,8 +441,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.branding.scopes is defined %} {{ console.branding.enabled }},
-                {% else %} false,
+                "enabled": {% if console.branding.enabled is defined %} {{ console.branding.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.branding.scopes is defined %}
@@ -465,7 +471,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.certificates.enabled }},
+                "enabled": {% if console.certificates.enabled is defined %} {{ console.certificates.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.certificates.scopes is defined %}
                     {% for operation, scopes in console.certificates.scopes.items() %}
@@ -493,8 +501,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.email_providers.scopes is defined %} {{ console.email_providers.enabled }},
-                {% else %} false,
+                "enabled": {% if console.email_providers.enabled is defined %} {{ console.email_providers.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.email_providers.scopes is defined %}
@@ -523,7 +531,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.email_templates.enabled }},
+                "enabled": {% if console.email_templates.enabled is defined %} {{ console.email_templates.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.email_templates.scopes is defined %}
                     {% for operation, scopes in console.email_templates.scopes.items() %}
@@ -551,8 +561,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.event_publishing.scopes is defined %} {{ console.event_publishing.enabled }},
-                {% else %} false,
+                "enabled": {% if console.event_publishing.enabled is defined %} {{ console.event_publishing.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.event_publishing.scopes is defined %}
@@ -581,7 +591,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.governance_connectors.enabled }},
+                "enabled": {% if console.governance_connectors.enabled is defined %} {{ console.governance_connectors.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.governance_connectors.scopes is defined %}
                     {% for operation, scopes in console.governance_connectors.scopes.items() %}
@@ -609,7 +621,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.groups.enabled }},
+                "enabled": {% if console.groups.enabled is defined %} {{ console.groups.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.groups.scopes is defined %}
                     {% for operation, scopes in console.groups.scopes.items() %}
@@ -630,7 +644,6 @@
             {% endif %}
             {% if console.guest_user is defined %}
             "guestUser": {
-                "enabled": true,
                 "disabledFeatures": [
                     {% if console.guest_user.disabled_features is defined %}
                     {% for feature in console.guest_user.disabled_features %}
@@ -638,6 +651,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
+                "enabled": {% if console.guest_user.enabled is defined %} {{ console.guest_user.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.guest_user.scopes is defined %}
                     {% for operation, scopes in console.guest_user.scopes.items() %}
@@ -665,7 +681,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.identity_providers.enabled }},
+                "enabled": {% if console.identity_providers.enabled is defined %} {{ console.identity_providers.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.identity_providers.scopes is defined %}
                     {% for operation, scopes in console.identity_providers.scopes.items() %}
@@ -693,8 +711,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.identity_provider_groups.scopes is defined %} {{ console.identity_provider_groups.enabled }},
-                {% else %} false,
+                "enabled": {% if console.identity_provider_groups.enabled is defined %} {{ console.identity_provider_groups.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.identity_provider_groups.scopes is defined %}
@@ -716,7 +734,9 @@
             {% endif %}
             {% if console.identity_verification_providers is defined %}
             "identityVerificationProviders": {
-                "enabled": {{ console.identity_verification_providers.enabled }},
+                "enabled": {% if console.identity_verification_providers.enabled is defined %} {{ console.identity_verification_providers.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.identity_verification_providers.scopes is defined %}
                     {% for operation, scopes in console.identity_verification_providers.scopes.items() %}
@@ -744,8 +764,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.insights.scopes is defined %} {{ console.insights.enabled }},
-                {% else %} false,
+                "enabled": {% if console.insights.enabled is defined %} {{ console.insights.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.insights.scopes is defined %}
@@ -774,8 +794,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.my_account.scopes is defined %} {{ console.my_account.enabled }},
-                {% else %} false,
+                "enabled": {% if console.my_account.enabled is defined %} {{ console.my_account.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.my_account.scopes is defined %}
@@ -804,7 +824,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.oidc_scopes.enabled }},
+                "enabled": {% if console.oidc_scopes.enabled is defined %} {{ console.oidc_scopes.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.oidc_scopes.scopes is defined %}
                     {% for operation, scopes in console.oidc_scopes.scopes.items() %}
@@ -825,7 +847,9 @@
             {% endif %}
             {% if console.secrets_management is defined %}
             "secretsManagement": {
-                "enabled": {{ console.secrets_management.enabled }},
+                "enabled": {% if console.secrets_management.enabled is defined %} {{ console.secrets_management.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.secrets_management.scopes is defined %}
                     {% for operation, scopes in console.secrets_management.scopes.items() %}
@@ -853,7 +877,9 @@
             {% endif %}
             {% if console.organizations is defined %}
             "organizations": {
-                "enabled": {{ console.organizations.enabled }},
+                "enabled": {% if console.organizations.enabled is defined %} {{ console.organizations.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.organizations.scopes is defined %}
                     {% for operation, scopes in console.organizations.scopes.items() %}
@@ -888,7 +914,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.manage_getting_started.enabled }},
+                "enabled": {% if console.manage_getting_started.enabled is defined %} {{ console.manage_getting_started.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.manage_getting_started.scopes is defined %}
                     {% for operation, scopes in console.manage_getting_started.scopes.items() %}
@@ -916,7 +944,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.developer_getting_started.enabled }},
+                "enabled": {% if console.developer_getting_started.enabled is defined %} {{ console.developer_getting_started.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.developer_getting_started.scopes is defined %}
                     {% for operation, scopes in console.developer_getting_started.scopes.items() %}
@@ -944,7 +974,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.user_onboarding.enabled }},
+                "enabled": {% if console.user_onboarding.enabled is defined %} {{ console.user_onboarding.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.user_onboarding.scopes is defined %}
                     {% for operation, scopes in console.user_onboarding.scopes.items() %}
@@ -972,7 +1004,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.account_security.enabled }},
+                "enabled": {% if console.account_security.enabled is defined %} {{ console.account_security.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.account_security.scopes is defined %}
                     {% for operation, scopes in console.account_security.scopes.items() %}
@@ -1000,7 +1034,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.account_recovery.enabled }},
+                "enabled": {% if console.account_recovery.enabled is defined %} {{ console.account_recovery.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.account_recovery.scopes is defined %}
                     {% for operation, scopes in console.account_recovery.scopes.items() %}
@@ -1028,7 +1064,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.remote_fetch.enabled }},
+                "enabled": {% if console.remote_fetch.enabled is defined %} {{ console.remote_fetch.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.remote_fetch.scopes is defined %}
                     {% for operation, scopes in console.remote_fetch.scopes.items() %}
@@ -1056,7 +1094,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.roles.enabled }},
+                "enabled": {% if console.roles.enabled is defined %} {{ console.roles.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.roles.scopes is defined %}
                     {% for operation, scopes in console.roles.scopes.items() %}
@@ -1084,8 +1124,8 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.try_it.scopes is defined %} {{ console.try_it.enabled }},
-                {% else %} false,
+                "enabled": {% if console.try_it.enabled is defined %} {{ console.try_it.enabled }},
+                {% else %} true,
                 {% endif %}
                 "scopes": {
                     {% if console.try_it.scopes is defined %}
@@ -1114,7 +1154,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.users.enabled }},
+                "enabled": {% if console.users.enabled is defined %} {{ console.users.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.users.scopes is defined %}
                     {% for operation, scopes in console.users.scopes.items() %}
@@ -1142,7 +1184,9 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ console.user_stores.enabled }},
+                "enabled": {% if console.user_stores.enabled is defined %} {{ console.user_stores.enabled }},
+                {% else %} true,
+                {% endif %}
                 "scopes": {
                     {% if console.user_stores.scopes is defined %}
                     {% for operation, scopes in console.user_stores.scopes.items() %}
