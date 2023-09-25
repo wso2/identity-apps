@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4130](https://github.com/wso2/identity-apps/pull/4130) [`c455d1894c`](https://github.com/wso2/identity-apps/commit/c455d1894c12e7df2fd6322fc9293c00915a3ccb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update J2 file in the console app
+
 ## 2.0.9
 
 ### Patch Changes
