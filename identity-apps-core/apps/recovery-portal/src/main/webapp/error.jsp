@@ -150,9 +150,20 @@
                         <div class="ui divider hidden"></div>
                         <jsp:include page="extensions/error-tracking-reference.jsp"/>
                     <%
+                        } else {
+                    %>
+                        </p>
+                    <%
                         }
                     %>
                 <div class="ui divider hidden"></div>
+                <% if (isValidCallback) { %>
+                <div id="action-buttons" class="buttons">
+                    <a href="javascript:goBack()" class="ui button primary button">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "go.back")%>
+                    </a>
+                </div>
+                <% } %>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
