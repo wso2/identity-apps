@@ -84,7 +84,7 @@
         var userAccessedPath = window.location.href;
         var applicationDomain = window.location.origin;
 
-        var userTenant = userAccessedPath.split("/" + tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + tenantPrefix + "/")[1].split("/")[0] : null;
+        var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0] : null;
         userTenant = userTenant ?  userTenant.split("?")[0] : null;
         var utype =  userAccessedPath.split("utype=")[1] ?  userAccessedPath.split("utype=")[1] : null;
 
@@ -119,7 +119,7 @@
                     const path = window.location.pathname;
                     const pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(orgPrefix);
+                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -135,7 +135,7 @@
                  */
                 function getOrganizationPath() {
                     return getOrganizationName() !== ""
-                        ? "/" + orgPrefix + "/" + getOrganizationName()
+                        ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
                         : "";
                 };
 
@@ -152,12 +152,12 @@
                     storage: "webWorker",
                     endpoints: {
                         authorizationEndpoint: getApiPath(userTenant 
-                            ? "/" + tenantPrefix + "/" + superTenantProxy + authorizePath + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + tenantPrefix + "/" + superTenantProxy + authorizePath),
+                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/" + tenantPrefix + "/" + superTenantProxy + logoutPath),
-                        oidcSessionIFrameEndpointURL: getApiPath("/" + tenantPrefix + "/" + superTenantProxy + checksessionPath),
+                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.logoutPath),
+                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.checksessionPath),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },

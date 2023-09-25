@@ -127,9 +127,9 @@
 
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
-            var serverOriginGlobal = serverUrlGlobal;
-            var superTenantGlobal = superTenant;
-            var tenantPrefixGlobal = tenantPrefix;
+            var serverOriginGlobal = startupConfig.serverUrlGlobal;
+            var superTenantGlobal = startupConfig.superTenant;
+            var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var isAdaptiveAuthenticationAvailable = true;
             var isOrganizationManagementEnabled = true;
 

@@ -84,13 +84,13 @@
             var applicationDomain = window.location.origin;
             var userAccessedPath = window.location.href;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-            var userTenant = userAccessedPath.split("/" + tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + tenantPrefix + "/")[1].split("/")[0] : null;
+            var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0] : null;
             userTenant = userTenant ?  userTenant.split("?")[0] : null;
             if(isSignOutSuccess && userTenant) {
-                if (subdomainApplication) {
-                    window.location.href = applicationDomain + "/" + tenantPrefix + "/" + userTenant;
+                if (startupConfig.subdomainApplication) {
+                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
                 } else {
-                    window.location.href = applicationDomain + "/" + tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
                 }
             }
 
@@ -129,11 +129,11 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/" + tenantPrefix + "/" + userTenant + authorizePath) : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + authorizePath),
+                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.authorizePath) : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/" + tenantPrefix + "/" + userTenant + logoutPath) : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + logoutPath),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + tenantPrefix + "/" + userTenant + checksessionPath) : getApiPath("/" + tenantPrefix + "/" + superTenantProxy + checksessionPath),
+                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.logoutPath) : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.logoutPath),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.checksessionPath) : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.checksessionPath),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
