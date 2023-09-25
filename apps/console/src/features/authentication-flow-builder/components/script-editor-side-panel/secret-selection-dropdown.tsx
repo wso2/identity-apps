@@ -17,6 +17,7 @@
  */
 
 import Popover, { PopoverProps } from "@mui/material/Popover";
+import { ChevronDownIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Code from "@oxygen-ui/react/Code";
@@ -26,7 +27,6 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronDownIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement, SVGProps, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
