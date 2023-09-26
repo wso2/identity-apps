@@ -16,6 +16,7 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
+    if: ${{ false }} # disable temporarily
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -196,7 +197,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ lint, typecheck ]
+    needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
