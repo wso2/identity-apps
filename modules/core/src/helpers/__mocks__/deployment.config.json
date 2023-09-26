@@ -391,6 +391,7 @@
             "fallback": "404"
         },
         "hiddenAuthenticators": [],
+        "hiddenConnectionTemplates": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled":false
