@@ -4809,6 +4809,7 @@ export interface ConsoleNS {
                             subHeading: string;
                             list: {
                                 searchPlaceholder: string;
+                                searchByEmailPlaceholder: string;
                                 listHeader: string;
                             };
                         };
@@ -5648,8 +5649,30 @@ export interface ConsoleNS {
                         filters: {
                             userStore: string;
                             serviceProvider: string;
-                        }
-                    },
+                            identityProvider: string;
+                            authenticator: {
+                                attributeName: string;
+                                values: {
+                                    basic: string;
+                                    identifierFirst: string;
+                                    fido2: string;
+                                    magicLink: string;
+                                    emailOtp: string;
+                                    smsOtp: string;
+                                    totp: string;
+                                    backupCodes: string;
+                                    google: string;
+                                    facebook: string;
+                                    github: string;
+                                    apple: string;
+                                    oidc: string;
+                                    saml: string;
+                                    hypr: string;
+                                    organizationLogin: string;
+                                };
+                            };
+                        };
+                    };
                     registration: {
                         filters: {
                             onboardingMethod: {

@@ -426,3 +426,11 @@
         }
     }
 }
+
+/*-------------------------------------------
+    List item description with word breaks
+--------------------------------------------*/
+
+.ui.list .list>.item .description, .ui.list>.item .description {
+    overflow-wrap: break-word;
+}

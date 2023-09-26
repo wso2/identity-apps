@@ -6256,7 +6256,7 @@ export const console: ConsoleNS = {
         },
         modes: {
             legacy: {
-                label: "Legacy Editor"
+                label: "Classic Editor"
             },
             visual: {
                 label: "Visual Editor"
@@ -9399,7 +9399,8 @@ export const console: ConsoleNS = {
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
-                                searchPlaceholder: "Search users"
+                                searchPlaceholder: "Search users",
+                                searchByEmailPlaceholder: "Search users by email address"
                             },
                             subHeading: "Add new users or remove existing users assigned to the {{type}}."
                         }
@@ -11083,7 +11084,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "User Store",
-                            serviceProvider: "Application"
+                            serviceProvider: "Application",
+                            authenticator: {
+                                attributeName: "Connection Type",
+                                values: {
+                                    basic: "Username & Password",
+                                    identifierFirst: "Identifier First",
+                                    fido2: "FIDO2",
+                                    magicLink: "Magic Link",
+                                    emailOtp: "Email OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "Backup Code",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "Organization Login"
+                                }
+                            },
+                            identityProvider: "Connection ID"
                         }
                     },
                     registration: {
@@ -11113,7 +11136,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "User Signups",
-                        titleHint: "Total user (B2C) signups occurred within the selected period"
+                        titleHint: "Total user signups occurred within the selected period"
                     }
                 },
                 notifications: {

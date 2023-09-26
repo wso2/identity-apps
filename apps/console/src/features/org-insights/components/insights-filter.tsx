@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,12 +27,147 @@ import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getFilterAttributeListByActivityType } from "../config/org-insights";
 import { OrgInsightsConstants } from "../constants/org-insights";
-import { ActivityType, FilterCondition, OnboardingMethodFilterValue } from "../models/insights";
+import {
+    ActivityType,
+    AuthenticatorFilterValue,
+    FilterCondition,
+    OnboardingMethodFilterValue
+} from "../models/insights";
 import { getAllDisabledFeaturesForInsights } from "../utils/insights";
 
-const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod" ];
+const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator" ];
 
 const filterValueDropdownItems: Record<string,DropdownChild[]> = {
+    "authenticator": [
+        {
+            key:   1,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." + 
+                "basic"
+            ).toString(),
+            value: AuthenticatorFilterValue.BASIC
+        },
+        {
+            key:   2,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "identifierFirst"
+            ).toString(),
+            value: AuthenticatorFilterValue.IDENTIFIER_FIRST
+        },
+        {
+            key:   3,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "fido2"
+            ).toString(),
+            value: AuthenticatorFilterValue.FIDO2
+        },
+        {
+            key:   4,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "magicLink"
+            ).toString(),
+            value: AuthenticatorFilterValue.MAGIC_LINK
+        },
+        {
+            key:   5,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "emailOtp"
+            ).toString(),
+            value: AuthenticatorFilterValue.EMAIL_OTP
+        },
+        {
+            key:   6,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "smsOtp"
+            ).toString(),
+            value: AuthenticatorFilterValue.SMS_OTP
+        },
+        {
+            key:   7,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "totp"
+            ).toString(),
+            value: AuthenticatorFilterValue.TOTP
+        },
+        {
+            key:   8,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "backupCodes"
+            ).toString(),
+            value: AuthenticatorFilterValue.BACK_UP_CODE
+        },
+        {
+            key:   9,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "google"
+            ).toString(),
+            value: AuthenticatorFilterValue.GOOGLE
+        },
+        {
+            key:   10,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "facebook"
+            ).toString(),
+            value: AuthenticatorFilterValue.FACEBOOK
+        },
+        {
+            key:   11,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "github"
+            ).toString(),
+            value: AuthenticatorFilterValue.GITHUB
+        },
+        {
+            key:   12,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "apple"
+            ).toString(),
+            value: AuthenticatorFilterValue.APPLE
+        },
+        {
+            key:   13,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "oidc"
+            ).toString(),
+            value: AuthenticatorFilterValue.OIDC
+        },
+        {
+            key:   14,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "saml"
+            ).toString(),
+            value: AuthenticatorFilterValue.SAML
+        },
+        {
+            key:   15,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "hypr"
+            ).toString(),
+            value: AuthenticatorFilterValue.HYPR
+        },
+        {
+            key:   16,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "organizationLogin"
+            ).toString(),
+            value: AuthenticatorFilterValue.ORGANIZATION_AUTHENTICATOR
+        }
+    ],
     "onboardingMethod": [
         {
             key:   1,
