@@ -810,7 +810,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSignatureValidationCertificateAliasEnabled": false,
-        "listAllAttributeDialects": false,
+        "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

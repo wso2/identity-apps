@@ -104,8 +104,19 @@ export class ClaimManagementConstants {
         SCIMConfigs.oidc
     ];
 
+    public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
+    public static readonly EIDASLEGAL_MAPPING: string = "http://eidas.europa.eu/attributes/legalperson";
+    public static readonly EIDASNATURAL_MAPPING: string = "http://eidas.europa.eu/attributes/naturalperson";
+    public static readonly OPENIDNET_MAPPING: string = "http://schema.openid.net/2007/05/claims";
+    public static readonly XMLSOAP_MAPPING: string = "http://schemas.xmlsoap.org/ws/2005/05/identity";
+
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
+    public static readonly AXSCHEMA: string = "axschema";
+    public static readonly EIDASLEGAL: string = "eidaslegal";
+    public static readonly EIDASNATURAL: string = "eidasnatural";
+    public static readonly OPENIDNET: string = "openidnet";
+    public static readonly XMLSOAP: string = "xmlsoap";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {

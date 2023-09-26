@@ -289,6 +289,16 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.AXSCHEMA && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.EIDASLEGAL_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.EIDASLEGAL && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.EIDASNATURAL_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.EIDASNATURAL && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.OPENIDNET_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.OPENIDNET && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.XMLSOAP && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {
                             attributeMappings.push(attributeMapping);
                         }

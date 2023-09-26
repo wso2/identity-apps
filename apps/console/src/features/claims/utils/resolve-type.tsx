@@ -32,6 +32,16 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return shortForm? "OIDC" : "OpenID Connect";
         case ClaimManagementConstants.SCIM:
             return "SCIM";
+        case ClaimManagementConstants.AXSCHEMA:
+            return "AXSCHEMA";
+        case ClaimManagementConstants.EIDASLEGAL:
+            return "EIDASLEGAL";
+        case ClaimManagementConstants.EIDASNATURAL:
+            return "EIDASNATURAL";
+        case ClaimManagementConstants.OPENIDNET:
+            return "OPENIDNET";
+        case ClaimManagementConstants.XMLSOAP:
+            return "XMLSOAP";
         default:
             return capitalize ? "Custom" : "custom";
     }
