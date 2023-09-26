@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,15 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Code, ConfirmationModal, ContentLoader, EmphasizedSegment, LabeledCard, Text } from "@wso2is/react-components";
+import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { AuthenticationFlowProvider } from "./providers/authentication-flow-provider";
 import { SignInMethodCustomization } from "./sign-in-method-customization";
 import { SignInMethodLanding } from "./sign-in-method-landing";
 import AppleLoginSequenceTemplate from "./templates/apple-login-sequence.json";
@@ -38,6 +38,8 @@ import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-emai
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
+import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
+import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory
@@ -58,7 +60,8 @@ import { ApplicationManagementConstants } from "../../../constants";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
-    AuthenticationSequenceType, AuthenticatorInterface,
+    AuthenticationSequenceType,
+    AuthenticatorInterface,
     LoginFlowTypes
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
@@ -67,7 +70,6 @@ import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
  * Proptypes for the sign on methods component.
  */
 interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
-
     /**
      * Editing application.
      */
@@ -81,8 +83,8 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      */
     authenticationSequence: AuthenticationSequenceInterface;
     /**
-    * ClientID of the application.
-    */
+     * ClientID of the application.
+     */
     clientId?: string;
     /**
      * Is the application info request loading.
@@ -116,6 +118,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 ): ReactElement => {
 
     const {
+        application,
         appId,
         authenticationSequence,
         clientId,
@@ -190,10 +193,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         setModeratedAuthenticationSequence(authenticationSequence);
     }, [ authenticationSequence ]);
-
-    const refreshAuthenticators = (): Promise<void> => {
-        return fetchAndCategorizeAuthenticators();
-    };
 
     /**
      * Fetches the list of Authenticators and categorize them.
@@ -303,7 +302,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             setModeratedAuthenticationSequence(authenticationSequence);
         } else if (loginFlow === LoginFlowTypes.DEFAULT) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "default" }
             );
             setModeratedAuthenticationSequence({
@@ -312,7 +311,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_TOTP) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "second-factor-totp" }
             );
             setModeratedAuthenticationSequence({
@@ -321,7 +320,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "second-factor-email-otp" }
             );
             setModeratedAuthenticationSequence({
@@ -330,7 +329,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.SECOND_FACTOR_SMS_OTP) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "second-factor-sms-otp" }
             );
             setModeratedAuthenticationSequence({
@@ -339,7 +338,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.FIDO_LOGIN) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "first-factor-fido" }
             );
             setModeratedAuthenticationSequence({
@@ -348,7 +347,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "google-login" }
             );
             setSocialDisclaimerModalType(LoginFlowTypes.GOOGLE_LOGIN);
@@ -379,7 +378,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
         } else if (loginFlow === LoginFlowTypes.GITHUB_LOGIN) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "github-login" }
             );
 
@@ -443,7 +442,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
         } else if (loginFlow === LoginFlowTypes.MICROSOFT_LOGIN) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "microsoft-login" }
             );
 
@@ -475,7 +474,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
         } else if (loginFlow === LoginFlowTypes.APPLE_LOGIN) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "apple-login" }
             );
 
@@ -507,7 +506,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             }
         } else if (loginFlow === LoginFlowTypes.MAGIC_LINK) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "magic-link-login" }
             );
 
@@ -517,7 +516,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
         } else if (loginFlow === LoginFlowTypes.EMAIL_OTP) {
             eventPublisher.publish(
-                "application-sign-in-method-click-add", 
+                "application-sign-in-method-click-add",
                 { type: "email-otp-login" }
             );
 
@@ -827,7 +826,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         // If the IDP creation is triggered from the landing page, handle the relevant
                         // login flow changes so that we can navigate the user to the customizing page.
                         if (idpCreateWizardTriggerOrigin === "INTERNAL") {
-                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook, microsoft, 
+                            handleLoginFlowSelect(socialDisclaimerModalType, google, github, facebook, microsoft,
                                 apple);
                         }
                     }).finally();
@@ -843,28 +842,36 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     return (
-        <AuthenticationFlowProvider>
-            <EmphasizedSegment className="sign-on-methods-tab-content" padded="very">
-                {
-                    !(isLoading || isAuthenticatorsFetchRequestLoading) ?
-                        ((!readOnly && !loginFlow && isDefaultFlowConfiguration())
-                            ? (
+        <AuthenticationFlowProvider
+            application={ cloneDeep(application) }
+            authenticators={ authenticators }
+            onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
+            onUpdate={ onUpdate }
+            isLoading={ isAuthenticatorsFetchRequestLoading }
+            readOnly={ readOnly }
+        >
+            <AuthenticationFlowBuilder
+                legacyBuilder={ (
+                    <>
+                        { !(isLoading || isAuthenticatorsFetchRequestLoading) ? (
+                            !readOnly && !loginFlow && isDefaultFlowConfiguration() ? (
                                 <SignInMethodLanding
                                     readOnly={ readOnly }
                                     clientId={ clientId }
                                     onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                        handleLoginFlowSelect(type,
+                                        handleLoginFlowSelect(
+                                            type,
                                             googleAuthenticators,
                                             gitHubAuthenticators,
                                             facebookAuthenticators,
                                             microsoftAuthenticators,
-                                            appleAuthenticators);
+                                            appleAuthenticators
+                                        );
                                     } }
                                     data-testid={ `${testId}-landing` }
                                 />
                             ) : (
                                 <SignInMethodCustomization
-                                    refreshAuthenticators={ refreshAuthenticators }
                                     appId={ appId }
                                     authenticators={ authenticators }
                                     clientId={ clientId }
@@ -885,14 +892,24 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     readOnly={ readOnly }
                                 />
                             )
-                        ) : <ContentLoader inline="centered" active />
-                }
-                { showIDPCreateWizard && renderIDPCreateWizard() }
-                { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
-                { showDuplicateSocialAuthenticatorSelectionModal 
-                    && renderDuplicateSocialAuthenticatorSelectionModal()
-                }
-            </EmphasizedSegment>
+                        ) : (
+                            <ContentLoader inline="centered" active />
+                        ) }
+                    </>
+                ) }
+                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                    setSelectedIDPTemplate(template);
+                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                    setIDPTemplateTypeToTrigger(type);
+                    setShowMissingSocialAuthenticatorModal(false);
+                    setShowIDPCreateWizard(true);
+                    broadcastIDPCreateSuccessMessage = cb;
+                } }
+            />
+            { showIDPCreateWizard && renderIDPCreateWizard() }
+            { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
+            { showDuplicateSocialAuthenticatorSelectionModal &&
+                renderDuplicateSocialAuthenticatorSelectionModal() }
         </AuthenticationFlowProvider>
     );
 };

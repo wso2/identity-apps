@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -22,7 +23,7 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
-import { 
+import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
 import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
@@ -78,9 +79,6 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Show/Hide authenticator labels in UI.
      */
     showLabels?: boolean;
-    attributeStepId: number;
-    refreshAuthenticators: () => Promise<void>;
-    subjectStepId: number;
 }
 
 /**
@@ -101,7 +99,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         onAuthenticatorSelect,
         selected,
         showLabels,
-        // refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 

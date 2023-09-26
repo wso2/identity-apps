@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -4653,6 +4653,252 @@ export const console: ConsoleNS = {
             python: "Python",
             react: "React",
             windows: "Windows"
+        }
+    },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "Le modèle sélectionné remplacera le script existant dans l'éditeur ainsi que les étapes de connexion que vous avez configurées.Cliquez sur <1> Confirmer </1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Cette action est irréversible."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "Le modèle sélectionné remplacera les étapes de connexion existantes que vous avez configurées.Cliquez sur <1> Confirmer </1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Cette action est irréversible."
+        },
+        options: {
+            controls: {
+                remove: "Retirer"
+            },
+            displayName: "Connectez-vous avec {{displayName}}",
+            divider: "OU"
+        },
+        modes: {
+            legacy: {
+                label: "Rédacteur en chef"
+            },
+            visual: {
+                label: "Éditeur visuel"
+            },
+            switchConfirmationModal: {
+                assertionHint: "Oui je comprends.Je veux changer.",
+                content: "Cette action est irréversible et vous perdrez en permanence les changements non sauvés du flux de courant.",
+                primaryActionButtonText: "Confirmer",
+                secondaryActionButtonText: "Annuler",
+                title: "Es-tu sûr?",
+                warningMessage: "Si vous passez à la <1>{{mode}}</1>, vous perdez les changements non sauvés du flux de courant.Veuillez procéder avec prudence."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "Choisissez les attributs de cette étape"
+                },
+                enableBackupCodes: {
+                    label: "Activer les codes de sauvegarde"
+                },
+                userAttributeSelector: {
+                    label: "Choisissez l'identifiant de l'utilisateur à partir de cette étape"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer",
+                        secondary: "Renvoyer le code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code envoyé à votre identifiant de messagerie (John****@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "Vérification OTP"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer",
+                    optionSwitchTooltipContent: "Passez au nom d'utilisateur et au mot de passe"
+                },
+                form: {
+                    actions: {
+                        primary: "S'identifier"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "Se souvenir de moi sur cet ordinateur"
+                        },
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez votre nom d'utilisateur"
+                        }
+                    }
+                },
+                header: "S'identifier"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer",
+                    optionSwitchTooltipContent: "Passez d'abord à l'identifiant"
+                },
+                form: {
+                    actions: {
+                        primary: "S'identifier"
+                    },
+                    fields: {
+                        password: {
+                            label: "Mot de passe",
+                            placeholder: "Tapez votre mot de passe"
+                        },
+                        rememberMe: {
+                            label: "Se souvenir de moi sur cet ordinateur"
+                        },
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez votre nom d'utilisateur"
+                        }
+                    }
+                },
+                header: "S'identifier"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer",
+                        secondary: "Renvoyer le code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code envoyé à votre téléphone mobile (****** 3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "Vérification OTP"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code de vérification généré par votre application Authenticator.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "Vous n'avez pas encore configuré votre authentificateur TOTP?Contactez le support"
+                },
+                header: "Vérifiez Votre Identité"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "Oui je comprends.Je veux revenir.",
+            content: "Cette action est irréversible et vous perdrez en permanence les progrès que vous avez réalisés.",
+            primaryActionButtonText: "Confirmer",
+            secondaryActionButtonText: "Annuler",
+            title: "Es-tu sûr?",
+            warningMessage: "Si vous revenez à la valeur par défaut, vous ne pourrez pas récupérer les progrès.Veuillez procéder avec prudence."
+        },
+        steps: {
+            controls: {
+                addOption: "Ajouter l'option de connexion",
+                remove: "Retirer",
+                signUp: {
+                    hint: "Vous n'avez pas de compte?",
+                    label: "S'inscrire"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "AJOUTER"
+                },
+                header: "Flux de connexion conditionnels"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "Flux de connexion de base"
+            },
+            categories: {
+                basic: {
+                    label: "Ajouter la connexion de base"
+                },
+                mfa: {
+                    label: "Ajouter la connexion multi-facteurs"
+                },
+                passwordless: {
+                    label: "Ajouter la connexion sans mot de passe"
+                },
+                social: {
+                    label: "Ajouter la connexion sociale"
+                }
+            },
+            header: "Flux prédéfinis",
+            panelHeader: "Flux prédéfinis"
+        },
+        scriptEditor: {
+            panelHeader: "Éditeur de script",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "Créer un nouveau secret"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "Pas de secrets disponibles.",
+                    description: "Stockez en toute sécurité les clés d'accès comme des secrets.Un secret peut remplacer le secret du consommateur dans <1> Callchoreo () </1> dans les scripts d'authentification conditionnels."
+                },
+                label: "Ajouter le secret"
+            },
+            themes: {
+                dark: {
+                    label: "Dark (Visual Studio)"
+                },
+                highContrast: {
+                    label: "Contraste élevé"
+                },
+                light: {
+                    label: "Light (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "Revenir à la valeur par défaut"
+                },
+                update: {
+                    label: "Mise à jour"
+                }
+            }
         }
     },
     manage: {

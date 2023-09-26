@@ -29,7 +29,7 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@oxygen-ui/react": "^1.1.2",
+        "@oxygen-ui/react": "^1.3.2",
         "final-form": "^4.20.9",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",

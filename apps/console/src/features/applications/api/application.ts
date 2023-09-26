@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
@@ -27,6 +28,7 @@ import useRequest, {
 import { store } from "../../core/store";
 import { ApplicationManagementConstants } from "../constants";
 import {
+    AdaptiveAuthTemplateCategoryListItemInterface,
     AdaptiveAuthTemplatesListInterface,
     ApplicationBasicInterface,
     ApplicationInterface,
@@ -762,6 +764,50 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Hook to get the adaptive templates.
+ *
+ * @returns Adaptive auth template GET hook.
+ */
+export const useGetAdaptiveAuthTemplates = <
+    Data = AdaptiveAuthTemplateCategoryListItemInterface,
+    Error = RequestErrorInterface
+>(): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.applications}/meta/adaptive-auth-templates`
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate
+    } = useRequest<Data, Error>(requestConfig);
+
+    let parsed: Data | undefined = undefined;
+
+    if ((data as AdaptiveAuthTemplatesListInterface)?.templatesJSON) {
+        try {
+            parsed = JSON.parse((data as any).templatesJSON);
+        } catch(e) {
+            parsed = undefined;
+        }
+    }
+
+    return {
+        data: parsed,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 /**
