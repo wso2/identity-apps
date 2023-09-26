@@ -7689,7 +7689,8 @@ export const console: ConsoleNS = {
                             hint: "Sélectionnez des utilisateurs pour les ajouter au groupe d'utilisateurs.",
                             list: {
                                 listHeader: "Nom",
-                                searchPlaceholder: "Rechercher des utilisateurs"
+                                searchPlaceholder: "Rechercher des utilisateurs",
+                                searchByEmailPlaceholder: "Recherchez les utilisateurs par adresse e-mail"
                             },
                             subHeading: "Ajouter de nouveaux utilisateurs ou supprimer les utilisateurs " +
                                 "existants affectés a {{type}}."
@@ -9431,7 +9432,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "Magasin d'utilisateurs",
-                            serviceProvider: "Application"
+                            serviceProvider: "Application",
+                            authenticator: {
+                                attributeName: "Type de connexion",
+                                values: {
+                                    basic: "Identifiant Mot de passe",
+                                    identifierFirst: "Identifiant d'abord",
+                                    fido2: "FIDO2",
+                                    magicLink: "Lien magique",
+                                    emailOtp: "E-mail OTP",
+                                    smsOtp: "OTP SMS",
+                                    totp: "TOTP",
+                                    backupCodes: "Code de secours",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "Connexion à l'organisation"
+                                }
+                            },
+                            identityProvider: "ID de connexion"
                         }
                     },
                     registration: {
@@ -9466,7 +9489,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "Inscriptions d'utilisateurs",
-                        titleHint: "Nombre total d'inscriptions d'utilisateurs (B2C) au cours de la période sélectionnée"
+                        titleHint: "Nombre total d'inscriptions d'utilisateurs au cours de la période sélectionnée"
                     }
                 },
                 notifications: {

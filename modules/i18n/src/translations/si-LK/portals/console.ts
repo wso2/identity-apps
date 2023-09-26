@@ -7539,7 +7539,8 @@ export const console: ConsoleNS = {
                             hint: "පරිශීලක කණ්ඩායමට එකතු කිරීමට පරිශීලකයින් තෝරන්න.",
                             list: {
                                 listHeader: "නම",
-                                searchPlaceholder: "පරිශීලකයින් සොයන්න"
+                                searchPlaceholder: "පරිශීලකයින් සොයන්න",
+                                searchByEmailPlaceholder: "විද්යුත් තැපැල් ලිපිනය අනුව පරිශීලකයින් සොයන්න"
                             },
                             subHeading: "නව පරිශීලකයින් එක් කරන්න හෝ  {{type}} වෙත පවරා ඇති පවතින"
                                 + " පරිශීලකයින් ඉවත් කරන්න."
@@ -9225,7 +9226,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "පරිශීලක ගබඩාව",
-                            serviceProvider: "යෙදුම"
+                            serviceProvider: "යෙදුම",
+                            authenticator: {
+                                attributeName: "සම්බන්ධතා වර්ගය",
+                                values: {
+                                    basic: "පරිශීලක නාමය සහ මුරපදය",
+                                    identifierFirst: "පළමුව හඳුනාගැනීම",
+                                    fido2: "FIDO2",
+                                    magicLink: "මැජික් සබැඳිය",
+                                    emailOtp: "ඊමේල් OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "උපස්ථ කේත",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "සංවිධාන පිවිසුම්"
+                                }
+                            },
+                            identityProvider: "අනන්යතා සපයන්නා"
                         }
                     },
                     registration: {
@@ -9260,7 +9283,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "පරිශීලක ලියාපදිංචි කිරීම්",
-                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක (B2C) ලියාපදිංචි කිරීම් ගණන"
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක ලියාපදිංචි කිරීම් ගණන"
                     }
                 },
                 notifications: {
