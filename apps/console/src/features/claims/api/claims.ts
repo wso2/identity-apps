@@ -19,8 +19,9 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim, ClaimDialect, ClaimsGetParams, ExternalClaim, HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import { Claim, ClaimDialect, ClaimDialectsGetParams, ClaimsGetParams, ExternalClaim, HttpMethods }
+    from "@wso2is/core/models";
+import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
@@ -29,16 +30,17 @@ import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+const httpClient: AxiosInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add a local claim.
  *
- * @param {Claim} data Adds this data.
- * @return {Promise<AxiosResponse>} response
+ * @param data - Adds this data.
+ * @returns response.
  */
 export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             Accept: "application/json",
@@ -71,12 +73,11 @@ export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
 /**
  * Gets the local claim with the given ID.
  *
- * @param {string} id The id of the local claim.
- *
- * @return {Promise<any>} response.
+ * @param id - The id of the local claim.
+ * @returns response.
  */
 export const getAClaim = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -87,14 +88,14 @@ export const getAClaim = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -102,14 +103,12 @@ export const getAClaim = (id: string): Promise<any> => {
 /**
  * Update a Local Claim ID with the given data.
  *
- * @param {string} id Local Claim ID.
- *
- * @param {Claim} data Updates with this data.
- *
- * @return {Promise<any>} response.
+ * @param id - Local Claim ID.
+ * @param data - Updates with this data.
+ * @returns response.
  */
 export const updateAClaim = (id: string, data: Claim): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             Accept: "application/json",
@@ -121,14 +120,14 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -136,12 +135,11 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
 /**
  * Deletes the local claim with the given ID.
  *
- * @param {string} id Local Claim ID.
- *
- * @return {Promise<any>} response.
+ * @param id - Local Claim ID.
+ * @returns response.
  */
 export const deleteAClaim = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -152,14 +150,14 @@ export const deleteAClaim = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             /*
             TODO:
             Due to : https://github.com/wso2/product-is/issues/8729. We are hard coding following error response for
@@ -169,7 +167,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             { Hardcoded solution : Refactor error response by replacing "claim" with "attribute" }
              */
             if (error?.response?.data?.code === "CMT-50031") {
-                const hardCodedResponse =
+                const hardCodedResponse: any =
                     {
                         code: error?.response?.data?.code,
                         description: "Unable to remove local attribute while having associations with external claims.",
@@ -187,12 +185,12 @@ export const deleteAClaim = (id: string): Promise<any> => {
 /**
  * Add a claim dialect.
  *
- * @param {string} dialectURI Adds this dialect URI.
- * @return {Promise<AxiosResponse>} response.
+ * @param dialectURI - Adds this dialect URI.
+ * @returns response.
  */
 export const addDialect = (dialectURI: string): Promise<AxiosResponse> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: {
             dialectURI
         },
@@ -227,12 +225,11 @@ export const addDialect = (dialectURI: string): Promise<AxiosResponse> => {
 /**
  * Get the Claim Dialect with the given ID.
  *
- * @param {string} id Claim Dialect ID.
- *
- * @return {Promise<any>} response.
+ * @param id - Claim Dialect ID.
+ * @returns response.
  */
 export const getADialect = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -243,14 +240,14 @@ export const getADialect = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -258,13 +255,13 @@ export const getADialect = (id: string): Promise<any> => {
 /**
  * Update the claim dialect with the given ID.
  *
- * @param {string} id Claim Dialect ID.
- * @param {string} dialectURI Updates with this data.
+ * @param id - Claim Dialect ID.
+ * @param dialectURI - Updates with this data.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const updateADialect = (id: string, dialectURI: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: {
             dialectURI
         },
@@ -278,14 +275,14 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -293,12 +290,12 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
 /**
  * Delete the claim dialect with the given ID.
  *
- * @param {string} id Claim Dialect ID.
+ * @param id - Claim Dialect ID.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const deleteADialect = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -309,14 +306,14 @@ export const deleteADialect = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -324,13 +321,13 @@ export const deleteADialect = (id: string): Promise<any> => {
 /**
  * Create an external claim.
  *
- * @param {string} dialectID Claim Dialect ID.
- * @param {AddExternalClaim} data Adds this data.
+ * @param dialectID - Claim Dialect ID.
+ * @param data - Adds this data.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             Accept: "application/json",
@@ -342,14 +339,14 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -357,13 +354,13 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
 /**
  * Gets the external claim with the given ID for the given dialect.
  *
- * @param {string} dialectID Claim Dialect ID.
- * @param {string} claimID External Claim ID.
+ * @param dialectID - Claim Dialect ID.
+ * @param claimID - External Claim ID.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -374,14 +371,14 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -389,11 +386,12 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 /**
  * Gets the external claims with the given ID of the dialect.
  *
- * @param {string} dialectID Claim Dialect ID. *
- * @return {Promise<any>} response.
+ * @param dialectID - Claim Dialect ID. *
+ * 
+ * @returns response.
  */
 export const getExternalClaims = (dialectID: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -403,14 +401,14 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -418,14 +416,14 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
 /**
  * Update an external claim.
  *
- * @param {string} dialectID Dialect ID.
- * @param {string} claimID External Claim ID.
- * @param {AddExternalClaim} data Updates with this data.
+ * @param  dialectID - Dialect ID.
+ * @param  claimID - External Claim ID.
+ * @param  data - Updates with this data.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const updateAnExternalClaim = (dialectID: string, claimID: string, data: AddExternalClaim): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             Accept: "application/json",
@@ -437,14 +435,14 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -452,13 +450,13 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
 /**
  * Delete an external claim.
  *
- * @param {string} dialectID Dialect ID.
- * @param {string} claimID Claim ID.
+ * @param  dialectID - Dialect ID.
+ * @param  claimID - Claim ID.
  *
- * @return {Promise<any>} response.
+ * @returns response.
  */
 export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -469,14 +467,14 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -486,10 +484,11 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
  * per the given schema id.
  * 
  * @param id - Selected schema id
- * @returns - list of 
+ * 
+ * @returns response.
  */
 export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSupportedClaimsInterface> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -499,14 +498,14 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -514,13 +513,14 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
 /**
  * Fetch all local claims.
  *
- * @param {ClaimsGetParams} params - limit, offset, sort, attributes, filter.
- * @return {Promise<Claim[]>} response.
- * @throws {IdentityAppsApiException}
+ * @param params - limit, offset, sort, attributes, filter.
+ * 
+ * @returns response.
+ * @throws IdentityAppsApiException.
  */
 export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -558,13 +558,14 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
 /**
  * Get all the claim dialects.
  *
- * @param {ClaimsGetParams} params - sort, filter, offset, attributes, limit.
- * @return {Promise<ClaimDialect[]>} response.
- * @throws {IdentityAppsApiException}
+ * @param params - sort, filter, offset, attributes, limit.
+ * 
+ * @returns response.
+ * @throws IdentityAppsApiException
  */
-export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> => {
+export const getDialects = (params: ClaimDialectsGetParams): Promise<ClaimDialect[]> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -602,14 +603,14 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
 /**
  * Get all the external claims.
  *
- * @param {string } dialectID - Claim Dialect ID.
- * @param {ClaimsGetParams} params - limit, offset, filter, attributes, sort.
- * @return {Promise<ExternalClaim[]>} response.
- * @throws {IdentityAppsApiException}
+ * @param dialectID - Claim Dialect ID.
+ * @param params - limit, offset, filter, attributes, sort.
+ * @returns response.
+ * @throws IdentityAppsApiException
  */
 export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams): Promise<ExternalClaim[]> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -647,3 +648,46 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             return Promise.resolve([]);
         });
 };
+
+/**
+ * Get all SCIM resource types.
+ * 
+ * @returns response.
+ */
+export const getSCIMResourceTypes = (): Promise<any> => {
+    
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.resourceTypes}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ClaimConstants.ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+
