@@ -1,8 +1,6 @@
 var startupConfig = {
     subdomainApplication: false,
-    authorizePath: "/oauth2/authorize",
-    logoutPath: "/oidc/logout",
-    checksessionPath: "/oidc/checksession",
+    pathExtension: "",
     superTenant: "carbon.super",
     superTenantProxy: "carbon.super",
     serverUrl: "https://localhost:9443",

@@ -118,16 +118,16 @@
                         storage: "webWorker",
                         endpoints: {
                             authorizationEndpoint: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.authorizePath)
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath),
+                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize")
+                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
                             logoutEndpointURL: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.logoutPath)
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.logoutPath),
+                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout")
+                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
                             oidcSessionIFrameEndpointURL: userTenant
-                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.checksessionPath)
-                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.checksessionPath),
+                                ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession")
+                                : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined,
                         },

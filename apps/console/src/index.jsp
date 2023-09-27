@@ -152,12 +152,12 @@
                     storage: "webWorker",
                     endpoints: {
                         authorizationEndpoint: getApiPath(userTenant 
-                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.authorizePath),
+                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.logoutPath),
-                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.checksessionPath),
+                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },
