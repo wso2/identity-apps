@@ -89,3 +89,39 @@ export interface ClaimsGetParams {
     attributes?: string;
     "exclude-identity-claims"?: boolean;
 }
+
+/**
+ * Type of query params passed when fetching claim dialects.
+ */
+export interface ClaimDialectsGetParams {
+    limit?: number;
+    offset?: number;
+    filter?: string;
+    sort?: string;
+}
+
+/**
+ * Type of SCIM resource schema extension.
+ */
+export interface SCIMSchemaExtension {
+    schema: string;
+    required?: boolean;
+}
+
+/**
+ * Type of SCIM resource.
+ */
+export interface SCIMResource {
+    schemas: string[];
+    meta: {
+        location: string;
+        resourceType: string;
+    };
+    id: string;
+    name: string;
+    endpoint: string;
+    description: string;
+    schema: string;
+    schemaExtensions?: SCIMSchemaExtension[];
+}
+

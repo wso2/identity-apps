@@ -25,7 +25,6 @@ export class ClaimConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -33,14 +32,26 @@ export class ClaimConstants {
     // API errors
     public static readonly ALL_LOCAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving all the local claims.";
+    
     public static readonly ALL_LOCAL_CLAIMS_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "local claims.";
+    
     public static readonly DIALECTS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving claim dialects.";
+    
     public static readonly DIALECTS_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "claim dialects.";
+    
     public static readonly ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an " +
         "invalid status code while retrieving all the external claims.";
+    
     public static readonly ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "external claims.";
+    
+    public static readonly ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received " +
+        "an invalid status code while retrieving SCIM resource types.";
+    
+    public static readonly ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching " +
+        "the SCIM resource types.";
+        
 }
