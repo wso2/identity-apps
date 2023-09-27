@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
@@ -88,6 +89,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
+    const { setResourceEndpoints } = useResourceEndpoints();
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
@@ -165,6 +167,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     useEffect(() => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+        setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**

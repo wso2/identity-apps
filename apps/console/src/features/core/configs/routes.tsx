@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -145,7 +145,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../identity-providers/pages/identity-provider-template")
+                                    import("../../connections/pages/connection-templates")
                                 ),
                                 exact: true,
                                 icon: {
@@ -158,7 +158,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
+                                component: lazy(() => 
+                                    import("../../connections/pages/connection-edit")
+                                ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -170,7 +172,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../identity-providers/pages/identity-providers")),
+                        component: lazy(() => import("../../connections/pages/connections")),
                         exact: true,
                         icon: {
                             icon: identityProviderConfig?.useNewConnectionsView

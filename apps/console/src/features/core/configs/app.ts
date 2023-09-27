@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
+import { getConnectionResourceEndpoints } from "../../connections";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
@@ -212,6 +213,7 @@ export class Config {
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
+            ...getConnectionResourceEndpoints(this.resolveServerHost()),
             ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
             ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
@@ -249,10 +251,12 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
+            hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplateLoadingStrategy:

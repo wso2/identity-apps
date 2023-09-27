@@ -1,0 +1,14 @@
+{
+    "id": "DEFAULT",
+    "displayName": "",
+    "description": "",
+    "viewConfigs": {
+        "tags": {
+            "as": "label",
+            "showTagIcon": false,
+            "showTags": true,
+            "tagsKey": "services",
+            "sectionTitle": "Services"
+        }
+    }
+}
