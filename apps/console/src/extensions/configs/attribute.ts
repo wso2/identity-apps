@@ -38,7 +38,7 @@ const isIdentityClaims = (claim: ExternalClaim): boolean => {
 };
 
 export const attributeConfig: AttributeConfig = {
-    addAttributeMapping: false,
+    addAttributeMapping: true,
     attributeMappings: {
         deleteAction: false,
         editAttributeMappingDetails: false,
@@ -57,7 +57,7 @@ export const attributeConfig: AttributeConfig = {
 
             return claims;
         },
-        showDangerZone: false,
+        showDangerZone: true,
         showSCIMCore1: false
     },
     attributes: {
