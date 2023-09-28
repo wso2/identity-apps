@@ -121,12 +121,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 const oidc: ClaimDialect[] = [];
                 const scim: ClaimDialect[] = [];
-                const others: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
                 const eidaslegal: ClaimDialect[] = [];
                 const eidasnatural: ClaimDialect[] = [];
                 const openidnet: ClaimDialect[] =[];
                 const xmlsoap: ClaimDialect[] = [];
+                const others: ClaimDialect[] = [];
 
                 filteredDialect.forEach((attributeMapping: ClaimDialect) => {
                     if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
@@ -558,15 +558,16 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 <Grid>
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 12 }>
-                                                            <GenericIcon
-                                                                transparent
+                                                            <Image
+                                                                floated="left"
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                icon={ getTechnologyLogos().oidc }
-                                                                spaced="right"
+                                                                centered
                                                                 size="mini"
-                                                                floated="left"
-                                                            />
+                                                            >
+                                                                <AnimatedAvatar />
+                                                                <span className="claims-letter">A</span>
+                                                            </Image>
                                                             <List.Header>
                                                                 { t(
                                                                     "console:manage.features.claims." + 
