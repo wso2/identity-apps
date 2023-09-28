@@ -1715,6 +1715,11 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
+            placeholders: {
+                emptyRecoveryList: {
+                    heading: "No Account Recovery options available"
+                }
+            },
             description:
                 "ඔබගේ පරිශීලක නාමය හෝ මුරපදය නැවත ලබා ගැනීමට ඔබට උදව් කිරීමට අපට භාවිතා කළ හැකි ප්‍රතිසාධන තොරතුරු " +
                 "කළමනාකරණය කරන්න",

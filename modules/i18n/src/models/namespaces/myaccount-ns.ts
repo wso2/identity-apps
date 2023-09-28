@@ -1025,6 +1025,11 @@ export interface MyAccountNS {
     };
     sections: {
         accountRecovery: {
+            placeholders: {
+                emptyRecoveryList: {
+                    heading: string;
+                };
+            };
             description: string;
             heading: string;
         };

@@ -1586,6 +1586,11 @@ export const myAccount: MyAccountNS = {
     },
     "sections": {
         "accountRecovery": {
+            placeholders: {
+                emptyRecoveryList: {
+                    heading: "No Account Recovery options available"
+                }
+            },
             "description": "Verwalten Sie Wiederherstellungsinformationen, die wir verwenden können, um Ihnen bei der Wiederherstellung Ihres Benutzernamens oder Passworts zu helfen",
             "heading": "Konto-Wiederherstellung"
         },

@@ -1720,6 +1720,11 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
+            placeholders: {
+                emptyRecoveryList: {
+                    heading: "No Account Recovery options available"
+                }
+            },
             description:
                 "Manage recovery information that we can use to help you recover your username or password",
             heading: "Account Recovery"

@@ -1,5 +1,6 @@
+/* eslint-disable header/header */
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -159,7 +160,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             placeholder={
                 !isAccountRecoveryDetailsLoading &&
                 !(isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled)
-                    ? "No Account Recovery options available"
+                    ? t("myAccount:sections.accountRecovery.placeholders.emptyRecoveryList.heading")
                     : null
             }
         >
@@ -167,7 +168,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                 <List divided={ true } verticalAlign="middle" className="main-content-inner">
                     <List.Item className="inner-list-item">
                         { hasRequiredScopes(
-                            featureConfig?.security,
+                            featureConfig?.security, 
                             featureConfig?.security?.scopes?.read,
                             allowedScopes
                         ) &&
