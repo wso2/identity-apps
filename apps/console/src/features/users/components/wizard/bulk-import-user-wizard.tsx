@@ -15,143 +15,134 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { RolesInterface, TestableComponentInterface, ClaimDialect,
-    ExternalClaim,  AlertInterface, 
-    AlertLevels,  } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    ClaimDialect,
+    ExternalClaim,
+    SCIMResource,
+    SCIMSchemaExtension,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     CSVFileStrategy,
     CSVResult,
-    ContentLoader,
     FilePicker,
-    Heading,
-    Hint,
     LinkButton,
-    Message,
     PickerResult,
     PrimaryButton,
-    URLInput,
     useWizardAlert
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { addAlert } from "@wso2is/core/store";
-import { useTranslation } from "react-i18next";
-import {  Button, Grid, Icon, Modal } from "semantic-ui-react";
-import { getRoleById } from "../../../roles/api/roles";
-import { PermissionList } from "../../../roles/components/wizard/role-permission";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../core";
-import { getDialects, getAllExternalClaims } from "../../../claims/api";
-import { ClaimManagementConstants } from "../../../claims/constants";
-import { SCIMConfigs, attributeConfig } from "../../../../extensions";
-import { type } from "os";
 import Axios from "axios";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { v4 as uuidv4 } from "uuid";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { resolveType } from "../../../claims/utils";
-
-
+import { getCertificateIllustrations } from "../../../core";
+import { bulkAddUsers } from "../../api";
+import { BlockedBulkUserImportAttributes } from "../../constants";
+import { BulkUserImportOperationResponse, BulkUserImportOperationStatus, SCIMBulkOperation } from "../../models";
+import { BulkImportResponseList } from "../bulk-import-response-list";
 
 /**
- * Proptypes for the role permission component.
+ * Prototypes for the BulkImportUserWizardComponent.
  */
 interface BulkImportUserInterface extends TestableComponentInterface {
-    isAdminUser?: boolean;
     closeWizard: () => void;
 }
 
+interface SCIMOperation {
+    method: string;
+    bulkId: string;
+    path: string;
+    data: any;
+}
+
+interface SCIMRequestBody {
+    failOnErrors: number;
+    schemas: string[];
+    Operations: SCIMOperation[];
+}
+
+interface CSVAttributeMapping {
+    attributeName: string;
+    mappedLocalClaimURI: string;
+    mappedSCIMAttributeURI: string;
+    mappedSCIMClaimDialectURI: string;
+    claimURI?: string;
+}
+
+interface BulkResponseSummary {
+    successCount: number;
+    failedCount: number;
+}
+
+const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
+const SCIM2_ENTERPRISE_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
+const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
+
 /**
- *  Roles permission component.
+ *  BulkImportUserWizard component.
  *
  * @param props - Props injected to the component.
- * @returns Roles permission component.
+ * @returns BulkImportUser
  */
-export const BulkImportUserWizard
-: FunctionComponent<BulkImportUserInterface> = (
+export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const {
-        closeWizard,
-        isAdminUser,
-        [ "data-testid" ]: testId
-    } = props;
+    const { closeWizard, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const [ selectedCSVFile, setSelectedCSVFile] = useState<File>(null);
-    const [ pastedCSVContent, setPastedCSVContent ] = useState<string>(null);
-    const [emptyFileError, setEmptyFileError] = useState(false);
+    const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
+    const [ emptyFileError, setEmptyFileError ] = useState(false);
     const [ userData, setUserData ] = useState<CSVResult>();
-    const [role, setRole] = useState<RolesInterface>();
-    const [alert, setAlert, alertComponent] = useWizardAlert();
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
-    const [claimMapping, setClaimMapping] = useState<any[]>([]); //TODO: Define
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const listAllAttributeDialects: boolean = useSelector(
-        (state: AppState) => state.config.ui.listAllAttributeDialects
-    );
-    
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
+    const [ showResponseView, setShowResponseView ] = useState<boolean>(false);
+    const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
+
     /**
-     * Fetches all the dialects.
-     *
-     * @param {number} limit.
-     * @param {number} offset.
-     * @param {string} sort.
-     * @param {string} filter.
+     * Fetches SCIM dialects.
      */
-    const getDialect = async (limit?: number, offset?: number, sort?: string,
-        filter?: string): Promise<ClaimDialect[]> => {
-        
+    const getSCIMDialects = async (): Promise<ClaimDialect[]> => {
         setIsLoading(true);
 
         try {
-            const response: ClaimDialect[] = await getDialects({filter, limit, offset, sort });
-            const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
-                if (!listAllAttributeDialects) {
-                    return (
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("AXSCHEMA") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_LEGAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("EIDAS_NATURAL") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET") &&
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
-                        (attributeConfig.attributeMappings.showSCIMCore1
-                        || claim.dialectURI !== "urn:scim:schemas:core:1.0")
-                    );
-                }
-                return claim.id !== "local";
-            });
+            // Get SCIM dialect URIs for the user resource.
+            const resourceResponse: any = await getSCIMResourceTypes();
+            const scimResources: SCIMResource[] = resourceResponse?.Resources;
+            let scimDialectsSchemas: string[];
 
-            const attributeMappings: ClaimDialect[] = [];
-            const type: string = "scim";
+            for (const resource of scimResources) {
+                if (resource?.id === "User") {
+                    const schemaExtensions: SCIMSchemaExtension[] = resource?.schemaExtensions;
 
-            filteredDialect.forEach((attributeMapping: ClaimDialect) => {
-                if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
-                    type === ClaimManagementConstants.OIDC && attributeMappings.push(attributeMapping);
-                } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
-                    (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
-                    type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
-                } else if (type === ClaimManagementConstants.OTHERS) {
-                    attributeMappings.push(attributeMapping);
-                }
-            });
+                    scimDialectsSchemas = schemaExtensions.map((extension: SCIMSchemaExtension) => {
+                        return extension.schema;
+                    });
 
-            if (type === ClaimManagementConstants.SCIM) {
-                if (attributeConfig.showCustomDialectInSCIM 
-                    && filteredDialect.filter(e => e.dialectURI 
-                        === attributeConfig.localAttributes.customDialectURI).length > 0  ) {
-                    attributeMappings.push(filteredDialect.filter(e => e.dialectURI 
-                        === attributeConfig.localAttributes.customDialectURI)[0]);
+                    scimDialectsSchemas.push(resource?.schema);
                 }
             }
 
-            setDialects(attributeMappings);
+            const dialectResponse: ClaimDialect[] = await getDialects({});
 
-            return attributeMappings;
+            // Filter only the SCIM dialects.
+            const scimDialects: ClaimDialect[] = dialectResponse.filter((dialect: ClaimDialect) => {
+                return scimDialectsSchemas.includes(dialect.dialectURI);
+            });
 
+            return scimDialects;
         } catch (error) {
             dispatch(
                 addAlert({
@@ -159,14 +150,14 @@ export const BulkImportUserWizard
                         error?.response?.data?.description ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                            ".genericError.description"
+                                ".genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.response?.data?.message ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                            ".genericError.message"
+                                ".genericError.message"
                         )
                 })
             );
@@ -176,44 +167,40 @@ export const BulkImportUserWizard
     };
 
     /**
-     * This will fetch external claims for each dialect 
-     * and create a list of already mapped local claims 
-     * for filteration purpose.
-     * 
-     * TODO : This is not the ideal way to fetch and 
-     *        identify the already mapped claims. Need
-     *        API support for this.
+     * This will fetch external claims for each dialect
+     * and create a list of already mapped local claims.
      */
-    const getClaimMapping = async (dialects: ClaimDialect[], 
-        limit?: number, 
-        offset?: number, 
-        sort?: string, 
-        filter?: string) => {
-        
-        const dialectIdList: string[] = dialects.map((dialect: ClaimDialect) => dialect.id);
-        const mappedLocalClaimPromises: Promise<ExternalClaim[]>[] = dialectIdList.map((id: string) =>
-            getAllExternalClaims(id, {
-                filter,
-                limit,
-                offset,
-                sort
-            })
-        );
-    
-        const type: string = "scim";
-        
+    const getClaimMapping = async (): Promise<CSVAttributeMapping[]> => {
+        const scimDialects: ClaimDialect[] = await getSCIMDialects();
+
+        const scimClaimPromises: Promise<ExternalClaim[]>[] = [];
+
+        scimDialects.forEach((dialect: ClaimDialect) => {
+            scimClaimPromises.push(getAllExternalClaims(dialect.id, null));
+        });
+
         try {
-            const response: ExternalClaim[][] = await Axios.all(mappedLocalClaimPromises);
+            const scimClaimResponse: ExternalClaim[][] = await Axios.all(scimClaimPromises);
+            const _attributeMapping: CSVAttributeMapping[] = [];
 
-            const claimMapping: ExternalClaim[] = [];
+            scimClaimResponse.forEach((claimList: ExternalClaim[]) => {
+                const claims: CSVAttributeMapping[] = claimList.map(
+                    (item: ExternalClaim): CSVAttributeMapping => {
+                        return {
+                            attributeName: item.mappedLocalClaimURI
+                                .replace("http://wso2.org/claims/", "")
+                                .toLowerCase(),
+                            mappedLocalClaimURI: item.mappedLocalClaimURI,
+                            mappedSCIMAttributeURI: item.claimURI,
+                            mappedSCIMClaimDialectURI: item.claimDialectURI
+                        };
+                    }
+                );
 
-            response.forEach((claimList: ExternalClaim[]) => {
-                claimMapping.push(...claimList);
+                _attributeMapping.push(...claims);
             });
 
-            setClaimMapping(claimMapping);
-
-            return claimMapping;
+            return _attributeMapping;
         } catch (error) {
             dispatch(
                 addAlert({
@@ -221,15 +208,15 @@ export const BulkImportUserWizard
                         error[0]?.response?.data?.description ||
                         t(
                             "console:manage.features.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.description",
-                            { type: resolveType(type) }
+                                "fetchExternalClaims.genericError.description",
+                            { type: resolveType("scim") }
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error[0]?.response?.data?.message ||
                         t(
                             "console:manage.features.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.message"
+                                "fetchExternalClaims.genericError.message"
                         )
                 })
             );
@@ -238,84 +225,354 @@ export const BulkImportUserWizard
         }
     };
 
-    // TODO: Error message
-    const validateCSVHeaders = (headers: string[], blockedAttributes: string[]): boolean => {
-        // Check if headers contain any blocked attributes
-        for (const attribute of headers) {
-            if (blockedAttributes.includes(attribute)) {
-                console.error(`Header "${attribute}" is a blocked attribute.`);
-                setAlert({
-                    description: 
-                        `Header "${attribute}" is not allowed.`,
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.users.notifications.addUser.error.message"
-                    )
-                });
+    /**
+     * Validate the CSV file.
+     *
+     * @param userData - user data from the CSV file.
+     * @param blockedAttributes - blocked attributes.
+     * @param externalClaimAttributes - external claim attributes.
+     * @returns
+     */
+    const validateCSVFile = (
+        userData: CSVResult,
+        blockedAttributes: string[],
+        externalClaimAttributes: string[]
+    ): boolean => {
+        const headers: string[] = userData.headers.map((header: string) => header.toLowerCase());
+        const rows: string[][] = userData.items;
 
+        if (isEmpty(headers) || isEmpty(rows)) {
+            setAlert({
+                description: "CSV file is empty.",
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.addUser.error.message")
+            });
+
+            return false;
+        }
+
+        for (const attribute of headers) {
+            if (isInvalidAttribute(attribute, blockedAttributes, externalClaimAttributes)) {
                 return false;
             }
         }
-    
-        // Check if any attribute is empty or null
-        for (const attribute of headers) {
-            if (!attribute || attribute.trim() === "") {
-                console.error("Header cannot be empty or null.");
-                setAlert({
-                    description:
-                        "Header cannot be empty or null.",
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.users.notifications.addUser.error.message"
-                    )
-                });
 
-                return false;
-            }
-        }
-    
-        // Check headers against a regex pattern
-        // This regex checks for any character that is not an alphabet, number, or the '/' character.
-        const regexPattern = /[^a-zA-Z0-9/]/; 
-        
-        for (const attribute of headers) {
-            if (regexPattern.test(attribute)) {
-                setAlert({
-                    description: 
-                        `Header "${attribute}" contains invalid characters.`,
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.users.notifications.addUser.error.message"
-                    )
-                });
-
-                return false;
-            }
-        }
         return true;
     };
 
+    // Helper function to check if the array is empty.
+    const isEmpty = (array: any[]): boolean => {
+        return array.length === 0;
+    };
 
-    const handleSubmitButtonClick = async () => {
-        setIsSubmitting(true);
-        const dialects = await getDialect();
+    // Helper function to check if the attribute is invalid.
+    const isInvalidAttribute = (
+        attribute: string,
+        blockedAttributes: string[],
+        externalClaimAttributes: string[]
+    ): boolean => {
+        const regexPattern: RegExp = /[^a-zA-Z0-9/.]/;
 
-        const claimMapping: ExternalClaim[] = await getClaimMapping(dialects);
-        
-        const externalClaimAttributes: string[] = claimMapping.map((item: ExternalClaim) => {
-            return item.mappedLocalClaimURI.replace("http://wso2.org/claims/", "");
-        });
-        console.log(claimMapping, externalClaimAttributes);
+        if (!attribute || attribute.trim() === "" || regexPattern.test(attribute)) {
+            setAlert({
+                description:
+                    !attribute || attribute.trim() === ""
+                        ? "Header cannot be empty or null."
+                        : `Header "${attribute}" contains invalid characters.`,
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.addUser.error.message")
+            });
 
-        const blockedAttributes = ["roles", "groups"]
-
-        if (!validateCSVHeaders(userData.headers, blockedAttributes)) {
-            setIsSubmitting(false);
-            return;
+            return true;
         }
 
-        setIsSubmitting(false);
-        
+        if (blockedAttributes.includes(attribute)) {
+            setAlert({
+                description: `Header "${attribute}" is not allowed.`,
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.addUser.error.message")
+            });
+
+            return true;
+        }
+
+        if (!externalClaimAttributes.some((externalClaim: string) => attribute === externalClaim.toLowerCase())) {
+            setAlert({
+                description: `Header "${attribute}" is not a valid attribute.`,
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.addUser.error.message")
+            });
+
+            return true;
+        }
+
+        return false;
+    };
+
+    /**
+     * Generate SCIM Operation.
+     *
+     * @param row - user data row.
+     * @param filteredAttributeMapping - filtered attribute mapping.
+     * @param headers - csv headers.
+     * @returns
+     */
+    const generateOperation = (
+        row: string[],
+        filteredAttributeMapping: CSVAttributeMapping[],
+        headers: string[]
+    ): SCIMOperation => {
+        const asyncOperationID: string = uuidv4();
+
+        return {
+            bulkId: `bulkId.${row[headers.indexOf("username")]}.${asyncOperationID}`,
+            data: generateData(row, filteredAttributeMapping, headers),
+            method: "POST",
+            path: "/Users"
+        };
+    };
+
+    /**
+     * Generate SCIM Bulk Request Body
+     *
+     * @param attributeMapping - attribute mapping.
+     * @returns
+     */
+    const generateSCIMRequestBody = (attributeMapping: CSVAttributeMapping[]): SCIMRequestBody => {
+        const headers: string[] = userData.headers.map((header: string) => header.toLowerCase());
+        const rows: string[][] = userData.items;
+
+        const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
+
+        const operations: SCIMOperation[] = rows.map(row => generateOperation(row, filteredAttributeMapping, headers));
+
+        return {
+            Operations: operations,
+            failOnErrors: 0,
+            schemas: [ BULK_REQUEST_SCHEMA ]
+        };
+    };
+
+    /**
+     * Get only attributes that are in the header.
+     * @param headers - csv header.
+     * @param attributeMapping  - attribute mapping.
+     * @returns
+     */
+    const filterAttributes = (headers: string[], attributeMapping: CSVAttributeMapping[]): CSVAttributeMapping[] => {
+        return headers
+            .map((header: string) =>
+                attributeMapping.find(
+                    (attribute: CSVAttributeMapping) => header.toLowerCase() === attribute.attributeName.toLowerCase()
+                )
+            )
+            .filter(Boolean);
+    };
+
+    /**
+     * Get SCIM data for each operation.
+     *
+     * @param row - user data row.
+     * @param filteredAttributeMapping - filtered attribute mapping.
+     * @param headers - csv headers.
+     * @returns
+     */
+    const generateData = (row: string[], filteredAttributeMapping: CSVAttributeMapping[], headers: string[]): any => {
+        const data: any = {};
+        const schemasSet: Set<string> = new Set([ SCIM2_USER_SCHEMA ]);
+
+        for (const attribute of filteredAttributeMapping) {
+            const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
+                `${attribute.mappedSCIMClaimDialectURI}:`,
+                ""
+            );
+            const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
+
+            if (attribute.attributeName === "emails") {
+                data["emails"] = [
+                    {
+                        primary: true,
+                        value: attributeValue
+                    }
+                ];
+
+                continue;
+            } else if (attribute.attributeName === "mobile") {
+                data["phoneNumbers"] = [
+                    {
+                        type: "mobile",
+                        value: attributeValue
+                    }
+                ];
+
+                continue;
+            }
+
+            // Add the schema to the set
+            schemasSet.add(attribute.mappedSCIMClaimDialectURI);
+
+            const isMultiValued: boolean = scimAttribute.includes("#");
+            const cleanedAttribute: string = isMultiValued ? scimAttribute.split("#")[0] : scimAttribute;
+
+            // Handle simple attributes.
+            if (!cleanedAttribute.includes(".")) {
+                const target: any =
+                    attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
+                        ? data
+                        : data[attribute.mappedSCIMClaimDialectURI] || (data[attribute.mappedSCIMClaimDialectURI] = {});
+
+                if (isMultiValued) {
+                    target[cleanedAttribute] = (target[cleanedAttribute] || []).concat(attributeValue);
+                } else {
+                    target[cleanedAttribute] = attributeValue;
+                }
+            }
+            // Handle complex attributes.
+            else if (cleanedAttribute.includes(".")) {
+                const [ parentAttr, childAttr ] = cleanedAttribute.split(".");
+
+                const target: any =
+                    attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
+                        ? data
+                        : data[attribute.mappedSCIMClaimDialectURI] || (data[attribute.mappedSCIMClaimDialectURI] = {});
+
+                if (isMultiValued) {
+                    target[parentAttr] = (target[parentAttr] || []).concat({
+                        [childAttr]: attributeValue
+                    });
+                } else {
+                    if (!target[parentAttr]) {
+                        target[parentAttr] = {};
+                    }
+                    target[parentAttr][childAttr] = attributeValue;
+                }
+            }
+
+            // Check if the SCIM2_ENTERPRISE_USER_SCHEMA exists; if not, create an empty object.
+            if (!data[SCIM2_ENTERPRISE_USER_SCHEMA]) {
+                data[SCIM2_ENTERPRISE_USER_SCHEMA] = {};
+            }
+
+            // Set the askPassword attribute to "true".
+            data[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
+        }
+
+        return {
+            schema: Array.from(schemasSet),
+            ...data
+        };
+    };
+
+    /**
+     * Handle bulk user import.
+     */
+    const handleBulkUserImport = async () => {
+        setIsSubmitting(true);
+
+        try {
+            const attributeMapping: CSVAttributeMapping[] = await getClaimMapping();
+            const validAttributeNames: string[] = attributeMapping.map(
+                (item: CSVAttributeMapping) => item.attributeName
+            );
+            const blockedAttributeNames: string[] = Object.values(BlockedBulkUserImportAttributes);
+
+            if (!validateCSVFile(userData, blockedAttributeNames, validAttributeNames)) {
+                return;
+            }
+
+            const scimRequestBody: SCIMRequestBody = generateSCIMRequestBody(attributeMapping);
+
+            setShowResponseView(true);
+            const scimResponse: any = await bulkAddUsers(scimRequestBody);
+
+            if (scimResponse.status !== 200) {
+                throw new Error("Failed to import users.");
+            }
+
+            const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
+
+            setResponse(response);
+        } catch (error) {
+            setAlert({
+                description: t("console:manage.features.users.notifications.addUser.error.message"),
+                level: AlertLevels.ERROR,
+                message: "Error occurred while importing users."
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    /**
+     * Generate bulk response. 
+     * @param operation - SCIM bulk operation.
+     * @returns
+     */
+    const generateBulkResponse = (operation: SCIMBulkOperation): BulkUserImportOperationResponse => {
+        const username: string = operation.bulkId.split(".")[1];
+        const statusCode: number = operation?.status?.code;
+
+        const defaultMsg: string = "Error occurred while importing user.";
+
+        const statusMessages: Record<number, string> = {
+            201: "User imported successfully.",
+            202: "User creation accepted.",
+            400: "Invalid data.",
+            409: "User already exists.",
+            500: defaultMsg
+        };
+
+        // Update the summary.
+        setBulkResponseSummary((prevSummary: BulkResponseSummary) => {
+            
+            const successCount: number =
+                (statusCode === 201 || statusCode === 202) ? prevSummary.successCount + 1 : prevSummary.successCount;
+            const failedCount: number =
+                (statusCode !== 201 && statusCode !== 202) ? prevSummary.failedCount + 1 : prevSummary.failedCount;
+
+            return {
+                ...prevSummary,
+                failedCount,
+                successCount
+            };
+        });
+
+        return {
+            message: statusMessages[statusCode] || defaultMsg,
+            status: getStatusFromCode(statusCode),
+            username
+        };
+    };
+
+    /**
+     * Get status from the status code.
+     *
+     * @param statusCode - Status code.
+     * @returns
+     */
+    const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
+        if (statusCode === 201) return "Success";
+        if (statusCode === 202) return "Warning";
+
+        return "Failed";
+    };
+
+    /**
+     * Renders the bulk response summary.
+     * 
+     * @returns BulkResponseSummary component.
+     */
+    const showBulkResponseSummary = (): ReactElement => {
+        return (
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                    Success Count: { bulkResponseSummary.successCount }
+                </Grid.Column>
+                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                    Failed Count: { bulkResponseSummary.failedCount }
+                </Grid.Column>
+            </Grid.Row>
+        );
     };
 
     return (
@@ -330,67 +587,92 @@ export const BulkImportUserWizard
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                {/* { t("console:manage.features.user.modals.bulkUserImportWizard.title") } */}
+                { /* { t("console:manage.features.user.modals.bulkUserImportWizard.title") } */ }
                 Bulk Import Users
             </Modal.Header>
-            
+
             <Modal.Content className="content-container" scrolling>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <FilePicker
-                                key={ 1 }
-                                fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
-                                file={ selectedCSVFile }
-                                pastedContent={ pastedCSVContent }
-                                onChange={ (result: PickerResult<any>) => {
-                                    setSelectedCSVFile(result.file);
-                                    setPastedCSVContent(result.pastedContent);
-                                    setUserData(result.serialized);
-                                } }
-                                uploadButtonText="Upload CSV File"
-                                dropzoneText="Drag and drop a CSV file here."
-                                data-testid={ `${testId}-form-wizard-bulk-user-import-file-picker` }
-                                icon={ getCertificateIllustrations().uploadPlaceholder }
-                                placeholderIcon={ <Icon name="file code" size="huge"/> }
-                                normalizeStateOnRemoveOperations={ true }
-                                emptyFileError={ emptyFileError }
-                                hidePasteOption={ true }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { alert && alertComponent }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-               
+                { !showResponseView ? (
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <FilePicker
+                                    key={ 1 }
+                                    fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                    file={ selectedCSVFile }
+                                    onChange={ (result: PickerResult<any>) => {
+                                        setSelectedCSVFile(result.file);
+                                        setUserData(result.serialized);
+                                        setAlert(null);
+                                    } }
+                                    uploadButtonText="Upload CSV File"
+                                    dropzoneText="Drag and drop a CSV file here."
+                                    data-testid={ `${testId}-form-wizard-csv-file-picker` }
+                                    icon={ getCertificateIllustrations().uploadPlaceholder }
+                                    placeholderIcon={ <Icon name="file code" size="huge" /> }
+                                    normalizeStateOnRemoveOperations={ true }
+                                    emptyFileError={ emptyFileError }
+                                    hidePasteOption={ true }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                { alert && alertComponent }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) : (
+                    <Grid>
+                        
+                        { showResponseView && !isSubmitting && showBulkResponseSummary() }
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <BulkImportResponseList
+                                    isLoading={ isSubmitting }
+                                    data-testid={ `${testId}-bulk-user-response-list` }
+                                    responseList={ response }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
+
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        { alert && alertComponent }
+                    </Grid.Column>
+                </Grid.Row>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                data-testid={ `${ testId }-cancel-button` }
+                                data-testid={ `${testId}-cancel-button` }
                                 floated="left"
-                                onClick={() => closeWizard()}
+                                onClick={ () => {
+                                    closeWizard();
+                                    setShowResponseView(false);
+                                } }
                                 disabled={ isSubmitting }
                             >
-                                { t("common:cancel") }
+                                { t("common:close") }
                             </LinkButton>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton
-                                data-testid={ `${ testId }-finish-button` }
-                                floated="right"
-                                onClick={handleSubmitButtonClick }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                            >
-                                Finish</PrimaryButton>
-                            
-                        </Grid.Column>
+                        { !showResponseView || isSubmitting ? (
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <PrimaryButton
+                                    data-testid={ `${testId}-finish-button` }
+                                    floated="right"
+                                    onClick={ handleBulkUserImport }
+                                    loading={ isSubmitting }
+                                    disabled={ isLoading || isSubmitting }
+                                >
+                                    Finish
+                                </PrimaryButton>
+                            </Grid.Column>
+                        ) : null }
                     </Grid.Row>
                 </Grid>
             </Modal.Actions>
@@ -398,4 +680,7 @@ export const BulkImportUserWizard
     );
 };
 
-const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
+const initialBulkResponseSummary: BulkResponseSummary = {
+    failedCount: 0,
+    successCount: 0
+};

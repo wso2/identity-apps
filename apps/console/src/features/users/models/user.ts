@@ -337,3 +337,17 @@ export interface PayloadInterface {
       }[];
       schemas: string[];
 }
+
+/**
+ * Type of the bulk user import operation status.
+ */
+export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
+
+/**
+ * Interface for the bulk user import operation response.
+ */
+export interface BulkUserImportOperationResponse {
+    username: string;
+    status: BulkUserImportOperationStatus;
+    message: string;
+}

@@ -21,17 +21,18 @@ import { UsersResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Users feature.
  *
- * @param {string} serverHost - Server Host.
- * @return {UsersResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ * @returns UsersResourceEndpointsInterface
  */
 export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndpointsInterface => {
     return {
         bulk: `${ serverHost }/scim2/Bulk`,
         groups: `${ serverHost }/scim2/Groups`,
-        me: `${ serverHost }/scim2/Me`,
+        me: `${serverHost}/scim2/Me`,
+        resourceTypes: `${ serverHost }/scim2/ResourceTypes`,
         schemas: `${ serverHost }/scim2/Schemas`,
         userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,
-        users: `${ serverHost }/scim2/Users`
+        users: `${serverHost}/scim2/Users`
     };
 };

@@ -28,7 +28,7 @@ import useRequest, {
 import { store } from "../../core/store";
 import { PatchRoleDataInterface } from "../../roles/models";
 import { UserManagementConstants } from "../constants";
-import { UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
+import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
 
 /**
  * Initialize an axios Http client.

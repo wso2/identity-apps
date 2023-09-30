@@ -37,21 +37,21 @@ export class UserManagementConstants {
      * @typeparam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
      * @defaultValue
      */
-    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
+    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT: number = 10;
 
     /**
      * Default email template type list item limit.
      * @typeparam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
      * @defaultValue
      */
-    public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT = 10;
+    public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT: number = 10;
 
     /**
      * Default user list attributes.
      * @typeparam DEFAULT_USER_LIST_ATTRIBUTES - string[]
      * @defaultValue
      */
-    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "profileUrl",
+    public static readonly DEFAULT_USER_LIST_ATTRIBUTES: string[] = [ "name", "emails", "userName", "profileUrl",
         "meta.lastModified" ];
 
     /**
@@ -126,4 +126,10 @@ export enum UserAccountTypes {
     USER = "User",
     CUSTOMER = "Customer",
     COLLABORATOR = "Collaborator"
+}
+
+export enum BlockedBulkUserImportAttributes {
+    PASSWORD = "password",
+    ROLES = "roles",
+    VERIFY_EMAIL = "verifyEmail"
 }

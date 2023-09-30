@@ -570,7 +570,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     )
             }
             {
-                <Message
+                hasError &&
+                (<Message
                     error
                     visible={ hasError }
                     data-testid={ "file-picker-error-message" }
@@ -578,7 +579,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 >
                     <Icon name="file"/>
                     { errorMessage }
-                </Message>
+                </Message>)
+                
             }
         </React.Fragment>
     );
@@ -957,7 +959,6 @@ export interface CSVResult {
     items: string[][];
 }
 
-// TODO: As a improvement add a CSV validation logic.
 export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
     static readonly ENCODING: string = "UTF-8";
@@ -967,7 +968,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
     ];
 
     static readonly KILOBYTE: number = 1e+3;
-    static readonly MAX_FILE_SIZE: number = 300 * CSVFileStrategy.KILOBYTE;
+    static readonly MAX_FILE_SIZE: number = 250 * CSVFileStrategy.KILOBYTE;
 
     mimeTypes: string[];
 
@@ -982,14 +983,15 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
         return new Promise<CSVResult>((resolve, reject) => {
             if (!data) {
                 reject({ valid: false });
+                
                 return;
             }
 
             const processCSV = (csvContent: string) => {
-                // Split by lines
-                const lines = csvContent.split("\n");
+                // Split by lines and filter out empty lines
+                const lines = csvContent.split("\n").filter(line => line.trim() !== "");
                 // Split each line by comma to get items
-                const items = lines.map(line => line.split(","));
+                const items = lines.map(line => line.split(",").map(item => item.trim()));
                 // First line is the header
                 const headers = items.shift();
 
