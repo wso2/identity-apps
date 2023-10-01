@@ -4934,6 +4934,11 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "Représentation du schéma d'échange d'attributs (axschema) "
+                            + "pour les attributs utilisateur.",
+                        heading: "Schéma d'échange d'attributs"
+                    },
                     custom: {
                         description: "Représentation de protocole personnalisé pour les " +
                             "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
@@ -5085,6 +5090,11 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
+                            axschema: {
+                                description: "Le schéma d'échange d'attributs (axschema) définit un protocole "
+                                    + "standardisé pour représenter et échanger les attributs utilisateur.",
+                                heading: "Schéma d'échange d'attributs"
+                            },
                             custom: {
                                 description: "Communiquez des informations sur l'utilisateur via " +
                                     "des mappages personnalisés.",

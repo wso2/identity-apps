@@ -3198,6 +3198,10 @@ export interface ConsoleNS {
             };
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        heading: string;
+                        description: string;
+                    },
                     oidc: {
                         heading: string;
                         description: string;
@@ -3275,6 +3279,10 @@ export interface ConsoleNS {
                                 heading: string;
                                 description: string;
                             };
+                            axschema: {
+                                heading: string;
+                                description: string;
+                            }
                             custom: {
                                 heading: string;
                                 description: string;

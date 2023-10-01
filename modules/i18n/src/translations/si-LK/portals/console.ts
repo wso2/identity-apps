@@ -4816,6 +4816,11 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "පරිශීලක ගුණාංග සඳහා Attribute Exchange Schema (axschema) ප්‍රොටොකෝලය "
+                            + "නිරූපණය.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "අභිරුචි ගුණාංග"
@@ -4961,6 +4966,11 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
+                            axschema: {
+                                description: "Attribute Exchange Schema (axschema) යනු පරිශීලක තොරතුරු "
+                                    + "නියෝජනය කිරීම සහ හුවමාරු කිරීම සඳහා නිර්මාණය කරන ලද ප්‍රමිතිගත ප්‍රොටෝකෝලයකි.",
+                                heading: "Attribute Exchange Scheme"
+                            },
                             custom: {
                                 description: "අභිරුචි සිතියම්කරණය හරහා පරිශීලකයා පිළිබඳ තොරතුරු සන්නිවේදනය කරන්න.",
                                 heading: "අභිරුචි ගුණාංග සිතියම්ගත කිරීම"

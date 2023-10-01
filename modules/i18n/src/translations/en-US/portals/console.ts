@@ -6515,6 +6515,11 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "The Attribute Exchange Schema (axschema) representation "
+                            + "for user attributes.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "The custom protocol representation for user "
                             + "attributes.",
@@ -6664,6 +6669,11 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
+                            axschema: {
+                                description: "The Attribute Exchange Schema (axschema) defines a standardized "
+                                    + "protocol for representing and exchanging user attributes.",
+                                heading: "Attribute Exchange Schema"
+                            },
                             custom: {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"

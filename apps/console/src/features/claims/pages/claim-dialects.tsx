@@ -572,7 +572,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features.claims." + 
                                                                     "dialects.sections." +
-                                                                    "manageAttributeMappings.oidc.heading"
+                                                                    "manageAttributeMappings.axschema.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -581,7 +581,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "oidc.description"
+                                                                    "axschema.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
