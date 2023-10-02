@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { RolesInterface } from "@wso2is/core/models";
 import { ScimOperationsInterface } from "../../roles/models/roles";
 
 export interface OrganizationInterface {

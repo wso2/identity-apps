@@ -37,6 +37,7 @@ import {
     ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 
 /**
  * Get an axios instance.
@@ -206,7 +207,7 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: HttpError) => {
+        .catch((error: IdentityAppsApiException) => {
             return Promise.reject(error?.response?.data);
         });
 };

@@ -74,7 +74,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -629,8 +629,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             ]
                     : window["AppUtils"].getConfig().organizationName
                         ? [
-                                ...AppUtils.getHiddenRoutes(), 
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                            ...AppUtils.getHiddenRoutes(), 
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
                         ]
                         : [ 
                             ...AppUtils.getHiddenRoutes(), 

@@ -27,12 +27,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
+import { 
+    ReactComponent as CrossIcon 
+} from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { getMiscellaneousIcons } from "../../../core";
 import OrganizationSwitcherList from
     "../../../organizations/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "../../../organizations/constants";
 import { OrganizationInterface } from "../../../organizations/models";
-import { ReactComponent as CrossIcon } from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";

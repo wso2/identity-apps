@@ -34,13 +34,13 @@ import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, AppState } from "../../../core";
+import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import {
     BreadcrumbItem,
     GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
-import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 
 /**
  * Interface for component dropdown.

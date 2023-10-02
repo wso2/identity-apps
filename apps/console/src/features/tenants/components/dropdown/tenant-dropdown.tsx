@@ -47,20 +47,20 @@ import {
     Placeholder,
     SemanticICONS
 } from "semantic-ui-react";
+import { organizationConfigs } from "../../../../extensions";
+import { 
+    FeatureGateConstants 
+} from "../../../../extensions/components/feature-gate/constants/feature-gate";
 import { getMiscellaneousIcons } from "../../../core/configs";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers/history";
 import { AppState } from "../../../core/store";
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
-import { 
-    FeatureGateConstants 
-} from "../../../../extensions/components/feature-gate/constants/feature-gate";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
-import { organizationConfigs } from "../../../../extensions";
 
 /**
  * Dashboard layout Prop types.
@@ -518,7 +518,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                         data-testid={ "tenant-switch-menu" }
                                                     >
                                                         <ArrowLeftArrowRightIcon fill="black" />
-                                                        { t("extensions:manage.features.tenant.header.tenantSwitchHeader") }
+                                                        { 
+                                                            t("extensions:manage.features." + 
+                                                                "tenant.header.tenantSwitchHeader") 
+                                                        }
                                                     </Dropdown.Item>
                                                 )
                                                 : null
@@ -528,7 +531,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                             (tenantDropdownLinks
                                                 && tenantDropdownLinks.length
                                                 && tenantDropdownLinks.length > 0)
-                                                ? tenantDropdownLinks.map((link: TenantDropdownLinkInterface, index: number) => {
+                                                ? tenantDropdownLinks.map(
+                                                (link: TenantDropdownLinkInterface, index: number) => {
+
                                                     const {
                                                         content,
                                                         icon,
@@ -544,7 +549,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                             // Temporarily hiding dropdown item until
                                                             // modal is implemented.
                                                             // style={{display:'none'}}
-                                                            data-testid={ `tenant-dropdown-link-${ name.replace(" ", "-") }` }
+                                                            data-testid={ 
+                                                                `tenant-dropdown-link-
+                                                                    ${ name.replace(" ", "-") }` 
+                                                            }
                                                         >
                                                             {
                                                                 icon

@@ -414,8 +414,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             {
                 "data-componentid": `${ componentId }-item-switch-button`,
                 hidden: (organization: OrganizationInterface): boolean => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -441,8 +442,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
                     ),
                 icon: (organization: OrganizationInterface): SemanticICONS => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -459,8 +461,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
                     handleOrganizationEdit(organization.id),
                 popupText: (organization: OrganizationInterface ): string => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -479,8 +482,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
                 hidden: (organization: OrganizationInterface): boolean => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }

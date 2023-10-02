@@ -47,8 +47,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { organizationConfigs } from "../../../extensions";
-import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, store, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
@@ -57,6 +56,8 @@ import {
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../models";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { AxiosError } from "axios";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -285,11 +286,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
     }, [ authorizedListFetchRequestError ]);
 
-    const handleGetAuthoriziedListCallError = (error) => {
+    const handleGetAuthoriziedListCallError = (error: AxiosError) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({
-                    description: error.description,
+                    description: error?.response?.data?.description,
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.organizations.notifications." +
@@ -313,6 +314,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 )
             })
         );
+        
         return;
     };
 
