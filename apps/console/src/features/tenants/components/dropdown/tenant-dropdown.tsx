@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -532,36 +532,37 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                 && tenantDropdownLinks.length
                                                 && tenantDropdownLinks.length > 0)
                                                 ? tenantDropdownLinks.map(
-                                                (link: TenantDropdownLinkInterface, index: number) => {
+                                                    (link: TenantDropdownLinkInterface, index: number) => {
 
-                                                    const {
-                                                        content,
-                                                        icon,
-                                                        name,
-                                                        onClick
-                                                    } = link;
-            
-                                                    return (
-                                                        <Dropdown.Item
-                                                            key={ index }
-                                                            className="action-panel"
-                                                            onClick={ onClick }
-                                                            // Temporarily hiding dropdown item until
-                                                            // modal is implemented.
-                                                            // style={{display:'none'}}
-                                                            data-testid={ 
-                                                                `tenant-dropdown-link-
-                                                                    ${ name.replace(" ", "-") }` 
-                                                            }
-                                                        >
-                                                            {
-                                                                icon
-                                                            }
-                                                            { name }
-                                                            { content }
-                                                        </Dropdown.Item>
-                                                    );
-                                                })
+                                                        const {
+                                                            content,
+                                                            icon,
+                                                            name,
+                                                            onClick
+                                                        } = link;
+                
+                                                        return (
+                                                            <Dropdown.Item
+                                                                key={ index }
+                                                                className="action-panel"
+                                                                onClick={ onClick }
+                                                                // Temporarily hiding dropdown item until
+                                                                // modal is implemented.
+                                                                // style={{display:'none'}}
+                                                                data-testid={ 
+                                                                    `tenant-dropdown-link-
+                                                                        ${ name.replace(" ", "-") }` 
+                                                                }
+                                                            >
+                                                                {
+                                                                    icon
+                                                                }
+                                                                { name }
+                                                                { content }
+                                                            </Dropdown.Item>
+                                                        );
+                                                    }
+                                                )
                                                 : null
                                         }
                                         {

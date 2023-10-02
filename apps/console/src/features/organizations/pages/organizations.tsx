@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -56,8 +57,6 @@ import {
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../models";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
-import { AxiosError } from "axios";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {

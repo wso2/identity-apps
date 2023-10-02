@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
- *
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
@@ -20,7 +19,6 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core/store";
-import { getTenantResourceEndpoints } from "../configs";
 import { TenantRequestResponse } from "../models";
 
 const getDomainQueryParam = (): string => {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     HttpRequestConfig,
     HttpResponse
 } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
@@ -37,7 +38,6 @@ import {
     ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 
 /**
  * Get an axios instance.
@@ -118,7 +118,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
     recursive: boolean,
     isRoot: boolean = false
 ): RequestResultInterface<Data, Error> {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"

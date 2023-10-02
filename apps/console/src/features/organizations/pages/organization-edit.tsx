@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,15 +24,14 @@ import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { RouteChildrenProps } from "react-router-dom";
+import { Dispatch } from "redux";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization, useAuthorizedOrganizationsList } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationResponseInterface } from "../models";
-import { AxiosError } from "axios";
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
@@ -92,7 +91,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         setIsAuthorizedOrganization(authorizedOrganizationList.organizations?.length === 1);
     }, [ authorizedOrganizationList ]);
 
-    const handleGetAuthoriziedListCallError = (error: IdentityAppsApiException) => {
+    const handleGetAuthoriziedListCallError = (error: any) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({
@@ -124,7 +123,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         return;
     };
 
-    const getOrganizationData = useCallback((organizationId: string): void => {
+    const getOrganizationData: (organizationId: string) => void = useCallback((organizationId: string): void => {
         getOrganization(organizationId)
             .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
