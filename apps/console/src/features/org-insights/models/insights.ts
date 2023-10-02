@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -121,4 +121,23 @@ export enum OnboardingMethodFilterValue {
     ADMIN_INITIATED = "ADMIN_INITIATED",
     USER_INVITE = "USER_INVITE",
     SELF_SIGN_UP = "SELF_SIGNUP",
+}
+
+export enum AuthenticatorFilterValue {
+    BASIC = "BasicAuthenticator",
+    IDENTIFIER_FIRST = "IdentifierExecutor",
+    FIDO2 = "FIDOAuthenticator",
+    MAGIC_LINK = "MagicLinkAuthenticator",
+    EMAIL_OTP = "email-otp-authenticator",
+    SMS_OTP = "sms-otp-authenticator",
+    TOTP = "totp",
+    BACK_UP_CODE = "backup-code-authenticator",
+    GOOGLE = "GoogleOIDCAuthenticator",
+    FACEBOOK = "FacebookAuthenticator",
+    GITHUB = "GitHubAuthenticator",
+    APPLE = "AppleOIDCAuthenticator",
+    OIDC = "OpenIDConnectAuthenticator",
+    SAML = "SAMLSSOAuthenticator",
+    HYPR = "HYPRAuthenticator",
+    ORGANIZATION_AUTHENTICATOR = "OrganizationAuthenticator"
 }

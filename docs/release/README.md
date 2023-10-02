@@ -50,6 +50,8 @@ Add changeset 🦋
 💡 Sample PR title: `[Release] [GitHub Action] Update package versions.`
 
 2. Approve and merge the PR.
+    > **Warning**
+    > Do not squash and merge.
 
 ![changesets-autogen-pr-1](../assets/images/develop/release/changesets-autogen-pr-001.png)
 

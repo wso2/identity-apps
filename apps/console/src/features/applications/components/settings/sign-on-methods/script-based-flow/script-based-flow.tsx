@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
@@ -60,6 +61,7 @@ import { Dispatch } from "redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
+import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
@@ -75,7 +77,6 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
-import UseAuthenticationFlow from "../hooks/use-authentication-flow";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -185,7 +186,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingSecret, setDeletingSecret ] = useState<SecretModel>(undefined);
 
-    const { isConditionalAuthenticationEnabled, onConditionalAuthenticationToggle } = UseAuthenticationFlow();
+    const { isConditionalAuthenticationEnabled, onConditionalAuthenticationToggle } = useAuthenticationFlow();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -237,8 +238,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Check if the feature is a premium.
      */
     useEffect(() => {
-        if(adaptiveFeatureStatus === FeatureStatus.ENABLED 
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {           
+        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
             setIsPremiumFeature(true);
         }
     }, []);

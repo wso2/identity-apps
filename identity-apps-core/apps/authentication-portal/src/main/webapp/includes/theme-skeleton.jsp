@@ -338,9 +338,13 @@
             }
         }
 
-        if (theme.has(PAGE_KEY)) {
+        if (theme.has(PAGE_KEY) || theme.has(LOGIN_PAGE_KEY)) {
 
-            JSONObject pageBody = theme.optJSONObject(PAGE_KEY);
+            JSONObject pageBody = null;
+            
+            if (theme.has(PAGE_KEY)) {
+                pageBody = theme.optJSONObject(PAGE_KEY);
+            }
 
             if (theme.has(LOGIN_PAGE_KEY)) {
                 pageBody = theme.optJSONObject(LOGIN_PAGE_KEY);

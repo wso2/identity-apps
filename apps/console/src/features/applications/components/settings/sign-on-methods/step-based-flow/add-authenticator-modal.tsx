@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -29,7 +30,9 @@ import {
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
+import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
+import union from "lodash-es/union";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -57,19 +60,27 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
-import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "../../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
+import { AppState } from "../../../../../core/store";
+import { EventPublisher } from "../../../../../core/utils/event-publisher";
 import { getIdPIcons } from "../../../../../identity-providers/configs/ui";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
 import {
+    AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateInterface
+    IdentityProviderTemplateInterface,
+    IdentityProviderTemplateItemInterface
 } from "../../../../../identity-providers/models/identity-provider";
 import {
     IdentityProviderManagementUtils
 } from "../../../../../identity-providers/utils/identity-provider-management-utils";
+import {
+    IdentityProviderTemplateManagementUtils
+} from "../../../../../identity-providers/utils/identity-provider-template-management-utils";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";
@@ -77,7 +88,7 @@ import { AuthenticationStepInterface } from "../../../../models";
 /**
  * Prop-types for the Add authenticator modal component.
  */
-interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface, ModalProps {
+export interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface, ModalProps {
     /**
      * Allow social login addition.
      */
@@ -85,23 +96,21 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
     /**
      * Set of authenticators.
      */
-    authenticators: GenericAuthenticatorInterface[];
+    authenticators: {
+        local: GenericAuthenticatorInterface[];
+        social: GenericAuthenticatorInterface[];
+        enterprise: GenericAuthenticatorInterface[];
+        secondFactor: GenericAuthenticatorInterface[];
+        recovery: GenericAuthenticatorInterface[];
+    };
     /**
      * Configured authentication steps.
      */
     authenticationSteps: AuthenticationStepInterface[];
     /**
-     * Categorized IDP templates.
-     */
-    categorizedIDPTemplates: IdentityProviderTemplateCategoryInterface[];
-    /**
      * Current step.
      */
     currentStep: number;
-    /**
-     * Callback to be triggered when add new button is clicked.
-     */
-    onAddNewClick: () => void;
     /**
      * Callback to trigger IDP create wizard.
      */
@@ -126,9 +135,6 @@ interface AddAuthenticatorModalPropsInterface extends TestableComponentInterface
      * Show/Hide authenticator labels in UI.
      */
     showLabels?: boolean;
-    subjectStepId: number;
-    attributeStepId: number;
-    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -149,34 +155,40 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const {
         allowSocialLoginAddition,
         authenticationSteps,
-        authenticators,
-        categorizedIDPTemplates,
+        authenticators: unfilteredAuthenticators,
         className,
         currentStep,
         header,
         onClose,
         open,
-        onAddNewClick,
         onIDPCreateWizardTrigger,
         onModalSubmit,
         message,
         showStepSelector,
         stepCount,
         showLabels,
-        subjectStepId,
-        attributeStepId,
-        refreshAuthenticators,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     const { t } = useTranslation();
 
+    const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
+    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
+        (state: AppState) => state.identityProvider?.groupedTemplates
+    );
+    const orgType: OrganizationType = useSelector((state: AppState) => {
+        return state?.organization?.organizationType;
+    });
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     const [ isModalOpen ] = useState<boolean>(open);
     const [
         selectedAuthenticators,
         setSelectedAuthenticators
     ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ allAuthenticators, setAllAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [
         filteredAuthenticators,
         setFilteredAuthenticators
@@ -186,27 +198,51 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
+    const [
+        categorizedIdPTemplates,
+        setCategorizedIdPTemplates
+    ] = useState<IdentityProviderTemplateCategoryInterface[]>([]);
 
-    const classes: string = classNames(
-        "add-authenticator-modal",
-        className
-    );
+    /**
+     * Fetches IdP templates if not available.
+     */
+    useEffect(() => {
+        if (groupedIDPTemplates) {
+            return;
+        }
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    const orgType: OrganizationType = useSelector((state: AppState) =>
-        state?.organization?.organizationType);
+        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates();
+    }, [ groupedIDPTemplates ]);
 
     /**
      * Update the internal filtered authenticators state when the prop changes.
      */
     useEffect(() => {
-        if (!authenticators) {
+        if (!unfilteredAuthenticators) {
             return;
         }
 
+        let _filteredAuthenticators: GenericAuthenticatorInterface[] = [
+            ...moderateAuthenticators(unfilteredAuthenticators.local,
+                AuthenticatorCategories.LOCAL,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.LOCAL))),
+            ...moderateAuthenticators(unfilteredAuthenticators.social,
+                AuthenticatorCategories.SOCIAL,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SOCIAL))),
+            ...moderateAuthenticators(unfilteredAuthenticators.secondFactor,
+                AuthenticatorCategories.SECOND_FACTOR,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
+            ...moderateAuthenticators(unfilteredAuthenticators.enterprise,
+                AuthenticatorCategories.ENTERPRISE,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE))),
+            ...moderateAuthenticators(unfilteredAuthenticators.recovery,
+                AuthenticatorCategories.RECOVERY,
+                t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
+        ];
+
         // Remove SMS OTP authenticator from the list at the sub org level.
-        const filteredAuthenticators: GenericAuthenticatorInterface[] = (orgType === OrganizationType.SUBORGANIZATION) 
-            ? authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+        _filteredAuthenticators = (orgType === OrganizationType.SUBORGANIZATION)
+            ? _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return (
                     authenticator.name !==
                           IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
@@ -214,11 +250,85 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         ?.SMS_OTP_AUTHENTICATOR
                 );
             })
-            : authenticators;
-        
-        setFilteredAuthenticators(filteredAuthenticators);
-        extractAuthenticatorLabels(filteredAuthenticators);
-    }, [ authenticators ]);
+            : _filteredAuthenticators;
+
+        setFilteredAuthenticators(_filteredAuthenticators);
+        setAllAuthenticators(_filteredAuthenticators);
+        extractAuthenticatorLabels(_filteredAuthenticators);
+    }, [ unfilteredAuthenticators ]);
+
+    /**
+     * Persists the categorized IDP templates.
+     *
+     * @param templates - Templates to persist.
+     * @returns Promise returned from `categorizeTemplates`.
+     */
+    const persistCategorizedTemplates = (
+        templates: IdentityProviderTemplateInterface[]
+    ): Promise<void | IdentityProviderTemplateCategoryInterface[]> => {
+
+        return IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
+            .then((response: IdentityProviderTemplateCategoryInterface[]) => {
+
+                let tags: string[] = [];
+
+                response.filter((category: IdentityProviderTemplateCategoryInterface) => {
+                    // Order the templates by pushing coming soon items to the end.
+                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
+
+                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
+                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
+                            return;
+                        }
+
+                        tags = union(tags, template.tags);
+                    });
+                });
+
+                setCategorizedIdPTemplates(response);
+            })
+            .catch(() => {
+                setCategorizedIdPTemplates([]);
+            });
+    };
+
+    /**
+     * Filter out the displayable set of authenticators by validating against
+     * the array of authenticators defined to be hidden in the config.
+     *
+     * @param authenticators - Authenticators to be filtered.
+     * @param category - Authenticator category.
+     * @param categoryDisplayName - Authenticator category display name.
+     * @returns List of moderated authenticators
+     */
+    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
+        category: string,
+        categoryDisplayName: string) => {
+
+        if (isEmpty(authenticators)) {
+            return [];
+        }
+
+        // If the config is undefined or empty, return the original.
+        if (!hiddenAuthenticators
+            || !Array.isArray(hiddenAuthenticators)
+            || hiddenAuthenticators.length < 1) {
+
+            return authenticators;
+        }
+
+        return authenticators
+            .filter((authenticator: GenericAuthenticatorInterface) => {
+                return !hiddenAuthenticators.includes(authenticator.name);
+            })
+            .map((authenticator: GenericAuthenticatorInterface) => {
+                return {
+                    ...authenticator,
+                    category,
+                    categoryDisplayName
+                };
+            });
+    };
 
     /**
      * Extract Authenticator labels.
@@ -324,7 +434,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
 
-        return authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+        return allAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
 
             if (!query) {
                 return isFiltersMatched(authenticator);
@@ -389,7 +499,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 </div>
                 <Divider hidden/>
                 {
-                    categorizedIDPTemplates
+                    categorizedIdPTemplates
                         .map((category: IdentityProviderTemplateCategoryInterface, index: number) => {
                             return (
                                 <ResourceGrid
@@ -425,7 +535,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             templateIndex: number
                                         ) => {
 
-                                            const isOrgIdp: boolean = 
+                                            const isOrgIdp: boolean =
                                                 template.templateId === "organization-enterprise-idp";
 
                                             if (isOrgIdp && !isOrganizationManagementEnabled) {
@@ -526,7 +636,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                         ? (
                             <Card.Group itemsPerRow={ CARDS_PER_ROW }>
                                 <Authenticators
-                                    refreshAuthenticators={ refreshAuthenticators }
                                     authenticators={ filteredAuthenticators }
                                     authenticationSteps={ authenticationSteps }
                                     onAuthenticatorSelect={ (authenticators: GenericAuthenticatorInterface[]) => {
@@ -536,8 +645,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                     showLabels={ showLabels }
                                     data-testid={ `${ testId }-authenticators` }
                                     currentStep={ currentStep }
-                                    subjectStepId={ subjectStepId }
-                                    attributeStepId={ attributeStepId }
                                 />
                                 {
                                     allowSocialLoginAddition && (
@@ -624,91 +731,92 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Authenticator add click.
      */
     const handleNewAuthenticatorAddClick = (): void => {
+        if (groupedIDPTemplates) {
+            persistCategorizedTemplates(groupedIDPTemplates)
+                .then(() => setShowAddNewAuthenticatorView(true));
 
-        onAddNewClick();
-        setShowAddNewAuthenticatorView(true);
+            return;
+        }
     };
 
     return (
-        <>
-            <Modal
-                className={ classes }
-                data-testid={ testId }
-                open={ isModalOpen }
-                { ...rest }
-            >
-                <Modal.Header>{ header as ReactNode }</Modal.Header>
-                { showStepSelector && (
-                    <Modal.Content className="step-selection-dropdown-container">
-                        <>
-                            <Heading as="h5">
-                                {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                        "stepSelectDropdown.label")
-                                }
-                            </Heading>
-                            <Hint>
-                                {
-                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
-                                        "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
-                                        "stepSelectDropdown.hint")
-                                }
-                            </Hint>
-                            <Form>
-                                <Form.Field inline>
-                                    <Form.Select
-                                        scrolling
-                                        placeholder={
-                                            t("console:develop.features.applications.edit.sections.signOnMethod." +
-                                                "sections.authenticationFlow.sections.stepBased." +
-                                                "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
-                                        }
-                                        options={ generateStepSelectorOptions() }
-                                        onChange={ handleAddStepChange }
-                                        value={ authenticatorAddStep }
-                                        data-testid={ `${ testId }-step-select` }
-                                    />
-                                </Form.Field>
-                            </Form>
-                        </>
-                    </Modal.Content>
-                ) }
-                {
-                    showAddNewAuthenticatorView && categorizedIDPTemplates
-                        ? renderAddNewAuthenticatorContent()
-                        : renderAuthenticatorSelectionContent()
-                }
-                <Modal.Actions>
-                    <Grid>
-                        <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton
-                                    floated="left"
-                                    onClick={ (e: MouseEvent<HTMLButtonElement>) => onClose(e, null) }
-                                >
-                                    { t("common:cancel") }
-                                </LinkButton>
-                            </Grid.Column>
+        <Modal
+            className={ classNames("add-authenticator-modal", className) }
+            data-testid={ testId }
+            open={ isModalOpen }
+            { ...rest }
+        >
+            <Modal.Header>{ header as ReactNode }</Modal.Header>
+            { showStepSelector && (
+                <Modal.Content className="step-selection-dropdown-container">
+                    <>
+                        <Heading as="h5">
                             {
-                                !showAddNewAuthenticatorView && (
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ handleModalSubmit }
-                                            disabled={ isEmpty(selectedAuthenticators) }
-                                            data-testid={ `${ testId }-next-button` }
-                                        >
-                                            { t("common:add") }
-                                        </PrimaryButton>
-                                    </Grid.Column>
-                                )
+                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                    "stepSelectDropdown.label")
                             }
-                        </Grid.Row>
-                    </Grid>
-                </Modal.Actions>
-            </Modal>
-        </>
+                        </Heading>
+                        <Hint>
+                            {
+                                t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                    "authenticationFlow.sections.stepBased.addAuthenticatorModal.content." +
+                                    "stepSelectDropdown.hint")
+                            }
+                        </Hint>
+                        <Form>
+                            <Form.Field inline>
+                                <Form.Select
+                                    scrolling
+                                    placeholder={
+                                        t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                            "sections.authenticationFlow.sections.stepBased." +
+                                            "addAuthenticatorModal.content.stepSelectDropdown.placeholder")
+                                    }
+                                    options={ generateStepSelectorOptions() }
+                                    onChange={ handleAddStepChange }
+                                    value={ authenticatorAddStep }
+                                    data-testid={ `${ testId }-step-select` }
+                                />
+                            </Form.Field>
+                        </Form>
+                    </>
+                </Modal.Content>
+            ) }
+            {
+                showAddNewAuthenticatorView && categorizedIdPTemplates
+                    ? renderAddNewAuthenticatorContent()
+                    : renderAuthenticatorSelectionContent()
+            }
+            <Modal.Actions>
+                <Grid>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                floated="left"
+                                onClick={ (e: MouseEvent<HTMLButtonElement>) => onClose(e, null) }
+                            >
+                                { t("common:cancel") }
+                            </LinkButton>
+                        </Grid.Column>
+                        {
+                            !showAddNewAuthenticatorView && (
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ handleModalSubmit }
+                                        disabled={ isEmpty(selectedAuthenticators) }
+                                        data-testid={ `${ testId }-next-button` }
+                                    >
+                                        { t("common:add") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            )
+                        }
+                    </Grid.Row>
+                </Grid>
+            </Modal.Actions>
+        </Modal>
     );
 };
 

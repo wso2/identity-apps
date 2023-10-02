@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -2749,6 +2749,252 @@ export interface ConsoleNS {
             windows: string;
         };
     };
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        basicLoginFlowSelectConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        options: {
+            controls: {
+                remove: string;
+            };
+            displayName: string;
+            divider: string;
+        };
+        modes: {
+            legacy: {
+                label: string;
+            };
+            visual: {
+                label: string;
+            };
+            switchConfirmationModal: {
+                assertionHint: string;
+                content: string;
+                primaryActionButtonText: string;
+                secondaryActionButtonText: string;
+                title: string;
+                warningMessage: string;
+            };
+        };
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: string;
+                };
+                enableBackupCodes: {
+                    label: string;
+                };
+                userAttributeSelector: {
+                    label: string;
+                };
+            };
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                        secondary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                    optionSwitchTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        rememberMe: {
+                            label: string;
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                    optionSwitchTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        password: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        rememberMe: {
+                            label: string;
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                        secondary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    help: string;
+                };
+                header: string;
+            };
+        };
+        revertConfirmationModal: {
+            assertionHint: string;
+            content: string;
+            primaryActionButtonText: string;
+            secondaryActionButtonText: string;
+            title: string;
+            warningMessage: string;
+        };
+        steps: {
+            controls: {
+                addOption: string;
+                remove: string;
+                signUp: {
+                    hint: string;
+                    label: string;
+                };
+            };
+        };
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: string;
+                };
+                header: string;
+            };
+            authenticators: {
+                apple: {
+                    displayName: string;
+                };
+                facebook: {
+                    displayName: string;
+                };
+                github: {
+                    displayName: string;
+                };
+                google: {
+                    displayName: string;
+                };
+                microsoft: {
+                    displayName: string;
+                };
+            };
+            basic: {
+                header: string;
+            };
+            categories: {
+                basic: {
+                    label: string;
+                };
+                mfa: {
+                    label: string;
+                };
+                passwordless: {
+                    label: string;
+                };
+                social: {
+                    label: string;
+                };
+            };
+            header: string;
+            panelHeader: string;
+        };
+        scriptEditor: {
+            panelHeader: string;
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: string;
+                    }
+                };
+                emptyPlaceholder: {
+                    header: string;
+                    description: string;
+                };
+                label: string;
+            };
+            themes: {
+                dark: {
+                    label: string;
+                };
+                highContrast: {
+                    label: string;
+                };
+                light: {
+                    label: string;
+                };
+            };
+        };
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: string;
+                };
+                update: {
+                    label: string;
+                };
+            };
+        };
+    };
     manage: {
         features: {
             businessGroups: {
@@ -4563,6 +4809,7 @@ export interface ConsoleNS {
                             subHeading: string;
                             list: {
                                 searchPlaceholder: string;
+                                searchByEmailPlaceholder: string;
                                 listHeader: string;
                             };
                         };
@@ -5402,8 +5649,30 @@ export interface ConsoleNS {
                         filters: {
                             userStore: string;
                             serviceProvider: string;
-                        }
-                    },
+                            identityProvider: string;
+                            authenticator: {
+                                attributeName: string;
+                                values: {
+                                    basic: string;
+                                    identifierFirst: string;
+                                    fido2: string;
+                                    magicLink: string;
+                                    emailOtp: string;
+                                    smsOtp: string;
+                                    totp: string;
+                                    backupCodes: string;
+                                    google: string;
+                                    facebook: string;
+                                    github: string;
+                                    apple: string;
+                                    oidc: string;
+                                    saml: string;
+                                    hypr: string;
+                                    organizationLogin: string;
+                                };
+                            };
+                        };
+                    };
                     registration: {
                         filters: {
                             onboardingMethod: {

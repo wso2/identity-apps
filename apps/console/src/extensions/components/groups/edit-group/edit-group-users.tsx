@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,7 @@ import {
     UserAvatar,
     useWizardAlert
 } from "@wso2is/react-components";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -44,6 +45,7 @@ import React, {
     FunctionComponent,
     ReactElement,
     SetStateAction,
+    useCallback,
     useEffect,
     useState
 } from "react";
@@ -62,6 +64,7 @@ import { getUsersList } from "../../../../features/users/api/users";
 import { UserBasicInterface, UserListInterface } from "../../../../features/users/models/user";
 import { SCIMConfigs } from "../../../configs/scim";
 import { UserManagementUtils } from "../../users/utils";
+import { GroupsConstants } from "../constants/groups-constants";
 
 /**
  * Proptypes for the group users list component.
@@ -98,16 +101,61 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const [ isSelectedUsersFetchRequestLoading, setIsSelectedUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isAddNewUserQuerySearchLoading, setIsAddNewUserQuerySearchLoading ] = useState<boolean>(false);
+    const [ isAllUsersAreReturned, setIsAllUsersAreReturned ] = useState<boolean>(false);
+    const [ moderatedUserList, setModeratedUserList ] = useState<UserBasicInterface[]>([]);
+    const [ filterQuery, setFilterQuery ] = useState<string>(null);
 
     useEffect(() => {
 
         getSelectedUserList();
     }, [ group ]);
 
+    useEffect(() => {
+        if (!isGroupDetailsRequestLoading) {
+            if (moderatedUserList?.length > 0) { 
+                setAddModalUserList(getAddModalUsersList());
+            } else {
+                setAddModalUserList([]);
+            }
+        }
+    }, [ moderatedUserList, filterQuery ]);
+
+    /**
+     * Get the users list to be displayed in the add new users modal.
+     * 
+     * @returns  Arrange the users list in the following order: `[ selected users, unselected users ]`
+     */
+    const getAddModalUsersList = (): UserBasicInterface[] => {
+
+        const setSelectedUsersList: UserBasicInterface[] = newlySelectedUsers?.length > 0
+            ? newlySelectedUsers
+            : selectedUserList;
+
+        const uniqueModeratedUserList: UserBasicInterface[] = moderatedUserList.filter(
+            (user: UserBasicInterface) => !setSelectedUsersList?.some(
+                (selectedUser: UserBasicInterface) => selectedUser.id === user.id));
+
+        if (setSelectedUsersList) {
+
+            const moderatedSelectedUserList: UserBasicInterface[] = 
+                filterQuery 
+                    ? setSelectedUsersList.filter(
+                        (user: UserBasicInterface) => user?.emails[0]?.toString().includes(filterQuery))
+                    : setSelectedUsersList;
+
+            return [ ...moderatedSelectedUserList, ...uniqueModeratedUserList ];
+        }
+        
+        return uniqueModeratedUserList;
+    };
+    
     /**
      * Get the users list.
+     * 
+     * @param filter - Search filter.
      */
-    const getUserList = (): Promise<void> => {
+    const getUserList = (filter?: string): Promise<void> => {
 
         const userstore: string = group?.displayName?.indexOf("/") === -1
             ? "primary"
@@ -115,34 +163,44 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         setIsUsersFetchRequestLoading(true);
 
-        return getUsersList(null, null, null, null, userstore)
+        const emailFilterString: string = filter ? `emails co ${filter}` : null;
+
+        return getUsersList(null, null, emailFilterString, null, userstore)
             .then((response: UserListInterface) => {
+
+                if (!filter) {
+                    setIsAllUsersAreReturned(response?.totalResults <= response?.itemsPerPage);
+                }
 
                 // Exclude JIT users.
                 const moderatedUserList: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) => !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId);
 
                 setOriginalUserList(moderatedUserList);
-                setAddModalUserList(moderatedUserList);
+                setModeratedUserList(moderatedUserList);
+                setFilterQuery(filter);
             }).catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
+                // because we do not need to show an error when the user is searching for a user, as it is a valid case.
+                if (!filter) {
+                    if (error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error?.response?.data?.description ?? error?.response?.data?.detail
+                                ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.response?.data?.message
+                                ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        }));
+    
+                        return;
+                    }
+    
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                            "description"),
                         level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
                     }));
-
-                    return;
                 }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
-                }));
 
                 setOriginalUserList([]);
                 setAddModalUserList([]);
@@ -246,6 +304,35 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         return;
     };
 
+    /**
+     * Handles the change in the search query in the add new users modal.
+     * 
+     * @param query - Search query string.
+     */
+    const handleAddNewUserSearchFieldChange = (query: string) => {
+        /**
+         * If all the users are returned from the `getUserList` API call, then search the user list in the state.
+         * Else, search the user list from the API using the email filter.
+         */
+        if (isAllUsersAreReturned) {
+            handleSearchFieldChange(null, query, originalUserList, setAddModalUserList);
+        } else {
+            setIsAddNewUserQuerySearchLoading(true);
+            searchRoleFieldChange(query);
+        }
+    };
+
+    /**
+     * Search user list for the given query in a given delay.
+     * 
+     * @param query - Search query string.
+     */
+    const searchRoleFieldChange: DebouncedFunc<(query: string) => void> =
+        useCallback(debounce((query: string) => {
+            query = !isEmpty(query) ? query : null;
+            handleSearchUser(query);
+        }, GroupsConstants.DEBOUNCE_TIMEOUT), []);
+
     const handleAssignedItemCheckboxChange = (user: UserBasicInterface) => {
         const checkedUsers: UserBasicInterface[] = !isEmpty(newlySelectedUsers)
             ? [ ...newlySelectedUsers ]
@@ -264,7 +351,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     };
 
     const handleOpenAddNewGroupModal = () => {
-        getUserList()
+        getUserList(null)
             .then(() => {
                 setNewlySelectedUsers(selectedUserList);
                 setIsSelectAllUsers(selectedUserList?.length === originalUserList?.length);
@@ -276,6 +363,18 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
                 }));
+            });
+    };
+
+    /**
+     * Handles searching for users for the add new users modal.
+     * 
+     * @param query - Search query string.
+     */
+    const handleSearchUser = (query: string) => {
+        getUserList(query)
+            .finally(() => {
+                setIsAddNewUserQuerySearchLoading(false);
             });
     };
 
@@ -370,14 +469,17 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
-                            ".searchPlaceholder")
+                        isAllUsersAreReturned
+                            ? t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                ".searchPlaceholder")
+                            : t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                ".searchByEmailPlaceholder")
                     }
-                    isLoading={ isUsersFetchRequestLoading }
+                    isLoading={ isUsersFetchRequestLoading || isAddNewUserQuerySearchLoading } 
                     // handleHeaderCheckboxChange={ selectAllAssignedList }
                     // isHeaderCheckboxChecked={ isSelectAllUsers }
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
-                        handleSearchFieldChange(e, value, originalUserList, setAddModalUserList);
+                        handleAddNewUserSearchFieldChange(value);
                     } }
                     // showSelectAllCheckbox={ !isLoading && users?.length > 0 }
                     data-testid={ `${ testId }-user-list-transfer` }

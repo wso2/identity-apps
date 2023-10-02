@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,14 +15,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
+import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { getGeneralIcons } from "../../../../../core";
-import { 
+import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
 import {
@@ -30,7 +32,6 @@ import {
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
-import UseAuthenticationFlow from "../hooks/use-authentication-flow";
 
 /**
  * Proptypes for the authentication step component.
@@ -147,8 +148,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
     const [ showBackupCodesEnableCheckBox, setShowBackupCodesEnableCheckBox ] = useState<boolean>(false);
     const [ backupCodeIndex, setBackupCodeIndex ] = useState<number>(null);
-    
-    const { isConditionalAuthenticationEnabled } = UseAuthenticationFlow();
+
+    const { isConditionalAuthenticationEnabled } = useAuthenticationFlow();
 
     useEffect(() => {
         let isBackupCodeSupportedAuthenticator: boolean = false;
@@ -220,20 +221,20 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     /**
      * Check whether the subject step checkbox should be disabled or not.
-     * 
+     *
      * Note: It should be disabled when the IDF is in the step and conditional authentication
-     * is disabled. IDF can be set as subject step when user validation is enabled for IDF 
+     * is disabled. IDF can be set as subject step when user validation is enabled for IDF
      * through conditional authentication.
-     * 
+     *
      * @returns Whether the subject step checkbox should be disabled or not.
      */
     const isSubjectStepCheckboxDisabledOnIDF = (): boolean => {
         let toDisable: boolean = false;
 
         step.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR 
+            if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
                 && !isConditionalAuthenticationEnabled) {
-                
+
                 toDisable = true;
             }
         });
@@ -243,17 +244,17 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     /**
      * Check whether the attribute step checkbox should be disabled or not.
-     * 
-     * Note: It should be disabled when the IDF is in the step and conditional authentication 
-     * is disabled. IDF can be set as attribute step when user validation is enabled for IDF 
+     *
+     * Note: It should be disabled when the IDF is in the step and conditional authentication
+     * is disabled. IDF can be set as attribute step when user validation is enabled for IDF
      * through conditional authentication.
-     * 
+     *
      * @returns Whether the attribute step checkbox should be disabled or not.
      */
     const isAttributeStepCheckboxDisabledOnIDF = (): boolean => {
 
-        return step.options.some((option: AuthenticatorInterface) => 
-            option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR 
+        return step.options.some((option: AuthenticatorInterface) =>
+            option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
                 && !isConditionalAuthenticationEnabled
         );
     };

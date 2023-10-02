@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -6236,6 +6236,252 @@ export const console: ConsoleNS = {
             windows: "Windows"
         }
     },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "The selected template will replace the existing script in the editor as well as the login steps you configured. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "This action is irreversible."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "The selected template will replace the existing login steps you configured. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "This action is irreversible."
+        },
+        options: {
+            controls: {
+                remove: "Remove"
+            },
+            displayName: "Sign In With {{displayName}}",
+            divider: "OR"
+        },
+        modes: {
+            legacy: {
+                label: "Classic Editor"
+            },
+            visual: {
+                label: "Visual Editor"
+            },
+            switchConfirmationModal: {
+                assertionHint: "Yes, I understand. I want to switch.",
+                content: "This action is irreversible and you will permanently loose the unsaved changes in the current flow.",
+                primaryActionButtonText: "Confirm",
+                secondaryActionButtonText: "Cancel",
+                title: "Are you sure?",
+                warningMessage: "If you switch to the <1>{{mode}}</1>, you will loose the unsaved changes in the current flow. Please proceed with caution."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "Pick attributes from this step"
+                },
+                enableBackupCodes: {
+                    label: "Enable backup codes"
+                },
+                userAttributeSelector: {
+                    label: "Pick user identifier from this step"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue",
+                        secondary: "Resend Code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the code sent to your email ID (john*****@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP Verification"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove",
+                    optionSwitchTooltipContent: "Switch to Username & Password"
+                },
+                form: {
+                    actions: {
+                        primary: "Sign In"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "Remember me on this computer"
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter your username"
+                        }
+                    }
+                },
+                header: "Sign in"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove",
+                    optionSwitchTooltipContent: "Switch to Identifier First"
+                },
+                form: {
+                    actions: {
+                        primary: "Sign In"
+                    },
+                    fields: {
+                        password: {
+                            label: "Password",
+                            placeholder: "Enter your password"
+                        },
+                        rememberMe: {
+                            label: "Remember me on this computer"
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter your username"
+                        }
+                    }
+                },
+                header: "Sign in"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue",
+                        secondary: "Resend Code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the code sent to your mobile phone (******3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP Verification"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the verification code generated by your authenticator app.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "Haven't setup your TOTP authenticator yet? Contact support"
+                },
+                header: "Verify Your Identity"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "Yes, I understand. I want to revert.",
+            content: "This action is irreversible and you will permanently loose the progress you have made.",
+            primaryActionButtonText: "Confirm",
+            secondaryActionButtonText: "Cancel",
+            title: "Are you sure?",
+            warningMessage: "If you revert back to default, you will not be able to recover the progress. Please proceed with caution."
+        },
+        steps: {
+            controls: {
+                addOption: "Add Sign In Option",
+                remove: "Remove",
+                signUp: {
+                    hint: "Don't have an account?",
+                    label: "Sign up"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "ADD"
+                },
+                header: "Conditional Login Flows"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "Basic Login Flows"
+            },
+            categories: {
+                basic: {
+                    label: "Add Basic Login"
+                },
+                mfa: {
+                    label: "Add Multi-factor Login"
+                },
+                passwordless: {
+                    label: "Add Passwordless Login"
+                },
+                social: {
+                    label: "Add Social Login"
+                }
+            },
+            header: "Predefined Flows",
+            panelHeader: "Predefined Flows"
+        },
+        scriptEditor: {
+            panelHeader: "Script Editor",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "Create New Secret"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "No secrets available.",
+                    description: "Securely store access keys as secrets. A secret can replace the consumer secret in <1>callChoreo()</1> function in the conditional authentication scripts."
+                },
+                label: "Add Secret"
+            },
+            themes: {
+                dark: {
+                    label: "Dark (Visual Studio)"
+                },
+                highContrast: {
+                    label: "High Contrast"
+                },
+                light: {
+                    label: "Light (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "Revert to default"
+                },
+                update: {
+                    label: "Update"
+                }
+            }
+        }
+    },
     manage: {
         features: {
             approvals: {
@@ -9153,7 +9399,8 @@ export const console: ConsoleNS = {
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
-                                searchPlaceholder: "Search users"
+                                searchPlaceholder: "Search users",
+                                searchByEmailPlaceholder: "Search users by email address"
                             },
                             subHeading: "Add new users or remove existing users assigned to the {{type}}."
                         }
@@ -10837,7 +11084,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "User Store",
-                            serviceProvider: "Application"
+                            serviceProvider: "Application",
+                            authenticator: {
+                                attributeName: "Connection Type",
+                                values: {
+                                    basic: "Username & Password",
+                                    identifierFirst: "Identifier First",
+                                    fido2: "FIDO2",
+                                    magicLink: "Magic Link",
+                                    emailOtp: "Email OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "Backup Code",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "Organization Login"
+                                }
+                            },
+                            identityProvider: "Connection ID"
                         }
                     },
                     registration: {
@@ -10867,7 +11136,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "User Signups",
-                        titleHint: "Total user (B2C) signups occurred within the selected period"
+                        titleHint: "Total user signups occurred within the selected period"
                     }
                 },
                 notifications: {
