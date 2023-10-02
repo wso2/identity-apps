@@ -7659,6 +7659,28 @@ export const console: ConsoleNS = {
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
                                         "et 30 caractères."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
+                                label: "Sélectionnez le rôle de rôle",
+                                values: {
+                                    organization: "Rôle de l'organisation",
+                                    application: "Rôle appliqué"
+                                }
+                            },
+                            notes: {
+                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
+                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
+                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                            },
+                            assignedApplication: {
+                                hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
+                                label: "Application attribuée",
+                                placeholder: "Sélectionnez l'application pour attribuer le rôle",
+                                applicationSubTitle: {
+                                    application: "Prise en charge des rôles à application",
+                                    organization: "Rôles de soutien à l'organisation"
+                                }
                             }
                         }
                     },

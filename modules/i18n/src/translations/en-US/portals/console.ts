@@ -9369,6 +9369,28 @@ export const console: ConsoleNS = {
                                     invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                                         + "And must be of length between 3 to 30 characters."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
+                                label: "Select the role audience",
+                                values: {
+                                    organization: "Organization-scoped role",
+                                    application: "Application-scoped role"
+                                }
+                            },
+                            notes: {
+                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
+                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
+                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                            },
+                            assignedApplication: {
+                                hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
+                                label: "Assigned application",
+                                placeholder: "Select application to assign the role",
+                                applicationSubTitle: {
+                                    application: "Support application-scoped roles",
+                                    organization: "Support organization-scoped roles"
+                                }
                             }
                         }
                     },
