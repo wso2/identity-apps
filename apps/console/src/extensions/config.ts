@@ -173,7 +173,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                 {
                     content: {},
                     enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.
-                        trustedTokenIssuer?.enabled ?? false,
+                        trustedTokenIssuer?.enabled ?? true,
                     id: "trusted-token-issuer",
                     resource: "./identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json"
                 }
