@@ -28,6 +28,7 @@ import { getConnectionResourceEndpoints } from "../../connections";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
+import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getInsightsResourceEndpoints } from "../../org-insights/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
@@ -212,6 +213,7 @@ export class Config {
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
+            ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getConnectionResourceEndpoints(this.resolveServerHost()),
             ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),

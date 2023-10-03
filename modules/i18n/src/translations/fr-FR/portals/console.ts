@@ -4321,6 +4321,255 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Saisissez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom"
+                },
+                buttons: {
+                    addIDVP: "Nouveau fournisseur de vérification d'identité"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "Il n'y a pas de fournisseurs de vérification d'identité disponibles pour le moment.",
+                            1: "Vous pouvez facilement ajouter un nouveau fournisseur de vérification d'identité en " +
+                                "suivant les",
+                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité."
+                        },
+                        title: "Ajouter un nouveau fournisseur de vérification d'identité"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "Il n'y a actuellement aucun type de fournisseur de vérification ",
+                            1: "d'identité disponible pour la configuration."
+                        },
+                        title: "Aucun type de fournisseur de vérification d'identité trouvé"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Veuillez confirmer votre action",
+                        content: "Si vous supprimez ce fournisseur de vérification d'identité, vous ne pourrez pas " +
+                            "le récupérer. Veuillez procéder avec prudence.",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le fournisseur de " +
+                            "vérification d'identité."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des fournisseurs de " +
+                                "vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Supprimer l'erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Supprimer l'erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été supprimé.",
+                            message: "Suppression réussie"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Erreur de mise à jour"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été mis à jour.",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Créer une erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la création du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Créer une erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été créé.",
+                            message: "Créez avec succès"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Nécessité de configurer toutes les propriétés obligatoires.",
+                            message: "Impossible d'effectuer la mise à jour"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des claims localaux.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des données du " +
+                                "fournisseur de vérification d'identité",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées de " +
+                                "l'interface utilisateur.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des types de modèles " +
+                                "auprès du fournisseur de vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du type de modèle auprès" +
+                                " du fournisseur de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur " +
+                                "de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "Une description textuelle du fournisseur de vérification d'identité.",
+                            label: "Description",
+                            placeholder: "Entrez une description du fournisseur de vérification d'identité."
+                        },
+                        name: {
+                            hint: "Entrez Un nom unique pour ce fournisseur de vérification d'identité.",
+                            label: "Nom",
+                            placeholder: "Entrez un nom pour le fournisseur de vérification d'identité.",
+                            validations: {
+                                duplicate: "Un fournisseur de vérification d'identité existe déjà avec ce nom",
+                                empty: "Le nom du fournisseur de vérification d'identité est requis",
+                                maxLengthReached: "Le nom du fournisseur de vérification d'identité ne peut pas " +
+                                    "dépasser {{ maxLength }} caractères.",
+                                required: "Le nom du fournisseur de vérification d'identité est requis",
+                                invalid: "Le nom du fournisseur de vérification d'identité n'est pas valide"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Mapping des attributs du fournisseur de vérification d'identité",
+                            hint: "Ajoutez et mappez les attributs pris en charge par le fournisseur externe " +
+                                "de vérification d'identité.",
+                            addButton: "Ajouter un mappage d'attributs",
+                            emptyPlaceholderEdit: {
+                                subtitle: "Aucun attribut n'est associé à ce fournisseur de vérification d'identité.",
+                                title: "Aucun attribut associé"
+                            },
+                            emptyPlaceholderCreate: {
+                                subtitle: "Associez les attributs sur la carte et cliquez sur <1>Ajouter un mappage " +
+                                    "d'attributs</1> pour commencer.",
+                                title: "Vous n'avez associé aucun attribut"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "Il existe déjà un attribut mapé avec ce nom.",
+                                required: "Ce champ ne peut pas être vide",
+                                invalid: "Veuillez entrer une valeur valide"
+                            },
+                            placeholders: {
+                                mappedValue: "Saisissez l'attribut IDVP externe",
+                                localClaim: "Sélectionnez l'attribut de mappage"
+                            },
+                            labels: {
+                                mappedValue: "Attribut IDVP externe",
+                                localClaim: "Mappe à"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Ajouter des mappages d'attributs"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Supprimer",
+                        header: "Supprimer le fournisseur de vérification d'identité",
+                        subheader: "Il s'agit d'une action irréversible, procédez avec prudence."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Fournisseur de vérification d'identité",
+                        header: "Fournisseur de vérification d'identité {{ state }}",
+                        subheader: "Une fois que vous avez désactivé un fournisseur de vérification d'identité, " +
+                            "il ne peut plus être utilisé tant qu'il n'est pas réactivé.",
+                        subheader2: "Activez le fournisseur de vérification d'identité pour l'utiliser avec vos " +
+                            "applications."
+                    },
+                    header: "Zone de Danger"
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Nom"
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server pour les développeurs",
@@ -4525,7 +4774,8 @@ export const console: ConsoleNS = {
                     application: "Applications",
                     general: "Général",
                     gettingStarted: " Pour commencer",
-                    identityProviders: "Fournisseurs d'identité"
+                    identityProviders: "Fournisseurs d'identité",
+                    identityVerificationProviders: "Fournisseurs de vérification d'identité"
                 },
                 customize: "Personnaliser",
                 identityProviderEdit: "Edition des fournisseurs d'identité",
@@ -4619,6 +4869,19 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "Approvisionnement"
                 },
                 title: "Sélectionnez le connexion"
+            },
+            idvp: {
+                subTitle: "Gérez les fournisseurs de vérification d'identité pour permettre aux utilisateurs de " +
+                "vérifier leur identité via eux.",
+                title: "Fournisseurs de vérification d'identité"
+            },
+            idvpTemplate: {
+                backButton: "Retourner aux fournisseurs de vérification d'identité",
+                subTitle: "Choisissez l'un des fournisseurs de vérification d'identité suivants.",
+                title: "Sélectionnez le fournisseur de vérification d'identité",
+                "search": {
+                    "placeholder": "Recherche par nom"
+                }
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +
