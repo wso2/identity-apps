@@ -18,8 +18,6 @@
 
 import {
     DataTable,
-    EmptyPlaceholder,
-    LinkButton,
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
@@ -27,8 +25,7 @@ import React, { ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Label } from "semantic-ui-react";
 import {
-    UIConstants,
-    getEmptyPlaceholderIllustrations } from "../../core";
+    UIConstants } from "../../core";
 import { BulkUserImportOperationResponse } from "../models";
 
 interface BulkImportResponseListProps {
@@ -65,13 +62,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
                         <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
-                            <UserAvatar
+                            {/* <UserAvatar
                                 data-testid="users-list-item-image"
                                 name={ response.username }
                                 size="mini"
                                 image={ "" }
                                 spaced="right"
-                            />
+                            /> */}
                             <Header.Content>
                                 {
                                     // <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
@@ -82,8 +79,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         </Header>
                     );
                 },
-                // title: t("console:manage.features.users.list.columns.name")
-                title: "Username"
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.username")
             },
             {
                 allowToggleVisibility: false,
@@ -98,15 +94,14 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                     data-testid={ `${testId}-bulk-label` }
                                     content={ response.status }
                                     size="mini"
-                                    color={ response.status === "Success" ? "green" : "yellow" }
+                                    color={ response.statusCode === 201 ? "green" : "yellow" }
                                     className={ "group-label" }
                                 />
                             </Header.Content>
                         </Header>
                     );
                 },
-                // title: t("console:manage.features.users.list.columns.name")
-                title: "Status"
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.status")
             },
             {
                 allowToggleVisibility: false,
@@ -123,41 +118,11 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         </Header>
                     );
                 },
-                // title: t("console:manage.features.users.list.columns.name")
-                title: "Message"
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.message")
             }
         ];
 
         return defaultColumns;
-    };
-
-    /**
-     * Shows list placeholders. TODO: Change messages.
-     *
-     * @returns Placeholders.
-     */
-    const showPlaceholders = (): ReactElement => {
-        if (!isLoading && responseList?.length === 0)
-            return (
-                <EmptyPlaceholder
-                    action={
-                        (<LinkButton onClick={ () => null }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
-                        </LinkButton>)
-                    }
-                    image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
-                    subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0", {
-                            query: "searchQuery"
-                        }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
-                    ] }
-                />
-            );
-
-        return null;
     };
 
     return (
@@ -170,10 +135,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 data={ responseList }
                 onColumnSelectionChange={ () => null }
                 onRowClick={ () => null }
-                placeholders={ showPlaceholders() }
+                placeholders={ null }
                 selectable={ false }
                 showHeader={ true }
-                transparent={ !isLoading && showPlaceholders() !== null }
+                transparent={ !isLoading }
                 data-testid={ testId }
                 loadingStateOptions={ {
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,

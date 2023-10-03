@@ -8092,6 +8092,27 @@ export const console: ConsoleNS = {
                             username: "Nom d'utilisateur"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "Bulk Import Users",
+                        subTitle: "Bulk Import Users",
+                        wizardSummary: {
+                            successCount: "Success Count",
+                            failedCount: "Failed Count",
+                            success: "Success",
+                            warning: "Warning",
+                            failed: "Failed",
+                            userCreatedMessage: "User imported successfully",
+                            invalidDataMessage: "Invalid data provided",
+                            userAlreadyExistsMessage: "User already exists",
+                            userCreationAcceptedMessage: "User creation accepted",
+                            internalErrorMessage: "Error occurred while importing user",
+                            uploadCSV: "Upload CSV File",
+                            dropCSV: "Drag and drop a CSV file here",
+                            username: "Username",
+                            status: "Status",
+                            message: "Message"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
@@ -8198,6 +8219,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -8675,6 +8697,44 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'utilisateur a été ajouté avec succès.",
                             message: "Ajout d'utilisateur réussi"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "No data found in the selected file",
+                                message: "Empty file"
+                            },
+                            invalidAttributeError: {
+                                description: "Header {{attribute}} is not a valid attribute",
+                                message: "Invalid header attribute"
+                            },
+                            headerEmptyError: {
+                                description: "Headers can not be empty or null",
+                                message: "Empty header attribute"
+                            },
+                            headerInvalidCharacterError: {
+                                description: "Header {{attribute}} contains invalid characters",
+                                message: "Invalid header attribute"
+                            },
+                            blockedAttributeError: {
+                                description: "Row {{row}} is empty.",
+                                message: "Empty row found"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error bulk importing users"
+                            },
+                            genericError: {
+                                description: "Couldn't bulk import users",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "The users were imported successfully.",
+                                message: "Users imported successfully"
+                            }
                         }
                     },
                     deleteUser: {

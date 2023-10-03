@@ -22,7 +22,7 @@ import {
     AlertInterface, 
     AlertLevels, 
     MultiValueAttributeInterface, 
-    TestableComponentInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -39,7 +39,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps,Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -70,8 +70,8 @@ import { getUsersList } from "../api";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
-import {BulkImportUserWizard} from "../components/wizard/bulk-import-user-wizard";
-import { UserManagementConstants } from "../constants";
+import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
+import { UserAddOptionTypes, UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 interface UserStoreItem {
@@ -127,7 +127,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ userStoreError, setUserStoreError ] = useState(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
-    const [realmConfigs, setRealmConfigs] = useState<RealmConfigInterface>(undefined);
+    const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
 
     const init : MutableRefObject<boolean> = useRef(true);
 
@@ -437,6 +437,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         dispatch(addAlert(alert));
     };
 
+
     /**
      * The following method set the list of columns selected by the user to
      * the state.
@@ -496,41 +497,89 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
+    
+
     /**
      * Handles the click event of the create new user button.
      */
-    // const handleAddNewUserWizardClick = (): void => {
+    const handleAddNewUserWizardClick = (): void => {
 
-    //     getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-    //         .then((response: GovernanceConnectorCategoryInterface) => {
-    //             const connectors: GovernanceConnectorInterface[]  = response?.connectors;
-    //             const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
-    //                 (connector: GovernanceConnectorInterface) => connector.id
-    //                     === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
-    //             );
+        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+            .then((response: GovernanceConnectorCategoryInterface) => {
+                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
+                const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
+                    (connector: GovernanceConnectorInterface) => connector.id
+                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
+                );
 
-    //             const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
-    //                 (property: ConnectorPropertyInterface) => 
-    //                     property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+                const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
+                    (property: ConnectorPropertyInterface) => 
+                        property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
-    //             setEmailVerificationEnabled(emailVerification.value === "true");
-    //         }).catch((error: AxiosError) => {
-    //             handleAlerts({
-    //                 description: error?.response?.data?.description ?? t(
-    //                     "console:manage.features.governanceConnectors.notifications." +
-    //                     "getConnector.genericError.description"
-    //                 ),
-    //                 level: AlertLevels.ERROR,
-    //                 message: error?.response?.data?.message ?? t(
-    //                     "console:manage.features.governanceConnectors.notifications." +
-    //                     "getConnector.genericError.message"
-    //                 )
-    //             });
-    //         });
-    // };
+                setEmailVerificationEnabled(emailVerification.value === "true");
+            }).catch((error: AxiosError) => {
+                handleAlerts({
+                    description: error?.response?.data?.description ?? t(
+                        "console:manage.features.governanceConnectors.notifications." +
+                        "getConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message ?? t(
+                        "console:manage.features.governanceConnectors.notifications." +
+                        "getConnector.genericError.message"
+                    )
+                });
+            });
+    };
 
-    const handleAddNewUserWizardClick = async (): Promise<void> => {
-        setShowBulkImportWizard(true);
+    const addUserDropdown: ReactElement = (
+        <>
+            <PrimaryButton
+                data-testid={ `${ testId }-add-admin-button` }
+                onClick={() => {
+                    () => null
+                } }
+                className="tablet or lower hidden"
+            >
+                <Icon name="add"/>
+                { t("extensions:manage.users.buttons.addUserBtn") }
+                <Icon name="dropdown" className="ml-3 mr-0"/>
+            </PrimaryButton>
+            {/* <Button
+                data-testid={ `${ testId }-add-admin-button` }
+                icon="add"
+                onClick={ () => {
+                    eventPublisher.publish("admins-click-add-new-button");
+                } }
+                className="mobile only tablet only"
+                primary
+            >
+            </Button> */}
+        </>
+    );
+
+    const addUserOptions: DropdownItemProps[] = [
+        {
+            "data-testid": "admins-add-external-admin",
+            key: 1,
+            text: t("console:manage.features.users.buttons.addNewUserBtn"),
+            value: UserAddOptionTypes.MANUAL_INPUT
+        },
+        {
+            "data-testid": "admins-add-internal-admin",
+            key: 2,
+            // text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
+            text: t("Bulk Import"),
+            value: UserAddOptionTypes.BULK_IMPORT
+        }
+    ];
+
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAddOptionTypes.MANUAL_INPUT) {
+            handleAddNewUserWizardClick();
+        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            setShowBulkImportWizard(true);
+        }
     };
 
     return (
@@ -539,13 +588,35 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        <PrimaryButton
+                        {/* <PrimaryButton
                             data-testid="user-mgt-user-list-add-user-button"
                             onClick={ () => handleAddNewUserWizardClick()  }
                         >
                             <Icon name="add"/>
                             { t("console:manage.features.users.buttons.addNewUserBtn") }
-                        </PrimaryButton>
+                        </PrimaryButton> */}
+                        <Dropdown
+                            data-testid={ `${ testId }-add-admin-dropdown` }
+                            direction="left"
+                            floating
+                            icon={ null }
+                            trigger={ addUserDropdown }
+                        >
+                            <Dropdown.Menu >
+                                { addUserOptions.map((option: {
+                                    "data-testid": string;
+                                    key: number;
+                                    text: string;
+                                    value: UserAddOptionTypes;
+                                }) => (
+                                    <Dropdown.Item
+                                        key={ option.value }
+                                        onClick={ ()=> handleDropdownItemChange(option.value) }
+                                        { ...option }
+                                    />
+                                )) }
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Show>
                 )
             }
@@ -723,7 +794,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 {
                     showBulkImportWizard && (
                         <BulkImportUserWizard
-                            data-testid="user-mgt-add-user-wizard-modal"
+                            data-testid="user-mgt-add-bulk-user-wizard-modal"
                             closeWizard={ () => {
                                 setShowBulkImportWizard(false);
                             } }

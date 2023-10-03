@@ -128,8 +128,17 @@ export enum UserAccountTypes {
     COLLABORATOR = "Collaborator"
 }
 
+/**
+ * @readonly
+ * @typeParam string - types of attributes that can not be bulk imported.
+ */
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
     ROLES = "roles",
     VERIFY_EMAIL = "verifyEmail"
+}
+
+export enum UserAddOptionTypes {
+    BULK_IMPORT = "bulk-import",
+    MANUAL_INPUT = "manual-input"
 }

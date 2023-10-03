@@ -3000,6 +3000,16 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: NotificationItem;
+                            invalidAttributeError: NotificationItem;
+                            headerEmptyError: NotificationItem;
+                            headerInvalidCharacterError: NotificationItem;
+                            blockedAttributeError: NotificationItem;
+                        },
+                        submit: Notification;
+                    }
                     deleteUser: Notification;
                     fetchUsers: Notification;
                     getAdminRole: Notification;
@@ -4933,6 +4943,27 @@ export interface ConsoleNS {
                                     1: string;
                                 };
                             };
+                        };
+                    };
+                    bulkImportUserWizard: {
+                        title: string;
+                        subTitle: string;
+                        wizardSummary: {
+                            successCount: string;
+                            failedCount: string;
+                            success: string;
+                            warning: string;
+                            failed: string;
+                            userCreatedMessage: string;
+                            invalidDataMessage: string;
+                            userAlreadyExistsMessage: string;
+                            userCreationAcceptedMessage: string;
+                            internalErrorMessage: string;
+                            uploadCSV: string;
+                            dropCSV: string;
+                            username: string;
+                            status: string;
+                            message: string;
                         };
                     };
                     changePasswordModal: {

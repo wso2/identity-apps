@@ -350,4 +350,5 @@ export interface BulkUserImportOperationResponse {
     username: string;
     status: BulkUserImportOperationStatus;
     message: string;
+    statusCode: number;
 }

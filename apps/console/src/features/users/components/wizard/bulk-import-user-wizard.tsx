@@ -41,7 +41,6 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
-import { resolveType } from "../../../claims/utils";
 import { getCertificateIllustrations } from "../../../core";
 import { bulkAddUsers } from "../../api";
 import { BlockedBulkUserImportAttributes } from "../../constants";
@@ -81,6 +80,13 @@ interface BulkResponseSummary {
     failedCount: number;
 }
 
+interface MultiValuedComplexAttribute {
+    [key: string] : string | boolean;
+    
+}
+
+
+const WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
 const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
 const SCIM2_ENTERPRISE_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
@@ -104,7 +110,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ emptyFileError, setEmptyFileError ] = useState(false);
     const [ userData, setUserData ] = useState<CSVResult>();
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [alert, setAlert, alertComponent] = useWizardAlert();
+    const [ hasError, setHasError ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
@@ -144,6 +151,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             return scimDialects;
         } catch (error) {
+            setHasError(true);
             dispatch(
                 addAlert({
                     description:
@@ -188,7 +196,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     (item: ExternalClaim): CSVAttributeMapping => {
                         return {
                             attributeName: item.mappedLocalClaimURI
-                                .replace("http://wso2.org/claims/", "")
+                                .replace(WSO2_LOCAL_CLAIM_DIALECT+"/", "")
                                 .toLowerCase(),
                             mappedLocalClaimURI: item.mappedLocalClaimURI,
                             mappedSCIMAttributeURI: item.claimURI,
@@ -202,14 +210,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             return _attributeMapping;
         } catch (error) {
+            setHasError(true);
             dispatch(
                 addAlert({
                     description:
                         error[0]?.response?.data?.description ||
                         t(
                             "console:manage.features.claims.dialects.notifications." +
-                                "fetchExternalClaims.genericError.description",
-                            { type: resolveType("scim") }
+                                "fetchExternalClaims.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
@@ -243,9 +251,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         if (isEmpty(headers) || isEmpty(rows)) {
             setAlert({
-                description: "CSV file is empty.",
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation.emptyRowError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.addUser.error.message")
+                message: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation.emptyRowError.message")
             });
 
             return false;
@@ -265,7 +275,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return array.length === 0;
     };
 
-    // Helper function to check if the attribute is invalid.
+    /**
+     * Helper function to check if the attribute is invalid.
+     * @param attribute - attribute to be checked.
+     * @param blockedAttributes - blocked attributes.
+     * @param externalClaimAttributes - external claim attributes.
+     * @returns isInvalidAttribute - boolean
+     */
     const isInvalidAttribute = (
         attribute: string,
         blockedAttributes: string[],
@@ -273,14 +289,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     ): boolean => {
         const regexPattern: RegExp = /[^a-zA-Z0-9/.]/;
 
-        if (!attribute || attribute.trim() === "" || regexPattern.test(attribute)) {
+        if (!attribute || attribute.trim() === "") {
             setAlert({
-                description:
-                    !attribute || attribute.trim() === ""
-                        ? "Header cannot be empty or null."
-                        : `Header "${attribute}" contains invalid characters.`,
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "headerEmptyError.description" ),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.addUser.error.message")
+                message: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation.headerEmptyError.message")
+            });
+
+            return true;
+        }
+
+        if (regexPattern.test(attribute)) {
+            setAlert({
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "headerInvalidCharacterError.description", { attribute }),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "headerInvalidCharacterError.message")
             });
 
             return true;
@@ -288,9 +318,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         if (blockedAttributes.includes(attribute)) {
             setAlert({
-                description: `Header "${attribute}" is not allowed.`,
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "blockedAttributeError.description", { attribute }),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.addUser.error.message")
+                message: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "blockedAttributeError.message")
             });
 
             return true;
@@ -298,9 +332,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         if (!externalClaimAttributes.some((externalClaim: string) => attribute === externalClaim.toLowerCase())) {
             setAlert({
-                description: `Header "${attribute}" is not a valid attribute.`,
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "invalidAttributeError.description", { attribute }),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.addUser.error.message")
+                message: t(
+                    "console:manage.features.users.notifications.bulkImportUser.validation." +
+                    "invalidAttributeError.message")
             });
 
             return true;
@@ -344,7 +382,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
 
-        const operations: SCIMOperation[] = rows.map(row => generateOperation(row, filteredAttributeMapping, headers));
+        const operations: SCIMOperation[] = rows.map((row: string[]) =>
+            generateOperation(row, filteredAttributeMapping, headers));
 
         return {
             Operations: operations,
@@ -378,7 +417,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns
      */
     const generateData = (row: string[], filteredAttributeMapping: CSVAttributeMapping[], headers: string[]): any => {
-        const data: any = {};
+        const dataObj: any = {};
         const schemasSet: Set<string> = new Set([ SCIM2_USER_SCHEMA ]);
 
         for (const attribute of filteredAttributeMapping) {
@@ -387,55 +426,70 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 ""
             );
             const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
+            const isMultiValued: boolean = scimAttribute.includes("#");
+            
+            const attrTypes: string[] = [ "emails", "phoneNumbers", "photos", "addresses", "entitlements",
+                "x509Certificates" ];
 
-            if (attribute.attributeName === "emails") {
-                data["emails"] = [
-                    {
-                        primary: true,
-                        value: attributeValue
-                    }
-                ];
+            const matchingAttrType: string = attrTypes.find((attrType: string) => scimAttribute.includes(attrType));
 
-                continue;
-            } else if (attribute.attributeName === "mobile") {
-                data["phoneNumbers"] = [
-                    {
-                        type: "mobile",
-                        value: attributeValue
-                    }
-                ];
+            // Check if scimAttribute contains any of the attrTypes
+            if (!isMultiValued && matchingAttrType) {
+                const info: MultiValuedComplexAttribute = scimAttribute.includes(matchingAttrType + ".")
+                    ? { type: scimAttribute.split(".")[1], value: attributeValue }
+                    : { primary: true, value: attributeValue };
+
+                dataObj[matchingAttrType] = dataObj[matchingAttrType] || [];
+                dataObj[matchingAttrType].push(info);
 
                 continue;
+                
             }
+
+            if (scimAttribute.includes("addresses#home")) {
+                // For Asgardeo. TODO: test
+                dataObj["addresses"] = dataObj["addresses"] || [];
+                dataObj["addresses"].push(
+                    {
+                        type: "home",
+                        [scimAttribute.replace(SCIM2_ENTERPRISE_USER_SCHEMA + "addresses#home", "")]:
+                            attributeValue
+                    }
+                );
+
+                continue;
+            } 
 
             // Add the schema to the set
             schemasSet.add(attribute.mappedSCIMClaimDialectURI);
 
-            const isMultiValued: boolean = scimAttribute.includes("#");
             const cleanedAttribute: string = isMultiValued ? scimAttribute.split("#")[0] : scimAttribute;
 
             // Handle simple attributes.
             if (!cleanedAttribute.includes(".")) {
                 const target: any =
                     attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
-                        ? data
-                        : data[attribute.mappedSCIMClaimDialectURI] || (data[attribute.mappedSCIMClaimDialectURI] = {});
+                        ? dataObj
+                        : dataObj[attribute.mappedSCIMClaimDialectURI] ||
+                        (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
 
                 if (isMultiValued) {
                     target[cleanedAttribute] = (target[cleanedAttribute] || []).concat(attributeValue);
                 } else {
                     target[cleanedAttribute] = attributeValue;
                 }
+
+                continue;
             }
             // Handle complex attributes.
             else if (cleanedAttribute.includes(".")) {
                 const [ parentAttr, childAttr ] = cleanedAttribute.split(".");
-
                 const target: any =
                     attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
-                        ? data
-                        : data[attribute.mappedSCIMClaimDialectURI] || (data[attribute.mappedSCIMClaimDialectURI] = {});
-
+                        ? dataObj
+                        : dataObj[attribute.mappedSCIMClaimDialectURI] ||
+                        (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
+                
                 if (isMultiValued) {
                     target[parentAttr] = (target[parentAttr] || []).concat({
                         [childAttr]: attributeValue
@@ -446,20 +500,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     }
                     target[parentAttr][childAttr] = attributeValue;
                 }
+
+                continue;
             }
 
-            // Check if the SCIM2_ENTERPRISE_USER_SCHEMA exists; if not, create an empty object.
-            if (!data[SCIM2_ENTERPRISE_USER_SCHEMA]) {
-                data[SCIM2_ENTERPRISE_USER_SCHEMA] = {};
-            }
-
-            // Set the askPassword attribute to "true".
-            data[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
         }
+
+        // Check if the SCIM2_ENTERPRISE_USER_SCHEMA exists; if not, create an empty object.
+        if (!dataObj[SCIM2_ENTERPRISE_USER_SCHEMA]) {
+            dataObj[SCIM2_ENTERPRISE_USER_SCHEMA] = {};
+        }
+
+        // Set the askPassword attribute to "true".
+        dataObj[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
 
         return {
             schema: Array.from(schemasSet),
-            ...data
+            ...dataObj
         };
     };
 
@@ -477,6 +534,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const blockedAttributeNames: string[] = Object.values(BlockedBulkUserImportAttributes);
 
             if (!validateCSVFile(userData, blockedAttributeNames, validAttributeNames)) {
+                setHasError(true);
+                setIsSubmitting(false);
+
                 return;
             }
 
@@ -490,14 +550,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
 
             const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
-
+           
             setResponse(response);
         } catch (error) {
+            setHasError(true);
+            
             setAlert({
-                description: t("console:manage.features.users.notifications.addUser.error.message"),
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: "Error occurred while importing users."
+                message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
             });
+            console.log("Error occurred while importing users.", error);
         } finally {
             setIsSubmitting(false);
         }
@@ -515,11 +579,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const defaultMsg: string = "Error occurred while importing user.";
 
         const statusMessages: Record<number, string> = {
-            201: "User imported successfully.",
-            202: "User creation accepted.",
-            400: "Invalid data.",
-            409: "User already exists.",
-            500: defaultMsg
+            201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.userCreatedMessage"),
+            202: t(
+                "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.userCreationAcceptedMessage"),
+            400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.invalidDataMessage"),
+            409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.userAlreadyExistsMessage"),
+            500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.internalErrorMessage")
         };
 
         // Update the summary.
@@ -540,6 +605,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return {
             message: statusMessages[statusCode] || defaultMsg,
             status: getStatusFromCode(statusCode),
+            statusCode,
             username
         };
     };
@@ -551,10 +617,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns
      */
     const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
-        if (statusCode === 201) return "Success";
-        if (statusCode === 202) return "Warning";
+        if (statusCode === 201) return t(
+            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.success" );
+        if (statusCode === 202) return t(
+            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.warning" );
 
-        return "Failed";
+        return t(
+            "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.failed" );
     };
 
     /**
@@ -587,8 +656,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { /* { t("console:manage.features.user.modals.bulkUserImportWizard.title") } */ }
-                Bulk Import Users
+                { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
             </Modal.Header>
 
             <Modal.Content className="content-container" scrolling>
@@ -596,6 +664,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                { alert && alertComponent }
                                 <FilePicker
                                     key={ 1 }
                                     fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
@@ -604,6 +673,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         setSelectedCSVFile(result.file);
                                         setUserData(result.serialized);
                                         setAlert(null);
+                                        setHasError(false);
                                     } }
                                     uploadButtonText="Upload CSV File"
                                     dropzoneText="Drag and drop a CSV file here."
@@ -616,15 +686,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 />
                             </Grid.Column>
                         </Grid.Row>
+                    </Grid>
+                ) : (
+                    <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 { alert && alertComponent }
                             </Grid.Column>
                         </Grid.Row>
-                    </Grid>
-                ) : (
-                    <Grid>
-                        
                         { showResponseView && !isSubmitting && showBulkResponseSummary() }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -638,11 +707,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     </Grid>
                 ) }
 
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        { alert && alertComponent }
-                    </Grid.Column>
-                </Grid.Row>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -667,9 +731,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     floated="right"
                                     onClick={ handleBulkUserImport }
                                     loading={ isSubmitting }
-                                    disabled={ isLoading || isSubmitting }
+                                    disabled={ isLoading || isSubmitting ||  hasError }
                                 >
-                                    Finish
+                                    { t("common:finish") }
                                 </PrimaryButton>
                             </Grid.Column>
                         ) : null }
