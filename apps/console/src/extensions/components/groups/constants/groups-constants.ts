@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,8 @@ export class GroupsConstants {
     private constructor() { }
 
     public static readonly APPLICATION_RESOURCE_DIR: string = "applications";
+
+    public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 
     /**
      * Get the paths necessary for the groups page.

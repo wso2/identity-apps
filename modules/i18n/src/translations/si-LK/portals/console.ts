@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -4538,6 +4538,252 @@ export const console: ConsoleNS = {
             windows: "Windows"
         }
     },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "තෝරාගත් අච්චුව, සංස්කාරකයේ පවතින පිටපත මෙන්ම ඔබ වින්යාසගත කර ඇති පිවිසුම් පියවර ද ප්රතිස්ථාපනය කරයි.ඉදිරියට යාමට </1>තහවුරු කරන්න</1> ක්ලික් කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි ය."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "තෝරාගත් අච්චුව ඔබ වින්යාසගත කර ඇති දැනට පවතින පිවිසුම් පියවර ප්රතිස්ථාපනය කරයි.ඉදිරියට යාමට </1>තහවුරු කරන්න</1> ක්ලික් කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි ය."
+        },
+        options: {
+            controls: {
+                remove: "ඉවත් කරන්න"
+            },
+            displayName: "{{displayName}} සමඟ පුරනය වන්න",
+            divider: "හෝ"
+        },
+        modes: {
+            legacy: {
+                label: "උරුමය සංස්කාරක"
+            },
+            visual: {
+                label: "දෘශ්ය සංස්කාරකය"
+            },
+            switchConfirmationModal: {
+                assertionHint: "ඔව් මට තේරෙනවා.මට මාරු වීමට අවශ්යයි.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි අතර වර්තමාන ප්රවාහයේ සිදු වූ වෙනස්කම් ඔබ ස්ථිරවම ලිහිල් කරනු ඇත.",
+                primaryActionButtonText: "තහවුරු කරන්න",
+                secondaryActionButtonText: "අවලංගු කරන්න",
+                title: "Are you sure?",
+                warningMessage: "ඔබ <1>{{mode}}</1> මාරු වුවහොත් නම්, ඔබ වත්මන් ප්රවාහයේ සිදු නොවූ වෙනස්කම් ලිහිල් කරනු ඇත.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "මෙම පියවරේ සිට ගුණාංග තෝරන්න"
+                },
+                enableBackupCodes: {
+                    label: "උපස්ථ කේත සක්රිය කරන්න"
+                },
+                userAttributeSelector: {
+                    label: "මෙම පියවරේ සිට පරිශීලක හඳුනාගැනීමක් තෝරන්න"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න",
+                        secondary: "කේතය නැවත සකස් කරන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ විද්යුත් තැපැල් හැඳුනුම්පතට යවා ඇති කේතය ඇතුළත් කරන්න (ජෝන් ******@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP සත්යාපනය"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න",
+                    optionSwitchTooltipContent: "පරිශීලක නාමය සහ මුරපදය වෙත මාරු වන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "පුරන්න"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "මෙම පරිගණකයේ මාව මතක තබා ගන්න"
+                        },
+                        username: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "ඔබගේ පරිශීලක නාමය ඇතුළත් කරන්න"
+                        }
+                    }
+                },
+                header: "පුරන්න"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න",
+                    optionSwitchTooltipContent: "මුලින්ම හඳුනාගැහක් වෙත මාරු වන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "පුරන්න"
+                    },
+                    fields: {
+                        password: {
+                            label: "මුරපදය",
+                            placeholder: "ඔබගේ මුරපදය ඇතුළත් කරන්න"
+                        },
+                        rememberMe: {
+                            label: "මෙම පරිගණකයේ මාව මතක තබා ගන්න"
+                        },
+                        username: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "ඔබගේ පරිශීලක නාමය ඇතුළත් කරන්න"
+                        }
+                    }
+                },
+                header: "පුරන්න"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න",
+                        secondary: "කේතය නැවත සකස් කරන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ ජංගම දුරකථනයට යවා ඇති කේතය ඇතුළත් කරන්න (****** 3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP සත්යාපනය"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ සත්යාපන යෙදුම මඟින් ජනනය කරන සත්යාපන කේතය ඇතුළත් කරන්න.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "තවමත් ඔබේ TOTP සත්යාපනය සකසා නැද්ද?උදවු සදහා අමතන්න"
+                },
+                header: "ඔබේ අනන්යතාවය සත්යාපනය කරන්න"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "ඔව් මට තේරෙනවා.මට ආපසු යාමට අවශ්යයි.",
+            content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි අතර ඔබ විසින් සිදු කරන ලද ප්රගතිය ඔබ ස්ථිරවම ලිහිල් කරනු ඇත.",
+            primaryActionButtonText: "තහවුරු කරන්න",
+            secondaryActionButtonText: "අවලංගු කරන්න",
+            title: "ඔයාට විශ්වාස ද?",
+            warningMessage: "ඔබ නැවත පෙරනිමියට ආපසු ගියහොත්, ප්රගතිය යථා තත්ත්වයට පත් කිරීමට ඔබට නොහැකි වනු ඇත.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+        },
+        steps: {
+            controls: {
+                addOption: "විකල්පය තුළ ලකුණ එක් කරන්න",
+                remove: "ඉවත් කරන්න",
+                signUp: {
+                    hint: "ගිණුමක් නැද්ද?",
+                    label: "ලියාපදිංචි වන්න"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "එකතු කරන්න"
+                },
+                header: "කොන්දේසි සහිත පිවිසුම් ප්රවාහයන්"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "මූලික පිවිසුම් ප්රවාහ"
+            },
+            categories: {
+                basic: {
+                    label: "මූලික පිවිසුම එක් කරන්න"
+                },
+                mfa: {
+                    label: "බහු සාධක පිවිසුම එක් කරන්න"
+                },
+                passwordless: {
+                    label: "මුරපද නොමැති පුරනය වීම එක් කරන්න"
+                },
+                social: {
+                    label: "සමාජ ප්රවේශය එක් කරන්න"
+                }
+            },
+            header: "පූර්ව නිශ්චිත ප්රවාහ",
+            panelHeader: "පූර්ව නිශ්චිත ප්රවාහ"
+        },
+        scriptEditor: {
+            panelHeader: "පිටපත සංස්කාරකය",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "නව රහසක් සාදන්න"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "රහස් ලබා ගත නොහැක.",
+                    description: "ආරක්ෂිතව ප්රවේශ යතුරු රහස් ලෙස ආරක්ෂිතව ගබඩා කරන්න.කොන්දේසි සහිත සත්යාපන ස්ක්රිප්ට් වල පාරිභෝගික රහස <1>callchoreo()</1> හි පාරිභෝගික රහස ආදේශ කළ හැකිය."
+                },
+                label: "රහසක් එකතු කරන්න"
+            },
+            themes: {
+                dark: {
+                    label: "අඳුරු (Visual Studio)"
+                },
+                highContrast: {
+                    label: "ඉහළ වෙනස"
+                },
+                light: {
+                    label: "ආලෝකය (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "පෙරනිමියට ආපසු යන්න"
+                },
+                update: {
+                    label: "යාවත්කාලීන කිරීම"
+                }
+            }
+        }
+    },
     manage: {
         features: {
             approvals: {
@@ -7293,7 +7539,8 @@ export const console: ConsoleNS = {
                             hint: "පරිශීලක කණ්ඩායමට එකතු කිරීමට පරිශීලකයින් තෝරන්න.",
                             list: {
                                 listHeader: "නම",
-                                searchPlaceholder: "පරිශීලකයින් සොයන්න"
+                                searchPlaceholder: "පරිශීලකයින් සොයන්න",
+                                searchByEmailPlaceholder: "විද්යුත් තැපැල් ලිපිනය අනුව පරිශීලකයින් සොයන්න"
                             },
                             subHeading: "නව පරිශීලකයින් එක් කරන්න හෝ  {{type}} වෙත පවරා ඇති පවතින"
                                 + " පරිශීලකයින් ඉවත් කරන්න."
@@ -8979,7 +9226,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "පරිශීලක ගබඩාව",
-                            serviceProvider: "යෙදුම"
+                            serviceProvider: "යෙදුම",
+                            authenticator: {
+                                attributeName: "සම්බන්ධතා වර්ගය",
+                                values: {
+                                    basic: "පරිශීලක නාමය සහ මුරපදය",
+                                    identifierFirst: "පළමුව හඳුනාගැනීම",
+                                    fido2: "FIDO2",
+                                    magicLink: "මැජික් සබැඳිය",
+                                    emailOtp: "ඊමේල් OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "උපස්ථ කේත",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "සංවිධාන පිවිසුම්"
+                                }
+                            },
+                            identityProvider: "අනන්යතා සපයන්නා"
                         }
                     },
                     registration: {
@@ -9014,7 +9283,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "පරිශීලක ලියාපදිංචි කිරීම්",
-                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක (B2C) ලියාපදිංචි කිරීම් ගණන"
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක ලියාපදිංචි කිරීම් ගණන"
                     }
                 },
                 notifications: {

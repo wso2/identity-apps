@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4138](https://github.com/wso2/identity-apps/pull/4138) [`a481bd70e5`](https://github.com/wso2/identity-apps/commit/a481bd70e5316a83021e35558ca6922af36add70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update j2 file
+
+## 2.0.11
+
+### Patch Changes
+
+- [#4135](https://github.com/wso2/identity-apps/pull/4135) [`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and bug fixes
+
+- Updated dependencies [[`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255)]:
+  - @wso2is/theme@2.0.4
+  - @wso2is/core@2.0.2
+  - @wso2is/i18n@2.0.2
+  - @wso2is/form@2.0.1
+  - @wso2is/react-components@2.0.3
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4130](https://github.com/wso2/identity-apps/pull/4130) [`c455d1894c`](https://github.com/wso2/identity-apps/commit/c455d1894c12e7df2fd6322fc9293c00915a3ccb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update J2 file in the console app
+
 ## 2.0.9
 
 ### Patch Changes

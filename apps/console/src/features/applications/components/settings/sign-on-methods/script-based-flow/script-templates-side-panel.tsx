@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
-import { TemplateDescription } from "./template-description";
+// eslint-disable-next-line max-len
+import AdaptiveAuthTemplateInfoModal from "../../../../../authentication-flow-builder/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**
@@ -218,9 +219,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
         return (
             <>
                 {
-                    selectedTemplate &&
-                    (
-                        <TemplateDescription
+                    selectedTemplate && (
+                        <AdaptiveAuthTemplateInfoModal
                             template={ selectedTemplate }
                             open={ !!selectedTemplate }
                             onClose={ closeTemplateDescriptionModal }
