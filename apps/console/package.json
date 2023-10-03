@@ -36,7 +36,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^1.1.23",
+        "@asgardeo/auth-react": "^1.1.24",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@microsoft/applicationinsights-core-js": "^3.0.0",
