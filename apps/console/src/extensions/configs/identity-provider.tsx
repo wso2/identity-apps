@@ -297,8 +297,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return [
                 IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
                 IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.X509_AUTHENTICATOR,
-                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
+                IdentityProviderManagementConstants.X509_AUTHENTICATOR
             ].includes(name);
         },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {

@@ -679,6 +679,8 @@ export interface ConsoleNS {
                                                 multipleIdps: string;
                                                 singleIdp: string;
                                             };
+                                            sessionExecutorDisabledInFirstStep: string;
+                                            sessionExecutorDisabledInMultiOptionStep: string;
                                         };
                                     };
                                 };
@@ -2983,6 +2985,19 @@ export interface ConsoleNS {
                             label: string;
                             placeholder: string;
                         };
+                    };
+                    help: string;
+                };
+                header: string;
+            };
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    sessions: {
+                        browserLabel: string;
+                        lastAccessedLabel: string;
                     };
                     help: string;
                 };

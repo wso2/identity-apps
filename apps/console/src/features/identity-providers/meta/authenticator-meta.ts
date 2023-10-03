@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
             "their Apple IDs.",
             [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
-            "recovery option."
+            "recovery option.",
+            [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: "Limit the number " +
+            "of active user sessions."
         }, authenticatorId);
     }
 
@@ -124,6 +126,9 @@ export class AuthenticatorMeta {
             ],
             [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.HANDLERS
             ]
         }, authenticatorId);
     }

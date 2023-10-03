@@ -1165,7 +1165,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo requires the user's profile containing the"+
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " + 
+                                            "having a basic authenticator in a prior step.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " + 
+                                            "added to a multi option step."
                                         }
                                     }
                                 },
@@ -6635,6 +6639,19 @@ export const console: ConsoleNS = {
                     help: "Haven't setup your TOTP authenticator yet? Contact support"
                 },
                 header: "Verify Your Identity"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Browser",
+                        lastAccessedLabel: "Last Accessed"
+                    },
+                    help: "Terminate active sessions to continue."
+                },
+                header: "Multiple Active Sessions Found"
             }
         },
         revertConfirmationModal: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -335,7 +335,8 @@ export class ApplicationManagementConstants {
 
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
-        ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+        ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
@@ -388,6 +389,14 @@ export class ApplicationManagementConstants {
     public static readonly EIDP_AUTHENTICATORS: SupportedAuthenticators[] = [
         SupportedAuthenticators.OIDC,
         SupportedAuthenticators.SAML
+    ];
+
+    // Authenticators that can handle Active Sessions Limit.
+    public static readonly ACTIVE_SESSIONS_LIMIT_HANDLERS: string[] = [
+        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     /**

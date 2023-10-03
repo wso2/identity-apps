@@ -45,6 +45,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Node, Position } from "reactflow";
+import ActiveSessionsLimitFragment from "./fragments/active-sessions-limit-fragment";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
@@ -234,6 +235,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
             } else if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
                 basicSignInOption = IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR;
+            } else if (option.authenticator === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+                basicSignInOption = IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR;
             }
 
             if (filteredOptions.length === 1) {
@@ -414,10 +417,33 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
+        if (activeBasicSignInOption === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            return (
+                <>
+                    <ActiveSessionsLimitFragment
+                        onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
+                            onSignInOptionRemove(e, {
+                                stepIndex,
+                                toRemove
+                            });
+                        } }
+                        onOptionSwitch={ (
+                            e: MouseEvent<HTMLButtonElement>,
+                            { toAdd, toRemove }: { toAdd: string; toRemove: string }
+                        ) => {
+                            onSignInOptionSwitch(e, {
+                                stepIndex,
+                                toAdd,
+                                toRemove
+                            });
+                        } }
+                    />
+                </>
+            );
+        }
+
         return (
-            <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("console:loginFlow.nodes.signIn.header") }
-            </Typography>
+            <></>
         );
     };
 
@@ -435,7 +461,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
+                    IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
                 shouldShowSubjectIdentifierCheck = false;
@@ -514,21 +541,26 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                         return generateDynamicSignInOption(option);
                                     }
                                 ) }
-                                <Button
-                                    fullWidth
-                                    startIcon={ <PlusIcon /> }
-                                    variant="outlined"
-                                    className="oxygen-sign-in-option oxygen-sign-in-option-add"
-                                    type="button"
-                                    onClick={ (e: MouseEvent<HTMLButtonElement>) =>
-                                        onSignInOptionAdd(e, {
-                                            stepIndex
-                                        })
-                                    }
-                                    data-componentid={ `${componentId}-add-sign-in-option` }
-                                >
-                                    { t("console:loginFlow.steps.controls.addOption") }
-                                </Button>
+                                {
+                                    (getBasicSignInOption() !== 
+                                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) 
+                                    &&
+                                    (<Button
+                                        fullWidth
+                                        startIcon={ <PlusIcon /> }
+                                        variant="outlined"
+                                        className="oxygen-sign-in-option oxygen-sign-in-option-add"
+                                        type="button"
+                                        onClick={ (e: MouseEvent<HTMLButtonElement>) =>
+                                            onSignInOptionAdd(e, {
+                                                stepIndex
+                                            })
+                                        }
+                                        data-componentid={ `${componentId}-add-sign-in-option` }
+                                    >
+                                        { t("console:loginFlow.steps.controls.addOption") }
+                                    </Button>)
+                                }
                             </div>
                         </div>
                         { showSelfSignUp && (
