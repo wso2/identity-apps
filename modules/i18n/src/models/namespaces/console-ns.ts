@@ -4779,6 +4779,13 @@ export interface ConsoleNS {
                                 };
                             };
                             roleName: FormAttributes;
+                            roleAudience: FormAttributes;
+                            assignedApplication: FormAttributes;
+                            notes: {
+                                orgNote: string,
+                                appNote: string,
+                                cannotCreateRole: string
+                            }
                         };
                     };
                     heading: string;
