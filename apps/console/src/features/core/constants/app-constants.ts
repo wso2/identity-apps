@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -348,7 +348,9 @@ export class AppConstants {
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ]
+            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/session-management` ],
+            [ "SESSION_MANAGEMENT_EDIT",`${AppConstants.getAdminViewBasePath()}/edit-session-management` ]
         ]);
 
         return paths;

@@ -9658,5 +9658,43 @@ export const console: ConsoleNS = {
                 }
             }
         }
+    },
+    sessionManagement: {
+        description: "Gérez les paramètres liés à la session de vos utilisateurs.",
+        title: "Gestion des sessions",
+        form: {
+            idleSessionTimeout: {
+                hint: "L'utilisateur sera automatiquement déconnecté après l'heure configurée.",
+                label: "Délai d'expiration de la session inactive",
+                placeholder: "Entrez le délai d'expiration de la session inactive en minutes"
+            },
+            rememberMePeriod: {
+                hint: "L'utilisateur sera invité à se reconnecter après l'heure configurée.",
+                label: "Période Souviens-toi de moi",
+                placeholder: "Entrez la période de mémorisation en minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Le délai d'expiration de la session inactive doit être un entier positif.",
+                rememberMePeriod: "La période Remember Me doit être un entier positif."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la récupération des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la mise à jour des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mise à jour réussie des paramètres de gestion de session.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
     }
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1179,6 +1179,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 name: "console:manage.features.sidePanel.userstores",
                 order: 9,
                 path: AppConstants.getPaths().get("USERSTORES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                component: lazy(() => import("../../session-management/pages/session-management")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().userStore
+                },
+                id: "sessionManagement",
+                name: "Session Management",
+                order: 22,
+                path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                 protected: true,
                 showOnSidePanel: true
             }

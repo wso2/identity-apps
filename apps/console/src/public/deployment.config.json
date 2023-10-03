@@ -578,6 +578,16 @@
                 },
                 "disabledFeatures": []
             },
+            "sessionManagement": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "organizations": {
                 "enabled": true,
                 "scopes": {

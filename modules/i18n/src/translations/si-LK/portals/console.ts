@@ -9452,5 +9452,43 @@ export const console: ConsoleNS = {
                 }
             }
         }
+    },
+    sessionManagement: {
+        description: "ඔබගේ පරිශීලකයින්ගේ සැසියට අදාළ සැකසුම් කළමනාකරණය කරන්න.",
+        title: "සැසි කළමනාකරණය",
+        form: {
+            idleSessionTimeout: {
+                hint: "වින්‍යාස කළ කාලයෙන් පසු පරිශීලකයා ස්වයංක්‍රීයව ඉවත් වනු ඇත.",
+                label: "නිෂ්ක්‍රීය සැසි කල් ඉකුත්වීම",
+                placeholder: "මිනිත්තු කිහිපයකින් නිෂ්ක්‍රීය සැසියේ කල් ඉකුත්වීම ඇතුළු කරන්න"
+            },
+            rememberMePeriod: {
+                hint: "වින්‍යාස කළ කාලයෙන් පසු නැවත පුරනය වීමට පරිශීලකයාගෙන් විමසනු ඇත.",
+                label: "මාව මතක තබා ගන්න කාලය",
+                placeholder: "මතක තබා ගැනීමේ කාල සීමාව මිනිත්තු කිහිපයකින් ඇතුළත් කරන්න"
+            },
+            validation: {
+                idleSessionTimeout: "Idle Session Timeout ධන නිඛිලයක් විය යුතුය.",
+                rememberMePeriod: "Remember Me Period ධන නිඛිලයක් විය යුතුය."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "සැසි කළමනාකරණ සැකසුම් ලබා ගැනීමේදී දෝෂයක් සිදු විය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "සැසි කළමනාකරණ සැකසුම් යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "සැසි කළමනාකරණ සැකසීම් සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        }
     }
 };

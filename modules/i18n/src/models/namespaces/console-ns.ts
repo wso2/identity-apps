@@ -5745,4 +5745,28 @@ export interface ConsoleNS {
             underConstruction: Placeholder;
         };
     };
+    sessionManagement: {
+        title: string;
+        description: string;
+        form: {
+            idleSessionTimeout: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            rememberMePeriod: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            validation: {
+                rememberMePeriod: string;
+                idleSessionTimeout: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    }
 }
