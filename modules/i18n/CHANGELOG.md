@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4111](https://github.com/wso2/identity-apps/pull/4111) [`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add identity verification provider feature
+
+* [#4152](https://github.com/wso2/identity-apps/pull/4152) [`9e75f3f3f1`](https://github.com/wso2/identity-apps/commit/9e75f3f3f170938319aa6d4c0f3b9a63d2bd3bd7) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated i18n of roles.
+
 ## 2.0.3
 
 ### Patch Changes

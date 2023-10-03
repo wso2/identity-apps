@@ -536,13 +536,13 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.3
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.4
+        specifier: ^2.0.5
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -861,13 +861,13 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.2
+        specifier: ^2.0.4
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.3
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.4
+        specifier: ^2.0.5
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -2724,6 +2724,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.23.0
+    dev: true
 
   /@babel/helper-split-export-declaration@7.22.6:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
@@ -5554,7 +5555,7 @@ packages:
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.18.9
       '@babel/helper-hoist-variables': 7.18.6
-      '@babel/helper-split-export-declaration': 7.18.6
+      '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
       debug: 4.3.4(supports-color@6.1.0)
@@ -5571,7 +5572,7 @@ packages:
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.18.9
       '@babel/helper-hoist-variables': 7.18.6
-      '@babel/helper-split-export-declaration': 7.18.6
+      '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.0
       '@babel/types': 7.23.0
       debug: 4.3.4(supports-color@5.5.0)
@@ -7991,7 +7992,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@emotion/is-prop-valid': 1.2.1
       '@mui/types': 7.2.4(@types/react@18.0.18)
       '@mui/utils': 5.12.3(react@18.2.0)
@@ -8184,7 +8185,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@emotion/react': 11.11.0(@types/react@18.0.18)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.0)(@types/react@18.0.18)(react@18.2.0)
       '@mui/private-theming': 5.14.4(@types/react@18.0.18)(react@18.2.0)
@@ -8215,7 +8216,7 @@ packages:
     peerDependencies:
       react: ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@types/prop-types': 15.7.5
       '@types/react-is': 17.0.4
       prop-types: 15.8.1
