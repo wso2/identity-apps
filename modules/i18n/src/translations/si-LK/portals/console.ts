@@ -7775,6 +7775,9 @@ export const console: ConsoleNS = {
                                 applicationSubTitle: {
                                     application: "අයදුම්පත් සහිත භූමිකාවන් සහාය",
                                     organization: "සංවිධාන භූමිකාවන් සහාය"
+                                },
+                                validations: {
+                                    empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
                                 }
                             }
                         }

@@ -9644,6 +9644,9 @@ export const console: ConsoleNS = {
                                 applicationSubTitle: {
                                     application: "Support application-scoped roles",
                                     organization: "Support organization-scoped roles"
+                                },
+                                validations: {
+                                    empty: "Assigned application is required to create an application-scoped role."
                                 }
                             }
                         }
