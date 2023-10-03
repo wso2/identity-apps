@@ -205,7 +205,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
      * checkbox field of an unassigned item.
      */
     const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
-        const checkedGroups: GroupsInterface[] = [ ...selectedGroupsList ];
+        const checkedGroups: GroupsInterface[] = selectedGroupsList ? [ ...selectedGroupsList ] : [];
         const groupIndex: number = checkedGroups.findIndex(
             (selectedGroup: GroupsInterface) => selectedGroup.id === group.id);
 
