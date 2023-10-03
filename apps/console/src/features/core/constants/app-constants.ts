@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -298,8 +298,8 @@ export class AppConstants {
             ],
             [ "IDP_EDIT",
                 useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
             ],
             [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],

@@ -18,6 +18,7 @@
 
 import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
+import { AppConfigProvider } from "@wso2is/common/src/providers/app-config-provider";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
@@ -85,7 +86,9 @@ const RootWithConfig = (): ReactElement => {
                         fallback={ <PreLoader /> }
                         getAuthParams={ getAuthParams }
                     >
-                        <ProtectedApp />
+                        <AppConfigProvider>
+                            <ProtectedApp />
+                        </AppConfigProvider>
                     </AuthProvider>
                 </BrowserRouter>
             </Provider>

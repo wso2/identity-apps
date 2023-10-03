@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ElementType, FunctionComponent, ReactElement, SVGProps, lazy } from "react";
 import { IdentityProviderConfig } from "./models";
+import { ConnectionTabTypes } from "../../features/connections";
 import { IdentityProviderManagementConstants } from "../../features/identity-providers/constants";
 import {
     AuthenticatorLabels,
@@ -198,7 +199,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 }
             ];
         },
-        isTabEnabledForIdP: (templateType: string, tabType: IdentityProviderTabTypes): boolean | undefined => {
+        isTabEnabledForIdP: (templateType: string, tabType: ConnectionTabTypes): boolean | undefined => {
 
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
                 [
