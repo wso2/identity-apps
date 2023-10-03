@@ -14,6 +14,11 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%
+    String TENANT_DOMAIN = "tenantDomain";
+    String TENANT_DOMAIN_SHORT = "t";
+    String USER_TENANT_DOMAIN_SHORT = "ut";
+    String SERVICE_PROVIDER_NAME_SHORT = "sp";
+    
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
     String commonauthURL = "../commonauth";
@@ -32,9 +37,22 @@
         tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
         tenantForTheming = tenantDomain;
         userTenant = tenantDomain;
-        spAppName = request.getParameter("sp");
-        String tenantDomainFromURL = request.getParameter("t");
-        String tenantDomainOfUser = request.getParameter("ut");
+
+        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
+        if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank(request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
+            spAppName = request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
+        }
+
+        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
+        if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank(request.getAttribute(TENANT_DOMAIN_SHORT))) {
+            tenantDomainFromURL = request.getAttribute(TENANT_DOMAIN_SHORT);
+        }
+
+        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
+        if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank(request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
+            tenantDomainOfUser = request.getAttribute(USER_TENANT_DOMAIN_SHORT);
+        }
+
         userTenantDomain = tenantDomainOfUser;
 
         if (StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)
@@ -57,13 +75,31 @@
             }
         }
     } else {
-        tenantDomain = request.getParameter("tenantDomain");
-        String tenantDomainFromURL = request.getParameter("t");
-        String tenantDomainOfUser = request.getParameter("ut");
-        spAppName = request.getParameter("sp");
+        tenantDomain = request.getParameter(TENANT_DOMAIN);
+        if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank(request.getAttribute(TENANT_DOMAIN))) {
+            tenantDomain = request.getAttribute(TENANT_DOMAIN);
+        }
+
+        String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
+        if (StringUtils.isBlank(tenantDomainFromURL) && StringUtils.isNotBlank(request.getAttribute(TENANT_DOMAIN_SHORT))) {
+            tenantDomainFromURL = request.getAttribute(TENANT_DOMAIN_SHORT);
+        }
+
+        String tenantDomainOfUser = request.getParameter(USER_TENANT_DOMAIN_SHORT);
+        if (StringUtils.isBlank(tenantDomainOfUser) && StringUtils.isNotBlank(request.getAttribute(USER_TENANT_DOMAIN_SHORT))) {
+            tenantDomainOfUser = request.getAttribute(USER_TENANT_DOMAIN_SHORT);
+        }
+
+        spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
+        if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank(request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
+            spAppName = request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
+        }
 
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+            if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank(request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN))) {
+                tenantDomain = request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+            }
         }
 
         if (!StringUtils.isBlank(tenantDomainFromURL)) {

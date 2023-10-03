@@ -61,6 +61,7 @@
     String productLogoAlt = "WSO2 Identity Server Logo";
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+    boolean enableDefaultPreLoader = true;
 
     // Preferences response object pointer keys.
     String PREFERENCE_KEY = "preference";
@@ -97,6 +98,7 @@
     String PRODUCT_LOGO_ALT_KEY = "productLogoAlt";
     String PRODUCT_WHITE_LOGO_URL_KEY = "productWhiteLogoURL";
     String PRODUCT_WHITE_LOGO_ALT_KEY = "productWhiteLogoAlt";
+    String IS_DEFAULT_PRE_LOADER_ENABLED_KEY = "enableDefaultPreLoader";
 
     // Load the branding fallback override values file if it exists.
     if (config.getServletContext().getResource("extensions/branding-fallbacks.jsp") != null) {
@@ -132,6 +134,11 @@
 
         if (overrideFallbackValues.containsKey(SHOULD_REMOVE_DEFAULT_BRANDING_KEY)) {
             shouldRemoveDefaultBranding = (boolean) overrideFallbackValues.get(SHOULD_REMOVE_DEFAULT_BRANDING_KEY);
+        }
+
+        // Pre loader
+        if (overrideFallbackValues.containsKey(IS_DEFAULT_PRE_LOADER_ENABLED_KEY)) {
+            enableDefaultPreLoader = (boolean) overrideFallbackValues.get(IS_DEFAULT_PRE_LOADER_ENABLED_KEY);
         }
 
         // Colors.

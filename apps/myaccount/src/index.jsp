@@ -24,12 +24,137 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="referrer" content="no-referrer" />
+        <style>
+            #trifacta-pre-loader {
+                display: none;
+            }
 
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" />
+            #default-pre-loader {
+                display: none;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            @keyframes alert-success {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+
+            .pre-loader-wrapper {
+                background-color: #F5F6F6;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                background-image: unset;
+            }
+
+            .pre-loader-logo {
+                margin-top: -0.1rem;
+            }
+    
+            .content-loader {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                user-select: none;
+            }
+    
+            .content-loader .ui.loader {
+                display: block;
+                position: relative;
+                margin-top: 10px;
+                margin-bottom: 25px;
+            }
+    
+            @keyframes loader {
+                0% {
+                    transform: rotate(0)
+                }
+    
+                to {
+                    transform: rotate(1turn)
+                }
+            }
+    
+            .content-loader .ui.loader:before {
+                content: "";
+                display: block;
+                height: 26px;
+                width: 26px;
+                border: .2em solid rgba(0,0,0,.1);
+                border-radius: 500rem;
+            }
+    
+            .content-loader .ui.loader:after {
+                content: "";
+                position: absolute;
+                height: 26px;
+                width: 26px;
+                border-color: #767676 transparent transparent !important;
+                border: .2em solid transparent;
+                animation: loader .6s linear;
+                animation-iteration-count: infinite;
+                border-radius: 500rem;
+                box-shadow: 0 0 0 1px transparent;
+                top: 0;
+                left: 0;
+            }
+
+            .trifacta-pre-loader  {
+                margin-top: -0.1rem;
+            }
+
+            .trifacta-pre-loader svg #_1 {
+                animation-name: alert-success;
+                animation-duration: 3s;
+                position: relative;
+                animation-delay: 0s;
+                animation-iteration-count: infinite;
+            }
+
+            .trifacta-pre-loader svg #_2 {
+                animation-name: alert-success;
+                animation-duration: 3s;
+                position: relative;
+                animation-delay: 1s;
+                animation-iteration-count: infinite;
+            }
+
+            .trifacta-pre-loader svg #_3 {
+                animation-name: alert-success;
+                animation-duration: 3s;
+                position: relative;
+                animation-delay: 2s;
+                animation-iteration-count: infinite;
+            }
+        </style>
+        <script>
+            function preLoaderResolver() {
+                var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
+                var defaultPreLoader = document.getElementById("default-pre-loader");
+                var loader = document.getElementById("loader");
+        
+                if (startupConfig.enableDefaultPreLoader) {
+                    defaultPreLoader.style.display = 'block';
+                    trifactaPreLoader.style.display = 'none';
+                } else {
+                    defaultPreLoader.style.display = 'none';
+                    trifactaPreLoader.style.display = 'block';
+                    loader.style.display = 'none';
+                }
+            };
+        </script>
         <script>
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
@@ -107,9 +232,25 @@
             authSPAJS.addEventListener("load", authenticateWithSDK, false);
         }
     </script>
-    <body>
-        <div class="pre-loader-wrapper">
-            <div class="oxygen-image pre-loader-logo">
+    <body onload="preLoaderResolver()">
+        <div class="pre-loader-wrapper" data-testid="preauth-pre-loader-wrapper">
+            <div class="trifacta-pre-loader" data-testid="preauth-pre-loader" id="trifacta-pre-loader">
+                <svg data-testid="preauth-pre-loader-svg" xmlns="http://www.w3.org/2000/svg" width="67.56" height="58.476"
+                     viewBox="0 0 67.56 58.476">
+                    <g id="logo-only" transform="translate(-424.967 -306)">
+                        <path id="_3" data-name="3"
+                              d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
+                              transform="translate(-261.054 -82.98)" fill="#ff7300"/>
+                        <path id="_2" data-name="2"
+                              d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
+                              transform="translate(-280.983 -82.98)" fill="#ff7300"/>
+                        <path id="_1" data-name="1"
+                              d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
+                              transform="translate(-271.019 -65.725)" fill="#000"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="pre-loader-logo" id="default-pre-loader">
                 <svg class="icon" id="is-logo" xmlns="http://www.w3.org/2000/svg" width="255.16" height="23.057" viewBox="0 0 255.16 23.057">
                     <g id="logo-full" transform="translate(-804.154 2199)">
                         <g id="wso2-logo" transform="translate(804.154 -2199)">
@@ -124,11 +265,9 @@
                     </g>
                 </svg>
             </div>
-            <div class="loaders content-loader">
-                <div class="ui active transition visible inverted dimmer" style="display: flex !important;">
-                    <div class="content">
-                        <div class="ui inverted loader"></div>
-                    </div>
+            <div class="content-loader" id="loader">
+                <div class="ui dimmer">
+                    <div class="ui loader"></div>
                 </div>
             </div>
         </div>

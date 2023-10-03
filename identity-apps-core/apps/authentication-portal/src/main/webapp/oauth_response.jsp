@@ -11,6 +11,17 @@
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
+<%
+    String USER_TENANT_DOMAIN = "userTenantDomain";
+    String USER_TENANT_DOMAIN_SHORT = "ut";
+    String SERVICE_PROVIDER_NAME = "serviceProvider";
+    String SERVICE_PROVIDER_NAME_SHORT = "sp";
+
+    request.setAttribute(USER_TENANT_DOMAIN_SHORT, request.getAttribute(USER_TENANT_DOMAIN));
+    request.setAttribute(SERVICE_PROVIDER_NAME_SHORT, request.getAttribute(SERVICE_PROVIDER_NAME));
+    // The `request` object contains the tenantDomain, which can be directly provided to the init-url.jsp code.
+%>
+
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
@@ -19,11 +30,6 @@
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp" />
-
-<%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null) { %>
-<link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
-<% } %>
 
 <html>
 
@@ -43,6 +49,60 @@
                 local('Montserrat'),
                 url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap') format('Roboto');
         }
+
+        .pre-loader-logo {
+            margin-top: 41px;
+            border-style: none;
+        }
+
+        .content-loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .content-loader .ui.loader {
+            display: block;
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        @keyframes loader {
+            0% {
+                transform: rotate(0)
+            }
+
+            to {
+                transform: rotate(1turn)
+            }
+        }
+
+        .content-loader .ui.loader:before {
+            content: "";
+            display: block;
+            height: 26px;
+            width: 26px;
+            border: .2em solid rgba(0,0,0,.1);
+            border-radius: 500rem;
+        }
+
+        .content-loader .ui.loader:after {
+            content: "";
+            position: absolute;
+            height: 26px;
+            width: 26px;
+            border-color: #767676 transparent transparent !important;
+            border: .2em solid transparent;
+            animation: loader .6s linear;
+            animation-iteration-count: infinite;
+            border-radius: 500rem;
+            box-shadow: 0 0 0 1px transparent;
+            top: 0;
+            left: 0;
+        } 
 
         .trifacta-pre-loader {
             margin-top: 41px;
@@ -332,29 +392,43 @@
             -webkit-tap-highlight-color: transparent;
         }
     </style>
+
+    <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
+    <% if (overrideStylesheet != null) { %>
+    <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
+    <% } %>
 </head>
 
 <body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()">
     <div class="page-wrapper">
         <main class="center-segment registration-loader">
             <div class="ui container aligned middle aligned text-center">
-                <div class="pre-loader-wrapper" data-testid="{" `${ testId }-wrapper` }>
-                    <div class="trifacta-pre-loader" data-testid="{" testId }>
-                        <svg data-testid="{" `${ testId }-svg` } xmlns="http://www.w3.org/2000/svg" width="67.56"
-                            height="58.476" viewBox="0 0 67.56 58.476">
-                            <g id="logo-only" transform="translate(-424.967 -306)">
-                                <path id="_3" data-name="3"
-                                    d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
-                                    transform="translate(-261.054 -82.98)" fill="#ff7300" />
-                                <path id="_2" data-name="2"
-                                    d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
-                                    transform="translate(-280.983 -82.98)" fill="#ff7300" />
-                                <path id="_1" data-name="1"
-                                    d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
-                                    transform="translate(-271.019 -65.725)" fill="#000" />
-                            </g>
-                        </svg>
-                    </div>
+                <div class="pre-loader-wrapper" data-testid="pre-loader-wrapper">
+                    <% if (enableDefaultPreLoader) { %>
+                        <img class="pre-loader-logo" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>">
+                        <div class="content-loader">
+                            <div class="ui dimmer">
+                                <div class="ui loader"></div>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="trifacta-pre-loader" data-testid="trifacta-pre-loader">
+                            <svg data-testid="trifacta-pre-loader-svg" xmlns="http://www.w3.org/2000/svg" width="67.56"
+                                height="58.476" viewBox="0 0 67.56 58.476">
+                                <g id="logo-only" transform="translate(-424.967 -306)">
+                                    <path id="_3" data-name="3"
+                                        d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
+                                        transform="translate(-261.054 -82.98)" fill="#ff7300" />
+                                    <path id="_2" data-name="2"
+                                        d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
+                                        transform="translate(-280.983 -82.98)" fill="#ff7300" />
+                                    <path id="_1" data-name="1"
+                                        d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
+                                        transform="translate(-271.019 -65.725)" fill="#000" />
+                                </g>
+                            </svg>
+                        </div>
+                    <% } %> 
                 </div>
                 <p class="message-description">
                     <a class="primary-color-btn button"
