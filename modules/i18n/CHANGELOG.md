@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.3
+
+### Patch Changes
+
+- [#4147](https://github.com/wso2/identity-apps/pull/4147) [`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae) Thanks [@Achintha444](https://github.com/Achintha444)! - Add i18N to the new roles section
+
 ## 2.0.2
 
 ### Patch Changes

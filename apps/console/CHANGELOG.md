@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4142](https://github.com/wso2/identity-apps/pull/4142) [`cdecb197ea`](https://github.com/wso2/identity-apps/commit/cdecb197ea50b947d5ae4dd7450616f37d23a9d1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to branding changes not being visible when modifying properties in the login page section of the branding design
+
+* [#4147](https://github.com/wso2/identity-apps/pull/4147) [`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae) Thanks [@Achintha444](https://github.com/Achintha444)! - Add i18N to the new roles section
+
+* Updated dependencies [[`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae)]:
+  - @wso2is/i18n@2.0.3
+
 ## 2.0.12
 
 ### Patch Changes

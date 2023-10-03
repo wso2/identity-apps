@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.6
+
+### Patch Changes
+
+- [#4142](https://github.com/wso2/identity-apps/pull/4142) [`cdecb197ea`](https://github.com/wso2/identity-apps/commit/cdecb197ea50b947d5ae4dd7450616f37d23a9d1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to branding changes not being visible when modifying properties in the login page section of the branding design
+
 ## 2.0.5
 
 ### Patch Changes
