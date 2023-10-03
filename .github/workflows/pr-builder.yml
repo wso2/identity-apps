@@ -196,7 +196,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ typecheck ]
+    needs: [ lint, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
