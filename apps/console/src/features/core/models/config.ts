@@ -127,6 +127,10 @@ export interface FeatureConfigInterface {
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
+     * Resident IDP Config management feature.
+     */
+    residentIdp?: FeatureAccessConfigInterface;
+    /**
      * Role management feature.
      */
     roles?: FeatureAccessConfigInterface;

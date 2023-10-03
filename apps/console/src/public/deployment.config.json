@@ -560,6 +560,16 @@
                     ]
                 }
             },
+            "residentIdp": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "secretsManagement": {
                 "enabled": false,
                 "scopes": {

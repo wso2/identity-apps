@@ -2434,14 +2434,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Enregistrement client dynamique",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
                                         issuer: "Émetteur",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "Serveur OpenID",
+                                        pushedAuthorizationRequest: "Demande d'autorisation poussée",
                                         revoke: "Révoquer",
+                                        sessionIframe: "Iframe de session",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },

@@ -2370,14 +2370,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "අවසරලත්",
+                                        dynamicClientRegistration: "ගතික සේවාලාභී ලියාපදිංචිය",
                                         endSession: "පිටතට",
                                         introspection: "ස්වයං විමර්ශනය",
                                         issuer: "නිකුත් කරන්නා",
                                         jwks: "JWKS",
                                         keystore: "යතුරු කට්ටලය",
+                                        openIdServer: "OpenID සේවාදායකය",
+                                        pushedAuthorizationRequest: "තල්ලු වූ අවසර ඉල්ලීම",
                                         revoke: "අහෝසි කරන්න",
+                                        sessionIframe: "Session Iframe",
                                         token: "ටෝකන්",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "සොයාගැනීම"
                                     }
                                 },
