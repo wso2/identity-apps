@@ -18,6 +18,6 @@
 
 export const RemoteUserStoreMeta: any = {
     userStoreAgent: {
-        artifact: "agent-v1.1.5.zip"
+        artifact: "agent-v1.1.6.zip"
     }
 };
