@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.0.14
+
+### Patch Changes
+
+- [#4137](https://github.com/wso2/identity-apps/pull/4137) [`12f007fd9c`](https://github.com/wso2/identity-apps/commit/12f007fd9c4feb3b71e11b84440bf13fada136ed) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enhance connections section
+
+- Updated dependencies [[`c30cc8f293`](https://github.com/wso2/identity-apps/commit/c30cc8f293f8f8d524f82bdeedc6105d1ce39875)]:
+  - @wso2is/dynamic-forms@2.0.2
+  - @wso2is/common@2.0.1
+
 ## 2.0.13
 
 ### Patch Changes
