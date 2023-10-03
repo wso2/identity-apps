@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,11 +32,12 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -53,9 +54,14 @@ import {
     getSidePanelIcons,
     updateResources
 } from "../../../../../features/core";
-import { GroupsInterface, GroupsMemberInterface } from "../../../../../features/groups";
+import { 
+    GroupsInterface, 
+    GroupsMemberInterface, 
+    SearchGroupInterface, 
+    searchGroupList 
+} from "../../../../../features/groups";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../../features/roles/constants/role-constants";
-import { CONSUMER_USERSTORE } from "../../../../../features/userstores/constants/user-store-constants";
+import { UsersConstants } from "../../constants";
 
 interface ConsumerUserGroupsPropsInterface {
     /**
@@ -96,12 +102,13 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<GroupsInterface[]>([]);
-    const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
-    const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
+    const [ selectedGroupsList, setSelectedGroupsList ] = useState<GroupsInterface[]>(undefined);
+    const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, GroupsInterface>>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isGroupFilterLoading, setGroupFilterLoading ] = useState<boolean>(false);
+    const [ groupSearchQuery, setGroupSearchQuery ] = useState<string>(undefined);
     const [ , setIsSelectAllGroupsChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * The following useEffect will be triggered when the
@@ -115,22 +122,62 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
     }, [ user ]);
 
     useEffect(() => {
-        if (!(user.groups)) {
-            return;
+        if (primaryGroupsList) {
+            setInitialLists();
         }
-        setInitialLists();
-    }, [ user.groups && primaryGroups ]);
+    }, [ primaryGroupsList, primaryGroups ]);
+
+    useEffect(() => {
+        if (groupSearchQuery) {
+            filterGroups(groupSearchQuery);
+        } else {
+            setInitialLists();
+        }
+    }, [ groupSearchQuery ]);
+
+    /**
+     * Filter the groups by the search query.
+     * 
+     * @param query - Search query
+     */
+    const filterGroups = (query: string) => {
+        if(query) {
+            setGroupFilterLoading(true);
+
+            const searchData: SearchGroupInterface = {
+                filter: `displayName co ${query}`,
+                schemas: [
+                    "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                ],
+                startIndex: 1
+            };
+
+            searchGroupList(searchData)
+                .then((response: AxiosResponse) => {
+                    setGroupLists(response.data.Resources);
+                }).catch(() => {
+                    setGroupLists([]);
+                }).finally(() => {
+                    setGroupFilterLoading(false);
+                });
+        }
+    };
 
     const mapUserGroups = () => {
-        const groupsMap: Map<string, string> = new Map<string, string> ();
+        const groupsMap: Map<string, GroupsInterface> = new Map<string, GroupsInterface> ();
 
         if (user.groups && user.groups instanceof Array) {
 
-            forEachRight (user.groups, (group:GroupsMemberInterface) => {
+            forEachRight (user.groups, (group: GroupsMemberInterface) => {
                 const groupName: string[] = group?.display?.split("/");
 
                 if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
-                    groupsMap.set(group.display, group.value);
+                    const groupObject: GroupsInterface = {
+                        displayName: group.display,
+                        id: group.value
+                    };
+
+                    groupsMap.set(group.display, groupObject);
                 }
             });
             setPrimaryGroupsList(groupsMap);
@@ -159,30 +206,46 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
      */
     const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
         const checkedGroups: GroupsInterface[] = [ ...selectedGroupsList ];
+        const groupIndex: number = checkedGroups.findIndex(
+            (selectedGroup: GroupsInterface) => selectedGroup.id === group.id);
 
-        if (checkedGroups?.includes(group)) {
-            checkedGroups.splice(checkedGroups.indexOf(group), 1);
-            setSelectedGroupList(checkedGroups);
+        if (groupIndex !== -1) {
+            checkedGroups.splice(groupIndex, 1);
         } else {
             checkedGroups.push(group);
-            setSelectedGroupList(checkedGroups);
         }
+        setSelectedGroupsList(checkedGroups);
         setIsSelectAllGroupsChecked(checkedGroups.length === groupList.length);
     };
 
+    /**
+     * Set the initial group lists and set the group lists when the query is empty.
+     */
     const setInitialLists = () => {
-        const groupListCopy: GroupsInterface[] = primaryGroups ? [ ...primaryGroups ] : [];
-        const addedGroups: GroupsInterface[] = [];
+        const selectedGroups: GroupsInterface[] = selectedGroupsList || 
+            (primaryGroupsList ? Array.from(primaryGroupsList.values()) : null);
 
-        forEachRight(groupListCopy, (group: GroupsInterface) => {
-            if (primaryGroupsList?.has(group.displayName)) {
-                addedGroups.push(group);
-            }
-        });
-        setSelectedGroupList(addedGroups);
-        setGroupList(groupListCopy);
-        setInitialGroupList(groupListCopy);
-        setIsSelectAllGroupsChecked(groupListCopy.length === addedGroups.length);
+        let uniqueGroups: GroupsInterface[];
+
+        if (selectedGroups) {
+            uniqueGroups = primaryGroups.filter(
+                (group: GroupsInterface) => !selectedGroups?.some(
+                    (selectedGroup: GroupsInterface) => selectedGroup.id === group.id));
+            setGroupLists([ ...selectedGroups, ...uniqueGroups ]);
+        } else {
+            uniqueGroups = primaryGroups;
+            setGroupLists(uniqueGroups);
+        }
+
+        setSelectedGroupsList(selectedGroups);
+    };
+
+    /**
+     * Set the group list.
+     * @param groupList - Group list
+     */
+    const setGroupLists = (groupList: GroupsInterface[]) => {
+        setGroupList(groupList ? groupList : []);
     };
 
     const handleOpenAddNewGroupModal = () => {
@@ -195,29 +258,14 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
         setAddNewRoleModalView(false);
     };
 
-    const handleUnselectedListSearch = (e: React.FormEvent<HTMLInputElement>, { value }:{ value: string }) => {
-        let isMatch: boolean = false;
-        let displayName: string = null;
-        const filteredGroupList: GroupsInterface[] = [];
-
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            initialGroupList && initialGroupList.map((role: GroupsInterface) => {
-                displayName = role.displayName.includes(`${CONSUMER_USERSTORE}/`)
-                    ? role.displayName.split(`${CONSUMER_USERSTORE}/`)[1]
-                    : role.displayName;
-                isMatch = re.test(displayName);
-                if (isMatch) {
-                    filteredGroupList.push(role);
-                }
-            });
-
-            setGroupList(filteredGroupList);
-        } else {
-            setGroupList(initialGroupList);
-        }
-    };
+    /**
+     * The following function handles the search query for the groups list.
+     */
+    const searchGroups: DebouncedFunc<(query: string) => void> = 
+        useCallback(debounce((query: string) => {
+            query = !isEmpty(query) ? query : null;
+            setGroupSearchQuery(query);
+        }, UsersConstants.DEBOUNCE_TIMEOUT), []);
 
     /**
      * This function handles assigning the roles to the user.
@@ -226,11 +274,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
      * @param groups - Assigned groups
      */
     const updateUserGroup = (user: ProfileInfoInterface, groups: GroupsInterface[]) => {
-        const groupIds: string[] = [];
-
-        groups.map((group: GroupsInterface) => {
-            groupIds.push(group.id);
-        });
+        const groupIds: string[] = groups.map((group: GroupsInterface) => group.id);
 
         const bulkData: any = {
             Operations: [],
@@ -267,7 +311,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
         let removedIds: string[] = [];
 
         if (primaryGroupsList) {
-            removedIds = [ ...primaryGroupsList.values() ];
+            removedIds = Array.from(primaryGroupsList.values()).map((group: GroupsInterface) => group.id);
         }
 
         if (groupIds?.length > 0) {
@@ -389,7 +433,10 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                     selectionComponent
                     searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
                         { type: "Groups" }) }
-                    handleUnelectedListSearch={ handleUnselectedListSearch }
+                    handleUnelectedListSearch={ 
+                        (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) =>  searchGroups(value)
+                    }
+                    isLoading={ isGroupFilterLoading }
                     data-testid="user-mgt-update-groups-modal"
                 >
                     <TransferList
@@ -402,23 +449,23 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            groupList?.map((group: GroupsInterface, index: number)=> {
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={
-                                            () => handleUnassignedItemCheckboxChange(group)
-                                        }
-                                        key={ index }
-                                        listItem={ resolveListItem(group?.displayName) }
-                                        listItemId={ group?.id }
-                                        listItemIndex={ index }
-                                        listItemTypeLabel={ null }
-                                        isItemChecked={ selectedGroupsList.includes(group) }
-                                        showSecondaryActions={ false }
-                                        data-testid="user-mgt-update-groups-modal-unselected-groups"
-                                    />
-                                );
-                            })
+                            groupList?.map((group: GroupsInterface, index: number)=> (
+                                <TransferListItem
+                                    handleItemChange={
+                                        () => handleUnassignedItemCheckboxChange(group)
+                                    }
+                                    key={ index }
+                                    listItem={ resolveListItem(group?.displayName) }
+                                    listItemId={ group?.id }
+                                    listItemIndex={ index }
+                                    listItemTypeLabel={ null }
+                                    isItemChecked={ selectedGroupsList?.some(
+                                        (selectedGroup: GroupsInterface) => group.id === selectedGroup.id) 
+                                    }
+                                    showSecondaryActions={ false }
+                                    data-testid="user-mgt-update-groups-modal-unselected-groups"
+                                />
+                            ))
                         }
                     </TransferList>
                 </TransferComponent>

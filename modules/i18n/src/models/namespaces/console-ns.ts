@@ -3258,6 +3258,9 @@ export interface ConsoleNS {
                             3: string;
                         };
                     };
+                    placeholders: {
+                        undefinedUser: Placeholder;
+                    };
                 };
                 userSessions: {
                     components: {
@@ -5117,6 +5120,7 @@ export interface ConsoleNS {
                         roles: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         users: {
                             roles: {

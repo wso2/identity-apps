@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -352,11 +352,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     ): void => {
         const processedFormValues: ValidationFormInterface = { ...values };
 
-        const updatePasswordHistory: Promise<any> = serverConfigurationConfig.processPasswordCountSubmitData(
-            processedFormValues
-        );
-
-        const updatePasswordExpiry: Promise<any> = serverConfigurationConfig.processPasswordExpirySubmitData(
+        const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
             processedFormValues
         );
 
@@ -380,8 +376,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         setSubmitting(true);
         Promise.all([
-            updatePasswordHistory,
-            updatePasswordExpiry,
+            updatePasswordPolicies,
             updateValidationConfigData(processedFormValues, null, validationData[0])
         ])
             .then(() => {

@@ -10083,7 +10083,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "There are no {{type}} assigned with this role.",
-                            unselected: "There are no {{type}} available to assign with this role."
+                            unselected: "There are no {{type}} available to assign to this group.",
+                            common: "No {{type}} found"
                         },
                         users: {
                             roles: {
@@ -10804,6 +10805,13 @@ export const console: ConsoleNS = {
                             1: "Groups",
                             2: "Roles",
                             3: "Active Sessions"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Go back to users",
+                            subtitles: "It looks like the requested user does not exist.",
+                            title: "User not found"
                         }
                     }
                 },

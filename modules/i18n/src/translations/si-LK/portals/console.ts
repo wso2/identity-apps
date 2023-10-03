@@ -8216,7 +8216,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "මෙම භූමිකාව සමඟ පවරා ඇති {{type}} නොමැත.",
-                            unselected: "මෙම භූමිකාව සමඟ පැවරීම සඳහා {{type}} නොමැත."
+                            unselected: "මෙම කණ්ඩායමට පැවරීම සඳහා {{type}} නොමැත.",
+                            common: "{{type}} හමු නොවීය"
                         },
                         users: {
                             roles: {
@@ -8944,6 +8945,13 @@ export const console: ConsoleNS = {
                             1: "කණ්ඩායම්",
                             2: "භූමිකාවන්",
                             3: "ක්‍රියාකාරී සැසි"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "පරිශීලකයන් වෙත ආපසු යන්න",
+                            subtitles: "ඉල්ලූ පරිශීලකයා නොපවතින බව පෙනේ.",
+                            title: "පරිශීලක හමු නොවීය"
                         }
                     }
                 },
