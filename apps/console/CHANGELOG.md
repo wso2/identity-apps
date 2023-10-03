@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4111](https://github.com/wso2/identity-apps/pull/4111) [`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add identity verification provider feature
+
+* [#4127](https://github.com/wso2/identity-apps/pull/4127) [`e09ada60b1`](https://github.com/wso2/identity-apps/commit/e09ada60b1b1f5ae47a47ae3007f0974d79dc690) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a startup config file to store config variables.
+
+* Updated dependencies [[`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530), [`9e75f3f3f1`](https://github.com/wso2/identity-apps/commit/9e75f3f3f170938319aa6d4c0f3b9a63d2bd3bd7)]:
+  - @wso2is/theme@2.0.5
+  - @wso2is/i18n@2.0.4
+
 ## 2.0.14
 
 ### Patch Changes

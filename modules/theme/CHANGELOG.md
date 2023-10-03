@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.5
+
+### Patch Changes
+
+- [#4111](https://github.com/wso2/identity-apps/pull/4111) [`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add identity verification provider feature
+
 ## 2.0.4
 
 ### Patch Changes
