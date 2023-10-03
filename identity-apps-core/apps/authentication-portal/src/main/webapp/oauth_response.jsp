@@ -428,7 +428,7 @@
                                         <div class="ui loader"></div>
                                     </div>
                                 </div>
-                    <%      else { %>
+                    <%      } else { %>
                                 <div class="trifacta-pre-loader" data-testid="trifacta-pre-loader">
                                     <svg data-testid="trifacta-pre-loader-svg" xmlns="http://www.w3.org/2000/svg" width="67.56"
                                         height="58.476" viewBox="0 0 67.56 58.476">
