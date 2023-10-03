@@ -5170,6 +5170,12 @@ export interface ConsoleNS {
                         title: string;
                         header: string;
                         subheader: string;
+                        confirmation: {
+                            hint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        }
                     };
                     errors: {
                         genericError: string;

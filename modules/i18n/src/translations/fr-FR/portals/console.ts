@@ -8457,7 +8457,14 @@ export const console: ConsoleNS = {
                     dangerZone: {
                         title: "",
                         header: "",
-                        subheader: ""
+                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        confirmation: {
+                            hint: "Veuillez confirmer votre action.",
+                            header: "Êtes-vous sûr?",
+                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            "Veuillez procéder avec prudence.",
+                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                        }
                     },
                     errors: {
                         genericError: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance."

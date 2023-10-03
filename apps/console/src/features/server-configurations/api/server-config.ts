@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -187,6 +187,33 @@ export const updateAdminAdvisoryBannerConfiguration = (
 };
 
 /**
+ * Hook to get the remote log publishing configurations.
+ * 
+ * @returns remote log publishing configurations.
+ */
+export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigurationInterface[],
+    Error = RequestErrorInterface>(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.remoteLogging
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
  * Update remote log publishing configurations.
  *
  * @returns a promise containing the response.
@@ -201,7 +228,7 @@ export const updateRemoteLogPublishingConfiguration = (
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
+        method: HttpMethods.PUT,
         url: store.getState().config.endpoints.remoteLogging
     };
 

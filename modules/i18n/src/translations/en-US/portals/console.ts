@@ -10139,7 +10139,14 @@ export const console: ConsoleNS = {
                     dangerZone: {
                         title: "Restore Default Configuration",
                         header: "Restore Default Configuration",
-                        subheader: "This action will permanently delete the API Resource. Please be certain before you proceed."
+                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        confirmation: {
+                            hint: "Please confirm your action.",
+                            header: "Are you sure?",
+                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            "Please proceed with caution.",
+                            content: "This action will restore the default log publishing configuration."
+                        }
                     },
                     errors: {
                         genericError: "An error occurred while updating remote log publishing configuration."

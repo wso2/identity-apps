@@ -19,15 +19,19 @@
 import { Divider,  Grid, Typography } from "@oxygen-ui/react";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { DangerZone, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import { AlertInterface, AlertLevels } from "modules/core/src/models/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Form } from "semantic-ui-react";
-import { restoreRemoteLogPublishingConfiguration, updateRemoteLogPublishingConfiguration } from "../api/server-config";
+import { 
+    restoreRemoteLogPublishingConfiguration, 
+    updateRemoteLogPublishingConfiguration, 
+    useRemoteLogPublishingConfigs 
+} from "../api/server-config";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/governance-connectors";
 
 interface RemoteLoggingConfig {
@@ -51,9 +55,42 @@ interface RemoteLoggingConfig {
 
 export default function RemoteLogging (): JSX.Element {
     const [ remoteLoggingConfig,setRemoteLoggingConfig ] = useState<RemoteLoggingConfig>();
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const {
+        data: remoteLogPublishingConfigs,
+        isLoading: isRemoteLogPublishingConfigsLoading,
+        error: remoteLogPublishingConfigRetrievalError
+    } = useRemoteLogPublishingConfigs();
+
+    useEffect(() => {
+        if (!remoteLogPublishingConfigRetrievalError) {
+
+            return;
+        }
+
+        dispatch(addAlert<AlertInterface>({
+            description: t("extensions:develop.branding.notifications.fetch.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("extensions:develop.branding.notifications.fetch.genericError.message")
+        }));
+    }, [ remoteLogPublishingConfigRetrievalError ]);
+
+    useEffect(() => {
+        if (remoteLogPublishingConfigs) {
+            let existingConfig: RemoteLoggingConfig = remoteLogPublishingConfigs.find(
+                (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT);
+            
+            if (remoteLogPublishingConfigs?.length === 2) {
+                existingConfig = { ...existingConfig,logType: LogType.ALL };
+            }
+
+            setRemoteLoggingConfig(existingConfig);
+            
+        }
+    },[ remoteLogPublishingConfigs ]);
 
     const restoreDefaultRemoteLoggingConfiguration = () => {
         restoreRemoteLogPublishingConfiguration().then(() => {
@@ -134,6 +171,7 @@ export default function RemoteLogging (): JSX.Element {
             description={ (<>
                 { t("console:manage.features.serverConfigs.remoteLogPublishing.description") }
             </>) }
+            isLoading={ isRemoteLogPublishingConfigsLoading }
         >
             <Grid
                 container
@@ -152,7 +190,6 @@ export default function RemoteLogging (): JSX.Element {
                 >
                     <Forms
                         onSubmit={ handleRemoteLoggingConfigUpdate }
-                        // resetState={ isFiltersReset }
                     >
                         <Field
                             children={ [
@@ -194,7 +231,7 @@ export default function RemoteLogging (): JSX.Element {
                             label={ 
                                 "Destination URL"
                             }
-                            name={ "remoteURL" }
+                            name={ "remoteUrl" }
                             required
                             requiredErrorMessage={ 
                                 "Remote logging destination endpoint URL is missing"
@@ -220,7 +257,7 @@ export default function RemoteLogging (): JSX.Element {
                                 t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                     "connectionTimeout.label")
                             }
-                            name={ "connectionTimeoutInMilis" }
+                            name={ "connectTimeoutMillis" }
                             type="number"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -259,8 +296,6 @@ export default function RemoteLogging (): JSX.Element {
                             </Grid>
                         </Grid>
 
-                        
-
                         <Typography variant="subtitle1" style={ { marginBottom: "1em" } }>
                             { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                 "basicAuthConfig.title") }
@@ -271,7 +306,7 @@ export default function RemoteLogging (): JSX.Element {
                                 t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                     "basicAuthConfig.serverUsername.label")
                             }
-                            name={ "remoteServerUsername" }
+                            name={ "username" }
                             type="text"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -286,7 +321,7 @@ export default function RemoteLogging (): JSX.Element {
                                 t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                     "basicAuthConfig.serverPassword.label")
                             }
-                            name={ "remoteServerPassword" }
+                            name={ "password" }
                             type="password"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -336,7 +371,7 @@ export default function RemoteLogging (): JSX.Element {
                                 t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                     "sslConfig.truststorePath.label")
                             }
-                            name={ "trustStoreLocation" }
+                            name={ "truststoreLocation" }
                             type="text"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -351,7 +386,7 @@ export default function RemoteLogging (): JSX.Element {
                                 t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." + 
                                     "sslConfig.truststorePassword.label")
                             }
-                            name={ "trustStorePassword" }
+                            name={ "truststorePassword" }
                             type="password"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -382,16 +417,53 @@ export default function RemoteLogging (): JSX.Element {
                 </Typography>
                 <DangerZone
                     data-testid={ "remote-logging-danger-zone" }
-                    actionTitle={ "Restore Default Configuration" }
-                    header={ "Restore Default Configuration" }
+                    actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title") }
+                    header={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.header") }
                     subheader={ 
-                        "This action will permanently delete the API Resource. Please be certain before you proceed."
+                        t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.subheader")
                     }
                     onActionClick={ (): void => {
-                        restoreDefaultRemoteLoggingConfiguration();
+                        setShowDeleteConfirmationModal(true);
                     } }
                     isButtonDisabled={ false }
                 />
+                <ConfirmationModal
+                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                    type="negative"
+                    open={ showDeleteConfirmationModal }
+                    assertionHint={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                    "confirmation.hint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => {
+                        setShowDeleteConfirmationModal(false);
+                    } }
+                    onPrimaryActionClick={ (): void => restoreDefaultRemoteLoggingConfiguration() }
+                    data-testid={ "remote-logging-delete-confirmation-modal" }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-testid={ "remote-logging-delete-confirmation-modal-header" }
+                    >
+                        { t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                        "confirmation.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-testid={ "remote-logging-delete-confirmation-modal-message" }
+                    >
+                        { t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                        "confirmation.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-testid={ "remote-logging-delete-confirmation-modal-content" }
+                    >
+                        { t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                        "confirmation.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
             </div>
         </PageLayout>
     );
