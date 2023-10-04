@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,16 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./es-ES";
-export * from "./de-DE";
-export * from "./ja-JP";
-export * from "./zh-CN";
+import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
+
+export const meta: LocaleMeta = {
+    code: "ja-JP",
+    flag: "jp",
+    name: "日本語 (日本)",
+    namespaces: [
+        I18nModuleConstants.COMMON_NAMESPACE,
+        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
+        I18nModuleConstants.EXTENSIONS_NAMESPACE
+    ]
+};
