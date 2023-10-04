@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import OxygenCheckbox from "@oxygen-ui/react/Checkbox";
 import {
     Button,
     ColorPicker,
@@ -312,13 +313,15 @@ export const ToggleAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
 /**
  * Semantic Checkbox adapter.
+ * @deprecated Use `CheckboxAdapter` instead.
+ * 
  * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
  *
  * @param props - Props injected to the component.
  *
  * @returns
  */
-export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+export const DepricatedCheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
 
     const {
         childFieldProps,
@@ -350,6 +353,61 @@ export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElem
                 if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(checked);
                 }
+
+                input.onChange({
+                    target: {
+                        checked,
+                        type: "checkbox",
+                        value
+                    }
+                });
+            } }
+        />
+    );
+};
+
+/**
+ * Oxygen Checkbox adapter.
+ * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns
+ */
+export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+
+    const {
+        childFieldProps,
+        input: { value, ...input },
+        ...rest
+    } = props;
+
+    // unused, just don't pass it along with the ...rest
+    const {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        type,
+        meta,
+        hint,
+        children,
+        parentFormProps,
+        render,
+        width,
+        /* eslint-enable @typescript-eslint/no-unused-vars */
+        ...filteredRest
+    } = rest;
+
+    return (
+        <OxygenCheckbox
+            { ...input }
+            { ...filteredRest }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
+                    childFieldProps.listen(event.target.checked);
+                }
+
+                const checked: boolean = event.target.checked;
 
                 input.onChange({
                     target: {

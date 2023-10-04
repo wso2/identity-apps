@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1177,7 +1177,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo nécessite le profil de l'utilisateur" +
                                                     " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
                                                     " avec Connexion <5>{{idpName}}</5>."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " + 
+                                                "d'avoir un authentificateur de base dans une étape préalable.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " + 
+                                                "ne peut pas être ajouté à une étape multi-options."
                                         }
                                     }
                                 },
@@ -4321,6 +4325,255 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Saisissez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom"
+                },
+                buttons: {
+                    addIDVP: "Nouveau fournisseur de vérification d'identité"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "Il n'y a pas de fournisseurs de vérification d'identité disponibles pour le moment.",
+                            1: "Vous pouvez facilement ajouter un nouveau fournisseur de vérification d'identité en " +
+                                "suivant les",
+                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité."
+                        },
+                        title: "Ajouter un nouveau fournisseur de vérification d'identité"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "Il n'y a actuellement aucun type de fournisseur de vérification ",
+                            1: "d'identité disponible pour la configuration."
+                        },
+                        title: "Aucun type de fournisseur de vérification d'identité trouvé"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Veuillez confirmer votre action",
+                        content: "Si vous supprimez ce fournisseur de vérification d'identité, vous ne pourrez pas " +
+                            "le récupérer. Veuillez procéder avec prudence.",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le fournisseur de " +
+                            "vérification d'identité."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des fournisseurs de " +
+                                "vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Supprimer l'erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Supprimer l'erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été supprimé.",
+                            message: "Suppression réussie"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Erreur de mise à jour"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été mis à jour.",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Créer une erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la création du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Créer une erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été créé.",
+                            message: "Créez avec succès"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Nécessité de configurer toutes les propriétés obligatoires.",
+                            message: "Impossible d'effectuer la mise à jour"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des claims localaux.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des données du " +
+                                "fournisseur de vérification d'identité",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées de " +
+                                "l'interface utilisateur.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des types de modèles " +
+                                "auprès du fournisseur de vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du type de modèle auprès" +
+                                " du fournisseur de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur " +
+                                "de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "Une description textuelle du fournisseur de vérification d'identité.",
+                            label: "Description",
+                            placeholder: "Entrez une description du fournisseur de vérification d'identité."
+                        },
+                        name: {
+                            hint: "Entrez Un nom unique pour ce fournisseur de vérification d'identité.",
+                            label: "Nom",
+                            placeholder: "Entrez un nom pour le fournisseur de vérification d'identité.",
+                            validations: {
+                                duplicate: "Un fournisseur de vérification d'identité existe déjà avec ce nom",
+                                empty: "Le nom du fournisseur de vérification d'identité est requis",
+                                maxLengthReached: "Le nom du fournisseur de vérification d'identité ne peut pas " +
+                                    "dépasser {{ maxLength }} caractères.",
+                                required: "Le nom du fournisseur de vérification d'identité est requis",
+                                invalid: "Le nom du fournisseur de vérification d'identité n'est pas valide"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Mapping des attributs du fournisseur de vérification d'identité",
+                            hint: "Ajoutez et mappez les attributs pris en charge par le fournisseur externe " +
+                                "de vérification d'identité.",
+                            addButton: "Ajouter un mappage d'attributs",
+                            emptyPlaceholderEdit: {
+                                subtitle: "Aucun attribut n'est associé à ce fournisseur de vérification d'identité.",
+                                title: "Aucun attribut associé"
+                            },
+                            emptyPlaceholderCreate: {
+                                subtitle: "Associez les attributs sur la carte et cliquez sur <1>Ajouter un mappage " +
+                                    "d'attributs</1> pour commencer.",
+                                title: "Vous n'avez associé aucun attribut"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "Il existe déjà un attribut mapé avec ce nom.",
+                                required: "Ce champ ne peut pas être vide",
+                                invalid: "Veuillez entrer une valeur valide"
+                            },
+                            placeholders: {
+                                mappedValue: "Saisissez l'attribut IDVP externe",
+                                localClaim: "Sélectionnez l'attribut de mappage"
+                            },
+                            labels: {
+                                mappedValue: "Attribut IDVP externe",
+                                localClaim: "Mappe à"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Ajouter des mappages d'attributs"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Supprimer",
+                        header: "Supprimer le fournisseur de vérification d'identité",
+                        subheader: "Il s'agit d'une action irréversible, procédez avec prudence."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Fournisseur de vérification d'identité",
+                        header: "Fournisseur de vérification d'identité {{ state }}",
+                        subheader: "Une fois que vous avez désactivé un fournisseur de vérification d'identité, " +
+                            "il ne peut plus être utilisé tant qu'il n'est pas réactivé.",
+                        subheader2: "Activez le fournisseur de vérification d'identité pour l'utiliser avec vos " +
+                            "applications."
+                    },
+                    header: "Zone de Danger"
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Nom"
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server pour les développeurs",
@@ -4525,7 +4778,8 @@ export const console: ConsoleNS = {
                     application: "Applications",
                     general: "Général",
                     gettingStarted: " Pour commencer",
-                    identityProviders: "Fournisseurs d'identité"
+                    identityProviders: "Fournisseurs d'identité",
+                    identityVerificationProviders: "Fournisseurs de vérification d'identité"
                 },
                 customize: "Personnaliser",
                 identityProviderEdit: "Edition des fournisseurs d'identité",
@@ -4620,6 +4874,19 @@ export const console: ConsoleNS = {
                 },
                 title: "Sélectionnez le connexion"
             },
+            idvp: {
+                subTitle: "Gérez les fournisseurs de vérification d'identité pour permettre aux utilisateurs de " +
+                "vérifier leur identité via eux.",
+                title: "Fournisseurs de vérification d'identité"
+            },
+            idvpTemplate: {
+                backButton: "Retourner aux fournisseurs de vérification d'identité",
+                subTitle: "Choisissez l'un des fournisseurs de vérification d'identité suivants.",
+                title: "Sélectionnez le fournisseur de vérification d'identité",
+                "search": {
+                    "placeholder": "Recherche par nom"
+                }
+            },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +
                     "et les rôles, les dialectes d'attributs, " +
@@ -4653,6 +4920,265 @@ export const console: ConsoleNS = {
             python: "Python",
             react: "React",
             windows: "Windows"
+        }
+    },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "Le modèle sélectionné remplacera le script existant dans l'éditeur ainsi que les étapes de connexion que vous avez configurées.Cliquez sur <1> Confirmer </1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Cette action est irréversible."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "Le modèle sélectionné remplacera les étapes de connexion existantes que vous avez configurées.Cliquez sur <1> Confirmer </1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Cette action est irréversible."
+        },
+        options: {
+            controls: {
+                remove: "Retirer"
+            },
+            displayName: "Connectez-vous avec {{displayName}}",
+            divider: "OU"
+        },
+        modes: {
+            legacy: {
+                label: "Rédacteur en chef"
+            },
+            visual: {
+                label: "Éditeur visuel"
+            },
+            switchConfirmationModal: {
+                assertionHint: "Oui je comprends.Je veux changer.",
+                content: "Cette action est irréversible et vous perdrez en permanence les changements non sauvés du flux de courant.",
+                primaryActionButtonText: "Confirmer",
+                secondaryActionButtonText: "Annuler",
+                title: "Es-tu sûr?",
+                warningMessage: "Si vous passez à la <1>{{mode}}</1>, vous perdez les changements non sauvés du flux de courant.Veuillez procéder avec prudence."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "Choisissez les attributs de cette étape"
+                },
+                enableBackupCodes: {
+                    label: "Activer les codes de sauvegarde"
+                },
+                userAttributeSelector: {
+                    label: "Choisissez l'identifiant de l'utilisateur à partir de cette étape"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer",
+                        secondary: "Renvoyer le code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code envoyé à votre identifiant de messagerie (John****@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "Vérification OTP"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer",
+                    optionSwitchTooltipContent: "Passez au nom d'utilisateur et au mot de passe"
+                },
+                form: {
+                    actions: {
+                        primary: "S'identifier"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "Se souvenir de moi sur cet ordinateur"
+                        },
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez votre nom d'utilisateur"
+                        }
+                    }
+                },
+                header: "S'identifier"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer",
+                    optionSwitchTooltipContent: "Passez d'abord à l'identifiant"
+                },
+                form: {
+                    actions: {
+                        primary: "S'identifier"
+                    },
+                    fields: {
+                        password: {
+                            label: "Mot de passe",
+                            placeholder: "Tapez votre mot de passe"
+                        },
+                        rememberMe: {
+                            label: "Se souvenir de moi sur cet ordinateur"
+                        },
+                        username: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez votre nom d'utilisateur"
+                        }
+                    }
+                },
+                header: "S'identifier"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer",
+                        secondary: "Renvoyer le code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code envoyé à votre téléphone mobile (****** 3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "Vérification OTP"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    actions: {
+                        primary: "Continuer"
+                    },
+                    fields: {
+                        code: {
+                            label: "Entrez le code de vérification généré par votre application Authenticator.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "Vous n'avez pas encore configuré votre authentificateur TOTP?Contactez le support"
+                },
+                header: "Vérifiez Votre Identité"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Navigateur",
+                        lastAccessedLabel: "Dernier accès"
+                    },
+                    help: "Terminez les sessions actives pour continuer."
+                },
+                header: "Plusieurs sessions actives trouvées"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "Oui je comprends.Je veux revenir.",
+            content: "Cette action est irréversible et vous perdrez en permanence les progrès que vous avez réalisés.",
+            primaryActionButtonText: "Confirmer",
+            secondaryActionButtonText: "Annuler",
+            title: "Es-tu sûr?",
+            warningMessage: "Si vous revenez à la valeur par défaut, vous ne pourrez pas récupérer les progrès.Veuillez procéder avec prudence."
+        },
+        steps: {
+            controls: {
+                addOption: "Ajouter l'option de connexion",
+                remove: "Retirer",
+                signUp: {
+                    hint: "Vous n'avez pas de compte?",
+                    label: "S'inscrire"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "AJOUTER"
+                },
+                header: "Flux de connexion conditionnels"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "Flux de connexion de base"
+            },
+            categories: {
+                basic: {
+                    label: "Ajouter la connexion de base"
+                },
+                mfa: {
+                    label: "Ajouter la connexion multi-facteurs"
+                },
+                passwordless: {
+                    label: "Ajouter la connexion sans mot de passe"
+                },
+                social: {
+                    label: "Ajouter la connexion sociale"
+                }
+            },
+            header: "Flux prédéfinis",
+            panelHeader: "Flux prédéfinis"
+        },
+        scriptEditor: {
+            panelHeader: "Éditeur de script",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "Créer un nouveau secret"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "Pas de secrets disponibles.",
+                    description: "Stockez en toute sécurité les clés d'accès comme des secrets.Un secret peut remplacer le secret du consommateur dans <1> Callchoreo () </1> dans les scripts d'authentification conditionnels."
+                },
+                label: "Ajouter le secret"
+            },
+            themes: {
+                dark: {
+                    label: "Dark (Visual Studio)"
+                },
+                highContrast: {
+                    label: "Contraste élevé"
+                },
+                light: {
+                    label: "Light (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "Revenir à la valeur par défaut"
+                },
+                update: {
+                    label: "Mise à jour"
+                }
+            }
         }
     },
     manage: {
@@ -7413,6 +7939,31 @@ export const console: ConsoleNS = {
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
                                         "et 30 caractères."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
+                                label: "Sélectionnez le rôle de rôle",
+                                values: {
+                                    organization: "Rôle de l'organisation",
+                                    application: "Rôle appliqué"
+                                }
+                            },
+                            notes: {
+                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
+                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
+                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                            },
+                            assignedApplication: {
+                                hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
+                                label: "Application attribuée",
+                                placeholder: "Sélectionnez l'application pour attribuer le rôle",
+                                applicationSubTitle: {
+                                    application: "Prise en charge des rôles à application",
+                                    organization: "Rôles de soutien à l'organisation"
+                                },
+                                validations: {
+                                    empty: "L'application attribuée est nécessaire pour créer un rôle à application."
+                                }
                             }
                         }
                     },
@@ -7443,7 +7994,8 @@ export const console: ConsoleNS = {
                             hint: "Sélectionnez des utilisateurs pour les ajouter au groupe d'utilisateurs.",
                             list: {
                                 listHeader: "Nom",
-                                searchPlaceholder: "Rechercher des utilisateurs"
+                                searchPlaceholder: "Rechercher des utilisateurs",
+                                searchByEmailPlaceholder: "Recherchez les utilisateurs par adresse e-mail"
                             },
                             subHeading: "Ajouter de nouveaux utilisateurs ou supprimer les utilisateurs " +
                                 "existants affectés a {{type}}."
@@ -7869,7 +8421,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "Aucun {{type}} n'est assigné à ce rôle.",
-                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce rôle."
+                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce groupe.",
+                            common: "Aucun {{type}} trouvé"
                         },
                         users: {
                             roles: {
@@ -8668,6 +9221,13 @@ export const console: ConsoleNS = {
                             2: "Rôles",
                             3: "Sessions Actives"
                         }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Retourner aux utilisateurs",
+                            subtitles: "Il semble que l'utilisateur demandé n'existe pas.",
+                            title: "Utilisateur non trouvé"
+                        }
                     }
                 },
                 forms: {
@@ -9269,7 +9829,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "Magasin d'utilisateurs",
-                            serviceProvider: "Application"
+                            serviceProvider: "Application",
+                            authenticator: {
+                                attributeName: "Type de connexion",
+                                values: {
+                                    basic: "Identifiant Mot de passe",
+                                    identifierFirst: "Identifiant d'abord",
+                                    fido2: "FIDO2",
+                                    magicLink: "Lien magique",
+                                    emailOtp: "E-mail OTP",
+                                    smsOtp: "OTP SMS",
+                                    totp: "TOTP",
+                                    backupCodes: "Code de secours",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "Connexion à l'organisation"
+                                }
+                            },
+                            identityProvider: "ID de connexion"
                         }
                     },
                     registration: {
@@ -9304,7 +9886,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "Inscriptions d'utilisateurs",
-                        titleHint: "Nombre total d'inscriptions d'utilisateurs (B2C) au cours de la période sélectionnée"
+                        titleHint: "Nombre total d'inscriptions d'utilisateurs au cours de la période sélectionnée"
                     }
                 },
                 notifications: {

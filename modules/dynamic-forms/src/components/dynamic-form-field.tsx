@@ -1,61 +1,78 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
-import React from "react";
+import { TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react/TextField";
+import classNames from "classnames";
+import React, { FC, cloneElement } from "react";
 import FieldInput from "./field-input";
-import { DynamicFieldInputTypes } from "../models";
-import { TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react";
+import { FieldButton } from "./field-button";
+import { FieldCheckbox } from "./field-checkbox";
 
-export type DynamicFormFieldProps = Partial<Omit<OuiTextFieldProps, 'type' | 'onChange'>> & {
-    
+export type DynamicFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange">> & {
     /**
-     * Type of the dynamic field.
+     * Aria label for the field.
      */
-    type: DynamicFieldInputTypes;
+    ariaLabel: string;
     /**
-     * Name of the dynamic field.
+     * Additional classes.
      */
-    name: string;
+    className?: string;
     /**
-     * Label of the dynamic field.
+     * Custom styles object
      */
-    label: string;
+    style?: Record<string, unknown>;
     /**
      * Index of the dynamic field.
      */
-    index: number;
+    index?: number;
 };
 
-// Recursive component for rendering form fields
-export const DynamicFormField = (props: DynamicFormFieldProps) => {
-    const { type, name, ...rest } = props;
+type DynamicFieldType = FC<DynamicFieldProps> & {
+    Input: typeof FieldInput;
+    Button: typeof FieldButton;
+    CheckBox: typeof FieldCheckbox;
+}
 
-    switch (type) {
-        case "text":
-        case "number":
-        case "password":
-            return (
-                <FieldInput name={ name } inputType={ type } { ...rest } />
-            );
+export const DynamicField: DynamicFieldType = (props: DynamicFieldProps) => {
+    const { 
+        children,
+        className,
+        style
+     } = props;
 
-        default:
-            return null;
-    }
+    const classes: string = classNames(
+        "fields",
+        className
+    );
+
+    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+        | React.ReactFragment | React.ReactPortal)[] = React.Children.toArray(children);
+
+    return (
+        <div className={ classes } style={ style }>
+            {
+                childNodes.map((child: any) => {
+                    if (!child) {
+                        return null;
+                    }
+
+                    const childProps: any = {
+                        ...child.props
+                    };
+
+                    return cloneElement(child, childProps);
+                })
+            }
+        </div>
+    );
 };
 
-export default DynamicFormField;
+DynamicField.Input = FieldInput;
+DynamicField.Button = FieldButton;
+DynamicField.CheckBox = FieldCheckbox;

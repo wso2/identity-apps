@@ -15,11 +15,12 @@
         <meta name="referrer" content="no-referrer" />
 
         <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" />
+        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" data-react-helmet="true" />
 
         <!-- CookiePro Cookies Consent Notice start for asgardeo.io -->
         <script src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8"
             data-domain-script="{COOKIEPRO_ID}"></script>
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>startup-config.js"></script>
         <script type="text/javascript">
             function OptanonWrapper() {
                 // Get initial OnetrustActiveGroups ids
@@ -121,9 +122,9 @@
 
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
-            var serverOriginGlobal = "https://localhost:9443";
-            var superTenantGlobal = "carbon.super";
-            var tenantPrefixGlobal = "t";
+            var serverOriginGlobal = startupConfig.serverUrlGlobal;
+            var superTenantGlobal = startupConfig.superTenant;
+            var tenantPrefixGlobal = startupConfig.tenantPrefix;
         </script>
     </head>
     <body>

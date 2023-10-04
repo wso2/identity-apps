@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,6 @@ import { useGetBrandingPreference } from "../api";
 import { generateAsgardeoTheme } from "../branding/theme";
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from "../contexts";
 import { BrandingPreferenceMeta } from "../meta";
-
 
 /**
  * Props interface for the BrandingPreferenceProvider.
@@ -80,6 +79,12 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
         [ brandingPreference?.preference?.theme ]
     );
 
+    const favicon: string = useMemo(() => {
+        return brandingPreference?.preference?.theme[
+            brandingPreference?.preference?.theme?.activeTheme
+        ].images?.favicon?.imgURL;
+    }, [ brandingPreference?.preference?.theme ]);
+
     const injectBrandingCSSSkeleton = () => {
         if (!brandingPreference?.preference?.theme || !brandingPreference?.preference?.configs?.isBrandingEnabled) {
             return;
@@ -92,10 +97,11 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
         <BrandingPreferenceContext.Provider value={ contextValues }>
             <Helmet>
                 { <title>{ appTitle }</title> }
+                { favicon && <link rel="shortcut icon" href={ favicon } /> }
                 { injectBaseTheme() }
                 { injectBrandingCSSSkeleton() }
             </Helmet>
-            <ThemeProvider theme={ generateAsgardeoTheme(contextValues) }>
+            <ThemeProvider theme={ generateAsgardeoTheme(contextValues) } defaultMode="light">
                 { children }
             </ThemeProvider>
         </BrandingPreferenceContext.Provider>

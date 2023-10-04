@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -504,9 +504,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             ".smtpServerHost.hint"
                                                                         }
                                                                     >
-                                                                        The Server Host usually begins with 
-                                                                        <Code>smtp</Code>, followed by the domain 
-                                                                        name of the email service provider.
+                                                                        For security reasons, we currently support port 
+                                                                        <Code>587</Code> only.
                                                                     </Trans>
                                                                 ) }
                                                                 required={ true }

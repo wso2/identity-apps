@@ -17,6 +17,12 @@
  */
 
 import { useColorScheme } from "@mui/material";
+import {
+    ArrowRightFromBracketIcon,
+    ChevronDownIcon,
+    LanguageIcon,
+    RectangleLineIcon
+} from "@oxygen-ui/react-icons";
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
@@ -28,12 +34,6 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import {
-    ArrowRightFromBracketIcon,
-    ChevronDownIcon,
-    LanguageIcon,
-    RectangleLineIcon
-} from "@oxygen-ui/react-icons";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -129,6 +129,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) =>
             state.authenticationInformation.profileInfo.isReadOnly
     );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
     const { theme } = useBrandingPreference();
@@ -213,7 +214,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const resolveOrganizationLabel = (): ReactElement => {
         const organization: string =
             tenantName == "carbon.super"
-                ? commonConfig.header.organization
+                ? commonConfig.header.organization.replace("{{productName}}", productName)
                 : tenantName;
 
         return (
@@ -274,6 +275,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     return (
         <OxygenHeader
+            className="is-header"
             brand={ {
                 logo: {
                     desktop: (

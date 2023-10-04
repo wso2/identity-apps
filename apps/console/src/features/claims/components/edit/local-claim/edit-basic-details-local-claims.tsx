@@ -289,7 +289,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
+        if (SCIMConfigs.scimDialectID?.customEnterpriseSchema) {
+            dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
+        }
 
         return dialectID;
     };
@@ -467,7 +469,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </Grid>
                 <Form
                     id={ FORM_ID }
-                    uncontrolledForm={ false }
+                    uncontrolledForm={ true }
                     onSubmit={ (values: Record<string, unknown>): void => {
                         onSubmit(values as Record<string, unknown>);
                     } }

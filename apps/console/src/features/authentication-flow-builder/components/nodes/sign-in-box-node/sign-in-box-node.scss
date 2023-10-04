@@ -1,0 +1,241 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed var(--oxygen-palette-divider);
+}
+
+.sign-in-box-node {
+    .oxygen-sign-in {
+        display: flex;
+        flex-flow: column nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        text-align: left;
+
+        .oxygen-sign-in-box {
+            padding: 32px;
+            width: 350px;
+        }
+
+        .oxygen-sign-in-logo {
+            max-height: 50px;
+            margin-bottom: 30px;
+        }
+
+        .oxygen-sign-in-header {
+            margin-bottom: 32px;
+        }
+
+        .oxygen-sign-in-sub-header {
+            margin-bottom: 16px;
+        }
+
+        .oxygen-sign-in-form {
+            .oxygen-text-field {
+                margin-bottom: 20px;
+            }
+
+            .oxygen-sign-in-cta {
+                margin: 16px 0;
+            }
+
+            .oxygen-sign-in-sign-up-link {
+                font-size: 14px;
+            }
+
+            .oxygen-sign-in-sign-up-link-action {
+                margin-left: 5px;
+            }
+        }
+
+        .oxygen-sign-in-options {
+            margin-top: 16px;
+
+            .oxygen-sign-in-option {
+                .remove-button {
+                    position: absolute;
+                    z-index: 999;
+                    right: 29px;
+                    margin-top: -8px;
+                    background: white;
+                    width: 20px;
+                    border: 1px solid var(--oxygen-palette-divider);
+                    height: 20px;
+
+                    svg {
+                        fill: var(--oxygen-palette-text-secondary);
+                    }
+
+                    &:hover {
+                        box-shadow: var(--oxygen-shadows-0);
+                    }
+                }
+
+                &:not(:last-child) {
+                    margin-bottom: 16px;
+                }
+            }
+
+            .oxygen-button {
+                background: var(--oxygen-palette-common-white);
+                color: var(--oxygen-palette-common-black);
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
+
+                &:hover {
+                    color: rgba(0, 0, 0, .8);
+                }
+
+                .oxygen-sign-in-option-image {
+                    height: 20px;
+                }
+
+                &.oxygen-sign-in-option-add {
+                    background: transparent;
+                    box-shadow: none;
+                    border: var(--asg-auth-flow-builder-flows-basic-sign-in-option-controls-border);
+                    animation: pulsing-success 1500ms cubic-bezier(0.0, 0, 0.2, 1) infinite;
+
+                    .pulsating-badge {
+                        margin-left: 14px;
+                    }
+                }
+            }
+        }
+    }
+
+    .remove-button {
+        position: absolute;
+        z-index: 999;
+        right: -12px;
+        margin-top: -10px;
+        background: white;
+        border: 1px solid var(--oxygen-palette-divider);
+        width: 25px;
+        height: 25px;
+
+        svg {
+            fill: var(--oxygen-palette-text-secondary);
+        }
+
+        &:hover {
+            box-shadow: var(--oxygen-shadows-0);
+        }
+    }
+
+    .additional-behaviors {
+        margin-top: 15px;
+    }
+
+    .step-id {
+        margin-bottom: 10px;
+    }
+}
+
+@keyframes pulsing-success {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+.basic-sign-in-option-controls-wrapper {
+    .basic-sign-in-option-controls {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-right: -10px;
+        margin-left: -10px;
+        margin-bottom: 10px;
+
+        .action-button {
+            width: 20px;
+            height: 20px;
+
+            svg {
+                fill: var(--oxygen-palette-text-secondary);
+            }
+        }
+    }
+
+    .basic-sign-in-option-control-fields {
+        border: var(--asg-auth-flow-builder-flows-basic-sign-in-option-controls-border);
+        padding: 10px 10px 0 10px;
+        margin-right: -10px;
+        margin-left: -10px;
+    }
+}
+
+.totp-fragment, .sms-otp-fragment {
+    .pin-code-input-fields {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        text-align: center;
+
+        .MuiInputBase-input {
+            text-align: center;
+        }
+    }
+}
+
+.email-otp-fragment {
+    .otp-input .MuiFormLabel-root {
+        text-wrap: wrap;
+    }
+}
+
+.sms-otp-fragment, .email-otp-fragment {
+    .oxygen-sign-in-action-group {
+        .oxygen-sign-in-cta:first-child {
+            margin-bottom: 0px;
+        }
+    }
+}
+
+.active-sessions-limit-fragment {
+    table, th, td {
+        border: 1px solid var(--oxygen-palette-divider);
+        border-collapse: collapse;
+        border-style: inset;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

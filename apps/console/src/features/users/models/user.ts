@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
+import { GroupsMemberInterface } from "../../groups";
 import { BulkUserImportStatus } from "../constants";
 
 /**
@@ -65,6 +66,10 @@ export interface UserBasicInterface {
      * Profile URL of the user.
      */
     profileUrl: string;
+    /**
+     * Groups of the user.
+     */
+    groups?: GroupsMemberInterface[];
 }
 
 /**

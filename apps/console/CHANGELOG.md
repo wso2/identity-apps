@@ -1,5 +1,103 @@
 # @wso2is/console
 
+## 2.0.16
+
+### Patch Changes
+
+- [#4153](https://github.com/wso2/identity-apps/pull/4153) [`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71) Thanks [@Yasasr1](https://github.com/Yasasr1)! - bump react-sdk version
+
+* [#4150](https://github.com/wso2/identity-apps/pull/4150) [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and Bug fixes
+
+* Updated dependencies [[`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71), [`6653bac2ef`](https://github.com/wso2/identity-apps/commit/6653bac2ef53bd770a30786f67fab6f2776405f2), [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e)]:
+  - @wso2is/core@2.0.3
+  - @wso2is/react-components@2.0.4
+  - @wso2is/theme@2.0.6
+  - @wso2is/form@2.0.2
+  - @wso2is/i18n@2.0.5
+
+## 2.0.15
+
+### Patch Changes
+
+- [#4111](https://github.com/wso2/identity-apps/pull/4111) [`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add identity verification provider feature
+
+* [#4127](https://github.com/wso2/identity-apps/pull/4127) [`e09ada60b1`](https://github.com/wso2/identity-apps/commit/e09ada60b1b1f5ae47a47ae3007f0974d79dc690) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a startup config file to store config variables.
+
+* Updated dependencies [[`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530), [`9e75f3f3f1`](https://github.com/wso2/identity-apps/commit/9e75f3f3f170938319aa6d4c0f3b9a63d2bd3bd7)]:
+  - @wso2is/theme@2.0.5
+  - @wso2is/i18n@2.0.4
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4137](https://github.com/wso2/identity-apps/pull/4137) [`12f007fd9c`](https://github.com/wso2/identity-apps/commit/12f007fd9c4feb3b71e11b84440bf13fada136ed) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enhance connections section
+
+- Updated dependencies [[`c30cc8f293`](https://github.com/wso2/identity-apps/commit/c30cc8f293f8f8d524f82bdeedc6105d1ce39875)]:
+  - @wso2is/dynamic-forms@2.0.2
+  - @wso2is/common@2.0.1
+
+## 2.0.13
+
+### Patch Changes
+
+- [#4142](https://github.com/wso2/identity-apps/pull/4142) [`cdecb197ea`](https://github.com/wso2/identity-apps/commit/cdecb197ea50b947d5ae4dd7450616f37d23a9d1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to branding changes not being visible when modifying properties in the login page section of the branding design
+
+* [#4147](https://github.com/wso2/identity-apps/pull/4147) [`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae) Thanks [@Achintha444](https://github.com/Achintha444)! - Add i18N to the new roles section
+
+* Updated dependencies [[`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae)]:
+  - @wso2is/i18n@2.0.3
+
+## 2.0.12
+
+### Patch Changes
+
+- [#4138](https://github.com/wso2/identity-apps/pull/4138) [`a481bd70e5`](https://github.com/wso2/identity-apps/commit/a481bd70e5316a83021e35558ca6922af36add70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update j2 file
+
+## 2.0.11
+
+### Patch Changes
+
+- [#4135](https://github.com/wso2/identity-apps/pull/4135) [`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and bug fixes
+
+- Updated dependencies [[`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255)]:
+  - @wso2is/theme@2.0.4
+  - @wso2is/core@2.0.2
+  - @wso2is/i18n@2.0.2
+  - @wso2is/form@2.0.1
+  - @wso2is/react-components@2.0.3
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4130](https://github.com/wso2/identity-apps/pull/4130) [`c455d1894c`](https://github.com/wso2/identity-apps/commit/c455d1894c12e7df2fd6322fc9293c00915a3ccb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update J2 file in the console app
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4122](https://github.com/wso2/identity-apps/pull/4122) [`43443daa55`](https://github.com/wso2/identity-apps/commit/43443daa5566e30b5fdcf8e44918af5457c28b65) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the problem that occurs when editing a single claim within the WSO2 dialect results in an error page
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4119](https://github.com/wso2/identity-apps/pull/4119) [`b1f0f49a83`](https://github.com/wso2/identity-apps/commit/b1f0f49a83ee33a733b5e03af36348514ba53f7f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix j2 build issue
+
+- Updated dependencies [[`b1f0f49a83`](https://github.com/wso2/identity-apps/commit/b1f0f49a83ee33a733b5e03af36348514ba53f7f)]:
+  - @wso2is/theme@2.0.3
+
+## 2.0.7
+
+### Patch Changes
+
+- [#4105](https://github.com/wso2/identity-apps/pull/4105) [`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify My Account app between Asgardeo and IS
+
+- Updated dependencies [[`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6)]:
+  - @wso2is/theme@2.0.2
+  - @wso2is/core@2.0.1
+
 ## 2.0.6
 
 ### Patch Changes

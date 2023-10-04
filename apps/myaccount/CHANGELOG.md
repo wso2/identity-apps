@@ -1,5 +1,58 @@
 # @wso2is/myaccount
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4153](https://github.com/wso2/identity-apps/pull/4153) [`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71) Thanks [@Yasasr1](https://github.com/Yasasr1)! - bump react-sdk version
+
+* [#4150](https://github.com/wso2/identity-apps/pull/4150) [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and Bug fixes
+
+* Updated dependencies [[`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71), [`6653bac2ef`](https://github.com/wso2/identity-apps/commit/6653bac2ef53bd770a30786f67fab6f2776405f2), [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e)]:
+  - @wso2is/core@2.0.3
+  - @wso2is/react-components@2.0.4
+  - @wso2is/theme@2.0.6
+  - @wso2is/i18n@2.0.5
+
+## 2.0.7
+
+### Patch Changes
+
+- [#4127](https://github.com/wso2/identity-apps/pull/4127) [`e09ada60b1`](https://github.com/wso2/identity-apps/commit/e09ada60b1b1f5ae47a47ae3007f0974d79dc690) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a startup config file to store the config variables.
+  Fix the logout issue of tenanted myaccount login.
+  Update the development server config to support IS.
+- Updated dependencies [[`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530), [`9e75f3f3f1`](https://github.com/wso2/identity-apps/commit/9e75f3f3f170938319aa6d4c0f3b9a63d2bd3bd7)]:
+  - @wso2is/theme@2.0.5
+  - @wso2is/i18n@2.0.4
+
+## 2.0.6
+
+### Patch Changes
+
+- [#4135](https://github.com/wso2/identity-apps/pull/4135) [`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and bug fixes
+
+- Updated dependencies [[`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255)]:
+  - @wso2is/theme@2.0.4
+  - @wso2is/core@2.0.2
+  - @wso2is/i18n@2.0.2
+  - @wso2is/react-components@2.0.3
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4122](https://github.com/wso2/identity-apps/pull/4122) [`43443daa55`](https://github.com/wso2/identity-apps/commit/43443daa5566e30b5fdcf8e44918af5457c28b65) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Bump myaccount theme version
+
+## 2.0.4
+
+### Patch Changes
+
+- [#4105](https://github.com/wso2/identity-apps/pull/4105) [`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify My Account app between Asgardeo and IS
+
+- Updated dependencies [[`b8389d6800`](https://github.com/wso2/identity-apps/commit/b8389d680042502b46b8cc1ad6b6740583b962c6)]:
+  - @wso2is/theme@2.0.2
+  - @wso2is/core@2.0.1
+
 ## 2.0.3
 
 ### Patch Changes

@@ -167,13 +167,13 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
-            showIncludeTenantDomain: false,
-            showIncludeUserstoreDomainRole: false,
-            showIncludeUserstoreDomainSubject: false,
-            showRoleAttribute: false,
-            showRoleMapping: false,
-            showSubjectAttribute: false,
-            showUseMappedLocalSubject: false
+            showIncludeTenantDomain: true,
+            showIncludeUserstoreDomainRole: true,
+            showIncludeUserstoreDomainSubject: true,
+            showRoleAttribute: true,
+            showRoleMapping: true,
+            showSubjectAttribute: true,
+            showUseMappedLocalSubject: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -188,7 +188,7 @@ export const applicationConfig: ApplicationConfig = {
             }
         },
         makeSubjectMandatory: true,
-        roleMapping: false
+        roleMapping: true
     },
     customApplication: {
         allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
@@ -583,7 +583,7 @@ export const applicationConfig: ApplicationConfig = {
             // Hide delete button for Enterprise IDP Login Applications.
             return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
         },
-        showProvisioningSettings: false
+        showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
     excludeSubjectClaim: true,
@@ -638,9 +638,9 @@ export const applicationConfig: ApplicationConfig = {
     },
     inboundSAMLForm: {
         artifactBindingAllowed:false,
-        showApplicationQualifier: false,
+        showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: false,
-        showQueryRequestProfile: false
+        showQueryRequestProfile: true
     },
     marketingConsent: {
         getBannerComponent: (): ReactElement =>

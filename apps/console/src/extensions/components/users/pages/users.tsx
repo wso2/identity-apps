@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,6 +64,7 @@ type UsersPageInterface = IdentifiableComponentInterface & TestableComponentInte
  * Temporary value to append to the list limit to figure out if the next button is there.
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
+const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
 /**
  * Users listing page.
@@ -235,11 +236,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
             const moderated: UserListInterface = list;
 
-            if (moderated.itemsPerPage === requestedLimit) {
-                moderated.Resources.splice(-1, popCount);
-                setIsUsersNextPageAvailable(true);
-            } else {
+            if (moderated.Resources?.length < requestedLimit) {
                 setIsUsersNextPageAvailable(false);
+            } else {
+                moderated.Resources?.splice(-1, popCount);
+                setIsUsersNextPageAvailable(true);
             }
 
             return moderated;
@@ -387,6 +388,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 
+    const resolveTotalPages = (): number => { 
+        if (selectedUserStore === CONSUMER_USERSTORE) { 
+            return Math.ceil(usersList?.totalResults / listItemLimit);
+        } else {
+            /** Response from the LDAP only contains the total items per page. 
+             * No way to resolve the total number of items. So a large value will be set here and the 
+             * next button will be disabled if there are no more items to fetch.
+            */
+            return NUMBER_OF_PAGES_FOR_LDAP;
+        }
+    };
+
     const advancedSearchFilter = (): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
@@ -482,11 +495,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 showPagination={ true }
-                totalPages={ Math.ceil(usersList?.totalResults / listItemLimit) }
+                totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 isLoading={ isUserListFetchRequestLoading }
                 paginationOptions={ {
-                    disableNextButton: !isUsersNextPageAvailable
+                    disableNextButton: !isUsersNextPageAvailable,
+                    showItemsPerPageDropdown: selectedUserStore === CONSUMER_USERSTORE ? true : false
                 } }
                 showPaginationPageLimit={ !isSelectedUserStoreReadOnly }
                 leftActionPanel={

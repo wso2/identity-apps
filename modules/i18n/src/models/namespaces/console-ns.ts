@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -679,6 +679,8 @@ export interface ConsoleNS {
                                                 multipleIdps: string;
                                                 singleIdp: string;
                                             };
+                                            sessionExecutorDisabledInFirstStep: string;
+                                            sessionExecutorDisabledInMultiOptionStep: string;
                                         };
                                     };
                                 };
@@ -2513,6 +2515,89 @@ export interface ConsoleNS {
                     };
                 };
             };
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                buttons: {
+                    addIDVP: string;
+                };
+                placeholders: {
+                    emptyIDVPList: Placeholder;
+                    emptyIDVPTypeList: Placeholder;
+                };
+                confirmations: {
+                    deleteIDVP: Confirmation;
+                };
+                notifications: {
+                  getIDVPList: Notification;
+                  deleteIDVP: Notification;
+                  updateIDVP: Notification;
+                  addIDVP: Notification;
+                  submitAttributeSettings: Notification;
+                  getAllLocalClaims: Notification;
+                  getIDVP: Notification;
+                  getUIMetadata: Notification;
+                  getIDVPTemplateTypes: Notification;
+                  getIDVPTemplateType: Notification;
+                  getIDVPTemplate: Notification;
+                };
+                forms: {
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: string;
+                            hint: string;
+                            addButton: string;
+                            emptyPlaceholderEdit: {
+                                title: string;
+                                subtitle: string;
+                            };
+                            emptyPlaceholderCreate: {
+                                title: string;
+                                subtitle: string;
+                            };
+                        };
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: string;
+                                required: string;
+                                invalid: string;
+                            };
+                            placeholders: {
+                                mappedValue: string;
+                                localClaim: string;
+                            };
+                            labels: {
+                                mappedValue: string;
+                                localClaim: string;
+                            }
+                        };
+                        attributeSelectionModal: {
+                            header: string;
+                        };
+                    };
+                    generalDetails: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                    };
+                };
+                dangerZoneGroup?: {
+                    header: string;
+                    disableIDVP: DangerZone;
+                    deleteIDVP: DangerZone;
+                };
+                list: {
+                    actions: string;
+                    name: string;
+                };
+            };
             overview: {
                 banner: {
                     heading: string;
@@ -2550,6 +2635,7 @@ export interface ConsoleNS {
                     identityProviders: string;
                     authenticationProviders?: string;
                     general: string;
+                    identityVerificationProviders: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2724,6 +2810,15 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
+            idvp: Page;
+            idvpTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+                search: {
+                    placeholder: string;
+                };
+            };
             overview: Page;
         };
         componentExtensions: {
@@ -2747,6 +2842,265 @@ export interface ConsoleNS {
             python: string;
             react: string;
             windows: string;
+        };
+    };
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        basicLoginFlowSelectConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        options: {
+            controls: {
+                remove: string;
+            };
+            displayName: string;
+            divider: string;
+        };
+        modes: {
+            legacy: {
+                label: string;
+            };
+            visual: {
+                label: string;
+            };
+            switchConfirmationModal: {
+                assertionHint: string;
+                content: string;
+                primaryActionButtonText: string;
+                secondaryActionButtonText: string;
+                title: string;
+                warningMessage: string;
+            };
+        };
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: string;
+                };
+                enableBackupCodes: {
+                    label: string;
+                };
+                userAttributeSelector: {
+                    label: string;
+                };
+            };
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                        secondary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                    optionSwitchTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        rememberMe: {
+                            label: string;
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                    optionSwitchTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        password: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        rememberMe: {
+                            label: string;
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                        secondary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+                header: string;
+            };
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    actions: {
+                        primary: string;
+                    };
+                    fields: {
+                        code: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    help: string;
+                };
+                header: string;
+            };
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    sessions: {
+                        browserLabel: string;
+                        lastAccessedLabel: string;
+                    };
+                    help: string;
+                };
+                header: string;
+            };
+        };
+        revertConfirmationModal: {
+            assertionHint: string;
+            content: string;
+            primaryActionButtonText: string;
+            secondaryActionButtonText: string;
+            title: string;
+            warningMessage: string;
+        };
+        steps: {
+            controls: {
+                addOption: string;
+                remove: string;
+                signUp: {
+                    hint: string;
+                    label: string;
+                };
+            };
+        };
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: string;
+                };
+                header: string;
+            };
+            authenticators: {
+                apple: {
+                    displayName: string;
+                };
+                facebook: {
+                    displayName: string;
+                };
+                github: {
+                    displayName: string;
+                };
+                google: {
+                    displayName: string;
+                };
+                microsoft: {
+                    displayName: string;
+                };
+            };
+            basic: {
+                header: string;
+            };
+            categories: {
+                basic: {
+                    label: string;
+                };
+                mfa: {
+                    label: string;
+                };
+                passwordless: {
+                    label: string;
+                };
+                social: {
+                    label: string;
+                };
+            };
+            header: string;
+            panelHeader: string;
+        };
+        scriptEditor: {
+            panelHeader: string;
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: string;
+                    }
+                };
+                emptyPlaceholder: {
+                    header: string;
+                    description: string;
+                };
+                label: string;
+            };
+            themes: {
+                dark: {
+                    label: string;
+                };
+                highContrast: {
+                    label: string;
+                };
+                light: {
+                    label: string;
+                };
+            };
+        };
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: string;
+                };
+                update: {
+                    label: string;
+                };
+            };
         };
     };
     manage: {
@@ -2918,6 +3272,9 @@ export interface ConsoleNS {
                             2: string;
                             3: string;
                         };
+                    };
+                    placeholders: {
+                        undefinedUser: Placeholder;
                     };
                 };
                 userSessions: {
@@ -4549,6 +4906,13 @@ export interface ConsoleNS {
                                 };
                             };
                             roleName: FormAttributes;
+                            roleAudience: FormAttributes;
+                            assignedApplication: FormAttributes;
+                            notes: {
+                                orgNote: string,
+                                appNote: string,
+                                cannotCreateRole: string
+                            }
                         };
                     };
                     heading: string;
@@ -4579,6 +4943,7 @@ export interface ConsoleNS {
                             subHeading: string;
                             list: {
                                 searchPlaceholder: string;
+                                searchByEmailPlaceholder: string;
                                 listHeader: string;
                             };
                         };
@@ -4786,6 +5151,7 @@ export interface ConsoleNS {
                         roles: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         users: {
                             roles: {
@@ -5450,8 +5816,30 @@ export interface ConsoleNS {
                         filters: {
                             userStore: string;
                             serviceProvider: string;
-                        }
-                    },
+                            identityProvider: string;
+                            authenticator: {
+                                attributeName: string;
+                                values: {
+                                    basic: string;
+                                    identifierFirst: string;
+                                    fido2: string;
+                                    magicLink: string;
+                                    emailOtp: string;
+                                    smsOtp: string;
+                                    totp: string;
+                                    backupCodes: string;
+                                    google: string;
+                                    facebook: string;
+                                    github: string;
+                                    apple: string;
+                                    oidc: string;
+                                    saml: string;
+                                    hypr: string;
+                                    organizationLogin: string;
+                                };
+                            };
+                        };
+                    };
                     registration: {
                         filters: {
                             onboardingMethod: {

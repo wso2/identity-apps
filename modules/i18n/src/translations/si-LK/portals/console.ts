@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1161,7 +1161,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "<5>{{idpName}}</5> සම්බන්ධතාවය සමඟ <3>SMS OTP</3>" +
                                                     " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
                                                     " පැතිකඩ අවශ්‍ය වේ."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " + 
+                                                "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
+                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " + 
+                                                "පියවරකට එක් කළ නොහැක."
                                         }
                                     }
                                 },
@@ -4206,6 +4210,238 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "සෙවීමට අගය ඇතුලත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "නම මගින් සොයන්න"
+                },
+                buttons: {
+                    addIDVP: "අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන් නොමැත.",
+                            1: "ඔබට අනන්‍යතා තහවුරු කරන්නන් නිර්මාණය කිරීමේ විසාඩය මගින්",
+                            2: "පහසුවෙන් අනන්‍යතා තහවුරු කරන්නෙක් එක් කර ගත හැක."
+                        },
+                        title: "නව අනන්‍යතා තහවුරු කරන්නෙක් එක් කරන්න"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "වින්‍යාස කිරීම සඳහා මේ මොහොතේ අනන්‍යතා තහවුරු කරන්නන්",
+                            1: "වර්ග නොමැත."
+                        },
+                        title: "අනන්‍යතා තහවුරු කරන්නන් වර්ග කිසිවක් හමු නොවිණි"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න",
+                        content: "ඔබ මෙම අනන්‍යතා තහවුරු කරන්නා මකා දැමුවහොත්, ඔබට එය නැවත ආපසු හැරවීමට නොහැකි වනු ඇත. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                        header: "ඔබට විශ්වාසද?",
+                        message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර අනන්‍යතා තහවුරු කරන්නා ස්ථිරවම මකා දැමෙනු ඇත."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නන් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                            message: "දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීමේදී දෝෂයක් ඇති විය",
+                            message: "මකා දැමීමේදී දෝෂයක් ඇති විය"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා මකා දැමීම සාර්ථකයි",
+                            message: "මකා දැමීම සාර්ථකයි"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නා නිර්මාණය කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "නිර්මාණය අසාර්ථකයි"
+                        },
+                        success: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාව සාර්ථකව නිර්මාණය කරන ලදී.",
+                            message: "නිර්මාණය සාර්ථකයි"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "සියලුම අනිවාර්ය ගුණාංග වින්‍යාස කිරීමට අවශ්‍යය.",
+                            message: "යාවත්කාලීන කිරීම කළ නොහැක"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "දේශීය හිමිකම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "අනන්‍යතා තහවුරු කරන්නාගේ තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ පාරදත්ත ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නන්ගේ සැකිලි වර්ග ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිලි වර්ගය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description:"අනන්‍යතා තහවුරු කරන්නාගේ සැකිල්ල ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "ලබා ගැනීමේ දෝෂයකි"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය",
+                            label: "විස්තරය",
+                            placeholder: "අනන්‍යතා තහවුරු කරන්නා පිළිබද විස්තරය ඇතුළත් කරන්න."
+                        },
+                        name: {
+                            hint: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක්",
+                            label: "නම",
+                            placeholder: "අනන්‍යතා තහවුරු කරන්නා සඳහා අලුත් නමක් ඇතුළත් කරන්න.",
+                            validations: {
+                                duplicate: "මෙම නම සහිත තවත් අනන්‍යතා තහවුරු කරන්නෙක් සිටී",
+                                empty: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
+                                maxLengthReached: "අනන්‍යතා තහවුරු කරන්නාගේ නමෙහි අකුරු ගණන {{ maxLength }} ට වඩා වැඩි විය නොහැක",
+                                required: "අනන්‍යතා තහවුරු කරන්නාගේ නම අවශ්‍යයි",
+                                invalid: "අන්‍යතා තහවුරු කරන්නාගේ නම වලංගු නොවේ"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "අනන්‍යතා තහවුරු කරන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
+                            hint: "බාහිර අනන්‍යතා තහවුරු කරන්නාගේ සහය දක්වන ගුණාංග එකතු කර සිතියම්ගත කරන්න.",
+                            addButton: "ගුණාංගයක් සිතියම්ගත කරන්න",
+                            emptyPlaceholderEdit: {
+                                subtitle: "මෙම අනන්‍යතා තහවුරු කරන්නා සඳහා සිතියම් ගතකල ගුණාංග නොමැත.",
+                                title: "ගුණාංග සිතියම් ගතකර නැත"
+                            },
+                            emptyPlaceholderCreate:{
+                                subtitle:"ගුණාංග සිතියම්ගත කර <1>ගුණාංගයක් සිතියම්ගත කරන්න</1> බොත්තම ඔබන්න.",
+                                title: "ඔබ ගුණාංග සිතියම් ගතකර නැත"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "මෙම නම සමඟ සිතියම් ගත කළ ගුණාංගයක් දැනටමත් ඇත.",
+                                required: "මෙම ප්‍රදේශය හිස් විය නොහැක",
+                                invalid: "කරුණාකර වලංගු ආදානයක් ඇතුළත් කරන්න"
+                            },
+                            placeholders: {
+                                mappedValue: "බාහිර ගුණාංගය ඇතුලත් කරන්න",
+                                localClaim: "සිතියම් ගතකරන ගුණාංගය තෝරාගන්න"
+                            },
+                            labels: {
+                                mappedValue: "බාහිර ගුණාංගය",
+                                localClaim: "සිතියම් ගතවන්නේ"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "ගුණාංග සිතියම්ගත කරන්න"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
+                        header: "අනන්‍යතා තහවුරු කරන්නා මකා දමන්න",
+                        subheader: "මෙය ආපසු හැරවිය නොහැකි ක්‍රියාවකි, ප්‍රවේශමෙන් කටයුතු කරන්න."
+                    },
+                    disableIDVP: {
+                        actionTitle: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
+                        header: "අනන්‍යතා තහවුරු කරන්නා අක්‍රීය කරන්න",
+                        subheader: "ඔබ අනන්‍යතා සත්‍යාපන සැපයුම්කරුවෙකු අක්‍රිය කළ පසු, එය නැවත සක්‍රිය කරන තෙක් එය තවදුරටත් භාවිත කළ නොහැක."
+                    },
+                    header: "ආන්තරා කලාපය"
+                },
+                list: {
+                    actions: "ක්‍රියා",
+                    name: "නම"
+                }
+            },
             overview: {
                 banner: {
                     heading: "සංවර්ධකයින් සඳහා WSO2 හැඳුනුම් සේවාදායකය",
@@ -4409,7 +4645,8 @@ export const console: ConsoleNS = {
                     application: "අයදුම්පත්",
                     general: "ජනරාල්",
                     gettingStarted: "ඇරඹේ",
-                    identityProviders: "හැඳුනුම්පත් සපයන්නන්"
+                    identityProviders: "හැඳුනුම්පත් සපයන්නන්",
+                    identityVerificationProviders: "අනන්‍යතා තහවුරු කරන්නන්"
                 },
                 customize: "අභිරුචිකරණය කරන්න",
                 identityProviderEdit: "හැඳුනුම්පත් සපයන්නන් සංස්කරණය කරන්න",
@@ -4504,6 +4741,18 @@ export const console: ConsoleNS = {
                 },
                 title: "අනන්‍යතා සැපයුම්කරු තෝරන්න"
             },
+            idvp: {
+                subTitle: "පරිශීලකයින්ට ඔවුන්ගේ අනන්‍යතා තහවුරු කිරීමට ඉඩ දීම සඳහා අනන්‍යතා තහවුරු කරන්නන් කළමනාකරණය කරන්න",
+                title: "අනන්‍යතා තහවුරු කරන්නන්"
+            },
+            idvpTemplate: {
+                backButton: "අනන්‍යතා තහවුරු කරන්නන් වෙත ආපසු යන්න",
+                subTitle: "පහත අනන්‍යතා තහවුරු කරන්නන්ගෙන් එකක් තෝරන්න.",
+                title: "අනන්‍යතා තහවුරු කරන්නන් තෝරන්න",
+                "search": {
+                    "placeholder": "නමින් සොයන්න"
+                }
+            },
             overview: {
                 subTitle: "යෙදුම්, අනන්‍යතා සපයන්නන්, පරිශීලකයින් සහ භූමිකාවන් වින්‍යාස කිරීම සහ කළමනාකරණය " +
                     "කිරීම, උපභාෂා ආරෝපණය කිරීම යනාදිය.",
@@ -4536,6 +4785,265 @@ export const console: ConsoleNS = {
             python: "Python",
             react: "React",
             windows: "Windows"
+        }
+    },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "තෝරාගත් අච්චුව, සංස්කාරකයේ පවතින පිටපත මෙන්ම ඔබ වින්යාසගත කර ඇති පිවිසුම් පියවර ද ප්රතිස්ථාපනය කරයි.ඉදිරියට යාමට </1>තහවුරු කරන්න</1> ක්ලික් කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි ය."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "තෝරාගත් අච්චුව ඔබ වින්යාසගත කර ඇති දැනට පවතින පිවිසුම් පියවර ප්රතිස්ථාපනය කරයි.ඉදිරියට යාමට </1>තහවුරු කරන්න</1> ක්ලික් කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි ය."
+        },
+        options: {
+            controls: {
+                remove: "ඉවත් කරන්න"
+            },
+            displayName: "{{displayName}} සමඟ පුරනය වන්න",
+            divider: "හෝ"
+        },
+        modes: {
+            legacy: {
+                label: "උරුමය සංස්කාරක"
+            },
+            visual: {
+                label: "දෘශ්ය සංස්කාරකය"
+            },
+            switchConfirmationModal: {
+                assertionHint: "ඔව් මට තේරෙනවා.මට මාරු වීමට අවශ්යයි.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි අතර වර්තමාන ප්රවාහයේ සිදු වූ වෙනස්කම් ඔබ ස්ථිරවම ලිහිල් කරනු ඇත.",
+                primaryActionButtonText: "තහවුරු කරන්න",
+                secondaryActionButtonText: "අවලංගු කරන්න",
+                title: "Are you sure?",
+                warningMessage: "ඔබ <1>{{mode}}</1> මාරු වුවහොත් නම්, ඔබ වත්මන් ප්රවාහයේ සිදු නොවූ වෙනස්කම් ලිහිල් කරනු ඇත.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "මෙම පියවරේ සිට ගුණාංග තෝරන්න"
+                },
+                enableBackupCodes: {
+                    label: "උපස්ථ කේත සක්රිය කරන්න"
+                },
+                userAttributeSelector: {
+                    label: "මෙම පියවරේ සිට පරිශීලක හඳුනාගැනීමක් තෝරන්න"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න",
+                        secondary: "කේතය නැවත සකස් කරන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ විද්යුත් තැපැල් හැඳුනුම්පතට යවා ඇති කේතය ඇතුළත් කරන්න (ජෝන් ******@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP සත්යාපනය"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න",
+                    optionSwitchTooltipContent: "පරිශීලක නාමය සහ මුරපදය වෙත මාරු වන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "පුරන්න"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "මෙම පරිගණකයේ මාව මතක තබා ගන්න"
+                        },
+                        username: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "ඔබගේ පරිශීලක නාමය ඇතුළත් කරන්න"
+                        }
+                    }
+                },
+                header: "පුරන්න"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න",
+                    optionSwitchTooltipContent: "මුලින්ම හඳුනාගැහක් වෙත මාරු වන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "පුරන්න"
+                    },
+                    fields: {
+                        password: {
+                            label: "මුරපදය",
+                            placeholder: "ඔබගේ මුරපදය ඇතුළත් කරන්න"
+                        },
+                        rememberMe: {
+                            label: "මෙම පරිගණකයේ මාව මතක තබා ගන්න"
+                        },
+                        username: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "ඔබගේ පරිශීලක නාමය ඇතුළත් කරන්න"
+                        }
+                    }
+                },
+                header: "පුරන්න"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න",
+                        secondary: "කේතය නැවත සකස් කරන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ ජංගම දුරකථනයට යවා ඇති කේතය ඇතුළත් කරන්න (****** 3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP සත්යාපනය"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    actions: {
+                        primary: "දිගටම කරගෙන යන්න"
+                    },
+                    fields: {
+                        code: {
+                            label: "ඔබගේ සත්යාපන යෙදුම මඟින් ජනනය කරන සත්යාපන කේතය ඇතුළත් කරන්න.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "තවමත් ඔබේ TOTP සත්යාපනය සකසා නැද්ද?උදවු සදහා අමතන්න"
+                },
+                header: "ඔබේ අනන්යතාවය සත්යාපනය කරන්න"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "බ්රවුසරය",
+                        lastAccessedLabel: "අවසන් ප්‍රවේශය"
+                    },
+                    help: "දිගටම කරගෙන යාමට සක්‍රිය සැසි අවසන් කරන්න."
+                },
+                header: "බහු ක්රියාකාරී සැසි හමු විය"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "ඔව් මට තේරෙනවා.මට ආපසු යාමට අවශ්යයි.",
+            content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි අතර ඔබ විසින් සිදු කරන ලද ප්රගතිය ඔබ ස්ථිරවම ලිහිල් කරනු ඇත.",
+            primaryActionButtonText: "තහවුරු කරන්න",
+            secondaryActionButtonText: "අවලංගු කරන්න",
+            title: "ඔයාට විශ්වාස ද?",
+            warningMessage: "ඔබ නැවත පෙරනිමියට ආපසු ගියහොත්, ප්රගතිය යථා තත්ත්වයට පත් කිරීමට ඔබට නොහැකි වනු ඇත.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+        },
+        steps: {
+            controls: {
+                addOption: "විකල්පය තුළ ලකුණ එක් කරන්න",
+                remove: "ඉවත් කරන්න",
+                signUp: {
+                    hint: "ගිණුමක් නැද්ද?",
+                    label: "ලියාපදිංචි වන්න"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "එකතු කරන්න"
+                },
+                header: "කොන්දේසි සහිත පිවිසුම් ප්රවාහයන්"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "මූලික පිවිසුම් ප්රවාහ"
+            },
+            categories: {
+                basic: {
+                    label: "මූලික පිවිසුම එක් කරන්න"
+                },
+                mfa: {
+                    label: "බහු සාධක පිවිසුම එක් කරන්න"
+                },
+                passwordless: {
+                    label: "මුරපද නොමැති පුරනය වීම එක් කරන්න"
+                },
+                social: {
+                    label: "සමාජ ප්රවේශය එක් කරන්න"
+                }
+            },
+            header: "පූර්ව නිශ්චිත ප්රවාහ",
+            panelHeader: "පූර්ව නිශ්චිත ප්රවාහ"
+        },
+        scriptEditor: {
+            panelHeader: "පිටපත සංස්කාරකය",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "නව රහසක් සාදන්න"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "රහස් ලබා ගත නොහැක.",
+                    description: "ආරක්ෂිතව ප්රවේශ යතුරු රහස් ලෙස ආරක්ෂිතව ගබඩා කරන්න.කොන්දේසි සහිත සත්යාපන ස්ක්රිප්ට් වල පාරිභෝගික රහස <1>callchoreo()</1> හි පාරිභෝගික රහස ආදේශ කළ හැකිය."
+                },
+                label: "රහසක් එකතු කරන්න"
+            },
+            themes: {
+                dark: {
+                    label: "අඳුරු (Visual Studio)"
+                },
+                highContrast: {
+                    label: "ඉහළ වෙනස"
+                },
+                light: {
+                    label: "ආලෝකය (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "පෙරනිමියට ආපසු යන්න"
+                },
+                update: {
+                    label: "යාවත්කාලීන කිරීම"
+                }
+            }
         }
     },
     manage: {
@@ -7263,6 +7771,31 @@ export const console: ConsoleNS = {
                                     invalid: "{{type}} නමක අඩංගු විය හැක්කේ අක්ෂර සංඛ්‍යා, -, සහ _ පමණි. "
                                         + "අක්ෂර 3 ත් 30 ත් අතර දිගකින් යුක්ත විය යුතුය."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "පරිශීලක කණ්ඩායමේ ප්රේක්ෂකයින් සකසන්න.<1> භූමිකාවේ ප්රේක්ෂකයින් වෙනස් කළ නොහැකි බව සලකන්න. </1>",
+                                label: "පරිශීලක කණ්ඩායමේ ප්රේක්ෂකයින් තෝරන්න",
+                                values: {
+                                    organization: "සංවිධානාත්මක භූමිකාව",
+                                    application: "අයදුම්පත් භූමිකාව"
+                                }
+                            },
+                            notes: {
+                                orgNote: "පරිශීලක කණ්ඩායමේ ප්රේක්ෂකයින් සංවිධානය කරන විට, ඔබට සංවිධානය කළ හැකි යෙදුම් සඳහා වූ භූමිකාව පමණක් සංවිධානය කළ හැක්කේ සංවිධානයට සමත් වූ භූමිකාවන් පමණක් උපකාරී වන යෙදුම් පමණි.",
+                                appNote: "භූමිකාව ප්රේක්ෂකයින් වන අයදුම්පතක් වන විට, ඔබට අවශ්ය වන්නේ යෙදුම්-ලූල් චරිතයට පමණක් සහාය දක්වන යෙදුම් සඳහා පමණි.",
+                                cannotCreateRole: "යෙදුම් විෂය පංච චරිතයක් ඔබට කළ නොහැක මන්ද ඒවාට අයදුම්පත් භාග්ය වූ කාර්යභාරය සඳහා දැනට යෙදුම් නොමැත.කරුණාකර <1> යෙදුමක් සාදන්න </1> අයදුම්පත්-වෙන් කළ භූමිකාවන් ඉදිරියට ගෙන යාම සඳහා සහාය වේ."
+                            },
+                            assignedApplication: {
+                                hint: "භූමිකාව සඳහා අයදුම්පතක් ඉල්ලා සිටින්න. මෙම භූමිකාව සඳහා පවරා ඇති අයදුම්පත නිර්මාණය කිරීමෙන් පසු සංස්කරණය කළ නොහැකි බව සලකන්න.",
+                                label: "පවරා ඇති අයදුම්පත",
+                                placeholder: "භූමිකාව පැවරීම සඳහා අයදුම්පත තෝරන්න",
+                                applicationSubTitle: {
+                                    application: "අයදුම්පත් සහිත භූමිකාවන් සහාය",
+                                    organization: "සංවිධාන භූමිකාවන් සහාය"
+                                },
+                                validations: {
+                                    empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
+                                }
                             }
                         }
                     },
@@ -7293,7 +7826,8 @@ export const console: ConsoleNS = {
                             hint: "පරිශීලක කණ්ඩායමට එකතු කිරීමට පරිශීලකයින් තෝරන්න.",
                             list: {
                                 listHeader: "නම",
-                                searchPlaceholder: "පරිශීලකයින් සොයන්න"
+                                searchPlaceholder: "පරිශීලකයින් සොයන්න",
+                                searchByEmailPlaceholder: "විද්යුත් තැපැල් ලිපිනය අනුව පරිශීලකයින් සොයන්න"
                             },
                             subHeading: "නව පරිශීලකයින් එක් කරන්න හෝ  {{type}} වෙත පවරා ඇති පවතින"
                                 + " පරිශීලකයින් ඉවත් කරන්න."
@@ -7699,7 +8233,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "මෙම භූමිකාව සමඟ පවරා ඇති {{type}} නොමැත.",
-                            unselected: "මෙම භූමිකාව සමඟ පැවරීම සඳහා {{type}} නොමැත."
+                            unselected: "මෙම කණ්ඩායමට පැවරීම සඳහා {{type}} නොමැත.",
+                            common: "{{type}} හමු නොවීය"
                         },
                         users: {
                             roles: {
@@ -8464,6 +8999,13 @@ export const console: ConsoleNS = {
                             2: "භූමිකාවන්",
                             3: "ක්‍රියාකාරී සැසි"
                         }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "පරිශීලකයන් වෙත ආපසු යන්න",
+                            subtitles: "ඉල්ලූ පරිශීලකයා නොපවතින බව පෙනේ.",
+                            title: "පරිශීලක හමු නොවීය"
+                        }
                     }
                 },
                 forms: {
@@ -9062,7 +9604,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "පරිශීලක ගබඩාව",
-                            serviceProvider: "යෙදුම"
+                            serviceProvider: "යෙදුම",
+                            authenticator: {
+                                attributeName: "සම්බන්ධතා වර්ගය",
+                                values: {
+                                    basic: "පරිශීලක නාමය සහ මුරපදය",
+                                    identifierFirst: "පළමුව හඳුනාගැනීම",
+                                    fido2: "FIDO2",
+                                    magicLink: "මැජික් සබැඳිය",
+                                    emailOtp: "ඊමේල් OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "උපස්ථ කේත",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "සංවිධාන පිවිසුම්"
+                                }
+                            },
+                            identityProvider: "අනන්යතා සපයන්නා"
                         }
                     },
                     registration: {
@@ -9097,7 +9661,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "පරිශීලක ලියාපදිංචි කිරීම්",
-                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක (B2C) ලියාපදිංචි කිරීම් ගණන"
+                        titleHint: "තෝරාගත් කාල සීමාව තුළ සම්පූර්ණ පරිශීලක ලියාපදිංචි කිරීම් ගණන"
                     }
                 },
                 notifications: {
