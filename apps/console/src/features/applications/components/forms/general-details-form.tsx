@@ -29,7 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppConstants, AppState, UIConfigInterface } from "../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";
@@ -171,6 +171,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
     const [ saas, setSaas ] = useState<boolean>(isSaasApp);
@@ -437,22 +438,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 /> ) : null
             }
 
-            <Field.Checkbox
-                ariaLabel="Make application accessible by other organizations"
-                name="saas"
-                required={ false }
-                label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+            { !featureConfig?.applications?.disabledFeatures?.includes("saasAppConfig") && (
+                <Field.Checkbox
+                    ariaLabel="Make application accessible by other organizations"
+                    name="saas"
+                    required={ false }
+                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                 ".saas.label") }
-                initialValue={ saas }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-application-saas-app-checkbox` }
-                listen={ (value: boolean) => setSaas(value) }
-                hint={ (
-                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                    initialValue={ saas }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-application-saas-app-checkbox` }
+                    listen={ (value: boolean) => setSaas(value) }
+                    hint={ (
+                        t("console:develop.features.applications.forms.generalDetails.fields" +
                     ".saas.hint")
-                ) }
-                width={ 16 }
-            />
+                    ) }
+                    width={ 16 }
+                />
+            ) }
 
             <Field.Input
                 ariaLabel="Application access URL"
