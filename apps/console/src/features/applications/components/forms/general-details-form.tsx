@@ -55,6 +55,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      */
     discoverability?: boolean;
     /**
+     * Is SaaS application.
+     */
+    isSaasApp?: boolean;
+    /**
      * Set of hidden fields.
      */
     hiddenFields?: string[];
@@ -109,6 +113,10 @@ export interface GeneralDetailsFormValuesInterface {
      */
     discoverableByEndUsers?: boolean;
     /**
+     * Is SaaS application.
+     */
+    saas?: boolean;
+    /**
      * Application logo URL.
      */
     imageUrl?: string;
@@ -145,6 +153,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         name,
         description,
         discoverability,
+        isSaasApp,
         hiddenFields,
         imageUrl,
         accessUrl,
@@ -165,6 +174,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
+    const [ saas, setSaas ] = useState<boolean>(isSaasApp);
+
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
@@ -179,7 +190,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: values.discoverableByEndUsers
+                discoverableByEndUsers: values.discoverableByEndUsers,
+                saas: values.saas
             },
             description: values.description?.toString().trim(),
             id: appId,
@@ -426,6 +438,25 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     width={ 16 }
                 /> ) : null
             }
+
+
+            <Field.Checkbox
+                    ariaLabel="Make application accessible by other organizations"
+                    name="saas"
+                    required={ false }
+                    label={ "SaaS Application" }
+                    initialValue={ saas }
+                    readOnly={ readOnly }
+                    data-testid={ `${ testId }-application-saas-app-checkbox` }
+                    listen={ (value: boolean) => setSaas(value) }
+                    hint={ (
+                        "Applications are by default restricted for usage by users of the service provider's tenant. If this application is SaaS enabled it is opened up for all the users of all the tenants."
+                    ) }
+                    width={ 16 }
+                />
+
+
+
             <Field.Input
                 ariaLabel="Application access URL"
                 inputType="url"
