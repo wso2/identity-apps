@@ -16,23 +16,39 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import Typography from "@oxygen-ui/react/Typography";
 import {
     DataTable,
-    TableColumnInterface,
-    UserAvatar
+    EmptyPlaceholder,
+    LinkButton,
+    ListLayout,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode } from "react";
-import { useTranslation } from "react-i18next";
-import { Header, Label } from "semantic-ui-react";
+import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import {
-    UIConstants } from "../../core";
-import { BulkUserImportOperationResponse } from "../models";
+    Dropdown,
+    DropdownItemProps,
+    DropdownProps,
+    Grid,
+    Header,
+    Label
+} from "semantic-ui-react";
+import {
+    AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
+import { RootOnlyComponent } from "../../organizations/components";
+import { BulkUserImportStatus } from "../constants";
+import { BulkResponseSummary, BulkUserImportOperationResponse } from "../models";
 
 interface BulkImportResponseListProps {
     responseList: BulkUserImportOperationResponse[];
     isLoading?: boolean;
     ["data-testid"]?: string;
+    bulkResponseSummary?: BulkResponseSummary
 }
+
+type FilterStatus = BulkUserImportStatus | "ALL";
 
 /**
  * Users info page.
@@ -43,9 +59,34 @@ interface BulkImportResponseListProps {
 export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseListProps> = (
     props: BulkImportResponseListProps
 ): ReactElement => {
-    const { responseList, isLoading, ["data-testid"]: testId } = props;
 
+    const { responseList, isLoading, ["data-testid"]: testId, bulkResponseSummary } = props;
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>("ALL");
+    const [ filteredResponseList, setFilteredResponseList ] = useState<BulkUserImportOperationResponse[]>([]);
+    
     const { t } = useTranslation();
+    const totalCount: number = bulkResponseSummary.failedCount + bulkResponseSummary.successCount;
+    
+    const statusOptions: DropdownItemProps[] = [
+        { key: 1, text: "All", value: "ALL" },
+        {
+            key: 2,
+            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.success"),
+            value: BulkUserImportStatus.SUCCESS
+        },
+        {
+            key: 3,
+            text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.failed"),
+            value: BulkUserImportStatus.FAILED
+        }
+    ];
+
+    useEffect(() => {
+        setFilteredResponseList(responseList);
+    }, [ responseList ]);
 
     /**
      * Resolves data table columns.
@@ -61,25 +102,16 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "username",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header image as="h6" className="header-with-icon" data-testid={ `${testId}-item-heading` }>
-                            {/* <UserAvatar
-                                data-testid="users-list-item-image"
-                                name={ response.username }
-                                size="mini"
-                                image={ "" }
-                                spaced="right"
-                            /> */}
+                        <Header image as="h6" data-testid={ `${testId}-item-heading` }>
                             <Header.Content>
                                 {
-                                    // <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
                                     response.username
-                                    // </Header.Subheader>
                                 }
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.username")
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.username")
             },
             {
                 allowToggleVisibility: false,
@@ -93,15 +125,15 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 <Label
                                     data-testid={ `${testId}-bulk-label` }
                                     content={ response.status }
-                                    size="mini"
-                                    color={ response.statusCode === 201 ? "green" : "yellow" }
+                                    size="small"
+                                    color={ response.statusCode === BulkUserImportStatus.SUCCESS ? "green" : "red" }
                                     className={ "group-label" }
                                 />
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.status")
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.status")
             },
             {
                 allowToggleVisibility: false,
@@ -112,39 +144,226 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     return (
                         <Header as="h6" data-testid={ `${testId}-item-heading` }>
                             <Header.Content>
-                                { /* <div className={ isNameAvailable ? "mt-2" : "" }>{ header as ReactNode }</div> */ }
                                 { response.message }
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.message")
+                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.message")
             }
         ];
 
         return defaultColumns;
     };
 
+    /**
+    * Handles the `onSearchQueryClear` callback action.
+    */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setSelectedStatus("ALL");
+        setFilteredResponseList(responseList);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * users search component.
+     *
+     * @param query - Search query.
+     */
+    const handleUserFilter = (query: string) => {
+        if (!query) {
+            setSearchQuery("");
+            setFilteredResponseList(responseList);
+            
+            return;
+        }
+        
+        setSearchQuery(query);
+        const [ attribute, condition, value ] = query.split(" ");
+        const list: BulkUserImportOperationResponse[] =
+            filteredResponseList.filter((item: BulkUserImportOperationResponse) => {
+                switch (condition) {
+                    case "sw":
+                        return item.username?.startsWith(value);
+                    case "ew":
+                        return item.username?.endsWith(value);
+                    case "co":
+                        return item.username?.includes(value);
+                    case "eq":
+                        return item.username === value;
+                    default:
+                        return true;  // or false depending on your requirement
+                }
+            });
+
+        setFilteredResponseList(list);
+    };
+
+    
+
+    const handleStatusDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setSelectedStatus(data.value as FilterStatus);
+        if (data.value === "ALL") {
+            setFilteredResponseList(responseList);
+        } else {
+            const list: BulkUserImportOperationResponse[] =
+                responseList.filter((item: BulkUserImportOperationResponse) => {
+                    return item.statusCode === data.value;
+                });
+            
+            setSearchQuery("");
+            setFilteredResponseList(list);
+        }
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @returns Placeholders.
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery || selectedStatus !== "ALL") {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>
+                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    subtitle={ [
+                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                            { query: searchQuery }),
+                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
-            <DataTable<BulkUserImportOperationResponse>
-                className="addon-field-wrapper"
-                isLoading={ isLoading }
-                actions={ [] }
-                columns={ resolveTableColumns() }
-                data={ responseList }
-                onColumnSelectionChange={ () => null }
-                onRowClick={ () => null }
-                placeholders={ null }
-                selectable={ false }
-                showHeader={ true }
-                transparent={ !isLoading }
-                data-testid={ testId }
-                loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                    imageType: "circular"
-                } }
-            />
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        { bulkResponseSummary.failedCount === 0 ?
+                            (<Alert severity="success">
+                                {
+                                    t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.alerts." +
+                            "bulkImportSuccess")
+                                }
+                            </Alert>)
+                            :  
+                            (<Alert severity="error">
+                                <Trans
+                                    i18nKey={
+                                        "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                    "alerts.failedImports"
+                                    }
+                                    tOptions={ {
+                                        failedCount: bulkResponseSummary.failedCount
+                                    } }
+                                >
+                                    Issues encountered in <b>{ bulkResponseSummary.failedCount } import(s)</b>.
+                                Review required.
+                                </Trans>
+                            </Alert>)
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <ListLayout
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleUserFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                                "filterAttributeOptions.username"),
+                                            value: "userName"
+                                        } ] }
+                                    filterAttributePlaceholder={
+                                        t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                                            ".placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                                            ".placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                            ".placeholder")
+                                    }
+                                    placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="userName"
+                                    defaultSearchOperator="co"
+                                    triggerClearQuery={ triggerClearQuery }
+                                    // enableQuerySearch={ true }
+                                    
+                                />
+                            ) }
+                            rightActionPanel={
+                                (
+                                    <>
+                                        
+                                        <RootOnlyComponent>
+                                            <Dropdown
+                                                data-testid="user-mgt-user-list-userstore-dropdown"
+                                                selection
+                                                options={ statusOptions }
+                                                onChange={ handleStatusDropdownChange }
+                                                defaultValue="all"
+                                            />
+                                        </RootOnlyComponent>
+                                    </>
+                                )
+                            }
+                            showPagination={ false }
+                            showTopActionPanel={ true }
+                            totalPages={ Math.ceil(totalCount / listItemLimit) }
+                            totalListSize={ totalCount }
+                            isLoading={ isLoading }
+                            listItemLimit={ UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT }
+                            data-testid="user-mgt-user-list-layout"
+                            onPageChange={ () => null }
+                        >
+                            <Typography variant="body2" style={ { textAlign: "right" } }>
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                            "totalCount") } : { totalCount }
+                            </Typography>
+                            <DataTable<BulkUserImportOperationResponse>
+                                className="addon-field-wrapper"
+                                isLoading={ isLoading }
+                                actions={ [] }
+                                columns={ resolveTableColumns() }
+                                data={ filteredResponseList }
+                                onColumnSelectionChange={ () => null }
+                                onRowClick={ () => null }
+                                placeholders={ showPlaceholders() }
+                                transparent={ true }
+                                selectable={ false }
+                                showHeader={ false }
+                                data-testid={ testId }
+                                loadingStateOptions={ {
+                                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                                    imageType: "circular"
+                                }
+                                }
+                            />
+                        </ListLayout>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </>
     );
 };

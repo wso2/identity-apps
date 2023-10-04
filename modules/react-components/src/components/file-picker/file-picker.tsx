@@ -981,6 +981,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
     async serialize(data: File | string): Promise<CSVResult> {
         return new Promise<CSVResult>((resolve, reject) => {
+            console.log(data);
             if (!data) {
                 reject({ valid: false });
                 
@@ -1014,7 +1015,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
     async validate(data: File | string): Promise<ValidationResult> {
         return new Promise<ValidationResult>((resolve, reject) => {
             if (data instanceof File) {
-                // Check MIME type
+                // Check MIME type.
                 if (!this.mimeTypes.includes(data.type)) {
                     reject({
                         errorMessage: "Invalid file type. Only CSV files are allowed.",
@@ -1024,7 +1025,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                     return;
                 }
     
-                // Check file size
+                // Check file size.
                 if (data.size > CSVFileStrategy.MAX_FILE_SIZE) {
                     reject({
                         errorMessage: `File exceeds max size of 
@@ -1040,9 +1041,10 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 reader.readAsText(data, CSVFileStrategy.ENCODING);
                 reader.onload = () => {
                     try {
-                        const lines = (reader.result as string).split("\n");
+                        const lines = (reader.result as string).split("\n").map(line => line.trim());
+                        console.log(lines);
 
-                        if (lines.length > 0 && lines[0].split(",").length > 0) {
+                        if (lines.length > 0 && lines[0] !== "" && lines[0].split(",").length > 0) {
                             resolve({ valid: true });
                         } else {
                             throw "CSV file is empty or invalid";

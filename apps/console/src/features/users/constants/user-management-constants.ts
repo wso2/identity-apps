@@ -34,21 +34,21 @@ export class UserManagementConstants {
 
     /**
      * Default role list item limit.
-     * @typeparam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
+     * @typeParam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
      * @defaultValue
      */
     public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT: number = 10;
 
     /**
      * Default email template type list item limit.
-     * @typeparam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
+     * @typeParam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
      * @defaultValue
      */
     public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT: number = 10;
 
     /**
      * Default user list attributes.
-     * @typeparam DEFAULT_USER_LIST_ATTRIBUTES - string[]
+     * @typeParam DEFAULT_USER_LIST_ATTRIBUTES - string[]
      * @defaultValue
      */
     public static readonly DEFAULT_USER_LIST_ATTRIBUTES: string[] = [ "name", "emails", "userName", "profileUrl",
@@ -56,7 +56,7 @@ export class UserManagementConstants {
 
     /**
      * Set of keys used to enable/disable features.
-     * @typeparam FEATURE_DICTIONARY - `Map<string, string>`
+     * @typeParam FEATURE_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
@@ -87,7 +87,7 @@ export class UserManagementConstants {
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
-     * @typeparam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
+     * @typeParam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
@@ -98,7 +98,7 @@ export class UserManagementConstants {
 
     /**
      * Set of SCIM2 enterprise attributes.
-     * @typeparam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
+     * @typeParam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
@@ -130,7 +130,7 @@ export enum UserAccountTypes {
 
 /**
  * @readonly
- * @typeParam string - types of attributes that can not be bulk imported.
+ * @typeParam string - Types of attributes that cannot be bulk imported.
  */
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
@@ -138,7 +138,29 @@ export enum BlockedBulkUserImportAttributes {
     VERIFY_EMAIL = "verifyEmail"
 }
 
+/**
+ * @readonly
+ * @typeParam string - Types of attributes that are required for bulk import.
+ */
+export enum RequiredBulkUserImportAttributes {
+    USERNAME = "userName",
+    EMAILADDRESS = "emailaddress"
+}
+
+/**
+ * @readonly
+ * @typeParam string - User add option types.
+ */
 export enum UserAddOptionTypes {
     BULK_IMPORT = "bulk-import",
     MANUAL_INPUT = "manual-input"
+}
+
+/**
+ * @readonly
+ * @typeParam string - Bulk user import status.
+ */
+export enum BulkUserImportStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
 }

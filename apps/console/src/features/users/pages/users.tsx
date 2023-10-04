@@ -437,6 +437,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         dispatch(addAlert(alert));
     };
 
+    /**
+     * Handles the `onClose` callback action from the bulk import wizard.
+     */
+    const handleBulkImportWizardClose = (): void => {
+        setShowBulkImportWizard(false);
+        getList(listItemLimit, listOffset, null, null, null);
+    };
+
 
     /**
      * The following method set the list of columns selected by the user to
@@ -497,8 +505,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
-    
-
     /**
      * Handles the click event of the create new user button.
      */
@@ -536,25 +542,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         <>
             <PrimaryButton
                 data-testid={ `${ testId }-add-admin-button` }
-                onClick={() => {
-                    () => null
-                } }
                 className="tablet or lower hidden"
             >
                 <Icon name="add"/>
                 { t("extensions:manage.users.buttons.addUserBtn") }
                 <Icon name="dropdown" className="ml-3 mr-0"/>
             </PrimaryButton>
-            {/* <Button
-                data-testid={ `${ testId }-add-admin-button` }
-                icon="add"
-                onClick={ () => {
-                    eventPublisher.publish("admins-click-add-new-button");
-                } }
-                className="mobile only tablet only"
-                primary
-            >
-            </Button> */}
         </>
     );
 
@@ -574,6 +567,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     ];
 
+    /**
+     * Handle Add user dropdown item change.
+     * @param value - Dropdown item value.
+     */
     const handleDropdownItemChange = (value: string): void => {
         if (value === UserAddOptionTypes.MANUAL_INPUT) {
             handleAddNewUserWizardClick();
@@ -588,13 +585,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        {/* <PrimaryButton
-                            data-testid="user-mgt-user-list-add-user-button"
-                            onClick={ () => handleAddNewUserWizardClick()  }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.users.buttons.addNewUserBtn") }
-                        </PrimaryButton> */}
                         <Dropdown
                             data-testid={ `${ testId }-add-admin-dropdown` }
                             direction="left"
@@ -795,9 +785,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     showBulkImportWizard && (
                         <BulkImportUserWizard
                             data-testid="user-mgt-add-bulk-user-wizard-modal"
-                            closeWizard={ () => {
-                                setShowBulkImportWizard(false);
-                            } }
+                            closeWizard={ handleBulkImportWizardClose }
                         />
                     )
                 }
