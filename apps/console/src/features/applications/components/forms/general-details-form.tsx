@@ -443,14 +443,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 ariaLabel="Make application accessible by other organizations"
                 name="saas"
                 required={ false }
-                label={ "SaaS Application" }
+                label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+                ".saas.label") }
                 initialValue={ saas }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-application-saas-app-checkbox` }
                 listen={ (value: boolean) => setSaas(value) }
                 hint={ (
-                    "Applications are by default restricted for usage by users of the service provider's tenant." + 
-                    " If this application is SaaS enabled it is opened up for all the users of all the tenants."
+                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                    ".saas.hint")
                 ) }
                 width={ 16 }
             />

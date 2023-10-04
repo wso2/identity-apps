@@ -852,6 +852,7 @@ export interface ConsoleNS {
                             description: FormAttributes;
                             imageUrl: FormAttributes;
                             discoverable: FormAttributes;
+                            saas: FormAttributes;
                             accessUrl: FormAttributes;
                             isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
