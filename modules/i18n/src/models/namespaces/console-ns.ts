@@ -2984,6 +2984,10 @@ export interface ConsoleNS {
                     assignUserRoleBtn: string;
                     metaColumnBtn: string;
                 };
+                addUserDropDown: {
+                    addNewUser: string;
+                    bulkImport: string;
+                }
                 forms: {
                     validation: {
                         formatError: string;
@@ -3003,10 +3007,12 @@ export interface ConsoleNS {
                     bulkImportUser: {
                         validation: {
                             emptyRowError: NotificationItem;
-                            invalidAttributeError: NotificationItem;
-                            headerEmptyError: NotificationItem;
-                            headerInvalidCharacterError: NotificationItem;
-                            blockedAttributeError: NotificationItem;
+                            columnMismatchError: NotificationItem;
+                            emptyHeaderError: NotificationItem;
+                            missingRequiredHeaderError: NotificationItem;
+                            blockedHeaderError: NotificationItem;
+                            duplicateHeaderError: NotificationItem;
+                            invalidHeaderError: NotificationItem;
                         },
                         submit: Notification;
                     }
@@ -4951,19 +4957,30 @@ export interface ConsoleNS {
                         wizardSummary: {
                             successCount: string;
                             failedCount: string;
-                            success: string;
-                            warning: string;
-                            failed: string;
-                            userCreatedMessage: string;
-                            invalidDataMessage: string;
-                            userAlreadyExistsMessage: string;
-                            userCreationAcceptedMessage: string;
-                            internalErrorMessage: string;
+                            totalCount: string;
                             uploadCSV: string;
                             dropCSV: string;
-                            username: string;
-                            status: string;
-                            message: string;
+                            tableHeaders: {
+                                username: string;
+                                status: string;
+                                message: string;
+                            }
+                            tableMessages: {
+                                userCreatedMessage: string;
+                                invalidDataMessage: string;
+                                userAlreadyExistsMessage: string;
+                                userCreationAcceptedMessage: string;
+                                internalErrorMessage: string;
+                            };
+                            tableStatus: {
+                                success: string;
+                                warning: string;
+                                failed: string;
+                            };
+                            alerts: {
+                                bulkImportSuccess: string;
+                                failedImports: string;
+                            };
                         };
                     };
                     changePasswordModal: {

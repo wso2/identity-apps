@@ -8093,24 +8093,35 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Bulk Import Users",
+                        title: "Bulk User Import",
+                        subTitle: "Import Multiple Users Simultaneously",
                         wizardSummary: {
-                            successCount: "Success Count",
-                            failedCount: "Failed Count",
-                            success: "Success",
-                            warning: "Warning",
-                            failed: "Failed",
-                            userCreatedMessage: "User imported successfully",
-                            invalidDataMessage: "Invalid data provided",
-                            userAlreadyExistsMessage: "User already exists",
-                            userCreationAcceptedMessage: "User creation accepted",
-                            internalErrorMessage: "Error occurred while importing user",
+                            successCount: "Successful Imports",
+                            failedCount: "Failed Imports",
+                            totalCount: "Total Imports",
                             uploadCSV: "Upload CSV File",
-                            dropCSV: "Drag and drop a CSV file here",
-                            username: "Username",
-                            status: "Status",
-                            message: "Message"
+                            dropCSV: "Drag and drop a CSV file here or click to upload",
+                            tableHeaders: {
+                                username: "Username",
+                                status: "Import Status",
+                                message: "Details"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "User imported successfully",
+                                invalidDataMessage: "Invalid data detected",
+                                userAlreadyExistsMessage: "User already exists",
+                                userCreationAcceptedMessage: "User creation request accepted",
+                                internalErrorMessage: "An error occurred during user import"
+                            },
+                            tableStatus: {
+                                success: "Success",
+                                warning: "Warning",
+                                failed: "Failed"
+                            },
+                            alerts: {
+                                bulkImportSuccess: "Bulk Import Completed Successfully",
+                                failedImports: "{{failedCount}} imports failed and require your attention"
+                            }
                         }
                     },
                     changePasswordModal: {
@@ -8612,6 +8623,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assigner un rôle",
                     metaColumnBtn: "Champs"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Add User",
+                    bulkImport: "Bulk Import"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Veuillez confirmer votre action.",
@@ -8705,21 +8720,30 @@ export const console: ConsoleNS = {
                                 description: "No data found in the selected file",
                                 message: "Empty file"
                             },
-                            invalidAttributeError: {
-                                description: "Header {{attribute}} is not a valid attribute",
-                                message: "Invalid header attribute"
+                            columnMismatchError: {
+                                description: "Mismatched column count in one or more rows. Ensure each row has " +
+                                    "the correct number of columns",
+                                message: "Column mismatch"
                             },
-                            headerEmptyError: {
-                                description: "Headers can not be empty or null",
-                                message: "Empty header attribute"
+                            emptyHeaderError: {
+                                description: "Empty column headers found. Ensure each column has a header",
+                                message: "Empty column headers"
                             },
-                            headerInvalidCharacterError: {
-                                description: "Header {{attribute}} contains invalid characters",
-                                message: "Invalid header attribute"
+                            missingRequiredHeaderError: {
+                                description: "The following required headers are missing from the header: {}.",
+                                message: "Missing column headers"
                             },
-                            blockedAttributeError: {
-                                description: "Row {{row}} is empty.",
-                                message: "Empty row found"
+                            blockedHeaderError: {
+                                description: "The following headers are not allowed: {headers}.",
+                                message: "Blocked column headers"
+                            },
+                            duplicateHeaderError: {
+                                description: "The following headers are duplicated: {headers}.",
+                                message: "Duplicate column headers"
+                            },
+                            invalidHeaderError: {
+                                description: "The following headers are invalid: {headers}.",
+                                message: "Invalid column headers"
                             }
                         },
                         submit: {
@@ -8732,7 +8756,7 @@ export const console: ConsoleNS = {
                                 message: "Something went wrong"
                             },
                             success: {
-                                description: "The users were imported successfully.",
+                                description: "The users were imported successfully",
                                 message: "Users imported successfully"
                             }
                         }
