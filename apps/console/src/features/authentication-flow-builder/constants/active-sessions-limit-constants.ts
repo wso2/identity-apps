@@ -16,30 +16,6 @@
  * under the License.
  */
 
-/**
- * Meta data of a node on the visual editor.
- */
-export interface VisualEditorFlowNodeMetaInterface {
-    /**
-     * Height of the node.
-     */
-    height: number;
-    /**
-     * Width of the node.
-     */
-    width: number;
-}
+export const CHROME_BROWSER_CONSTANT: string = "Chrome";
 
-/**
- * Authenticator data of actions of step option.
- */
-export interface StepOptionActionsDataInterface {
-    /**
-     * Autenticator to be added.
-     */
-    toAdd?: string;
-    /**
-     * Autenticator to be removed.
-     */
-    toRemove?: string;
-}
+export const FIREFOX_BROWSER_CONSTANT: string = "Firefox";

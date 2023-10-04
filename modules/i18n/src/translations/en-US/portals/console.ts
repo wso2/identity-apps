@@ -1165,7 +1165,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo requires the user's profile containing the"+
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " + 
+                                            "having a basic authenticator in a prior step.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " + 
+                                            "added to a multi option step."
                                         }
                                     }
                                 },
@@ -6635,6 +6639,19 @@ export const console: ConsoleNS = {
                     help: "Haven't setup your TOTP authenticator yet? Contact support"
                 },
                 header: "Verify Your Identity"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Browser",
+                        lastAccessedLabel: "Last Accessed"
+                    },
+                    help: "Terminate active sessions to continue."
+                },
+                header: "Multiple Active Sessions Found"
             }
         },
         revertConfirmationModal: {
@@ -10083,7 +10100,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "There are no {{type}} assigned with this role.",
-                            unselected: "There are no {{type}} available to assign with this role."
+                            unselected: "There are no {{type}} available to assign to this group.",
+                            common: "No {{type}} found"
                         },
                         users: {
                             roles: {
@@ -10804,6 +10822,13 @@ export const console: ConsoleNS = {
                             1: "Groups",
                             2: "Roles",
                             3: "Active Sessions"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Go back to users",
+                            subtitles: "It looks like the requested user does not exist.",
+                            title: "User not found"
                         }
                     }
                 },

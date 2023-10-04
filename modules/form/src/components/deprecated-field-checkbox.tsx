@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,14 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { CheckboxAdapter } from "./adapters";
+import { DepricatedCheckboxAdapter } from "./adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FormFieldMessage } from "../models";
 
 /**
  * Interface for the Checkbox field component.
  */
-export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface, TestableComponentInterface {
+export interface DepricatedFieldCheckboxPropsInterface extends FormFieldPropsInterface, TestableComponentInterface {
 
     /**
      * Hint of the form field.
@@ -45,13 +45,13 @@ export interface FieldCheckboxPropsInterface extends FormFieldPropsInterface, Te
 
 /**
  * Implementation of the Checkbox Field component.
- *
+ * @deprecated Use `Field.OxygenCheckbox` instead.
  * @param props - Props injected to the component.
  *
  * @returns
  */
-export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
-    props: FieldCheckboxPropsInterface
+export const DepricatedFieldCheckbox: FunctionComponent<DepricatedFieldCheckboxPropsInterface> = (
+    props: DepricatedFieldCheckboxPropsInterface
 ): ReactElement => {
 
     const {
@@ -94,7 +94,7 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
                 key={ testId }
                 type="checkbox"
                 name={ props.name }
-                component={ CheckboxAdapter }
+                component={ DepricatedCheckboxAdapter }
                 data-testid={ testId }
                 { ...rest }
             />
@@ -117,6 +117,6 @@ export const FieldCheckbox: FunctionComponent<FieldCheckboxPropsInterface> = (
 /**
  * Default props for the component.
  */
-FieldCheckbox.defaultProps = {
-    "data-testid": "oxygen-checkbox-field"
+DepricatedFieldCheckbox.defaultProps = {
+    "data-testid": "checkbox-field"
 };

@@ -115,6 +115,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordExpiry: "",
             passwordHistory: "",
             passwordPolicies: "",
+            passwordPoliciesUpdate: "",
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",

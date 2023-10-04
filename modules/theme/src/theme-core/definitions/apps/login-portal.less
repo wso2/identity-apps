@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 Inc. (http://www.wso2.org).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -292,3 +292,32 @@
 }
 
 .loadUIOverrides();
+
+/*-----------------------------
+  Concurrent Session Handling
+------------------------------*/
+
+a.session-refresh {
+    float: right; 
+    margin-bottom: 5px; 
+}
+
+.active-sessions-table tr {
+    td {
+        font-size: 0.9em;
+    }
+
+    .th-session-checkbox, .td-session-checkbox {
+        text-align: center !important;
+
+        .ui.checkbox {
+            width: 17px !important;
+        }
+    }
+}
+
+.button-group-sessions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 0px;
+}

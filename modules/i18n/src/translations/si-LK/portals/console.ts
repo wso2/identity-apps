@@ -1161,7 +1161,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "<5>{{idpName}}</5> සම්බන්ධතාවය සමඟ <3>SMS OTP</3>" +
                                                     " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
                                                     " පැතිකඩ අවශ්‍ය වේ."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " + 
+                                                "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
+                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " + 
+                                                "පියවරකට එක් කළ නොහැක."
                                         }
                                     }
                                 },
@@ -4928,6 +4932,19 @@ export const console: ConsoleNS = {
                     help: "තවමත් ඔබේ TOTP සත්යාපනය සකසා නැද්ද?උදවු සදහා අමතන්න"
                 },
                 header: "ඔබේ අනන්යතාවය සත්යාපනය කරන්න"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "ඉවත් කරන්න"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "බ්රවුසරය",
+                        lastAccessedLabel: "අවසන් ප්‍රවේශය"
+                    },
+                    help: "දිගටම කරගෙන යාමට සක්‍රිය සැසි අවසන් කරන්න."
+                },
+                header: "බහු ක්රියාකාරී සැසි හමු විය"
             }
         },
         revertConfirmationModal: {
@@ -8216,7 +8233,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "මෙම භූමිකාව සමඟ පවරා ඇති {{type}} නොමැත.",
-                            unselected: "මෙම භූමිකාව සමඟ පැවරීම සඳහා {{type}} නොමැත."
+                            unselected: "මෙම කණ්ඩායමට පැවරීම සඳහා {{type}} නොමැත.",
+                            common: "{{type}} හමු නොවීය"
                         },
                         users: {
                             roles: {
@@ -8944,6 +8962,13 @@ export const console: ConsoleNS = {
                             1: "කණ්ඩායම්",
                             2: "භූමිකාවන්",
                             3: "ක්‍රියාකාරී සැසි"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "පරිශීලකයන් වෙත ආපසු යන්න",
+                            subtitles: "ඉල්ලූ පරිශීලකයා නොපවතින බව පෙනේ.",
+                            title: "පරිශීලක හමු නොවීය"
                         }
                     }
                 },

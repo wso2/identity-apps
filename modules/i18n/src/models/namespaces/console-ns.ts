@@ -679,6 +679,8 @@ export interface ConsoleNS {
                                                 multipleIdps: string;
                                                 singleIdp: string;
                                             };
+                                            sessionExecutorDisabledInFirstStep: string;
+                                            sessionExecutorDisabledInMultiOptionStep: string;
                                         };
                                     };
                                 };
@@ -2988,6 +2990,19 @@ export interface ConsoleNS {
                 };
                 header: string;
             };
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    sessions: {
+                        browserLabel: string;
+                        lastAccessedLabel: string;
+                    };
+                    help: string;
+                };
+                header: string;
+            };
         };
         revertConfirmationModal: {
             assertionHint: string;
@@ -3257,6 +3272,9 @@ export interface ConsoleNS {
                             2: string;
                             3: string;
                         };
+                    };
+                    placeholders: {
+                        undefinedUser: Placeholder;
                     };
                 };
                 userSessions: {
@@ -5117,6 +5135,7 @@ export interface ConsoleNS {
                         roles: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         users: {
                             roles: {

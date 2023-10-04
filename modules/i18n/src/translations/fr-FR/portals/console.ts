@@ -1177,7 +1177,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo nécessite le profil de l'utilisateur" +
                                                     " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
                                                     " avec Connexion <5>{{idpName}}</5>."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " + 
+                                                "d'avoir un authentificateur de base dans une étape préalable.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " + 
+                                                "ne peut pas être ajouté à une étape multi-options."
                                         }
                                     }
                                 },
@@ -5063,6 +5067,19 @@ export const console: ConsoleNS = {
                     help: "Vous n'avez pas encore configuré votre authentificateur TOTP?Contactez le support"
                 },
                 header: "Vérifiez Votre Identité"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Navigateur",
+                        lastAccessedLabel: "Dernier accès"
+                    },
+                    help: "Terminez les sessions actives pour continuer."
+                },
+                header: "Plusieurs sessions actives trouvées"
             }
         },
         revertConfirmationModal: {
@@ -8404,7 +8421,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "Aucun {{type}} n'est assigné à ce rôle.",
-                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce rôle."
+                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce groupe.",
+                            common: "Aucun {{type}} trouvé"
                         },
                         users: {
                             roles: {
@@ -9165,6 +9183,13 @@ export const console: ConsoleNS = {
                             1: "Groupes",
                             2: "Rôles",
                             3: "Sessions Actives"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Retourner aux utilisateurs",
+                            subtitles: "Il semble que l'utilisateur demandé n'existe pas.",
+                            title: "Utilisateur non trouvé"
                         }
                     }
                 },
