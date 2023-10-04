@@ -12,6 +12,16 @@
                     "idp": "LOCAL"
                 }
             ]
+        },
+        {
+            "id": 2,
+            "options": [
+                {
+                    "authenticator": "BasicAuthenticator",
+                    "idp": "LOCAL"
+                }
+            ]
         }
-    ]
+    ],
+    "script": "var onLoginRequest = function(context) {\n\texecuteStep(1, {\n\t\tonFail: function (context) {\n\t\t\tvar authenticatorStatus = context.request.params.scenario; \n\t\t\t// If it is a passkey key registration request trigger the following flow.\n\t\t\tif (authenticatorStatus != null && (authenticatorStatus[0] == 'INIT_FIDO_ENROL' || authenticatorStatus[0] == 'IDF_INIT_FIDO_ENROL')) { \n\t\t\t\texecuteStep(2, {\n\t\t\t\t\tonSuccess: function (context) {\n\t\t\t\t\t\t// If user got successfully authenticated \n\t\t\t\t\t\texecuteStep(1, {\n\t\t\t\t\t\t\tauthenticationOptions: [{authenticator:'FIDOAuthenticator'}]\n\t\t\t\t\t\t}, {});\n\t\t\t\t\t},\n\t\t\t\t});\n\t\t\t}\n\t\t}\n\t});\n};"
 }

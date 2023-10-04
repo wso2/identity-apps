@@ -242,11 +242,9 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     data-componentid="usernameless-flow-card"
                                     image={ getAuthenticatorIcons().fido }
                                     imageSize="mini"
-                                    header={
-                                        identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                                            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
-                                            t("console:develop.features.applications.edit.sections.signOnMethod"
-                                                + ".sections.landing.flowBuilder.types.usernameless.heading"))
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections.signOnMethod" +
+                                        ".sections.landing.flowBuilder.types.usernameless.heading")
                                     }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +

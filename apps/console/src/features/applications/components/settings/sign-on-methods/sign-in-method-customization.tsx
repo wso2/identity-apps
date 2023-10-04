@@ -677,8 +677,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             {
-                authenticationSequence.steps[ 0 ].options.find((authenticator: AuthenticatorInterface) =>
-                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
+                authenticationSequence.steps.some(step => step.options.find((authenticator: AuthenticatorInterface) =>
+                authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
+                // authenticationSequence.steps[ 0 ].options.find((authenticator: AuthenticatorInterface) =>
+                //     authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
                 && (
                     <Message
                         type="warning"
@@ -691,9 +693,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                             "types.usernameless.info")
                                     }
                                 >
-                                    To sign in with passwordless login, your users
-                                    should have their FIDO2 security keys or biometrics
-                                    registered via My Account.
+                                    On-the-fly passkey enrollment is available exclusively 
+                                    for FIDO2 supported passkeys and further users wishing to register 
+                                    multiple passkeys, they must do so via MyAccount.
                                 </Trans>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.editApplication.signInMethod.fido") }

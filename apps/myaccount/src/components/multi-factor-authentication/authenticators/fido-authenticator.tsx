@@ -668,7 +668,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     <>
                         <p style={ { fontSize: "12px" } }>
                             <Icon color="grey" floated="left" name="info circle" />
-                            You don&apos;t have any security key/biometrics registered yet.
+                            You don&apos;t have any passkeys enrolled yet.
                         </p>
                     </>
                 ) }

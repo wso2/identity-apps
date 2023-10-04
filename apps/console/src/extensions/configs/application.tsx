@@ -517,31 +517,6 @@ export const applicationConfig: ApplicationConfig = {
                 stepIndex: number,
                 dispatch: Dispatch
             ): boolean => {
-                // Prevent FIDO2 from being added as a second factor
-                if (
-                    [
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
-                    ].includes(authenticatorID)
-                    && stepIndex > 0
-                ) {
-                    dispatch(
-                        addAlert({
-                            description: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.description"
-                            ),
-                            level: AlertLevels.WARNING,
-                            message: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.message"
-                            )
-                        })
-                    );
-
-                    return false;
-                }
-
                 return true;
             },
             messages: {
@@ -553,7 +528,7 @@ export const applicationConfig: ApplicationConfig = {
                         }
                     >
                         Second factor authenticators can only be used if <Code>Username & Password
-                        </Code>, <Code>Social Login</Code> or <Code>Security Key/Biometrics</Code>
+                        </Code>, <Code>Social Login</Code> or <Code>Passkey</Code>
                         is present in a previous step.
                     </Trans>
                 ),

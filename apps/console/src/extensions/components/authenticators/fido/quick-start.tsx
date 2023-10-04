@@ -77,7 +77,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         >
                             Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>
-                            for which you want to set up FIDO2 login.
+                            for which you want to set up passkey login.
                         </Trans>
                     </Text>
                 </>
@@ -91,8 +91,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add FIDO2
-                            login</strong> to configure a basic FIDO flow.
+                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
+                            login</strong> to configure a basic passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -100,7 +100,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add FIDO2 login</strong>
+                    Select <strong>Add Passkey login</strong>
                 </Trans>
             )
         },
