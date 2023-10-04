@@ -886,15 +886,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                   });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
                  && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp
                     && applicationConfig.editApplication.showApplicationShare
                     && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                     && hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.update, allowedScopes)
-                    && orgType !== OrganizationType.SUBORGANIZATION) {
-
+                    && orgType !== OrganizationType.SUBORGANIZATION
+                    && ![ "CONSOLE","MY_ACCOUNT" ].includes(application?.clientId)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
