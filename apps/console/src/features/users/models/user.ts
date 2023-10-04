@@ -21,6 +21,7 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
+import { BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -350,5 +351,14 @@ export interface BulkUserImportOperationResponse {
     username: string;
     status: BulkUserImportOperationStatus;
     message: string;
-    statusCode: number;
+    statusCode: BulkUserImportStatus;
 }
+
+/**
+ * Interface for the bulk user import operation summary.
+ */
+export interface BulkResponseSummary {
+    successCount: number;
+    failedCount: number;
+}
+

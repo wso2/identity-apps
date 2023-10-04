@@ -981,7 +981,6 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
     async serialize(data: File | string): Promise<CSVResult> {
         return new Promise<CSVResult>((resolve, reject) => {
-            console.log(data);
             if (!data) {
                 reject({ valid: false });
                 
@@ -989,11 +988,11 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
             }
 
             const processCSV = (csvContent: string) => {
-                // Split by lines and filter out empty lines
+                // Split by lines and filter out empty lines.
                 const lines = csvContent.split("\n").filter(line => line.trim() !== "");
-                // Split each line by comma to get items
+                // Split each line by comma to get items.
                 const items = lines.map(line => line.split(",").map(item => item.trim()));
-                // First line is the header
+                // First line is the header.
                 const headers = items.shift();
 
                 resolve({ headers, items  });
@@ -1042,7 +1041,6 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 reader.onload = () => {
                     try {
                         const lines = (reader.result as string).split("\n").map(line => line.trim());
-                        console.log(lines);
 
                         if (lines.length > 0 && lines[0] !== "" && lines[0].split(",").length > 0) {
                             resolve({ valid: true });

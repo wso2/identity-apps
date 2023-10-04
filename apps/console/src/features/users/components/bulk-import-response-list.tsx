@@ -63,12 +63,12 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const { responseList, isLoading, ["data-testid"]: testId, bulkResponseSummary } = props;
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>("ALL");
     const [ filteredResponseList, setFilteredResponseList ] = useState<BulkUserImportOperationResponse[]>([]);
     
     const { t } = useTranslation();
     const totalCount: number = bulkResponseSummary.failedCount + bulkResponseSummary.successCount;
+    const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
     
     const statusOptions: DropdownItemProps[] = [
         { key: 1, text: "All", value: "ALL" },
@@ -181,6 +181,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         }
         
         setSearchQuery(query);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [ attribute, condition, value ] = query.split(" ");
         const list: BulkUserImportOperationResponse[] =
             filteredResponseList.filter((item: BulkUserImportOperationResponse) => {

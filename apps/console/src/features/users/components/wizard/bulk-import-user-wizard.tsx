@@ -44,8 +44,17 @@ import { v4 as uuidv4 } from "uuid";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { getCertificateIllustrations } from "../../../core";
 import { bulkAddUsers } from "../../api";
-import { BlockedBulkUserImportAttributes, BulkUserImportStatus, RequiredBulkUserImportAttributes } from "../../constants";
-import { BulkResponseSummary, BulkUserImportOperationResponse, BulkUserImportOperationStatus, SCIMBulkEndpointInterface, SCIMBulkOperation } from "../../models";
+import {
+    BlockedBulkUserImportAttributes,
+    BulkUserImportStatus,
+    RequiredBulkUserImportAttributes
+} from "../../constants";
+import {
+    BulkResponseSummary,
+    BulkUserImportOperationResponse,
+    BulkUserImportOperationStatus,
+    SCIMBulkOperation
+} from "../../models";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
 /**
@@ -83,7 +92,7 @@ interface MultiValuedComplexAttribute {
 type ValidationError = {
     descriptionKey: string;
     messageKey: string;
-    descriptionValues?: { [key: string]: any };
+    descriptionValues?: { [key: string]: string };
 };
 
 interface Validation {
@@ -725,7 +734,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     key={ 1 }
                                     fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
                                     file={ selectedCSVFile }
-                                    onChange={ (result: PickerResult<any>) => {
+                                    onChange={ (result: PickerResult<{
+                                        headers: string[];
+                                        items: string[][];
+                                    }>) => {
                                         setSelectedCSVFile(result.file);
                                         setUserData(result.serialized);
                                         setAlert(null);
