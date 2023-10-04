@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,12 +56,14 @@ import {
     SCIMBulkOperation
 } from "../../models";
 import { BulkImportResponseList } from "../bulk-import-response-list";
+import { PRIMARY_USERSTORE } from "../../../userstores/constants"
 
 /**
  * Prototypes for the BulkImportUserWizardComponent.
  */
 interface BulkImportUserInterface extends TestableComponentInterface {
     closeWizard: () => void;
+    userstore: string;
 }
 
 interface SCIMOperation {
@@ -104,6 +106,7 @@ const WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
 const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
 const SCIM2_ENTERPRISE_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
+const ASK_PASSWORD_ATTRIBUTE: string = "askPassword";
 const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
 
 /**
@@ -115,7 +118,7 @@ const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
 export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const { closeWizard, ["data-testid"]: testId } = props;
+    const { closeWizard, userstore, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -424,13 +427,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns filtered attribute mapping.
      */
     const filterAttributes = (headers: string[], attributeMapping: CSVAttributeMapping[]): CSVAttributeMapping[] => {
-        return headers
+        const filteredAttributeList: CSVAttributeMapping[] = headers
             .map((header: string) =>
                 attributeMapping.find(
                     (attribute: CSVAttributeMapping) => header.toLowerCase() === attribute.attributeName.toLowerCase()
                 )
             )
             .filter(Boolean);
+        
+        filteredAttributeList.push(
+            attributeMapping.find((attribute: CSVAttributeMapping) =>
+                attribute.attributeName.toLowerCase().includes(ASK_PASSWORD_ATTRIBUTE.toLowerCase()))
+        );
+
+        return filteredAttributeList;
     };
 
     /**
@@ -472,19 +482,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 
             }
 
+            // Handle multi-valued address attribute.
             if (scimAttribute.includes("addresses#home")) {
-            // For Asgardeo. TODO: test
                 dataObj["addresses"] = dataObj["addresses"] || [];
                 dataObj["addresses"].push(
                     {
                         type: "home",
-                        [scimAttribute.replace(SCIM2_ENTERPRISE_USER_SCHEMA + "addresses#home", "")]:
+                        [scimAttribute.replace("addresses#home.", "")]:
                             attributeValue
                     }
                 );
 
                 continue;
             } 
+
+            // Handle username attribute.
+            if (scimAttribute === "userName") {
+                dataObj["userName"] = (userstore && userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase())
+                    ? `${userstore}/${attributeValue}`
+                    : attributeValue;
+                
+                continue;
+            }
 
             // Add the schema to the set
             schemasSet.add(attribute.mappedSCIMClaimDialectURI);
@@ -537,7 +556,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             dataObj[SCIM2_ENTERPRISE_USER_SCHEMA] = {};
         }
         // Default value for the "askPassword" attribute is "true".
-        dataObj[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
+        // dataObj[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
+        // TODO: Check this inside the loop.
 
         return {
             schema: Array.from(schemasSet),
