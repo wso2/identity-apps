@@ -158,14 +158,6 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
                 "hypr"
             ).toString(),
             value: AuthenticatorFilterValue.HYPR
-        },
-        {
-            key:   16,
-            text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
-                "organizationLogin"
-            ).toString(),
-            value: AuthenticatorFilterValue.ORGANIZATION_AUTHENTICATOR
         }
     ],
     "onboardingMethod": [
