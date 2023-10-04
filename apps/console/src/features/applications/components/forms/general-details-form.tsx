@@ -173,9 +173,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
-
     const [ saas, setSaas ] = useState<boolean>(isSaasApp);
-
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
@@ -455,8 +453,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 ) }
                 width={ 16 }
             />
-
-
 
             <Field.Input
                 ariaLabel="Application access URL"
