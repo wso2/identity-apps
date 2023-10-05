@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,17 @@
  * under the License.
  */
 
-export * from "./connector-form-factory";
-export * from "./login-attempt-security-form";
-export * from "./password-recovery-form";
-export * from "./self-registration-form";
+export type EmailTemplateType = {
+    id: string;
+    displayName: string;
+    self: string,
+    description?: string
+}
+
+export type EmailTemplate = {
+    id: string;
+    contentType: string;
+    subject: string;
+    body: string;
+    footer: string;
+}

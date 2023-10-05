@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,17 +41,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../features/core";
-import { GovernanceConnectorUtils, ServerConfigurationsConstants } from "../../../../features/server-configurations";
-import { getConnectorDetails, updateGovernanceConnector } from "../../../../features/server-configurations/api";
+import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { ConnectorFormFactory } from "../forms";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface
-} from "../../../../features/server-configurations/models";
-import { serverConfigurationConfig } from "../../../configs";
-import { ConnectorFormFactory } from "../forms";
+} from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Props for the Server Configurations page.
@@ -415,20 +416,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         }
     };
 
-    const resolveBackButtonText = (connector: GovernanceConnectorInterface): string => {
-        switch (connector.id) {
-            case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
-            case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountSecurity.backButton");
-            case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.userOnboarding.backButton");
-            case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountRecovery.backButton");
-            default:
-                return t("extensions:manage.serverConfigurations.generalBackButton");
-        }
-    };
-
     const resolveConnectorUpdateSuccessMessage = (): string => {
         switch (connector?.id) {
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
@@ -592,14 +579,18 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         ) : null;
     };
 
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     return !isConnectorRequestLoading && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
             description={ resolveConnectorDescription(connector) }
             backButton={ {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: resolveBackButtonText(connector)
+                onClick: () => onBackButtonClick(),
+                text: "Go back to Login & Registration"
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

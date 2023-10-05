@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,12 +25,12 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
+import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+    GovernanceConnectorInterface
+} from "../models/governance-connectors";
 
 /**
  * Interface for Password Recovery Configuration Form props.
@@ -187,8 +187,11 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: any) => {
-        const data: any = {
+    const getUpdatedConfigurations = (values: Record<string, any>) => {
+        const data: {
+            "Recovery.ExpiryTime": any;
+            "Recovery.NotifySuccess": boolean;
+        } = {
             "Recovery.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
                 : initialConnectorValues?.expiryTime,
@@ -209,7 +212,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                onSubmit={ (values: any) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >

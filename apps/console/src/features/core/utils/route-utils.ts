@@ -302,9 +302,9 @@ export class RouteUtils {
         };
 
         const pathsToCheck: string[] = [
-            "/console/governance-connectors/",
-            AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
+            `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
+            AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
         ];
@@ -361,7 +361,7 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userStores",
-                parent: userManagement
+                parent: userAttributesAndStores
             },
             {
                 category: manage,

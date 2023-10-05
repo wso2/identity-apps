@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,12 +25,12 @@ import toInteger from "lodash-es/toInteger";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, AccordionTitleProps, Divider, Icon, Label, List, Message } from "semantic-ui-react";
+import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+    GovernanceConnectorInterface
+} from "../models/";
 
 /**
  * Interface for Login Attempt Security Configuration Form props.
@@ -179,7 +179,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: any) => {
+    const getUpdatedConfigurations = (values: Record<string, any>) => {
         const data: any = {
             "account.lock.handler.On.Failure.Max.Attempts": values.maxFailedAttempts !== undefined
                 ? values.maxFailedAttempts
@@ -291,7 +291,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
         if (!accordionTitleProps) {
             return;
         }
-        const newIndex: any = accordionActiveIndex === accordionTitleProps.index
+        const newIndex: string | number = accordionActiveIndex === accordionTitleProps.index
             ? -1
             : accordionTitleProps.index;
 
@@ -402,7 +402,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                onSubmit={ (values: any) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >
@@ -423,7 +423,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ true }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.maxFailedAttempts.placeholder") }
-                    listen={ (value: any) => value
+                    listen={ (value: string) => value
                         ? setMaxAttempts(value)
                         : setMaxAttempts(initialConnectorValues.maxFailedAttempts) }
                     maxLength={
@@ -461,7 +461,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ true }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.accountLockTime.placeholder") }
-                    listen={ (value: any) => value
+                    listen={ (value: string) => value
                         ? setLockDuration(value)
                         : setLockDuration(initialConnectorValues.accountLockTime) }
                     maxLength={
@@ -505,7 +505,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     required={ false }
                     placeholder={ t("extensions:manage.serverConfigurations.accountSecurity." +
                         "loginAttemptSecurity.form.fields.accountLockIncrementFactor.placeholder") }
-                    listen={ (value: any) => value
+                    listen={ (value: string) => value
                         ? setLockIncrementRatio(value)
                         : setLockIncrementRatio(initialConnectorValues.accountLockIncrementFactor) }
                     maxLength={

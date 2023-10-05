@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,13 +21,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { SettingsSection } from "./settings-section";
-import { AppConstants, history } from "../../../../features/core";
-import { ServerConfigurationsConstants } from "../../../../features/server-configurations";
-import { getSettingsSectionIcons } from "../../../../features/server-configurations/configs";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../../../../features/server-configurations/models";
+import { AppConstants, history } from "../../core";
+import { getSettingsSectionIcons } from "../configs";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
 
 /**
  * Prop types for the edit connector component.
@@ -42,9 +39,9 @@ interface EditConnectorProps extends TestableComponentInterface {
 /**
  * Edit connector component.
  *
- * @param props - Props injected to the connector component.
+ * @param {EditConnectorProps} props - Props injected to the connector component.
  *
- * @returns Edit connector component.
+ * @return {React.ReactElement}
  */
 export const EditConnector: FunctionComponent<EditConnectorProps> = (
     props: EditConnectorProps
@@ -66,7 +63,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
     useEffect(() => {
         if (connector) {
             const enableProperty: ConnectorPropertyInterface = connector.properties.find(
-                (property: ConnectorPropertyInterface) => property.name === connectorToggleName);
+                (property: ConnectorPropertyInterface) => property.name === connectorToggleName
+            );
 
             setEnableOption(enableProperty?.value === "true");
         }
@@ -99,8 +97,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
         switch (connector?.id) {
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return (
-                    t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity" +
-                    ".connectorDescription")
+                    t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity." +
+                        "connectorDescription")
                 );
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return (

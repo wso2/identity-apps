@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,13 +31,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
+import { updateGovernanceConnector } from "./api";
+import { GovernanceConnectorUtils } from "./utils";
+import { serverConfigurationConfig } from "../../extensions/configs/server-configuration";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    updateGovernanceConnector
-} from "../../../features/server-configurations";
-import { serverConfigurationConfig } from "../../configs/server-configuration";
+    GovernanceConnectorInterface
+} from "../server-configurations/models/governance-connectors";
 
 /**
  * Interface of the prop types of the `ExtendedDynamicConnector`.
@@ -53,7 +53,7 @@ interface DynamicConnectorPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the connector settings.
  *
- * @param props - Component props.
+ * @param {DynamicConnectorPropsInterface} props - Component props.
  */
 export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsInterface> = (
     props: DynamicConnectorPropsInterface
@@ -71,7 +71,8 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
     useEffect(() => {
         if (connector) {
             const enableProperty: ConnectorPropertyInterface = connector.properties.find(
-                (property: ConnectorPropertyInterface) => property.name === connectorToggleName);
+                (property: ConnectorPropertyInterface) => property.name === connectorToggleName
+            );
 
             setShowForm(enableProperty?.value === "true");
         }
@@ -80,13 +81,16 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
     /**
      * This is called when the enable toggle changes.
      *
-     * @param e - Event object
-     * @param data - The data object.
+     * @param SyntheticEvent - e Event object
+     * @param CheckboxProps - data The data object.
      */
     const handleToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
         setShowForm(data.checked);
 
-        const updateData: any = {
+        const updateData: {
+            operation: string;
+            properties: any[];
+        } = {
             operation: "UPDATE",
             properties: []
         };

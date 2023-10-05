@@ -529,7 +529,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -549,7 +549,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" + "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -625,8 +625,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -651,7 +650,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" +  "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -675,7 +674,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -701,8 +700,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -755,7 +753,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/" + "governance-connectors/pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,

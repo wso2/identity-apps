@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,11 +23,9 @@ import { useSelector } from "react-redux";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
-import { AppState, FeatureConfigInterface } from "../../../../features/core";
-import {
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations";
+import { AppState, FeatureConfigInterface } from "../../core";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { GovernanceConnectorInterface } from "../models/governance-connectors";
 
 /**
  * Proptypes for the connector form factory component.
@@ -39,7 +37,7 @@ interface ConnectorFormFactoryInterface extends TestableComponentInterface {
     initialValues: GovernanceConnectorInterface;
     /**
      * Callback for form submit.
-     * @param values - Resolved Form Values.
+     * @param any - values - Resolved Form Values.
      */
     onSubmit: (values) => void;
     /**
@@ -63,8 +61,8 @@ interface ConnectorFormFactoryInterface extends TestableComponentInterface {
 /**
  * Connector form factory.
  *
- * @param props - Props injected to the component.
- * @returns connector form factory component.
+ * @param ConnectorFormFactoryInterface - Props injected to the component.
+ * @returns a ReactElement
  */
 export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterface> = (
     props: ConnectorFormFactoryInterface

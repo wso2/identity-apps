@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,12 +29,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
+import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+    GovernanceConnectorInterface
+} from "../models/governance-connectors";
 
 /**
  * Form initial values interface.
