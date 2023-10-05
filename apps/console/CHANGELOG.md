@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.0.19
+
+### Patch Changes
+
+- [#4166](https://github.com/wso2/identity-apps/pull/4166) [`337db8ebb6`](https://github.com/wso2/identity-apps/commit/337db8ebb6edc052f57f8678da622f322496886d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update missing dependency in dynamic-forms module
+
+- Updated dependencies [[`337db8ebb6`](https://github.com/wso2/identity-apps/commit/337db8ebb6edc052f57f8678da622f322496886d)]:
+  - @wso2is/dynamic-forms@2.0.3
+
 ## 2.0.18
 
 ### Patch Changes
