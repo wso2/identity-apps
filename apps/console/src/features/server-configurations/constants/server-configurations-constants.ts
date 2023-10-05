@@ -338,8 +338,22 @@ export class ServerConfigurationsConstants {
 	public static readonly ANALYTICS_HTTP_CONNECTION_REQUEST_TIMEOUT: string =
 		"adaptive_authentication.elastic.HTTPConnectionRequestTimeout";
 
-	public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";	
-		
+	public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";
+
+	/**
+	 * User Claim Update Connector Constants.
+	 */
+	public static readonly USER_CLAIM_UPDATE_CATEGORY_ID: string = "VXNlciBDbGFpbSBVcGRhdGU";
+	public static readonly EMAIL_VERIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableVerification";
+	public static readonly EMAIL_NOTIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableNotification";
+	public static readonly EMAIL_VERIFICATION_EXPIRY_TIME: string = "UserClaimUpdate.Email.VerificationCode.ExpiryTime";
+	public static readonly MOBILE_VERIFICATION_ENABLE: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+	public static readonly MOBILE_NOTIFICATION_ENABLE: string = 
+		"UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
+
+	public static readonly MOBILE_VERIFICATION_EXPIRY_TIME: string =
+		"UserClaimUpdate.MobileNumber.VerificationCode.ExpiryTime";
+
 	/**
 	 * Extensions Constants.
 	 */

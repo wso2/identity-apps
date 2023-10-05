@@ -90,4 +90,4 @@ export interface AnalyticsAPIRequestInterface {
      * Hostname verification.
      */
     "adaptive_authentication.elastic.hostnameVerfier": string;
- }
+}

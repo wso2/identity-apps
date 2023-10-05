@@ -777,8 +777,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "analytics-engine-connector",
-                                name: "Analytics Engine",
+                                id: "analytics",
+                                name: "Analytics",
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
                                     .replace(
@@ -788,6 +788,58 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                     .replace(
                                         ":connectorId",
                                         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/governance-connectors/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "consent-information-controller",
+                                name: "Consent Information Controller",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/governance-connectors/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "user-claim-update",
+                                name: "User Claim Update",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
                                     ),
                                 protected: true,
                                 showOnSidePanel: false
@@ -802,8 +854,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: {
                             icon: getSidePanelIcons().insights
                         },
-                        id: "analytics",
-                        name: "Analytics",
+                        id: "other-settings",
+                        name: "Other Settings",
                         order: 20,
                         path: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR")

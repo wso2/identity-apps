@@ -40,7 +40,9 @@ interface EditConnectorProps extends TestableComponentInterface {
 }
 
 const enableOptionDisabledConnectorIDs: string[] = [
-    ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
+    ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
+    ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
 ];
 
 /**

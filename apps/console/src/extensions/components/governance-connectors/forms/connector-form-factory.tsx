@@ -21,9 +21,11 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { AnalyticsConfigurationForm } from "./analytics-form";
+import { ConsentInformationControllerConfigurationForm } from "./consent-information-controller-form";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
+import { UserClaimUpdateConfigurationForm } from "./user-claim-update-form";
 import { AppState, FeatureConfigInterface } from "../../../../features/core";
 import {
     GovernanceConnectorInterface,
@@ -126,6 +128,26 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
             return (
                 <AnalyticsConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ true }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID:
+            return (
+                <ConsentInformationControllerConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ true }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID:
+            return (
+                <UserClaimUpdateConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }

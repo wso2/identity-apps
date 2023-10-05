@@ -60,8 +60,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "account-recovery",
         "account.lock.handler",
         "elastic-analytics-engine",
+        "pii-controller",
         "self-sign-up",
-        "sso.login.recaptcha"
+        "sso.login.recaptcha",
+        "user-claim-update"
     ],
     intendSettings: false,
     passwordExpiryComponent: (

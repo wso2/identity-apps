@@ -30,7 +30,7 @@ import {
     ServerConfigurationsConstants
 } from "../../../../features/server-configurations";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
-import { AnalyticsAPIRequestInterface, AnalyticsFormValuesInterface } from "../models/analytics-form";
+import { AnalyticsAPIRequestInterface, AnalyticsFormValuesInterface } from "../models/analytics";
 
 /**
  * Interface for Password Recovery Configuration Form props.
