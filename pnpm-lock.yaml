@@ -9401,8 +9401,8 @@ packages:
     resolution: {integrity: sha512-F/OcG/7rrA3kBdhs8vVmhB+CKahovS1BLMCLvzZ2IAd/zzHh6yxey3gJ+JpWDmZgyo8/JluqVc4D/gQuDK7ZrQ==}
     dev: false
 
-  /@oxygen-ui/react-icons@1.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
-    resolution: {integrity: sha512-cbWY4GlReIRXxCXBX2AHnxd5lcbn+zWwG8efToECnbBS5TmWqzeEiikCnQNCVMVYZucrpuEsLOzewYcTdyg57w==}
+  /@oxygen-ui/react-icons@1.3.2(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
+    resolution: {integrity: sha512-Cx3+iYiW56IO6rUr9zBI8FE24WbfRPdExiaY2XD3xUvluA7hgVHZm2qMga32vbcoN/HCkmQSXlTuADEvztxy4w==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -9416,8 +9416,8 @@ packages:
       typescript: 4.8.2
     dev: false
 
-  /@oxygen-ui/react@1.4.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
-    resolution: {integrity: sha512-C/0d47t82GanvlKgL4uG2UJ+Sug2qIzD9RfHRB+2Gomb6e5W9PIrNO7XMKu/7/e88G4dJE7iQO0tKBZzGIA3aQ==}
+  /@oxygen-ui/react@1.3.2(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
+    resolution: {integrity: sha512-VhmKfyS9FFbNFI07qGmplsBV3MqjM4WhgYn+J2cki6jwdFarrONAqyphSCUEDq+Iv3/reEDNwT8dw9lCB40ztQ==}
     peerDependencies:
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
@@ -9452,8 +9452,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@oxygen-ui/react@1.4.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.12.3)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
-    resolution: {integrity: sha512-C/0d47t82GanvlKgL4uG2UJ+Sug2qIzD9RfHRB+2Gomb6e5W9PIrNO7XMKu/7/e88G4dJE7iQO0tKBZzGIA3aQ==}
+  /@oxygen-ui/react@1.3.2(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.12.3)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
+    resolution: {integrity: sha512-VhmKfyS9FFbNFI07qGmplsBV3MqjM4WhgYn+J2cki6jwdFarrONAqyphSCUEDq+Iv3/reEDNwT8dw9lCB40ztQ==}
     peerDependencies:
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
@@ -9477,8 +9477,8 @@ packages:
       '@mui/system': 5.12.3(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.18)(react@18.2.0)
       '@mui/utils': 5.12.3(react@18.2.0)
       '@mui/x-data-grid': 6.14.0(@mui/material@5.13.0)(@mui/system@5.12.3)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
-      '@oxygen-ui/primitives': 1.4.0
-      '@oxygen-ui/react-icons': 1.4.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
+      '@oxygen-ui/primitives': 1.3.2
+      '@oxygen-ui/react-icons': 1.3.2(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       clsx: 1.2.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)

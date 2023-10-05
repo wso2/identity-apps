@@ -24,9 +24,11 @@ import { ValidationFormInterface } from "../../../features/validation/models";
 
 export interface ServerConfigurationConfig {
     autoEnableConnectorToggleProperty: boolean;
+    connectorCategoriesToShow: string[];
     connectorPropertiesToShow: string[];
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];
+    dynamicConnectors: boolean,
     intendSettings: boolean;
     renderConnector: (
         connector: GovernanceConnectorInterface,

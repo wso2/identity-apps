@@ -255,6 +255,7 @@ export class RouteUtils {
     }
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -262,25 +263,16 @@ export class RouteUtils {
             order: 1
         };
 
-        const attributeManagement: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: DocumentPenIcon,
-            id: "attributeManagement",
-            name: "Attribute Management",
-            order: 2
-        };
-
-        const organizationalSettings: Omit<RouteInterface, "showOnSidePanel"> = {
+        const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: BuildingGearIcon,
-            id: "organizationalSettings",
-            name: "Organizational Settings",
-            order: 3
+            id: "userAttributesAndStores",
+            name: "User Attributes & Stores"
         };
 
-        const customization: Omit<RouteInterface, "showOnSidePanel"> = {
+        const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
-            name: "Customization",
-            order: 4
+            name: "branding"
         };
 
         const monitoring: Omit<RouteInterface, "showOnSidePanel"> = {
@@ -309,13 +301,21 @@ export class RouteUtils {
             order: 3
         };
 
+        const pathsToCheck: string[] = [
+            "/console/governance-connectors/",
+            AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
+            `${AppConstants.getAdminViewBasePath()}/connector/`,
+            AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
+            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
+        ];
+
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
                 id: "gettingStarted"
             },
             {
-                category: overview,
+                category: monitoring,
                 id: "insights"
             },
             {
@@ -366,62 +366,41 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "attributeDialects",
-                parent: attributeManagement
+                parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "oidcScopes",
-                parent: attributeManagement
+                parent: userAttributesAndStores
             },
             {
-                category: manage,
+                category: build,
                 id: "branding",
-                parent: customization
+                parent: branding
             },
             {
-                category: manage,
+                category: build,
                 id: "communication-management",
-                parent: customization
+                parent: branding,
+                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") || 
+                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/email-management`
             },
             {
-                category: manage,
-                id: "administrators",
-                parent: organizationalSettings
+                category: settings,
+                id: "administrators"
             },
             {
-                category: manage,
-                id: "myAccount",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "userOnboarding",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountLogin",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountRecovery",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountSecurity",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
+                category: build,
                 id: "emailProviders",
-                parent: organizationalSettings
+                parent: branding
             },
             {
                 category: manage,
-                id: "adminAdvisoryBanner",
-                parent: organizationalSettings
+                id: "organizations"
+            },
+            {
+                category: monitoring,
+                id: "logs"            
             },
             {
                 category: manage,       
@@ -430,18 +409,16 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "organizations",
-                order: 1
+                id: "eventPublishing"
             },
             {
                 category: settings,
-                id: "logs",
-                parent: monitoring
+                id: "adminAdvisoryBanner"
             },
             {
                 category: settings,
-                id: "eventPublishing",
-                parent: monitoring
+                id: "loginAndRegistration",
+                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             }
         ];
 
@@ -458,7 +435,8 @@ export class RouteUtils {
                 ...route,
                 navCategory: categoryMappedRoute?.category,
                 order: categoryMappedRoute?.order,
-                parent: categoryMappedRoute?.parent
+                parent: categoryMappedRoute?.parent,
+                selected: categoryMappedRoute?.selected
             };
         });
 

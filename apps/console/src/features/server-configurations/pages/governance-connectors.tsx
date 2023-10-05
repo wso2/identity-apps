@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
@@ -164,6 +164,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             });
     };
 
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     return (
         <PageLayout
             title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
@@ -182,40 +186,46 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     })
                 )
             }
+            backButton={ {
+                onClick: () => onBackButtonClick(),
+                text: "Go back to Login & Registration"
+            } }
             data-testid={ `${testId}-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 12 }>
-                            {
-                                (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
-                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
-                                            || serverConfigurationConfig.connectorsToShow.includes(
-                                                ServerConfigurationsConstants.ALL) ) {
-                                            const connectorElement = (
-                                                <div ref={ connector.ref }>
-                                                    <DynamicGovernanceConnector
-                                                        connector={ connector }
-                                                        data-testid={ `${testId}-` + connector?.id }
-                                                        onUpdate={ () => loadCategoryConnectors() }
-                                                    />
-                                                </div>
-                                            );
+                        <Grid.Column width={ serverConfigurationConfig.showGovernanceConnectorCategories ? 12 : 16 }>
+                            <Grid>
+                                {
+                                    (connectors && Array.isArray(connectors) && connectors.length > 0)
+                                        ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
+                                            if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
+                                                || serverConfigurationConfig.connectorsToShow.includes(
+                                                    ServerConfigurationsConstants.ALL) ) {
+                                                const connectorElement: ReactElement = (
+                                                    <Grid.Row ref={ connector.ref }>
+                                                        <DynamicGovernanceConnector
+                                                            connector={ connector }
+                                                            data-testid={ `${testId}-` + connector?.id }
+                                                            onUpdate={ () => loadCategoryConnectors() }
+                                                        />
+                                                    </Grid.Row>
+                                                );
 
-                                            return (
-                                                serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
-                                                    ?
-                                                    (<EmphasizedSegment key={ index } padded="very">
-                                                        { connectorElement }
-                                                    </EmphasizedSegment>)
-                                                    : connectorElement
-                                            );
-                                        }
-                                    })
-                                    : null
-                            }
+                                                return (
+                                                    serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
+                                                        ?
+                                                        (<EmphasizedSegment key={ index } padded="very">
+                                                            { connectorElement }
+                                                        </EmphasizedSegment>)
+                                                        : connectorElement
+                                                );
+                                            }
+                                        })
+                                        : null
+                                }
+                            </Grid>
                             { serverConfigurationConfig.showGovernanceConnectorCategories &&
                             (<Rail
                                 className="non-emphasized"
