@@ -521,13 +521,13 @@ importers:
         specifier: ^2.0.2
         version: link:../../modules/access-control
       '@wso2is/common':
-        specifier: ^2.0.1
+        specifier: ^2.0.2
         version: link:../../modules/common
       '@wso2is/core':
         specifier: ^2.0.3
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
-        specifier: ^2.0.3
+        specifier: ^2.0.4
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
         specifier: ^2.0.2
@@ -5924,7 +5924,7 @@ packages:
   /@emotion/babel-plugin@11.11.0:
     resolution: {integrity: sha512-m4HEDZleaaCH+XgDDsPF15Ht6wTLsgDTeR3WYj9Q/k76JtWhrJjcP4+/XlG8LGT/Rol9qUfOIztXeA84ATpqPQ==}
     dependencies:
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.22.15
       '@babel/runtime': 7.22.15
       '@emotion/hash': 0.9.1
       '@emotion/memoize': 0.8.1
