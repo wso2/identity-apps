@@ -93,8 +93,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
         });
     }, [ emailTemplatesList ]);
 
-    const [ localeList, setLocaleList ] = 
-    useState<DropdownChild[]>(undefined);
+    const [ localeList, setLocaleList ] = useState<DropdownChild[]>(undefined);
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
