@@ -33,6 +33,7 @@
         "@mui/material": "^5.13.0",
         "@wso2is/core": "^2.0.1",
         "@wso2is/validation": "^2.0.0",
+        "@wso2is/react-components": "^2.0.4",
         "final-form": "^4.20.9",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
