@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.17
+
+### Patch Changes
+
+- [#4148](https://github.com/wso2/identity-apps/pull/4148) [`05edc0e859`](https://github.com/wso2/identity-apps/commit/05edc0e859cfe34f56f6ca7045c8a88d62e7a373) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show country flags in the locale dropdown in email templates page
+
 ## 2.0.16
 
 ### Patch Changes
