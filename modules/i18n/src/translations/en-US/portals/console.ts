@@ -114,7 +114,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "It seems like the selected email is not registered on Gravatar. " +
-                                    "Sign up for a Gravatar account by visiting Gravatar official website or use " +
+                                "Sign up for a Gravatar account by visiting <1>Gravatar official website</1> or use " +
                                     "one of the following.",
                                 header: "No matching Gravatar image found!"
                             }
