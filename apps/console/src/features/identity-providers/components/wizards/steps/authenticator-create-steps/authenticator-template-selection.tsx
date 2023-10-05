@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -217,7 +217,8 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                                         .authenticatorId
                                                 }
                                                 className={ 
-                                                    selectedManualModeOption?.authenticatorId === template.authenticatorId 
+                                                    selectedManualModeOption?.authenticatorId === template
+                                                        .authenticatorId 
                                                         ? "selection-info-card selected" 
                                                         : "selection-info-card"  
                                                 }
@@ -239,7 +240,9 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                                     >
                                                         { template.displayName || template.name }
                                                     </Card.Header>
-                                                    <Card.Description style={ { fontSize: ".9em" } } className="card-description">
+                                                    <Card.Description 
+                                                        className="card-description"
+                                                    >
                                                         { template.description }
                                                     </Card.Description>
                                                 </Card.Content>
