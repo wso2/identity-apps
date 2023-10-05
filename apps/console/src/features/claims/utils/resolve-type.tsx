@@ -21,10 +21,11 @@ import { ClaimManagementConstants } from "../constants";
 /**
  * Resolves the type of the attribute.
  *
- * @param {string} - Attribute type.
- * @param {boolean} - Capitalize.
+ * @param attributeType - Attribute type.
+ * @param capitalize - Capitalize.
+ * @param shortForm - Return short form.
  *
- * @return {string} - The type name.
+ * @returns - The type name.
  */
 export const resolveType = (attributeType: string, capitalize?: boolean, shortForm?: boolean): string => {
     switch (attributeType) {
@@ -33,7 +34,7 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
         case ClaimManagementConstants.SCIM:
             return "SCIM";
         case ClaimManagementConstants.AXSCHEMA:
-            return "AXSCHEMA";
+            return shortForm? "AXSCHEMA": "Attribute Exchange Schema" ;
         case ClaimManagementConstants.EIDASLEGAL:
             return "EIDASLEGAL";
         case ClaimManagementConstants.EIDASNATURAL:
