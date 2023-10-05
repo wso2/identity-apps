@@ -396,8 +396,9 @@
 
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>

@@ -170,7 +170,7 @@
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>' async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <style type="text/css">
         .grecaptcha-badge {
             bottom: 55px !important;

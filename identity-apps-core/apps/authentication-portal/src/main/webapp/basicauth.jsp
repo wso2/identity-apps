@@ -212,7 +212,12 @@
             document.getElementById("loginForm").submit();
         } else {
             // Reset the recaptcha to allow another submission.
-            grecaptcha.reset();
+            var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>"
+            if ("recaptcha-enterprise" == reCaptchaType) {
+                grecaptcha.enterprise.reset();
+            } else {
+                grecaptcha.reset();
+            }
         }
     }
 </script>

@@ -391,7 +391,7 @@
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-        <script src='<%=(reCaptchaAPI)%>'  async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -1060,6 +1060,8 @@
                                     <div class="g-recaptcha"
                                         data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
                                         data-theme="light"
+                                        data-bind="registrationSubmit"
+                                        data-callback="submitForm"
                                     >
                                     </div>
                                 </div>
@@ -1574,6 +1576,109 @@
 
             $("#previous_step").val(window.location.href);
         });
+
+        // Submit form method to submit when recaptcha is enabled.
+        function submitForm() {
+            $form = $("#register");
+            if ($form.data("submitted") === true) {
+                // Previously submitted - don't submit again.
+                console.warn("Prevented a possible double submit event");
+            } else {
+                var validInput = true;
+                var userName = document.getElementById("username");
+                var alphanumericUsernameUserInput = document.getElementById("alphanumericUsernameUserInput");
+                var usernameUserInput = document.getElementById("usernameUserInput");
+                var password = document.getElementById("password");
+                var passwordUserInput = document.getElementById("passwordUserInput");
+                var unsafeCharPattern = /[<>`\"]/;
+                var elements = document.getElementsByTagName("input");
+                var error_msg = $("#error-msg");
+                var server_error_msg = $("#server-error-msg");
+                
+                // Username validation.
+                if (isAlphanumericUsernameEnabled()) {
+                    if (showAlphanumericUsernameValidationStatus()) {
+                        userName.value = alphanumericUsernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                } else {
+                    if (showUsernameValidationStatus()) {
+                        userName.value = usernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                }
+                // Password validation.
+                if (showPasswordValidationStatus()) {
+                    if (passwordUserInput) {
+                        password.value = passwordUserInput.value.trim();
+                    }
+                } else {
+                    validInput = false;
+                }
+                // Firstname validation.
+                if (!showFirstNameValidationStatus()) {
+                    validInput = false;
+                }
+                // Lastname validation.
+                if (!showLastNameValidationStatus()) {
+                    validInput = false;
+                }
+                // Date of birth validation.
+                if (!showDateOfBirthValidationStatus()) {
+                    validInput = false;
+                }
+                // Mobile number validation.
+                if (!showMobileNumberValidationStatus()) {
+                    validInput = false;
+                }
+                // Country validation
+                if (!showCountryValidationStatus()) {
+                    validInput = false;
+                }
+                // Validate the custom input fields.
+                // If at least one of the fields return false,
+                // the input will be invalid.
+                for (i = 0; i < elements.length; i++) {
+                    if (!showFieldValidationStatus(elements[i])) {
+                        validInput = false;
+                    }
+                }
+                // Hide the error message from server if exists.
+                if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
+                    $("#error-msg").hide();
+                    error_msg = $("#server-error-msg");
+                }
+                <%
+                    if(reCaptchaEnabled) {
+                        %>
+                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        if (resp.trim() == '') {
+                            error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                "Please.select.reCaptcha")%>");
+                            error_msg.show();
+                            $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                            validInput = false;
+                        }
+                        <%
+                    }
+                %>
+                // Do the form submission if the inputs are valid.
+                if (validInput) {
+                    $form.data("submitted", true);
+                    document.getElementById("register").submit();
+                } else {
+                    // Reset the recaptcha to allow another submission.
+                    var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>"
+                    if ("recaptcha-enterprise" == reCaptchaType) {
+                        grecaptcha.enterprise.reset();
+                    } else {
+                        grecaptcha.reset();
+                    }                   
+                }
+            }
+        }
 
         // Handle selected authenticators.
         function handleNoDomain(elem, key, value) {
