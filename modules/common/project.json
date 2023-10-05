@@ -4,7 +4,7 @@
     "sourceRoot": "modules/common/src",
     "projectType": "library",
     "generators": {},
-    "prefix": "@asgardeo",
+    "prefix": "@wso2is",
     "tags": [],
     "implicitDependencies": [
         "core",
