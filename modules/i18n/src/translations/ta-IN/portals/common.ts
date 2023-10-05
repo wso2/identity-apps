@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -126,6 +126,7 @@ export const common: CommonNS = {
     },
     new: "புதிய",
     next: "அடுத்தது",
+    noResultsFound: "முடிவுகள் எதுவும் இல்லை",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
     operations: "செயற்பாடுகள்",
@@ -155,6 +156,7 @@ export const common: CommonNS = {
     save: "சேமி",
     sdks: "SDKகள்",
     search: "தேடு",
+    searching: "தேடி",
     security: "பாதுகாப்பு",
     services: "சேவைகள்",
     settings: "அமைப்புகள்",

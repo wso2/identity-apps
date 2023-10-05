@@ -1,5 +1,74 @@
 # @wso2is/console
 
+## 2.0.19
+
+### Patch Changes
+
+- [#4166](https://github.com/wso2/identity-apps/pull/4166) [`337db8ebb6`](https://github.com/wso2/identity-apps/commit/337db8ebb6edc052f57f8678da622f322496886d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update missing dependency in dynamic-forms module
+
+- Updated dependencies [[`337db8ebb6`](https://github.com/wso2/identity-apps/commit/337db8ebb6edc052f57f8678da622f322496886d)]:
+  - @wso2is/dynamic-forms@2.0.3
+
+## 2.0.18
+
+### Patch Changes
+
+- [#4162](https://github.com/wso2/identity-apps/pull/4162) [`15edf76686`](https://github.com/wso2/identity-apps/commit/15edf76686d655c2c76a0303239d8aa4c12f8fda) Thanks [@Achintha444](https://github.com/Achintha444)! - Update UI of the groups section of roles
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4148](https://github.com/wso2/identity-apps/pull/4148) [`05edc0e859`](https://github.com/wso2/identity-apps/commit/05edc0e859cfe34f56f6ca7045c8a88d62e7a373) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show country flags in the locale dropdown in email templates page
+
+## 2.0.16
+
+### Patch Changes
+
+- [#4153](https://github.com/wso2/identity-apps/pull/4153) [`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71) Thanks [@Yasasr1](https://github.com/Yasasr1)! - bump react-sdk version
+
+* [#4150](https://github.com/wso2/identity-apps/pull/4150) [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and Bug fixes
+
+* Updated dependencies [[`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71), [`6653bac2ef`](https://github.com/wso2/identity-apps/commit/6653bac2ef53bd770a30786f67fab6f2776405f2), [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e)]:
+  - @wso2is/core@2.0.3
+  - @wso2is/react-components@2.0.4
+  - @wso2is/theme@2.0.6
+  - @wso2is/form@2.0.2
+  - @wso2is/i18n@2.0.5
+
+## 2.0.15
+
+### Patch Changes
+
+- [#4111](https://github.com/wso2/identity-apps/pull/4111) [`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add identity verification provider feature
+
+* [#4127](https://github.com/wso2/identity-apps/pull/4127) [`e09ada60b1`](https://github.com/wso2/identity-apps/commit/e09ada60b1b1f5ae47a47ae3007f0974d79dc690) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a startup config file to store config variables.
+
+* Updated dependencies [[`b75e9fa2fc`](https://github.com/wso2/identity-apps/commit/b75e9fa2fc01bb8424a5bc3c3882c494a45e7530), [`9e75f3f3f1`](https://github.com/wso2/identity-apps/commit/9e75f3f3f170938319aa6d4c0f3b9a63d2bd3bd7)]:
+  - @wso2is/theme@2.0.5
+  - @wso2is/i18n@2.0.4
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4137](https://github.com/wso2/identity-apps/pull/4137) [`12f007fd9c`](https://github.com/wso2/identity-apps/commit/12f007fd9c4feb3b71e11b84440bf13fada136ed) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enhance connections section
+
+- Updated dependencies [[`c30cc8f293`](https://github.com/wso2/identity-apps/commit/c30cc8f293f8f8d524f82bdeedc6105d1ce39875)]:
+  - @wso2is/dynamic-forms@2.0.2
+  - @wso2is/common@2.0.1
+
+## 2.0.13
+
+### Patch Changes
+
+- [#4142](https://github.com/wso2/identity-apps/pull/4142) [`cdecb197ea`](https://github.com/wso2/identity-apps/commit/cdecb197ea50b947d5ae4dd7450616f37d23a9d1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to branding changes not being visible when modifying properties in the login page section of the branding design
+
+* [#4147](https://github.com/wso2/identity-apps/pull/4147) [`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae) Thanks [@Achintha444](https://github.com/Achintha444)! - Add i18N to the new roles section
+
+* Updated dependencies [[`cd315ea309`](https://github.com/wso2/identity-apps/commit/cd315ea30989b6fece80e01619826dae54a3bfae)]:
+  - @wso2is/i18n@2.0.3
+
 ## 2.0.12
 
 ### Patch Changes

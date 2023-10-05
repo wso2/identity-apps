@@ -32,6 +32,7 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
@@ -155,6 +156,19 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
+        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            if (authenticationSteps[currentStep]?.options?.length !== 0) {
+                return false;
+            }
+            const [ leftSideSteps ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(
+                currentStep, authenticationSteps);
+
+            if (!SignInMethodUtils.hasSpecificFactorsInSteps(
+                ApplicationManagementConstants.ACTIVE_SESSIONS_LIMIT_HANDLERS, leftSideSteps)) {
+                return false;
+            }
+        }
+
         return true;
     };
 
@@ -267,6 +281,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                 ".firstFactorDisabled"
                             )
+                        }
+                    </Text>
+                </Fragment>
+            );
+        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            (authenticationSteps[currentStep]?.options?.length !== 0) 
+                                ? t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInMultiOptionStep"
+                                )
+                                : t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInFirstStep"
+                                )
                         }
                     </Text>
                 </Fragment>

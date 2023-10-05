@@ -679,6 +679,8 @@ export interface ConsoleNS {
                                                 multipleIdps: string;
                                                 singleIdp: string;
                                             };
+                                            sessionExecutorDisabledInFirstStep: string;
+                                            sessionExecutorDisabledInMultiOptionStep: string;
                                         };
                                     };
                                 };
@@ -2513,6 +2515,89 @@ export interface ConsoleNS {
                     };
                 };
             };
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                buttons: {
+                    addIDVP: string;
+                };
+                placeholders: {
+                    emptyIDVPList: Placeholder;
+                    emptyIDVPTypeList: Placeholder;
+                };
+                confirmations: {
+                    deleteIDVP: Confirmation;
+                };
+                notifications: {
+                  getIDVPList: Notification;
+                  deleteIDVP: Notification;
+                  updateIDVP: Notification;
+                  addIDVP: Notification;
+                  submitAttributeSettings: Notification;
+                  getAllLocalClaims: Notification;
+                  getIDVP: Notification;
+                  getUIMetadata: Notification;
+                  getIDVPTemplateTypes: Notification;
+                  getIDVPTemplateType: Notification;
+                  getIDVPTemplate: Notification;
+                };
+                forms: {
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: string;
+                            hint: string;
+                            addButton: string;
+                            emptyPlaceholderEdit: {
+                                title: string;
+                                subtitle: string;
+                            };
+                            emptyPlaceholderCreate: {
+                                title: string;
+                                subtitle: string;
+                            };
+                        };
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: string;
+                                required: string;
+                                invalid: string;
+                            };
+                            placeholders: {
+                                mappedValue: string;
+                                localClaim: string;
+                            };
+                            labels: {
+                                mappedValue: string;
+                                localClaim: string;
+                            }
+                        };
+                        attributeSelectionModal: {
+                            header: string;
+                        };
+                    };
+                    generalDetails: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                    };
+                };
+                dangerZoneGroup?: {
+                    header: string;
+                    disableIDVP: DangerZone;
+                    deleteIDVP: DangerZone;
+                };
+                list: {
+                    actions: string;
+                    name: string;
+                };
+            };
             overview: {
                 banner: {
                     heading: string;
@@ -2550,6 +2635,7 @@ export interface ConsoleNS {
                     identityProviders: string;
                     authenticationProviders?: string;
                     general: string;
+                    identityVerificationProviders: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2724,6 +2810,15 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
+            idvp: Page;
+            idvpTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+                search: {
+                    placeholder: string;
+                };
+            };
             overview: Page;
         };
         componentExtensions: {
@@ -2890,6 +2985,19 @@ export interface ConsoleNS {
                             label: string;
                             placeholder: string;
                         };
+                    };
+                    help: string;
+                };
+                header: string;
+            };
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: string;
+                };
+                form: {
+                    sessions: {
+                        browserLabel: string;
+                        lastAccessedLabel: string;
                     };
                     help: string;
                 };
@@ -3164,6 +3272,9 @@ export interface ConsoleNS {
                             2: string;
                             3: string;
                         };
+                    };
+                    placeholders: {
+                        undefinedUser: Placeholder;
                     };
                 };
                 userSessions: {
@@ -4779,6 +4890,13 @@ export interface ConsoleNS {
                                 };
                             };
                             roleName: FormAttributes;
+                            roleAudience: FormAttributes;
+                            assignedApplication: FormAttributes;
+                            notes: {
+                                orgNote: string,
+                                appNote: string,
+                                cannotCreateRole: string
+                            }
                         };
                     };
                     heading: string;
@@ -5017,6 +5135,7 @@ export interface ConsoleNS {
                         roles: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         users: {
                             roles: {
