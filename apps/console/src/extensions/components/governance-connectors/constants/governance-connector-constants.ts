@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -98,5 +98,14 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1
+    };
+
+    /**
+     * Analytics Form element constraints.
+     */
+    public static readonly ANALYTICS_FORM_FIELD_CONSTRAINTS: {
+        TIMEOUT_MIN_LENGTH: number;
+    } = {
+        TIMEOUT_MIN_LENGTH: 0
     };
 }

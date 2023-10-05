@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,6 +39,10 @@ interface EditConnectorProps extends TestableComponentInterface {
     onUpdate: () => void;
 }
 
+const enableOptionDisabledConnectorIDs: string[] = [
+    ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+];
+
 /**
  * Edit connector component.
  *
@@ -65,6 +69,9 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
      */
     useEffect(() => {
         if (connector) {
+            // Remove enable option UI elements for connectors that are not allowed to be disabled.
+            if (enableOptionDisabledConnectorIDs.includes(connector.id)) return;
+
             const enableProperty: ConnectorPropertyInterface = connector.properties.find(
                 (property: ConnectorPropertyInterface) => property.name === connectorToggleName);
 
@@ -90,6 +97,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
                 return (
                     t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading")
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.heading");
             default:
                 return connector?.friendlyName;
         }
@@ -114,6 +123,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
                 return (
                     t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.connectorDescription")
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.subHeading");
             default:
                 return (
                     connector?.description

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -366,6 +366,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.heading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading");
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.heading");
             default:
                 return connector?.friendlyName;
         }
@@ -405,6 +407,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </DocumentationLink>
                     </>
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.subHeading");
             default:
                 return connector?.description
                     ? connector.description
@@ -451,6 +455,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
                     "notification.success.description"
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t(
+                    "extensions:manage.serverConfigurations.analytics.form." +
+                    "notification.success.description"
+                );
             default:
                 return t(
                     "console:manage.features.governanceConnectors.notifications.updateConnector.success.description",
@@ -479,6 +488,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return t(
                     "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
+                    "notification.error.description"
+                );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t(
+                    "extensions:manage.serverConfigurations.analytics.form." +
                     "notification.error.description"
                 );
             default:

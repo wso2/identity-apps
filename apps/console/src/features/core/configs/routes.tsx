@@ -764,6 +764,57 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        category: "extensions:manage.sidePanel.categories.AccountManagement",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/governance-connectors/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "analytics-engine-connector",
+                                name: "Analytics Engine",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() =>
+                            import(
+                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().insights
+                        },
+                        id: "analytics",
+                        name: "Analytics",
+                        order: 20,
+                        path: AppConstants.getPaths()
+                            .get("GOVERNANCE_CONNECTOR")
+                            .replace(
+                                ":id",
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                            ),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../org-insights/pages/org-insights")),
                         exact: true,

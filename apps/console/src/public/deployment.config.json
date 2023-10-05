@@ -227,6 +227,11 @@
                     "delete": []
                 }
             },
+            "analytics": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
             "apiResources": {
                 "disabledFeatures": [],
                 "enabled": false,
