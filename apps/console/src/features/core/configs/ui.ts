@@ -133,10 +133,14 @@ import {
 import {
     ReactComponent as PageNotFoundIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
+import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
+import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
+import OpenidNetLogo from "../../../themes/default/assets/images/protocols/openid-net.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
+import XMLSOAPLogo from "../../../themes/default/assets/images/protocols/xmlsoap.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -164,9 +168,11 @@ interface GetTechnologyLogosInterface {
     android: FunctionComponent | ReactNode,
     angular: FunctionComponent | ReactNode,
     apple: FunctionComponent | ReactNode,
+    axschema: string,
     cSharp: FunctionComponent | ReactNode,
     cordova: FunctionComponent | ReactNode,
     dotNet: FunctionComponent | ReactNode,
+    eidas: string,
     html: FunctionComponent | ReactNode,
     ios: FunctionComponent | ReactNode,
     java: FunctionComponent | ReactNode,
@@ -175,12 +181,14 @@ interface GetTechnologyLogosInterface {
     nodejs: FunctionComponent | ReactNode,
     oidc: string,
     openidconnect: string,
+    openidnet: string,
     python: FunctionComponent | ReactNode,
     react: FunctionComponent | ReactNode,
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode
+    windows: FunctionComponent | ReactNode,
+    xmlsoap: string
 }
 
 /**
@@ -194,9 +202,11 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         android: AndroidLogo,
         angular: AngularLogo,
         apple: AppleLogo,
+        axschema: AxschemaLogo,
         cSharp: CSharpLogo,
         cordova: CordovaLogo,
         dotNet: DotNetLogo,
+        eidas: EidasLogo,
         html: HTMLLogo,
         ios: IOSLogo,
         java: JavaLogo,
@@ -205,12 +215,14 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         nodejs: NodeJSLogo,
         oidc: OIDCLogo,
         openidconnect: OIDCFullLogo,
+        openidnet: OpenidNetLogo,
         python: PythonLogo,
         react: ReactLogo,
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo
+        windows: WindowsLogo,
+        xmlsoap: XMLSOAPLogo
     };
 };
 

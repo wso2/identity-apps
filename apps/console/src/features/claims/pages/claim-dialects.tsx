@@ -558,16 +558,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 <Grid>
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 12 }>
-                                                            <Image
-                                                                floated="left"
+                                                            <GenericIcon
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                centered
+                                                                icon={ getTechnologyLogos().axschema }
+                                                                spaced="right"
                                                                 size="mini"
-                                                            >
-                                                                <AnimatedAvatar />
-                                                                <span className="claims-letter">A</span>
-                                                            </Image>
+                                                                floated="left"
+                                                            />
                                                             <List.Header>
                                                                 { t(
                                                                     "console:manage.features.claims." + 
