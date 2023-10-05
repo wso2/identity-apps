@@ -2881,6 +2881,38 @@ export const extensions: Extensions = {
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max"
             },
+            alternativeLoginIdentifierPage: {
+                pageTitle: "Identifiants de connexion alternatifs",
+                description: "Configurez des identifiants de connexion alternatifs et autorisez les utilisateurs à" + 
+                    " utiliser un nom d'utilisateur ou un identifiant de connexion configurédans les flux de" + 
+                    " connexion et de récupération.",
+                loginIdentifierTypes: "Sélectionnez l'identifiant de connexion",
+                loginIdentifierTypesHint: "Autoriser les utilisateurs à utiliser un nom d'utilisateur ou un" + 
+                    " identifiant de connexion configuré dans le flux de connexion.",
+                warning: "Les utilisateurs professionnels peuvent utiliser n'importe lequel des identifiants de" + 
+                    " connexion sélectionnés comme alternative au nom d'utilisateur dans les flux de connexion," + 
+                    " les flux de récupération, etc.",
+                info: "Vous avez sélectionné l'e-mail comme type de nom d'utilisateur, ce qui en fait l'identifiant de connexion principal.",
+                notification: {
+                    error: {
+                        description:"Erreur lors de la mise à jour de la configuration alternative de" + 
+                            " l'identifiant de connexion.",
+                        message: "Erreur lors de la mise à jour de la configuration"
+                    },
+                    success: {
+                        description: "Mise à jour réussie de la configuration alternative de l'identifiant" + 
+                            " de connexion.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                claimUpdateNotification: {
+                    error: {
+                        description: "Erreur lors de la mise à jour de l'attribut en tant qu'attribut unique." + 
+                            " Veuillez réessayer.",
+                        message: "Erreur lors de la mise à jour de la revendication"
+                    }
+                }
+            },
             pageTitle: "Connexion au compte",
             description: "Personnalisez les configurations de connexion du compte des utilisateurs de votre organisation.",
             goBackToApplication: "Revenir aux applications",

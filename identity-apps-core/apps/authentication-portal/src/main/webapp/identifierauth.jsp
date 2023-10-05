@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2021, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2021-2023, WSO2 LLC. (http://www.wso2.com).
  ~
  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -38,6 +38,10 @@
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
+    String usernamePlaceHolder = "enter.your.username";
+
+    Boolean isMultiAttributeLoginEnabledInTenant;
+    String allowedAttributes;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -45,8 +49,24 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+        usernamePlaceHolder = "enter.your.identifier";
     }
 %>
 
@@ -229,7 +249,11 @@
             <input id="username" name="username" type="hidden" value="">
             <input id="authType" name="authType" type="hidden" value="idf">
         <% } else { %>
-            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
+            <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                <label><%=usernameLabel %></label>
+            <% } else { %>
+                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
+            <% } %>
             <div class="ui fluid left icon input">
                 <input
                     type="text"
@@ -237,8 +261,9 @@
                     value=""
                     name="usernameUserInput"
                     maxlength="50"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.username")%>"
-                    required />
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
+                    required
+                />
                 <i aria-hidden="true" class="user outline icon"></i>
             </div>
             <div class="mt-1" id="usernameError" style="display: none;">

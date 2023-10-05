@@ -251,6 +251,10 @@
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
+    String usernamePlaceHolder = "enter.your.username";
+
+    Boolean isMultiAttributeLoginEnabledInTenant;
+    String allowedAttributes;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -258,8 +262,26 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        if (allowedAttributes != null) {
+            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+            usernamePlaceHolder = "enter.your.identifier";
+        }
     }
 
     String resendUsername = request.getParameter("resend_username");
@@ -443,14 +465,18 @@
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
             <div class="field m-0">
-                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
+                <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                    <label><%=usernameLabel %></label>
+                <% } else { %>
+                    <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
+                <% } %>
                 <div class="ui fluid left icon input">
                 <input
                     type="text"
                     id="usernameUserInput"
                     value=""
                     name="usernameUserInput"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.username")%>"
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
                     data-testid="login-page-username-input"
                     aria-required="true"
                 >

@@ -16,5 +16,7 @@
  * under the License.
  */
 
-export * from "./username-validation";
-export * from "./alternative-login-identifier-validation";
+export interface AlternativeLoginIdentifierFormInterface {
+    email: boolean,
+    mobile: boolean
+}

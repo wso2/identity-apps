@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ArrowLoopRightUserIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
@@ -51,6 +52,10 @@ export const AccountLoginPage: FunctionComponent<AccountLoginPageInterface> = (
         history.push(AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"));
     };
 
+    const handleAlternativeLoginIdentifierSelection = (): void => {
+        history.push(AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"));
+    };
+
     return (
         <PageLayout
             pageTitle={ t("extensions:manage.accountLogin.pageTitle") }
@@ -70,6 +75,22 @@ export const AccountLoginPage: FunctionComponent<AccountLoginPageInterface> = (
                                 icon={ UsernameValidationIcon }
                                 header={ t("extensions:manage.accountLogin.editPage.pageTitle") }
                                 onPrimaryActionClick={ handleSelection }
+                                primaryAction={ "Configure" }
+                            >
+                                <Divider hidden/>
+                            </Section>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Divider hidden/>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 12 }>
+                            <Section
+                                data-componentid={ `${componentId}-alternative-login-identifier-section` }
+                                description={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                                                "description") }
+                                icon={ <ArrowLoopRightUserIcon className="icon" /> }
+                                header={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.pageTitle") }
+                                onPrimaryActionClick={ handleAlternativeLoginIdentifierSelection }
                                 primaryAction={ "Configure" }
                             >
                                 <Divider hidden/>
