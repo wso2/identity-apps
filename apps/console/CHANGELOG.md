@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4162](https://github.com/wso2/identity-apps/pull/4162) [`15edf76686`](https://github.com/wso2/identity-apps/commit/15edf76686d655c2c76a0303239d8aa4c12f8fda) Thanks [@Achintha444](https://github.com/Achintha444)! - Update UI of the groups section of roles
+
 ## 2.0.17
 
 ### Patch Changes
