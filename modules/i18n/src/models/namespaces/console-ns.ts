@@ -5324,8 +5324,6 @@ export interface ConsoleNS {
                             successCount: string;
                             failedCount: string;
                             totalCount: string;
-                            uploadCSV: string;
-                            dropCSV: string;
                             tableHeaders: {
                                 username: string;
                                 status: string;
@@ -5347,6 +5345,9 @@ export interface ConsoleNS {
                                 bulkImportSuccess: string;
                                 failedImports: string;
                             };
+                            advanceSearch: {
+                                placeholder: string;
+                            }
                         };
                     };
                     changePasswordModal: {

@@ -8646,34 +8646,36 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk User Import",
-                        subTitle: "Import Multiple Users Simultaneously",
+                        title: "Importer des utilisateurs en masse",
+                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
                         wizardSummary: {
-                            successCount: "Successful Imports",
-                            failedCount: "Failed Imports",
-                            totalCount: "Total Imports",
-                            uploadCSV: "Upload CSV File",
-                            dropCSV: "Drag and drop a CSV file here or click to upload",
+                            successCount: "Nombre de réussites",
+                            failedCount: "Nombre d'échecs",
+                            totalCount: "Le compte total",
                             tableHeaders: {
-                                username: "Username",
-                                status: "Import Status",
-                                message: "Details"
+                                username: "Nom d'utilisateur",
+                                status: "Statut",
+                                message: "Message"
                             },
                             tableMessages: {
-                                userCreatedMessage: "User imported successfully",
-                                invalidDataMessage: "Invalid data detected",
-                                userAlreadyExistsMessage: "User already exists",
-                                userCreationAcceptedMessage: "User creation request accepted",
-                                internalErrorMessage: "An error occurred during user import"
+                                userCreatedMessage: "Utilisateur importé avec succès",
+                                invalidDataMessage: "Données non valides fournies",
+                                userAlreadyExistsMessage: "L'utilisateur existe déjà",
+                                userCreationAcceptedMessage: "Création d'utilisateur acceptée",
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
                             },
                             tableStatus: {
-                                success: "Success",
-                                warning: "Warning",
-                                failed: "Failed"
+                                success: "Succès",
+                                warning: "Avertissement",
+                                failed: "Échoué"
                             },
                             alerts: {
-                                bulkImportSuccess: "Bulk Import Completed Successfully",
-                                failedImports: "{{failedCount}} imports failed and require your attention"
+                                bulkImportSuccess: "L'importation groupée s'est terminée avec succès.",
+                                failedImports: "Révision requise.<1>Problèmes rencontrés dans <2>{{failedCount}}</2> " +
+                                    "importations."
+                            },
+                            advanceSearch: {
+                                placeholder: "Rechercher par nom d'utilisateur"
                             }
                         }
                     },
@@ -9177,8 +9179,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Champs"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Ajouter un utilisateur",
+                    bulkImport: "Importation en masse"
                 },
                 confirmations: {
                     terminateAllSessions: {
@@ -9277,47 +9279,49 @@ export const console: ConsoleNS = {
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
-                                description: "No data found in the selected file",
-                                message: "Empty file"
+                                description: "Le fichier sélectionné ne contient aucune donnée.",
+                                message: "Fichier vide"
                             },
                             columnMismatchError: {
-                                description: "Mismatched column count in one or more rows. Ensure each row has " +
-                                    "the correct number of columns",
-                                message: "Column mismatch"
+                                description: "Certaines lignes de données du fichier déposer ne correspondent " +
+                                    "pas au nombre de colonnes requis. Veuillez examiner et corriger les données.",
+                                message: "Incompatibilité du nombre de colonnes"
                             },
                             emptyHeaderError: {
-                                description: "Empty column headers found. Ensure each column has a header",
-                                message: "Empty column headers"
+                                description: "Assurez-vous que la première ligne contient les en-têtes de " +
+                                "chaque colonne.",
+                                message: "En-têtes de colonnes manquants"
                             },
                             missingRequiredHeaderError: {
-                                description: "The following required headers are missing from the header: {}.",
-                                message: "Missing column headers"
+                                description: "Le ou les en-têtes suivants sont requis mais sont manquants dans" +
+                                "le fichier CSV: {{ headers }}.",
+                                message: "En-têtes de colonnes obligatoires manquants"
                             },
                             blockedHeaderError: {
-                                description: "The following headers are not allowed: {headers}.",
-                                message: "Blocked column headers"
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                message: "En-têtes de colonnes bloqués"
                             },
                             duplicateHeaderError: {
-                                description: "The following headers are duplicated: {headers}.",
-                                message: "Duplicate column headers"
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                message: "En-têtes de colonnes en double"
                             },
                             invalidHeaderError: {
-                                description: "The following headers are invalid: {headers}.",
-                                message: "Invalid column headers"
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                message: "En-têtes de colonnes invalides"
                             }
                         },
                         submit: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error bulk importing users"
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
                             },
                             genericError: {
-                                description: "Couldn't bulk import users",
-                                message: "Something went wrong"
+                                description: "Impossible d'importer les utilisateurs.",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
                             },
                             success: {
-                                description: "The users were imported successfully",
-                                message: "Users imported successfully"
+                                description: "Les utilisateurs ont été importés avec succès.",
+                                message: "Utilisateurs importés avec succès"
                             }
                         }
                     },

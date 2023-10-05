@@ -10318,25 +10318,23 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk User Import",
-                        subTitle: "Import multiple users using a CSV file",
+                        title: "Bulk Import Users",
+                        subTitle: "Import multiple users using a CSV file.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
-                            totalCount: "Total Imports",
-                            uploadCSV: "Upload CSV File",
-                            dropCSV: "Drag and drop a CSV file here or click to upload",
+                            totalCount: "Total Count",
                             tableHeaders: {
                                 username: "Username",
-                                status: "Import Status",
-                                message: "Details"
+                                status: "Status",
+                                message: "Message"
                             },
                             tableMessages: {
                                 userCreatedMessage: "User imported successfully",
-                                invalidDataMessage: "Invalid data detected",
+                                invalidDataMessage: "Invalid data provided",
                                 userAlreadyExistsMessage: "User already exists",
-                                userCreationAcceptedMessage: "User creation request accepted",
-                                internalErrorMessage: "An error occurred during user import"
+                                userCreationAcceptedMessage: "User creation accepted",
+                                internalErrorMessage: "Error occured while importing users"
                             },
                             tableStatus: {
                                 success: "Success",
@@ -10344,8 +10342,12 @@ export const console: ConsoleNS = {
                                 failed: "Failed"
                             },
                             alerts: {
-                                bulkImportSuccess: "Bulk import completed successfully",
-                                failedImports: "Issues encountered in <1>{{failedCount}} import(s)</1>. Review required."
+                                bulkImportSuccess: "Bulk import completed successfully.",
+                                failedImports: "Review Required. <1>Issues encountered in <2>{{failedCount}} " +
+                                "import(s) < /2>."
+                            },
+                            advanceSearch: {
+                                placeholder: "Search by Username"
                             }
                         }
                     },
@@ -10916,47 +10918,48 @@ export const console: ConsoleNS = {
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
-                                description: "No data found in the selected file",
-                                message: "Empty file"
+                                description: "Selected file contains no data.",
+                                message: "Empty File"
                             },
                             columnMismatchError: {
-                                description: "Mismatched column count in one or more rows. Ensure each row has " +
-                                    "the correct number of columns",
-                                message: "Column mismatch"
+                                description: "Some data rows of the file does not match the required column count. " +
+                                    "Please review and correct the data.",
+                                message: "Column Count Mismatch"
                             },
                             emptyHeaderError: {
-                                description: "Empty column headers found. Ensure each column has a header",
-                                message: "Empty column headers"
+                                description: "Ensure that the first row contains the headers for each column.",
+                                message: "Missing Column Headers"
                             },
                             missingRequiredHeaderError: {
-                                description: "The following required headers are missing from the header: {{headers}}",
-                                message: "Missing required column headers"
+                                description: "The following header(s) are required but are missing in the CSV file: " +
+                                "{{ headers }}.",
+                                message: "Missing Required Column Headers"
                             },
                             blockedHeaderError: {
-                                description: "The following headers are not allowed: {{headers}}",
-                                message: "Blocked column headers"
+                                description: "The following header(s) are not allowed: {{headers}}.",
+                                message: "Blocked Column Headers"
                             },
                             duplicateHeaderError: {
-                                description: "The following headers are duplicated: {{headers}}",
-                                message: "Duplicate column headers"
+                                description: "The following headers are duplicated: {{headers}}.",
+                                message: "Duplicate Column Headers"
                             },
                             invalidHeaderError: {
-                                description: "The following headers are invalid: {{headers}}",
-                                message: "Invalid column headers"
+                                description: "The following headers are invalid: {{headers}}.",
+                                message: "Invalid Column Headers"
                             }
                         },
                         submit: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error bulk importing users"
+                                message: "Error occured while importing users"
                             },
                             genericError: {
-                                description: "Could not bulk import users",
-                                message: "Something went wrong"
+                                description: "Unable to import users",
+                                message: "Error occured while importing users"
                             },
                             success: {
-                                description: "The users were imported successfully",
-                                message: "Users imported successfully"
+                                description: "The users were imported successfully.",
+                                message: "Users Imported Successfully"
                             }
                         }
                     },

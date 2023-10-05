@@ -8452,34 +8452,35 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk User Import",
-                        subTitle: "Import Multiple Users Simultaneously",
+                        title: "සමූහ පරිශීලක ආනයනය​",
+                        subTitle: " ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
                         wizardSummary: {
-                            successCount: "Successful Imports",
-                            failedCount: "Failed Imports",
-                            totalCount: "Total Imports",
-                            uploadCSV: "Upload CSV File",
-                            dropCSV: "Drag and drop a CSV file here or click to upload",
+                            successCount: "සාර්ථකත්ව ගණන",
+                            failedCount: "අසාර්ථක වූ ගණන",
+                            totalCount: "මුළු ගණන",
                             tableHeaders: {
-                                username: "Username",
-                                status: "Import Status",
-                                message: "Details"
+                                username: "පරිශීලක නාමය",
+                                status: "තත්ත්වය",
+                                message: "පණිවුඩය"
                             },
                             tableMessages: {
-                                userCreatedMessage: "User imported successfully",
-                                invalidDataMessage: "Invalid data detected",
-                                userAlreadyExistsMessage: "User already exists",
-                                userCreationAcceptedMessage: "User creation request accepted",
-                                internalErrorMessage: "An error occurred during user import"
+                                userCreatedMessage: "පරිශීලකයා සාර්ථකව ආනයනය කරන ලදී",
+                                invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
+                                userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
+                                userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
+                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
                             },
                             tableStatus: {
-                                success: "Success",
-                                warning: "Warning",
-                                failed: "Failed"
+                                success: "සාර්ථකයි",
+                                warning: "අවවාදයයි",
+                                failed: "අසාර්ථකයි"
                             },
                             alerts: {
-                                bulkImportSuccess: "Bulk Import Completed Successfully",
-                                failedImports: "{{failedCount}} imports failed and require your attention"
+                                bulkImportSuccess: "සමූහ ආනයනය සාර්ථකව නිම කරන ලදී.",
+                                failedImports: "ගැටළු සමාලෝචනය අවශ්‍යයි. {{failedCount}} ආනයන(ය) තුළ ගැටළු ඇති වී ඇත​."
+                            },
+                            advanceSearch: {
+                                placeholder: "පරිශීලක නාමයෙන් සොයන්න"
                             }
                         }
                     },
@@ -8956,8 +8957,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "තීරු"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "පරිශීලක එකතු කරන්න",
+                    bulkImport: "සමූහ​ ආනයනය"
                 },
                 confirmations: {
                     terminateAllSessions: {
@@ -9055,47 +9056,47 @@ export const console: ConsoleNS = {
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
-                                description: "No data found in the selected file",
-                                message: "Empty file"
+                                description: "තෝරාගත් ගොනුවේ දත්ත නොමැත.",
+                                message: "හිස් ගොනුව"
                             },
                             columnMismatchError: {
-                                description: "Mismatched column count in one or more rows. Ensure each row has " +
-                                    "the correct number of columns",
-                                message: "Column mismatch"
+                                description: "ගොනුවේ සමහර දත්ත පේළි අවශ්‍ය තීරු ගණනට නොගැලපේ. කරුණාකර දත්ත සමාලෝචනය " +
+                                    "කර නිවැරදි කරන්න.",
+                                message: "තීරු ගණන් නොගැලපීම"
                             },
                             emptyHeaderError: {
-                                description: "Empty column headers found. Ensure each column has a header",
-                                message: "Empty column headers"
+                                description: "පළමු පේළියේ එක් එක් තීරුව සඳහා ශීර්ෂ ඇති බව සහතික කර ගන්න.",
+                                message: "තීරු ශීර්ෂ අස්ථානගත වී ඇත"
                             },
                             missingRequiredHeaderError: {
-                                description: "The following required headers are missing from the header: {}.",
-                                message: "Missing column headers"
+                                description: "පහත ශීර්ෂ(ය) අවශ්‍ය නමුත් CSV ගොනුවේ අස්ථානගත වී ඇත: {{headers}}.",
+                                message: "අවශ්‍ය තීරු ශීර්ෂ අස්ථානගත වී ඇත"
                             },
                             blockedHeaderError: {
-                                description: "The following headers are not allowed: {headers}.",
-                                message: "Blocked column headers"
+                                description: "පහත ශීර්ෂ(ය) අවසර නැත: {{headers}}.",
+                                message: "අවහිර කළ තීරු ශීර්ෂ"
                             },
                             duplicateHeaderError: {
-                                description: "The following headers are duplicated: {headers}.",
-                                message: "Duplicate column headers"
+                                description: "පහත ශීර්ෂ(ය) අනුපිටපත් කර ඇත: {{headers}}.",
+                                message: "අනුපිටපත් තීරු ශීර්ෂ"
                             },
                             invalidHeaderError: {
-                                description: "The following headers are invalid: {headers}.",
-                                message: "Invalid column headers"
+                                description: "පහත ශීර්ෂය(ය) වලංගු නැත: {{headers}}.",
+                                message: "වලංගු නොවන තීරු ශීර්ෂක"
                             }
                         },
                         submit: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error bulk importing users"
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
                             },
                             genericError: {
-                                description: "Couldn't bulk import users",
-                                message: "Something went wrong"
+                                description: "පරිශීලකයින් ආනයනය කළ නොහැක.",
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
                             },
                             success: {
-                                description: "The users were imported successfully",
-                                message: "Users imported successfully"
+                                description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                message: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී"
                             }
                         }
                     },
