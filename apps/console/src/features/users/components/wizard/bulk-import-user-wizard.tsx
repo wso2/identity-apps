@@ -43,6 +43,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { getCertificateIllustrations } from "../../../core";
+import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { bulkAddUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
@@ -56,7 +57,6 @@ import {
     SCIMBulkOperation
 } from "../../models";
 import { BulkImportResponseList } from "../bulk-import-response-list";
-import { PRIMARY_USERSTORE } from "../../../userstores/constants"
 
 /**
  * Prototypes for the BulkImportUserWizardComponent.
@@ -64,6 +64,7 @@ import { PRIMARY_USERSTORE } from "../../../userstores/constants"
 interface BulkImportUserInterface extends TestableComponentInterface {
     closeWizard: () => void;
     userstore: string;
+    ["data-componentid"]?: string;
 }
 
 interface SCIMOperation {
@@ -104,9 +105,8 @@ interface Validation {
 
 const WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
 const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
-const SCIM2_ENTERPRISE_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
-const ASK_PASSWORD_ATTRIBUTE: string = "askPassword";
+const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
 const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
 
 /**
@@ -118,7 +118,7 @@ const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
 export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const { closeWizard, userstore, ["data-testid"]: testId } = props;
+    const { closeWizard, userstore, ["data-componentid"]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -249,11 +249,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
-    /**
-     * Helper function to get duplicate entries in an array. 
-     * @param array - array to be checked.
-     * @returns - duplicate entries.
-     */
+    const joinWithAnd = (arr: string[]): string => {
+        if (arr.length === 0) return "";
+        if (arr.length === 1) return arr[0];
+
+        return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+    };
+
     const getDuplicateEntries = (array: string[]): string[] => {
         const counts: { [key: string]: number } = array.reduce((acc: { [key: string]: number }, value: string) => {
             const lowerCaseValue: string = value.toLowerCase();
@@ -266,12 +268,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return Object.keys(counts).filter((key: string) => counts[key] > 1);
     };
 
-    /**
-     * Check if the required fields are present in the CSV file.
-     * @param headers - csv headers.
-     * @param requiredFields - required fields.
-     * @returns - missing fields.
-     */
     const getMissingFields = (headers: string[], requiredFields: string[]): string[] => {
         return requiredFields.filter((field: string) => 
             !headers.some((header: string) => header.toLowerCase() === field.toLowerCase())
@@ -374,7 +370,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 check: () => emptyHeaderIndices.length === 0,
                 error: {
                     descriptionKey: "emptyHeaderError.description",
-                    descriptionValues: { headers: emptyHeaderIndices.join(",") },
                     messageKey: "emptyHeaderError.message"
                 }
             },
@@ -382,7 +377,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 check: () => missingFields.length === 0,
                 error: {
                     descriptionKey: "missingRequiredHeaderError.description",
-                    descriptionValues: { headers: missingFields.join(",") },
+                    descriptionValues: { headers: joinWithAnd(missingFields) },
                     messageKey: "missingRequiredHeaderError.message"
                 }
             },
@@ -390,7 +385,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 check: () => blockedHeaders.length === 0,
                 error: {
                     descriptionKey: "blockedHeaderError.description",
-                    descriptionValues: { headers: blockedHeaders.join(",") },
+                    descriptionValues: { headers: joinWithAnd(blockedHeaders) },
                     messageKey: "blockedHeaderError.message"
                 }
             },
@@ -398,7 +393,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 check: () => duplicateEntries.length === 0,
                 error: {
                     descriptionKey: "duplicateHeaderError.description",
-                    descriptionValues: { headers: duplicateEntries.join(",") },
+                    descriptionValues: { headers: joinWithAnd(duplicateEntries) },
                     messageKey: "duplicateHeaderError.message"
                 }
             },
@@ -406,19 +401,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 check: () => invalidHeaders.length === 0,
                 error: {
                     descriptionKey: "invalidHeaderError.description",
-                    descriptionValues: { headers: invalidHeaders.join(",") },
+                    descriptionValues: { headers: joinWithAnd(invalidHeaders) },
                     messageKey: "invalidHeaderError.message"
                 }
-            }
-            
-            
+            }  
         ];
 
         if (!runValidations(csvValidations)) return false;
 
         return true;
     };
-    
     
     /**
      * Get only attributes that are in the header.
@@ -437,9 +429,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         
         filteredAttributeList.push(
             attributeMapping.find((attribute: CSVAttributeMapping) =>
-                attribute.attributeName.toLowerCase().includes(ASK_PASSWORD_ATTRIBUTE.toLowerCase()))
+                attribute.attributeName.toLowerCase() === (ASK_PASSWORD_ATTRIBUTE.toLowerCase()))
         );
-
+        
         return filteredAttributeList;
     };
 
@@ -462,6 +454,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             );
             const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
             const isMultiValued: boolean = scimAttribute.includes("#");
+
+            // Handle username attribute.
+            if (scimAttribute === "userName") {
+                dataObj["userName"] = userstore && userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    ? `${userstore}/${attributeValue}`
+                    : attributeValue;
+                
+                continue;
+            }
+
+            // Handle askPassword attribute.
+            if (attribute.attributeName.toLowerCase() === ASK_PASSWORD_ATTRIBUTE.toLowerCase()) {
+                dataObj[attribute.mappedSCIMClaimDialectURI] = {
+                    ...dataObj[attribute.mappedSCIMClaimDialectURI],
+                    [scimAttribute]: "true"
+                };
+
+                continue;
+            }
             
             // These attributes are handled separately.
             const attrTypes: string[] = [ "emails", "phoneNumbers", "photos", "addresses", "entitlements",
@@ -495,15 +506,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 continue;
             } 
-
-            // Handle username attribute.
-            if (scimAttribute === "userName") {
-                dataObj["userName"] = (userstore && userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase())
-                    ? `${userstore}/${attributeValue}`
-                    : attributeValue;
-                
-                continue;
-            }
 
             // Add the schema to the set
             schemasSet.add(attribute.mappedSCIMClaimDialectURI);
@@ -550,14 +552,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
 
         }
-
-        // Check if the SCIM2_ENTERPRISE_USER_SCHEMA exists; if not, create an empty object.
-        if (!dataObj[SCIM2_ENTERPRISE_USER_SCHEMA]) {
-            dataObj[SCIM2_ENTERPRISE_USER_SCHEMA] = {};
-        }
-        // Default value for the "askPassword" attribute is "true".
-        // dataObj[SCIM2_ENTERPRISE_USER_SCHEMA].askPassword = "true";
-        // TODO: Check this inside the loop.
 
         return {
             schema: Array.from(schemasSet),
@@ -652,8 +646,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
             });
-
-            console.log(error);
         } finally {
             setIsSubmitting(false);
         }
@@ -662,13 +654,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     /**
      * Generate bulk response. 
      * @param operation - SCIM bulk operation.
-     * @returns
+     * @returns - BulkUserImportOperationResponse
      */
     const generateBulkResponse = (operation: SCIMBulkOperation): BulkUserImportOperationResponse => {
         const username: string = operation.bulkId.split(".")[1];
         const statusCode: number = operation?.status?.code;
 
-        const defaultMsg: string = "Error occurred while importing user.";
+        const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+        "tableMessages.internalErrorMessage");
 
         const statusMessages: Record<number, string> = {
             201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
@@ -716,7 +709,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Get status message from the status code.
      *
      * @param statusCode - Status code from the bulk response.
-     * @returns
+     * @returns - Status message.
      */
     const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
         if (statusCode === 201) return t(
@@ -731,6 +724,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     return (
         <Modal
             data-testid={ testId }
+            data-componentid={ testId }
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
@@ -766,6 +760,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     uploadButtonText="Upload CSV File"
                                     dropzoneText="Drag and drop a CSV file here."
                                     data-testid={ `${testId}-form-wizard-csv-file-picker` }
+                                    data-componentid={ `${testId}-form-wizard-csv-file-picker` }
                                     icon={ getCertificateIllustrations().uploadPlaceholder }
                                     placeholderIcon={ <Icon name="file code" size="huge" /> }
                                     normalizeStateOnRemoveOperations={ true }
@@ -787,7 +782,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <Grid.Row columns={ 1 }>
                             <BulkImportResponseList
                                 isLoading={ isSubmitting }
-                                data-testid={ `${testId}-bulk-user-response-list` }
+                                data-testid={ `${testId}-bulk-import-response-list` }
                                 responseList={ response }
                                 bulkResponseSummary={ bulkResponseSummary }
                             />

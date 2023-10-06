@@ -27,7 +27,6 @@ export interface UsersResourceEndpointsInterface {
     userStores: string;
     users: string;
     schemas: string;
-    resourceTypes: string;
 }
 
 /**

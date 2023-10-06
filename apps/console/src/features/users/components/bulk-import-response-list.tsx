@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AlertTitle } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
 import Typography from "@oxygen-ui/react/Typography";
 import {
@@ -37,18 +38,19 @@ import {
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
-import { RootOnlyComponent } from "../../organizations/components";
 import { BulkUserImportStatus } from "../constants";
 import { BulkResponseSummary, BulkUserImportOperationResponse } from "../models";
 
 interface BulkImportResponseListProps {
     responseList: BulkUserImportOperationResponse[];
     isLoading?: boolean;
-    ["data-testid"]?: string;
+    ["data-componentid"]?: string;
     bulkResponseSummary?: BulkResponseSummary
 }
 
-type FilterStatus = BulkUserImportStatus | "ALL";
+const ALL_STATUS: string = "ALL";
+
+type FilterStatus = BulkUserImportStatus | typeof ALL_STATUS;
 
 /**
  * Users info page.
@@ -60,10 +62,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     props: BulkImportResponseListProps
 ): ReactElement => {
 
-    const { responseList, isLoading, ["data-testid"]: testId, bulkResponseSummary } = props;
+    const { responseList, isLoading, ["data-componentid"]: testId, bulkResponseSummary } = props;
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>("ALL");
+    const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>(ALL_STATUS);
     const [ filteredResponseList, setFilteredResponseList ] = useState<BulkUserImportOperationResponse[]>([]);
     
     const { t } = useTranslation();
@@ -71,7 +73,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
     
     const statusOptions: DropdownItemProps[] = [
-        { key: 1, text: "All", value: "ALL" },
+        { key: 1, text: "All", value: ALL_STATUS },
         {
             key: 2,
             text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.success"),
@@ -102,7 +104,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "username",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header image as="h6" data-testid={ `${testId}-item-heading` }>
+                        <Header image as="h6" data-componentid={ `${testId}-username-item-heading` }>
                             <Header.Content>
                                 {
                                     response.username
@@ -120,10 +122,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "status",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-testid={ `${testId}-item-heading` }>
+                        <Header as="h6" data-componentid={ `${testId}--status-item-heading` } >
                             <Header.Content>
                                 <Label
-                                    data-testid={ `${testId}-bulk-label` }
+                                    data-componentid={ `${testId}-bulk-label` }
                                     content={ response.status }
                                     size="small"
                                     color={ response.statusCode === BulkUserImportStatus.SUCCESS ? "green" : "red" }
@@ -142,7 +144,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "message",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-testid={ `${testId}-item-heading` }>
+                        <Header as="h6" data-componentid={ `${testId}-status-item-heading` }>
                             <Header.Content>
                                 { response.message }
                             </Header.Content>
@@ -162,7 +164,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const handleSearchQueryClear = (): void => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
-        setSelectedStatus("ALL");
+        setSelectedStatus(ALL_STATUS);
         setFilteredResponseList(responseList);
     };
 
@@ -202,11 +204,9 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         setFilteredResponseList(list);
     };
 
-    
-
     const handleStatusDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setSelectedStatus(data.value as FilterStatus);
-        if (data.value === "ALL") {
+        if (data.value === ALL_STATUS) {
             setFilteredResponseList(responseList);
         } else {
             const list: BulkUserImportOperationResponse[] =
@@ -226,9 +226,11 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery || selectedStatus !== "ALL") {
+        if (searchQuery || selectedStatus !== ALL_STATUS) {
             return (
                 <EmptyPlaceholder
+                    data-testid={ `${testId}-bulk-user-empty-search-result` }
+                    data-componentid={ `${testId}-bulk-user-empty-search-result` }
                     action={ (
                         <LinkButton onClick={ handleSearchQueryClear }>
                             { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
@@ -254,28 +256,42 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        { bulkResponseSummary.failedCount === 0 ?
-                            (<Alert severity="success">
-                                {
-                                    t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.alerts." +
-                            "bulkImportSuccess")
-                                }
-                            </Alert>)
-                            :  
-                            (<Alert severity="error">
-                                <Trans
-                                    i18nKey={
-                                        "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                                    "alerts.failedImports"
-                                    }
-                                    tOptions={ {
-                                        failedCount: bulkResponseSummary.failedCount
-                                    } }
-                                >
-                                    Issues encountered in <b>{ bulkResponseSummary.failedCount } import(s)</b>.
-                                Review required.
-                                </Trans>
-                            </Alert>)
+                        {
+                            isLoading ? null :
+                                bulkResponseSummary.failedCount === 0 ?
+                                    (<Alert severity="success">
+                                        <AlertTitle>
+                                            {
+                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.alerts.importSuccess.message")
+                                            }
+                                        </AlertTitle>
+                                        {
+                                            t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.alerts.importSuccess.description")
+                                        }
+                                    </Alert>)
+                                    :  
+                                    (<Alert severity="error">
+                                        <AlertTitle>
+                                            {
+                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.alerts.importFailed.message")
+                                            }
+                                        </AlertTitle>
+                                        <Trans
+                                            i18nKey={
+                                                "console:manage.features.user.modals.bulkImportUserWizard." +
+                                                "wizardSummary.alerts.importFailed.description"
+                                            }
+                                            tOptions={ {
+                                                failedCount: 5
+                                            } }
+                                        >
+                                            Issues encountered in <b>count import(s)</b>.
+                                
+                                        </Trans>
+                                    </Alert>)
                         }
                     </Grid.Column>
                 </Grid.Row>
@@ -305,27 +321,24 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
-                                    placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                                    placeholder={ t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                    "wizardSummary.advanceSearch.placeholder") }
                                     defaultSearchAttribute="userName"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
-                                    // enableQuerySearch={ true }
-                                    
                                 />
                             ) }
                             rightActionPanel={
                                 (
                                     <>
-                                        
-                                        <RootOnlyComponent>
-                                            <Dropdown
-                                                data-testid="user-mgt-user-list-userstore-dropdown"
-                                                selection
-                                                options={ statusOptions }
-                                                onChange={ handleStatusDropdownChange }
-                                                defaultValue="ALL"
-                                            />
-                                        </RootOnlyComponent>
+                                        <Dropdown
+                                            data-testid="bulk-user-list-status-dropdown"
+                                            data-componentid="bulk-user-list-status-dropdown"
+                                            selection
+                                            options={ statusOptions }
+                                            onChange={ handleStatusDropdownChange }
+                                            defaultValue={ ALL_STATUS }
+                                        />
                                     </>
                                 )
                             }
@@ -335,8 +348,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                             totalListSize={ totalCount }
                             isLoading={ isLoading }
                             listItemLimit={ UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT }
-                            data-testid="user-mgt-user-list-layout"
+                            data-testid="bulk-user-list-layout"
+                            data-componentid="bulk-user-list-layout"
                             onPageChange={ () => null }
+                            disableRightActionPanel={ false }
                         >
                             <Typography variant="body2" style={ { textAlign: "right" } }>
                                 { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
@@ -354,7 +369,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 transparent={ true }
                                 selectable={ false }
                                 showHeader={ false }
-                                data-testid={ testId }
+                                data-testid="bulk-user-list-data-table"
+                                data-componentid="bulk-user-list-data-table"
                                 loadingStateOptions={ {
                                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                     imageType: "circular"

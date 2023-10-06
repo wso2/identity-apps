@@ -40,6 +40,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps,Icon, PaginationProps } from "semantic-ui-react";
+import { userConfig } from "../../../extensions/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -135,7 +136,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
     
-
     /**
      * Fetch the list of available userstores.
      */
@@ -438,15 +438,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
-     * Handles the `onClose` callback action from the bulk import wizard.
-     */
-    const handleBulkImportWizardClose = (): void => {
-        setShowBulkImportWizard(false);
-        getList(listItemLimit, listOffset, null, null, null);
-    };
-
-
-    /**
      * The following method set the list of columns selected by the user to
      * the state.
      *
@@ -538,11 +529,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
     };
 
-    const addUserDropdown: ReactElement = (
+    const addUserDropdownTrigger: ReactElement = (
         <>
             <PrimaryButton
-                data-testid={ `${ testId }-add-admin-button` }
-                className="tablet or lower hidden"
+                data-componentid={ `${ testId }-add-user-button` }
+                data-testid={ `${ testId }-add-user-button` }
             >
                 <Icon name="add"/>
                 { t("extensions:manage.users.buttons.addUserBtn") }
@@ -551,21 +542,53 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         </>
     );
 
-    const addUserOptions: DropdownItemProps[] = [
-        {
-            "data-testid": "admins-add-external-admin",
-            key: 1,
-            text: t("console:manage.features.users.buttons.addNewUserBtn"),
-            value: UserAddOptionTypes.MANUAL_INPUT
-        },
-        {
-            "data-testid": "admins-add-internal-admin",
-            key: 2,
-            // text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
-            text: t("Bulk Import"),
-            value: UserAddOptionTypes.BULK_IMPORT
-        }
-    ];
+    const getAddUserOptions = () => {
+        const options: DropdownItemProps = [
+            {
+                "data-componentid": "admins-add-external-admin-dropdown-item",
+                "data-testid": "admins-add-external-admin-dropdown-item",
+                key: 1,
+                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                value: UserAddOptionTypes.MANUAL_INPUT
+            },
+            {
+                "data-componentid": "admins-add-bulk-users-dropdown-item",
+                "data-testif": "admins-add-bulk-users-dropdown-item",
+                key: 2,
+                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                value: UserAddOptionTypes.BULK_IMPORT
+            }
+        ];
+    
+        return options;
+    };
+
+    const addUserDropDown: ReactElement = (
+        <Dropdown
+            data-testid={ `${ testId }-add-admin-dropdown` }
+            data-componentid={ `${ testId }-add-admin-dropdown` }
+            direction="left"
+            floating
+            icon={ null }
+            trigger={ addUserDropdownTrigger }
+        >
+            <Dropdown.Menu >
+                { getAddUserOptions().map((option: {
+                                    "data-componentid": string;
+                                    "data-testid": string;
+                                    key: number;
+                                    text: string;
+                                    value: UserAddOptionTypes;
+                                }) => (
+                    <Dropdown.Item
+                        key={ option.value }
+                        onClick={ ()=> handleDropdownItemChange(option.value) }
+                        { ...option }
+                    />
+                )) }
+            </Dropdown.Menu>
+        </Dropdown>
+    );
 
     /**
      * Handle Add user dropdown item change.
@@ -579,34 +602,35 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     };
 
+    /**
+     * Handles the `onClose` callback action from the bulk import wizard.
+     */
+    const handleBulkImportWizardClose = (): void => {
+        setShowBulkImportWizard(false);
+        getList(listItemLimit, listOffset, null, null, null);
+    };
+
     return (
         <PageLayout
             action={
-                (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
+                (isUserListRequestLoading || !(!searchQuery))
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        <Dropdown
-                            data-testid={ `${ testId }-add-admin-dropdown` }
-                            direction="left"
-                            floating
-                            icon={ null }
-                            trigger={ addUserDropdown }
-                        >
-                            <Dropdown.Menu >
-                                { addUserOptions.map((option: {
-                                    "data-testid": string;
-                                    key: number;
-                                    text: string;
-                                    value: UserAddOptionTypes;
-                                }) => (
-                                    <Dropdown.Item
-                                        key={ option.value }
-                                        onClick={ ()=> handleDropdownItemChange(option.value) }
-                                        { ...option }
-                                    />
-                                )) }
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        { userConfig.showBulkUserImportOption ? (
+                            addUserDropDown 
+                        ) : (
+                            <PrimaryButton
+                                data-componentid={ `${ testId }-add-user-button` }
+                                data-testid={ `${ testId }-add-user-button` }
+                                onClick={ () => {
+                                    setShowWizard(true);
+                                } }
+                            >
+                                <Icon name="add"/>
+                                { t("extensions:manage.users.buttons.addUserBtn") }
+                            </PrimaryButton>
+                        ) } 
+                        
                     </Show>
                 )
             }
@@ -784,7 +808,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 {
                     showBulkImportWizard && (
                         <BulkImportUserWizard
-                            data-testid="user-mgt-add-bulk-user-wizard-modal"
+                            data-componentid="user-mgt-add-bulk-user-wizard-modal"
                             closeWizard={ handleBulkImportWizardClose }
                             userstore={ userStore }
                         />
