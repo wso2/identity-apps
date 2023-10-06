@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -49,7 +49,7 @@ import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 /**
  * Proptypes for the applications settings component.
  */
-interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
+interface AuthenticationFlowPropsInterface extends IdentifiableComponentInterface {
 
     /**
      * All authenticators in the system.
@@ -110,7 +110,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -788,23 +788,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onPrimaryActionClick={ () => setShowHandlerDisclaimerModal(false) }
-            data-testid={ `${ testId }-handler-disclaimer-modal` }
+            data-componentid={ `${ componentId }-handler-disclaimer-modal` }
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.content") }
             </ConfirmationModal.Content>
@@ -869,16 +869,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 setShowBackupCodeRemoveConfirmModal(false);
             } }
             onSecondaryActionClick={ () => setShowBackupCodeRemoveConfirmModal(false) }
-            data-testid={ `${ testId }-backupcode-delete-confirm-modal` }
+            data-componentid={ `${ componentId }-backupcode-delete-confirm-modal` }
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-header` }
+                data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-header` }
             >
                 { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-content` }
+                data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-content` }
             >
                 { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.content") }
             </ConfirmationModal.Content>
@@ -905,7 +905,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     return (
-        <div className="authentication-flow-wrapper" data-testid={ testId }>
+        <div className="authentication-flow-wrapper" data-componentid={ componentId }>
             <div className="authentication-flow-section timeline">
                 <div className="timeline-button start">
                     <GenericIcon
@@ -947,7 +947,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         attributeStepId={ attributeStepId }
                                         onAttributeCheckboxChange={ handleAttributeRetrievalStepChange }
                                         onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
-                                        data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
+                                        data-componentid={ `${ componentId }-authentication-step-${ stepIndex }` }
                                         updateAuthenticationStep={ updateAuthenticationStep }
                                     />
                                 </Fragment>
@@ -997,5 +997,5 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
  * Default props for the step based flow component.
  */
 StepBasedFlow.defaultProps = {
-    "data-testid": "step-based-flow"
+    "data-componentid": "step-based-flow"
 };

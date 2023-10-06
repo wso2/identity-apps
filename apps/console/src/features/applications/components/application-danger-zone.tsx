@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,7 +69,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
         clientId,
         name,
         content,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -92,7 +92,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 setIsDeletionInProgress(false);
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication.success" +
-                         ".description"),
+                        ".description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
                 }));
@@ -112,7 +112,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("console:develop.features.applications.notifications.deleteApplication.error" +
-                             ".message")
+                            ".message")
                     }));
  
                     return;
@@ -120,10 +120,10 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
  
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.deleteApplication" +
-                         ".genericError.description"),
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
-                         ".message")
+                        ".message")
                 }));
                 eventPublisher.publish(
                     "application-delete-error", 
@@ -176,7 +176,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                                 : content
                         }
                         onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                        data-testid={ `${ testId }-danger-zone` }
+                        data-componentid={ `${ componentId }-danger-zone` }
                     />
                 </DangerZoneGroup>
             </Show>
@@ -197,24 +197,24 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                 onPrimaryActionClick={ (): void => handleApplicationDelete() }
-                data-testid={ `${ testId }-application-delete-confirmation-modal` }
+                data-componentid={ `${ componentId }-application-delete-confirmation-modal` }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isDeletionInProgress }
             >
                 <ConfirmationModal.Header
-                    data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                    data-componentid={ `${ componentId }-application-delete-confirmation-modal-header` }
                 >
                     { t("console:develop.features.applications.confirmations.deleteApplication.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
-                    data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                    data-componentid={ `${ componentId }-application-delete-confirmation-modal-message` }
                 >
                     { t("console:develop.features.applications.confirmations.deleteApplication.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
-                    data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                    data-componentid={ `${ componentId }-application-delete-confirmation-modal-content` }
                 >   
                     { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                 </ConfirmationModal.Content>

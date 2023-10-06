@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -69,7 +69,7 @@ import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -125,7 +125,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         isLoading,
         onUpdate,
         readOnly,
-        ["data-testid"]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -618,7 +618,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     // Since the wizard was triggered from landing page, set the origin as `INTERNAL`.
                     setIDPCreateWizardTriggerOrigin("INTERNAL");
                 } }
-                data-testid={ `${testId}-add-missing-authenticator-modal` }
+                data-componentid={ `${componentId}-add-missing-authenticator-modal` }
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
@@ -714,7 +714,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     setLoginFlow(socialDisclaimerModalType);
                     setShowDuplicateSocialAuthenticatorSelectionModal(false);
                 } }
-                data-testid={ `${testId}-duplicate-authenticator-selection-modal` }
+                data-componentid={ `${componentId}-duplicate-authenticator-selection-modal` }
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
@@ -762,9 +762,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         image={ authenticator.image }
                                         label={ authenticator.displayName }
                                         labelEllipsis={ true }
-                                        data-testid={
-                                            `${testId}-authenticator-${authenticator.name}`
-                                        }
+                                        data-componentid={ `${componentId}-authenticator-${authenticator.name}` }
                                         onClick={ () => setSelectedSocialAuthenticator(authenticator) }
                                     />
                                 ))
@@ -868,7 +866,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                             appleAuthenticators
                                         );
                                     } }
-                                    data-testid={ `${testId}-landing` }
+                                    data-componentid={ `${componentId}-landing` }
                                 />
                             ) : (
                                 <SignInMethodCustomization
@@ -886,7 +884,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                     } }
                                     onUpdate={ onUpdate }
                                     onReset={ handleLoginFlowReset }
-                                    data-testid={ testId }
+                                    data-componentid={ componentId }
                                     isLoading={ isAuthenticatorsFetchRequestLoading }
                                     setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
                                     readOnly={ readOnly }
@@ -918,5 +916,5 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
  * Default props for the application sign-on-methods component.
  */
 SignOnMethods.defaultProps = {
-    "data-testid": "sign-on-methods"
+    "data-componentid": "sign-on-methods"
 };

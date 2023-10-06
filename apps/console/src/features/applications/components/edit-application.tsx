@@ -16,7 +16,7 @@
  * under the License.
  */
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -76,7 +76,7 @@ import { ApplicationManagementUtils } from "../utils/application-management-util
 /**
  * Proptypes for the applications edit component.
  */
-interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -142,7 +142,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -625,7 +625,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
-                data-testid={ `${ testId }-general-settings` }
+                data-componentid={ `${ componentId }-general-settings` }
                 isManagementApp={ application.isManagementApp }
             />
         </ResourceTab.Pane>
@@ -655,7 +655,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_ACCESS_CONFIG", application) }
-                data-testid={ `${ testId }-access-settings` }
+                data-componentid={ `${ componentId }-access-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -678,7 +678,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 applicationTemplateId={ application?.templateId }
                 readOnly={ readOnly }
-                data-testid={ `${ testId }-attribute-settings` }
+                data-componentid={ `${ componentId }-attribute-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -695,7 +695,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
-                data-testid={ `${ testId }-sign-on-methods` }
+                data-componentid={ `${ componentId }-sign-on-methods` }
             />
         </ResourceTab.Pane>
     );
@@ -709,7 +709,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
                 template={ template }
-                data-testid={ `${ testId }-advanced-settings` }
+                data-componentid={ `${ componentId }-advanced-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -724,7 +724,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         onUpdate={ handleApplicationUpdate }
                         featureConfig={ featureConfig }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-provisioning-settings` }
+                        data-componentid={ `${ componentId }-provisioning-settings` }
                     />
                 </ResourceTab.Pane>
             )
@@ -737,7 +737,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 application={ application }
                 onUpdate={ handleApplicationUpdate }
                 readOnly={ readOnly }
-                data-testid={ `${ testId }-shared-access` }
+                data-componentid={ `${ componentId }-shared-access` }
             />
         </ResourceTab.Pane>
     );
@@ -749,7 +749,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isOIDCConfigLoading={ isOIDCConfigsLoading }
                 isSAMLConfigLoading={ isSAMLConfigsLoading }
                 templateId={ application?.templateId }
-                data-testid={ `${ testId }-server-endpoints` }
+                data-componentid={ `${ componentId }-server-endpoints` }
             />
         </ResourceTab.Pane>
     );
@@ -1013,7 +1013,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return (
             <ConfirmationModal
-                data-testid={ `${ testId }-client-secret-hash-disclaimer-modal` }
+                data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal` }
                 type="warning"
                 open={ true }
                 primaryAction={ t("common:confirm") }
@@ -1026,7 +1026,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 } }
             >
                 <ConfirmationModal.Header
-                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-header` }
+                    data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal-header` }
                 >
                     {
                         t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
@@ -1036,7 +1036,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-message` }
+                    data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal-message` }
                 >
                     {
                         t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
@@ -1044,7 +1044,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
-                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-content` }
+                    data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal-content` }
                 >
                     <Form>
                         <Grid.Row>
@@ -1066,7 +1066,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
                                         }
-                                        data-testid={ `${ testId }-client-secret-readonly-input` }
+                                        data-componentid={ `${ componentId }-client-secret-readonly-input` }
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -1088,7 +1088,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             t("console:develop.features.applications.confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
                                         }
-                                        data-testid={ `${ testId }-client-secret-readonly-input` }
+                                        data-componentid={ `${ componentId }-client-secret-readonly-input` }
                                     />
                                 </Form.Field>
                             </Grid.Column>
@@ -1107,7 +1107,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     <ResourceTab
                         isLoading={ isLoading }
                         activeIndex={ activeTabIndex }
-                        data-testid={ `${testId}-resource-tabs` }
+                        data-componentid={ `${ componentId }-resource-tabs` }
                         defaultActiveIndex={ defaultActiveIndex }
                         onTabChange={ handleTabChange }
                         panes={ resolveTabPanes() }
@@ -1125,7 +1125,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
  * Default props for the application edit component.
  */
 EditApplication.defaultProps = {
-    "data-testid": "edit-application",
+    "data-componentid": "edit-application",
     getConfiguredInboundProtocolConfigs: () => null,
     getConfiguredInboundProtocolsList: () => null
 };
