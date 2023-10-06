@@ -170,6 +170,18 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "console:manage.features.claims.attributeMappings.axschema.heading"
                     );
+                case ClaimManagementConstants.EIDAS:
+                    return t(
+                        "console:manage.features.claims.attributeMappings.eidas.heading"
+                    );
+                case ClaimManagementConstants.OPENIDNET:
+                    return t(
+                        "console:manage.features.claims.attributeMappings.openidnet.heading"
+                    );
+                case ClaimManagementConstants.XMLSOAP:
+                    return t(
+                        "console:manage.features.claims.attributeMappings.xmlsoap.heading"
+                    );
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.heading"
@@ -208,6 +220,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     );
                 case ClaimManagementConstants.AXSCHEMA:
                     return t("console:manage.features.claims.attributeMappings.axschema.description");
+                case ClaimManagementConstants.EIDAS:
+                    return t("console:manage.features.claims.attributeMappings.eidas.description");
+                case ClaimManagementConstants.OPENIDNET:
+                    return t("console:manage.features.claims.attributeMappings.openidnet.description");
+                case ClaimManagementConstants.XMLSOAP:
+                    return t("console:manage.features.claims.attributeMappings.xmlsoap.description");
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.description"
@@ -251,6 +269,39 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             verticalAlign="middle"
                             rounded
                             icon={ getTechnologyLogos().axschema }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                case ClaimManagementConstants.EIDAS:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().eidas }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                case ClaimManagementConstants.OPENIDNET:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().openidnet }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                case ClaimManagementConstants.XMLSOAP:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().xmlsoap }
                             spaced="right"
                             size="tiny"
                             floated="left"
@@ -310,10 +361,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
                             type === ClaimManagementConstants.AXSCHEMA && attributeMappings.push(attributeMapping);
-                        } else if (ClaimManagementConstants.EIDASLEGAL_MAPPING === attributeMapping.dialectURI) {
-                            type === ClaimManagementConstants.EIDASLEGAL && attributeMappings.push(attributeMapping);
-                        } else if (ClaimManagementConstants.EIDASNATURAL_MAPPING === attributeMapping.dialectURI) {
-                            type === ClaimManagementConstants.EIDASNATURAL && attributeMappings.push(attributeMapping);
+                        } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
+                            (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
+                            type === ClaimManagementConstants.EIDAS && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.OPENIDNET_MAPPING === attributeMapping.dialectURI) {
                             type === ClaimManagementConstants.OPENIDNET && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
@@ -408,6 +458,34 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         });
                     }
                 }
+
+                return panes;
+            }
+
+            if (type === ClaimManagementConstants.EIDAS) {
+                const panes: StrictTabProps[ "panes" ] = [];
+
+                ClaimManagementConstants.EIDAS_TABS.forEach((tab: { name: string; uri: string }) => {
+                    const dialect: ClaimDialect = dialects?.find(
+                        (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
+                    );
+
+                    dialect &&
+                        panes.push({
+                            menuItem: tab.name,
+                            render: () => (
+                                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                    <ExternalDialectEditPage 
+                                        id={ dialect.id } 
+                                        attributeUri={ tab.uri } 
+                                        attributeType={ type }
+                                        mappedLocalClaims={ mappedLocalclaims }
+                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                    />
+                                </ResourceTab.Pane>
+                            )
+                        });
+                });
 
                 return panes;
             }

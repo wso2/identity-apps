@@ -34,15 +34,13 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
         case ClaimManagementConstants.SCIM:
             return "SCIM";
         case ClaimManagementConstants.AXSCHEMA:
-            return shortForm? "AXSCHEMA": "Attribute Exchange Schema" ;
-        case ClaimManagementConstants.EIDASLEGAL:
-            return "EIDASLEGAL";
-        case ClaimManagementConstants.EIDASNATURAL:
-            return "EIDASNATURAL";
+            return "Axschema";
+        case ClaimManagementConstants.EIDAS:
+            return "eIDAS";
         case ClaimManagementConstants.OPENIDNET:
-            return "OPENIDNET";
+            return "OpenID Net";
         case ClaimManagementConstants.XMLSOAP:
-            return "XMLSOAP";
+            return "XML SOAP";
         default:
             return capitalize ? "Custom" : "custom";
     }

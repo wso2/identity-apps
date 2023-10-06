@@ -105,16 +105,13 @@ export class ClaimManagementConstants {
     ];
 
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
-    public static readonly EIDASLEGAL_MAPPING: string = "http://eidas.europa.eu/attributes/legalperson";
-    public static readonly EIDASNATURAL_MAPPING: string = "http://eidas.europa.eu/attributes/naturalperson";
     public static readonly OPENIDNET_MAPPING: string = "http://schema.openid.net/2007/05/claims";
     public static readonly XMLSOAP_MAPPING: string = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
     public static readonly AXSCHEMA: string = "axschema";
-    public static readonly EIDASLEGAL: string = "eidaslegal";
-    public static readonly EIDASNATURAL: string = "eidasnatural";
+    public static readonly EIDAS: string = "eidas";
     public static readonly OPENIDNET: string = "openidnet";
     public static readonly XMLSOAP: string = "xmlsoap";
     public static readonly OTHERS: string = "others";
@@ -127,6 +124,14 @@ export class ClaimManagementConstants {
         { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
         { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
+    ];
+
+    public static readonly EIDAS_TABS: {
+        name: string;
+        uri: string;
+    }[] = [
+        { name: "Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+        { name: "Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
     ];
 
     /**

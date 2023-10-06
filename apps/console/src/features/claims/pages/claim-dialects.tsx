@@ -74,8 +74,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ oidcAttributeMappings, setOidcAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ eidaslegalAttributeMappings, setEidaslegalAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ eidasnaturalAttributeMappings, setEidasnaturalAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ openidnetAttributeMappings, setOpenidnetAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ xmlsoapAttributeMappings, setXmlsoapAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
@@ -122,8 +121,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 const oidc: ClaimDialect[] = [];
                 const scim: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
-                const eidaslegal: ClaimDialect[] = [];
-                const eidasnatural: ClaimDialect[] = [];
+                const eidas: ClaimDialect[] = [];
                 const openidnet: ClaimDialect[] =[];
                 const xmlsoap: ClaimDialect[] = [];
                 const others: ClaimDialect[] = [];
@@ -136,10 +134,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         scim.push(attributeMapping);
                     } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
                         axschema.push(attributeMapping);
-                    } else if (ClaimManagementConstants.EIDASLEGAL_MAPPING === attributeMapping.dialectURI) {
-                        eidaslegal.push(attributeMapping);
-                    } else if (ClaimManagementConstants.EIDASNATURAL_MAPPING === attributeMapping.dialectURI) {
-                        eidasnatural.push(attributeMapping);
+                    } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
+                        (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
+                        eidas.push(attributeMapping);
                     } else if (ClaimManagementConstants.OPENIDNET_MAPPING === attributeMapping.dialectURI) {
                         openidnet.push(attributeMapping);
                     } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
@@ -158,8 +155,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 setOidcAttributeMappings(oidc);
                 setScimAttributeMappings(scim);
                 setAxschemaAttributeMappings(axschema);
-                setEidaslegalAttributeMappings(eidaslegal);
-                setEidasnaturalAttributeMappings(eidasnatural);
+                setEidasAttributeMappings(eidas);
                 setOpenidnetAttributeMappings(openidnet);
                 setXmlsoapAttributeMappings(xmlsoap);
                 setOtherAttributeMappings(others);
@@ -568,9 +564,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." +
-                                                                    "manageAttributeMappings.axschema.heading"
+                                                                    "console:manage.features." + 
+                                                                    "claims.attributeMappings." +
+                                                                    "axschema.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -625,10 +621,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
-                                eidaslegalAttributeMappings?.length > 0 && (
+                                eidasAttributeMappings?.length > 0 && (
                                     <EmphasizedSegment
                                         className="clickable"
-                                        data-testid={ `${ testId }-eidaslegal-dialect-container` }
+                                        data-testid={ `${ testId }-eidas-dialect-container` }
                                     >
                                         <List>
                                             <List.Item
@@ -636,7 +632,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     history.push(
                                                         AppConstants.getPaths()
                                                             .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.EIDASLEGAL)
+                                                            .replace(":type", ClaimManagementConstants.EIDAS)
                                                     );
                                                 } }
                                             >
@@ -647,16 +643,16 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 transparent
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                icon={ getTechnologyLogos().oidc }
+                                                                icon={ getTechnologyLogos().eidas }
                                                                 spaced="right"
                                                                 size="mini"
                                                                 floated="left"
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." +
-                                                                    "manageAttributeMappings.oidc.heading"
+                                                                    "console:manage.features." + 
+                                                                    "claims.attributeMappings." +
+                                                                    "eidas.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -665,93 +661,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "oidc.description"
-                                                                ) }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                        <Grid.Column
-                                                            width={ 4 }
-                                                            verticalAlign="middle"
-                                                            textAlign="right"
-                                                        >
-                                                            <Popup
-                                                                content={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.
-                                                                            attributeDialects?.scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                        t("common:edit") :
-                                                                        t("common:view")
-                                                                }
-                                                                trigger={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.
-                                                                            attributeDialects?.scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                        <Icon color="grey" name="pencil" /> :
-                                                                        <Icon color="grey" name="eye" />
-                                                                }
-                                                                inverted
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Item>
-                                        </List>
-                                    </EmphasizedSegment>
-                                )
-                            )
-                    }
-                    {
-                        isLoading 
-                            ? (
-                                renderSegmentPlaceholder()
-                            ) : (
-                                eidasnaturalAttributeMappings?.length > 0 && (
-                                    <EmphasizedSegment
-                                        className="clickable"
-                                        data-testid={ `${ testId }-eidasnatural-dialect-container` }
-                                    >
-                                        <List>
-                                            <List.Item
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.EIDASNATURAL)
-                                                    );
-                                                } }
-                                            >
-                                                <Grid>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 12 }>
-                                                            <GenericIcon
-                                                                transparent
-                                                                verticalAlign="middle"
-                                                                rounded
-                                                                icon={ getTechnologyLogos().oidc }
-                                                                spaced="right"
-                                                                size="mini"
-                                                                floated="left"
-                                                            />
-                                                            <List.Header>
-                                                                { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." +
-                                                                    "manageAttributeMappings.oidc.heading"
-                                                                ) }
-                                                            </List.Header>
-                                                            <List.Description
-                                                                data-testid={ `${ testId }-local-dialect` }
-                                                            >
-                                                                { t(
-                                                                    "console:manage.features." + 
-                                                                    "claims.attributeMappings." +
-                                                                    "oidc.description"
+                                                                    "eidas.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
@@ -819,16 +729,16 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 transparent
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                icon={ getTechnologyLogos().oidc }
+                                                                icon={ getTechnologyLogos().openidnet }
                                                                 spaced="right"
                                                                 size="mini"
                                                                 floated="left"
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." +
-                                                                    "manageAttributeMappings.oidc.heading"
+                                                                    "console:manage.features." + 
+                                                                    "claims.attributeMappings." +
+                                                                    "openidnet.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -837,7 +747,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "oidc.description"
+                                                                    "openidnet.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
@@ -905,16 +815,16 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 transparent
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                icon={ getTechnologyLogos().oidc }
+                                                                icon={ getTechnologyLogos().xmlsoap }
                                                                 spaced="right"
                                                                 size="mini"
                                                                 floated="left"
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." +
-                                                                    "manageAttributeMappings.oidc.heading"
+                                                                    "console:manage.features." + 
+                                                                    "claims.attributeMappings." +
+                                                                    "xmlsoap.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -923,7 +833,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "oidc.description"
+                                                                    "xmlsoap.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
