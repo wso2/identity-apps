@@ -268,7 +268,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     templates: {
         apple: true,
         enterprise: true,
-        expertMode: false,
+        expertMode: true,
         facebook: true,
         github: true,
         google: true,
