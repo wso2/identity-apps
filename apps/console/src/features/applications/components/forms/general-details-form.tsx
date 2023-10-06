@@ -174,7 +174,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
-    const [ saas, setSaas ] = useState<boolean>(isSaasApp);
+    const [ isSaasApplication, setSaasApplication ] = useState<boolean>(isSaasApp);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
@@ -445,10 +445,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     required={ false }
                     label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                 ".saas.label") }
-                    initialValue={ saas }
+                    initialValue={ isSaasApplication }
                     readOnly={ readOnly }
                     data-testid={ `${ testId }-application-saas-app-checkbox` }
-                    listen={ (value: boolean) => setSaas(value) }
+                    listen={ (value: boolean) => setSaasApplication(value) }
                     hint={ (
                         t("console:develop.features.applications.forms.generalDetails.fields" +
                     ".saas.hint")
