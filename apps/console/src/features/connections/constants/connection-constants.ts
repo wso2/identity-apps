@@ -40,7 +40,7 @@ export class ConnectionManagementConstants {
      */
     public static readonly INTERNAL_DOMAIN: string  = "Internal/";
 
-    public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE = "IDP-65004";
+    public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
@@ -62,8 +62,7 @@ export class ConnectionManagementConstants {
 
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
-    public static readonly ORGANIZATION_SSO_AUTHENTICATOR_ID: string = "e8e40c0e-2238-4438-a9e4-69c063d9b9dd";
-    public static readonly ORG_SSO_AUTHENTICATOR_ID: string = "44c2a88a-d8c1-4668-9717-44bc135fb015";
+    public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
 
     public static readonly IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
     public static readonly JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };

@@ -25,13 +25,13 @@ import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
-    AuthenticatorSettingsFormModes,
-    CommonAuthenticatorFormInitialValuesInterface
-} from "../../../../models/authenticators";
-import {
     FederatedAuthenticatorInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../../../models/connection";
+import {
+    AuthenticatorSettingsFormModes,
+    CommonAuthenticatorFormInitialValuesInterface
+} from "../../../../models/authenticators";
 import {
     DEFAULT_NAME_ID_FORMAT,
     DEFAULT_PROTOCOL_BINDING,

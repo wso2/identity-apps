@@ -97,7 +97,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
          * keeps failing to set the correct grouped template to this state.
          */
         selectedTemplate: parentSelectedTemplate,
-        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -112,16 +111,16 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     const {
         data: connectionsResponse,
         isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError,
-        mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(null, null, "name sw " + selectedTemplate?.idp?.name || selectedTemplate?.name);
+        error: connectionsFetchRequestError
+    } = useGetConnections(null, null, !selectedTemplate?.idp?.name 
+        ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name, null, true
+    );
 
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
-        error: connectionTemplateFetchRequestError,
-        mutate: mutateConnectionTemplateFetchRequest
-    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type);
+        error: connectionTemplateFetchRequestError
+    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, type !== null);
 
 
     useEffect(() => {

@@ -16,15 +16,6 @@
  * under the License.
  */
 
-import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import Backdrop from "@mui/material/Backdrop";
-import Divider from "@oxygen-ui/react/Divider";
-import Grid from "@oxygen-ui/react/Grid";
-import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
-import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
-import { ConfigReducerStateInterface } from "@wso2is/common/src/models/reducer-state";
-import { AppState } from "@wso2is/common/src/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -65,19 +56,28 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import Grid from '@oxygen-ui/react/Grid';
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
-import { EventPublisher } from "../../../core";
+import Divider from "@oxygen-ui/react/Divider";
+import Backdrop from '@mui/material/Backdrop';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import { AppConstants } from "@wso2is/common/src/constants/app-constants";
+import { ConfigReducerStateInterface } from "@wso2is/common/src/models/reducer-state";
+import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
+import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
 import { createConnection, useGetConnectionTemplate, useGetConnections } from "../../api/connections";
-import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
-import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthProtocolTypes,
-    ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
-    StrictConnectionInterface
+    ConnectionTemplateInterface,
+    StrictConnectionInterface,
 } from "../../models/connection";
 import { handleGetConnectionsError } from "../../utils/connection-utils";
+import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
+import { AppState } from "@wso2is/common/src/store";
+import { EventPublisher } from "../../../core";
+import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -147,7 +147,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>([]);
+    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -160,21 +160,27 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const {
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null);
+        error: connectionsFetchRequestError,
+    } = useGetConnections();
 
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
-        error: connectionTemplateFetchRequestError
-    } = useGetConnectionTemplate(selectedTemplateId);
+    } = useGetConnectionTemplate(selectedTemplateId, selectedTemplateId !== null);
 
     useEffect(() => {
-        if (!isConnectionsFetchRequestLoading && !connectionsFetchRequestError) {
+        if (isConnectionsFetchRequestLoading) {
+
             return;
         }
 
         if (!connections) {
+
+            return;
+        }
+
+        if (idpList) {
+
             return;
         }
 
@@ -196,8 +202,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
 
         const templateId = selectedProtocol === "saml"
-            ? "enterprise-saml-idp"
-            : "enterprise-oidc-idp";
+                ? "enterprise-saml-idp"
+                : "enterprise-oidc-idp"
 
         setSelectedTemplateId(templateId);
     }, [ selectedProtocol ]);
@@ -230,8 +236,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
         if (idpList?.length > 0) {
-            return idpList
-                .reduce((set, { name }) => set.add(name), new Set<string>())
+            return idpList?.reduce((set, { name }) => set.add(name), new Set<string>())
                 .has(userInput);
         }
 
@@ -485,10 +490,10 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 <label className="sub-templates-label">Select protocol</label>
                 <Grid 
                     container 
-                    spacing={ { xs: 2, md: 3 } } 
-                    columns={ { xs: 4, sm: 8, md: 12 } }
+                    spacing={{ xs: 2, md: 3 }} 
+                    columns={{ xs: 4, sm: 8, md: 12 }}
                 >
-                    <Grid xs={ 2 } sm={ 4 } md={ 8 }>
+                    <Grid xs={2} sm={4} md={8}>
                         <SelectionCard
                             inline
                             image={ getConnectionIcons().oidc }
@@ -566,8 +571,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 placeholder="Enter a Service Provider Entity ID"
                 data-componentid={ `${ componentId }-form-wizard-saml-entity-id` }
             />
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid xs={2} sm={4} md={6}>
                     <p><b>Mode of configuration</b></p>
                     <Switcher
                         compact
@@ -741,8 +746,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
                 return errors;
             } }>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid xs={2} sm={4} md={6}>
                     <p><b>Mode of certificate configuration</b></p>
                     { (selectedProtocol === "oidc") && (
                         <Switcher
@@ -914,6 +919,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     return (
         <ModalWithSidePanel
+            isLoading={ isConnectionTemplateFetchRequestLoading }
             open={ true }
             className="wizard identity-provider-create-wizard"
             dimmer="blurring"
@@ -938,7 +944,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                             { subTitle && (
                                 <Heading as="h6">
                                     { subTitle }
-                                    { /* { resolveDocumentationLink() } */ }
+                                    {/* { resolveDocumentationLink() } */}
                                 </Heading>
                             ) }
                         </div>

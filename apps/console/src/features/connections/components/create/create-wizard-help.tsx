@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 
 /**
  * Wizard help message props interface.
@@ -115,14 +115,14 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.paragraphs?.map((paragraph, index) => (
                                 <p 
                                     key={ index } 
-                                    dangerouslySetInnerHTML={ { __html: paragraph } }
+                                    dangerouslySetInnerHTML={{ __html: paragraph }}
                                 />
                             ))
                         }
                         {
                             wizardHelp.message.copyInputFields?.map((copyInputField, index) => (
                                 <p key={ index }>
-                                    <div dangerouslySetInnerHTML={ { __html: copyInputField.description } } />
+                                    <div dangerouslySetInnerHTML={{ __html: copyInputField.description }} />
                                     <CopyInputField
                                         className="copy-input-dark spaced"
                                         value={ overrideFieldValue(copyInputField.value) }
@@ -140,7 +140,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                         {
                             wizardHelp.message.codeSnippets?.map((codeSnippet, index) => (
                                 <p key={ index }>
-                                    <div dangerouslySetInnerHTML={ { __html: codeSnippet.description } } />
+                                    <div dangerouslySetInnerHTML={{ __html: codeSnippet.description }} />
                                     <Divider hidden />
                                     <CodeEditor
                                         oneLiner
@@ -172,7 +172,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        <p dangerouslySetInnerHTML={ { __html: field.hint } }/>
+                            <p dangerouslySetInnerHTML={{ __html: field.hint }}/>
                         <Divider />
                     </div>
                 ))

@@ -26,8 +26,6 @@ export class AuthenticatorManagementConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
@@ -57,6 +55,7 @@ export class AuthenticatorManagementConstants {
     public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
     public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
+    public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "SSO";
 
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
@@ -338,7 +337,6 @@ export class AuthenticatorManagementConstants {
 
     /**
      * SIWE Scope mappings.
-     * @type {Record<string, string>}
      */
     public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
         OPENID: "openid",
