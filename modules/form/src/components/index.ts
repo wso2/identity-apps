@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ export * from "./adapters";
 export * from "./field";
 export * from "./field-button";
 export * from "./field-color-picker";
+export * from "./deprecated-field-checkbox";
 export * from "./field-checkbox";
 export * from "./field-checkbox-legacy";
 export * from "./field-input";

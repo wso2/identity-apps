@@ -35,7 +35,7 @@ ESLINT_SUPPORTED_EXT=(js jsx ts tsx)
 # Excluding files that adhere to the specified patterns from the list of supported files.
 PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js")
 
-MAX_FILE_THRESHOLD_FOR_LINTER=50
+MAX_FILE_THRESHOLD_FOR_LINTER=30
 
 # Check relevant packages are available
 command -v pnpm >/dev/null 2>&1 || { echo >&2 "Error: $0 script requires 'pnpm' for buid.  Aborting as not found."; exit 1; }

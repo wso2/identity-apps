@@ -1827,6 +1827,21 @@ TODO : Move values to separate variables and cleanup styles.
 }
 
 /*-------------------------------
+    Group Page
+--------------------------------*/
+
+.group-add-user-model-transfer-list {
+    .ui.basic.segment.transfer-segment {
+        overflow-y: scroll;
+    }
+
+    .ui.segment.transfer-list-segment {
+        height: 100%;
+        overflow: initial;
+    }
+}
+
+/*-------------------------------
     Email Customization
 --------------------------------*/
 

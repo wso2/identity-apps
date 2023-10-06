@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -110,6 +110,10 @@ export interface FeatureConfigInterface {
      * Identity provider groups feature.
      */
     identityProviderGroups?: FeatureAccessConfigInterface;
+    /**
+     * Identity verification provider management feature.
+     */
+    identityVerificationProviders?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */
@@ -227,6 +231,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
+     * Connection resources URL.
+     */
+    connectionResourcesUrl?: string;
+    /**
      * Configuration to enable Google One Tap for specific tenants.
      */
     googleOneTapEnabledTenants?: string[];
@@ -234,6 +242,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
+    /**
+     * Set of connections to be hidden.
+     */
+    hiddenConnectionTemplates?: string[];
     /**
      * Configurations for IDP templates.
      */

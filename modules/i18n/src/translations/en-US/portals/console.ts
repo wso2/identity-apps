@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1165,7 +1165,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo requires the user's profile containing the"+
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " + 
+                                            "having a basic authenticator in a prior step.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " + 
+                                            "added to a multi option step."
                                         }
                                     }
                                 },
@@ -4608,7 +4612,7 @@ export const console: ConsoleNS = {
                         validation: {
                             invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
                                 " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
-                            name: "Please enter a valid name"
+                            name: "Identity verification provider name is not valid"
                         }
                     },
                     trustedTokenIssuer: {
@@ -5884,6 +5888,246 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Enter the value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by name"
+                },
+                buttons: {
+                    addIDVP: "New Identity Verification Provider"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "There are no identity verification providers available at the moment.",
+                            1: "You can add a new identity verification provider easily by following the",
+                            2: "steps in the identity verification provider creation wizard."
+                        },
+                        title: "Add a new Identity Verification Provider"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "There are currently no identity verification provider types ",
+                            1: "available for configuration."
+                        },
+                        title: "No identity verification provider types found"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Please confirm your action.",
+                        content: "If you delete this identity verification provider, you will not be able to " +
+                            "recover it. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the identity verification " +
+                            "provider."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification providers.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Delete Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while deleting the identity verification provider.",
+                            message: "Delete Error"
+                        },
+                        success: {
+                            description: "Successfully deleted the identity verification provider.",
+                            message: "Delete Successful"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the identity verification provider.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the identity verification provider.",
+                            message: "Update successful"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Create error"
+                        },
+                        genericError: {
+                            description: "An error occurred while creating the identity verification provider.",
+                            message: "Create error"
+                        },
+                        success: {
+                            description: "Successfully created the identity verification provider.",
+                            message: "Create successful"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Need to configure all the mandatory properties.",
+                            message: "Cannot perform update"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving attributes.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider details.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving metadata for identity verification " +
+                                "provider.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider template" +
+                                " types.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider template " +
+                                "type.",
+                            message: "Retrieval Error"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving identity verification provider template.",
+                            message: "Retrieval Error"
+                        }
+                    }
+
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "A text description for the identity verification provider.",
+                            label: "Description",
+                            placeholder: "Enter a description for the identity verification provider."
+                        },
+                        name: {
+                            hint: "Enter a unique name for this identity verification provider.",
+                            label: "Name",
+                            placeholder: "Enter a name for the identity verification provider.",
+                            validations: {
+                                duplicate: "An identity verification provider already exists with this name",
+                                empty: "Identity Verification Provider name is required",
+                                maxLengthReached: "Identity verification provider name cannot exceed {{ maxLength }} " +
+                                    "characters.",
+                                required: "Identity Verification Provider name is required",
+                                invalid: "Please enter a valid name"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Identity Verification Provider Attribute Mappings",
+                            hint: "Add and map the supported attributes from external Identity Verification Provider.",
+                            addButton: "Add Attribute Mapping",
+                            emptyPlaceholderEdit: {
+                                subtitle: "There are no attributes mapped for this Identity Verification Provider.",
+                                title: "No attributes mapped"
+                            },
+                            emptyPlaceholderCreate:{
+                                subtitle: "Map attributes and click <1>Add Attribute Mapping</1> to get started.",
+                                title: "You haven't mapped any attributes"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "There's already an attribute mapped with this name.",
+                                required: "This field cannot be empty",
+                                invalid: "Please enter a valid input"
+                            },
+                            placeholders: {
+                                mappedValue: "Enter external IDVP attribute",
+                                localClaim: "Select mapping attribute"
+                            },
+                            labels: {
+                                mappedValue: "External IDVP Attribute",
+                                localClaim: "Maps to"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Add Attribute Mappings"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Delete",
+                        header: "Delete identity verification provider",
+                        subheader: "This is an irreversible action, proceed with caution."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Identity Verification Provider",
+                        header: "{{ state }} identity verification provider",
+                        subheader: "Once you disable an identity verification provider, it can no longer be used " +
+                            "until re-enabled.",
+                        subheader2: "Enable the identity verification provider to use it with your applications."
+                    },
+                    header: "Danger Zone"
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Name"
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server for Developers",
@@ -6092,7 +6336,8 @@ export const console: ConsoleNS = {
                     authenticationProviders: "Connections",
                     general: "General",
                     gettingStarted: "Getting Started",
-                    identityProviders: "Connections"
+                    identityProviders: "Connections",
+                    identityVerificationProviders: "Identity Verification Providers"
                 },
                 customize: "Customize",
                 identityProviderEdit: "Connections Edit",
@@ -6202,6 +6447,19 @@ export const console: ConsoleNS = {
                 },
                 title: "Select Connection"
             },
+            idvp: {
+                subTitle: "Manage Identity Verification Providers to allow users to verify their identities " +
+                    "through them.",
+                title: "Identity Verification Providers"
+            },
+            idvpTemplate: {
+                backButton: "Go back to Identity Verification Providers",
+                subTitle: "Choose one of the following identity verification providers.",
+                title: "Select Identity Verification Provider",
+                search: {
+                    placeholder: "Search by name"
+                }
+            },
             overview: {
                 subTitle: "Configure and manage applications, connections, users and roles, attribute " +
                     "dialects, etc.",
@@ -6234,6 +6492,265 @@ export const console: ConsoleNS = {
             python: "Python",
             react: "React",
             windows: "Windows"
+        }
+    },
+    loginFlow: {
+        adaptiveLoginFlowSelectConfirmationModal: {
+            content: "The selected template will replace the existing script in the editor as well as the login steps you configured. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "This action is irreversible."
+        },
+        basicLoginFlowSelectConfirmationModal: {
+            content: "The selected template will replace the existing login steps you configured. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "This action is irreversible."
+        },
+        options: {
+            controls: {
+                remove: "Remove"
+            },
+            displayName: "Sign In With {{displayName}}",
+            divider: "OR"
+        },
+        modes: {
+            legacy: {
+                label: "Classic Editor"
+            },
+            visual: {
+                label: "Visual Editor"
+            },
+            switchConfirmationModal: {
+                assertionHint: "Yes, I understand. I want to switch.",
+                content: "This action is irreversible and you will permanently loose the unsaved changes in the current flow.",
+                primaryActionButtonText: "Confirm",
+                secondaryActionButtonText: "Cancel",
+                title: "Are you sure?",
+                warningMessage: "If you switch to the <1>{{mode}}</1>, you will loose the unsaved changes in the current flow. Please proceed with caution."
+            }
+        },
+        nodes: {
+            controls: {
+                attributeSelector: {
+                    label: "Pick attributes from this step"
+                },
+                enableBackupCodes: {
+                    label: "Enable backup codes"
+                },
+                userAttributeSelector: {
+                    label: "Pick user identifier from this step"
+                }
+            },
+            emailOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue",
+                        secondary: "Resend Code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the code sent to your email ID (john*****@gmail.com)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP Verification"
+            },
+            identifierFirst: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove",
+                    optionSwitchTooltipContent: "Switch to Username & Password"
+                },
+                form: {
+                    actions: {
+                        primary: "Sign In"
+                    },
+                    fields: {
+                        rememberMe: {
+                            label: "Remember me on this computer"
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter your username"
+                        }
+                    }
+                },
+                header: "Sign in"
+            },
+            signIn: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove",
+                    optionSwitchTooltipContent: "Switch to Identifier First"
+                },
+                form: {
+                    actions: {
+                        primary: "Sign In"
+                    },
+                    fields: {
+                        password: {
+                            label: "Password",
+                            placeholder: "Enter your password"
+                        },
+                        rememberMe: {
+                            label: "Remember me on this computer"
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter your username"
+                        }
+                    }
+                },
+                header: "Sign in"
+            },
+            smsOTP: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue",
+                        secondary: "Resend Code"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the code sent to your mobile phone (******3830)",
+                            placeholder: ""
+                        }
+                    }
+                },
+                header: "OTP Verification"
+            },
+            totp: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    actions: {
+                        primary: "Continue"
+                    },
+                    fields: {
+                        code: {
+                            label: "Enter the verification code generated by your authenticator app.",
+                            placeholder: ""
+                        }
+                    },
+                    help: "Haven't setup your TOTP authenticator yet? Contact support"
+                },
+                header: "Verify Your Identity"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Remove"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Browser",
+                        lastAccessedLabel: "Last Accessed"
+                    },
+                    help: "Terminate active sessions to continue."
+                },
+                header: "Multiple Active Sessions Found"
+            }
+        },
+        revertConfirmationModal: {
+            assertionHint: "Yes, I understand. I want to revert.",
+            content: "This action is irreversible and you will permanently loose the progress you have made.",
+            primaryActionButtonText: "Confirm",
+            secondaryActionButtonText: "Cancel",
+            title: "Are you sure?",
+            warningMessage: "If you revert back to default, you will not be able to recover the progress. Please proceed with caution."
+        },
+        steps: {
+            controls: {
+                addOption: "Add Sign In Option",
+                remove: "Remove",
+                signUp: {
+                    hint: "Don't have an account?",
+                    label: "Sign up"
+                }
+            }
+        },
+        predefinedFlows: {
+            adaptive: {
+                actions: {
+                    add: "ADD"
+                },
+                header: "Conditional Login Flows"
+            },
+            authenticators: {
+                apple: {
+                    displayName: "Apple"
+                },
+                facebook: {
+                    displayName: "Facebook"
+                },
+                github: {
+                    displayName: "GitHub"
+                },
+                google: {
+                    displayName: "Google"
+                },
+                microsoft: {
+                    displayName: "Microsoft"
+                }
+            },
+            basic: {
+                header: "Basic Login Flows"
+            },
+            categories: {
+                basic: {
+                    label: "Add Basic Login"
+                },
+                mfa: {
+                    label: "Add Multi-factor Login"
+                },
+                passwordless: {
+                    label: "Add Passwordless Login"
+                },
+                social: {
+                    label: "Add Social Login"
+                }
+            },
+            header: "Predefined Flows",
+            panelHeader: "Predefined Flows"
+        },
+        scriptEditor: {
+            panelHeader: "Script Editor",
+            secretSelector: {
+                actions: {
+                    create: {
+                        label: "Create New Secret"
+                    }
+                },
+                emptyPlaceholder: {
+                    header: "No secrets available.",
+                    description: "Securely store access keys as secrets. A secret can replace the consumer secret in <1>callChoreo()</1> function in the conditional authentication scripts."
+                },
+                label: "Add Secret"
+            },
+            themes: {
+                dark: {
+                    label: "Dark (Visual Studio)"
+                },
+                highContrast: {
+                    label: "High Contrast"
+                },
+                light: {
+                    label: "Light (Visual Studio)"
+                }
+            }
+        },
+        visualEditor: {
+            actions: {
+                revert: {
+                    label: "Revert to default"
+                },
+                update: {
+                    label: "Update"
+                }
+            }
         }
     },
     manage: {
@@ -9140,6 +9657,31 @@ export const console: ConsoleNS = {
                                     invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                                         + "And must be of length between 3 to 30 characters."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
+                                label: "Select the role audience",
+                                values: {
+                                    organization: "Organization-scoped role",
+                                    application: "Application-scoped role"
+                                }
+                            },
+                            notes: {
+                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
+                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
+                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                            },
+                            assignedApplication: {
+                                hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
+                                label: "Assigned application",
+                                placeholder: "Select application to assign the role",
+                                applicationSubTitle: {
+                                    application: "Support application-scoped roles",
+                                    organization: "Support organization-scoped roles"
+                                },
+                                validations: {
+                                    empty: "Assigned application is required to create an application-scoped role."
+                                }
                             }
                         }
                     },
@@ -9170,7 +9712,8 @@ export const console: ConsoleNS = {
                             hint: "Select users to add them to the user group.",
                             list: {
                                 listHeader: "Name",
-                                searchPlaceholder: "Search users"
+                                searchPlaceholder: "Search users",
+                                searchByEmailPlaceholder: "Search users by email address"
                             },
                             subHeading: "Add new users or remove existing users assigned to the {{type}}."
                         }
@@ -9574,7 +10117,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "There are no {{type}} assigned with this role.",
-                            unselected: "There are no {{type}} available to assign with this role."
+                            unselected: "There are no {{type}} available to assign to this group.",
+                            common: "No {{type}} found"
                         },
                         users: {
                             roles: {
@@ -10296,6 +10840,13 @@ export const console: ConsoleNS = {
                             2: "Roles",
                             3: "Active Sessions"
                         }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Go back to users",
+                            subtitles: "It looks like the requested user does not exist.",
+                            title: "User not found"
+                        }
                     }
                 },
                 forms: {
@@ -10854,7 +11405,29 @@ export const console: ConsoleNS = {
                     login: {
                         filters: {
                             userStore: "User Store",
-                            serviceProvider: "Application"
+                            serviceProvider: "Application",
+                            authenticator: {
+                                attributeName: "Connection Type",
+                                values: {
+                                    basic: "Username & Password",
+                                    identifierFirst: "Identifier First",
+                                    fido2: "FIDO2",
+                                    magicLink: "Magic Link",
+                                    emailOtp: "Email OTP",
+                                    smsOtp: "SMS OTP",
+                                    totp: "TOTP",
+                                    backupCodes: "Backup Code",
+                                    google: "Google",
+                                    facebook: "Facebook",
+                                    github: "GitHub",
+                                    apple: "Apple",
+                                    oidc: "OIDC IdP",
+                                    saml: "SAML IdP",
+                                    hypr: "HYPR",
+                                    organizationLogin: "Organization Login"
+                                }
+                            },
+                            identityProvider: "Connection ID"
                         }
                     },
                     registration: {
@@ -10884,7 +11457,7 @@ export const console: ConsoleNS = {
                     },
                     signups: {
                         title: "User Signups",
-                        titleHint: "Total user (B2C) signups occurred within the selected period"
+                        titleHint: "Total user signups occurred within the selected period"
                     }
                 },
                 notifications: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ export const extensions: Extensions = {
                     description: "යෙදුමට ප්‍රවේශ වීම සඳහා ඔබට <1>පාරිභෝගික ගිණුමක්</1> ගිණුමක් අවශ්‍යයි.",
                     hint:
                         "ඔබට දැනටමත් පාරිභෝගික ගිණුමක් නොමැති නම්, එකක් සෑදීමට පහත බොත්තම ක්ලික් කරන්න. විකල්පයක් වශයෙන්, " +
-                        "<1>කළමනාකරණය > පරිශීලකයින් වෙත යන්න</1><3></3> සහ පාරිභෝගිකයින් තනන්න.",
+                        "<1>පරිශීලක කළමනාකරණය > පරිශීලකයින් වෙත යන්න</1><3></3> සහ පාරිභෝගිකයින් තනන්න.",
                     message: "ඔබට දැනටමත් පාරිභෝගික පරිශීලක ගිණුමක් නොමැති නම්, ඔබේ සංවිධාන පරිපාලක අමතන්න."
                 },
                 spa: {
@@ -1939,7 +1939,7 @@ export const extensions: Extensions = {
                 fromAddress: {
                     label: "ලිපිනයෙන්",
                     placeholder: "ඊමේල් ලිපිනයක් ඇතුලත් කරන්න",
-                    hint: "වෙතින් ලිපිනය යනු ඔබගේ පිටතට යන ඊමේල් යවන්නා ලෙස පෙනී සිටීමට අවශ්‍ය ඊමේල් ලිපිනයයි. මෙය ඔබට ප්‍රවේශය ඇති ඊමේල් ලිපිනයක් විය යුතුය."
+                    hint: "ආරක්ෂක හේතූන් මත, අපි දැනට වරාය <1>587</1> පමණක් සහාය දක්වමු."
                 },
                 replyToAddress: {
                     label: "පිළිතුරු-ලිපිනයට",

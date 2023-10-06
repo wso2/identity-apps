@@ -72,10 +72,8 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\d{4}, WSO2 LLC. \\(https://www.wso2.com\\).",
-            template: ` * Copyright (c) ${
-                new Date().getFullYear()
-            }, WSO2 LLC. (https://www.wso2.com).`
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-3])(?:-(202[0-3]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
+            template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",
         " * WSO2 LLC. licenses this file to you under the Apache License,",

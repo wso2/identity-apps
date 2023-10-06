@@ -4,3 +4,4 @@ target/
 src/main/
 themes/
 src/public/auth-spa-0.3.3.min.js
+src/public/startup-config.js

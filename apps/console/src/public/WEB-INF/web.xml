@@ -81,6 +81,11 @@
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
+        <url-pattern>/startup-config.js</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
         <url-pattern>/rpIFrame.html</url-pattern>
     </servlet-mapping>
 

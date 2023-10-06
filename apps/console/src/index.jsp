@@ -77,13 +77,14 @@
                 animation-iteration-count: infinite;
             }
         </style>
+        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
     </head>
     <script>
 
         var userAccessedPath = window.location.href;
         var applicationDomain = window.location.origin;
 
-        var userTenant = userAccessedPath.split("/t/")[1] ?  userAccessedPath.split("/t/")[1].split("/")[0] : null;
+        var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0] : null;
         userTenant = userTenant ?  userTenant.split("?")[0] : null;
         var utype =  userAccessedPath.split("utype=")[1] ?  userAccessedPath.split("utype=")[1] : null;
 
@@ -109,8 +110,6 @@
                     return serverOrigin;
                 }
 
-                var orgPrefix = "o";
-
                 /**
                  * Get the organization name.
                  *
@@ -120,7 +119,7 @@
                     const path = window.location.pathname;
                     const pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(orgPrefix);
+                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -136,7 +135,7 @@
                  */
                 function getOrganizationPath() {
                     return getOrganizationName() !== ""
-                        ? "/" + orgPrefix + "/" + getOrganizationName()
+                        ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
                         : "";
                 };
 
@@ -152,11 +151,13 @@
                     scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: getApiPath(userTenant ? "/t/carbon.super/oauth2/authorize?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : ''): "/t/carbon.super/oauth2/authorize"),
+                        authorizationEndpoint: getApiPath(userTenant 
+                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/t/carbon.super/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/t/carbon.super/oidc/checksession"),
+                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },

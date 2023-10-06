@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4150](https://github.com/wso2/identity-apps/pull/4150) [`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and Bug fixes
+
+- Updated dependencies [[`51833efb2f`](https://github.com/wso2/identity-apps/commit/51833efb2f505217b83b457d502031b978c57d0e)]:
+  - @wso2is/theme@2.0.6
+
+## 2.0.6
+
+### Patch Changes
+
+- [#4142](https://github.com/wso2/identity-apps/pull/4142) [`cdecb197ea`](https://github.com/wso2/identity-apps/commit/cdecb197ea50b947d5ae4dd7450616f37d23a9d1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to branding changes not being visible when modifying properties in the login page section of the branding design
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4135](https://github.com/wso2/identity-apps/pull/4135) [`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvements and bug fixes
+
+- Updated dependencies [[`9bb63bf50e`](https://github.com/wso2/identity-apps/commit/9bb63bf50e805d423d8094cb79a9b0d125041255)]:
+  - @wso2is/theme@2.0.4
+
 ## 2.0.4
 
 ### Patch Changes

@@ -1,19 +1,10 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
  */
 
 export const TYPE_PASSWORD = "password";
@@ -29,6 +20,9 @@ export const TYPE_NAME = "name";
 export const TYPE_RESOURCE_NAME = "resourceName";
 export const TYPE_CLIENT_ID = "clientId";
 export const TYPE_COPY_INPUT = "copyInput";
+export const TYPE_QUERY_PARAM_INPUT = "queryParamInput";
+export const TYPE_SCOPE_INPUT = "scopeInput";
+export const TYPE_BUTTON = "button";
 
 /**
  * Dynamic input field types
@@ -46,22 +40,26 @@ export type DynamicFieldInputTypes =
     | typeof TYPE_NAME
     | typeof TYPE_RESOURCE_NAME
     | typeof TYPE_CLIENT_ID
-    | typeof TYPE_COPY_INPUT;
+    | typeof TYPE_COPY_INPUT
+    | typeof TYPE_QUERY_PARAM_INPUT
+    | typeof TYPE_SCOPE_INPUT;
 
 export enum FieldInputTypes {
     INPUT_DEFAULT = "default",
     INPUT_IDENTIFIER = "identifier",
-    INPUT_PHONE_NUMBER = "phone_number",
+    INPUT_PHONE_NUMBER = "phoneNumber",
     INPUT_NAME = "name",
     INPUT_NUMBER = "number",
-    INPUT_RESOURCE_NAME = "resource_name",
-    INPUT_CLIENT_ID = "client_id",
+    INPUT_RESOURCE_NAME = "resourceName",
+    INPUT_CLIENT_ID = "clientId",
     INPUT_DESCRIPTION = "description",
     INPUT_EMAIL = "email",
     INPUT_URL = "url",
-    INPUT_COPY = "copy_input",
+    INPUT_COPY = "copyInput",
     INPUT_PASSWORD = "password",
-    INPUT_TEXT = "text"
+    INPUT_TEXT = "text",
+    INPUT_QUERY_PARAM = "queryParamInput",
+    INPUT_SCOPE = "scopeInput",
 }
 
 export enum FieldButtonTypes {
