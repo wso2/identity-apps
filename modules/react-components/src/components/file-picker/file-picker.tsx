@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -968,15 +968,14 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
     ];
 
     static readonly KILOBYTE: number = 1e+3;
-    static readonly MAX_FILE_SIZE: number = 250 * CSVFileStrategy.KILOBYTE;
+    static readonly DEFAULT_MAX_FILE_SIZE: number = 250 * CSVFileStrategy.KILOBYTE;
 
     mimeTypes: string[];
+    maxSize: number;
 
-    constructor(mimeTypes?: string[]) {
-        if (!mimeTypes || mimeTypes.length === 0)
-            this.mimeTypes = CSVFileStrategy.DEFAULT_MIMES;
-        else
-            this.mimeTypes = mimeTypes;
+    constructor(mimeTypes?: string[], maxSize?: number) {
+        this.mimeTypes = mimeTypes && mimeTypes.length > 0 ? mimeTypes : CSVFileStrategy.DEFAULT_MIMES;
+        this.maxSize = maxSize || CSVFileStrategy.DEFAULT_MAX_FILE_SIZE;
     }
 
     async serialize(data: File | string): Promise<CSVResult> {
@@ -1025,10 +1024,10 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 }
     
                 // Check file size.
-                if (data.size > CSVFileStrategy.MAX_FILE_SIZE) {
+                if (data.size > this.maxSize) {
                     reject({
                         errorMessage: `File exceeds max size of 
-                        ${CSVFileStrategy.MAX_FILE_SIZE / CSVFileStrategy.KILOBYTE} KB`,
+                        ${this.maxSize / CSVFileStrategy.KILOBYTE} KB`,
                         valid: false
                     });
 
