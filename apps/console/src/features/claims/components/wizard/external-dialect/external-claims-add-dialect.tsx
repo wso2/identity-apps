@@ -170,7 +170,9 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
         switch (attributeType) {
             case ClaimManagementConstants.SCIM:
                 return `${claimDialectURI}:${claimURIValue}`;
-            case ClaimManagementConstants.OIDC || ClaimManagementConstants.OTHERS:
+            case ClaimManagementConstants.OIDC:
+            case ClaimManagementConstants.OPENID:
+            case ClaimManagementConstants.OTHERS:
                 return claimURIValue;
             default:
                 return `${claimDialectURI}/${claimURIValue}`;
