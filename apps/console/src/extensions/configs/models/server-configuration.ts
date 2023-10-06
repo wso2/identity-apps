@@ -27,6 +27,7 @@ export interface ServerConfigurationConfig {
     connectorPropertiesToShow: string[];
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];
+    connectorStatusViewDisabledConnectorIDs: string[];
     intendSettings: boolean;
     renderConnector: (
         connector: GovernanceConnectorInterface,

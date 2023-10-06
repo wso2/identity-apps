@@ -28,6 +28,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "../../../../features/server-configurations/models";
+import { serverConfigurationConfig } from "../../../configs";
 
 /**
  * Prop types for the edit connector component.
@@ -38,12 +39,6 @@ interface EditConnectorProps extends TestableComponentInterface {
     categoryID: string;
     onUpdate: () => void;
 }
-
-const enableOptionDisabledConnectorIDs: string[] = [
-    ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
-    ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
-    ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
-];
 
 /**
  * Edit connector component.
@@ -72,7 +67,7 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
     useEffect(() => {
         if (connector) {
             // Remove enable option UI elements for connectors that are not allowed to be disabled.
-            if (enableOptionDisabledConnectorIDs.includes(connector.id)) return;
+            if (serverConfigurationConfig.connectorStatusViewDisabledConnectorIDs.includes(connector.id)) return;
 
             const enableProperty: ConnectorPropertyInterface = connector.properties.find(
                 (property: ConnectorPropertyInterface) => property.name === connectorToggleName);

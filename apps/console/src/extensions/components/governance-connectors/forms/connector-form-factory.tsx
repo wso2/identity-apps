@@ -27,6 +27,7 @@ import { IdleAccountSuspendConfigurationForm } from "./idle-account-suspend-form
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { MultiAttributeLoginConfigurationForm } from "./multi-attribute-login-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
+import { PasswordResetConfigurationForm } from "./password-reset-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UserClaimUpdateConfigurationForm } from "./user-claim-update-form";
 import { AppState, FeatureConfigInterface } from "../../../../features/core";
@@ -181,6 +182,16 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
             return (
                 <MultiAttributeLoginConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID:
+            return (
+                <PasswordResetConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }

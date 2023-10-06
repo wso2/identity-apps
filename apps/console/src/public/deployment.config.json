@@ -217,6 +217,11 @@
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
+            "accountManagement": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
             "administrators": {
                 "disabledFeatures": [],
                 "enabled": true,

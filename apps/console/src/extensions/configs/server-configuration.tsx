@@ -52,6 +52,12 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "Recovery.NotifySuccess",
         "Recovery.ExpiryTime"
     ],
+    connectorStatusViewDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
+        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
+        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID,
+        ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID
+    ],
     connectorToggleName: {
         "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
         "account.disable.handler": ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE,
@@ -65,6 +71,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "account-recovery",
         "account.disable.handler",
         "account.lock.handler",
+        "admin-forced-password-reset",
         "elastic-analytics-engine",
         "multiattribute.login.handler",
         "pii-controller",

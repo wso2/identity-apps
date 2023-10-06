@@ -901,7 +901,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: {
                             icon: getSidePanelIcons().insights
                         },
-                        id: "other-settings",
+                        id: "otherSettings",
                         name: "Other Settings",
                         order: 20,
                         path: AppConstants.getPaths()
@@ -993,6 +993,32 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                     ),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/governance-connectors/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "password-reset",
+                                name: "Password Reset",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() =>
@@ -1005,7 +1031,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             icon: getSidePanelIcons()
                                 .connectors[ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID]
                         },
-                        id: "account-management",
+                        id: "accountManagement",
                         name: "Account Management",
                         order: 21,
                         path: AppConstants.getPaths()
@@ -1014,6 +1040,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 ":id",
                                 ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
                             ),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.sessionManagement",
+                        component: lazy(() => import("../../session-management/pages/session-management")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().userStore
+                        },
+                        id: "sessionManagement",
+                        name: "Session Management",
+                        order: 22,
+                        path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -1433,20 +1473,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 name: "console:manage.features.sidePanel.userstores",
                 order: 9,
                 path: AppConstants.getPaths().get("USERSTORES"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                component: lazy(() => import("../../session-management/pages/session-management")),
-                exact: true,
-                icon: {
-                    icon: getSidePanelIcons().userStore
-                },
-                id: "sessionManagement",
-                name: "Session Management",
-                order: 22,
-                path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                 protected: true,
                 showOnSidePanel: true
             }
