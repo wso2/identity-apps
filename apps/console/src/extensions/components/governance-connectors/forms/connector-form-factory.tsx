@@ -25,6 +25,7 @@ import { AnalyticsConfigurationForm } from "./analytics-form";
 import { ConsentInformationControllerConfigurationForm } from "./consent-information-controller-form";
 import { IdleAccountSuspendConfigurationForm } from "./idle-account-suspend-form";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
+import { MultiAttributeLoginConfigurationForm } from "./multi-attribute-login-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UserClaimUpdateConfigurationForm } from "./user-claim-update-form";
@@ -170,6 +171,16 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID:
             return (
                 <AccountDisableConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+            return (
+                <MultiAttributeLoginConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
