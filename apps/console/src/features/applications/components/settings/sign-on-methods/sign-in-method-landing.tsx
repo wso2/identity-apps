@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,7 +34,8 @@ import { LoginFlowTypes } from "../../../models";
 /**
  * Prop-types for the sign in methods landing component.
  */
-interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * Is the application info request loading.
      */
@@ -66,7 +67,13 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
 export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInterface> = (
     props: SignInMethodLandingPropsInterface
 ): ReactElement => {
-    const { isLoading, onLoginFlowSelect, hiddenOptions, [ "data-testid" ]: testId, clientId } = props;
+    const {
+        isLoading,
+        onLoginFlowSelect,
+        hiddenOptions,
+        clientId,
+        [ "data-componentid" ]: componentId
+    } = props;
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
@@ -77,7 +84,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     return (
-        <Segment basic loading={ isLoading } data-testid={ testId } className="sign-in-method-landing">
+        <Segment
+            data-componentid={ componentId }
+            loading={ isLoading }
+            className="sign-in-method-landing"
+            basic
+        >
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
@@ -103,7 +115,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     </Heading>
                                     <InfoCard
                                         fluid
-                                        data-testid="basic-configuration-flow-card"
+                                        data-componentid="basic-configuration-flow-card"
                                         image={ getAuthenticatorIcons().basic }
                                         imageSize="mini"
                                         header={ t(
@@ -136,7 +148,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_TOTP) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="totp-mfa-flow-card"
+                                    data-componentid="totp-mfa-flow-card"
                                     image={ getAuthenticatorIcons().totp }
                                     imageSize="mini"
                                     header={ t(
@@ -161,7 +173,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             { !hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="email-otp-mfa-flow-card"
+                                    data-componentid="email-otp-mfa-flow-card"
                                     image={ getAuthenticatorIcons().emailOTP }
                                     imageSize="mini"
                                     header={ t(
@@ -187,7 +199,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     orgType !== OrganizationType.SUBORGANIZATION) && (
                                     <InfoCard
                                         fluid
-                                        data-testid="sms-otp-mfa-flow-card"
+                                        data-componentid="sms-otp-mfa-flow-card"
                                         image={ getAuthenticatorIcons().smsOTP }
                                         imageSize="mini"
                                         header={ t(
@@ -227,7 +239,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 ) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="usernameless-flow-card"
+                                    data-componentid="usernameless-flow-card"
                                     image={ getAuthenticatorIcons().fido }
                                     imageSize="mini"
                                     header={
@@ -258,7 +270,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 ) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="magic-link-flow-card"
+                                    data-componentid="magic-link-flow-card"
                                     image={ getAuthenticatorIcons().magicLink }
                                     imageSize="mini"
                                     header={ t(
@@ -288,7 +300,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 ) && (
                                 <InfoCard
                                     fluid
-                                    data-testid="email-otp-flow-card"
+                                    data-componentid="email-otp-flow-card"
                                     image={ getAuthenticatorIcons().emailOTP }
                                     imageSize="mini"
                                     header={ t(
@@ -328,7 +340,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     { !hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) && (
                                         <InfoCard
                                             fluid
-                                            data-testid="google-login-flow-card"
+                                            data-componentid="google-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().google }
                                             header={ t(
@@ -355,7 +367,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     { !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) && (
                                         <InfoCard
                                             fluid
-                                            data-testid="github-login-flow-card"
+                                            data-componentid="github-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().github }
                                             header={ t(
@@ -375,7 +387,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     { !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) && (
                                         <InfoCard
                                             fluid
-                                            data-testid="facebook-login-flow-card"
+                                            data-componentid="facebook-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().facebook }
                                             header={ t(
@@ -395,7 +407,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     { !hiddenOptions.includes(LoginFlowTypes.MICROSOFT_LOGIN) && (
                                         <InfoCard
                                             fluid
-                                            data-testid="microsoft-login-flow-card"
+                                            data-componentid="microsoft-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().microsoft }
                                             header={ t(
@@ -421,7 +433,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     { !hiddenOptions.includes(LoginFlowTypes.APPLE_LOGIN) && (
                                         <InfoCard
                                             fluid
-                                            data-testid="apple-login-flow-card"
+                                            data-componentid="apple-login-flow-card"
                                             imageSize="mini"
                                             image={ getAuthenticatorIcons().apple }
                                             header={
@@ -452,6 +464,6 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
  * Default props for the Application Sign-in method landing component.
  */
 SignInMethodLanding.defaultProps = {
-    "data-testid": "sign-in-method-landing",
+    "data-componentid": "sign-in-method-landing",
     hiddenOptions: [ LoginFlowTypes.FACEBOOK_LOGIN, LoginFlowTypes.GITHUB_LOGIN ]
 };

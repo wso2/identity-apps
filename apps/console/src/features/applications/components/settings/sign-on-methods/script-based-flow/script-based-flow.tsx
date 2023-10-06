@@ -20,7 +20,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -81,7 +81,7 @@ import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 /**
  * Proptypes for the adaptive scripts component.
  */
-interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
+interface AdaptiveScriptsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -140,7 +140,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         authenticationSteps,
         isDefaultScript,
         onAdaptiveScriptReset,
-        ["data-testid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -771,8 +771,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     size="micro"
                                     hoverType="rounded"
                                     icon={ getOperationIcons().keyIcon }
-                                    data-testid={
-                                        `${ testId }-code-editor-secret-selection`
+                                    data-componentid={
+                                        `${ componentId }-code-editor-secret-selection`
                                     }
                                 />
                             </div>
@@ -799,7 +799,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     {
                         secretList.length > 0 && (
                             <Input
-                                data-testid={ `${testId}-secret-search` }
+                                data-componentid={ `${ componentId }-secret-search` }
                                 icon="search"
                                 iconPosition="left"
                                 className="search"
@@ -819,7 +819,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         )
                     }
                     <Dropdown.Menu
-                        data-testid={ `${ testId }-secret-list` }
+                        data-componentid={ `${ componentId }-secret-list` }
                         scrolling
                         className={ "custom-dropdown" }
                     >
@@ -856,7 +856,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 onClick={ () => {
                                                     handleSecretDelete(secret);
                                                 } }
-                                                data-testid={ `${ testId }-secret-delete` }
+                                                data-componentid={ `${ componentId }-secret-delete` }
                                             />
                                             <GenericIcon
                                                 defaultIcon
@@ -880,7 +880,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 onClick={ () => {
                                                     addSecretToScript(secret);
                                                 } }
-                                                data-testid={ `${ testId }-secret-add` }
+                                                data-componentid={ `${ componentId }-secret-add` }
                                             />
                                             <Header.Content>
                                                 { secret.secretName }
@@ -895,7 +895,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 ))
                             ) : (
                                 <Dropdown.Item
-                                    data-testid={ `${ testId }-empty-placeholder` }
+                                    data-componentid={ `${ componentId }-empty-placeholder` }
                                     key={ "secretEmptyPlaceholder" }
                                     text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
                                         ".sections.authenticationFlow.sections.scriptBased.secretsList." +
@@ -995,8 +995,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 defaultIcon
                                 size="micro"
                                 icon={ getOperationIcons().openBookIcon }
-                                data-testid={
-                                    `${ testId }-code-editor-open-documentation`
+                                data-componentid={
+                                    `${ componentId }-code-editor-open-documentation`
                                 }
                             />
                             <p>
@@ -1034,10 +1034,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     setShowScriptResetWarning(false);
                     resetAdaptiveScriptTemplateToDefaultHandler();
                 } }
-                data-testid={ `${ testId }-delete-confirmation-modal` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal` }
                 closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
+                <ConfirmationModal.Header data-componentid={ `${ componentId }-reset-confirmation-modal-header` }>
                     { t("console:develop.features.applications.edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.heading") }
@@ -1045,13 +1045,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={ `${ testId }-reset-confirmation-modal-message` }
+                    data-componentid={ `${ componentId }-reset-confirmation-modal-message` }
                 >
                     { t("console:develop.features.applications.edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
+                <ConfirmationModal.Content data-componentid={ `${ componentId }-reset-confirmation-modal-content` }>
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.edit.sections.signOnMethod.sections" +
@@ -1089,10 +1089,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     handleTemplateSelection(selectedAdaptiveAuthTemplate);
                     setSelectedAdaptiveAuthTemplate(undefined);
                 } }
-                data-testid={ `${ testId }-adaptive-script-template-change-confirmation-modal` }
+                data-componentid={ `${ componentId }-adaptive-script-template-change-confirmation-modal` }
                 closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={ `${ testId }-reset-confirmation-modal-header` }>
+                <ConfirmationModal.Header data-componentid={ `${ componentId }-reset-confirmation-modal-header` }>
                     { t("console:develop.features.applications.edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.heading") }
@@ -1100,13 +1100,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={ `${ testId }-reset-confirmation-modal-message` }
+                    data-componentid={ `${ componentId }-reset-confirmation-modal-message` }
                 >
                     { t("console:develop.features.applications.edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${ testId }-reset-confirmation-modal-content` }>
+                <ConfirmationModal.Content data-componentid={ `${ componentId }-reset-confirmation-modal-content` }>
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.edit.sections.signOnMethod.sections" +
@@ -1138,18 +1138,18 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             assertionType="checkbox"
             primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
             secondaryAction={ t("console:develop.features.secrets.modals.deleteSecret.secondaryActionButtonText") }
-            data-testid={ `${ testId }-delete-confirmation-modal` }
+            data-componentid={ `${ componentId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
-            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }>
+                data-componentid={ `${ componentId }-delete-confirmation-modal-message` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
                 { t("console:develop.features.secrets.modals.deleteSecret.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -1160,11 +1160,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             <div className="conditional-auth-section">
                 <SegmentedAccordion
                     fluid
-                    data-testid={ `${ testId }-accordion` }
+                    data-componentid={ `${ componentId }-accordion` }
                     className="conditional-auth-accordion"
                 >
                     <SegmentedAccordion.Title
-                        data-testid={ `${ testId }-accordion-title` }
+                        data-componentid={ `${ componentId }-accordion-title` }
                         active={ isConditionalAuthenticationEnabled }
                         content={ (
                             <>
@@ -1235,7 +1235,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     <SegmentedAccordion.Content
                         active={ isConditionalAuthenticationEnabled }
                         className="conditional-auth-accordion-content"
-                        data-testid={ `${ testId }-accordion-content` }
+                        data-componentid={ `${ componentId }-accordion-content` }
                     >
                         <Sidebar.Pushable className="script-editor-with-template-panel no-border">
                             { !readOnly && (
@@ -1256,7 +1256,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     }
                                     visible={ showAuthTemplatesSidePanel }
                                     readOnly={ readOnly }
-                                    data-testid={ `${ testId }-script-templates-side-panel` }
+                                    data-componentid={ `${ componentId }-script-templates-side-panel` }
                                 />
                             ) }
                             <Sidebar.Pusher>
@@ -1288,8 +1288,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                 onClick={ () => {
                                                                     setIsEditorFullScreen(!isEditorFullScreen);
                                                                 } }
-                                                                data-testid={
-                                                                    `${ testId }-code-editor-fullscreen-toggle`
+                                                                data-componentid={
+                                                                    `${ componentId }-code-editor-fullscreen-toggle`
                                                                 }
                                                             />
                                                         </div>
@@ -1326,7 +1326,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                                         : getOperationIcons().darkMode
                                                                 }
                                                                 onClick={ handleEditorDarkModeToggle }
-                                                                data-testid={ `${ testId }-code-editor-mode-toggle` }
+                                                                data-componentid={
+                                                                    `${ componentId }-code-editor-mode-toggle`
+                                                                }
                                                             />
                                                         </div>
                                                     ) }
@@ -1342,7 +1344,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 <Menu.Item
                                                     onClick={ handleScriptTemplateSidebarToggle }
                                                     className="action hamburger"
-                                                    data-testid={ `${ testId }-script-template-sidebar-toggle` }
+                                                    data-componentid={
+                                                        `${ componentId }-script-template-sidebar-toggle`
+                                                    }
                                                 >
                                                     <Icon name="bars"/>
                                                 </Menu.Item>
@@ -1380,7 +1384,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 exitFullScreen: t("common:exitFullScreen"),
                                                 goFullScreen: t("common:goFullScreen")
                                             } }
-                                            data-testid={ `${ testId }-code-editor` }
+                                            data-componentid={ `${ componentId }-code-editor` }
                                         />
                                     </div>
                                 </div>
@@ -1401,5 +1405,5 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
  * Default props for the script based flow component.
  */
 ScriptBasedFlow.defaultProps = {
-    "data-testid": "script-based-flow"
+    "data-componentid": "script-based-flow"
 };

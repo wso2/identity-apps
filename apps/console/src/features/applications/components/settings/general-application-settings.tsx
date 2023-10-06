@@ -18,7 +18,7 @@
 
 import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -48,7 +48,7 @@ import { GeneralDetailsForm } from "../forms";
  * Proptypes for the applications general details component.
  */
 interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfigInterface>,
-    TestableComponentInterface {
+    IdentifiableComponentInterface {
 
     /**
      * Application access URL.
@@ -139,7 +139,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -278,7 +278,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                     ".subheader")
                             }
                             onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                            data-testid={ `${ testId }-danger-zone` }
+                            data-testid={ `${ componentId }-danger-zone` }
                         />
                     </DangerZoneGroup>
                 </Show>
@@ -314,7 +314,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             hasRequiredScope={ hasRequiredScopes(
                                 featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                                 allowedScopes) }
-                            data-testid={ `${ testId }-form` }
+                            data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
                         />
@@ -332,9 +332,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
-                        data-testid={ `${ testId }-application-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                         primaryActionLoading={ isDeletionInProgress }
+                        data-testid={ `${ componentId }-application-delete-confirmation-modal` }
                     >
                         
                         {
@@ -342,7 +342,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 ? ( 
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." + 
                                                 "deleteChoreoApplication.header") }
@@ -350,13 +352,17 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." + 
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            }
                                         >
                                             <Trans 
                                                 i18nKey= { "console:develop.features.applications.confirmations." + 
@@ -371,7 +377,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 : ( 
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." + 
                                                 "deleteApplication.header") }
@@ -379,13 +387,17 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." + 
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                                            data-testid={ 
+                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." + 
                                                 "deleteApplication.content") }
@@ -408,5 +420,5 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
  * Default props for the application general settings component.
  */
 GeneralApplicationSettings.defaultProps = {
-    "data-testid": "application-general-settings"
+    "data-componentid": "application-general-settings"
 };
