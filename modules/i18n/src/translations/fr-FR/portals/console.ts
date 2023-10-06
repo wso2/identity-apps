@@ -8670,9 +8670,14 @@ export const console: ConsoleNS = {
                                 failed: "Échoué"
                             },
                             alerts: {
-                                bulkImportSuccess: "L'importation groupée s'est terminée avec succès.",
-                                failedImports: "Révision requise.<1>Problèmes rencontrés dans <2>{{failedCount}}</2> " +
-                                    "importations."
+                                importSuccess: {
+                                    description: "Les utilisateurs ont été importés avec succès.",
+                                    message: "Importation réussie"
+                                },
+                                importFailed: {
+                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    message: "Révision requise."
+                                }
                             },
                             advanceSearch: {
                                 placeholder: "Rechercher par nom d'utilisateur"

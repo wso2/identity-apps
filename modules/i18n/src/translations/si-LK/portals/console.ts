@@ -8476,8 +8476,14 @@ export const console: ConsoleNS = {
                                 failed: "අසාර්ථකයි"
                             },
                             alerts: {
-                                bulkImportSuccess: "සමූහ ආනයනය සාර්ථකව නිම කරන ලදී.",
-                                failedImports: "ගැටළු සමාලෝචනය අවශ්‍යයි. {{failedCount}} ආනයන(ය) තුළ ගැටළු ඇති වී ඇත​."
+                                importSuccess: {
+                                    description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                    message: "ආනයනය සාර්ථකයි"
+                                },
+                                importFailed: {
+                                    description: "<1>{{failedCount}}</1> ආනයන තුළ ගැටළු ඇති වී ඇත​.",
+                                    message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
+                                }
                             },
                             advanceSearch: {
                                 placeholder: "පරිශීලක නාමයෙන් සොයන්න"

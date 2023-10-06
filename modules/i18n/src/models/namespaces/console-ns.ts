@@ -5342,8 +5342,8 @@ export interface ConsoleNS {
                                 failed: string;
                             };
                             alerts: {
-                                bulkImportSuccess: string;
-                                failedImports: string;
+                                importSuccess: NotificationItem;
+                                importFailed: NotificationItem;
                             };
                             advanceSearch: {
                                 placeholder: string;

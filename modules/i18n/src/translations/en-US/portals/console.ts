@@ -10342,9 +10342,14 @@ export const console: ConsoleNS = {
                                 failed: "Failed"
                             },
                             alerts: {
-                                bulkImportSuccess: "Bulk import completed successfully.",
-                                failedImports: "Review Required. <1>Issues encountered in <2>{{failedCount}} " +
-                                "import(s) < /2>."
+                                importSuccess: {
+                                    description: "The user accounts were imported successfully.",
+                                    message: "Import Successful"
+                                },
+                                importFailed: {
+                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    message: "Review Required"
+                                }
                             },
                             advanceSearch: {
                                 placeholder: "Search by Username"
