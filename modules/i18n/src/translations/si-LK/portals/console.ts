@@ -4835,8 +4835,8 @@ export const console: ConsoleNS = {
                         heading: "OpenID Connect"
                     },
                     openid: {
-                        description: "පරිශීලක ගුණාංග සඳහා OpenID Net ප්‍රොටෝකෝල නිරූපණය.",
-                        heading: "OpenID Net"
+                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "OpenID"
                     },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",

@@ -6535,8 +6535,8 @@ export const console: ConsoleNS = {
                         heading: "OpenID Connect"
                     },
                     openid: {
-                        description: "The OpenID Net protocol representation for user attributes.",
-                        heading: "OpenID Net"
+                        description: "The OpenID protocol representation for user attributes.",
+                        heading: "OpenID"
                     },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
