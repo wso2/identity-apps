@@ -130,8 +130,8 @@ export class ClaimManagementConstants {
         name: string;
         uri: string;
     }[] = [
-        { name: "Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
-        { name: "Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
+        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
     ];
 
     /**
