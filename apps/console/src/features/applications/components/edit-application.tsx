@@ -614,6 +614,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                isSaasApp={ application.advancedConfigurations?.saas }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 application = { application }

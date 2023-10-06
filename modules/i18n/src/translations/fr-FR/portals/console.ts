@@ -1548,6 +1548,10 @@ export const console: ConsoleNS = {
                                     "leur catalogue d'applications <1>{{ myAccount }}</1>.",
                                 label: "Application découvrable"
                             },
+                            saas: {
+                                hint: "Les applications sont par défaut limitées à l'utilisation par les utilisateurs du locataire du fournisseur de services. Si cette application est compatible SaaS, elle est ouverte à tous les utilisateurs de tous les locataires.",
+                                label: "Application SaaS"
+                            },
                             imageUrl: {
                                 description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +
                                     "afficherons une vignette générée à la place. Taille recommandée: 200x200 pixels",
