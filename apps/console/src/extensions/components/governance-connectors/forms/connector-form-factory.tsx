@@ -20,8 +20,10 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { AccountDisableConfigurationForm } from "./account-disable-form";
 import { AnalyticsConfigurationForm } from "./analytics-form";
 import { ConsentInformationControllerConfigurationForm } from "./consent-information-controller-form";
+import { IdleAccountSuspendConfigurationForm } from "./idle-account-suspend-form";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
@@ -151,6 +153,26 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID:
+            return (
+                <IdleAccountSuspendConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID:
+            return (
+                <AccountDisableConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

@@ -307,6 +307,7 @@ export class ServerConfigurationsConstants {
 		"in the request.";
 
 	// Idle account suspend names.
+	public static readonly IDLE_ACCOUNT_SUSPEND_ENABLE: string = "suspension.notification.enable";
 	public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
 	public static readonly ALERT_SENDING_TIME_PERIODS_IN_DAYS: string = "suspension.notification.delays";
 
@@ -343,7 +344,6 @@ export class ServerConfigurationsConstants {
 	/**
 	 * User Claim Update Connector Constants.
 	 */
-	public static readonly USER_CLAIM_UPDATE_CATEGORY_ID: string = "VXNlciBDbGFpbSBVcGRhdGU";
 	public static readonly EMAIL_VERIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableVerification";
 	public static readonly EMAIL_NOTIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableNotification";
 	public static readonly EMAIL_VERIFICATION_EXPIRY_TIME: string = "UserClaimUpdate.Email.VerificationCode.ExpiryTime";
@@ -353,6 +353,14 @@ export class ServerConfigurationsConstants {
 
 	public static readonly MOBILE_VERIFICATION_EXPIRY_TIME: string =
 		"UserClaimUpdate.MobileNumber.VerificationCode.ExpiryTime";
+
+	/**
+	 * Multi attribute login connector constants.
+	 */
+	public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
+	public static readonly MULTI_ATTRIBUTE_LOGIN_ENABLE: string = "account.multiattributelogin.handler.enable";
+	public static readonly MULTI_ATTRIBUTE_LOGIN_ALLOWED_CLAIM_LIST: string =
+		"account.multiattributelogin.handler.allowedattributes";
 
 	/**
 	 * Extensions Constants.

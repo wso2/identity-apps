@@ -541,6 +541,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE;
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
+            case ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID:
+                return ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_ENABLE;
+            case ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID:
+                return ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE;
+            case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+                return ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE;
             default:
                 return null;
         }

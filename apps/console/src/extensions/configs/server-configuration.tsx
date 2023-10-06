@@ -54,17 +54,23 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     connectorToggleName: {
         "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        "account.disable.handler": ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE,
         "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
         "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
+        "suspension.notification": ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_ENABLE
     },
     connectorsToShow: [
         "account-recovery",
+        "account.disable.handler",
         "account.lock.handler",
         "elastic-analytics-engine",
+        "multiattribute.login.handler",
         "pii-controller",
         "self-sign-up",
         "sso.login.recaptcha",
+        "suspension.notification",
         "user-claim-update"
     ],
     intendSettings: false,
