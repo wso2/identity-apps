@@ -3202,10 +3202,18 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     },
+                    eidas: {
+                        heading: string;
+                        description: string;
+                    },
                     oidc: {
                         heading: string;
                         description: string;
                     };
+                    openidnet: {
+                        heading: string;
+                        description: string;
+                    },
                     scim: {
                         heading: string;
                         description: string;
@@ -3214,6 +3222,10 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
+                    xmlsoap: {
+                        heading: string;
+                        description: string;
+                    },
                 };
                 dialects: {
                     advancedSearch: {
@@ -3279,10 +3291,6 @@ export interface ConsoleNS {
                                 heading: string;
                                 description: string;
                             };
-                            axschema: {
-                                heading: string;
-                                description: string;
-                            }
                             custom: {
                                 heading: string;
                                 description: string;

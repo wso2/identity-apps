@@ -4944,15 +4944,27 @@ export const console: ConsoleNS = {
                             "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
                         heading: "Attributs personnalisés"
                     },
+                    eidas: {
+                        description: "La représentation du protocole eIDAS pour les attributs utilisateur.",
+                        heading: "eIDAS"
+                    },
                     oidc: {
                         description: "Représentation du protocole OpenID Connect pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
+                    openidnet: {
+                        description: "La représentation du protocole OpenID Net pour les attributs utilisateur.",
+                        heading: "OpenID Net"
+                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "Représentation du protocole XML SOAP pour les attributs utilisateur.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -5090,11 +5102,6 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
-                            axschema: {
-                                description: "Le schéma d'échange d'attributs (axschema) définit un protocole "
-                                    + "standardisé pour représenter et échanger les attributs utilisateur.",
-                                heading: "Schéma d'échange d'attributs"
-                            },
                             custom: {
                                 description: "Communiquez des informations sur l'utilisateur via " +
                                     "des mappages personnalisés.",

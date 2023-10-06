@@ -4825,14 +4825,26 @@ export const console: ConsoleNS = {
                         description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "අභිරුචි ගුණාංග"
                     },
+                    eidas: {
+                        description: "පරිශීලක ගුණාංග සඳහා eIDAS ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "eIDAS"
+                    },
                     oidc: {
                         description: "OpenID Connect API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා " +
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
+                    openidnet: {
+                        description: "පරිශීලක ගුණාංග සඳහා OpenID Net ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "OpenID Net"
+                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -4966,11 +4978,6 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
-                            axschema: {
-                                description: "Attribute Exchange Schema (axschema) යනු පරිශීලක තොරතුරු "
-                                    + "නියෝජනය කිරීම සහ හුවමාරු කිරීම සඳහා නිර්මාණය කරන ලද ප්‍රමිතිගත ප්‍රොටෝකෝලයකි.",
-                                heading: "Attribute Exchange Scheme"
-                            },
                             custom: {
                                 description: "අභිරුචි සිතියම්කරණය හරහා පරිශීලකයා පිළිබඳ තොරතුරු සන්නිවේදනය කරන්න.",
                                 heading: "අභිරුචි ගුණාංග සිතියම්ගත කිරීම"

@@ -6525,15 +6525,27 @@ export const console: ConsoleNS = {
                             + "attributes.",
                         heading: "Custom Attributes"
                     },
+                    eidas: {
+                        description: "The eIDAS protocol representation for user attributes.",
+                        heading: "eIDAS"
+                    },
                     oidc: {
                         description: "The OpenID Connect (OIDC) protocol representation for user "
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
+                    openidnet: {
+                        description: "The OpenID Net protocol representation for user attributes.",
+                        heading: "OpenID Net"
+                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
+                    },
+                    xmlsoap: {
+                        description: "The XML SOAP protocol representation for user attributes.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -6669,11 +6681,6 @@ export const console: ConsoleNS = {
                     },
                     sections: {
                         manageAttributeMappings: {
-                            axschema: {
-                                description: "The Attribute Exchange Schema (axschema) defines a standardized "
-                                    + "protocol for representing and exchanging user attributes.",
-                                heading: "Attribute Exchange Schema"
-                            },
                             custom: {
                                 description: "Communicate information about the user via custom mappings.",
                                 heading: "Custom Attribute Mapping"
