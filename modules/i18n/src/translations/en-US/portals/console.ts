@@ -6534,7 +6534,7 @@ export const console: ConsoleNS = {
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
-                    openidnet: {
+                    openid: {
                         description: "The OpenID Net protocol representation for user attributes.",
                         heading: "OpenID Net"
                     },

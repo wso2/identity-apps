@@ -75,7 +75,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ openidnetAttributeMappings, setOpenidnetAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ openidAttributeMappings, setOpenidAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ xmlsoapAttributeMappings, setXmlsoapAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
 
@@ -122,7 +122,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 const scim: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
                 const eidas: ClaimDialect[] = [];
-                const openidnet: ClaimDialect[] =[];
+                const openid: ClaimDialect[] =[];
                 const xmlsoap: ClaimDialect[] = [];
                 const others: ClaimDialect[] = [];
 
@@ -137,8 +137,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
                         (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                         eidas.push(attributeMapping);
-                    } else if (ClaimManagementConstants.OPENIDNET_MAPPING === attributeMapping.dialectURI) {
-                        openidnet.push(attributeMapping);
+                    } else if (ClaimManagementConstants.OPENID_MAPPING === attributeMapping.dialectURI) {
+                        openid.push(attributeMapping);
                     } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
                         xmlsoap.push(attributeMapping);
                     } else {
@@ -156,7 +156,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 setScimAttributeMappings(scim);
                 setAxschemaAttributeMappings(axschema);
                 setEidasAttributeMappings(eidas);
-                setOpenidnetAttributeMappings(openidnet);
+                setOpenidAttributeMappings(openid);
                 setXmlsoapAttributeMappings(xmlsoap);
                 setOtherAttributeMappings(others);
             })
@@ -707,10 +707,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
-                                openidnetAttributeMappings?.length > 0 && (
+                                openidAttributeMappings?.length > 0 && (
                                     <EmphasizedSegment
                                         className="clickable"
-                                        data-testid={ `${ testId }-openidnet-dialect-container` }
+                                        data-testid={ `${ testId }-openid-dialect-container` }
                                     >
                                         <List>
                                             <List.Item
@@ -718,7 +718,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                     history.push(
                                                         AppConstants.getPaths()
                                                             .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.OPENIDNET)
+                                                            .replace(":type", ClaimManagementConstants.OPENID)
                                                     );
                                                 } }
                                             >
@@ -729,7 +729,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 transparent
                                                                 verticalAlign="middle"
                                                                 rounded
-                                                                icon={ getTechnologyLogos().openidnet }
+                                                                icon={ getTechnologyLogos().openid }
                                                                 spaced="right"
                                                                 size="mini"
                                                                 floated="left"
@@ -738,7 +738,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "openidnet.heading"
+                                                                    "openid.heading"
                                                                 ) }
                                                             </List.Header>
                                                             <List.Description
@@ -747,7 +747,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 { t(
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
-                                                                    "openidnet.description"
+                                                                    "openid.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>

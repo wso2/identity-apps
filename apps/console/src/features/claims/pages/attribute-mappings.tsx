@@ -174,9 +174,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "console:manage.features.claims.attributeMappings.eidas.heading"
                     );
-                case ClaimManagementConstants.OPENIDNET:
+                case ClaimManagementConstants.OPENID:
                     return t(
-                        "console:manage.features.claims.attributeMappings.openidnet.heading"
+                        "console:manage.features.claims.attributeMappings.openid.heading"
                     );
                 case ClaimManagementConstants.XMLSOAP:
                     return t(
@@ -222,8 +222,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t("console:manage.features.claims.attributeMappings.axschema.description");
                 case ClaimManagementConstants.EIDAS:
                     return t("console:manage.features.claims.attributeMappings.eidas.description");
-                case ClaimManagementConstants.OPENIDNET:
-                    return t("console:manage.features.claims.attributeMappings.openidnet.description");
+                case ClaimManagementConstants.OPENID:
+                    return t("console:manage.features.claims.attributeMappings.openid.description");
                 case ClaimManagementConstants.XMLSOAP:
                     return t("console:manage.features.claims.attributeMappings.xmlsoap.description");
                 default:
@@ -285,12 +285,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             floated="left"
                         />
                     );
-                case ClaimManagementConstants.OPENIDNET:
+                case ClaimManagementConstants.OPENID:
                     return (
                         <GenericIcon
                             verticalAlign="middle"
                             rounded
-                            icon={ getTechnologyLogos().openidnet }
+                            icon={ getTechnologyLogos().openid }
                             spaced="right"
                             size="tiny"
                             floated="left"
@@ -364,8 +364,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.EIDAS && attributeMappings.push(attributeMapping);
-                        } else if (ClaimManagementConstants.OPENIDNET_MAPPING === attributeMapping.dialectURI) {
-                            type === ClaimManagementConstants.OPENIDNET && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.OPENID_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.OPENID && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
                             type === ClaimManagementConstants.XMLSOAP && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {

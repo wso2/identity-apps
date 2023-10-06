@@ -4834,7 +4834,7 @@ export const console: ConsoleNS = {
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
-                    openidnet: {
+                    openid: {
                         description: "පරිශීලක ගුණාංග සඳහා OpenID Net ප්‍රොටෝකෝල නිරූපණය.",
                         heading: "OpenID Net"
                     },

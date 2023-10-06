@@ -3210,7 +3210,7 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    openidnet: {
+                    openid: {
                         heading: string;
                         description: string;
                     },

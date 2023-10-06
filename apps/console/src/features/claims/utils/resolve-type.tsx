@@ -37,8 +37,8 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return "Axschema";
         case ClaimManagementConstants.EIDAS:
             return "eIDAS";
-        case ClaimManagementConstants.OPENIDNET:
-            return "OpenID Net";
+        case ClaimManagementConstants.OPENID:
+            return "OpenID";
         case ClaimManagementConstants.XMLSOAP:
             return "XML SOAP";
         default:

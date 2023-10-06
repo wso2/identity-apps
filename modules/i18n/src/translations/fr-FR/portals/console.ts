@@ -4953,7 +4953,7 @@ export const console: ConsoleNS = {
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
-                    openidnet: {
+                    openid: {
                         description: "La représentation du protocole OpenID Net pour les attributs utilisateur.",
                         heading: "OpenID Net"
                     },
