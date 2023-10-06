@@ -140,6 +140,19 @@ export enum BlockedBulkUserImportAttributes {
 
 /**
  * @readonly
+ * @typeParam string - Types of attributes that should be handled manually.
+ */
+export enum SpecialMultiValuedComplexAttributes {
+    Emails = "emails",
+    PhoneNumbers = "phoneNumbers",
+    Photos = "photos",
+    Addresses = "addresses",
+    Entitlements = "entitlements",
+    X509Certificates = "x509Certificates"
+}
+
+/**
+ * @readonly
  * @typeParam string - Types of attributes that are required for bulk import.
  */
 export enum RequiredBulkUserImportAttributes {

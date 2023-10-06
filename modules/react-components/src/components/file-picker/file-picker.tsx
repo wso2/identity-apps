@@ -1029,8 +1029,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 // Check file size.
                 if (data.size > this.maxSize) {
                     reject({
-                        errorMessage: `File exceeds max size of 
-                        ${this.maxSize / CSVFileStrategy.KILOBYTE} KB`,
+                        errorMessage: `File exceeds max size of ${this.maxSize / CSVFileStrategy.KILOBYTE} KB.`,
                         valid: false
                     });
 
@@ -1056,20 +1055,20 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
                         if (actualRowCount > this.maxRowCount) {
                             reject({
-                                errorMessage: `Row count exceeds max limit of ${this.maxRowCount}`,
+                                errorMessage: `Row count exceeds max limit of ${this.maxRowCount}.`,
                                 valid: false
                             });
-                            throw `Row count exceeds max limit of ${this.maxRowCount}`;
+                            throw `Row count exceeds max limit of ${this.maxRowCount}.`;
                         }
 
                         if (lines.length > 0 && lines[0] !== "" && lines[0].split(",").length > 0) {
                             resolve({ valid: true });
                         } else {
-                            throw "CSV file is empty or invalid";
+                            throw "CSV file is empty or invalid.";
                         }
                     } catch (error) {
                         reject({
-                            errorMessage: error ?? "CSV file has errors",
+                            errorMessage: error ?? "CSV file has errors.",
                             valid: false
                         });
                     }

@@ -536,7 +536,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         mutateUserListFetchRequest();
     };
 
-
     return (
         <PageLayout
             pageTitle="Users"

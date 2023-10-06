@@ -163,10 +163,10 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
 /**
  * Bulk add users.
  * 
- * @param data SCIM2.0 compliant request body
+ * @param data - SCIM2.0 compliant request body
  * @returns a promise containing the response.
  */
-export const bulkAddUsers = (data: any): Promise<any> => {
+export const bulkAddUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -184,7 +184,7 @@ export const bulkAddUsers = (data: any): Promise<any> => {
         .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Delete user.
