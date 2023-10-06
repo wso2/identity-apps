@@ -210,7 +210,7 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         // oidc standard app template
         [ "custom-application" ]: [
