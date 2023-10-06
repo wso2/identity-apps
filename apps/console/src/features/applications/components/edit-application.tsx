@@ -894,7 +894,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     && hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.update, allowedScopes)
                     && orgType !== OrganizationType.SUBORGANIZATION
-                    && ![ "CONSOLE","MY_ACCOUNT" ].includes(application?.clientId)) {
+                    && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
