@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -145,7 +145,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../identity-providers/pages/identity-provider-template")
+                                    import("../../connections/pages/connection-templates")
                                 ),
                                 exact: true,
                                 icon: {
@@ -158,7 +158,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
+                                component: lazy(() => 
+                                    import("../../connections/pages/connection-edit")
+                                ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -170,7 +172,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../identity-providers/pages/identity-providers")),
+                        component: lazy(() => import("../../connections/pages/connections")),
                         exact: true,
                         icon: {
                             icon: identityProviderConfig?.useNewConnectionsView
@@ -183,6 +185,51 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             : "console:develop.features.sidePanel.identityProviders",
                         order: 3,
                         path: AppConstants.getPaths().get("IDP"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "console:develop.features.sidePanel.categories.application",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import("../../identity-verification-providers/pages/" +
+                                    "identity-verification-provider-template")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "identityVerificationProviderTemplate",
+                                name: "Identity Verification Provider Templates",
+                                path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import(
+                                    "../../identity-verification-providers/pages/identity-verification-provider-edit")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "identityVerificationProvidersEdit",
+                                name: "Identity Verification Providers Edit",
+                                path: AppConstants.getPaths().get("IDVP_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(
+                            () => import("../../identity-verification-providers/pages/identity-verification-providers")
+                        ),
+                        exact: true,
+                        icon: { icon: getSidePanelIcons().identityVerificationProviders },
+                        id: "identityVerificationProviders",
+                        name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+                        order: 4,
+                        path: AppConstants.getPaths().get("IDVP"),
                         protected: true,
                         showOnSidePanel: true
                     },

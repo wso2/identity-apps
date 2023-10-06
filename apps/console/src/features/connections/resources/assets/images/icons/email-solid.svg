@@ -1,0 +1,30 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="email-solid-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24.654 18.49">
+    <g id="Group_1011">
+        <g id="Group_1010">
+            <path id="Path_374"
+                  d="M7.1,65.5c3.384,2.866,9.321,7.907,11.066,9.479a1.031,1.031,0,0,0,1.491,0C21.4,73.408,27.336,68.366,30.72,65.5a.513.513,0,0,0,.072-.709A2.04,2.04,0,0,0,29.18,64H8.635a2.04,2.04,0,0,0-1.612.792A.513.513,0,0,0,7.1,65.5Z"
+                  transform="translate(-6.581 -64)" fill="#464646"/>
+            <path id="Path_375"
+                  d="M24.356,126.455a.556.556,0,0,0-.548.067c-3.752,2.865-8.542,7.538-10.048,8.761a2.249,2.249,0,0,1-2.867,0c-1.606-1.3-6.984-6.421-10.047-8.76a.56.56,0,0,0-.548-.067.463.463,0,0,0-.3.42v11.634a1.962,1.962,0,0,0,2.055,1.85H22.6a1.962,1.962,0,0,0,2.054-1.85V126.874A.462.462,0,0,0,24.356,126.455Z"
+                  transform="translate(0 -121.869)" fill="#464646"/>
+        </g>
+    </g>
+</svg>

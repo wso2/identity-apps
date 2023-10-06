@@ -29,3 +29,17 @@ export interface VisualEditorFlowNodeMetaInterface {
      */
     width: number;
 }
+
+/**
+ * Authenticator data of actions of step option.
+ */
+export interface StepOptionActionsDataInterface {
+    /**
+     * Autenticator to be added.
+     */
+    toAdd?: string;
+    /**
+     * Autenticator to be removed.
+     */
+    toRemove?: string;
+}

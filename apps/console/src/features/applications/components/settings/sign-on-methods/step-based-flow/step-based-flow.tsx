@@ -484,7 +484,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 // If the step that the deleting authenticator has no other first factors or handlers,
                 // start evaluation other options.
                 if ((onlySecondFactorsRequiringHandlersOnRight && secondFactorHandlersInTheStep <= 1)
-                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1)) {
+                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1 
+                    && isDeletingOptionFirstFactor)) {
 
                     // If there is TOTP or Email OTP on the right, evaluate if the left side has necessary handlers.
                     // Else check if there are first factors on the left.

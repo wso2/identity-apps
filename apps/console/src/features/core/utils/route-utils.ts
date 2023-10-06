@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -460,7 +460,7 @@ export class RouteUtils {
             (group: NavRouteInterface[]) => ({
                 icon: { icon: group[0]?.parent?.icon },
                 id: group[0]?.parent?.id,
-                items: group,
+                items: sortBy(group, (item: NavRouteInterface) => item.order),
                 name: group[0]?.parent?.name,
                 navCategory: group[0]?.navCategory,
                 order: group[0]?.parent?.order,

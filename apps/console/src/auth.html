@@ -131,6 +131,7 @@
                 animation-iteration-count: infinite;
             }
         </style>
+        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
         <script>
             function preLoaderResolver() {
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
@@ -152,8 +153,8 @@
                 var userAccessedPath = window.location.href;
                 var applicationDomain = window.location.origin;
 
-                var userTenant = userAccessedPath.split("/t/")[1]
-                    ? userAccessedPath.split("/t/")[1].split("/")[0]
+                var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1]
+                    ? userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0]
                     : null;
                 userTenant = userTenant ? userTenant.split("?")[0] : null;
                 var utype = userAccessedPath.split("utype=")[1]
@@ -162,7 +163,7 @@
 
                 const urlParams = new URLSearchParams(window.location.search);
 
-                var serverOrigin = "https://api.asg.io";
+                var serverOrigin = startupConfig.serverUrl;
                 var authorizationCode = urlParams.get("code");
                 var authSessionState = urlParams.get("session_state");
 
@@ -177,8 +178,6 @@
                         return serverOrigin;
                     }
 
-                    var orgPrefix = "o";
-
                     /**
                      * Get the organization name.
                      *
@@ -189,7 +188,7 @@
                         const pathChunks = path.split("/");
 
                         const orgPrefixIndex = pathChunks.indexOf(
-                            orgPrefix
+                            startupConfig.orgPrefix
                         );
 
                         if (orgPrefixIndex !== -1) {
@@ -206,7 +205,7 @@
                      */
                     function getOrganizationPath() {
                         return getOrganizationName() !== ""
-                            ? "/" + orgPrefix + "/" + getOrganizationName()
+                            ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
                             : "";
                     }
 
@@ -225,18 +224,18 @@
                         endpoints: {
                             authorizationEndpoint: getApiPath(
                                 userTenant
-                                    ? "/t/a/oauth2/authorize?ut=" +
+                                    ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut=" +
                                         userTenant.replace(/\/+$/, "") +
                                         (utype ? "&utype=" + utype : "")
-                                    : "/t/a/oauth2/authorize"
+                                    : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"
                             ),
                             clockTolerance: 300,
                             jwksEndpointURL: undefined,
                             logoutEndpointURL: getApiPath(
-                                "/t/a/oidc/logout"
+                                "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"
                             ),
                             oidcSessionIFrameEndpointURL: getApiPath(
-                                "/t/a/oidc/checksession"
+                                "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"
                             ),
                             tokenEndpointURL: undefined,
                             tokenRevocationEndpointURL: undefined

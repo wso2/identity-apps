@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -614,6 +614,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                isSaasApp={ application.advancedConfigurations?.saas }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 application = { application }
@@ -886,15 +887,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                   });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
                  && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
                     && !isFragmentApp
                     && applicationConfig.editApplication.showApplicationShare
                     && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                     && hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.update, allowedScopes)
-                    && orgType !== OrganizationType.SUBORGANIZATION) {
-
+                    && orgType !== OrganizationType.SUBORGANIZATION
+                    && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
