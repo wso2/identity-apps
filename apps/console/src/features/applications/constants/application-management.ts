@@ -33,6 +33,8 @@ export class ApplicationManagementConstants {
     public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
+    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -61,6 +63,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
+        .set("APPLICATION_SHARED_ACCESS", "applications.edit.sharedAccess")
         .set("APPLICATION_EDIT_INFO", "applications.edit.info");
 
     /**
