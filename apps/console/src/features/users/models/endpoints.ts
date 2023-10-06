@@ -32,7 +32,7 @@ export interface UsersResourceEndpointsInterface {
 /**
  * Interface for the SCIM bulk operation.
  */
-export interface SCIMBulkOperation {
+export interface SCIMBulkResponseOperation {
     bulkId: string;
     method: string;
     location: string;
@@ -42,10 +42,18 @@ export interface SCIMBulkOperation {
     response?: string;
 }
 
+export interface SCIMBulkOperation {
+    method: string;
+    bulkId: string;
+    path: string;
+    data: any;
+}
+
 /**
  * Interface for the SCIM bulk endpoint.
  */
 export interface SCIMBulkEndpointInterface {
+    failOnErrors: number;
     schemas: string[];
     Operations: SCIMBulkOperation[];
 }

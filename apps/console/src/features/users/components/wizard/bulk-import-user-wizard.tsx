@@ -49,13 +49,16 @@ import { bulkAddUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
     BulkUserImportStatus,
-    RequiredBulkUserImportAttributes
+    RequiredBulkUserImportAttributes,
+    SpecialMultiValuedComplexAttributes
 } from "../../constants";
 import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
     BulkUserImportOperationStatus,
-    SCIMBulkOperation
+    SCIMBulkEndpointInterface,
+    SCIMBulkOperation,
+    SCIMBulkResponseOperation
 } from "../../models";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
@@ -67,20 +70,6 @@ interface BulkImportUserInterface extends TestableComponentInterface {
     userstore: string;
     ["data-componentid"]?: string;
 }
-
-interface SCIMOperation {
-    method: string;
-    bulkId: string;
-    path: string;
-    data: any;
-}
-
-interface SCIMRequestBody {
-    failOnErrors: number;
-    schemas: string[];
-    Operations: SCIMOperation[];
-}
-
 interface CSVAttributeMapping {
     attributeName: string;
     mappedLocalClaimURI: string;
@@ -461,8 +450,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const isMultiValued: boolean = scimAttribute.includes("#");
 
             // Handle username attribute.
-            if (scimAttribute === "userName") {
-                dataObj["userName"] = userstore && userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+            if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                dataObj[RequiredBulkUserImportAttributes.USERNAME] = userstore &&
+                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? `${userstore}/${attributeValue}`
                     : attributeValue;
                 
@@ -479,20 +469,19 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 continue;
             }
             
-            // These attributes are handled separately.
-            const attrTypes: string[] = [ "emails", "phoneNumbers", "photos", "addresses", "entitlements",
-                "x509Certificates" ];
+            // Usage in your existing code
+            const specialMultiValuedComplex: SpecialMultiValuedComplexAttributes | undefined =
+                Object.values(SpecialMultiValuedComplexAttributes).find(
+                    (attrType: string) => scimAttribute.includes(attrType)
+                );
 
-            const matchingAttrType: string = attrTypes.find((attrType: string) => scimAttribute.includes(attrType));
-
-            // Check if scimAttribute contains any of the attrTypes
-            if (!isMultiValued && matchingAttrType) {
-                const info: MultiValuedComplexAttribute = scimAttribute.includes(matchingAttrType + ".")
+            if (!isMultiValued && specialMultiValuedComplex) {
+                const info: MultiValuedComplexAttribute = scimAttribute.includes(specialMultiValuedComplex + ".")
                     ? { type: scimAttribute.split(".")[1], value: attributeValue }
                     : { primary: true, value: attributeValue };
 
-                dataObj[matchingAttrType] = dataObj[matchingAttrType] || [];
-                dataObj[matchingAttrType].push(info);
+                dataObj[specialMultiValuedComplex] = dataObj[specialMultiValuedComplex] || [];
+                dataObj[specialMultiValuedComplex].push(info);
 
                 continue;
                 
@@ -555,7 +544,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 continue;
             }
-
         }
 
         return {
@@ -576,11 +564,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         row: string[],
         filteredAttributeMapping: CSVAttributeMapping[],
         headers: string[]
-    ): SCIMOperation => {
+    ): SCIMBulkOperation => {
         const asyncOperationID: string = uuidv4();
 
         return {
-            bulkId: `bulkId.${row[headers.indexOf("username")]}.${asyncOperationID}`,
+            bulkId: `bulkId:${row[headers.indexOf("username")]}:${asyncOperationID}`,
             data: generateData(row, filteredAttributeMapping, headers),
             method: "POST",
             path: "/Users"
@@ -591,15 +579,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Generate SCIM Bulk Request Body
      *
      * @param attributeMapping - attribute mapping.
-     * @returns SCIMRequestBody
+     * @returns SCIMBulkRequestBody
      */
-    const generateSCIMRequestBody = (attributeMapping: CSVAttributeMapping[]): SCIMRequestBody => {
+    const generateSCIMRequestBody = (attributeMapping: CSVAttributeMapping[]): SCIMBulkEndpointInterface => {
         const headers: string[] = userData.headers.map((header: string) => header.toLowerCase());
         const rows: string[][] = userData.items;
 
         const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
 
-        const operations: SCIMOperation[] = rows.map((row: string[]) =>
+        const operations: SCIMBulkOperation[] = rows.map((row: string[]) =>
             generateOperation(row, filteredAttributeMapping, headers));
 
         return {
@@ -630,7 +618,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 return;
             }
 
-            const scimRequestBody: SCIMRequestBody = generateSCIMRequestBody(attributeMapping);
+            const scimRequestBody: SCIMBulkEndpointInterface = generateSCIMRequestBody(attributeMapping);
             
             setShowResponseView(true);
             const scimResponse: any = await bulkAddUsers(scimRequestBody);
@@ -644,7 +632,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             setResponse(response);
         } catch (error) {
             setHasError(true);
-            console.log("Error in bulk",error);
             setAlert({
                 description: t(
                     "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
@@ -661,8 +648,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param operation - SCIM bulk operation.
      * @returns - BulkUserImportOperationResponse
      */
-    const generateBulkResponse = (operation: SCIMBulkOperation): BulkUserImportOperationResponse => {
-        const username: string = operation.bulkId.split(".")[1];
+    const generateBulkResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
+        const username: string = operation.bulkId.split(":")[1];
         const statusCode: number = operation?.status?.code;
 
         const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
