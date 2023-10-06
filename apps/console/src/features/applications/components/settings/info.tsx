@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,6 +40,7 @@ import {
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**
  * Proptypes for the server endpoints details component.
@@ -66,9 +67,9 @@ interface InfoPropsInterface extends LoadableComponentInterface, TestableCompone
 /**
  * Component to include server endpoints details of the application.
  *
- * @param {InfoPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @returns Info component.
  */
 export const Info: FunctionComponent<InfoPropsInterface> = (
     props: InfoPropsInterface
@@ -86,10 +87,13 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
+    const wsFedConfigurations: any = useSelector(
+        (state: AppState) => state.application.wsFedConfigurations);
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
+    const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -98,7 +102,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         }
 
         if (inboundProtocols.length > 0) {
-            inboundProtocols.map((protocol) => {
+            inboundProtocols.map((protocol: InboundProtocolListItemInterface) => {
                 if (protocol.type == "oauth2") {
                     setIsOIDC(true);
                     setIsLoading(isOIDCConfigLoading);
@@ -109,6 +113,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
             });
         }
     }, [ inboundProtocols ]);
+
+    useEffect(() => {
+        if (templateId == ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            setIsWSFed(true);
+        } 
+    }, [ templateId ]);
 
     return (
         !isLoading
@@ -167,6 +177,28 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                         <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
                                     </>
                                 ) }
+                                {
+                                    isWSFed && (
+                                        <>
+                                            <Heading ellipsis as="h4">
+                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                "wsFedHeading") }
+                                            </Heading>
+                                            <Heading as="h6" color="grey" compact>
+                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                "wsFedSubHeading") }
+                                                <DocumentationLink
+                                                    link={ getLink("develop.applications.editApplication." +
+                                                    "wsFedApplication.info.learnMore") }
+                                                >
+                                                    { t("common:learnMore") }
+                                                </DocumentationLink>
+                                            </Heading>
+                                            <Divider hidden/>
+                                            <WSFederationConfigurations wsFedConfigurations={ wsFedConfigurations }/>
+                                        </>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

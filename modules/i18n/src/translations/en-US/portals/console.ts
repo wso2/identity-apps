@@ -930,6 +930,9 @@ export const console: ConsoleNS = {
                             samlHeading: "Connection Details",
                             samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
+                            wsFedHeading: "Connection Details",
+                            wsFedSubHeading: "The following IdP details will be useful for you to implement and " +
+                                "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
                         provisioning: {
@@ -2447,6 +2450,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Install and use our SDKs to integrate authentication to your " +
                                         "application with minimum number of code lines.",
                                     title: "Integrate your own app"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "Passive STS URL"
+                                    }
                                 }
                             },
                             heading: "What's Next?"

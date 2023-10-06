@@ -556,6 +556,8 @@ export interface ConsoleNS {
                             oidcSubHeading: string;
                             samlHeading: string;
                             samlSubHeading: string;
+                            wsFedHeading: string;
+                            wsFedSubHeading: string;
                             tabName: string;
                         };
                         general: {
