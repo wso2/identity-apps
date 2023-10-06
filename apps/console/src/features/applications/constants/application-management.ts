@@ -203,7 +203,7 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
-        // oidc web app template
+        // oidc traditional web app template
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
@@ -211,9 +211,8 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
         ],
+        // oidc standard app template
         [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
@@ -222,7 +221,9 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.SAML2_BEARER,
+            ApplicationManagementConstants.JWT_BEARER
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
