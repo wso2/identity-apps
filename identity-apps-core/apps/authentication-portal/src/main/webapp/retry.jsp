@@ -171,11 +171,11 @@
                         </p>
                     <% } else { %>
                         <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                            <%=Encode.forHtmlContent(stat)%>
+                            <%=stat%>
                         </h3>
 
                         <p class="portal-tagline-description">
-                            <%=Encode.forHtmlContent(statusMessage)%>
+                            <%=statusMessage%>
                         </p>
 
                         <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
@@ -256,11 +256,11 @@
 
                 <% } else { %>
                     <h2 class="ui header portal-logo-tagline slogan-message">
-                        <%=Encode.forHtmlContent(stat)%>
+                        <%=stat%>
                     </h2>
 
                     <p class="portal-tagline-description mt-1 mb-5">
-                        <%=Encode.forHtmlContent(statusMessage)%>
+                        <%=statusMessage%>
                     </p>
 
                     <%
