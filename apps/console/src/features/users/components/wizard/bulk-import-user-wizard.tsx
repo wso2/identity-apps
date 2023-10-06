@@ -34,6 +34,7 @@ import {
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
+import { userConfig } from "apps/console/src/extensions/configs";
 import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -107,7 +108,11 @@ const WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
 const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
 const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
-const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy();
+const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
+    undefined,  // Mimetype.
+    userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
+    userConfig.bulkUserImportLimit.userCount  // Row Count.
+);
 
 /**
  *  BulkImportUserWizard component.
@@ -639,7 +644,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             setResponse(response);
         } catch (error) {
             setHasError(true);
-            
+            console.log("Error in bulk",error);
             setAlert({
                 description: t(
                     "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),

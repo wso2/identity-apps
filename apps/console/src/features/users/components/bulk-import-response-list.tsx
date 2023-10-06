@@ -157,36 +157,19 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
         return defaultColumns;
     };
-
+    
     /**
-    * Handles the `onSearchQueryClear` callback action.
-    */
-    const handleSearchQueryClear = (): void => {
-        setTriggerClearQuery(!triggerClearQuery);
-        setSearchQuery("");
-        setSelectedStatus(ALL_STATUS);
-        setFilteredResponseList(responseList);
-    };
-
-    /**
-     * Handles the `onFilter` callback action from the
-     * users search component.
-     *
-     * @param query - Search query.
+     * Filters the response list based on the search query and the selected status.
      */
-    const handleUserFilter = (query: string) => {
-        if (!query) {
-            setSearchQuery("");
-            setFilteredResponseList(responseList);
+    const filterResponseList = () => {
+        let filteredList: BulkUserImportOperationResponse[] = responseList;
+
+        if (searchQuery && searchQuery !== "") {
+            const [ _, condition, value ] = searchQuery.split(" ");
             
-            return;
-        }
-        
-        setSearchQuery(query);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [ attribute, condition, value ] = query.split(" ");
-        const list: BulkUserImportOperationResponse[] =
-            filteredResponseList.filter((item: BulkUserImportOperationResponse) => {
+            filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
+                if (selectedStatus !== ALL_STATUS && item.statusCode !== selectedStatus) return false;
+
                 switch (condition) {
                     case "sw":
                         return item.username?.startsWith(value);
@@ -197,26 +180,42 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     case "eq":
                         return item.username === value;
                     default:
-                        return true;  // or false depending on your requirement
+                        return false;
                 }
             });
+        }
 
-        setFilteredResponseList(list);
+        if (selectedStatus !== ALL_STATUS) {
+            filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
+                return item.statusCode === selectedStatus;
+            });
+        }
+
+        setFilteredResponseList(filteredList);
+    };
+
+    useEffect(() => {
+        filterResponseList();
+    }, [ searchQuery, selectedStatus ]);
+
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredResponseList(responseList);
+    };
+
+    const handleUserFilter = (query: string) => {
+        setSearchQuery(query);
+        if (!query) {
+            setFilteredResponseList(responseList);
+        }
     };
 
     const handleStatusDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setSelectedStatus(data.value as FilterStatus);
-        if (data.value === ALL_STATUS) {
-            setFilteredResponseList(responseList);
-        } else {
-            const list: BulkUserImportOperationResponse[] =
-                responseList.filter((item: BulkUserImportOperationResponse) => {
-                    return item.statusCode === data.value;
-                });
-            
-            setSearchQuery("");
-            setFilteredResponseList(list);
-        }
+        const newStatus: FilterStatus = data.value as FilterStatus;
+        
+        setSelectedStatus(newStatus);
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     /**
@@ -225,30 +224,25 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
      * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
-        if (searchQuery || selectedStatus !== ALL_STATUS) {
-            return (
-                <EmptyPlaceholder
-                    data-testid={ `${testId}-bulk-user-empty-search-result` }
-                    data-componentid={ `${testId}-bulk-user-empty-search-result` }
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
-                        </LinkButton>
-                    ) }
-                    image={ getEmptyPlaceholderIllustrations().emptySearch }
-                    imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
-                    subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
-                            { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
-                    ] }
-                />
-            );
-        }
-
-        return null;
+        return (
+            <EmptyPlaceholder
+                data-testid={ `${testId}-bulk-user-empty-search-result` }
+                data-componentid={ `${testId}-bulk-user-empty-search-result` }
+                action={ !searchQuery ? null : (
+                    <LinkButton onClick={ handleSearchQueryClear }>
+                        { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                    </LinkButton>
+                ) }
+                image={ getEmptyPlaceholderIllustrations().emptySearch }
+                imageSize="tiny"
+                title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                subtitle={ [
+                    t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        { query: !searchQuery ? selectedStatus : searchQuery }),
+                    t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                ] }
+            />
+        );
     };
 
     return (
@@ -285,11 +279,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                                 "wizardSummary.alerts.importFailed.description"
                                             }
                                             tOptions={ {
-                                                failedCount: 5
+                                                failedCount: bulkResponseSummary.failedCount
                                             } }
                                         >
                                             Issues encountered in <b>count import(s)</b>.
-                                
                                         </Trans>
                                     </Alert>)
                         }

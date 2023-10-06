@@ -969,13 +969,16 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
     static readonly KILOBYTE: number = 1e+3;
     static readonly DEFAULT_MAX_FILE_SIZE: number = 250 * CSVFileStrategy.KILOBYTE;
+    static readonly DEFAULT_MAX_ROW_COUNT: number = Infinity;
 
     mimeTypes: string[];
     maxSize: number;
+    maxRowCount: number;
 
-    constructor(mimeTypes?: string[], maxSize?: number) {
+    constructor(mimeTypes?: string[], maxSize?: number, maxRowCount?: number) {
         this.mimeTypes = mimeTypes && mimeTypes.length > 0 ? mimeTypes : CSVFileStrategy.DEFAULT_MIMES;
         this.maxSize = maxSize || CSVFileStrategy.DEFAULT_MAX_FILE_SIZE;
+        this.maxRowCount = maxRowCount || CSVFileStrategy.DEFAULT_MAX_ROW_COUNT;
     }
 
     async serialize(data: File | string): Promise<CSVResult> {
@@ -1039,7 +1042,25 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 reader.readAsText(data, CSVFileStrategy.ENCODING);
                 reader.onload = () => {
                     try {
-                        const lines = (reader.result as string).split("\n").map(line => line.trim());
+                        const { lines, rowCount } = (reader.result as string).split("\n").reduce((acc, line) => {
+                            const trimmedLine = line.trim();
+
+                            if (trimmedLine.length > 0) {
+                                acc.lines.push(trimmedLine);
+                                acc.rowCount++;
+                            }
+
+                            return acc;
+                        }, { lines: [], rowCount: 0 });
+                        const actualRowCount: number = rowCount - 1; 
+
+                        if (actualRowCount > this.maxRowCount) {
+                            reject({
+                                errorMessage: `Row count exceeds max limit of ${this.maxRowCount}`,
+                                valid: false
+                            });
+                            throw `Row count exceeds max limit of ${this.maxRowCount}`;
+                        }
 
                         if (lines.length > 0 && lines[0] !== "" && lines[0].split(",").length > 0) {
                             resolve({ valid: true });
@@ -1070,6 +1091,5 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 }
             }
         });
-    }
-    
+    } 
 }
