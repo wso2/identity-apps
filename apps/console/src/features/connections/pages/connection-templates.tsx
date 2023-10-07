@@ -22,7 +22,6 @@ import {
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
-import { UIConfigContext } from "@wso2is/common/src/contexts/ui-config-context";
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
@@ -110,9 +109,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     const { deploymentConfig } = useDeploymentConfig();
-    const setConnectionTemplates = useSetConnectionTemplates();
+    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
     
-    const documentationBaseUrl: string = deploymentConfig?.docSiteURL || "https://wso2.com/asgardeo/docs";
+    const documentationBaseUrl: string = deploymentConfig?.docSiteURL;
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -156,7 +155,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return;
         }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map((template) => {
+        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map((template: any) => {
             if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
                 return {
                     ...template,
@@ -498,8 +497,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
-                                                        resourceDocumentationLink={ 
-                                                            documentationBaseUrl + template.docLink 
+                                                        showSetupGuideButton={ getLink(template.docLink) !== undefined }
+                                                        resourceDocumentationLink={
+                                                            documentationBaseUrl + template.docLink
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
