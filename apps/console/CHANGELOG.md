@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.0.21
+
+### Patch Changes
+
+- [#4168](https://github.com/wso2/identity-apps/pull/4168) [`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Enable expert mode in Identity Server Console
+
+* [#4177](https://github.com/wso2/identity-apps/pull/4177) [`5170170ae1`](https://github.com/wso2/identity-apps/commit/5170170ae1718a445a68bdf707eee63e01829f1a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update test ids in Application edit section
+
+* Updated dependencies [[`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221)]:
+  - @wso2is/theme@2.0.7
+
 ## 2.0.20
 
 ### Patch Changes
