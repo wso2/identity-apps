@@ -292,6 +292,9 @@ interface ConnectionsDocumentationLinksInterface {
             learnMore: string;
             setupGuide: string;
         };
+        trustedTokenIssuer: {
+            learnMore: string;
+        };
     };
     edit: {
         advancedSettings: {

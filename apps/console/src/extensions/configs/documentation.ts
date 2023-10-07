@@ -266,6 +266,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         },
                         learnMore: undefined,
                         setupGuide: undefined
+                    },
+                    trustedTokenIssuer: {
+                        learnMore: undefined
                     }
                 }
             },
