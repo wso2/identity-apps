@@ -133,31 +133,35 @@
         </style>
         <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
         <script>
+            var userAccessedPath = window.location.href;
+
+            var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1]
+                    ? userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0]
+                    : null;
+
+            userTenant = userTenant ?  userTenant.split("?")[0] : null;
+
             function preLoaderResolver() {
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
         
-                if (startupConfig.enableDefaultPreLoader) {
-                    defaultPreLoader.style.display = 'block';
-                    trifactaPreLoader.style.display = 'none';
-                } else {
-                    defaultPreLoader.style.display = 'none';
-                    trifactaPreLoader.style.display = 'block';
-                    loader.style.display = 'none';
+                if (userTenant && userTenant == startupConfig.superTenantProxy) {
+                    if (startupConfig.enableDefaultPreLoader) {
+                        defaultPreLoader.style.display = 'block';
+                        trifactaPreLoader.style.display = 'none';
+                    } else {
+                        defaultPreLoader.style.display = 'none';
+                        trifactaPreLoader.style.display = 'block';
+                        loader.style.display = 'none';
+                    }
                 }
             };
         </script>
         <script>
             function onAuthScriptLoad() {
                 var applicationDomain = window.location.origin;
-                var userAccessedPath = window.location.href;
                 var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-                var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1]
-                    ? userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0]
-                    : null;
-
-                userTenant = userTenant ?  userTenant.split("?")[0] : null;
 
                 if(isSignOutSuccess && userTenant) {
                     if (startupConfig.subdomainApplication) {
