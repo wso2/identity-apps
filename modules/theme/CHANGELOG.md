@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4168](https://github.com/wso2/identity-apps/pull/4168) [`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Enable expert mode in Identity Server Console
+
 ## 2.0.6
 
 ### Patch Changes

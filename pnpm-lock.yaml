@@ -542,7 +542,7 @@ importers:
         specifier: ^2.0.4
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.6
+        specifier: ^2.0.7
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
