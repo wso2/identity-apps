@@ -155,34 +155,35 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return;
         }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map((template: any) => {
-            if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                return {
-                    ...template,
-                    templateGroup: "enterprise-protocols"
-                };
-            }
+        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map(
+            (template: ConnectionTemplateInterface) => {
+                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
+                    return {
+                        ...template,
+                        templateGroup: "enterprise-protocols"
+                    };
+                }
 
-            if (template.id === "linkedin-idp") {
-                return {
-                    ...template,
-                    comingSoon: true
-                };
-            }
+                if (template.id === "linkedin-idp") {
+                    return {
+                        ...template,
+                        comingSoon: true
+                    };
+                }
 
-            if (template.displayOrder < 0) {
+                if (template.displayOrder < 0) {
                 
-                return;
-            }
+                    return;
+                }
 
-            // Removes hidden connections.
-            if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
+                // Removes hidden connections.
+                if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
 
-                return;
-            }
+                    return;
+                }
 
-            return template;
-        });
+                return template;
+            });
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
