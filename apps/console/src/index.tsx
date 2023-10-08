@@ -78,7 +78,7 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <ThemeProvider theme={ AsgardeoTheme } defaultMode="light">
+        <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
             <Provider store={ store }>
                 <BrowserRouter>
                     <AuthProvider
