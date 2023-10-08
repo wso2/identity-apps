@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "../components";
 import { getAppLayoutRoutes } from "../configs/routes";
+import { commonConfig } from "../extensions/configs";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 import { AppConstants } from "../constants";
 import { AppState } from "../store";
@@ -111,7 +112,12 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                     </Switch>
                 </Suspense>
                 {
-                    isCookieConsentBannerEnabled && (
+                    isCookieConsentBannerEnabled 
+                        && (!commonConfig.enableCookiePro 
+                            || (commonConfig.enableCookiePro 
+                                && (AppConstants.getTenant() !== AppConstants.getSuperTenant())
+                            )
+                        )  && (
                         <CookieConsentBanner
                             inverted
                             domainCookie
