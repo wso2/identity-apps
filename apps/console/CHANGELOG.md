@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.0.22
+
+### Patch Changes
+
+- [#4178](https://github.com/wso2/identity-apps/pull/4178) [`9580af4e84`](https://github.com/wso2/identity-apps/commit/9580af4e846a6265a4ec44e7cbf7c5b841bd7130) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bug Fixes and improvements in Connections section
+
+* [#4178](https://github.com/wso2/identity-apps/pull/4178) [`e518776324`](https://github.com/wso2/identity-apps/commit/e518776324941d37ea0e6226f95ab6daedbcd509) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce configurations for routing and documentation
+
 ## 2.0.21
 
 ### Patch Changes
