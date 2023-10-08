@@ -153,5 +153,4 @@ export interface ApplicationConfig {
     };
     excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;
-    useExtendedRoutes: boolean;
 }

@@ -74,7 +74,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { applicationConfig, commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig, organizationConfigs } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -168,8 +168,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(applicationConfig.useExtendedRoutes)));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(applicationConfig.useExtendedRoutes)));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -647,7 +647,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(applicationConfig.useExtendedRoutes),
+            getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,

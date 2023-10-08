@@ -704,6 +704,5 @@ export const applicationConfig: ApplicationConfig = {
         saml: false,
         spa: true,
         windows: false
-    },
-    useExtendedRoutes: false
+    }
 };
