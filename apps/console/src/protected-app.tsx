@@ -168,8 +168,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -647,7 +647,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(),
+            getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,

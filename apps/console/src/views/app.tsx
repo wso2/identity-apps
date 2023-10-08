@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -61,7 +61,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
-import { applicationConfig } from "../extensions";
+import { applicationConfig, commonConfig } from "../extensions";
 import { FeatureGateConstants } from "../extensions/components/feature-gate/constants/feature-gate";
 import { getProfileInformation } from "../features/authentication/store";
 import {
@@ -133,7 +133,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
 
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
-    >(getAppViewRoutes()[ 0 ]);
+    >(getAppViewRoutes(commonConfig.useExtendedRoutes)[ 0 ]);
 
     const { isMobileViewport } = useMediaContext();
 
