@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,15 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, Iframe, Link } from "@wso2is/react-components";
+import { 
+    ContentLoader, 
+    DocumentationLink, 
+    EmptyPlaceholder, 
+    Iframe, 
+    Link, 
+    useDocumentation 
+} from "@wso2is/react-components";
+import { commonConfig } from "apps/console/src/extensions/configs";
 import get from "lodash-es/get";
 import Mustache from "mustache";
 import React, {
@@ -36,6 +44,8 @@ import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
 import { AppState } from "../../../../../features/core/store";
+import { ReactComponent as CustomLayoutSuccessImg } from
+    "../../../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api";
@@ -80,6 +90,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportEmail: string = useSelector((state: AppState) =>
@@ -334,51 +345,79 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                 {
                     !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading
                         ? (
-                            isErrorOccured
-                                ? (
-                                    <div className="branding-preference-preview-error" >
+                            commonConfig.enableDefaultBrandingPreviewSection 
+                                && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
+                                    <div className="branding-preference-preview-message" >
                                         <EmptyPlaceholder
-                                            image={ CustomLayoutWarningImg }
+                                            image={ CustomLayoutSuccessImg }
                                             imageSize="small"
                                             subtitle={
-                                                layoutContext[0] === PredefinedLayouts.CUSTOM
-                                                    ? [
-                                                        "You have not yet deployed a custom layout.",
-                                                        <Trans
-                                                            key={ 1 }
-                                                            i18nKey={ "extensions:develop.branding.tabs.preview."
-                                                                + "errors.layout.notFoundWithSupport.subTitle" }
-                                                            tOptions={ {
-                                                                supportEmail
-                                                            } }
+                                                [
+                                                    "The custom layout has been successfully activated.",
+                                                    <>
+                                                        { "You can now incorporate a custom layout for login,"
+                                                            + "registration, and recovery pages. Refer to our "
+                                                            + "documentation for detailed instructions." }
+                                                        <DocumentationLink
+                                                            link={ "http://www.google.com" }
                                                         >
-                                                            Need a fully customized layout for your organization?
-                                                            Reach us out at <Link
-                                                                data-componentid=
-                                                                    "branding-preference-custom-request-mail-trigger"
-                                                                link={ `mailto:${ supportEmail }` }
-                                                            >
-                                                                { supportEmail }
-                                                            </Link>
-                                                        </Trans>
-                                                    ]
-                                                    : [
-                                                        t("extensions:develop.branding.tabs."
-                                                            + "preview.errors.layout.notFound.subTitle")
-                                                    ]
-
+                                                            { t("common:learnMore") }
+                                                        </DocumentationLink>
+                                                    </>
+                                                ]
                                             }
-                                            title={
-                                                layoutContext[0] === PredefinedLayouts.CUSTOM
-                                                    ? t("extensions:develop.branding.tabs.preview.errors."
-                                                        + "layout.notFoundWithSupport.title")
-                                                    : t("extensions:develop.branding.tabs.preview.errors."
-                                                        + "layout.notFound.title")
-                                            }
+                                            title={ "Custom Layout" }
                                         />
                                     </div>
+                                ) : (
+                                    isErrorOccured
+                                        ? (
+                                            <div className="branding-preference-preview-message" >
+                                                <EmptyPlaceholder
+                                                    image={ CustomLayoutWarningImg }
+                                                    imageSize="small"
+                                                    subtitle={
+                                                        layoutContext[0] === PredefinedLayouts.CUSTOM
+                                                            ? [
+                                                                "You have not yet deployed a custom layout.",
+                                                                <Trans
+                                                                    key={ 1 }
+                                                                    i18nKey={ "extensions:develop.branding."
+                                                                        + "tabs.preview.errors.layout."
+                                                                        + "notFoundWithSupport.subTitle" }
+                                                                    tOptions={ {
+                                                                        supportEmail
+                                                                    } }
+                                                                >
+                                                                    Need a fully customized layout for your 
+                                                                    organization? Reach us out at <Link
+                                                                        data-componentid=
+                                                                            { "branding-preference-"
+                                                                            + "custom-request-mail-trigger" }
+                                                                        link={ `mailto:${ supportEmail }` }
+                                                                    >
+                                                                        { supportEmail }
+                                                                    </Link>
+                                                                </Trans>
+                                                            ]
+                                                            : [
+                                                                t("extensions:develop.branding.tabs."
+                                                                    + "preview.errors.layout.notFound.subTitle")
+                                                            ]
+
+                                                    }
+                                                    title={
+                                                        layoutContext[0] === PredefinedLayouts.CUSTOM
+                                                            ? t("extensions:develop.branding.tabs.preview.errors."
+                                                                + "layout.notFoundWithSupport.title")
+                                                            : t("extensions:develop.branding.tabs.preview.errors."
+                                                                + "layout.notFound.title")
+                                                    }
+                                                />
+                                            </div>
+                                        )
+                                        : resolvePreviewScreen()
                                 )
-                                : resolvePreviewScreen()
                         ) : <ContentLoader data-componentid={ `${ componentId }-loader` } />
                 }
             </Iframe>
