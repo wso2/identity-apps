@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.0.24
+
+### Patch Changes
+
+- [#4189](https://github.com/wso2/identity-apps/pull/4189) [`141753f482`](https://github.com/wso2/identity-apps/commit/141753f4820ccec0a2f652473a28bea080e8e762) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvement in extention points
+
+* [#4189](https://github.com/wso2/identity-apps/pull/4189) [`122f2f08cf`](https://github.com/wso2/identity-apps/commit/122f2f08cfc62ac01c75623cad0c7fb7fc1f247a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update PASSWORD_EXPIRY_CONNECTOR_ID to match the new implementation
+
 ## 2.0.23
 
 ### Patch Changes
