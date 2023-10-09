@@ -8682,6 +8682,9 @@ export const console: ConsoleNS = {
                             advanceSearch: {
                                 placeholder: "Rechercher par nom d'utilisateur"
                             }
+                        },
+                        buttons: {
+                            import: "Importer"
                         }
                     },
                     changePasswordModal: {

@@ -10354,6 +10354,9 @@ export const console: ConsoleNS = {
                             advanceSearch: {
                                 placeholder: "Search by Username"
                             }
+                        },
+                        buttons: {
+                            import: "Import"
                         }
                     },
                     changePasswordModal: {

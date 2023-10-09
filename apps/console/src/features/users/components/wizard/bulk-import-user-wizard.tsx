@@ -815,7 +815,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     loading={ isSubmitting }
                                     disabled={ isLoading || isSubmitting ||  hasError || !selectedCSVFile }
                                 >
-                                    { t("common:finish") }
+                                    { t("console:manage.features.user.modals.bulkImportUserWizard.buttons.import") }
                                 </PrimaryButton>
                             </Grid.Column>
                         ) : null }

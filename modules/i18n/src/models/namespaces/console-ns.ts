@@ -5349,6 +5349,9 @@ export interface ConsoleNS {
                                 placeholder: string;
                             }
                         };
+                        buttons: {
+                            import: string;
+                        }
                     };
                     changePasswordModal: {
                         header: string;

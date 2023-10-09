@@ -8488,6 +8488,9 @@ export const console: ConsoleNS = {
                             advanceSearch: {
                                 placeholder: "පරිශීලක නාමයෙන් සොයන්න"
                             }
+                        },
+                        buttons: {
+                            import: "ආනයනය කරන්න"
                         }
                     },
                     changePasswordModal: {
