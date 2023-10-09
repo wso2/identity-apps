@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4187](https://github.com/wso2/identity-apps/pull/4187) [`442c8f324e`](https://github.com/wso2/identity-apps/commit/442c8f324e271d22059481748a17cbc11030e4cc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add extended routes for Roles pages
+
 ## 2.0.22
 
 ### Patch Changes
