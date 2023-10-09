@@ -6,12 +6,12 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
   ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~ KIND, either express or implied.  See the License for the
+  ~ KIND, either express or implied. See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
 --%>
@@ -102,49 +102,47 @@
                     <form class="segment-form" name="sessionsForm" action="<%=commonauthURL%>" method="POST"
                             onsubmit="return validateForm(this.submitted)">
 
-                        <h4>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.1")%> <fmt:formatNumber><e:forHtmlContent value='${fn:length(requestScope.data["sessions"])}'/></fmt:formatNumber>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.2")%>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.3")%>
-                            <fmt:formatNumber><e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/></fmt:formatNumber> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.2")%>.
-                        </h4>
+                        <h5>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.1")%> <fmt:formatNumber><e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/></fmt:formatNumber>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.have.reached.maximum.active.sessions.2")%>. 
+                        </h5>
+                        <h5>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.1")%>.
+                        </h5>
 
-                        <table id="session-details" class="ui celled table">
+                        <a class="session-refresh" href='javascript:;' onclick="setRefreshActionAndSubmitForm()">
+                            <i aria-hidden="true" class="refresh icon"></i> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "refresh.sessions")%>
+                        </a>
+                        <table id="session-details" class="ui celled table active-sessions-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th class='th-session-checkbox'>
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" onchange="toggleSessionCheckboxes()" id="masterCheckbox" class="checkbox-session">
+                                            <label></label>
+                                        </div>
+                                    </th>
                                     <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "browser")%></th>
                                     <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "platform")%></th>
                                     <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "last.accessed")%></th>
-                                    <th><input type="checkbox" onchange="toggleSessionCheckboxes()" id="masterCheckbox" checked></th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
 
-                        <h4>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.1")%>.
-                            <br>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.2")%>.
-                        </h4>
-
                         <input type="hidden" name="promptResp" value="true">
                         <input type="hidden" name="promptId" value="<e:forHtmlAttribute value="${requestScope.promptId}"/>">
 
-                        <div class="align-right buttons">
-                            <input name="terminateActiveSessionsAction" type="submit"
-                                    onclick="this.form.submitted='terminateActiveSessionsAction';"
-                                    class="ui large button"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.selected.active.sessions.and.proceed")%>">
-
-                            <input name="denyLimitActiveSessionsAction" type="submit"
+                        <div class="buttons align-right button-group-sessions">
+                            <input name="denyLimitActiveSessionsAction" id="denyLimitActiveSessionsAction" type="submit"
                                     onclick="this.form.submitted='denyLimitActiveSessionsAction';"
-                                    class="ui large button"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "deny.login")%>">
+                                    class="ui medium button secondary"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>">
 
-                            <input name="refreshActiveSessionsAction" type="submit"
-                                    onclick="this.form.submitted='refreshActiveSessionsAction';"
-                                    class="ui large primary button"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "refresh.sessions")%>">
+                            <input name="terminateActiveSessionsAction" id="terminateActiveSessionsAction" type="submit"
+                                    onclick="this.form.submitted='terminateActiveSessionsAction';"
+                                    class="ui medium button primary disabled"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate")%>">
 
                             <input id="ActiveSessionsLimitAction" type="hidden" name="ActiveSessionsLimitAction"/>
                         </div>
@@ -200,11 +198,15 @@
                 var accessedTime = getDateFromTimestamp(<e:forJavaScript value="${session[1]}"/>);
                 var tableRow =
                     "<tr>"
-                    + "<td><e:forHtmlContent value="${loop.index + 1}"/></td>"
+                    + "<td class='td-session-checkbox'>" 
+                        + "<div class='ui checkbox'>" 
+                            + "<input type='checkbox' class='checkbox-session' onchange='handleToggleSessionCheckbox()' value='<e:forHtmlAttribute value="${session[0]}"/>' name='sessionsToTerminate' />" 
+                            + "<label class='session-checkbox-label' style='padding-left: 0px;'></label>" 
+                        + "</div>" 
+                    + "</td>"
                     + "<td><e:forHtmlContent value="${session[2]}"/></td>"
                     + "<td><e:forHtmlContent value="${session[3]}"/></td>"
                     + "<td id='<e:forHtmlAttribute value="${session[1]}"/>'>" + accessedTime + "</td>"
-                    + "<td><input type='checkbox' onchange='toggleMasterCheckbox()' value='<e:forHtmlAttribute value="${session[0]}"/>' name='sessionsToTerminate' checked/></td>"
                     + "</tr>";
 
                 $("#session-details tbody").append(tableRow);
@@ -228,7 +230,36 @@
             return date.toLocaleDateString(undefined, options);
         }
 
+        function handleToggleSessionCheckbox() {
+            
+            toggleMasterCheckbox();
+            handleTerminateButtonActivation();
+        }
+
+        function handleTerminateButtonActivation() {
+            
+            var checkboxes = document.sessionsForm.sessionsToTerminate;
+            var existsCheckedSession = false;
+            if (checkboxes instanceof RadioNodeList) {
+                for (i = 0; i < checkboxes.length; i++) {
+                    existsCheckedSession = checkboxes[i].checked
+                    if (existsCheckedSession) {
+                        break;
+                    }
+                }
+            } else {
+                existsCheckedSession = checkboxes.checked
+            }
+            
+            if (existsCheckedSession) {
+                document.getElementById("terminateActiveSessionsAction").classList.remove("disabled");
+            } else {
+                document.getElementById("terminateActiveSessionsAction").classList.add("disabled");
+            }
+        }
+
         function toggleSessionCheckboxes() {
+            
             var isMasterCheckboxChecked = document.getElementById("masterCheckbox").checked;
             var checkboxes = document.sessionsForm.sessionsToTerminate;
 
@@ -239,6 +270,7 @@
             } else {
                 checkboxes.checked = isMasterCheckboxChecked;
             }
+            handleTerminateButtonActivation();
         }
 
         function toggleMasterCheckbox() {
@@ -281,6 +313,14 @@
             $('#selected_sessions_validation').modal("show");
 
             return false;
+        }
+
+        function setRefreshActionAndSubmitForm() {
+            
+            document.sessionsForm.submitted = "refreshActiveSessionsAction";
+            if (validateForm("refreshActiveSessionsAction")) {
+                document.sessionsForm.submit();
+            }
         }
     </script>
 </body>

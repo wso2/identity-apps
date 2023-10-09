@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,6 +66,7 @@ export interface ServerConfigurationConfig {
         setPasswordExpiryEnabled: (state: boolean) => void
     ) => PasswordExpiryInterface;
     processPasswordExpirySubmitData: (data: ValidationFormInterface) => Promise<any>;
+    processPasswordPoliciesSubmitData: (data: ValidationFormInterface) => Promise<void>;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {
@@ -76,4 +77,11 @@ export interface PasswordHistoryCountInterface extends ValidationFormInterface {
 export interface PasswordExpiryInterface extends ValidationFormInterface {
     passwordExpiryTime?: number | string;
     passwordExpiryEnabled?: boolean;
+}
+
+export interface PasswordPoliciesInterface extends ValidationFormInterface {
+    passwordExpiryTime?: number | string;
+    passwordExpiryEnabled?: boolean;
+    passwordHistoryCount?: number | string;
+    passwordHistoryCountEnabled?: boolean;
 }

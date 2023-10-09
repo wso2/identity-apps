@@ -1,0 +1,17 @@
+{
+    "steps": [
+        {
+            "id": 1,
+            "options": [
+                {
+                    "authenticator": "BasicAuthenticator",
+                    "idp": "LOCAL"
+                },
+                {
+                    "authenticator": "FIDOAuthenticator",
+                    "idp": "LOCAL"
+                }
+            ]
+        }
+    ]
+}

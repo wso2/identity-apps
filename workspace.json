@@ -14,6 +14,7 @@
         "react-components": "modules/react-components",
         "tests": "tests",
         "theme": "modules/theme",
-        "validation": "modules/validation"
+        "validation": "modules/validation",
+        "common": "modules/common"
     }
 }

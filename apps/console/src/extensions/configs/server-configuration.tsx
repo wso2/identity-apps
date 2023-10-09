@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,13 +21,15 @@ import { TFunction } from "react-i18next";
 import {
     PasswordExpiryInterface,
     PasswordHistoryCountInterface,
+    PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigInterface
+    UpdateGovernanceConnectorConfigInterface,
+    UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
 import { ExtendedDynamicConnector } from "../components/governance-connectors";
@@ -41,7 +43,7 @@ import {
     useGetPasswordHistoryCount
 } from "../components/password-history-count/api";
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
-
+import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: true,
@@ -191,6 +193,59 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         };
 
         return updatePasswordExpiryProperties(passwordExpiryData);
+    },
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {   
+        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));     
+        const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
+        let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
+        const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
+
+        delete data.passwordExpiryTime;
+        delete data.passwordExpiryEnabled;
+        delete data.passwordHistoryCount;
+        delete data.passwordHistoryCountEnabled;
+
+        if (passwordExpiryEnabled && passwordExpiryTime === 0) {
+            passwordExpiryTime = 30;
+        }
+
+        if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
+            passwordHistoryCount = 1;
+        }
+
+        const passwordPoliciesData: UpdateMultipleGovernanceConnectorsInterface = {
+            connectors: [
+                {
+                    id: ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID,
+                    properties: [
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
+                            value: passwordExpiryEnabled?.toString()
+                        },
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
+                            value: passwordExpiryTime?.toString()
+                        }
+                    ]
+                },
+                {
+                    id: ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID,
+                    properties: [
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT,
+                            value: passwordHistoryCount?.toString()
+                        },
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE,
+                            value: passwordHistoryCountEnabled?.toString()
+                        }
+                    ]
+                }
+            ],
+            operation: "UPDATE"
+        };
+
+        return updatePasswordPolicyProperties(passwordPoliciesData);
     },
     renderConnector: (
         connector: GovernanceConnectorInterface,

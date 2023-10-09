@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ export const extensions: Extensions = {
                     description: "You need a <1>user account</1> to log in to the application.",
                     hint:
                         "If you don’t already have a user account, click the below button to create one. " +
-                        "Alternatively, go to <1>Manage > Users</1><3></3> and create users.",
+                        "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
                     message:
                         "If you do not already have a user account, contact your organization " +
                         "administrator."
@@ -1958,8 +1958,7 @@ export const extensions: Extensions = {
                 smtpPort: {
                     label: "Server Port",
                     placeholder: "Enter a port number",
-                    hint: "The default SMTP port is <1>25</1>, but some email service providers may use alternative ports " +
-                        "such as <3>587</3>."
+                    hint: "For security reasons, we currently support port <1>587</1> only."
                 },
                 fromAddress: {
                     label: "From Address",

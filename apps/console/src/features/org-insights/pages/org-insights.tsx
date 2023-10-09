@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import { Hint, PageLayout } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Label, Menu, Tab, TabProps } from "semantic-ui-react";
+import { Tab, TabProps } from "semantic-ui-react";
 import { InsightsView } from "../components/insights-view";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
@@ -61,15 +61,6 @@ const OrgInsightsPage: FunctionComponent = () => {
             render: () => (
                 <InsightsView
                     selectedActivityType={ selectedActivityType }
-                />
-            )
-        },
-        {
-            menuItem: <Menu.Item disabled>User recovery <Label>{ t("common:comingSoon") }</Label></Menu.Item>,
-            render: () => (
-                <InsightsView
-                    selectedActivityType={ selectedActivityType }
-                    isComingSoon 
                 />
             )
         }

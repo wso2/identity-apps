@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -126,7 +126,7 @@ export const extensions: Extensions = {
                         "Vous avez besoin d'un compte <1>compte client</1> pour vous connecter à " + "l'application.",
                     hint:
                         "Si vous n'avez pas encore de compte client, cliquez sur le bouton ci-dessous pour en " +
-                        "créer un. Sinon, accédez à <1>Gérer > utilisateurs</1><3></3> et créez des clients.",
+                        "créer un. Sinon, accédez à <1>Gestion des utilisateurs > utilisateurs</1><3></3> et créez des clients.",
                     message:
                         "Si vous n'avez pas encore de compte d'utilisateur client, contactez l'administrateur " +
                         "de votre organisation."
@@ -2004,8 +2004,7 @@ export const extensions: Extensions = {
                 fromAddress: {
                     label: "De l'adresse",
                     placeholder: "entrez une adresse email",
-                    hint: "L'adresse de l'expéditeur est l'adresse e-mail que vous souhaitez voir apparaître comme " +
-                        "expéditeur de vos e-mails sortants. Il doit s'agir d'une adresse e-mail à laquelle vous avez accès."
+                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
                 },
                 replyToAddress: {
                     label: "Répondre à l'adresse",

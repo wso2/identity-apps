@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { AuthParams, AuthProvider, SPAUtils } from "@asgardeo/auth-react";
+import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
+import { AppConfigProvider } from "@wso2is/common/src/providers/app-config-provider";
 import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
 import * as React from "react";
@@ -34,7 +35,8 @@ import { ProtectedApp } from "./protected-app";
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL() && process.env.NODE_ENV === "production") {
+    if (!SPAUtils.hasAuthSearchParamsInURL() 
+        && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
             ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
@@ -76,7 +78,7 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <ThemeProvider theme={ AsgardeoTheme }>
+        <ThemeProvider theme={ AsgardeoTheme } defaultMode="light">
             <Provider store={ store }>
                 <BrowserRouter>
                     <AuthProvider
@@ -84,7 +86,9 @@ const RootWithConfig = (): ReactElement => {
                         fallback={ <PreLoader /> }
                         getAuthParams={ getAuthParams }
                     >
-                        <ProtectedApp />
+                        <AppConfigProvider>
+                            <ProtectedApp />
+                        </AppConfigProvider>
                     </AuthProvider>
                 </BrowserRouter>
             </Provider>

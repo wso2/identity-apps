@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -22,7 +23,7 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
-import { 
+import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
 import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
@@ -31,6 +32,7 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
@@ -78,9 +80,6 @@ interface AuthenticatorsPropsInterface extends TestableComponentInterface {
      * Show/Hide authenticator labels in UI.
      */
     showLabels?: boolean;
-    attributeStepId: number;
-    refreshAuthenticators: () => Promise<void>;
-    subjectStepId: number;
 }
 
 /**
@@ -101,7 +100,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         onAuthenticatorSelect,
         selected,
         showLabels,
-        // refreshAuthenticators,
         [ "data-testid" ]: testId
     } = props;
 
@@ -156,6 +154,19 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
+        }
+
+        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            if (authenticationSteps[currentStep]?.options?.length !== 0) {
+                return false;
+            }
+            const [ leftSideSteps ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(
+                currentStep, authenticationSteps);
+
+            if (!SignInMethodUtils.hasSpecificFactorsInSteps(
+                ApplicationManagementConstants.ACTIVE_SESSIONS_LIMIT_HANDLERS, leftSideSteps)) {
+                return false;
+            }
         }
 
         return true;
@@ -270,6 +281,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
                                 ".firstFactorDisabled"
                             )
+                        }
+                    </Text>
+                </Fragment>
+            );
+        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            (authenticationSteps[currentStep]?.options?.length !== 0) 
+                                ? t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInMultiOptionStep"
+                                )
+                                : t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInFirstStep"
+                                )
                         }
                     </Text>
                 </Fragment>

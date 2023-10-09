@@ -49,6 +49,9 @@
         text-overflow: ellipsis;
         padding: 11px 14.5px;
     }
+    &.overflow-wrap {
+        overflow-wrap: anywhere;
+    }
 }
 
 /*******************************

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,37 +16,26 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import orderBy from "lodash-es/orderBy";
-import union from "lodash-es/union";
 import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
-import { AppState, ConfigReducerStateInterface, EventPublisher } from "../../../../../core";
+import { EventPublisher } from "../../../../../core";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
 import {
-    AuthenticatorCategories,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
-    IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface,
-    IdentityProviderTemplateLoadingStrategies,
     SupportedAuthenticators
 } from "../../../../../identity-providers/models";
-import {
-    IdentityProviderTemplateManagementUtils
-} from "../../../../../identity-providers/utils/identity-provider-template-management-utils";
 import { getSignInFlowIcons } from "../../../../configs/ui";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {
@@ -60,7 +49,7 @@ import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 /**
  * Proptypes for the applications settings component.
  */
-interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
+interface AuthenticationFlowPropsInterface extends IdentifiableComponentInterface {
 
     /**
      * All authenticators in the system.
@@ -99,7 +88,6 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Callback to update the button disable state change.
      */
     onAuthenticationSequenceChange: (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => void;
-    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -122,18 +110,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
-        refreshAuthenticators,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider?.groupedTemplates
-    );
 
     const [ enterpriseAuthenticators, setEnterpriseAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ socialAuthenticators, setSocialAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
@@ -147,9 +129,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ showBackupCodeRemoveConfirmModal, setShowBackupCodeRemoveConfirmModal ] = useState<boolean>(false);
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(1);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
-    const [ categorizedTemplates, setCategorizedTemplates ] =
-        useState<IdentityProviderTemplateCategoryInterface[]>(undefined);
-    const [ addNewAuthenticatorClicked, setAddNewAuthenticatorClicked ] = useState<boolean>(false);
     const [ authenticatorRemoveStep, setAuthenticatorRemoveStep ] = useState<number>(0);
     const [ backupCodeRemoveIndex, setBackupCodeRemoveIndex ] = useState<number>(0);
     const [ authenticatorRemoveIndex, setAuthenticatorRemoveIndex ] = useState<number>(0);
@@ -262,15 +241,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             // Tracked here https://github.com/wso2/product-is/issues/11650.
         }
     }, [ authenticationSteps ]);
-
-    useEffect(() => {
-
-        if (addNewAuthenticatorClicked
-            && groupedIDPTemplates
-            && groupedIDPTemplates.length > 0) {
-            persistCategorizedTemplates(groupedIDPTemplates);
-        }
-    }, [ groupedIDPTemplates, addNewAuthenticatorClicked ]);
 
     /**
      * Disable button when there are no authentication options selected.
@@ -514,7 +484,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 // If the step that the deleting authenticator has no other first factors or handlers,
                 // start evaluation other options.
                 if ((onlySecondFactorsRequiringHandlersOnRight && secondFactorHandlersInTheStep <= 1)
-                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1)) {
+                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1 
+                    && isDeletingOptionFirstFactor)) {
 
                     // If there is TOTP or Email OTP on the right, evaluate if the left side has necessary handlers.
                     // Else check if there are first factors on the left.
@@ -701,9 +672,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param options - Authenticator options.
      * @returns true or false - Options include Identifier First or not.
      */
-    const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean => 
+    const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
         options.some(
-            (option: AuthenticatorInterface) => 
+            (option: AuthenticatorInterface) =>
                 option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
         );
 
@@ -779,7 +750,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         // Don't allow identifier first being with another authenticator in the 1FA flow.
-        if ( 
+        if (
             steps.length === 1
             && steps[0].options.length > 1
             && handleIdentifierFirstInStep(steps[0].options)
@@ -805,96 +776,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Filter out the displayable set of authenticators by validating against
-     * the array of authenticators defined to be hidden in the config.
-     *
-     * @param authenticators - Authenticators to be filtered.
-     * @param category - Authenticator category.
-     * @param categoryDisplayName - Authenticator category display name.
-     *
-     * @returns List of moderated authenticators
-     */
-    const moderateAuthenticators = (authenticators: GenericAuthenticatorInterface[],
-        category: string,
-        categoryDisplayName: string) => {
-
-        if (isEmpty(authenticators)) {
-            return [];
-        }
-
-        // If the config is undefined or empty, return the original.
-        if (!config.ui?.hiddenAuthenticators
-            || !Array.isArray(config.ui.hiddenAuthenticators)
-            || config.ui.hiddenAuthenticators.length < 1) {
-
-            return authenticators;
-        }
-
-        return authenticators
-            .filter((authenticator: GenericAuthenticatorInterface) => {
-                return !config.ui.hiddenAuthenticators.includes(authenticator.name);
-            })
-            .map((authenticator: GenericAuthenticatorInterface) => {
-                return {
-                    ...authenticator,
-                    category,
-                    categoryDisplayName
-                };
-            });
-    };
-
-    /**
-     * Handles the clock event of add new authenticator button.
-     */
-    const handleAddNewAuthenticatorClick = (): void => {
-
-        if (groupedIDPTemplates !== undefined) {
-            persistCategorizedTemplates(groupedIDPTemplates);
-
-            return;
-        }
-
-        const useAPI: boolean = config.ui.identityProviderTemplateLoadingStrategy
-            ? (config.ui.identityProviderTemplateLoadingStrategy === IdentityProviderTemplateLoadingStrategies.REMOTE)
-            : (IdentityProviderManagementConstants.DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY
-                === IdentityProviderTemplateLoadingStrategies.REMOTE);
-
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates(useAPI)
-            .finally(() => {
-                setAddNewAuthenticatorClicked(true);
-            });
-    };
-
-    const persistCategorizedTemplates = (templates: IdentityProviderTemplateInterface[]) => {
-
-        IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
-            .then((response: IdentityProviderTemplateCategoryInterface[]) => {
-
-                let tags: string[] = [];
-
-                response.filter((category: IdentityProviderTemplateCategoryInterface) => {
-                    // Order the templates by pushing coming soon items to the end.
-                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
-
-                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
-                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
-                            return;
-                        }
-
-                        tags = union(tags, template.tags);
-                    });
-                });
-
-                setCategorizedTemplates(response);
-                setAddNewAuthenticatorClicked(false);
-            })
-            .catch(() => {
-                setCategorizedTemplates([]);
-                setAddNewAuthenticatorClicked(false);
-            });
-    };
-
-    /**
      * Shows a disclaimer to users when a handler is added.
      * @returns Handler disclaimer modal.
      */
@@ -907,23 +788,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onPrimaryActionClick={ () => setShowHandlerDisclaimerModal(false) }
-            data-testid={ `${ testId }-handler-disclaimer-modal` }
+            data-componentid={ `${ componentId }-handler-disclaimer-modal` }
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
             >
                 { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.content") }
             </ConfirmationModal.Content>
@@ -939,7 +820,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         return (
             <AddAuthenticatorModal
-                refreshAuthenticators={ refreshAuthenticators }
                 authenticationSteps={ authenticationSteps }
                 allowSocialLoginAddition={ true }
                 currentStep={ authenticatorAddStep }
@@ -956,30 +836,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
                         "sections.stepBased.addAuthenticatorModal.heading")
                 }
-                authenticators={ [
-                    ...moderateAuthenticators(localAuthenticators,
-                        AuthenticatorCategories.LOCAL,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.LOCAL))),
-                    ...moderateAuthenticators(socialAuthenticators,
-                        AuthenticatorCategories.SOCIAL,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SOCIAL))),
-                    ...moderateAuthenticators(secondFactorAuthenticators,
-                        AuthenticatorCategories.SECOND_FACTOR,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.SECOND_FACTOR))),
-                    ...moderateAuthenticators(enterpriseAuthenticators,
-                        AuthenticatorCategories.ENTERPRISE,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.ENTERPRISE))),
-                    ...moderateAuthenticators(recoveryAuthenticators,
-                        AuthenticatorCategories.RECOVERY,
-                        t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.RECOVERY)))
-                ] }
+                authenticators={ {
+                    enterprise: enterpriseAuthenticators,
+                    local: localAuthenticators,
+                    recovery: recoveryAuthenticators,
+                    secondFactor: secondFactorAuthenticators,
+                    social: socialAuthenticators
+                } }
                 showStepSelector={ false }
                 stepCount={ authenticationSteps.length }
-                onAddNewClick={ handleAddNewAuthenticatorClick }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                categorizedIDPTemplates={ categorizedTemplates }
-                subjectStepId={ subjectStepId }
-                attributeStepId={ attributeStepId }
             />
         );
     };
@@ -1003,16 +869,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 setShowBackupCodeRemoveConfirmModal(false);
             } }
             onSecondaryActionClick={ () => setShowBackupCodeRemoveConfirmModal(false) }
-            data-testid={ `${ testId }-backupcode-delete-confirm-modal` }
+            data-componentid={ `${ componentId }-backupcode-delete-confirm-modal` }
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-header` }
+                data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-header` }
             >
                 { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-backupcode-delete-confirmation-modal-content` }
+                data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-content` }
             >
                 { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.content") }
             </ConfirmationModal.Content>
@@ -1039,7 +905,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     return (
-        <div className="authentication-flow-wrapper" data-testid={ testId }>
+        <div className="authentication-flow-wrapper" data-componentid={ componentId }>
             <div className="authentication-flow-section timeline">
                 <div className="timeline-button start">
                     <GenericIcon
@@ -1081,7 +947,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         attributeStepId={ attributeStepId }
                                         onAttributeCheckboxChange={ handleAttributeRetrievalStepChange }
                                         onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
-                                        data-testid={ `${ testId }-authentication-step-${ stepIndex }` }
+                                        data-componentid={ `${ componentId }-authentication-step-${ stepIndex }` }
                                         updateAuthenticationStep={ updateAuthenticationStep }
                                     />
                                 </Fragment>
@@ -1131,5 +997,5 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
  * Default props for the step based flow component.
  */
 StepBasedFlow.defaultProps = {
-    "data-testid": "step-based-flow"
+    "data-componentid": "step-based-flow"
 };

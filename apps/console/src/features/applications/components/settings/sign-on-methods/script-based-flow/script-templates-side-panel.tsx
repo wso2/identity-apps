@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Popup, Tooltip } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
 import React, {
@@ -31,7 +31,8 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
-import { TemplateDescription } from "./template-description";
+// eslint-disable-next-line max-len
+import AdaptiveAuthTemplateInfoModal from "../../../../../authentication-flow-builder/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**
@@ -44,7 +45,7 @@ export interface ScriptTemplatesSidePanelRefInterface {
 /**
  * Proptypes for the adaptive scripts component.
  */
-interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
+interface ScriptTemplatesSidePanelInterface extends IdentifiableComponentInterface {
     /**
      * Fired on template selection.
      *
@@ -97,7 +98,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
             title,
             visible,
             readOnly,
-            [ "data-testid" ]: testId
+            [ "data-componentid" ]: componentId
         } = props;
 
         const { t } = useTranslation();
@@ -150,12 +151,12 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                         index={ index }
                         icon={ <Icon className="angle right caret-icon"/> }
                         onClick={ handleAccordionOnClick }
-                        data-testid={ `${testId}-accordion-title-${index}` }
+                        data-componentid={ `${ componentId }-accordion-title-${ index }` }
                     />
                     <Accordion.Content
                         className="template-list"
                         active={ accordionActiveIndexes.includes(index) }
-                        data-testid={ `${testId}-accordion-content-${index}` }
+                        data-componentid={ `${ componentId }-accordion-content-${ index }` }
                     >
                         {
                             category.templates.map((template: AdaptiveAuthTemplateInterface , index: number) => (
@@ -218,9 +219,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
         return (
             <>
                 {
-                    selectedTemplate &&
-                    (
-                        <TemplateDescription
+                    selectedTemplate && (
+                        <AdaptiveAuthTemplateInfoModal
                             template={ selectedTemplate }
                             open={ !!selectedTemplate }
                             onClose={ closeTemplateDescriptionModal }
@@ -237,7 +237,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                     vertical
                     secondary
                     visible={ visible }
-                    data-testid={ testId }
+                    data-componentid={ componentId }
                 >
                     { title && typeof title === "string" ? <Heading as="h6" bold>{ title }</Heading> : title }
                     {
@@ -246,7 +246,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                 <Accordion
                                     as={ Menu }
                                     className="template-category-menu"
-                                    data-testid={ `${testId}-accordion` }
+                                    data-componentid={ `${ componentId }-accordion` }
                                     fluid
                                     secondary
                                     vertical
@@ -265,7 +265,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
  * Default props for the script templates side panel component.
  */
 ScriptTemplatesSidePanel.defaultProps = {
-    "data-testid": "script-templates-side-panel",
+    "data-componentid": "script-templates-side-panel",
     defaultActiveIndexes: [ -1 ],
     visible: false
 };

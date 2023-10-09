@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import {
@@ -60,7 +61,7 @@ import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from ".
  * Proptypes for the sign in methods customization entry point component.
  */
 interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureConfigInterface>,
-    TestableComponentInterface {
+    IdentifiableComponentInterface {
 
     /**
      * ID of the application.
@@ -99,7 +100,6 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * Make the form read only.
      */
     readOnly?: boolean;
-    refreshAuthenticators: () => Promise<void>;
 }
 
 /**
@@ -124,8 +124,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
-        refreshAuthenticators,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -466,7 +465,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     }
                                 }
                                 readOnly={ readOnly }
-                                data-testid={ `${ testId }-request-path-authenticators` }
+                                data-componentid={ `${ componentId }-request-path-authenticators` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -498,7 +497,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <Divider hidden/>
                 <PrimaryButton
                     onClick={ handleUpdateClick }
-                    data-testid={ `${ testId }-update-button` }
+                    data-componentid={ `${ componentId }-update-button` }
                     disabled={ isButtonDisabled || isLoading }
                     loading={ isLoading }
                 >
@@ -518,7 +517,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         return (
             <Message
                 data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
-                data-testid="jit-provisioning-mfa-in-sequence-warning-message"
                 type="warning"
                 // Semantic hides warning messages inside <form> by default.
                 // Overriding the behaviour here to make sure it renders properly.
@@ -580,7 +578,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         return (
             <Message
                 data-componentid="jit-provisioning-mfa-in-sequence-warning-message"
-                data-testid="jit-provisioning-mfa-in-sequence-warning-message"
                 type="info"
                 // Semantic hides warning messages inside <form> by default.
                 // Overriding the behaviour here to make sure it renders properly.
@@ -714,20 +711,19 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <StepBasedFlow
-                refreshAuthenticators={ refreshAuthenticators }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
                 readOnly={ readOnly }
-                data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
                 onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
                 onAuthenticationSequenceChange={ (isDisabled: boolean, updatedSteps: AuthenticationStepInterface[]) => {
                     handleButtonDisabledStateChange(isDisabled);
                     setUpdatedSteps(updatedSteps);
                 } }
+                data-componentid={ `${ componentId }-step-based-flow` }
             />
             <Divider className="x1" hidden/>
             { validationResult?.conflicting && validationResult?.idpList.length
@@ -744,10 +740,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         onTemplateSelect={ handleLoadingDataFromTemplate }
                         onScriptChange={ handleAdaptiveScriptChange }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-script-based-flow` }
                         authenticationSteps={ steps }
                         isDefaultScript={ isDefaultScript }
                         onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                        data-componentid={ `${ componentId }-script-based-flow` }
                     />
                 )
             }
@@ -765,5 +761,5 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
  * Default props for the Application Sign-in method customization.
  */
 SignInMethodCustomization.defaultProps = {
-    "data-testid": "sign-in-method-customization"
+    "data-componentid": "sign-in-method-customization"
 };

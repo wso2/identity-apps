@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1084,7 +1084,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                             }
                         }
                     } }
-                    maxLength={ schema.maxLength ? schema.maxLength : 30 }
+                    maxLength={ schema.maxLength ? schema.maxLength : ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
                     ref={ (element: DropdownItemProps) => assignReferenceToField(element, schema.name, key) }
                 />
             );
@@ -1147,7 +1147,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                         }
                     } }
                     maxLength={ schema.name.toLowerCase().includes("url") ? 1024 :
-                        (schema.maxLength ? schema.maxLength : 30) }
+                        (schema.maxLength ? schema.maxLength : ProfileConstants.CLAIM_VALUE_MAX_LENGTH) }
                     ref={ (element: DropdownItemProps) => assignReferenceToField(element, schema.name, key) }
                 />
             );
@@ -1279,7 +1279,11 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                             schema.mutability === ProfileConstants.READONLY_SCHEMA ||
                                             schema.name === "userName"
                                         }
-                                        maxLength={ schema.maxLength ? schema.maxLength : 30 }
+                                        maxLength={
+                                            schema.maxLength
+                                                ? schema.maxLength
+                                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                                        }
                                     />
                                 </Form.Field>
                             ) : (
