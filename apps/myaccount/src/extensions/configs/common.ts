@@ -40,7 +40,6 @@ export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: false
     },
-    enableCookiePro: false,
     header: {
         organization: "{{productName}}",
         renderAppSwitcherAsDropdown: false

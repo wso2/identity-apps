@@ -22,7 +22,6 @@ export interface CommonConfig {
     advancedSearchWithBasicFilters: {
         enableQuerySearch: boolean;
     };
-    enableCookiePro: boolean;
     header: {
         organization: string;
         /**

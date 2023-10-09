@@ -11,7 +11,8 @@
     "routePaths": {
         "home": "/overview",
         "login": "",
-        "logout": "/logout"
+        "logout": "/logout",
+        "cookiePolicy": "/authenticationendpoint/cookie_policy.do"
     },
     "extensions": {
         "applicationInsightsCookieDomain": "",

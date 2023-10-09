@@ -820,6 +820,7 @@
         "connectionResourcesUrl": "",
         "isFeatureGateEnabled": true,
         "isCookieConsentBannerEnabled": false,
+        "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isMarketingConsentBannerEnabled": false,
         "isClientSecretHashEnabled": false,
         "isDefaultDialectEditingEnabled": false,

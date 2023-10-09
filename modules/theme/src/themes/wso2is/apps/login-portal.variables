@@ -56,5 +56,5 @@
 @loginPortalAppHeaderBackground: @asgardeoBlack;
 @loginPortalAppHeaderBorderBottom: 1px solid #454d52;
 
-@policyPageBackgroundImage: none;
-@policyPageTOCBackground: @asgardeoBlack;
+@policyHeaderBackground: @loginPortalBackgroundColor;
+@policyHeaderBorderBotton: 1px solid #DCDCDC;

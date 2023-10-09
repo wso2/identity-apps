@@ -112,12 +112,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                     </Switch>
                 </Suspense>
                 {
-                    isCookieConsentBannerEnabled 
-                        && (!commonConfig.enableCookiePro 
-                            || (commonConfig.enableCookiePro 
-                                && (AppConstants.getTenant() !== AppConstants.getSuperTenant())
-                            )
-                        )  && (
+                    isCookieConsentBannerEnabled && (
                         <CookieConsentBanner
                             inverted
                             domainCookie
@@ -130,7 +125,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         These cookies are used to maintain an uninterrupted continuous
                                         session whilst providing smooth and personalized services.
                                         To learn more about how we use cookies, refer our <a
-                                            href="https://wso2.com/cookie-policy"
+                                            href={ window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl ?? "" }
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             data-testid="login-page-cookie-policy-link"
