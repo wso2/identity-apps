@@ -611,7 +611,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     return (
         <PageLayout
             action={
-                (isUserListRequestLoading || !(!searchQuery))
+                !isUserListRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
                         { userConfig.showBulkUserImportOption ?
@@ -632,6 +632,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         
                     </Show>
                 )
+                
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }
