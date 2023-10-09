@@ -268,7 +268,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         );
     };
     
-    const isEmptyArray = (array: any[]): boolean => {
+    const isEmptyArray = (array: unknown[]): boolean => {
         return array.length === 0;
     };
    
@@ -437,120 +437,124 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param headers - csv headers.
      * @returns
      */
-    const generateData = (row: string[], filteredAttributeMapping: CSVAttributeMapping[], headers: string[]): any => {
-        const dataObj: any = {};
-        const schemasSet: Set<string> = new Set([ SCIM2_USER_SCHEMA ]);
+    const generateData =
+        (   row: string[],
+            filteredAttributeMapping: CSVAttributeMapping[],
+            headers: string[]): Record<string, unknown> => {
+            const dataObj: Record<string, unknown> = {};
+            const schemasSet: Set<string> = new Set([ SCIM2_USER_SCHEMA ]);
 
-        for (const attribute of filteredAttributeMapping) {
-            const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
-                `${attribute.mappedSCIMClaimDialectURI}:`,
-                ""
-            );
-            const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
-            const isMultiValued: boolean = scimAttribute.includes("#");
+            for (const attribute of filteredAttributeMapping) {
+                const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
+                    `${attribute.mappedSCIMClaimDialectURI}:`,
+                    ""
+                );
+                const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
+                const isMultiValued: boolean = scimAttribute.includes("#");
 
-            // Handle username attribute.
-            if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
-                dataObj[RequiredBulkUserImportAttributes.USERNAME] = userstore &&
+                // Handle username attribute.
+                if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = userstore &&
                     userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                    ? `${userstore}/${attributeValue}`
-                    : attributeValue;
+                        ? `${userstore}/${attributeValue}`
+                        : attributeValue;
                 
-                continue;
-            }
+                    continue;
+                }
 
-            // Handle askPassword attribute.
-            if (attribute.attributeName.toLowerCase() === ASK_PASSWORD_ATTRIBUTE.toLowerCase()) {
-                dataObj[attribute.mappedSCIMClaimDialectURI] = {
-                    ...dataObj[attribute.mappedSCIMClaimDialectURI],
-                    [scimAttribute]: "true"
-                };
+                // Handle askPassword attribute.
+                if (attribute.attributeName.toLowerCase() === ASK_PASSWORD_ATTRIBUTE.toLowerCase()) {
+                    dataObj[attribute.mappedSCIMClaimDialectURI] = {
+                        ...(dataObj[attribute.mappedSCIMClaimDialectURI] as Record<string, unknown> || {}),
+                        [scimAttribute]: "true"
+                    };
 
-                continue;
-            }
+                    continue;
+                }
             
-            // Usage in your existing code
-            const specialMultiValuedComplex: SpecialMultiValuedComplexAttributes | undefined =
+                // Usage in your existing code
+                const specialMultiValuedComplex: SpecialMultiValuedComplexAttributes | undefined =
                 Object.values(SpecialMultiValuedComplexAttributes).find(
                     (attrType: string) => scimAttribute.includes(attrType)
                 );
 
-            if (!isMultiValued && specialMultiValuedComplex) {
-                const info: MultiValuedComplexAttribute = scimAttribute.includes(specialMultiValuedComplex + ".")
-                    ? { type: scimAttribute.split(".")[1], value: attributeValue }
-                    : { primary: true, value: attributeValue };
+                if (!isMultiValued && specialMultiValuedComplex) {
+                    const info: MultiValuedComplexAttribute = scimAttribute.includes(specialMultiValuedComplex + ".")
+                        ? { type: scimAttribute.split(".")[1], value: attributeValue }
+                        : { primary: true, value: attributeValue };
 
-                dataObj[specialMultiValuedComplex] = dataObj[specialMultiValuedComplex] || [];
-                dataObj[specialMultiValuedComplex].push(info);
+                    dataObj[specialMultiValuedComplex] = dataObj[specialMultiValuedComplex] || [];
+                    (dataObj[specialMultiValuedComplex] as unknown[]).push(info);
 
-                continue;
+                    continue;
                 
-            }
+                }
 
-            // Handle multi-valued address attribute.
-            if (scimAttribute.includes("addresses#home")) {
-                dataObj["addresses"] = dataObj["addresses"] || [];
-                dataObj["addresses"].push(
-                    {
-                        type: "home",
-                        [scimAttribute.replace("addresses#home.", "")]:
+                // Handle multi-valued address attribute.
+                if (scimAttribute.includes("addresses#home")) {
+                    dataObj["addresses"] = dataObj["addresses"] || [];
+                    (dataObj["addresses"] as unknown[]).push(
+                        {
+                            type: "home",
+                            [scimAttribute.replace("addresses#home.", "")]:
                             attributeValue
-                    }
-                );
+                        }
+                    );
 
-                continue;
-            } 
+                    continue;
+                } 
 
-            // Add the schema to the set
-            schemasSet.add(attribute.mappedSCIMClaimDialectURI);
+                // Add the schema to the set
+                schemasSet.add(attribute.mappedSCIMClaimDialectURI);
 
-            const cleanedAttribute: string = isMultiValued ? scimAttribute.split("#")[0] : scimAttribute;
+                const cleanedAttribute: string = isMultiValued ? scimAttribute.split("#")[0] : scimAttribute;
 
-            // Handle simple attributes.
-            if (!cleanedAttribute.includes(".")) {
-                const target: any =
+                // Handle simple attributes.
+                if (!cleanedAttribute.includes(".")) {
+                    const target: unknown =
                     attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
                         ? dataObj
                         : dataObj[attribute.mappedSCIMClaimDialectURI] ||
                         (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
 
-                if (isMultiValued) {
-                    target[cleanedAttribute] = (target[cleanedAttribute] || []).concat(attributeValue);
-                } else {
-                    target[cleanedAttribute] = attributeValue;
-                }
+                    if (isMultiValued) {
+                        target[cleanedAttribute] =
+                            ((target[cleanedAttribute] || [] ) as unknown[]).concat(attributeValue);
+                    } else {
+                        target[cleanedAttribute] = attributeValue;
+                    }
 
-                continue;
-            }
-            // Handle complex attributes.
-            else if (cleanedAttribute.includes(".")) {
-                const [ parentAttr, childAttr ] = cleanedAttribute.split(".");
-                const target: any =
+                    continue;
+                }
+                // Handle complex attributes.
+                else if (cleanedAttribute.includes(".")) {
+                    const [ parentAttr, childAttr ] = cleanedAttribute.split(".");
+                    const target: unknown =
                     attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
                         ? dataObj
                         : dataObj[attribute.mappedSCIMClaimDialectURI] ||
                         (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
                 
-                if (isMultiValued) {
-                    target[parentAttr] = (target[parentAttr] || []).concat({
-                        [childAttr]: attributeValue
-                    });
-                } else {
-                    if (!target[parentAttr]) {
-                        target[parentAttr] = {};
+                    if (isMultiValued) {
+                        target[parentAttr] = ((target[parentAttr] || []) as unknown[]).concat({
+                            [childAttr]: attributeValue
+                        });
+                    } else {
+                        if (!target[parentAttr]) {
+                            target[parentAttr] = {};
+                        }
+                        target[parentAttr][childAttr] = attributeValue;
                     }
-                    target[parentAttr][childAttr] = attributeValue;
+
+                    continue;
                 }
-
-                continue;
             }
-        }
 
-        return {
-            schema: Array.from(schemasSet),
-            ...dataObj
+            return {
+                schema: Array.from(schemasSet),
+                ...dataObj
+            };
         };
-    };
 
     /**
      * Generate SCIM Operation.
@@ -775,6 +779,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             <BulkImportResponseList
                                 isLoading={ isSubmitting }
                                 data-testid={ `${testId}-bulk-import-response-list` }
+                                hasError={ hasError }
                                 responseList={ response }
                                 bulkResponseSummary={ bulkResponseSummary }
                             />

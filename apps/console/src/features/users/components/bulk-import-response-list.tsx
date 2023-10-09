@@ -46,6 +46,7 @@ interface BulkImportResponseListProps {
     isLoading?: boolean;
     ["data-componentid"]?: string;
     bulkResponseSummary?: BulkResponseSummary
+    hasError: boolean;
 }
 
 const ALL_STATUS: string = "ALL";
@@ -62,7 +63,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     props: BulkImportResponseListProps
 ): ReactElement => {
 
-    const { responseList, isLoading, ["data-componentid"]: testId, bulkResponseSummary } = props;
+    const { responseList, isLoading, ["data-componentid"]: testId, bulkResponseSummary, hasError } = props;
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>(ALL_STATUS);
@@ -251,7 +252,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         {
-                            isLoading ? null :
+                            isLoading || hasError ? null :
                                 bulkResponseSummary.failedCount === 0 ?
                                     (<Alert severity="success">
                                         <AlertTitle>

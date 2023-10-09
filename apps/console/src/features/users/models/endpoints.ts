@@ -46,7 +46,7 @@ export interface SCIMBulkOperation {
     method: string;
     bulkId: string;
     path: string;
-    data: any;
+    data: Record<string, unknown>;
 }
 
 /**

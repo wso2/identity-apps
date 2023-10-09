@@ -530,16 +530,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const addUserDropdownTrigger: ReactElement = (
-        <>
-            <PrimaryButton
-                data-componentid={ `${ testId }-add-user-button` }
-                data-testid={ `${ testId }-add-user-button` }
-            >
-                <Icon name="add"/>
-                { t("extensions:manage.users.buttons.addUserBtn") }
-                <Icon name="dropdown" className="ml-3 mr-0"/>
-            </PrimaryButton>
-        </>
+        <PrimaryButton
+            data-componentid={ `${ testId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("extensions:manage.users.buttons.addUserBtn") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
     );
 
     const getAddUserOptions = () => {
@@ -616,20 +614,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 (isUserListRequestLoading || !(!searchQuery))
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { userConfig.showBulkUserImportOption ? (
-                            addUserDropDown 
-                        ) : (
-                            <PrimaryButton
-                                data-componentid={ `${ testId }-add-user-button` }
-                                data-testid={ `${ testId }-add-user-button` }
-                                onClick={ () => {
-                                    setShowWizard(true);
-                                } }
-                            >
-                                <Icon name="add"/>
-                                { t("extensions:manage.users.buttons.addUserBtn") }
-                            </PrimaryButton>
-                        ) } 
+                        { userConfig.showBulkUserImportOption ?
+                            (
+                                addUserDropDown 
+                            ) : (
+                                <PrimaryButton
+                                    data-componentid={ `${ testId }-add-user-button` }
+                                    data-testid={ `${ testId }-add-user-button` }
+                                    onClick={ () => {
+                                        setShowWizard(true);
+                                    } }
+                                >
+                                    <Icon name="add"/>
+                                    { t("extensions:manage.users.buttons.addUserBtn") }
+                                </PrimaryButton>
+                            ) } 
                         
                     </Show>
                 )

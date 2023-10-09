@@ -450,16 +450,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     const addUserDropdownTrigger: ReactElement = (
-        <>
-            <PrimaryButton
-                data-componentid={ `${ componentId }-add-user-button` }
-                data-testid={ `${ testId }-add-user-button` }
-            >
-                <Icon name="add"/>
-                { t("extensions:manage.users.buttons.addUserBtn") }
-                <Icon name="dropdown" className="ml-3 mr-0"/>
-            </PrimaryButton>
-        </>
+        <PrimaryButton
+            data-componentid={ `${ componentId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("extensions:manage.users.buttons.addUserBtn") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
     );
 
     const getAddUserOptions = () => {
@@ -543,23 +541,24 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListFetchRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { userConfig.showBulkUserImportOption ? (
-                            addUserDropDown 
-                        ) : (
-                            <PrimaryButton
-                                data-componentid={ `${ componentId }-add-user-button` }
-                                data-testid={ `${ testId }-add-user-button` }
-                                onClick={ () => {
-                                    eventPublisher.publish("manage-users-click-create-new", {
-                                        type: "user"
-                                    });
-                                    setShowWizard(true);
-                                } }
-                            >
-                                <Icon name="add"/>
-                                { t("extensions:manage.users.buttons.addUserBtn") }
-                            </PrimaryButton>
-                        ) } 
+                        { userConfig.showBulkUserImportOption
+                            ? (
+                                addUserDropDown 
+                            ) : (
+                                <PrimaryButton
+                                    data-componentid={ `${ componentId }-add-user-button` }
+                                    data-testid={ `${ testId }-add-user-button` }
+                                    onClick={ () => {
+                                        eventPublisher.publish("manage-users-click-create-new", {
+                                            type: "user"
+                                        });
+                                        setShowWizard(true);
+                                    } }
+                                >
+                                    <Icon name="add"/>
+                                    { t("extensions:manage.users.buttons.addUserBtn") }
+                                </PrimaryButton>
+                            ) } 
                         
                     </Show>
                 )
