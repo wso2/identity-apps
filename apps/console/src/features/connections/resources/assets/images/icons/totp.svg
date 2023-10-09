@@ -1,0 +1,31 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="clock-outline-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+     viewBox="0 0 24.282 24.282">
+    <g id="clock-circular-outline" transform="translate(0.4 0.4)">
+        <g id="Group_631">
+            <path id="Path_346"
+                  d="M11.741,0A11.741,11.741,0,1,0,23.482,11.741,11.754,11.754,0,0,0,11.741,0Zm0,20.916a9.175,9.175,0,1,1,9.175-9.175A9.185,9.185,0,0,1,11.741,20.916Z"
+                  fill="#464646" stroke="#464646" stroke-width="0.8"/>
+            <path id="Path_347"
+                  d="M258.778,145.171V140.25a.995.995,0,1,0-1.989,0v5.239c0,.016,0,.03,0,.046a.989.989,0,0,0,.287.752l3.7,3.7a.995.995,0,0,0,1.407-1.407Z"
+                  transform="translate(-246.021 -133.416)" fill="#464646" stroke="#464646" stroke-width="0.8"/>
+        </g>
+    </g>
+</svg>

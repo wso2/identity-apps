@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,6 +66,9 @@ export class UsersConstants {
 
     // Regular expression to validate having alphanumeric characters.
     public static readonly USERNAME_VALIDATION_REGEX: string = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$";
+
+    // Timeout for the debounce function.
+    public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 
     /**
      * Get the consumer users paths as a map.

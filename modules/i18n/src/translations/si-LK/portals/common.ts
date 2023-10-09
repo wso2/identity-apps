@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -125,6 +125,7 @@ export const common: CommonNS = {
     },
     new: "නවතම",
     next: "ඊළඟ ",
+    noResultsFound: "ප්‍රතිඵල හමු නොවීය",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
     operations: "මෙහෙයුම්",
@@ -154,6 +155,7 @@ export const common: CommonNS = {
     save: "සුරකින්න",
     sdks: "SDKs",
     search: "සොයන්න",
+    searching: "සොයමින්",
     security: "ආරක්ෂාව",
     services: "සේවාවන්",
     settings: "සැකසුම්",

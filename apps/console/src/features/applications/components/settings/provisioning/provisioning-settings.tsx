@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -30,7 +30,7 @@ import { ApplicationInterface, ProvisioningConfigurationInterface } from "../../
  * Proptypes for the provision settings component.
  */
 interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
-    TestableComponentInterface {
+    IdentifiableComponentInterface {
 
     /**
      * Editing application.
@@ -53,9 +53,9 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
 /**
  *  Provisioning component.
  *
- * @param {ProvisioningSettingsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Provisioning Settings component.
  */
 export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
     props: ProvisioningSettingsPropsInterface
@@ -67,7 +67,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         provisioningConfigurations,
         onUpdate,
         readOnly,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -86,7 +86,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                                 featureConfig?.applications?.scopes?.update,
                                 allowedScopes)
                         }
-                        data-testid={ `${ testId }-inbound-configuration` }
+                        data-testid={ `${ componentId }-inbound-configuration` }
                     />
                 </Grid.Column>
             </Grid.Row>
@@ -102,7 +102,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                                 featureConfig?.applications?.scopes?.update,
                                 allowedScopes)
                         }
-                        data-testid={ `${ testId }-outbound-configuration` }
+                        data-testid={ `${ componentId }-outbound-configuration` }
                     />
                 </Grid.Column>
             </Grid.Row>
@@ -114,5 +114,5 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
  * Default props for the application provisioning settings component.
  */
 ProvisioningSettings.defaultProps = {
-    "data-testid": "provisioning-settings"
+    "data-componentid": "provisioning-settings"
 };

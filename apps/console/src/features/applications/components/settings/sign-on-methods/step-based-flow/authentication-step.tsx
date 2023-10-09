@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -36,7 +36,7 @@ import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../..
 /**
  * Proptypes for the authentication step component.
  */
-interface AuthenticationStepPropsInterface extends TestableComponentInterface {
+interface AuthenticationStepPropsInterface extends IdentifiableComponentInterface {
     /**
      * List of all available authenticators.
      */
@@ -138,7 +138,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         onSubjectCheckboxChange,
         onAttributeCheckboxChange,
         updateAuthenticationStep,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -157,7 +157,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         step.options.map((option: AuthenticatorInterface) => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
+                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {
@@ -305,7 +306,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     trigger={ (
                         <div
                             className="authenticator-item-wrapper"
-                            data-testid={ `${ testId }-option` }
+                            data-componentid={ `${ componentId }-option` }
                             hidden={
                                 authenticator?.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID
                             }
@@ -324,7 +325,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                     (): void => onStepOptionDelete(stepIndex, optionIndex)
                                                 )
                                             }
-                                            data-testid={ `${ testId }-close-button` }
+                                            data-componentid={ `${ componentId }-close-button` }
                                         >
                                             <GenericIcon
                                                 transparent
@@ -341,10 +342,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         spaced="right"
                                         floated="left"
                                         icon={ authenticator.image }
-                                        data-testid={ `${ testId }-image` }
+                                        data-componentid={ `${ componentId }-image` }
                                         transparent
                                     />
-                                    <span data-testid={ `${ testId }-option-name` }>
+                                    <span data-componentid={ `${ componentId }-option-name` }>
                                         { authenticator.displayName }
                                     </span>
                                 </Card.Content>
@@ -358,7 +359,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.actions.selectAuthenticator") }
                                 </Label>
-                                <Form data-testid={ `${ testId }-authenticator-selection` }>
+                                <Form data-componentid={ `${ componentId }-authenticator-selection` }>
                                     {
                                         authenticator?.authenticators?.map((item: FederatedAuthenticatorInterface) => {
                                             return (
@@ -395,7 +396,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             </div>
             <div
                 className={ classes }
-                data-testid={ testId }
+                data-componentid={ componentId }
             >
                 {
                     showStepMeta && (
@@ -413,7 +414,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         className="delete-button"
                                         name="cancel"
                                         onClick={ (): void => onStepDelete(stepIndex) }
-                                        data-testid={ `${ testId }-delete-button` }
+                                        data-componentid={ `${ componentId }-delete-button` }
                                     />
                                 )
                             }
@@ -474,7 +475,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                 t("console:develop.features.applications.placeholders." +
                                                     "emptyAuthenticatorStep.subtitles.0")
                                             ] }
-                                            data-testid={ `${ testId }-empty-placeholder` }
+                                            data-componentid={ `${ componentId }-empty-placeholder` }
                                         />
                                     </>
                                 )
@@ -500,7 +501,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                                 ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                                             ) }
                                                             checked={ isSubjectIdentifierChecked }
-                                                            data-componentid={ `${ testId }-subject-step-checkbox` }
+                                                            data-componentid={
+                                                                `${ componentId }-subject-step-checkbox`
+                                                            }
                                                             onChange={
                                                                 (): void => onSubjectCheckboxChange(stepIndex + 1)
                                                             }
@@ -512,7 +515,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         ".signOnMethod.sections.landing.flowBuilder.types.idf" +
                                                         ".tooltipText"
                                                     ) }
-                                                    data-componentid={ `${ testId }-subject-step-tooltip` }
+                                                    data-componentid={ `${ componentId }-subject-step-tooltip` }
                                                     basic
                                                 >
                                                 </Tooltip>
@@ -524,7 +527,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                                     ) }
                                                     checked={ isSubjectIdentifierChecked }
-                                                    data-componentid={ `${ testId }-subject-step-checkbox` }
+                                                    data-componentid={ `${ componentId }-subject-step-checkbox` }
                                                     onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
                                                     readOnly={ isSubjectIdentifierChecked }
                                                 />
@@ -541,7 +544,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                                 ".stepBased.forms.fields.attributesFrom.label"
                                                             ) }
                                                             checked={ isAttributeIdentifierChecked }
-                                                            data-componentid={ `${ testId }-attribute-step-checkbox` }
+                                                            data-componentid={
+                                                                `${ componentId }-attribute-step-checkbox`
+                                                            }
                                                             onChange={
                                                                 (): void => onAttributeCheckboxChange(stepIndex + 1)
                                                             }
@@ -553,7 +558,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         ".signOnMethod.sections.landing.flowBuilder.types.idf" +
                                                         ".tooltipText"
                                                     ) }
-                                                    data-componentid={ `${ testId }-attribute-step-tooltip` }
+                                                    data-componentid={ `${ componentId }-attribute-step-tooltip` }
                                                     basic
                                                 >
                                                 </Tooltip>
@@ -565,7 +570,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         ".stepBased.forms.fields.attributesFrom.label"
                                                     ) }
                                                     checked={ isAttributeIdentifierChecked }
-                                                    data-componentid={ `${ testId }-attribute-step-checkbox` }
+                                                    data-componentid={ `${ componentId }-attribute-step-checkbox` }
                                                     onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
                                                     readOnly={ isAttributeIdentifierChecked }
                                                 />
@@ -596,5 +601,5 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
  * Default props for the authentication step component.
  */
 AuthenticationStep.defaultProps = {
-    "data-testid": "authentication-step"
+    "data-componentid": "authentication-step"
 };

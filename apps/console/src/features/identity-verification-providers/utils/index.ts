@@ -16,23 +16,8 @@
  * under the License.
  */
 
-import { FeatureGateInterface, FeatureStatus } from "@wso2is/access-control";
-
-export const featureGateConfig: FeatureGateInterface  = {
-    console:  {
-        application: {
-            signIn: {
-                adaptiveAuth : {
-                    status: FeatureStatus.DEFAULT,
-                    tags: []
-                },
-                status: FeatureStatus.DEFAULT
-            },
-            status: FeatureStatus.DEFAULT
-        },
-        saasFeatures: {
-            status: FeatureStatus.DISABLED
-        },
-        status: FeatureStatus.DEFAULT
-    }
-};
+export * from "./common-utils";
+export * from "./image-utils";
+export * from "./metatdata-utils";
+export * from "./notification-utils";
+export * from "./validation-utils";

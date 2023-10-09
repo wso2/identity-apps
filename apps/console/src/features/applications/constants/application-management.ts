@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,8 @@ export class ApplicationManagementConstants {
     public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
+    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -61,6 +63,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
+        .set("APPLICATION_SHARED_ACCESS", "applications.edit.sharedAccess")
         .set("APPLICATION_EDIT_INFO", "applications.edit.info");
 
     /**
@@ -159,11 +162,6 @@ export class ApplicationManagementConstants {
         ApplicationTemplateCategories.VENDOR
     ];
 
-    /**
-     * Set of grant types to hide from the UI.
-     */
-    public static readonly HIDDEN_GRANT_TYPES: string[] = [ "account_switch" ];
-
     public static readonly AUTHORIZATION_CODE_GRANT: string = "authorization_code";
     public static readonly CLIENT_CREDENTIALS_GRANT: string = "client_credentials";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
@@ -176,6 +174,12 @@ export class ApplicationManagementConstants {
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
+    public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+    
+    /**
+     * Set of grant types to hide from the UI.
+     */
+    public static readonly HIDDEN_GRANT_TYPES: string[] = [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ];
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -195,12 +199,14 @@ export class ApplicationManagementConstants {
      * Set of grant types allowed for certain templates.
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
+        // single page app template
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
+        // oidc traditional web app template
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
@@ -209,6 +215,7 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
+        // oidc standard app template
         [ "custom-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
@@ -217,7 +224,9 @@ export class ApplicationManagementConstants {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.SAML2_BEARER,
+            ApplicationManagementConstants.JWT_BEARER
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -235,11 +244,13 @@ export class ApplicationManagementConstants {
      * Usage: Map the index to key to rearrange the values.
      */
     public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER: { [ key: string ]: Map<string, number>; } = {
+        // single page application template
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 1 ],
             [ ApplicationManagementConstants.REFRESH_TOKEN_GRANT, 2 ]
         ]),
+        // OIDC web application template
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: new Map<string, number>([
             [ ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT, 0 ],
             [ ApplicationManagementConstants.IMPLICIT_GRANT, 3 ],
@@ -335,7 +346,8 @@ export class ApplicationManagementConstants {
 
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
-        ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
+        ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+        IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
@@ -388,6 +400,14 @@ export class ApplicationManagementConstants {
     public static readonly EIDP_AUTHENTICATORS: SupportedAuthenticators[] = [
         SupportedAuthenticators.OIDC,
         SupportedAuthenticators.SAML
+    ];
+
+    // Authenticators that can handle Active Sessions Limit.
+    public static readonly ACTIVE_SESSIONS_LIMIT_HANDLERS: string[] = [
+        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
+        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     /**

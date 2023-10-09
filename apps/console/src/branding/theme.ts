@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -116,6 +116,9 @@ export const AsgardeoTheme: Theme = extendTheme({
             styleOverrides: {
                 input: {
                     padding: "0.67857143em 1em"
+                },
+                root: {
+                    fontFamily: "Gilmer, sans-serif"
                 }
             }
         }

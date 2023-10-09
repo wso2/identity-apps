@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,8 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
     const {
         appId,
         appName,
-        clientId
+        clientId,
+        [ "data-componentid" ]: componentId
     } = props ;
 
     const [ isTriggered, setIsTriggered ] = useState<boolean>(false);
@@ -116,9 +117,17 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
             <ApplicationDangerZoneComponent
                 appId={ appId }
                 name={ appName }
-                clientId={ clientId } 
+                clientId={ clientId }
+                data-componentid={ componentId }
                 content="Once you delete an application it cannot be restored. 
                     You can create the Try It application again from the Get Started page." />
         </ResourceTab.Pane>
     );
-}; 
+};
+
+/**
+ * Default props for the Application application-general-tab-overide.
+ */
+ApplicationGeneralTabOverride.defaultProps = {
+    "data-componentid": "application-general-tab-overide"
+};

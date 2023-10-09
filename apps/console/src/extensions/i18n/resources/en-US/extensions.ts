@@ -1958,8 +1958,7 @@ export const extensions: Extensions = {
                 smtpPort: {
                     label: "Server Port",
                     placeholder: "Enter a port number",
-                    hint: "The default SMTP port is <1>25</1>, but some email service providers may use alternative ports " +
-                        "such as <3>587</3>."
+                    hint: "For security reasons, we currently support port <1>587</1> only."
                 },
                 fromAddress: {
                     label: "From Address",
