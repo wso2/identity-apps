@@ -99,10 +99,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
+
                 setConnectorCategories(response?.filter((category: GovernanceConnectorCategoryInterface) => {
                     return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
                 }
-                )); 
+                ));
+
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -125,12 +127,13 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     }));
                 }
             });
-
-        serverConfigurationConfig.connectorCategoriesToShow.forEach((connectorCategory: string) => {
-            loadCategoryConnectors(connectorCategory);
-        })
-
     }, []);
+
+    useEffect(() => {
+        connectorCategories?.forEach((connectorCategory: GovernanceConnectorCategoryInterface) => {
+            loadCategoryConnectors(connectorCategory.id);
+        });
+    }, [ connectorCategories ]);
 
     const loadCategoryConnectors = (categoryId: string) => {
         setConnectorCategoryLoading(true);
@@ -138,14 +141,15 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                // setCategoryId(categoryId);
                 response?.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
+
                 });
 
-                // setConnectorCategory(response);
-                setConnectors(() => [...connectors, ...response?.connectors as GovernanceConnectorWithRef[]]);
+                setConnectors((connectors: GovernanceConnectorWithRef[]) => [
+                    ...connectors, ...response?.connectors as GovernanceConnectorWithRef[]
+                ]);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
             .catch((error: IdentityAppsApiException) => {
@@ -272,18 +276,16 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     return (
         <PageLayout
-            pageTitle= {"Login & Registration" }
-            title={ "Login & Registration" }
-            description={
-                "Configure login and registration settings."
-            }
+            pageTitle= { t("console:common.sidePanel.loginAndRegistration.label") }
+            title={ t("console:common.sidePanel.loginAndRegistration.label") }
+            description={ t("console:common.sidePanel.loginAndRegistration.description") }
             data-testid={ `${ testId }-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
                 <GridLayout
                     showTopActionPanel={ false }
                 >
-                    { 
+                    {
                         isConnectorCategoryLoading 
                             ? renderLoadingPlaceholder() 
                             : (

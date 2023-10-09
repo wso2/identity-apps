@@ -366,7 +366,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             action={
                 featureConfig.emailProviders?.enabled &&
                 (
-                    <SecondaryButton onClick={ goToEmailProvider }>
+                    <SecondaryButton
+                        onClick={ goToEmailProvider }
+                        data-componentId="email-provider-configure-button"
+                    >
                         { "Configure " + t("extensions:develop.sidePanel.emailProvider") }
                     </SecondaryButton>
                 )
@@ -380,7 +383,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 onTemplateSelected={ handleTemplateIdChange }
                 onLocaleChanged={ handleLocaleChange }
             />
-
             <ResourceTab
                 attached="top"
                 secondary={ false }

@@ -116,11 +116,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(
-            AppConstants.getPaths()
-                .get("GOVERNANCE_CONNECTOR")
-                .replace(":id", categoryId)
-        );
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     const handleUpdateSuccess = () => {
@@ -579,18 +575,14 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         ) : null;
     };
 
-    const onBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
-    };
-
     return !isConnectorRequestLoading && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
             description={ resolveConnectorDescription(connector) }
             backButton={ {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
-                onClick: () => onBackButtonClick(),
-                text: "Go back to Login & Registration"
+                onClick: () => handleBackButtonClick(),
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

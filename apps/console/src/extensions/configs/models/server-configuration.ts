@@ -28,6 +28,7 @@ export interface ServerConfigurationConfig {
     connectorPropertiesToShow: string[];
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];
+    connectorsToHide: string[];
     dynamicConnectors: boolean,
     intendSettings: boolean;
     renderConnector: (

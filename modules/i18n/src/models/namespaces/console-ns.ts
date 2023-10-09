@@ -293,6 +293,13 @@ export interface ConsoleNS {
         };
         sidePanel: {
             privacy: string;
+            loginAndRegistration: {
+                label: string,
+                description: string,
+            },
+            userAttributesAndStores: string,
+            userManagement: string,
+            branding: string
         };
     };
     branding: {
@@ -4219,6 +4226,7 @@ export interface ConsoleNS {
                         format: string;
                     };
                 };
+                goBackLoginAndRegistration: string;
                 enabled: string;
                 disabled: string;
                 categories: string;

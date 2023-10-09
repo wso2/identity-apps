@@ -17,10 +17,8 @@
  */
 
 import {
-    BuildingGearIcon, 
-    DocumentPenIcon, 
+    BuildingGearIcon,
     PaletteIcon,
-    SquareMagnifyingGlassIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
@@ -272,13 +270,7 @@ export class RouteUtils {
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
-            name: "branding"
-        };
-
-        const monitoring: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: SquareMagnifyingGlassIcon,
-            id: "monitoring",
-            name: "Monitoring"
+            name: "Branding"
         };
 
         const overview: NavCategory= {
@@ -299,6 +291,11 @@ export class RouteUtils {
         const settings: NavCategory = {
             id: "insights",
             order: 3
+        };
+
+        const monitoring: NavCategory = {
+            id: "monitoring",
+            order: 4
         };
 
         const pathsToCheck: string[] = [

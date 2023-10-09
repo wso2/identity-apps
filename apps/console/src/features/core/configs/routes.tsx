@@ -88,7 +88,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             icon: <ArrowRightToBracketPencilIcon /> 
                         },
                         id: "loginAndRegistration",
-                        name: "Login & Registration",
+                        name: "console:common.sidePanel.loginAndRegistration.label",
                         order: 0,
                         path: AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
                         protected: true,

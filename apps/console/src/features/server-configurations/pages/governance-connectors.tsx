@@ -188,7 +188,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: "Go back to Login & Registration"
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             data-testid={ `${testId}-page-layout` }
         >
@@ -202,7 +202,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                         ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
                                             if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
                                                 || serverConfigurationConfig.connectorsToShow.includes(
-                                                    ServerConfigurationsConstants.ALL) ) {
+                                                    ServerConfigurationsConstants.ALL) && 
+                                                    !serverConfigurationConfig.connectorsToHide.includes(
+                                                        connector.name
+                                                    ) ) {
                                                 const connectorElement: ReactElement = (
                                                     <Grid.Row ref={ connector.ref }>
                                                         <DynamicGovernanceConnector
