@@ -63,7 +63,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     props: BulkImportResponseListProps
 ): ReactElement => {
 
-    const { responseList, isLoading, ["data-componentid"]: testId, bulkResponseSummary, hasError } = props;
+    const { responseList, isLoading, ["data-componentid"]: componentId, bulkResponseSummary, hasError } = props;
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>(ALL_STATUS);
@@ -105,7 +105,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "username",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header image as="h6" data-componentid={ `${testId}-username-item-heading` }>
+                        <Header as="h6" data-componentid={ `${componentId}-username-item-heading` }>
                             <Header.Content>
                                 {
                                     response.username
@@ -123,10 +123,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "status",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-componentid={ `${testId}--status-item-heading` } >
+                        <Header as="h6" data-componentid={ `${componentId}--status-item-heading` } >
                             <Header.Content>
                                 <Label
-                                    data-componentid={ `${testId}-bulk-label` }
+                                    data-componentid={ `${componentId}-bulk-label` }
                                     content={ response.status }
                                     size="small"
                                     color={ response.statusCode === BulkUserImportStatus.SUCCESS ? "green" : "red" }
@@ -145,7 +145,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "message",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-componentid={ `${testId}-status-item-heading` }>
+                        <Header as="h6" data-componentid={ `${componentId}-status-item-heading` }>
                             <Header.Content>
                                 { response.message }
                             </Header.Content>
@@ -227,8 +227,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const showPlaceholders = (): ReactElement => {
         return (
             <EmptyPlaceholder
-                data-testid={ `${testId}-bulk-user-empty-search-result` }
-                data-componentid={ `${testId}-bulk-user-empty-search-result` }
+                data-testid={ `${componentId}-empty-search-result` }
+                data-componentid={ `${componentId}-empty-search-result` }
                 action={ !searchQuery ? null : (
                     <LinkButton onClick={ handleSearchQueryClear }>
                         { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
@@ -254,8 +254,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         {
                             isLoading || hasError ? null :
                                 bulkResponseSummary.failedCount === 0 ?
-                                    (<Alert severity="success">
-                                        <AlertTitle>
+                                    (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
+                                        <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                             {
                                                 t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importSuccess.message")
@@ -267,8 +267,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         }
                                     </Alert>)
                                     :  
-                                    (<Alert severity="error">
-                                        <AlertTitle>
+                                    (<Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
+                                        <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
                                                 t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importFailed.message")
@@ -320,14 +320,16 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                     defaultSearchAttribute="userName"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
+                                    data-testid={ `${componentId}-advanced-search` }
+                                    data-componentid={ `${componentId}-advanced-search` }
                                 />
                             ) }
                             rightActionPanel={
                                 (
                                     <>
                                         <Dropdown
-                                            data-testid="bulk-user-list-status-dropdown"
-                                            data-componentid="bulk-user-list-status-dropdown"
+                                            data-testid={ `${componentId}-filter-status-dropdown` }
+                                            data-componentid={ `${componentId}-filter-status-dropdown` }
                                             selection
                                             options={ statusOptions }
                                             onChange={ handleStatusDropdownChange }
@@ -342,8 +344,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                             totalListSize={ totalCount }
                             isLoading={ isLoading }
                             listItemLimit={ UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT }
-                            data-testid="bulk-user-list-layout"
-                            data-componentid="bulk-user-list-layout"
+                            data-testid={ `${componentId}-list-layout` }
+                            data-componentid={ `${componentId}-list-layout` }
                             onPageChange={ () => null }
                             disableRightActionPanel={ false }
                         >
@@ -363,8 +365,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 transparent={ true }
                                 selectable={ false }
                                 showHeader={ false }
-                                data-testid="bulk-user-list-data-table"
-                                data-componentid="bulk-user-list-data-table"
+                                data-testid={ `${componentId}-data-table` }
+                                data-componentid={ `${componentId}-data-table` }
                                 loadingStateOptions={ {
                                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                     imageType: "circular"

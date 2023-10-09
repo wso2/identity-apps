@@ -475,7 +475,11 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                             <p className="description">{ dropzoneText }</p>
                             <p className="description">– or –</p>
                         </div>
-                        <Button basic primary onClick={ handleOnUploadButtonClick }>
+                        <Button
+                            basic
+                            primary
+                            onClick={ handleOnUploadButtonClick }
+                            data-componentid={ `${componentId}-upload-button` } >
                             { uploadButtonText }
                         </Button>
                     </Segment>

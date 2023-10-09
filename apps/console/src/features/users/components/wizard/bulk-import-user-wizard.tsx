@@ -112,7 +112,7 @@ const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
 export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const { closeWizard, userstore, ["data-componentid"]: testId } = props;
+    const { closeWizard, userstore, ["data-componentid"]: componentId } = props;
 
     const { t } = useTranslation();
 
@@ -120,7 +120,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ hasError, setHasError ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
@@ -719,8 +719,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     return (
         <Modal
-            data-testid={ testId }
-            data-componentid={ testId }
+            data-testid={ componentId }
+            data-componentid={ componentId }
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
@@ -755,8 +755,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     } }
                                     uploadButtonText="Upload CSV File"
                                     dropzoneText="Drag and drop a CSV file here."
-                                    data-testid={ `${testId}-form-wizard-csv-file-picker` }
-                                    data-componentid={ `${testId}-form-wizard-csv-file-picker` }
+                                    data-testid={ `${componentId}-form-wizard-csv-file-picker` }
+                                    data-componentid={ `${componentId}-form-wizard-csv-file-picker` }
                                     icon={ getCertificateIllustrations().uploadPlaceholder }
                                     placeholderIcon={ <Icon name="file code" size="huge" /> }
                                     normalizeStateOnRemoveOperations={ true }
@@ -778,7 +778,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <Grid.Row columns={ 1 }>
                             <BulkImportResponseList
                                 isLoading={ isSubmitting }
-                                data-testid={ `${testId}-bulk-import-response-list` }
+                                data-componentid={ `${componentId}-response-list` }
                                 hasError={ hasError }
                                 responseList={ response }
                                 bulkResponseSummary={ bulkResponseSummary }
@@ -793,7 +793,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                data-testid={ `${testId}-cancel-button` }
+                                data-testid={ `${componentId}-cancel-button` }
+                                data-componentid={ `${componentId}-cancel-button` }
                                 floated="left"
                                 onClick={ () => {
                                     closeWizard();
@@ -807,7 +808,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         { !showResponseView || isSubmitting ? (
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <PrimaryButton
-                                    data-testid={ `${testId}-finish-button` }
+                                    data-testid={ `${componentId}-finish-button` }
+                                    data-componentid={ `${componentId}-finish-button` }
                                     floated="right"
                                     onClick={ handleBulkUserImport }
                                     loading={ isSubmitting }
