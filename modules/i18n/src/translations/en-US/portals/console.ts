@@ -1518,10 +1518,6 @@ export const console: ConsoleNS = {
                                     "<1>{{ myAccount }}</1> portal.",
                                 label: "Discoverable application"
                             },
-                            saas: {
-                                hint: "Applications are by default restricted for usage by users of the service provider's tenant. If this application is SaaS enabled it is opened up for all the users of all the tenants.",
-                                label: "SaaS application"
-                            },
                             imageUrl: {
                                 hint: "An image URL for the application. If this is not provided, we will display " +
                                     "a generated thumbnail instead. Recommended size: 200x200 pixels.",
