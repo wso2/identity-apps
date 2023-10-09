@@ -31,7 +31,6 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PreLoader, ProtectedRoute } from "../components";
 import { getAppLayoutRoutes } from "../configs/routes";
-import { commonConfig } from "../extensions/configs";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 import { AppConstants } from "../constants";
 import { AppState } from "../store";

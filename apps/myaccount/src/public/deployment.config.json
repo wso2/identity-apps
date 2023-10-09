@@ -11,8 +11,7 @@
     "routePaths": {
         "home": "/overview",
         "login": "",
-        "logout": "/logout",
-        "cookiePolicy": "/authenticationendpoint/cookie_policy.do"
+        "logout": "/logout"
     },
     "extensions": {
         "applicationInsightsCookieDomain": "",
@@ -105,6 +104,7 @@
             }
         },
         "isCookieConsentBannerEnabled": false,
+        "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isHeaderAvatarLabelAllowed": false,
         "i18nConfigs": {
             "showLanguageSwitcher": true,
