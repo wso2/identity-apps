@@ -419,6 +419,7 @@ export class AppConstants {
         "organizations",
         "groups",
         "roles",
+        "userRoles",
         "applications",
         "emailTemplates",
         "governanceConnectors"
