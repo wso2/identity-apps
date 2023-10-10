@@ -34,6 +34,7 @@ export interface ApplicationConfig {
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
+    allowedGrantTypes: Record<string, string[]>,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };

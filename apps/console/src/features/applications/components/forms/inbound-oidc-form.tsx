@@ -770,8 +770,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
-                    && get(ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES, template.id)
-                    && !ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES[ template.id ]
+                    && get(applicationConfig.allowedGrantTypes, template.id)
+                    && !applicationConfig.allowedGrantTypes[ template.id ]
                         .includes(name)) {
 
                     return;
