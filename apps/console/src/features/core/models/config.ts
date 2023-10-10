@@ -165,7 +165,7 @@ export interface FeatureConfigInterface {
     /**
      * Bulk Import Feature
      */
-    bulkImport?: FeatureAccessConfigInterface;
+    bulkUserImport?: FeatureAccessConfigInterface;
 }
 
 /**
