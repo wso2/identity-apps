@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -42,12 +42,6 @@ import union from "lodash-es/union";
 import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
-import {
-    AppConstants,
-} from "@wso2is/common/src/constants/app-constants";
-import {
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/common/src/configs/ui";
 import { 
     AuthenticatorCreateWizardFactory 
 } from "../components/create/authenticator-create-wizard-factory";
@@ -58,7 +52,6 @@ import {
     ConnectionTemplateItemInterface,
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { useGetConnectionTemplates } from "../api/connections";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
