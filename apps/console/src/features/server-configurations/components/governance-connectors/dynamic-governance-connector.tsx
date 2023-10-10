@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -224,16 +224,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
         const connectorTitleKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
             camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName";
-
-        if (connector?.id === ServerConfigurationsConstants.ELK_ANALYTICS_CONNECTOR_ID) {
-            return "Analytics";
-        }
+        let connectorTitle: string = connector?.friendlyName;
 
         if (i18n.exists(connectorTitleKey)) {
-            return t(connectorTitleKey);
+            connectorTitle = t(connectorTitleKey);
         }
-
-        return connector?.friendlyName;
+        
+        return connectorTitle;
     };
 
     /**
