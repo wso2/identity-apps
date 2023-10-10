@@ -207,13 +207,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         } else {
                             const error: IdentityAppsApiException = result.reason;
 
-                            if (error.code !== 404) {
+                            if (error.code === 404) {
                                 dispatch(
                                     addAlert({
                                         description: error?.response?.data?.description,
                                         level: AlertLevels.ERROR,
                                         message: t("console:manage.features.claims.dialects"
-                                            + ".notifications.fetchExternalClaims.message")
+                                            + ".notifications.fetchExternalClaims.genericError.message")
                                     })
                                 );
                             }
