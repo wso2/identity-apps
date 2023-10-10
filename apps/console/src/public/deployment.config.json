@@ -283,7 +283,7 @@
                     ]
                 }
             },
-            "bulkImport": {
+            "bulkUserImport": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
