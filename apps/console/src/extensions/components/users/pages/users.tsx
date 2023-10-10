@@ -628,7 +628,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 usersList={ usersList }
                                 handleUserDelete={ handleUserDelete }
                                 userMetaListContent={ userListMetaContent }
-                                onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
                                 data-componentid="user-mgt-user-list"

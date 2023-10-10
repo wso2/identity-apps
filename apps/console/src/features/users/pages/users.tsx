@@ -780,7 +780,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
                         realmConfigs={ realmConfigs }
-                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid="user-mgt-user-list"

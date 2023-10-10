@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -470,20 +470,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
-                    action={ (
-                        <Show
-                            when={ AccessControlConstants.USER_WRITE }
-                        >
-                            <PrimaryButton
-                                data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
-                                onClick={ onEmptyListPlaceholderActionClick }
-                            >
-                                <Icon name="add"/>
-                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton",
-                                    { type: "User" }) }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.placeholders.emptyList.title") }

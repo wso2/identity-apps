@@ -53,7 +53,7 @@ type UseWizardAlertHookReturnType = [ WizardAlert, React.Dispatch<React.SetState
  */
 export const useWizardAlert = (props?: WizardAlertProps): UseWizardAlertHookReturnType => {
 
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId } = props || { "data-componentid": "wizard-alert" };
     const [ alert, setAlert ] = useState<WizardAlert>(null);
 
     const renderAlert = (): ReactElement => {

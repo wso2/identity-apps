@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -32,16 +31,17 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
-    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
     AppConstants,
@@ -81,10 +81,6 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * @param columns - New columns.
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
-    /**
-     * Callback to be fired when the empty list placeholder action is clicked.
-     */
-    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * On list item select callback.
      */
@@ -142,7 +138,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         readOnlyUserStores,
         featureConfig,
         onColumnSelectionChange,
-        onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
         realmConfigs,
@@ -156,7 +151,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any>= useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -183,7 +178,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     })
                 );
                 onUserDelete();
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -223,7 +218,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 render: (user: UserBasicInterface): ReactNode => {
                     let header: string | MultiValueAttributeInterface;
                     let subHeader: string | MultiValueAttributeInterface;
-                    const isNameAvailable = user.name?.familyName === undefined && user.name?.givenName === undefined;
+                    const isNameAvailable: boolean = 
+                    user.name?.familyName === undefined && user.name?.givenName === undefined;
 
                     if (user[SCIMConfigs.scim.enterpriseSchema]?.userSourceId) {
                         subHeader = user.emails[0]
@@ -308,8 +304,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 dynamicColumn = {
                     ...dynamicColumn,
                     render: (user: UserBasicInterface): ReactNode => {
-                        const now = moment(new Date());
-                        const receivedDate = moment(user?.meta?.lastModified);
+                        const now: moment.Moment = moment(new Date());
+                        const receivedDate: moment.Moment = moment(user?.meta?.lastModified);
 
                         return t("console:common.dateTime.humanizedDateString", {
                             date: moment.duration(now.diff(receivedDate)).humanize()
@@ -343,7 +339,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
                 icon: (user: UserBasicInterface): SemanticICONS => {
-                    const userStore = user?.userName?.split("/").length > 1
+                    const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
                         : "PRIMARY";
 
@@ -357,7 +353,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     handleUserEdit(user?.id),
                 popupText: (user: UserBasicInterface): string => {
-                    const userStore = user?.userName?.split("/").length > 1
+                    const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
                         : "PRIMARY";
 
@@ -375,7 +371,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         actions.push({
             "data-testid": "users-list-item-delete-button",
             hidden: (user: UserBasicInterface): boolean => {
-                const userStore = user?.userName?.split("/").length > 1
+                const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
                     : UserstoreConstants.PRIMARY_USER_STORE;
 
@@ -428,17 +424,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
-                    action={ (
-                        <Show when={ AccessControlConstants.USER_WRITE }>
-                            <PrimaryButton
-                                data-testid={ `${testId}-empty-placeholder-add-user-button` }
-                                onClick={ () => onEmptyListPlaceholderActionClick() }
-                            >
-                                <Icon name="add"/>
-                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
