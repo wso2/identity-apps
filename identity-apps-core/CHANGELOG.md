@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.9
+
+### Patch Changes
+
+- [#4186](https://github.com/wso2/identity-apps/pull/4186) [`c3a534895d`](https://github.com/wso2/identity-apps/commit/c3a534895d6dd2f920e6904ed7e1533a84213db2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n mapping for invalid code error message in device grant flow
+
 ## 2.0.8
 
 ### Patch Changes
