@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     hint={ t("extensions:develop.emailTemplates.form.inputs.subject.hint") }
                                     required={ true }
                                     value={ selectedEmailTemplate?.subject }
-                                    maxLength={ 50 }
+                                    maxLength={ 255 }
                                     minLength={ 1 }
                                     data-componentid={ `${ componentId }-email-subject` }
                                     listen={ (value: string) => {

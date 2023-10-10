@@ -18,12 +18,12 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
-import { AppState } from "apps/console/src/features/core";
-import { SupportedLanguagesMeta } from "modules/i18n/dist/types";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
+import { AppState } from "../../../../features/core";
 import { EmailTemplateType } from "../models";
 
 const FORM_ID: string = "email-customization-header-form";
@@ -84,6 +84,13 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
 
     const { t } = useTranslation();
 
+    const [ localeList, setLocaleList ] = 
+        useState<DropdownChild[]>(undefined);
+
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
+
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
             return {
@@ -92,12 +99,6 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
             };
         });
     }, [ emailTemplatesList ]);
-
-    const [ localeList, setLocaleList ] = useState<DropdownChild[]>(undefined);
-
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
 
     useEffect(() => {
         if (!supportedI18nLanguages) {
