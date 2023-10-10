@@ -33,6 +33,5 @@ export const userConfig: User = {
         } else {
             return deleteGuestUser(user.id);
         }
-    },
-    showBulkUserImportOption: true
+    }
 };

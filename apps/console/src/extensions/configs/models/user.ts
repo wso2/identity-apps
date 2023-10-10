@@ -24,5 +24,4 @@ export interface User {
         userCount: number;
     };
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
-    showBulkUserImportOption: boolean;
 }

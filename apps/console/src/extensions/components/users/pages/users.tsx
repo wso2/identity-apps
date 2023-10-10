@@ -51,7 +51,6 @@ import { deleteUser, useUsersList } from "../../../../features/users/api/users";
 import { BulkImportUserWizard } from "../../../../features/users/components/wizard/bulk-import-user-wizard";
 import { UserAddOptionTypes } from "../../../../features/users/constants";
 import { UserBasicInterface, UserListInterface } from "../../../../features/users/models/user";
-import { userConfig } from "../../../configs";
 import { CONSUMER_USERSTORE } from "../../users/constants";
 import { getUserStores } from "../api";
 import { UsersList } from "../components";
@@ -541,7 +540,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListFetchRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { userConfig.showBulkUserImportOption
+                        { featureConfig.bulkImport.enabled
                             ? (
                                 addUserDropDown 
                             ) : (

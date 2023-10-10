@@ -40,7 +40,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps,Icon, PaginationProps } from "semantic-ui-react";
-import { userConfig } from "../../../extensions/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -614,7 +613,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { userConfig.showBulkUserImportOption ?
+                        { featureConfig.bulkImport.enabled ?
                             (
                                 addUserDropDown 
                             ) : (

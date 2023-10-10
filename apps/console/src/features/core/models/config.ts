@@ -162,6 +162,10 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkImport?: FeatureAccessConfigInterface;
 }
 
 /**
