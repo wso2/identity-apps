@@ -419,11 +419,11 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error:AxiosError) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
                 error.stack,
-                error.code,
+                error.response.status,
                 error.request,
                 error.response,
                 error.config);

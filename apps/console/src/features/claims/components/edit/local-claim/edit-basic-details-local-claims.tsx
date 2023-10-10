@@ -206,7 +206,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             return true;
                         } else {
                             const error: IdentityAppsApiException = result.reason;
-                            console.log(error.code);
+                            
                             if (error.code !== 404) {
                                 dispatch(
                                     addAlert({
