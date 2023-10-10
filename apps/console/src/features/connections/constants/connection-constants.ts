@@ -210,4 +210,20 @@ export class ConnectionManagementConstants {
         SAML: "enterprise-saml-idp",
         SWE: "swe-idp"
     };
+
+    /**
+     * Set of Connection setup guide links.
+     */
+    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("apple-idp", "/guides/authentication/social-login/add-apple-login/")
+        .set("enterprise-protocols", "/guides/authentication/enterprise-login/")
+        .set("facebook-idp", "/guides/authentication/social-login/add-facebook-login/")
+        .set("github-idp", "/guides/authentication/social-login/add-github-login/")
+        .set("google-idp", "/guides/authentication/social-login/add-google-login/")
+        .set("hypr-idp", "/guides/authentication/#manage-connections")
+        .set("microsoft-idp", "/guides/authentication/social-login/add-microsoft-login/")
+        .set("enterprise-oidc-idp", "/guides/authentication/enterprise-login/")
+        .set("enterprise-saml-idp", "/guides/authentication/enterprise-login/")
+        .set("swe-idp", "/guides/authentication/decentralized-login/sign-in-with-ethereum")
+        .set("trusted-token-issuer", "/guides/authentication/configure-a-trusted-token-issuer/");
 }

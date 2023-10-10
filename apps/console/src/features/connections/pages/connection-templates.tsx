@@ -507,8 +507,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={
-                                                            documentationBaseUrl + template.docLink
+                                                        resourceDocumentationLink={ 
+                                                            documentationBaseUrl + ConnectionsManagementUtils
+                                                                .resolveConnectionDocLink(template.id) 
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils

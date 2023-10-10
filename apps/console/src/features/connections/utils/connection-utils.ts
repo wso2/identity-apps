@@ -230,6 +230,14 @@ export class ConnectionsManagementUtils {
             return AppConstants.getClientOrigin() + basename + "/resources/connections/" + path;
         }
     }
+
+    /**
+     * Util to resolve connection doc links. 
+     */
+    public static resolveConnectionDocLink(id: string): string {        
+
+        return ConnectionManagementConstants.DOC_LINK_DICTIONARY.get(id);
+    }
 }
 
 export const getIdPCapabilityIcons = (): any => {
