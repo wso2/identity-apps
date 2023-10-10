@@ -85,6 +85,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ connectorId, setConnectorId ] = useState<string>(undefined);
     const [ enableForm, setEnableForm ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
     const isReadOnly: boolean = useMemo(
         () =>
@@ -120,6 +121,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 .get("GOVERNANCE_CONNECTOR")
                 .replace(":id", categoryId)
         );
+    };
+
+    const resolveBackButtonState = (connectorID:string) => {
+        if (serverConfigurationConfig.backButtonDisabledConnectorIDs.includes(connectorID)) {
+            setEnableBackButton(false);
+        }
     };
 
     const handleUpdateSuccess = () => {
@@ -307,6 +314,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         setCategoryId(categoryId);
         setConnectorId(connectorId);
+        resolveBackButtonState(connectorId);
         setConnectorRequestLoading(true);
 
         getConnectorDetails(categoryId, connectorId)
@@ -616,7 +624,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         <PageLayout
             title={ resolveConnectorTitle(connector) }
             description={ resolveConnectorDescription(connector) }
-            backButton={ {
+            backButton={ enableBackButton && {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: resolveBackButtonText(connector)

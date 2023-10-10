@@ -24,6 +24,8 @@ import { ValidationFormInterface } from "../../../features/validation/models";
 
 export interface ServerConfigurationConfig {
     autoEnableConnectorToggleProperty: boolean;
+    backButtonDisabledConnectorIDs: string[];
+    connectorCategoriesToShow: string[];
     connectorPropertiesToShow: string[];
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];

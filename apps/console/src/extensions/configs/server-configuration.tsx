@@ -47,6 +47,17 @@ import { updatePasswordPolicyProperties } from "../components/password-policies/
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: true,
+    backButtonDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ],
+    connectorCategoriesToShow: [
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+        // ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+    ],
     connectorPropertiesToShow: [
         "Recovery.ReCaptcha.Password.Enable",
         "Recovery.NotifySuccess",
@@ -283,7 +294,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         );
     },
     renderConnectorWithinEmphasizedSegment: false,
-    showConnectorsOnTheSidePanel: false,
+    showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: false,
     showPageHeading: false,
     usePasswordExpiry: useGetPasswordExpiryProperties,

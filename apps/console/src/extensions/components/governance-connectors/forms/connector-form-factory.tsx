@@ -20,16 +20,10 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AccountDisableConfigurationForm } from "./account-disable-form";
 import { AnalyticsConfigurationForm } from "./analytics-form";
-import { ConsentInformationControllerConfigurationForm } from "./consent-information-controller-form";
-import { IdleAccountSuspendConfigurationForm } from "./idle-account-suspend-form";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
-import { MultiAttributeLoginConfigurationForm } from "./multi-attribute-login-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
-import { PasswordResetConfigurationForm } from "./password-reset-form";
 import { SelfRegistrationForm } from "./self-registration-form";
-import { UserClaimUpdateConfigurationForm } from "./user-claim-update-form";
 import { AppState, FeatureConfigInterface } from "../../../../features/core";
 import {
     GovernanceConnectorInterface,
@@ -135,66 +129,6 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID:
-            return (
-                <ConsentInformationControllerConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID:
-            return (
-                <UserClaimUpdateConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID:
-            return (
-                <IdleAccountSuspendConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID:
-            return (
-                <AccountDisableConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-            return (
-                <MultiAttributeLoginConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID:
-            return (
-                <PasswordResetConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

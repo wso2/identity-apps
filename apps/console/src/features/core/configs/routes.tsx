@@ -24,14 +24,18 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { identityProviderConfig, userstoresConfig } from "../../../extensions";
+import { identityProviderConfig, serverConfigurationConfig, userstoresConfig } from "../../../extensions";
 import { APIResourcesConstants } from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { RemoteUserStoreConstants } from "../../../extensions/components/user-stores/constants";
 import { UsersConstants } from "../../../extensions/components/users/constants";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AppView, FullScreenView } from "../../../views";
-import { ServerConfigurationsConstants } from "../../server-configurations";
+import {
+    GovernanceConnectorForOrgsInterface,
+    ServerConfigurationsConstants,
+    getConnectorCategories
+} from "../../server-configurations";
 import { AppConstants } from "../constants";
 
 /**
@@ -52,6 +56,7 @@ import { AppConstants } from "../constants";
  *     path: "/applications"
  *  \}
  */
+
 export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
 
     const routes: RouteInterface[] = values(
@@ -811,239 +816,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.AccountManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "analytics",
-                                name: "Analytics",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "consent-information-controller",
-                                name: "Consent Information Controller",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "user-claim-update",
-                                name: "User Claim Update",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
-                            )
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().insights
-                        },
-                        id: "otherSettings",
-                        name: "Other Settings",
-                        order: 20,
-                        path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTOR")
-                            .replace(
-                                ":id",
-                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                            ),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.AccountManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "idle-account-suspend",
-                                name: "Idle Account Suspend",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "account-disable",
-                                name: "Account Disable",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "multi-attribute-login",
-                                name: "Multi Attribute Login",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "password-reset",
-                                name: "Password Reset",
-                                path: AppConstants.getPaths()
-                                    .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(
-                                        ":categoryId",
-                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                                    )
-                                    .replace(
-                                        ":connectorId",
-                                        ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID
-                                    ),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
-                            )
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons()
-                                .connectors[ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID]
-                        },
-                        id: "accountManagement",
-                        name: "Account Management",
-                        order: 21,
-                        path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTOR")
-                            .replace(
-                                ":id",
-                                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
-                            ),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "extensions:manage.sidePanel.categories.sessionManagement",
                         component: lazy(() => import("../../session-management/pages/session-management")),
                         exact: true,
@@ -1071,6 +843,33 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "Insights",
                         order: 23,
                         path: AppConstants.getPaths().get("INSIGHTS"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.monitor",
+                        component: lazy(() =>
+                            import(
+                                "../../../extensions/components/governance-connectors/" +
+                                "pages/connector-edit-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().insights
+                        },
+                        id: "analytics",
+                        name: "Analytics",
+                        order: 24,
+                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                            .replace(
+                                ":categoryId",
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                            )
+                            .replace(
+                                ":connectorId",
+                                ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+                            ),
                         protected: true,
                         showOnSidePanel: true
                     },
