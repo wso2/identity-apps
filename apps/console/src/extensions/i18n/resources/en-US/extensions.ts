@@ -1916,9 +1916,21 @@ export const extensions: Extensions = {
                                 title: "Resource Not Found"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Need a fully customized layout for your organization? "
+                                description: "Need a fully customized layout for your organization? "
                                     + "Reach us out at <1>{{ supportEmail }}</1>",
+                                subTitle: "You have not yet deployed a custom layout.",
                                 title: "Custom Layout Not Found"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "You can now incorporate a custom layout for login, "
+                                    + "registration, and recovery pages. Refer to our "
+                                    + "documentation for detailed instructions.",
+                                subTitle: "The custom layout has been successfully activated.",
+                                title: "Custom Layout"
                             }
                         }
                     },

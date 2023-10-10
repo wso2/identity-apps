@@ -353,20 +353,21 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                             imageSize="small"
                                             subtitle={
                                                 [
-                                                    "The custom layout has been successfully activated.",
+                                                    t("extensions:develop.branding.tabs.preview."
+                                                        + "info.layout.activatedMessage.subTitle"),
                                                     <>
-                                                        { "You can now incorporate a custom layout for login,"
-                                                            + "registration, and recovery pages. Refer to our "
-                                                            + "documentation for detailed instructions." }
+                                                        { t("extensions:develop.branding.tabs.preview."
+                                                            + "info.layout.activatedMessage.description") }
                                                         <DocumentationLink
-                                                            link={ "http://www.google.com" }
+                                                            link={ getLink("develop.branding.layout.custom.learnMore") }
                                                         >
                                                             { t("common:learnMore") }
                                                         </DocumentationLink>
                                                     </>
                                                 ]
                                             }
-                                            title={ "Custom Layout" }
+                                            title={ t("extensions:develop.branding.tabs.preview."
+                                                + "info.layout.activatedMessage.title") }
                                         />
                                     </div>
                                 ) : (
@@ -379,12 +380,13 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                                     subtitle={
                                                         layoutContext[0] === PredefinedLayouts.CUSTOM
                                                             ? [
-                                                                "You have not yet deployed a custom layout.",
+                                                                t("extensions:develop.branding.tabs.preview."
+                                                                    + "errors.layout.notFoundWithSupport.subTitle"),
                                                                 <Trans
                                                                     key={ 1 }
                                                                     i18nKey={ "extensions:develop.branding."
                                                                         + "tabs.preview.errors.layout."
-                                                                        + "notFoundWithSupport.subTitle" }
+                                                                        + "notFoundWithSupport.description" }
                                                                     tOptions={ {
                                                                         supportEmail
                                                                     } }
