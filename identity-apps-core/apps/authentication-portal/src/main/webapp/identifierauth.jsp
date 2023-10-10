@@ -1,12 +1,19 @@
 <%--
- ~
- ~ Copyright (c) 2021, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 LLC. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content."
- ~
+  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
@@ -38,6 +45,10 @@
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
+    String usernamePlaceHolder = "enter.your.username";
+
+    Boolean isMultiAttributeLoginEnabledInTenant;
+    String allowedAttributes;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -45,8 +56,24 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+        usernamePlaceHolder = "enter.your.identifier";
     }
 %>
 
@@ -229,7 +256,11 @@
             <input id="username" name="username" type="hidden" value="">
             <input id="authType" name="authType" type="hidden" value="idf">
         <% } else { %>
-            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
+            <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                <label><%=usernameLabel %></label>
+            <% } else { %>
+                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
+            <% } %>
             <div class="ui fluid left icon input">
                 <input
                     type="text"
@@ -237,8 +268,9 @@
                     value=""
                     name="usernameUserInput"
                     maxlength="50"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.username")%>"
-                    required />
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
+                    required
+                />
                 <i aria-hidden="true" class="user outline icon"></i>
             </div>
             <div class="mt-1" id="usernameError" style="display: none;">
@@ -254,15 +286,18 @@
     <%
         if (reCaptchaEnabled) {
             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+            String reCaptchaType = CaptchaUtil.getReCaptchaType();
+            if (!"recaptcha-enterprise".equals(reCaptchaType)) {
     %>
     <div class="field">
         <div class="g-recaptcha"
-             data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
-             data-theme="light"
+            data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+            data-theme="light"
         >
         </div>
     </div>
     <%
+            }
         }
     %>
 

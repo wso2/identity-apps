@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -129,6 +129,7 @@ export class ClaimManagementConstants {
     public static readonly APPLICATION_ROLES_CLAIM_URI: string = "http://wso2.org/claims/applicationRoles";
     public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
     public static readonly EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
+    public static readonly MOBILE_CLAIM_URI: string = "http://wso2.org/claims/mobile";
 
     public static readonly GROUPS_CLAIM_NAME: string = "groups";
     public static readonly ROLES_CLAIM_NAME: string = "roles";

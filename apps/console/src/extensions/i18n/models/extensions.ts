@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -2506,6 +2506,21 @@ export interface Extensions {
                 usernameLength: string;
                 usernameLengthMin: string;
                 usernameLengthMax: string;
+            };
+            alternativeLoginIdentifierPage: {
+                pageTitle: string;
+                description: string;
+                loginIdentifierTypes: string;
+                loginIdentifierTypesHint: string;
+                warning: string;
+                info: string;
+                notification: {
+                    error: NotificationItem;
+                    success: NotificationItem;
+                };
+                claimUpdateNotification: {
+                    error: NotificationItem;
+                };
             };
             pageTitle: string;
             description: string;

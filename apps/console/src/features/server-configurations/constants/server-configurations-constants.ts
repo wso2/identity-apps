@@ -324,4 +324,9 @@ export class ServerConfigurationsConstants {
 	 * Extensions Constants.
 	 */
 	public  static  readonly ALL: string = "all";
+	
+	/**
+	 * Multi Attribute Login Constants.
+	 */
+	public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
 }

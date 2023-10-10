@@ -114,7 +114,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "තෝරාගත් විද්‍යුත් තැපෑල Gravatar හි ලියාපදිංචි වී නැති බවක් පෙනේ. " +
-                                    "Gravatar නිල වෙබ් අඩවියට පිවිසීමෙන් Gravatar ගිණුමක් සඳහා ලියාපදිංචි වන්න හෝ " +
+                                    "<1>Gravatar නිල වෙබ් අඩවියට</1> පිවිසීමෙන් Gravatar ගිණුමක් සඳහා ලියාපදිංචි වන්න හෝ " +
                                     "පහත සඳහන් එකක් භාවිතා කරන්න.",
                                 header: "ගැලපෙන Gravatar රූපයක් හමු නොවීය!"
                             }

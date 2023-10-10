@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
 import { AppConstants } from "../../constants";
-import { accountRecoveryConfig } from "../../extensions/configs/account-recovery";
 import {
     AlertInterface,
     AlertLevels,
@@ -150,11 +149,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={
-                accountRecoveryConfig.sections.accountRecovery.description == undefined
-                    ? t("myAccount:sections.accountRecovery.description")
-                    : accountRecoveryConfig.sections.accountRecovery.description
-            }
+            description={ t("myAccount:sections.accountRecovery.description") }
             header={ t("myAccount:sections.accountRecovery.heading") }
             placeholder={
                 !isAccountRecoveryDetailsLoading &&
