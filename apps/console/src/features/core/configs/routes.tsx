@@ -24,18 +24,14 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { identityProviderConfig, serverConfigurationConfig, userstoresConfig } from "../../../extensions";
+import { identityProviderConfig, userstoresConfig } from "../../../extensions";
 import { APIResourcesConstants } from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { RemoteUserStoreConstants } from "../../../extensions/components/user-stores/constants";
 import { UsersConstants } from "../../../extensions/components/users/constants";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AppView, FullScreenView } from "../../../views";
-import {
-    GovernanceConnectorForOrgsInterface,
-    ServerConfigurationsConstants,
-    getConnectorCategories
-} from "../../server-configurations";
+import { ServerConfigurationsConstants } from "../../server-configurations";
 import { AppConstants } from "../constants";
 
 /**

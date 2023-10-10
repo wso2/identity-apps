@@ -34,6 +34,7 @@ import {
     CommonConstants as CommonConstantsCore,
     TokenConstants
 } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     IdentifiableComponentInterface,
     RouteInterface,
@@ -59,6 +60,7 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { GovernanceConnectorProvider } from "@wso2is/react-components";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
@@ -74,7 +76,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig, organizationConfigs, serverConfigurationConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -104,6 +106,10 @@ import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationUtils } from "./features/organizations/utils";
+import {
+    GovernanceCategoryForOrgsInterface,
+    useGovernanceConnectorCategories
+} from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
@@ -134,6 +140,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { setResourceEndpoints } = useResourceEndpoints();
     const { setDeploymentConfig } = useDeploymentConfig();
     const { setUIConfig } = useUIConfig();
+    const [ governanceConnectors, setGovernanceConnectors ] =
+        useState<GovernanceCategoryForOrgsInterface[]>([]);
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
@@ -156,6 +164,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const loggedUserName: string = store.getState().profile.profileInfo.userName;
 
     const [ tenant, setTenant ] = useState<string>("");
+    const {
+        data: originalConnectorCategories,
+        error: connectorCategoriesFetchRequestError
+    } = useGovernanceConnectorCategories();
 
     useEffect(() => {
         dispatch(
@@ -530,6 +542,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         });
     }, []);
 
+    useEffect(() => {
+        if (!originalConnectorCategories ||
+            originalConnectorCategories instanceof IdentityAppsApiException ||
+            connectorCategoriesFetchRequestError) {
+            return;
+        }
+
+        setGovernanceConnectors(originalConnectorCategories);        
+    }, [ originalConnectorCategories ]);
+
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
@@ -670,6 +692,36 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
+        if (governanceConnectors?.length > 0) {
+            const customGovernanceConnectorRoutes: RouteInterface[] = [];
+
+            governanceConnectors.forEach((connector: GovernanceCategoryForOrgsInterface) => {
+                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(connector.id)) {
+                    customGovernanceConnectorRoutes.push(
+                        {
+                            category: "custom-governance-connectors",
+                            ccomponent: lazy(() =>
+                                import(
+                                    "./extensions/components/governance-connectors/pages/connector-listing-page"
+                                )
+                            ),
+                            exact: true,
+                            icon: null,
+                            id: connector.id,
+                            name: connector.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
+                                .replace(":id", connector.id),
+                            protected: true,
+                            showOnSidePanel: true
+                        }
+                    );
+                }
+            });
+
+            appRoutes.push(...customGovernanceConnectorRoutes);
+            sanitizedAppRoutes.push(...customGovernanceConnectorRoutes);            
+        }
+        
         dispatch(setFilteredDevelopRoutes(appRoutes));        
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 
@@ -686,7 +738,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, isSuperAdmin ]);
+    }, [ allowedScopes, dispatch, featureConfig, governanceConnectors, isFirstLevelOrg, isSuperAdmin ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -694,7 +746,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
 
         filterRoutes();
-    }, [ filterRoutes, isAuthenticated ]);
+    }, [ filterRoutes, governanceConnectors, isAuthenticated ]);
 
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(
@@ -796,9 +848,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 }
             } }
         >
-            <I18nextProvider i18n={ I18n.instance }>
-                { renderApp && routesFiltered ? <App /> : <PreLoader /> }
-            </I18nextProvider>
+            <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
+                <I18nextProvider i18n={ I18n.instance }>
+                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                </I18nextProvider>
+            </GovernanceConnectorProvider>
         </SecureApp>
     );
 };

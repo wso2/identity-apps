@@ -71,13 +71,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
         "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
     },
-    connectorsToShow: [
-        "account-recovery",
-        "account.lock.handler",
-        "elastic-analytics-engine",
-        "self-sign-up",
-        "sso.login.recaptcha"
-    ],
+    connectorsToShow: [ "all" ],
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,

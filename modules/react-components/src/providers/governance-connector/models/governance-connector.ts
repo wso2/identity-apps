@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,15 @@
  * under the License.
  */
 
-export * from "./governance-connector";
-export * from "./session-management";
+export interface GovernanceCategoryForOrgsInterface {
+	connectors: GovernanceConnectorForOrgsInterface[],
+	id: string,
+	name: string
+}
+
+export interface GovernanceConnectorForOrgsInterface {
+	friendlyName: string,
+	id: string,
+	name: string,
+	properties: string[]
+}
