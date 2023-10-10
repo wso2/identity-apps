@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.26
+
+### Patch Changes
+
+- [#4195](https://github.com/wso2/identity-apps/pull/4195) [`d8327c289d`](https://github.com/wso2/identity-apps/commit/d8327c289d6e2d99b6241fd69587d44d0440098a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move template wise allowed grant types to application configs
+
 ## 2.0.25
 
 ### Patch Changes
