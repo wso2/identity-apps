@@ -307,7 +307,6 @@ export class ServerConfigurationsConstants {
 		"in the request.";
 
 	// Idle account suspend names.
-	public static readonly IDLE_ACCOUNT_SUSPEND_ENABLE: string = "suspension.notification.enable";
 	public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
 	public static readonly ALERT_SENDING_TIME_PERIODS_IN_DAYS: string = "suspension.notification.delays";
 
@@ -340,27 +339,6 @@ export class ServerConfigurationsConstants {
 		"adaptive_authentication.elastic.HTTPConnectionRequestTimeout";
 
 	public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";
-
-	/**
-	 * User Claim Update Connector Constants.
-	 */
-	public static readonly EMAIL_VERIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableVerification";
-	public static readonly EMAIL_NOTIFICATION_ENABLE: string = "UserClaimUpdate.Email.EnableNotification";
-	public static readonly EMAIL_VERIFICATION_EXPIRY_TIME: string = "UserClaimUpdate.Email.VerificationCode.ExpiryTime";
-	public static readonly MOBILE_VERIFICATION_ENABLE: string = "UserClaimUpdate.MobileNumber.EnableVerification";
-	public static readonly MOBILE_NOTIFICATION_ENABLE: string = 
-		"UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
-
-	public static readonly MOBILE_VERIFICATION_EXPIRY_TIME: string =
-		"UserClaimUpdate.MobileNumber.VerificationCode.ExpiryTime";
-
-	/**
-	 * Multi attribute login connector constants.
-	 */
-	public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
-	public static readonly MULTI_ATTRIBUTE_LOGIN_ENABLE: string = "account.multiattributelogin.handler.enable";
-	public static readonly MULTI_ATTRIBUTE_LOGIN_ALLOWED_CLAIM_LIST: string =
-		"account.multiattributelogin.handler.allowedattributes";
 
 	/**
 	 * Extensions Constants.

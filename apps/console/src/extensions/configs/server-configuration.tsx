@@ -64,32 +64,19 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "Recovery.ExpiryTime"
     ],
     connectorStatusViewDisabledConnectorIDs: [
-        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
-        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
-        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID,
-        ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
     connectorToggleName: {
         "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account.disable.handler": ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE,
         "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
-        "suspension.notification": ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_ENABLE
+        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
     },
     connectorsToShow: [
         "account-recovery",
-        "account.disable.handler",
         "account.lock.handler",
-        "admin-forced-password-reset",
         "elastic-analytics-engine",
-        "multiattribute.login.handler",
-        "pii-controller",
         "self-sign-up",
-        "sso.login.recaptcha",
-        "suspension.notification",
-        "user-claim-update"
+        "sso.login.recaptcha"
     ],
     intendSettings: false,
     passwordExpiryComponent: (
