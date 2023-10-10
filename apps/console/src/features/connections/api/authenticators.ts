@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import useRequest, {
@@ -28,10 +28,12 @@ import useRequest, {
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { 
+    ConnectionManagementConstants 
+} from "../constants/connection-constants";
+import { 
     AuthenticatorInterface, 
     MultiFactorAuthenticatorInterface 
 } from "../models/authenticators";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { 
     ConnectionInterface, 
     FederatedAuthenticatorListItemInterface, 
@@ -172,7 +174,7 @@ export const updateMultiFactorAuthenticatorDetails = (
  */
 export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterface> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"

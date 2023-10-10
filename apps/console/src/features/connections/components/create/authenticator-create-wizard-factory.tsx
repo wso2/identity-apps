@@ -35,12 +35,12 @@ import {
     handleGetConnectionsError 
 } from "../../utils/connection-utils";
 import { 
+    ExpertModeAuthenticationProviderCreateWizard 
+} from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
+import { 
     OrganizationEnterpriseConnectionCreateWizard 
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
-import { 
-    ExpertModeAuthenticationProviderCreateWizard 
-} from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.

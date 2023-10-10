@@ -207,8 +207,8 @@ export class ConnectionsManagementUtils {
     /**
      * Util to resolve connection resource path.
      * 
-     * @param externalURL External resource location URL
-     * @param path Resource path.
+     * @param externalURL - External resource location URL
+     * @param path - Resource path.
      * @returns 
      */
     public static resolveConnectionResourcePath(externalURL: string, path: string): string {

@@ -49,7 +49,7 @@ import { ConnectionManagementConstants } from "../constants/connection-constants
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
-    ConnectionTemplateItemInterface,
+    ConnectionTemplateItemInterface
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
@@ -117,7 +117,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const {
         data: connectionTemplates,
         isLoading: isConnectionTemplatesFetchRequestLoading,
-        error: connectionTemplatesFetchRequestError,
+        error: connectionTemplatesFetchRequestError
     } = useGetConnectionTemplates(null, null, null);
 
     /**
@@ -176,14 +176,14 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                     return;
                 }
 
-            // Removes hidden connections.
-            if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
+                // Removes hidden connections.
+                if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
-                    return;
-                }
+                        return;
+                    }
 
-                return template;
-            });
+                    return template;
+                });
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -506,23 +506,24 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
-                                                            .resolveConnectionResourcePath("", template.image)
-                                                    }
-                                                    tags={ template.tags }
-                                                    onClick={ (e: SyntheticEvent) => {
-                                                        handleTemplateSelection(e, template.id);
-                                                        setShowWizard(true);
-                                                    } }
-                                                    showTooltips={ 
-                                                        { 
-                                                            description: true, 
-                                                            header: false 
-                                                        } 
-                                                    }
-                                                    data-testid={ `${ componentId }-${ template.name }` }
-                                                />
-                                            );
-                                        })
+                                                                .resolveConnectionResourcePath("", template.image)
+                                                        }
+                                                        tags={ template.tags }
+                                                        onClick={ (e: SyntheticEvent) => {
+                                                            handleTemplateSelection(e, template.id);
+                                                            setShowWizard(true);
+                                                        } }
+                                                        showTooltips={ 
+                                                            { 
+                                                                description: true, 
+                                                                header: false 
+                                                            } 
+                                                        }
+                                                        data-testid={ `${ componentId }-${ template.name }` }
+                                                    />
+                                                );
+                                            }
+                                        )
                                     }
                                 </ResourceGrid>
                             ))
