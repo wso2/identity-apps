@@ -95,10 +95,6 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      */
     template: ConnectionTemplateInterface;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Type of IDP.
      * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
@@ -140,7 +136,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         onDelete,
         onUpdate,
         template,
-        isTabExtensionsAvailable,
         type,
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
@@ -158,6 +153,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
      * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
+    const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
@@ -319,6 +315,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     
     useEffect(() => {
         setIsTrustedTokenIssuer(type === "trusted-token-issuer");
+        setIsExpertMode(type === "expert-mode-idp");
     }, [ type ]);
 
     useEffect(() => {
@@ -357,7 +354,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         }
 
         if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
             if (!urlSearchParams.get(ConnectionManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
                 setDefaultActiveIndex(1);
             }
@@ -489,7 +485,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     if (!identityProvider || isLoading || 
         ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer 
-        && !isEnterpriseConnection) && !tabPaneExtensions)) {
+        && !isEnterpriseConnection && !isExpertMode) && !tabPaneExtensions)) {
 
         return <Loader />;
     }

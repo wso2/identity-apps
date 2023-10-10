@@ -60,6 +60,18 @@ export class ConnectionManagementConstants {
     public static readonly HYPR_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
     public static readonly SIWE_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I"
 
+    // Known Social/Enterprise authenticator names;
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
+    public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
+    public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
+    public static readonly YAHOO_AUTHENTICATOR_NAME: string = "YahooOAuth2Authenticator";
+    public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+    public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
+    public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
+    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
+    public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
+
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
@@ -71,6 +83,9 @@ export class ConnectionManagementConstants {
     public static readonly CLAIM_APP_ROLE: string  = "http://wso2.org/claims/groups";
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
     public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
+
+    public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
+    public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";
 
     /**
      * General Form element constraints.

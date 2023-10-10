@@ -651,7 +651,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

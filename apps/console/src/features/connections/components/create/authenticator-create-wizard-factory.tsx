@@ -38,6 +38,9 @@ import {
     OrganizationEnterpriseConnectionCreateWizard 
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
+import { 
+    ExpertModeAuthenticationProviderCreateWizard 
+} from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -310,6 +313,23 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             "addWizard.title") }
                         subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
                             "addWizard.subtitle") }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            handleModalVisibility(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                );
+
+            case "expert-mode-idp":
+                return (
+                    <ExpertModeAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

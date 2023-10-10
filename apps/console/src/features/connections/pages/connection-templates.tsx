@@ -183,8 +183,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                     return;
                 }
 
-                // Removes hidden connections.
-                if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
+            // Removes hidden connections.
+            if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
                     return;
                 }

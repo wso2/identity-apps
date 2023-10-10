@@ -83,7 +83,8 @@ import {
     SupportedQuickStartTemplateTypes 
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils } from "../utils/connection-utils";
+import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
+import { AxiosError } from "axios";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -145,10 +146,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         isConnectorMetaDataFetchRequestLoading,
         setConnectorMetaDataFetchRequestLoading
     ] = useState<boolean>(undefined);
-
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
 
     const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
@@ -344,7 +341,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (identityProviderTemplate?.id === "trusted-token-issuer" || 
+        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID || 
+            identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
             identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
             identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
 
@@ -372,6 +370,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         getConnectionMetaData(id)
             .then((response: any) => { 
                 setConnectionSettings(response);
+            }).catch ((error: AxiosError) => {
+                handleGetConnectionsMetaDataError(error);
             })
             .finally(() => {
                 setConnectorMetaDataFetchRequestLoading(false);
@@ -765,7 +765,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
                             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
@@ -778,7 +777,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

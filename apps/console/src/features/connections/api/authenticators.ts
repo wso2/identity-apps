@@ -383,3 +383,32 @@ export const updateFederatedAuthenticator = (
             return Promise.reject(error);
         });
 };
+
+/**
+ * Get federated authenticator details.
+ *
+ * @returns A promise containing the response.
+ */
+export const getFederatedAuthenticatorsList = (): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get federated authenticators list"));
+            }
+
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};

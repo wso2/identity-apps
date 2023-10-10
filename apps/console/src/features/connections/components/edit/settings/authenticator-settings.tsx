@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -38,12 +39,12 @@ import { AuthenticatorAccordion } from "../../../../core/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
+    getFederatedAuthenticatorsList,
     updateFederatedAuthenticator,
     updateFederatedAuthenticators
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
-import { AuthenticatorMeta } from "../../../meta/authenticator-meta";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../models/authenticators";
@@ -63,6 +64,7 @@ import {
 import { getConnectorMetadata } from "../../meta/authenticators";
 import { AuthenticatorCreateWizard } from "../../wizards/authenticator-create-wizard";
 import { AuthenticatorFormFactory } from "../forms";
+import { identityProviderConfig } from "../../../../../extensions";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -119,14 +121,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     } = props;
 
     const dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
 
     const { t } = useTranslation();
 
-    const availableFederatedAuthenticators = useSelector((state: AppState) => {
-        return state.identityProvider.meta.authenticators;
-    });
-    const identityProviderTemplates: ConnectionTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider?.groupedTemplates);
+    const identityProviderTemplates: ConnectionTemplateItemInterface[] = UIConfig?.connectionTemplates;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [
@@ -135,8 +134,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
     const [ availableAuthenticators, setAvailableAuthenticators ] =
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
-    const [ availableTemplates, setAvailableTemplates ] =
-        useState<ConnectionTemplateInterface[]>(undefined);
+    const [ 
+        availableFederatedAuthenticators, 
+        setAvailableFederatedAuthenticators 
+    ] = useState(undefined);
+    const [ 
+        availableTemplates, 
+        setAvailableTemplates 
+    ] = useState<ConnectionTemplateInterface[]>(undefined);
     const [
         availableManualModeOptions,
         setAvailableManualModeOptions
@@ -152,10 +157,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    // const isActiveTemplateExpertMode: boolean = useMemo(() => {
-    //     return identityProviderConfig?.templates?.expertMode &&
-    //         (identityProvider.templateId === ExpertModeIdpTemplate.id || !identityProvider.templateId);
-    // }, [ identityProvider, identityProviderConfig  ]);
+    const isActiveTemplateExpertMode: boolean = useMemo(() => {
+        return identityProviderConfig?.templates?.expertMode &&
+            (identityProvider.templateId === "expert-mode-idp" || !identityProvider.templateId);
+    }, [ identityProvider, identityProviderConfig  ]);
+
+    useEffect(() => {
+        getAuthenticators();
+    }, []);
 
     /**
      * When `availableAuthenticators` updates, filter the templates.
@@ -166,16 +175,48 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }, [ availableAuthenticators ]);
 
     /**
-     * If `availableFederatedAuthenticators` is not in redux,
-     * Fetch it again and store in the store.
+     * Gets the list of available authenticator list and sets them in the redux store.
      */
-    useEffect(() => {
-        if (!isEmpty(availableFederatedAuthenticators)) {
-            return;
-        }
+    const getAuthenticators = () => {
+        return getFederatedAuthenticatorsList()
+            .then((response): void => {
+                setAvailableFederatedAuthenticators(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:develop.features.authenticationProvider.notifications." +
+                                    "getFederatedAuthenticatorsList.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:develop.features.authenticationProvider.notifications." +
+                                    "getFederatedAuthenticatorsList.error.message"
+                            )
+                        })
+                    );
 
-        AuthenticatorMeta.getAuthenticators();
-    }, [ availableFederatedAuthenticators ]);
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:develop.features.authenticationProvider.notifications." +
+                                "getFederatedAuthenticatorsList.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:develop.features.authenticationProvider.notifications." +
+                                "getFederatedAuthenticatorsList.genericError.message"
+                        )
+                    })
+                );
+            });
+    }
 
     /**
      * Handles the authenticator config form submit action.
@@ -186,6 +227,30 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         isDefaultAuthSet: boolean = true): void => {
 
         addCallbackUrl(values);
+
+        // Only execute this when not in the expert mode since it makes it impossible
+        // to disable a Google authenticator in expert mode.
+        if (!isActiveTemplateExpertMode) {
+            // Special checks on Google IDP
+            if (values.authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                // Enable/disable the Google authenticator based on client id and secret
+                const props: CommonPluggableComponentPropertyInterface[] = values.properties;
+                let isEnabled = true;
+
+                props.forEach((prop: CommonPluggableComponentPropertyInterface) => {
+                    if (prop.key === "ClientId" || prop.key === "ClientSecret") {
+                        if (isEmpty(prop.value)) {
+                            isEnabled = false;
+                        }
+                    }
+                });
+
+                values.isEnabled = isEnabled;
+
+                // Remove scopes
+                removeElementFromProps(props, "scopes");
+            }
+        }
 
         /**
          * `tags` were added to the IDP Rest API with https://github.com/wso2/product-is/issues/11985.
@@ -340,9 +405,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Added with:
                 // https://github.com/wso2/identity-apps/pull/2053/commits/177e8475aa3e48a7933f877a25c82306b7b3739f
                 // This poses issues with the enable toggle in IdP expert mode. So, not executing when in expert mode.
-                // if (!isActiveTemplateExpertMode) {
-                //     authenticator.isEnabled = true;
-                // }
+                if (!isActiveTemplateExpertMode) {
+                    authenticator.isEnabled = true;
+                }
                 // Make default authenticator if not added.
                 if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
@@ -768,9 +833,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const showAuthenticator = (): ReactElement => {
         if (availableAuthenticators.length > 0) {
             // Only show the Authenticator listing if `expertMode` is enabled.
-            // if (isActiveTemplateExpertMode) {
-            //     return showAuthenticatorList();
-            // }
+            if (isActiveTemplateExpertMode) {
+                return showAuthenticatorList();
+            }
 
             const authenticator: FederatedAuthenticatorWithMetaInterface =
                 availableAuthenticators.find(authenticator => (
