@@ -101,7 +101,11 @@ export const BrandingPreferenceProvider = (props: PropsWithChildren<BrandingPref
                 { injectBaseTheme() }
                 { injectBrandingCSSSkeleton() }
             </Helmet>
-            <ThemeProvider theme={ generateAsgardeoTheme(contextValues) } defaultMode="light">
+            <ThemeProvider 
+                theme={ generateAsgardeoTheme(contextValues) } 
+                defaultMode="light"  
+                modeStorageKey="myaccount-oxygen-mode"
+            >
                 { children }
             </ThemeProvider>
         </BrandingPreferenceContext.Provider>
