@@ -85,7 +85,7 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns - Component.
+ * @returns External claim add Component.
  */
 export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterface> = (
     props: AddExternalClaimsPropsInterface

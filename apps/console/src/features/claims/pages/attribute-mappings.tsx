@@ -154,7 +154,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page heading based on the `type`.
          *
-         * @returns - The page heading.
+         * @returns The page heading.
          */
         const resolvePageHeading = (): string => {
             switch (type) {
@@ -192,7 +192,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page description based on the `type`.
          *
-         * @returns - The page description.
+         * @returns The page description.
          */
         const resolvePageDescription = (): ReactElement => {
             switch (type) {
@@ -236,7 +236,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page header image based on `type`.
          *
-         * @returns - Image.
+         * @returns Image element.
          */
         const resolvePageHeaderImage = (): ReactElement => {
             switch (type) {

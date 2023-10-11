@@ -51,8 +51,8 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * A delegated event handler to pass the current
      * selected/active claims to the parent.
      *
-     * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit
-     * @param claims - Add external claims
+     * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit.
+     * @param claims - External claim addition data.
      */
     onExternalClaimsChanged?: (claims: AddExternalClaim[]) => void;
     /**
@@ -91,7 +91,7 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns - React element
+ * @returns External claims component.
  */
 export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     props: ExternalClaimsPropsInterface
@@ -158,13 +158,13 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     }, [ claims ]);
 
     /**
-     * Create the externam claim uri according to the claim dialect type
+     * Create the externam claim uri according to the claim dialect type.
      *
      * @param attributeType - Claim dialect type.
      * @param claimDialectURI - Dialect URI.
      * @param claimURIValue - Claim URI value.
      * 
-     * @returns - Complete claim URI
+     * @returns Complete claim URI.
      */
     const createClaimURI = (attributeType: string, claimDialectURI: string, claimURIValue: string): string => {
         switch (attributeType) {
@@ -212,7 +212,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * In this function the param `claim` is always {@link AddExternalClaim}
      *
      * @see {@link ClaimsList}
-     * @param editingClaim - Editing claim.
+     * @param editingClaim - Editing claim item.
      */
     const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
         const deletedClaim: AddExternalClaim = editingClaim as AddExternalClaim;
@@ -232,7 +232,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * claim in the {@link ClaimsList}
      *
      * @see ClaimsList
-     * @param editingClaim - Editing claim.
+     * @param editingClaim - Editing claim item.
      * @param values - claimURI, localClaim.
      */
     const onExternalClaimEdit = (editingClaim: ClaimEventClickItem, values: Map<string, FormValue>): void => {
