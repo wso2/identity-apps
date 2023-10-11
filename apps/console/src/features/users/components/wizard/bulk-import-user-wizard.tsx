@@ -722,7 +722,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
            
             setResponse(response);
         } catch (error) {
-            console.log(error);
             setHasError(true);
             setAlert({
                 description: t(
