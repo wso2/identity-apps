@@ -663,7 +663,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
-                        userstore={ selectedUserStore }
+                        userstore={ CONSUMER_USERSTORE }
                     />
                 )
             }

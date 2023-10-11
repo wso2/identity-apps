@@ -248,135 +248,133 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
     return (
         <>
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        {
-                            isLoading || hasError ? null :
-                                bulkResponseSummary.failedCount === 0 ?
-                                    (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
-                                        <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
-                                            {
-                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.alerts.importSuccess.message")
-                                            }
-                                        </AlertTitle>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    {
+                        isLoading || hasError ? null :
+                            bulkResponseSummary.failedCount === 0 ?
+                                (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
+                                    <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                         {
                                             t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.alerts.importSuccess.description")
+                                            "wizardSummary.alerts.importSuccess.message")
                                         }
-                                    </Alert>)
-                                    :  
-                                    (<Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
-                                        <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
-                                            {
-                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.alerts.importFailed.message")
-                                            }
-                                        </AlertTitle>
-                                        <Trans
-                                            i18nKey={
-                                                "console:manage.features.user.modals.bulkImportUserWizard." +
-                                                "wizardSummary.alerts.importFailed.description"
-                                            }
-                                            tOptions={ {
-                                                failedCount: bulkResponseSummary.failedCount
-                                            } }
-                                        >
-                                            Issues encountered in <b>count import(s)</b>.
-                                        </Trans>
-                                    </Alert>)
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <ListLayout
-                            advancedSearch={ (
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleUserFilter }
-                                    filterAttributeOptions={ [
+                                    </AlertTitle>
+                                    {
+                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.alerts.importSuccess.description")
+                                    }
+                                </Alert>)
+                                :  
+                                (<Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
+                                    <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                         {
-                                            key: 0,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.alerts.importFailed.message")
+                                        }
+                                    </AlertTitle>
+                                    <Trans
+                                        i18nKey={
+                                            "console:manage.features.user.modals.bulkImportUserWizard." +
+                                                "wizardSummary.alerts.importFailed.description"
+                                        }
+                                        tOptions={ {
+                                            failedCount: bulkResponseSummary.failedCount
+                                        } }
+                                    >
+                                            Issues encountered in <b>count import(s)</b>.
+                                    </Trans>
+                                </Alert>)
+                    }
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <ListLayout
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleUserFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
-                                            value: "userName"
-                                        } ] }
-                                    filterAttributePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                                        value: "userName"
+                                    } ] }
+                                filterAttributePlaceholder={
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
                                             ".placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                                }
+                                filterConditionsPlaceholder={
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                }
+                                filterValuePlaceholder={
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
-                                    }
-                                    placeholder={ t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                }
+                                placeholder={ t("console:manage.features.user.modals.bulkImportUserWizard." +
                                     "wizardSummary.advanceSearch.placeholder") }
-                                    defaultSearchAttribute="userName"
-                                    defaultSearchOperator="co"
-                                    triggerClearQuery={ triggerClearQuery }
-                                    data-testid={ `${componentId}-advanced-search` }
-                                    data-componentid={ `${componentId}-advanced-search` }
-                                />
-                            ) }
-                            rightActionPanel={
-                                (
-                                    <>
-                                        <Dropdown
-                                            data-testid={ `${componentId}-filter-status-dropdown` }
-                                            data-componentid={ `${componentId}-filter-status-dropdown` }
-                                            selection
-                                            options={ statusOptions }
-                                            onChange={ handleStatusDropdownChange }
-                                            defaultValue={ ALL_STATUS }
-                                        />
-                                    </>
-                                )
-                            }
-                            showPagination={ false }
-                            showTopActionPanel={ true }
-                            totalPages={ Math.ceil(totalCount / listItemLimit) }
-                            totalListSize={ totalCount }
-                            isLoading={ isLoading }
-                            listItemLimit={ UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT }
-                            data-testid={ `${componentId}-list-layout` }
-                            data-componentid={ `${componentId}-list-layout` }
-                            onPageChange={ () => null }
-                            disableRightActionPanel={ false }
-                        >
-                            <Typography variant="body2" style={ { textAlign: "right" } }>
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                            "totalCount") } : { totalCount }
-                            </Typography>
-                            <DataTable<BulkUserImportOperationResponse>
-                                className="addon-field-wrapper"
-                                isLoading={ isLoading }
-                                actions={ [] }
-                                columns={ resolveTableColumns() }
-                                data={ filteredResponseList }
-                                onColumnSelectionChange={ () => null }
-                                onRowClick={ () => null }
-                                placeholders={ showPlaceholders() }
-                                transparent={ true }
-                                selectable={ false }
-                                showHeader={ false }
-                                data-testid={ `${componentId}-data-table` }
-                                data-componentid={ `${componentId}-data-table` }
-                                loadingStateOptions={ {
-                                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                                    imageType: "circular"
-                                }
-                                }
+                                defaultSearchAttribute="userName"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${componentId}-advanced-search` }
+                                data-componentid={ `${componentId}-advanced-search` }
                             />
-                        </ListLayout>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                        ) }
+                        rightActionPanel={
+                            (
+                                <>
+                                    <Dropdown
+                                        data-testid={ `${componentId}-filter-status-dropdown` }
+                                        data-componentid={ `${componentId}-filter-status-dropdown` }
+                                        selection
+                                        options={ statusOptions }
+                                        onChange={ handleStatusDropdownChange }
+                                        defaultValue={ ALL_STATUS }
+                                    />
+                                </>
+                            )
+                        }
+                        showPagination={ false }
+                        showTopActionPanel={ true }
+                        totalPages={ Math.ceil(totalCount / listItemLimit) }
+                        totalListSize={ totalCount }
+                        isLoading={ isLoading }
+                        listItemLimit={ UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT }
+                        data-testid={ `${componentId}-list-layout` }
+                        data-componentid={ `${componentId}-list-layout` }
+                        onPageChange={ () => null }
+                        disableRightActionPanel={ false }
+                    >
+                        <Typography variant="body2" style={ { textAlign: "right" } }>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                            "totalCount") } : { totalCount }
+                        </Typography>
+                        <DataTable<BulkUserImportOperationResponse>
+                            className="addon-field-wrapper"
+                            isLoading={ isLoading }
+                            actions={ [] }
+                            columns={ resolveTableColumns() }
+                            data={ filteredResponseList }
+                            onColumnSelectionChange={ () => null }
+                            onRowClick={ () => null }
+                            placeholders={ showPlaceholders() }
+                            transparent={ true }
+                            selectable={ false }
+                            showHeader={ false }
+                            data-testid={ `${componentId}-data-table` }
+                            data-componentid={ `${componentId}-data-table` }
+                            loadingStateOptions={ {
+                                count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                                imageType: "circular"
+                            }
+                            }
+                        />
+                    </ListLayout>
+                </Grid.Column>
+            </Grid.Row>
         </>
     );
 };

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     ClaimDialect,
@@ -36,14 +37,16 @@ import {
 } from "@wso2is/react-components";
 import { userConfig } from "apps/console/src/extensions/configs";
 import Axios from "axios";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
+import { getUserStores } from "../../../../extensions/components/users/api";
+import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
-import { getCertificateIllustrations } from "../../../core";
+import { UserStoreDetails, UserStoreProperty, getCertificateIllustrations } from "../../../core";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { bulkAddUsers } from "../../api";
 import {
@@ -127,6 +130,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
     const [ showResponseView, setShowResponseView ] = useState<boolean>(false);
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
+    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+    
+    useEffect(() => {
+        setSelectedUserStore(userstore);
+        getUserStoreList();
+    }, [ userstore ]);
 
     /**
      * Fetches SCIM dialects.
@@ -198,6 +208,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         });
 
         try {
+            setIsLoading(true);
             const scimClaimResponse: ExternalClaim[][] = await Axios.all(scimClaimPromises);
             const _attributeMapping: CSVAttributeMapping[] = [];
 
@@ -241,6 +252,82 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         } finally {
             setIsLoading(false);
         }
+    };
+
+    /**
+     * This will fetch userstore list.
+     */
+    const getUserStoreList = (): void => {
+        setIsLoading(true);
+
+        getUserStores()
+            .then((response: UserStoreDetails[]) => {                      
+                const userStoreArray: DropdownItemProps[] = [];
+
+                response?.forEach((item: UserStoreDetails, index: number) => {
+                    // Set read/write enabled userstores based on the type.
+                    if (checkReadWriteUserStore(item)) {    
+                        userStoreArray.push({
+                            key: index,
+                            text: item.name.toUpperCase(),
+                            value: item.name.toUpperCase()
+                        });
+                    }});
+
+                
+                setReadWriteUserStoresList(userStoreArray);
+            }).catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                        "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                }));
+
+                setHasError(true);
+
+                return;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    /**
+     * Check the given user store is Read/Write enabled.
+     * 
+     * @param userStore - Userstore
+     * @returns If the given userstore is read only or not.
+     */
+    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
+        if( userStore.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
+            return true;
+        } else {
+            return  userStore.enabled && userStore.properties.filter((property: UserStoreProperty)=>
+                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
+        }
+    };
+
+    const hideUserStoreDropdown = (): boolean => {
+        // TODO: Currently only primary userstore is supported.
+        // if(readWriteUserStoresList) {
+        //     return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 && 
+        //         readWriteUserStoresList[0]?.value === userstore);
+        // }
+        
+        return true;
     };
 
     const joinWithAnd = (arr: string[]): string => {
@@ -456,7 +543,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = userstore &&
                     userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                        ? `${userstore}/${attributeValue}`
+                        ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
                 
                     continue;
@@ -635,6 +722,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
            
             setResponse(response);
         } catch (error) {
+            console.log(error);
             setHasError(true);
             setAlert({
                 description: t(
@@ -735,58 +823,102 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             </Modal.Header>
 
             <Modal.Content className="content-container" scrolling>
-                { !showResponseView ? (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                { alert && alertComponent }
-                                <FilePicker
-                                    key={ 1 }
-                                    fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
-                                    file={ selectedCSVFile }
-                                    onChange={ (result: PickerResult<{
-                                        headers: string[];
-                                        items: string[][];
-                                    }>) => {
-                                        setSelectedCSVFile(result.file);
-                                        setUserData(result.serialized);
-                                        setAlert(null);
-                                        setHasError(false);
-                                    } }
-                                    uploadButtonText="Upload CSV File"
-                                    dropzoneText="Drag and drop a CSV file here."
-                                    data-testid={ `${componentId}-form-wizard-csv-file-picker` }
-                                    data-componentid={ `${componentId}-form-wizard-csv-file-picker` }
-                                    icon={ getCertificateIllustrations().uploadPlaceholder }
-                                    placeholderIcon={ <Icon name="file code" size="huge" /> }
-                                    normalizeStateOnRemoveOperations={ true }
-                                    emptyFileError={ false }
-                                    hidePasteOption={ true }
+                <Grid>
+                    { !showResponseView ?
+                        (
+                            <>
+                                { alert
+                                    && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                { alertComponent }
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    ) }
+                                { !isLoading && !hideUserStoreDropdown()
+                                    && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                <Form.Field required={ true }>
+                                                    <label className="pb-2">
+                                                        { t("console:manage.features.user.forms.addUserForm.inputs."+
+                                            "domain.placeholder") }
+                                                    </label>
+                                                    <Dropdown
+                                                        className="mt-2"
+                                                        fluid
+                                                        selection
+                                                        labeled
+                                                        options={ readWriteUserStoresList }
+                                                        loading={ isLoading }
+                                                        data-testid={ `${componentId}-userstore-dropdown` }
+                                                        data-componentid={ `${componentId}-userstore-dropdown` }
+                                                        name="userstore"
+                                                        disabled={ false }
+                                                        value={ selectedUserStore }
+                                                        onChange={
+                                                            (e: React.ChangeEvent<HTMLInputElement>,
+                                                                data: DropdownProps) => {
+                                                                setSelectedUserStore(data.value.toString());
+                                                                setSelectedUserStore(data.value.toString());
+                                                            }
+                                                        }
+                                                        tabIndex={ 1 }
+                                                        maxLength={ 60 }
+                                                    />
+                                                </Form.Field>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
+                                <Grid.Row columns={ 1 } className="pt-0">
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <FilePicker
+                                            key={ 1 }
+                                            fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                            file={ selectedCSVFile }
+                                            onChange={ (result: PickerResult<{
+                                            headers: string[];
+                                            items: string[][];
+                                        }>) => {
+                                                setSelectedCSVFile(result.file);
+                                                setUserData(result.serialized);
+                                                setAlert(null);
+                                                setHasError(false);
+                                            } }
+                                            uploadButtonText="Upload CSV File"
+                                            dropzoneText="Drag and drop a CSV file here."
+                                            data-testid={ `${componentId}-form-wizard-csv-file-picker` }
+                                            data-componentid={ `${componentId}-form-wizard-csv-file-picker` }
+                                            icon={ getCertificateIllustrations().uploadPlaceholder }
+                                            placeholderIcon={ <Icon name="file code" size="huge" /> }
+                                            normalizeStateOnRemoveOperations={ true }
+                                            emptyFileError={ false }
+                                            hidePasteOption={ true }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </>
+                        ) : (
+                            <>
+                                { alert && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                        
+                                ) }
+                                <BulkImportResponseList
+                                    isLoading={ isSubmitting }
+                                    data-componentid={ `${componentId}-response-list` }
+                                    hasError={ hasError }
+                                    responseList={ response }
+                                    bulkResponseSummary={ bulkResponseSummary }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) : (
-                    <Grid>
-                        { alert && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    { alertComponent }
-                                </Grid.Column>
-                            </Grid.Row>
+                            </>
                         ) }
-                        <Grid.Row columns={ 1 }>
-                            <BulkImportResponseList
-                                isLoading={ isSubmitting }
-                                data-componentid={ `${componentId}-response-list` }
-                                hasError={ hasError }
-                                responseList={ response }
-                                bulkResponseSummary={ bulkResponseSummary }
-                            />
-                        </Grid.Row>
-                    </Grid>
-                ) }
-
+                </Grid>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
