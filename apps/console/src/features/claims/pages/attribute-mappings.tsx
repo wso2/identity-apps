@@ -470,7 +470,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
                     );
 
-                    dialect &&
+                    if (dialect) {
                         panes.push({
                             menuItem: tab.name,
                             render: () => (
@@ -485,6 +485,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 </ResourceTab.Pane>
                             )
                         });
+                    }
                 });
 
                 return panes;
