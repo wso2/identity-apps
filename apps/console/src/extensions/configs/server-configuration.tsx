@@ -69,7 +69,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorToggleName: {
         "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
         "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToShow: [ "all" ],
     intendSettings: false,
