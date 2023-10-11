@@ -196,50 +196,6 @@ export class ApplicationManagementConstants {
     ];
 
     /**
-     * Set of grant types allowed for certain templates.
-     */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
-        // single page app template
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        // oidc traditional web app template
-        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ],
-        // oidc standard app template
-        [ "custom-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
-        ],
-        [ "mobile-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ]
-    };
-
-    /**
      * Holds metadata on how to arrange the values when rendering above
      * Usage: Map the index to key to rearrange the values.
      */

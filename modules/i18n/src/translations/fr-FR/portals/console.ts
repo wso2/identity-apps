@@ -115,7 +115,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou " +
+                                    "Ouvrez un compte Gravatar en vous rendant sur le <1>site officiel de Gravatar</1> ou " +
                                     "utilisez l'un des choix suivants.",
                                 header: "Aucune image Gravatar correspondante trouvée !"
                             }
@@ -1547,10 +1547,6 @@ export const console: ConsoleNS = {
                                 hint: "Activez pour rendre l'application visible aux utilisateurs finaux sur " +
                                     "leur catalogue d'applications <1>{{ myAccount }}</1>.",
                                 label: "Application découvrable"
-                            },
-                            saas: {
-                                hint: "Les applications sont par défaut limitées à l'utilisation par les utilisateurs du locataire du fournisseur de services. Si cette application est compatible SaaS, elle est ouverte à tous les utilisateurs de tous les locataires.",
-                                label: "Application SaaS"
                             },
                             imageUrl: {
                                 description: "Une URL d'image pour l'application. Si cela n'est pas fourni, nous " +

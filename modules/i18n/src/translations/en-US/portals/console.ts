@@ -114,7 +114,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "It seems like the selected email is not registered on Gravatar. " +
-                                    "Sign up for a Gravatar account by visiting Gravatar official website or use " +
+                                "Sign up for a Gravatar account by visiting <1>Gravatar official website</1> or use " +
                                     "one of the following.",
                                 header: "No matching Gravatar image found!"
                             }
@@ -1517,10 +1517,6 @@ export const console: ConsoleNS = {
                                 hint: "If enabled, customers can access this application from the " +
                                     "<1>{{ myAccount }}</1> portal.",
                                 label: "Discoverable application"
-                            },
-                            saas: {
-                                hint: "Applications are by default restricted for usage by users of the service provider's tenant. If this application is SaaS enabled it is opened up for all the users of all the tenants.",
-                                label: "SaaS application"
                             },
                             imageUrl: {
                                 hint: "An image URL for the application. If this is not provided, we will display " +

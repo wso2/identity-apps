@@ -1,5 +1,15 @@
 # @wso2is/i18n
 
+## 2.0.6
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring Chinese and Japanese language support
+
+* [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve message wordings
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve i18n support for My Account app
+
 ## 2.0.5
 
 ### Patch Changes

@@ -349,6 +349,8 @@ export class AppConstants {
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
+            [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT", 
+                `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ 
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
@@ -417,6 +419,7 @@ export class AppConstants {
         "organizations",
         "groups",
         "roles",
+        "userRoles",
         "applications",
         "emailTemplates",
         "governanceConnectors"
