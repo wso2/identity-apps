@@ -26,8 +26,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV2" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v2.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -93,13 +93,13 @@
 
     RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
     recoveryInitRequest.setClaims(claimDTOList);
-    PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
+    PasswordRecoveryApiV2 passwordRecoveryApiV2 = new PasswordRecoveryApiV2();
     try {
         Map<String, String> requestHeaders = new HashedMap();
         if (recaptchaResponse != null) {
             requestHeaders.put("g-recaptcha-response", recaptchaResponse);
         }
-        List<AccountRecoveryType> accountRecoveryTypes = passwordRecoveryApiV1.
+        List<AccountRecoveryType> accountRecoveryTypes = passwordRecoveryApiV2.
                 initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
         if (accountRecoveryTypes == null) {
             request.setAttribute("callback", callback);
@@ -108,7 +108,7 @@
                         response);
             return;
         }
-        IdentityManagementEndpointUtil.addReCaptchaHeaders(request, passwordRecoveryApiV1.getApiClient().getResponseHeaders());
+        IdentityManagementEndpointUtil.addReCaptchaHeaders(request, passwordRecoveryApiV2.getApiClient().getResponseHeaders());
         for (AccountRecoveryType accountRecoveryType : accountRecoveryTypes) {
             if (accountRecoveryType.getMode().equals("recoverWithNotifications")) {
                 isNotificationBasedRecoveryEnabled = true;
