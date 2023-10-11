@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -31,7 +30,6 @@ import {
     EmptyPlaceholder,
     LinkButton,
     Popup,
-    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
@@ -40,7 +38,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../../../features/access-control/constants/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -146,7 +143,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
-        onEmptyListPlaceholderActionClick,
         searchQuery,
         selection,
         showListItemActions,
