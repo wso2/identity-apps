@@ -36,6 +36,7 @@ import {
 } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    ChildRouteInterface,
     IdentifiableComponentInterface,
     RouteInterface,
     TenantListInterface
@@ -92,6 +93,7 @@ import {
     UIConfigInterface,
     getAppViewRoutes,
     getServerConfigurations,
+    getSidePanelIcons,
     setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
@@ -108,6 +110,7 @@ import { OrganizationManagementConstants, OrganizationType } from "./features/or
 import { OrganizationUtils } from "./features/organizations/utils";
 import {
     GovernanceCategoryForOrgsInterface,
+    GovernanceConnectorForOrgsInterface,
     useGovernanceConnectorCategories
 } from "./features/server-configurations";
 
@@ -695,22 +698,54 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         if (governanceConnectors?.length > 0) {
             const customGovernanceConnectorRoutes: RouteInterface[] = [];
 
-            governanceConnectors.forEach((connector: GovernanceCategoryForOrgsInterface) => {
-                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(connector.id)) {
+            governanceConnectors.forEach((category: GovernanceCategoryForOrgsInterface) => {                
+                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(category.id)) {
+                    const governanceConnectorChildren: ChildRouteInterface[] = [];
+
+                    category?.connectors?.forEach((connector: GovernanceConnectorForOrgsInterface) => {
+                        governanceConnectorChildren.push({
+                            component: lazy(() =>
+                                import(
+                                    "./extensions/components/governance-connectors/pages/connector-edit-page"
+                                )
+                            ),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: connector.id,
+                            name: connector.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                .replace(
+                                    ":categoryId",
+                                    category.id
+                                )
+                                .replace(
+                                    ":connectorId",
+                                    connector.id
+                                ),
+                            protected: true,
+                            showOnSidePanel: false
+                        });
+                    });
+
                     customGovernanceConnectorRoutes.push(
                         {
-                            category: "custom-governance-connectors",
-                            ccomponent: lazy(() =>
+                            category: category.id,
+                            children: governanceConnectorChildren,
+                            component: lazy(() =>
                                 import(
                                     "./extensions/components/governance-connectors/pages/connector-listing-page"
                                 )
                             ),
                             exact: true,
-                            icon: null,
-                            id: connector.id,
-                            name: connector.name,
-                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
-                                .replace(":id", connector.id),
+                            icon: {
+                                icon: getSidePanelIcons().gears
+                            },
+                            id: category.id,
+                            name: category.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR")
+                                .replace(":id", category.id),
                             protected: true,
                             showOnSidePanel: true
                         }

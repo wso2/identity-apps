@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -232,6 +232,7 @@ export type GetSidePanelIconsInterface = {
     connections: FunctionComponent | ReactNode,
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
+    gears: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
@@ -279,6 +280,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             default: PlugIcon
         },
         emailTemplates: EmailIcon,
+        gears: GearsIcon,
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,

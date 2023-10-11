@@ -56,7 +56,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
-        // ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+        ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [
         "Recovery.ReCaptcha.Password.Enable",
