@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -651,7 +651,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

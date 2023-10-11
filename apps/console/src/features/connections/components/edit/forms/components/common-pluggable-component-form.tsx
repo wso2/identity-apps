@@ -22,13 +22,13 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
+import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import { getPropertyMetadata } from "../../../../utils/common-pluggable-component-utils";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 

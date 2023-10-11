@@ -565,7 +565,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
      */
     const resolveDocumentationLink = (): ReactElement => (
         <DocumentationLink
-            link={ getLink("develop.connections.newConnection.enterprise.samlLearnMore") }
+            link={ getLink("develop.connections.newConnection.trustedTokenIssuer.learnMore") }
         >
             { t("common:learnMore") }
         </DocumentationLink>
@@ -689,7 +689,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
-                                    data-componentid={ `${ componentId }-modal-next-button` }
+                                    data-testid="add-connection-modal-next-button"
+                                    data-componentid="add-connection-modal-next-button"
                                 >
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
@@ -703,7 +704,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     onClick={ () => {
                                         wizardRef.current.gotoNextPage();
                                     } }
-                                    data-componentid={ `${ componentId }-modal-finish-button` }
+                                    data-testid="add-connection-modal-finish-button"
+                                    data-componentid="add-connection-modal-finish-button"
                                     loading={ isSubmitting }
                                 >
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
@@ -714,7 +716,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                     type="submit"
                                     floated="right"
                                     onClick={ () => wizardRef.current.gotoPreviousPage() }
-                                    data-componentid={ `${ componentId }-modal-previous-button` }
+                                    data-testid="add-connection-modal-previous-button"
+                                    data-componentid="add-connection-modal-previous-button"
                                 >
                                     <Icon name="arrow left"/>
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }

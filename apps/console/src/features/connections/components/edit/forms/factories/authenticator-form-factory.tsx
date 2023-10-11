@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { identityProviderConfig } from "../../../../../../extensions/configs/identity-provider";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes
@@ -29,7 +28,6 @@ import {
     FederatedAuthenticatorMetaInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../../../models/connection";
-import { AuthenticatorSettingsForm } from "../authenticator-settings-form";
 import { 
     AppleAuthenticatorForm,
     CommonAuthenticatorForm,
@@ -41,6 +39,8 @@ import {
     SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
+import { AuthenticatorSettingsForm } from "../authenticator-settings-form";
+import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 
 /**
  * Proptypes for the authenticator form factory component.
@@ -63,7 +63,7 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     /**
      * Callback to trigger when the form is submitted.
      * 
-     * @param values - Form values.
+     * @param values 
      * @returns 
      */
     onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
