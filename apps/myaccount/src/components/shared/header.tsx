@@ -329,7 +329,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 title: theme?.images?.myAccountLogo?.title ?? config.ui.appName
             } }
             user={ {
-                email: profileInfo?.email ?? profileInfo?.emails[ 0 ],
+                email: profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1],
                 image: profileInfo?.profileUrl,
                 name: resolveUsername()
             } }
