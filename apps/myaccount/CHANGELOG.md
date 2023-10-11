@@ -1,5 +1,24 @@
 # @wso2is/myaccount
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4179](https://github.com/wso2/identity-apps/pull/4179) [`b2bfe06334`](https://github.com/wso2/identity-apps/commit/b2bfe06334e5f860239cca76dcf1d456f9ecd62d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change theme storing variable names in localstorage
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring Chinese and Japanese language support
+
+* [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve i18n support for My Account app
+
+* Updated dependencies [[`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96)]:
+  - @wso2is/theme@2.0.8
+  - @wso2is/i18n@2.0.6
+  - @wso2is/react-components@2.0.5
+
 ## 2.0.9
 
 ### Patch Changes

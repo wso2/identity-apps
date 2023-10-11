@@ -115,7 +115,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou " +
+                                    "Ouvrez un compte Gravatar en vous rendant sur le <1>site officiel de Gravatar</1> ou " +
                                     "utilisez l'un des choix suivants.",
                                 header: "Aucune image Gravatar correspondante trouvée !"
                             }

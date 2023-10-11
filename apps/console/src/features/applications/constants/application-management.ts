@@ -33,6 +33,8 @@ export class ApplicationManagementConstants {
     public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
+    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -61,6 +63,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
+        .set("APPLICATION_SHARED_ACCESS", "applications.edit.sharedAccess")
         .set("APPLICATION_EDIT_INFO", "applications.edit.info");
 
     /**
@@ -191,49 +194,6 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.JWT_BEARER,
         ApplicationManagementConstants.UMA_TICKET
     ];
-
-    /**
-     * Set of grant types allowed for certain templates.
-     */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
-        // single page app template
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        // oidc web app template
-        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
-        ],
-        [ "custom-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ],
-        [ "mobile-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ]
-    };
 
     /**
      * Holds metadata on how to arrange the values when rendering above

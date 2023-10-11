@@ -2802,6 +2802,33 @@ export const extensions: Extensions = {
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max"
             },
+            alternativeLoginIdentifierPage: {
+                pageTitle: "Alternative Login Identifiers",
+                description: "Configure alternative login identifiers and allow users to use username or configured" + 
+                    " login identifier in login and recovery flows.",
+                loginIdentifierTypes: "Select login identifier",
+                loginIdentifierTypesHint: "Allow users to use username or configured login identifier in" +
+                    " the login flow.",
+                warning: "Ensure that each user in your organization has a unique value assigned for the selected" + 
+                    " login identifiers.",
+                info: "You have selected email as the username type which makes it the primary login identifier.",
+                notification: {
+                    error: {
+                        description: "Error updating the alternative login identifier configuration.",
+                        message: "Error updating configuration"
+                    },
+                    success: {
+                        description: "Successfully updated the alternative login identifier configuration.",
+                        message: "Update successful"
+                    }
+                },
+                claimUpdateNotification: {
+                    error: {
+                        description: "Error updating the attribute as an unique attribute. Please try again.",
+                        message: "Error updating claim"
+                    }
+                }
+            },
             pageTitle: "Account Login",
             description: "Customize account login configurations of the users in your organization.",
             goBackToApplication: "Go back to Applications",
@@ -3723,7 +3750,7 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided" +
+                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password."
                     }
                 }

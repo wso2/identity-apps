@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,14 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { updateApplicationConfigurations } from "../../api";
 import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
@@ -31,7 +33,7 @@ import { AdvancedConfigurationsForm } from "../forms";
 /**
  * Proptypes for the advance settings component.
  */
-interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
     /**
      * Currently editing application id.
      */
@@ -57,9 +59,9 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
 /**
  *  advance settings component.
  *
- * @param {AdvancedSettingsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Advance settings component.
  */
 export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface> = (
     props: AdvancedSettingsPropsInterface
@@ -72,12 +74,12 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         onUpdate,
         readOnly,
         template,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch  = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -103,7 +105,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -139,7 +141,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                         allowedScopes)
                 }
                 template={ template }
-                data-testid={ `${ testId }-form` }
+                data-testid={ `${ componentId }-form` }
                 isSubmitting={ isSubmitting }
             />
         </EmphasizedSegment>
@@ -150,5 +152,5 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
  * Default props for the application advanced settings component.
  */
 AdvancedSettings.defaultProps = {
-    "data-testid": "application-advanced-settings"
+    "data-componentid": "application-advanced-settings"
 };

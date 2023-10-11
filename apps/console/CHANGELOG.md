@@ -1,5 +1,79 @@
 # @wso2is/console
 
+## 2.0.27
+
+### Patch Changes
+
+- [#4196](https://github.com/wso2/identity-apps/pull/4196) [`8729b88795`](https://github.com/wso2/identity-apps/commit/8729b88795917432042867418ed266ce1f4c25d6) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in connections section
+
+* [#4179](https://github.com/wso2/identity-apps/pull/4179) [`b2bfe06334`](https://github.com/wso2/identity-apps/commit/b2bfe06334e5f860239cca76dcf1d456f9ecd62d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change theme storing variable names in localstorage
+
+- [#4193](https://github.com/wso2/identity-apps/pull/4193) [`e6a6a6135f`](https://github.com/wso2/identity-apps/commit/e6a6a6135f7564a27b0fe627af00f8c8de9812fb) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable user roles section for sub orgs
+
+## 2.0.26
+
+### Patch Changes
+
+- [#4195](https://github.com/wso2/identity-apps/pull/4195) [`d8327c289d`](https://github.com/wso2/identity-apps/commit/d8327c289d6e2d99b6241fd69587d44d0440098a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move template wise allowed grant types to application configs
+
+## 2.0.25
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve multi attribute login feature
+
+* [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update locale dropdown in Email templates section
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring Chinese and Japanese language support
+
+- Updated dependencies [[`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96)]:
+  - @wso2is/theme@2.0.8
+  - @wso2is/i18n@2.0.6
+  - @wso2is/react-components@2.0.5
+
+## 2.0.24
+
+### Patch Changes
+
+- [#4189](https://github.com/wso2/identity-apps/pull/4189) [`141753f482`](https://github.com/wso2/identity-apps/commit/141753f4820ccec0a2f652473a28bea080e8e762) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improvement in extention points
+
+* [#4189](https://github.com/wso2/identity-apps/pull/4189) [`122f2f08cf`](https://github.com/wso2/identity-apps/commit/122f2f08cfc62ac01c75623cad0c7fb7fc1f247a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update PASSWORD_EXPIRY_CONNECTOR_ID to match the new implementation
+
+## 2.0.23
+
+### Patch Changes
+
+- [#4187](https://github.com/wso2/identity-apps/pull/4187) [`442c8f324e`](https://github.com/wso2/identity-apps/commit/442c8f324e271d22059481748a17cbc11030e4cc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add extended routes for Roles pages
+
+## 2.0.22
+
+### Patch Changes
+
+- [#4178](https://github.com/wso2/identity-apps/pull/4178) [`9580af4e84`](https://github.com/wso2/identity-apps/commit/9580af4e846a6265a4ec44e7cbf7c5b841bd7130) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bug Fixes and improvements in Connections section
+
+* [#4178](https://github.com/wso2/identity-apps/pull/4178) [`e518776324`](https://github.com/wso2/identity-apps/commit/e518776324941d37ea0e6226f95ab6daedbcd509) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce configurations for routing and documentation
+
+## 2.0.21
+
+### Patch Changes
+
+- [#4168](https://github.com/wso2/identity-apps/pull/4168) [`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Enable expert mode in Identity Server Console
+
+* [#4177](https://github.com/wso2/identity-apps/pull/4177) [`5170170ae1`](https://github.com/wso2/identity-apps/commit/5170170ae1718a445a68bdf707eee63e01829f1a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update test ids in Application edit section
+
+* Updated dependencies [[`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221)]:
+  - @wso2is/theme@2.0.7
+
+## 2.0.20
+
+### Patch Changes
+
+- [#4169](https://github.com/wso2/identity-apps/pull/4169) [`cff75e07a6`](https://github.com/wso2/identity-apps/commit/cff75e07a64d86c0c3bf6d8f84a06fc53729cd88) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bug fixes and improvements
+
+- Updated dependencies [[`cff75e07a6`](https://github.com/wso2/identity-apps/commit/cff75e07a64d86c0c3bf6d8f84a06fc53729cd88)]:
+  - @wso2is/common@2.0.2
+  - @wso2is/dynamic-forms@2.0.4
+
 ## 2.0.19
 
 ### Patch Changes

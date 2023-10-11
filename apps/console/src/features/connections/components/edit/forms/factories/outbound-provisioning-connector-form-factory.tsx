@@ -19,12 +19,12 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
-    AuthenticatorSettingsFormModes
-} from "../../../../models/authenticators";
-import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
+import {
+    AuthenticatorSettingsFormModes
+} from "../../../../models/authenticators";
 import { CommonOutboundProvisioningConnectorForm } from "../outbound-provisioning-connectors";
 
 interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComponentInterface {
@@ -46,8 +46,8 @@ interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComp
 /**
  * Outbound provisioning connector form factory.
  *
- * @param props - Props injected to the component.
- * @returns OutboundProvisioningConnectorFormFactory component instance.
+ * @param {OutboundProvisioningConnectorFormFactoryInterface} props - Props injected to the component.
+ * @return {ReactElement}
  */
 export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
     OutboundProvisioningConnectorFormFactoryInterface

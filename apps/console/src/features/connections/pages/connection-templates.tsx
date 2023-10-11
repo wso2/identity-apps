@@ -16,14 +16,13 @@
  * under the License.
  */
 
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
-import { UIConfigContext } from "@wso2is/common/src/contexts/ui-config-context";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -42,22 +41,22 @@ import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
 import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
-import { useGetConnectionTemplates } from "../api/connections";
 import { 
     AuthenticatorCreateWizardFactory 
 } from "../components/create/authenticator-create-wizard-factory";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
-import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
     ConnectionTemplateItemInterface
 } from "../models/connection";
-import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
+import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
+import { useGetConnectionTemplates } from "../api/connections";
+import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
+import { useSelector } from "react-redux";
 
 /**
  * Proptypes for the Connection template page component.
@@ -110,9 +109,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     const { deploymentConfig } = useDeploymentConfig();
-    const setConnectionTemplates = useSetConnectionTemplates();
+    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
     
-    const documentationBaseUrl: string = deploymentConfig?.docSiteURL || "https://wso2.com/asgardeo/docs";
+    const documentationBaseUrl: string = deploymentConfig?.docSiteURL;
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -156,34 +155,35 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return;
         }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map((template) => {
-            if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                return {
-                    ...template,
-                    templateGroup: "enterprise-protocols"
-                };
-            }
+        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map(
+            (template: ConnectionTemplateInterface) => {
+                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
+                    return {
+                        ...template,
+                        templateGroup: "enterprise-protocols"
+                    };
+                }
 
-            if (template.id === "linkedin-idp") {
-                return {
-                    ...template,
-                    comingSoon: true
-                };
-            }
+                if (template.id === "linkedin-idp") {
+                    return {
+                        ...template,
+                        comingSoon: true
+                    };
+                }
 
-            if (template.displayOrder < 0) {
+                if (template.displayOrder < 0) {
                 
-                return;
-            }
+                    return;
+                }
 
-            // Removes hidden connections.
-            if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
+                // Removes hidden connections.
+                if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
-                return;
-            }
+                        return;
+                    }
 
-            return template;
-        });
+                    return template;
+                });
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -484,6 +484,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 // then prevent rendering it.
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
+                                                        
                                                     return null;
                                                 }
 
@@ -498,8 +499,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={ 
-                                                            documentationBaseUrl + template.docLink 
+                                                            getLink(ConnectionsManagementUtils
+                                                                .resolveConnectionDocLink(template.id))
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
@@ -519,12 +522,13 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         data-testid={ `${ componentId }-${ template.name }` }
                                                     />
                                                 );
-                                            })
-                                        }
-                                    </ResourceGrid>
-                                ))
-                        )
-                        : <ContentLoader dimmer/>
+                                            }
+                                        )
+                                    }
+                                </ResourceGrid>
+                            ))
+                    )
+                    : <ContentLoader dimmer/>
                 }
             </GridLayout>
             {

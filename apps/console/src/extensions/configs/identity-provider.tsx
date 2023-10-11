@@ -225,7 +225,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         showAdvancedSettings: false,
         showJitProvisioning: true,
-        showOutboundProvisioning: false
+        showOutboundProvisioning: true
     },
     fidoTags: [
         AuthenticatorLabels.PASSWORDLESS,
@@ -268,7 +268,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     templates: {
         apple: true,
         enterprise: true,
-        expertMode: false,
+        expertMode: true,
         facebook: true,
         github: true,
         google: true,

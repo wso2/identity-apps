@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
     DocumentationLink,
@@ -45,7 +45,7 @@ import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations"
 /**
  * Proptypes for the server endpoints details component.
  */
-interface InfoPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+interface InfoPropsInterface extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
      *  Currently configured inbound protocols.
      */
@@ -69,7 +69,7 @@ interface InfoPropsInterface extends LoadableComponentInterface, TestableCompone
  *
  * @param props - Props injected to the component.
  *
- * @returns Info component.
+ * @returns Info tab component.
  */
 export const Info: FunctionComponent<InfoPropsInterface> = (
     props: InfoPropsInterface
@@ -80,7 +80,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         isOIDCConfigLoading,
         isSAMLConfigLoading,
         templateId,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
     
     const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
@@ -123,7 +123,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     return (
         !isLoading
             ? (
-                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ testId }>
+                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ componentId }>
                     <Grid className="form-container with-max-width">
                         <Grid.Row>
                             <Grid.Column>
@@ -216,5 +216,5 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
  * Default props for the server endpoints details component.
  */
 Info.defaultProps = {
-    "data-testid": "application-server-endpoints"
+    "data-componentid": "application-server-endpoints"
 };
