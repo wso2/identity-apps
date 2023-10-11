@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4179](https://github.com/wso2/identity-apps/pull/4179) [`b2bfe06334`](https://github.com/wso2/identity-apps/commit/b2bfe06334e5f860239cca76dcf1d456f9ecd62d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change theme storing variable names in localstorage
+
 ## 2.0.10
 
 ### Patch Changes
