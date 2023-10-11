@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,13 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { DropdownChild, Field, Form } from "@wso2is/form";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
+import { AppState } from "../../core";
 import { EmailTemplateType } from "../models";
 
 const FORM_ID: string = "email-customization-header-form";
@@ -81,6 +84,13 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
 
     const { t } = useTranslation();
 
+    const [ localeList, setLocaleList ] = 
+    useState<DropdownChild[]>(undefined);
+
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
+
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
             return {
@@ -90,13 +100,28 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
         });
     }, [ emailTemplatesList ]);
 
-    const localeList: { text: string, value: string }[] = [
-        { text: "en-US", value: "en-US" },
-        { text: "fr-FR", value: "fr-FR" },
-        { text: "es-ES", value: "es-ES" },
-        { text: "pt-PT", value: "pt-PT" },
-        { text: "de-DE", value: "de-DE" }
-    ];
+    useEffect(() => {
+        if (!supportedI18nLanguages) {
+            return;
+        }
+
+        const localeList: DropdownChild[] = [];
+
+        Object.keys(supportedI18nLanguages).map((key: string) => {
+            localeList.push({
+                key: supportedI18nLanguages[key].code,
+                text: (
+                    <div>
+                        <i className={ supportedI18nLanguages[key].flag + " flag" }></i>
+                        { supportedI18nLanguages[key].name }, { supportedI18nLanguages[key].code }
+                    </div>
+                ),
+                value: supportedI18nLanguages[key].code
+            });
+        });
+
+        setLocaleList(localeList);
+    }, [ supportedI18nLanguages ]);
 
     return (
         <Segment

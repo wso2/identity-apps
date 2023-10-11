@@ -122,7 +122,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     hint={ t("extensions:develop.emailTemplates.form.inputs.subject.hint") }
                                     required={ true }
                                     value={ selectedEmailTemplate?.subject }
-                                    maxLength={ 50 }
+                                    maxLength={ 255 }
                                     minLength={ 1 }
                                     data-componentid={ `${ componentId }-email-subject` }
                                     listen={ (value: string) => {
