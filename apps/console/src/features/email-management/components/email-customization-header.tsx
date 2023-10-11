@@ -85,7 +85,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
     const { t } = useTranslation();
 
     const [ localeList, setLocaleList ] = 
-    useState<DropdownChild[]>(undefined);
+        useState<DropdownChild[]>(undefined);
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
