@@ -40,6 +40,7 @@ import {
     FederatedAuthenticatorListResponseInterface, 
     FederatedAuthenticatorMetaInterface 
 } from "../models/connection";
+import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 
 /**
  * Get an axios instance.
@@ -304,12 +305,25 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
+                throw new IdentityAppsApiException(
+                    AuthenticatorManagementConstants.ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error: AxiosError) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message ?? AuthenticatorManagementConstants
+                    .ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -391,7 +405,7 @@ export const updateFederatedAuthenticator = (
  *
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorsList = (): Promise<any> => {
+export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {

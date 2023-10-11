@@ -41,6 +41,7 @@ import {
     OrganizationEnterpriseConnectionCreateWizard 
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
+import { ConnectionManagementConstants } from "../../constants/connection-constants";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -325,7 +326,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case "expert-mode-idp":
+            case ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID:
                 return (
                     <ExpertModeAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }

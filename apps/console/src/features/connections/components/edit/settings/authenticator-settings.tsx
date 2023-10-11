@@ -159,7 +159,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === "expert-mode-idp" || !identityProvider.templateId);
+            (identityProvider.templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID || !identityProvider.templateId);
     }, [ identityProvider, identityProviderConfig  ]);
 
     useEffect(() => {

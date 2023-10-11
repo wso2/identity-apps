@@ -501,8 +501,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={ 
-                                                            documentationBaseUrl + ConnectionsManagementUtils
-                                                                .resolveConnectionDocLink(template.id) 
+                                                            getLink(ConnectionsManagementUtils
+                                                                .resolveConnectionDocLink(template.id))
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils

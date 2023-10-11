@@ -944,7 +944,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                             { subTitle && (
                                 <Heading as="h6">
                                     { subTitle }
-                                    {/* { resolveDocumentationLink() } */}
+                                    { resolveDocumentationLink() }
                                 </Heading>
                             ) }
                         </div>

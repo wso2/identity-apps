@@ -515,7 +515,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                     ConnectionsManagementUtils.resolveConnectionResourcePath(
                                         "", connectionMetaData?.create?.image
                                     )
-                                } 
+                                }
                                 size="mini"
                                 transparent
                                 spaced="right"

@@ -214,16 +214,17 @@ export class ConnectionManagementConstants {
     /**
      * Set of Connection setup guide links.
      */
-    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("apple-idp", "/guides/authentication/social-login/add-apple-login/")
-        .set("enterprise-protocols", "/guides/authentication/enterprise-login/")
-        .set("facebook-idp", "/guides/authentication/social-login/add-facebook-login/")
-        .set("github-idp", "/guides/authentication/social-login/add-github-login/")
-        .set("google-idp", "/guides/authentication/social-login/add-google-login/")
-        .set("hypr-idp", "/guides/authentication/#manage-connections")
-        .set("microsoft-idp", "/guides/authentication/social-login/add-microsoft-login/")
-        .set("enterprise-oidc-idp", "/guides/authentication/enterprise-login/")
-        .set("enterprise-saml-idp", "/guides/authentication/enterprise-login/")
-        .set("swe-idp", "/guides/authentication/decentralized-login/sign-in-with-ethereum")
-        .set("trusted-token-issuer", "/guides/authentication/configure-a-trusted-token-issuer/");
+    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
+        [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
+        [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
+        [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
+        [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
+        [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
+        [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],
+        [ "swe-idp", "develop.connections.newConnection.siwe.learnMore" ],
+        [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
+    ]);
 }
