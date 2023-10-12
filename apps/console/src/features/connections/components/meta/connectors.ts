@@ -17,30 +17,31 @@
  */
 
 import { getConnectorIcons } from "../../configs/ui";
+import { OutboundProvisioningConnectorMetaDataInterface } from "../../models/connection";
 
-export const OutboundConnectors = [
+export const OutboundConnectors: OutboundProvisioningConnectorMetaDataInterface[]  = [
     {
         connectorId: "Z29vZ2xlYXBwcw",
+        description: "Provision users to a google domain.",
         displayName: "Google",
         icon: getConnectorIcons().google,
         name: "googleapps",
-        description: "Provision users to a google domain.",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw"
     },
     {
         connectorId: "c2FsZXNmb3JjZQ",
+        description: "Configure to provision users to Salesforce.",
         displayName: "Salesforce",
         icon: getConnectorIcons().salesforce,
         name: "salesforce",
-        description: "Configure to provision users to Salesforce.",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
     },
     {
         connectorId: "c2NpbQ",
+        description: "Provision users to SCIM 1.1 or SCIM 2.0 applications.",
         displayName: "SCIM",
         icon: getConnectorIcons().scim,
         name: "scim",
-        description: "Provision users to SCIM 1.1 or SCIM 2.0 applications.",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ"
     }
 ];

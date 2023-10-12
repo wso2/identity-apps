@@ -31,44 +31,32 @@ import {
     ResourceTabPaneInterface,
     Text
 } from "@wso2is/react-components";
-import React, { ElementType, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { Dispatch } from "redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
-import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { ApplicationConfig } from "./models";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
 import { ApplicationManagementConstants } from "../../features/applications/constants";
-import CustomApplicationTemplate from 
-    "../../features/applications/data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
-    ApplicationTemplateIdTypes,
-    ApplicationTemplateListItemInterface,
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "../../features/applications/models";
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../features/core";
+import { EventPublisher } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
 import {
     IdentityProviderManagementConstants
 } from "../../features/identity-providers/constants/identity-provider-management-constants";
-import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
-import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageAppTemplate from 
-    "../application-templates/templates/single-page-application/single-page-application.json";
-import { ApplicationRolesConstants } from "../components/application/constants/application-roles";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
-import APIAuthorizationTab from "../components/component-extensions/application/api-authorization-tab";
-import ApplicationRolesTab from "../components/component-extensions/application/application-roles-tab";
-import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
 
@@ -83,12 +71,6 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
-const WSO2_LOGIN_FOR_TEXT: string = "WSO2_LOGIN_FOR_";
-
-// Relative tab indexes.
-const QUICK_START_INDEX: number = 0;
-const API_AUTHORIZATION_INDEX: number = 4;
-const APPLICATION_ROLES_INDEX: number = 4;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -105,58 +87,6 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
-
-/**
- * Check whether the application is a Choreo application or not.
- *
- * @param application - application.
- * @returns true if the application is a Choreo application.
- */
-const isChoreoApplication = (application: ApplicationInterface): boolean => {
-    // Check whether `isChoreoApp` SP property is available.
-    const additionalSpProperties: additionalSpProperty[] = 
-        application?.advancedConfigurations?.additionalSpProperties;
-
-    const choreoSpProperty: additionalSpProperty = additionalSpProperties?.find(
-        (spProperty: additionalSpProperty) => 
-            spProperty.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY 
-            && spProperty.value === "true"
-    );
-
-    // Check whether the application is a choreo app using choreo app template ID or `isChoreoApp` SP property.
-    return application?.templateId === ApplicationRolesConstants.CHOREO_APP_TEMPLATE_ID
-        || choreoSpProperty?.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY;
-};
-
-/**
- * Check whether the application is a Management application or not.
- * 
- * @param application - application.
- * @returns true if the application is a Management application.
- */
-const isEnterpriseLoginManagemenetApplication = (application: ApplicationInterface): boolean => {
-    let isEnterpriseLoginMgt: string;
-
-    if (application?.advancedConfigurations?.additionalSpProperties?.length > 0) {
-        application?.advancedConfigurations?.additionalSpProperties?.
-            forEach((item: additionalSpProperty) => {
-                if (item.name === IS_ENTERPRISELOGIN_MANAGEMENT_APP && item.value === "true") {
-                    isEnterpriseLoginMgt = "true";
-                }
-            });
-    }
-
-    return application.name.startsWith(WSO2_LOGIN_FOR_TEXT) || isEnterpriseLoginMgt === "true";
-};
-
-/**
- * Check whether the application is the TryIt application or not.
- * 
- * @param application - application.
- * @returns true if the application is the TryIt application.
- */
-const isTryItApplication = (applicaiton: ApplicationInterface , tenantDomain: string): boolean => 
-    applicaiton?.clientId === getTryItClientId(tenantDomain);
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {

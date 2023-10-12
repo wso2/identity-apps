@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
@@ -587,7 +588,7 @@ export const handleConnectionUpdateError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the federated authenticator meta data GET request.
  */
-export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: AxiosError): void => {
+export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: IdentityAppsApiException): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
