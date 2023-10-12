@@ -541,8 +541,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
-                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = userstore &&
-                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
                 

@@ -64,7 +64,7 @@ import {
     getServerConfigs
 } from "../../server-configurations";
 import { getUserStoreList } from "../../userstores/api";
-import { CONSUMER_USERSTORE } from "../../userstores/constants/user-store-constants";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList } from "../api";
 import { UsersList } from "../components/users-list";
@@ -808,7 +808,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         <BulkImportUserWizard
                             data-componentid="user-mgt-add-bulk-user-wizard-modal"
                             closeWizard={ handleBulkImportWizardClose }
-                            userstore={ CONSUMER_USERSTORE }
+                            userstore={ PRIMARY_USERSTORE }
                         />
                     )
                 }
