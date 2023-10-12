@@ -235,7 +235,7 @@ export const applicationConfig: ApplicationConfig = {
         defaultTabIndex: 1
     },
     editApplication: {
-        extendTabs: true,
+        extendTabs: false,
         getActions: (clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
@@ -423,113 +423,7 @@ export const applicationConfig: ApplicationConfig = {
                 return 4; // Anything else
             }
         },
-        getTabExtensions: (
-            props: Record<string, unknown>, 
-            features: FeatureConfigInterface,
-            tenantDomain: string
-        ): ResourceTabPaneInterface[] => {
-            const { content, ...rest } = props;
-            const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
-            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
-            const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
-
-            const application: ApplicationInterface = props?.application as ApplicationInterface;
-            const applicationTemplate: ApplicationTemplateListItemInterface = 
-                props?.template as ApplicationTemplateListItemInterface;
-            const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
-
-            const tabExtensions: ResourceTabPaneInterface[] = [];
-
-            /**
-             * Return empty list for tab extensions in enterprise login management and try it applications.
-             */
-            if (isEnterpriseLoginManagemenetApplication(application) || isTryItApplication(application, tenantDomain)) {
-                return tabExtensions;
-            }
-
-            // Enable the quick start tab for supported templates when the quick start content is available.
-            if (
-                content
-                && application?.templateId !== CustomApplicationTemplate.id
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            ) {
-                tabExtensions.push(
-                    {
-                        componentId: "quick-start",
-                        index: QUICK_START_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            (applicationTemplate?.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION) ?
-                                "extensions:develop.applications.quickstart.mobileApp.tabHeading":
-                                "console:develop.componentExtensions.component.application.quickStart.title"
-                        ),
-                        render: () => <QuickStartTab content={ content as ElementType } { ...rest } />
-                    }
-                );
-            }
-
-            const isChoreoApp: boolean = isChoreoApplication(application);
-
-            // Enable the API authorization tab for supported templates when the api resources config is enabled.
-            // And disable if the application is a Choreo application or a shared application.
-            if (
-                apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                (
-                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                    || application?.templateId === MobileAppTemplate?.id
-                    || application?.templateId === OIDCWebAppTemplate?.id
-                    || application?.templateId === SinglePageAppTemplate?.id
-                )
-            ) {
-                tabExtensions.push(
-                    {
-                        componentId: "api-authorization",
-                        index: API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                        ),
-                        render: () => <APIAuthorizationTab isChoreoApp={ isChoreoApp } />
-                    }
-                );
-            }
-
-            // Enable the roles tab for supported templates when the api resources config is enabled.
-            // Otherwise enable the roles tab for choreo applications when the application roles config is enabled.
-            if (
-                (
-                    apiResourceFeatureEnabled &&
-                    applicationRolesFeatureEnabled
-                    && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                        applicationRoles?.enabled) 
-                    && (
-                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                        || application?.templateId === MobileAppTemplate?.id
-                        || application?.templateId === OIDCWebAppTemplate?.id
-                        || application?.templateId === SinglePageAppTemplate?.id
-                    )
-                )
-                || (applicationRolesFeatureEnabled && isChoreoApp)
-            ) {
-                tabExtensions.push(
-                    {
-                        componentId: "application-roles",
-                        index: APPLICATION_ROLES_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            "extensions:develop.applications.edit.sections.roles.heading"
-                        ),
-                        render: () => (
-                            <ApplicationRolesTab 
-                                application={ application }
-                                onUpdate={ onApplicationUpdate }
-                            />
-                        )
-                    }
-                );
-            }
-
-            return tabExtensions;
-        },
+        getTabExtensions: (): ResourceTabPaneInterface[] => [],
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface): boolean => {
             // Restrict modifying configurations for Enterprise IDP Login Applications.
             let isEnterpriseLoginMgt: string;
