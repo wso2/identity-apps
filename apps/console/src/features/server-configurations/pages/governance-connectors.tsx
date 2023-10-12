@@ -21,10 +21,12 @@ import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } 
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
@@ -56,8 +58,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 ): ReactElement => {
     const { [ "data-testid" ]: testId } = props;
 
-    const dispatch = useDispatch();
-    const pageContextRef = useRef(null);
+    const dispatch: Dispatch = useDispatch();
+    const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
 
     const { t } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes({
@@ -73,7 +75,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
 
-    const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
+    const ScrollTopPosition: number = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
 
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
@@ -129,7 +131,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                 setConnectors(response?.connectors as GovernanceConnectorWithRef[]);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

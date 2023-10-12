@@ -39,7 +39,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
-import { ServerConfigurationsConstants } from "../../server-configurations";
 import { updateJWTConfig, useTokenReuseConfigData } from "../api";
 
 /**

@@ -53,7 +53,7 @@ interface DynamicConnectorPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the connector settings.
  *
- * @param {DynamicConnectorPropsInterface} props - Component props.
+ * @param DynamicConnectorPropsInterface - props - Component props.
  */
 export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsInterface> = (
     props: DynamicConnectorPropsInterface

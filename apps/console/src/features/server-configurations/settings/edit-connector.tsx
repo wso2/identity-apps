@@ -39,9 +39,9 @@ interface EditConnectorProps extends TestableComponentInterface {
 /**
  * Edit connector component.
  *
- * @param {EditConnectorProps} props - Props injected to the connector component.
+ * @param EditConnectorProps - Props injected to the connector component.
  *
- * @return {React.ReactElement}
+ * @returns a React.ReactElement.
  */
 export const EditConnector: FunctionComponent<EditConnectorProps> = (
     props: EditConnectorProps

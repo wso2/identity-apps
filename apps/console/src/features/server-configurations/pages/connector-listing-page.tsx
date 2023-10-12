@@ -18,12 +18,12 @@
 
 import { 
     ArrowLoopRightUserIcon, 
-    PadlockAsteriskIcon,
-    UserPlusIcon, 
-    HexagonTwoIcon, 
-    VerticleFilterBarsIcon,
     CircleUserIcon,
-    ShieldCheckIcon
+    HexagonTwoIcon, 
+    PadlockAsteriskIcon, 
+    ShieldCheckIcon,
+    UserPlusIcon,
+    VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
