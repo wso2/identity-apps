@@ -542,15 +542,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getAddUserOptions = () => {
         const options: DropdownItemProps = [
             {
-                "data-componentid": "admins-add-external-admin-dropdown-item",
-                "data-testid": "admins-add-external-admin-dropdown-item",
+                "data-componentid": `${ testId }-admin-add-user-dropdown-item`,
+                "data-testid": `${ testId }-admin-add-user-dropdown-item`,
                 key: 1,
                 text: t("console:manage.features.users.addUserDropDown.addNewUser"),
                 value: UserAddOptionTypes.MANUAL_INPUT
             },
             {
-                "data-componentid": "admins-add-bulk-users-dropdown-item",
-                "data-testif": "admins-add-bulk-users-dropdown-item",
+                "data-componentid": `${ testId }-admin-bulk-import-users-dropdown-item`,
+                "data-testid": `${ testId }-admin-bulk-import-users-dropdown-item`,
                 key: 2,
                 text: t("console:manage.features.users.addUserDropDown.bulkImport"),
                 value: UserAddOptionTypes.BULK_IMPORT
@@ -562,8 +562,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const addUserDropDown: ReactElement = (
         <Dropdown
-            data-testid={ `${ testId }-add-admin-dropdown` }
-            data-componentid={ `${ testId }-add-admin-dropdown` }
+            data-testid={ `${ testId }-add-user-dropdown` }
+            data-componentid={ `${ testId }-add-user-dropdown` }
             direction="left"
             floating
             icon={ null }
@@ -806,7 +806,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 {
                     showBulkImportWizard && (
                         <BulkImportUserWizard
-                            data-componentid="user-mgt-add-bulk-user-wizard-modal"
+                            data-componentid="user-mgt-bulk-import-user-wizard-modal"
                             closeWizard={ handleBulkImportWizardClose }
                             userstore={ PRIMARY_USERSTORE }
                         />
