@@ -104,8 +104,16 @@ export class ClaimManagementConstants {
         SCIMConfigs.oidc
     ];
 
+    public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
+    public static readonly OPENID_MAPPING: string = "http://schema.openid.net/2007/05/claims";
+    public static readonly XMLSOAP_MAPPING: string = "http://schemas.xmlsoap.org/ws/2005/05/identity";
+
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
+    public static readonly AXSCHEMA: string = "axschema";
+    public static readonly EIDAS: string = "eidas";
+    public static readonly OPENID: string = "openid";
+    public static readonly XMLSOAP: string = "xmlsoap";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {
@@ -116,6 +124,14 @@ export class ClaimManagementConstants {
         { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
         { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
+    ];
+
+    public static readonly EIDAS_TABS: {
+        name: string;
+        uri: string;
+    }[] = [
+        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
     ];
 
     /**

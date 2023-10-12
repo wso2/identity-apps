@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4198](https://github.com/wso2/identity-apps/pull/4198) [`c6f2e06efd`](https://github.com/wso2/identity-apps/commit/c6f2e06efd7a6856db6491d0bc9c24a54a34decf) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve theme bundling script
+
+* [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
+- [#4198](https://github.com/wso2/identity-apps/pull/4198) [`c58635c51e`](https://github.com/wso2/identity-apps/commit/c58635c51e01b8db984b53e6749a2c8f6d82404a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bug fixes in recovery portal
+
 ## 2.0.9
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
 ## 2.0.11
 
 ### Patch Changes

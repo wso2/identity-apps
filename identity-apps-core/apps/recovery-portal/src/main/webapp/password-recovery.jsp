@@ -142,10 +142,6 @@
         return;
     }
 
-    <!-- String enterUsernameHereText = "password.reset.with.username";
-    if (isMultiAttributeLoginEnabledInTenant) {
-        enterUsernameHereText = "password.reset.with.identifier";
-    } -->
     String usernameLabel = "Username";
     if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {

@@ -3555,10 +3555,22 @@ export interface ConsoleNS {
             };
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        heading: string;
+                        description: string;
+                    },
+                    eidas: {
+                        heading: string;
+                        description: string;
+                    },
                     oidc: {
                         heading: string;
                         description: string;
                     };
+                    openid: {
+                        heading: string;
+                        description: string;
+                    },
                     scim: {
                         heading: string;
                         description: string;
@@ -3567,6 +3579,10 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
+                    xmlsoap: {
+                        heading: string;
+                        description: string;
+                    },
                 };
                 dialects: {
                     advancedSearch: {
