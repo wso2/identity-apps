@@ -410,6 +410,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 { showCardAction ? (
                                     <LinkButton
                                         className="idp-create-button"
+                                        disabled={ disabled }
                                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {
                                             onClick(e as unknown as MouseEvent<HTMLAnchorElement>,
                                                 null);
@@ -425,6 +426,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 { showSetupGuideButton && (<Button
                                     className="setup-guide-button"
                                     onClick={ handleClick }
+                                    disabled={ disabled }
                                     data-componentid={ `${ componentId }-${ header }-setup-guide` }
                                 >
                                     <i className="book icon"></i>

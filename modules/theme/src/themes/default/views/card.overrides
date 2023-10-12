@@ -531,18 +531,18 @@
                 .actions {
                     display: flex;
                     justify-content: space-between;
+                    width: 100%;
 
-                    .delete-button {
-                        visibility: hidden;
-                        color: @negativeColor;
+                    .left {
+                        order: 1;
                     }
-                }
-            }
 
-            &:hover {
-                .action-container {
+                    .right {
+                        order: 2;
+                    }
+
                     .delete-button {
-                        visibility: visible;
+                        color: @negativeColor;
                     }
                 }
             }
@@ -984,7 +984,7 @@
         }
         .action-container {
             .info-card-inner-action {
-                padding: 11px 0px !important;
+                padding: 12px 0px !important;
 
                 .icon {
                     margin-left: 3px !important;
