@@ -29,8 +29,11 @@ import { ReactComponent as DefaultConnectionIcon
 import { ReactComponent as EnterpriseConnectionIcon
 } from "../resources/assets/images/icons/enterprise-icon.svg";
 import OrganizationSSOIcon from "../resources/assets/images/icons/organization-sso-icon.svg";
+import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
 import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection-icon.png";
 import SAMLConnectionIcon from "../resources/assets/images/icons/saml-connection-icon.png";
+import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
+import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
 import WSFederationIcon from "../resources/assets/images/icons/ws-fed.png";
 import { SupportedServices } from "../models/connection";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
@@ -64,7 +67,10 @@ export const getConnectionIcons = (): any => {
         smsOTP: SMSOTPIcon,
         totp: TOTPIcon,
         trustedTokenIssuer: TrustedTokenIssuerIcon,
-        wsFed: WSFederationIcon
+        wsFed: WSFederationIcon,
+        office365: Office365Logo,
+        yahoo: YahooLogo,
+        iwaKerberos: KerberosLogo,
     };
 };
 

@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.0.27
+
+### Patch Changes
+
+- [#4196](https://github.com/wso2/identity-apps/pull/4196) [`8729b88795`](https://github.com/wso2/identity-apps/commit/8729b88795917432042867418ed266ce1f4c25d6) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in connections section
+
+* [#4179](https://github.com/wso2/identity-apps/pull/4179) [`b2bfe06334`](https://github.com/wso2/identity-apps/commit/b2bfe06334e5f860239cca76dcf1d456f9ecd62d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change theme storing variable names in localstorage
+
+- [#4193](https://github.com/wso2/identity-apps/pull/4193) [`e6a6a6135f`](https://github.com/wso2/identity-apps/commit/e6a6a6135f7564a27b0fe627af00f8c8de9812fb) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable user roles section for sub orgs
+
 ## 2.0.26
 
 ### Patch Changes

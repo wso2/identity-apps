@@ -225,7 +225,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         showAdvancedSettings: false,
         showJitProvisioning: true,
-        showOutboundProvisioning: false
+        showOutboundProvisioning: true
     },
     fidoTags: [
         AuthenticatorLabels.PASSWORDLESS,

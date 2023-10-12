@@ -58,10 +58,6 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
      */
     defaultActiveIndex?: number;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Type of the authenticator.
      * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
@@ -86,7 +82,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         authenticator,
         isLoading,
         defaultActiveIndex,
-        isTabExtensionsAvailable,
         onUpdate,
         type,
         isReadOnly,
@@ -120,10 +115,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             .editIdentityProvider.getTabExtensions({
                 content: authenticatorConfig.content.quickStart
             });
-
-        if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
-        }
 
         setTabPaneExtensions(extensions);
     }, [ authenticator, tabPaneExtensions ]);
