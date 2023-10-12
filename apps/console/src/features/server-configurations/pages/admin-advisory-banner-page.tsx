@@ -23,7 +23,7 @@ import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { SettingsSection } from "../../../features/server-configurations/settings";
+import { SettingsSection } from "../../../features/server-configurations/settings/settings-section";
 import { AppConstants, history } from "../../core";
 import { useAdminAdvisoryBannerConfigs } from "../api";
 

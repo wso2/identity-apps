@@ -24,5 +24,4 @@ export * from "./models";
 export * from "./pages";
 export * from "./store";
 export * from "./utils";
-export * from "./settings";
 export * from "./forms";
