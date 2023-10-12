@@ -161,7 +161,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError,
-    } = useGetConnections();
+    } = useGetConnections(null, null, null, null);
 
     const {
         data: connectionTemplate,
@@ -188,7 +188,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     }, [ connections ]);
 
     useEffect(() => {
-        handleGetConnectionsError(connectionsFetchRequestError);
+        if (connectionsFetchRequestError) {
+            handleGetConnectionsError(connectionsFetchRequestError);
+        }
     }, [ connectionsFetchRequestError ]);
 
     useEffect(() => {

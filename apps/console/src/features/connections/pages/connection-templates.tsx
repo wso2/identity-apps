@@ -179,11 +179,12 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                 // Removes hidden connections.
                 if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
-                        return;
-                    }
+                    return;
+                }
 
-                    return template;
-                });
+                return template;
+            }
+        );
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)

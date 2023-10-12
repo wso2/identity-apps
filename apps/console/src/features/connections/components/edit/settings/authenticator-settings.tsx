@@ -159,7 +159,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID || !identityProvider.templateId);
+            (identityProvider.templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID && !identityProvider.templateId);
     }, [ identityProvider, identityProviderConfig  ]);
 
     useEffect(() => {
@@ -597,7 +597,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         });
 
         moderatedManualModeOptions = moderatedManualModeOptions?.filter(a =>
-            !availableAuthenticatorIDs.includes(a?.authenticatorId));
+            !availableAuthenticatorIDs.includes(a?.authenticatorId) &&
+            a?.authenticatorId !== ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);

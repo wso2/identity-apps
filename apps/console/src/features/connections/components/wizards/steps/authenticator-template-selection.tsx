@@ -228,7 +228,12 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                             >
                                                 <Card.Content className="p-4">
                                                     <GenericIcon
-                                                        icon={ template.icon }
+                                                        icon={ 
+                                                            template.icon === "string"
+                                                                ? ConnectionsManagementUtils
+                                                                    .resolveConnectionResourcePath("", template.icon)
+                                                                : template.icon
+                                                        }
                                                         size="micro"
                                                         floated="left"
                                                         shape="square"

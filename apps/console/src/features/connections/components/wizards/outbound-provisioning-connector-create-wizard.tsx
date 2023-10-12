@@ -383,7 +383,6 @@ export const OutboundProvisioningConnectorCreateWizard:
                 open={ true }
                 className="wizard application-create-wizard"
                 dimmer="blurring"
-                size="small"
                 onClose={ closeWizard }
                 closeOnDimmerClick={ false }
                 closeOnEscape

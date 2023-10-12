@@ -20,6 +20,9 @@ import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/ge
 import { ReactComponent as DocumentIcon } from "../resources/assets/images/icons/document-icon.svg";
 import { ReactComponent as ReportIcon } from "../resources/assets/images/icons/report-icon.svg";
 import EmailOTPIcon from "../resources/assets/images/icons/email-solid.svg";
+import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
+import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
+import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
 import SMSOTPIcon from "../resources/assets/images/icons/sms-otp.svg";
 import FIDOIcon from "../resources/assets/images/icons/fido2.svg";
 import MagicLinkIcon from "../resources/assets/images/icons/magic-link-icon.svg";
@@ -34,6 +37,14 @@ import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection
 import SAMLConnectionIcon from "../resources/assets/images/icons/saml-connection-icon.png";
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
+import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
+import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
+import JWTLogo from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
+import AppleLogo from "../../../themes/default/assets/images/third-party/apple-logo.svg";
+import MicrosoftLogo from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
+import FacebookLogo from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import WSFederationIcon from "../resources/assets/images/icons/ws-fed.png";
 import { SupportedServices } from "../models/connection";
 import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
@@ -50,6 +61,16 @@ export const getConnectionWizardStepIcons = (): any => {
         general: DocumentIcon,
         outboundProvisioningSettings: GearsIcon,
         summary: ReportIcon
+    };
+};
+
+export const getConnectorIcons = (): any => {
+
+    return {
+        google: GoogleLogo,
+        salesforce: SalesforceLogo,
+        scim: SCIMLogo,
+        spml: SPMLLogo
     };
 };
 
@@ -71,6 +92,18 @@ export const getConnectionIcons = (): any => {
         office365: Office365Logo,
         yahoo: YahooLogo,
         iwaKerberos: KerberosLogo,
+        apple: AppleLogo,
+        basicAuthenticator: BasicAuthIcon,
+        facebook: FacebookLogo,
+        githubAuthenticator: GithubIdPIcon,
+        googleOIDCAuthenticator: GoogleLogo,
+        Microsoft: MicrosoftLogo,
+        basic: BasicAuthIcon,
+        "email-otp-authenticator": EmailOTPIcon,
+        google: GoogleLogo,
+        jwtBasic: JWTLogo,
+        microsoft: MicrosoftLogo,
+        twitter: TwitterLogo,
     };
 };
 
