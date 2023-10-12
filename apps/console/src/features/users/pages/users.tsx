@@ -542,15 +542,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getAddUserOptions = () => {
         const options: DropdownItemProps = [
             {
-                "data-componentid": `${ testId }-admin-add-user-dropdown-item`,
-                "data-testid": `${ testId }-admin-add-user-dropdown-item`,
+                "data-componentid": `${ testId }-add-user-dropdown-item`,
+                "data-testid": `${ testId }-add-user-dropdown-item`,
                 key: 1,
                 text: t("console:manage.features.users.addUserDropDown.addNewUser"),
                 value: UserAddOptionTypes.MANUAL_INPUT
             },
             {
-                "data-componentid": `${ testId }-admin-bulk-import-users-dropdown-item`,
-                "data-testid": `${ testId }-admin-bulk-import-users-dropdown-item`,
+                "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
+                "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
                 key: 2,
                 text: t("console:manage.features.users.addUserDropDown.bulkImport"),
                 value: UserAddOptionTypes.BULK_IMPORT

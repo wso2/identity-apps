@@ -119,7 +119,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();

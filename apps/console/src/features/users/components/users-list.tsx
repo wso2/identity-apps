@@ -151,7 +151,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch<any>= useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);

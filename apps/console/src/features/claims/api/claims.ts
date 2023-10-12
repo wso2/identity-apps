@@ -19,8 +19,14 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim, ClaimDialect, ClaimDialectsGetParams, ClaimsGetParams, ExternalClaim, HttpMethods }
-    from "@wso2is/core/models";
+import {
+    Claim,
+    ClaimDialect,
+    ClaimDialectsGetParams,
+    ClaimsGetParams,
+    ExternalClaim,
+    HttpMethods
+} from "@wso2is/core/models";
 import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";

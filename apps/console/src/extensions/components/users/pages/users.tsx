@@ -462,15 +462,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getAddUserOptions = () => {
         const options: DropdownItemProps = [
             {
-                "data-componentid": `${ componentId }-admin-add-user-dropdown-item`,
-                "data-testid": `${ testId }-admin-add-user-dropdown-item`,
+                "data-componentid": `${ componentId }-add-user-dropdown-item`,
+                "data-testid": `${ testId }-add-user-dropdown-item`,
                 key: 1,
                 text: t("console:manage.features.users.addUserDropDown.addNewUser"),
                 value: UserAddOptionTypes.MANUAL_INPUT
             },
             {
-                "data-componentid": `${ componentId }-admin-bulk-import-users-dropdown-item`,
-                "data-testid": `${ testId }-admin-bulk-import-users-dropdown-item`,
+                "data-componentid": `${ componentId }-bulk-import-users-dropdown-item`,
+                "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
                 key: 2,
                 text: t("console:manage.features.users.addUserDropDown.bulkImport"),
                 value: UserAddOptionTypes.BULK_IMPORT
@@ -491,12 +491,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         >
             <Dropdown.Menu >
                 { getAddUserOptions().map((option: {
-                                    "data-componentid": string;
-                                    "data-testid": string;
-                                    key: number;
-                                    text: string;
-                                    value: UserAddOptionTypes;
-                                }) => (
+                    "data-componentid": string;
+                    "data-testid": string;
+                    key: number;
+                    text: string;
+                    value: UserAddOptionTypes;
+                }) => (
                     <Dropdown.Item
                         key={ option.value }
                         onClick={ ()=> handleDropdownItemChange(option.value) }

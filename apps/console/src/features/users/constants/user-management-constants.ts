@@ -135,7 +135,11 @@ export enum UserAccountTypes {
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
     ROLES = "roles",
-    VERIFY_EMAIL = "verifyEmail"
+    GROUPS = "groups",
+    ONETIME_PASSWORD = "oneTimePassword",
+    X509CERTIFICATES = "x509Certificates",
+    GTALK = "gtalk",
+    SKYPE = "skype"
 }
 
 /**
@@ -147,8 +151,7 @@ export enum SpecialMultiValuedComplexAttributes {
     PhoneNumbers = "phoneNumbers",
     Photos = "photos",
     Addresses = "addresses",
-    Entitlements = "entitlements",
-    X509Certificates = "x509Certificates"
+    Entitlements = "entitlements"
 }
 
 /**
