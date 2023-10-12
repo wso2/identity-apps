@@ -7032,20 +7032,37 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "The Attribute Exchange Schema (axschema) representation "
+                            + "for user attributes.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "The custom protocol representation for user "
                             + "attributes.",
                         heading: "Custom Attributes"
+                    },
+                    eidas: {
+                        description: "The eIDAS protocol representation for user attributes.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "The OpenID Connect (OIDC) protocol representation for user "
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "The OpenID protocol representation for user attributes.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
+                    },
+                    xmlsoap: {
+                        description: "The XML SOAP protocol representation for user attributes.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

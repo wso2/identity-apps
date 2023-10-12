@@ -5324,18 +5324,35 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "පරිශීලක ගුණාංග සඳහා Attribute Exchange Schema (axschema) ප්‍රොටොකෝලය "
+                            + "නිරූපණය.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "අභිරුචි ගුණාංග"
+                    },
+                    eidas: {
+                        description: "පරිශීලක ගුණාංග සඳහා eIDAS ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "OpenID Connect API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා " +
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
