@@ -38,6 +38,13 @@
     private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
     private static final String DATA_AUTH_ERROR_URL = "data/AuthenticationError/";
     private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
+
+    /*
+     * This error code should be defined in a public repo along with related logic
+     * to handle the error.
+     * Tracked with https://github.com/wso2/product-is/issues/16932
+     */
+    private static final String UNVERIFIED_EMAIL_IN_MSFT_ERROR_CODE = "17101";
 %>
 <%
     String stat = request.getParameter(Constants.STATUS);
@@ -165,6 +172,30 @@
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
+
+                    <%
+                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
+                        if (trackingRefFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
+                    <% } %>
+
+
+                    <% } else if (UNVERIFIED_EMAIL_IN_MSFT_ERROR_CODE.equals(errorCode)) { %>
+                        <h2 class="ui header portal-logo-tagline slogan-message">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.not.verified")%>
+                        </h2>
+                        <p class="portal-tagline-description mt-1 mb-5">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.microsoft.account.email.is.not.verified.verify.and.try.again")%>
+                        </p>
+                        <jsp:include page="includes/error-tracking-reference.jsp"/>
+                        </br>
+                        <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
+                            <a class="clickable-link"
+                               href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "back.to.sign.in")%>
+                            </a>
+                        <% } %>
                 <% } else { %>
                     <h3 class="ui header text-center slogan-message mt-3 mb-6">
                         <%=stat%>
