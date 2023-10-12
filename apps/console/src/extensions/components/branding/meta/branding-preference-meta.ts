@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -94,26 +94,26 @@ export class BrandingPreferenceMeta {
                 [ PredefinedThemes.LIGHT ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/asgardeo-trifacta.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appFaviconPath)
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/logo-dark.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appLogoPath)
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/logo-dark.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appLogoPath)
                         }
                     }
                 },
                 [ PredefinedThemes.DARK ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/asgardeo-trifacta.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appFaviconPath)
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/asgardeo-logo-white.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath)
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath("/assets/images/branding/logo.svg")
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath)
                         }
                     }
                 }
