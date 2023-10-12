@@ -1250,6 +1250,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "hiddenConnectionTemplates": [
+            {% if console.ui.hiddenConnectionTemplates is defined %}
+                {% for value in console.ui.hiddenConnectionTemplates %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}
