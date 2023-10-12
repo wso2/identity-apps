@@ -21,7 +21,7 @@
 
     // Get the layout store url from the configuration file
     String tempLayoutStoreURL = application.getInitParameter("LayoutStoreURL");
-    if (!StringUtils.isBlank(tempLayoutStoreURL)) {
+    if (!StringUtils.equals(tenantRequestingPreferences, IdentityManagementEndpointConstants.SUPER_TENANT) && !StringUtils.isBlank(tempLayoutStoreURL)) {
         layoutStoreURL = tempLayoutStoreURL;
     }
 
