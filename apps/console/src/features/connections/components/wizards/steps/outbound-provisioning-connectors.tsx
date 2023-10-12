@@ -137,20 +137,6 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                                     </Card.Description>
                                 </Card.Content>
                             </Card>
-                            // <SelectionCard
-                            //     inline
-                            //     key={ index }
-                            //     header={ connector.displayName }
-                            //     image={ connector.icon }
-                            //     onClick={ (): void => handleConnectorSelection(connector) }
-                            //     selected={
-                            //         selectedConnector
-                            //             ? selectedConnector.connectorId === connector.connectorId
-                            //             : index === 0
-                            //     }
-                            //     size="small"
-                            //     data-testid={ `${ testId }-connector-${ index }` }
-                            // />
                         );
                     })
                 ) : null
