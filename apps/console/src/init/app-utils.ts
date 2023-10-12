@@ -233,7 +233,7 @@ export const AppUtils: any = (function() {
                     ? _config.clientID
                     : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
-                clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(true),
+                clientOriginWithTenant: _config.clientOrigin + this.getAppBaseWithTenant(),
                 customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 developerApp: {
@@ -377,6 +377,16 @@ export const AppUtils: any = (function() {
          * @returns Tenant path.
          */
         getTenantPath: function (skipSuperTenant: boolean = false) {
+            
+            console.log({
+                orgname: this.getOrganizationName(),
+                supertenant: this.getSuperTenant(),
+                skip: skipSuperTenant,
+                tenantname: this.getTenantName(),
+                saas: this.isSaas(),
+                tenantprefix: this.getTenantPrefix()
+            })
+
             if (this.getOrganizationName()) {
                 return "";
             }
