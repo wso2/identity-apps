@@ -24,6 +24,7 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkForUIResourceScopes: false,
+    enableDefaultBrandingPreviewSection: true,
     enableDefaultPreLoader: true,
     enableOrganizationAssociations: false,
     footer: {

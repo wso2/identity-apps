@@ -1955,9 +1955,21 @@ export const extensions: Extensions = {
                                 title: "Ressource introuvable"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Besoin d'une mise en page entièrement personnalisée pour "
+                                description: "Besoin d'une mise en page entièrement personnalisée pour "
                                     + "votre organisation? Contactez-nous à <1>{{ supportEmail }}</1>.",
+                                subTitle: "Vous n'avez pas encore déployé de mise en page personnalisée.",
                                 title: "Mise en page personnalisée introuvable"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "Vous pouvez désormais intégrer une mise en page personnalisée pour "
+                                    + "les pages de connexion, d'enregistrement et de récupération. Reportezvous "
+                                    + "à notre documentation pour des instructions détaillées.",
+                                subTitle: "La mise en page personnalisée a été activée avec succès.",
+                                title: "Mise en page personnalisée"
                             }
                         }
                     },

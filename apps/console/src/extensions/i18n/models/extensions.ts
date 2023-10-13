@@ -1691,11 +1691,21 @@ export interface Extensions {
                                 title: string;
                             };
                             notFoundWithSupport: {
+                                description: string;
                                 subTitle: string;
                                 title: string;
                             };
                         };
                     };
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: string;
+                                subTitle: string;
+                                title: string;
+                            }
+                        }
+                    }
                     label: string;
                 };
             };

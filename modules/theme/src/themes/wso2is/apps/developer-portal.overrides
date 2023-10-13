@@ -1239,7 +1239,7 @@ TODO : Move values to separate variables and cleanup styles.
     }
 }
 
-.branding-preference-preview-error {
+.branding-preference-preview-message {
     width: 100%;
     height: 100%;
     display: flex;
