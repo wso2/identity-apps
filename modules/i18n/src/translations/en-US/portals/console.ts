@@ -9759,14 +9759,57 @@ export const console: ConsoleNS = {
                             heading: "Update Role Groups",
                             subHeading: "Add new groups or remove existing groups assigned to the role."
                         },
-                        emptyPlaceholder: {
-                            action: "Assign Group",
-                            subtitles: "There are no groups assigned to this role at the moment.",
-                            title: "No Groups Assigned"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Assign Groups",
+                                subtitles: {
+                                    0: "There are no groups assigned to this role at the moment."
+                                },
+                                title: "No groups assigned to the role."
+                            },
+                            errorPlaceholder: {
+                                action: "Refresh",
+                                subtitles: {
+                                    0: "An error occurred while fetching groups assigned to this role.",
+                                    1: "Please try again."
+                                },
+                                title: "Something went wrong"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the groups assigned to the role."
+                            },
+                            success: {
+                                message: "Role updated successfully",
+                                description: "The groups assigned to the role have been successfully updated."
+                            },
+                            genericError: {
+                                message: "Something went wrong",
+                                description: "We were unable to update the groups assigned to the role."
+                            },
+                            fetchError: {
+                                message: "Something went wrong",
+                                description: "We were unable to fetch the groups assigned to the role."
+                            }
                         },
                         heading: "Assigned Groups",
                         subHeading: "Add or remove the groups assigned to this role. Note that this "
-                            + "will affect performing certain tasks."
+                            + "will affect performing certain tasks.",
+                        actions: {
+                            search: {
+                                placeholder: "Search groups"
+                            },
+                            assign: {
+                                placeholder: "Assign groups"
+                            },
+                            remove: {
+                                label: "Removing groups",
+                                placeholder: "Restore groups"
+                            }
+                        }
+                        
                     },
                     menuItems: {
                         basic: "Basics",
@@ -9776,6 +9819,55 @@ export const console: ConsoleNS = {
                         users: "Users"
                     },
                     users: {
+                        heading: "Assigned Users",
+                        subHeading: "Add or remove the users assigned to this role. Note that this will affect performing certain tasks.",
+                        actions: {
+                            search: {
+                                placeholder: "Search users"
+                            },
+                            assign: {
+                                placeholder: "Assign users"
+                            },
+                            remove: {
+                                label: "Removing users",
+                                placeholder: "Restore users"
+                            }
+                        },
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Assign Users",
+                                subtitles: {
+                                    0: "There are no users assigned to this role at the moment."
+                                },
+                                title: "No users assigned to the role."
+                            },
+                            errorPlaceholder: {
+                                action: "Refresh",
+                                subtitles: {
+                                    0: "An error occurred while fetching users assigned to this role.",
+                                    1: "Please try again."
+                                },
+                                title: "Something went wrong"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the users assigned to the role."
+                            },
+                            success: {
+                                message: "Role updated successfully",
+                                description: "The users assigned to the role have been successfully updated."
+                            },
+                            genericError: {
+                                message: "Something went wrong",
+                                description: "We were unable to update the users assigned to the role."
+                            },
+                            fetchError: {
+                                message: "Something went wrong",
+                                description: "We were unable to fetch the users assigned to the role."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "Assign User",
