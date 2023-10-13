@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.0.31
+
+### Patch Changes
+
+- [#4203](https://github.com/wso2/identity-apps/pull/4203) [`030f4fb522`](https://github.com/wso2/identity-apps/commit/030f4fb522c381f8e7eff0a5b02cf0e7c16dd815) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix console access url in administrator list page
+
+* [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
+- [#4191](https://github.com/wso2/identity-apps/pull/4191) [`98cfb2cc8e`](https://github.com/wso2/identity-apps/commit/98cfb2cc8e9d676b632e0472627b8741db2aa4de) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove fetch users from all userstores option in users page
+
+- Updated dependencies [[`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466)]:
+  - @wso2is/react-components@2.0.6
+  - @wso2is/theme@2.0.11
+
 ## 2.0.30
 
 ### Patch Changes
