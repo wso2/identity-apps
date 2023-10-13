@@ -223,6 +223,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${componentId}-analytics-success` }
+                    toggle
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -297,7 +298,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                 >
                     <input/>
                     <Label
-                        content={ "miliseconds" }
+                        content={ "milliseconds" }
                     />
                 </Field.Input>
                 <Hint className={ "mb-5" }>
@@ -328,7 +329,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                 >
                     <input/>
                     <Label
-                        content={ "miliseconds" }
+                        content={ "milliseconds" }
                     />
                 </Field.Input>
                 <Hint className={ "mb-5" }>
@@ -359,7 +360,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                 >
                     <input/>
                     <Label
-                        content={ "miliseconds" }
+                        content={ "milliseconds" }
                     />
                 </Field.Input>
                 <Hint className={ "mb-5" }>
