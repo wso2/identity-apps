@@ -131,7 +131,7 @@
                 animation-iteration-count: infinite;
             }
         </style>
-        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
+        <script src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>startup-config.js"></script>
         <script>
             var userAccessedPath = window.location.href;
 
@@ -188,10 +188,12 @@
                     }
 
                     var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+                    var basePath = applicationDomain.replace(/\/+$/, '');
+                    var baseRedirectURL = "<%= htmlWebpackPlugin.options.basename%>" ? basePath + '/' + "<%= htmlWebpackPlugin.options.basename%>" : basePath;
 
                     var authConfig = {
-                        signInRedirectURL: applicationDomain.replace(/\/+$/, '') + "/<%= htmlWebpackPlugin.options.basename %>",
-                        signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + "/<%= htmlWebpackPlugin.options.basename %>",
+                        signInRedirectURL: baseRedirectURL,
+                        signOutRedirectURL: baseRedirectURL,
                         clientID: "MY_ACCOUNT",
                         baseUrl: getApiPath(),
                         responseMode: "query",
@@ -225,7 +227,7 @@
         <script
             async
             onload="onAuthScriptLoad();"
-            src="/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js"
+            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>auth-spa-0.3.3.min.js"
         ></script>
     </head>
     <body onload="preLoaderResolver()">
