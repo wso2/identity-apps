@@ -234,7 +234,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 12 } verticalAlign="middle">
-                                        <h5> Organizations </h5>
+                                        <h5> { t("console:manage.features.organizations.title") } </h5>
                                     </Grid.Column>
                                     <Grid.Column width={ 4 }>
                                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>

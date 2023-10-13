@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    GenericIcon
-} from "@wso2is/react-components";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { getMiscellaneousIcons } from "../../../core/configs";
 

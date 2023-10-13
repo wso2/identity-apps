@@ -85,7 +85,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
         checkDuplicateTenants(submissionValue?.tenantName)
             .then((response: AxiosResponse) => {
                 setIsNewTenantLoading(false);
-                if (response.status == 200) {
+                if (response.status === 200) {
                     setIsTenantDuplicate(true);
                     setAlert({
                         description: t("extensions:manage.features.tenant.wizards.addTenant.forms.fields" +

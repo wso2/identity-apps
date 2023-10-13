@@ -166,14 +166,14 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             associatedTenants: associatedTenants,
             currentTenant: tenantDomain,
             defaultTenant: defaultTenant,
-            username: email ? email : username
+            username: email ?? username
         };
 
         if (Array.isArray(association.associatedTenants)) {
             // Remove the current tenant from the associated tenants list.
             const currentTenantIndex: number = association.associatedTenants.indexOf(association.currentTenant);
 
-            if (currentTenantIndex != -1) {
+            if (currentTenantIndex !== -1) {
                 association.associatedTenants.splice(currentTenantIndex, 1);
             }
             setTempTenantAssociationsList(association.associatedTenants);
@@ -260,9 +260,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         )
                                         : null
                                 ))
-                            )
-                            :
-                            (
+                            ) : (
                                 <Item
                                     className="empty-list"
                                 >
