@@ -89,7 +89,6 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                                         />
                                     ) }
                                     size="mini"
-
                                 />
                             </Grid>
                             <Grid>
