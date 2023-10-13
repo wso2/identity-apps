@@ -51,7 +51,7 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     ternaryTitle?: string;
     /**
-     * 
+     * The ternary subtitle of the option. (This will display in the middle of the option)
      */
     ternarySubTitle?: string;
     /**
@@ -79,7 +79,7 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="center" xs={ 8 }>
                     <Grid>
-                        { /* if selected is null or undefined do not show the checkbox */ }
+                        { /* if selected is null or undefined the checkbox will not be shown */ }
                         {
                             selected !== undefined && (
                                 <Checkbox checked={ selected } />

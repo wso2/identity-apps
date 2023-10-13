@@ -26,10 +26,25 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { getSidePanelIcons } from "../../../../core/configs/ui";
 
 interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
+    /**
+     * The anchor element of the popover.
+     */
     popoverAnchorEl: Element;
+    /**
+     * Callback to be fired when the popover is closed.
+     */
     onPopoverClose: () => void;
+    /**
+     * The primary text of the chip and the popover.
+     */
     primaryText: string;
+    /**
+     * The secondary text of the popover.
+     */
     secondaryText?: string;
+    /**
+     * The user store of the option. This will display in the chip.
+     */
     userStore: string;
 }
 
