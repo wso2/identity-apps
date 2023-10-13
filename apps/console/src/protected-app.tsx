@@ -74,7 +74,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -628,12 +628,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
                             ]
                     : window["AppUtils"].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [
-                                ...AppUtils.getHiddenRoutes(), 
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                            ]
+                        ? [
+                            ...AppUtils.getHiddenRoutes(), 
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                        ]
                         : [ 
                             ...AppUtils.getHiddenRoutes(), 
                             ...AppConstants.ORGANIZATION_ROUTES 

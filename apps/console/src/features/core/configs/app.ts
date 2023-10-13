@@ -38,6 +38,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-c
 import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
+import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../validation/configs";
@@ -228,6 +229,7 @@ export class Config {
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
