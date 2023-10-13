@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
 ## 2.0.10
 
 ### Patch Changes
