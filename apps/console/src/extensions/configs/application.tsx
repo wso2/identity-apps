@@ -90,10 +90,10 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
-        showEnableAuthorization: false,
+        showEnableAuthorization: true,
         showMyAccount: true,
-        showReturnAuthenticatedIdPs: false,
-        showSaaS: false
+        showReturnAuthenticatedIdPs: true,
+        showSaaS: true
     },
     allowedGrantTypes: {
         // single page app template
