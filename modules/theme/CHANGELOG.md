@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.9
+
+### Patch Changes
+
+- [#4180](https://github.com/wso2/identity-apps/pull/4180) [`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the branding preview logo issue
+
 ## 2.0.8
 
 ### Patch Changes

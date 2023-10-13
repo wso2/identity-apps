@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4205](https://github.com/wso2/identity-apps/pull/4205) [`ff9bf62485`](https://github.com/wso2/identity-apps/commit/ff9bf624859edf783b0ff7883c7509daabb7c4ea) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve pages to support layout and branding customization
+
+- Updated dependencies [[`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58)]:
+  - @wso2is/theme@2.0.9
+
 ## 2.0.10
 
 ### Patch Changes
