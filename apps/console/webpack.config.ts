@@ -616,7 +616,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         client: {
             overlay: false,
             webSocketURL: {
-                // Enable custom sockjs pathname for websocket connection to hot reloading server.
                 // Enable custom sockjs hostname, pathname and port for websocket connection
                 // to hot reloading server.
                 hostname: devServerWebSocketHost,
