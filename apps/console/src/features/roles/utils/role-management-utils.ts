@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import isEmpty from "lodash-es/isEmpty";
 import { I18n } from "@wso2is/i18n";
+import { SCIMConfigs } from "apps/console/src/extensions/configs/scim";
+import { AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../../../features/core";
 import { GroupsInterface } from "../../groups";
-
+import { UserBasicInterface } from "../../users/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";
-import { UserBasicInterface } from "../../users/models/user";
-import { SCIMConfigs } from "apps/console/src/extensions/configs/scim";
 
 /**
  * Utility class for roles operations.
@@ -54,48 +54,47 @@ export class RoleManagementUtils {
         };
 
         return searchRoleList(searchData)
-            .then((response) => {
-                return response?.data?.totalResults === 0;
-            });
+            .then((response: AxiosResponse) => response?.data?.totalResults === 0);
     };
 
     /**
      * Retrieve all permissions from backend.
      *
-     * @param {string[]} permissionsToSkip - Array of permissions to filter out.
-     * @return {Promise<TreeNode[]>}
+     * @param permissionsToSkip - Array of permissions to filter out.
+     * @returns `Promise<TreeNode[]>`
      */
-    public static getAllPermissions = (permissionsToSkip?: string[], tenantDomain?: string): Promise<TreeNode[]> => {
-        return getPermissionList().then((response) => {
-            if (response.status === 200 && response.data && response.data instanceof Array) {
+    public static getAllPermissions = (permissionsToSkip?: string[]): Promise<TreeNode[]> => {
+        return getPermissionList()
+            .then((response: AxiosResponse) => {
+                if (response.status === 200 && response.data && response.data instanceof Array) {
 
-                const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
-                    ? response.data.filter((permission: { resourcePath: string; }) => 
-                        !permissionsToSkip.includes(permission.resourcePath))
-                    : response.data;
+                    const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
+                        ? response.data.filter((permission: { resourcePath: string; }) => 
+                            !permissionsToSkip.includes(permission.resourcePath))
+                        : response.data;
 
-                let permissionTree: TreeNode[] = [];
+                    let permissionTree: TreeNode[] = [];
 
-                permissionTree = permissionStringArray.reduce((arr, path) => {
+                    permissionTree = permissionStringArray.reduce((arr: TreeNode[], path: PermissionObject) => {
 
-                    let nodes: TreeNode[] = [];
+                        let nodes: TreeNode[] = [];
 
-                    nodes = generatePermissionTree(
-                        path,
-                        path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
-                        arr
-                    );
-                    
-                    return nodes;
-                },[]);
+                        nodes = generatePermissionTree(
+                            path,
+                            path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
+                            arr
+                        );
+                        
+                        return nodes;
+                    },[]);
 
-                if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
-                    return permissionTree[0]?.children;
+                    if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
+                        return permissionTree[0]?.children;
+                    }
+    
+                    return permissionTree;
                 }
- 
-                return permissionTree;
-            }
-        });
+            });
     }
 
     /**
