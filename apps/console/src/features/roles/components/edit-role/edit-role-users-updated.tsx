@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import ReplayCircleFilledIcon from "@mui/icons-material/ReplayCircleFilled";
 import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
@@ -498,7 +497,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     activeOption={ activeOption }
                                                     setActiveOption={ setActiveOption }
                                                     variant="outlined"
-                                                    deleteIcon={ <ReplayCircleFilledIcon /> }
                                                     onDelete={ () => {
                                                         setSelectedUsersOption([
                                                             ...selectedUsersOption,
