@@ -380,8 +380,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 <AutoCompleteRenderOption
                                                     displayName={ RoleManagementUtils.getGroupDisplayName(option) }
                                                     userstore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    renderOptionProps={ props }
-                                                    
+                                                    renderOptionProps={ props }           
                                                 />
                                             ) }
                                         />

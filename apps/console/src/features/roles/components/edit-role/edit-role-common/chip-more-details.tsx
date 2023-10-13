@@ -115,7 +115,6 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                         </Grid>
                     </Grid>
                 </CardContent>
-
             </Paper>
         </Popover>
     );

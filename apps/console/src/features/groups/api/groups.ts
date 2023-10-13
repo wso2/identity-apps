@@ -43,6 +43,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * Retrieve the list of groups in the system.
  *
  * @param domain - user store
+ * @param excludedAttributes - Excluded Attributes.
  */
 export const getGroupList = (domain: string, excludedAttributes?: string): Promise<GroupListInterface | any> => {
 

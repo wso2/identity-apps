@@ -25,7 +25,6 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from
 import { ChipMoreDetails } from "./chip-more-details";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
-
     /**
      * Key of the chip.
      */
