@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4204](https://github.com/wso2/identity-apps/pull/4204) [`9fcb8cf8c4`](https://github.com/wso2/identity-apps/commit/9fcb8cf8c45a9315df5f903ef11267e0cea8a28b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add unverified msft account error code handling logic
+
 ## 2.0.11
 
 ### Patch Changes

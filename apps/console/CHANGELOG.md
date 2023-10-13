@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.32
+
+### Patch Changes
+
+- [#4134](https://github.com/wso2/identity-apps/pull/4134) [`47fc4adc34`](https://github.com/wso2/identity-apps/commit/47fc4adc342601ac88b5c0fbe4136831e2644e4e) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Unify tenant dropdown in IS and Asgardeo Consoles
+
 ## 2.0.31
 
 ### Patch Changes
