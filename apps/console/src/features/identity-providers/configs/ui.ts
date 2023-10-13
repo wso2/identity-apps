@@ -107,7 +107,7 @@ export const getAuthenticatorIcons = (): any => {
         jwtBasic: JWTLogo,
         magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
-        office365: Office365Logo, 
+        office365: Office365Logo,
         sessionExecutor: ClockColoredIcon,
         "sms-otp-authenticator": SMSOTPIcon,
         smsOTP: SMSOTPIcon,
