@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -178,9 +178,12 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
 
     // Dev Server Options.
     const devServerPort: number = process.env.DEV_SERVER_PORT || config.devServer?.port;
-    const devServerHost: number = process.env.DEV_SERVER_HOST || config.devServer?.host;
+    const devServerHost: string = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const devServerWebSocketHost: string = process.env.WDS_SOCKET_HOST;
+    const devServerWebSocketPath: string = process.env.WDS_SOCKET_PATH;
+    const devServerWebSocketPort: string = process.env.WDS_SOCKET_PORT;
 
     // Configurations resolved from deployment.config.json.
     const theme: string = DeploymentConfig.ui.theme.name || "default";
@@ -604,7 +607,15 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         // This has resulted in issues such as development in cloud environment or subdomains impossible.
         allowedHosts: isDevServerHostCheckDisabled ? "all" : "auto",
         client: {
-            overlay: false
+            overlay: false,
+            webSocketURL: {
+                // Enable custom sockjs pathname for websocket connection to hot reloading server.
+                // Enable custom sockjs hostname, pathname and port for websocket connection
+                // to hot reloading server.
+                hostname: devServerWebSocketHost,
+                pathname: devServerWebSocketPath,
+                port: devServerWebSocketPort
+            }
         },
         devMiddleware: {
             ...config.devServer?.devMiddleware,
