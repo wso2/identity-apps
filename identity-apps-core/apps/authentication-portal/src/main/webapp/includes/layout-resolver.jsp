@@ -21,7 +21,7 @@
 
     // Get the layout store url from the configuration file
     String tempLayoutStoreURL = application.getInitParameter("LayoutStoreURL");
-    if (!StringUtils.isBlank(tempLayoutStoreURL)) {
+    if (!StringUtils.equals(tenantRequestingPreferences, IdentityManagementEndpointConstants.SUPER_TENANT) && !StringUtils.isBlank(tempLayoutStoreURL)) {
         layoutStoreURL = tempLayoutStoreURL;
     }
 
@@ -62,20 +62,20 @@
                 if (brandingPreference.getJSONObject(LAYOUT_KEY).has(ACTIVE_LAYOUT_KEY)) {
                     if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))){
                         String temp = brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY);
-                        if (StringUtils.equals(temp, "custom")) {
+                        if (StringUtils.equals(temp, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
                             String tempLayout = "";
                             String tempLayoutFileRelativePath = "";
                             String tempBaseURL = "";
 
                             // App-wise and tenant-wise custom layout resolving logic.
                             if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                tempLayout = temp + "-" + tenantRequestingPreferences + "-" + applicationRequestingPreferences;
+                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences;
                                 tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/body.ser";
                                 tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences;
                             }
 
                             if (config.getServletContext().getResource(tempLayoutFileRelativePath) == null || StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
-                                tempLayout = temp + "-" + tenantRequestingPreferences;
+                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences;
                                 tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
                                 tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences);
                             }

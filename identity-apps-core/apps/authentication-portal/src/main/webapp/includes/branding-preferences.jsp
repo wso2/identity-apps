@@ -52,7 +52,6 @@
     String passwordRecoveryOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
-    String styleFilePath = "includes/layouts/" + layout + "/styles.css";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
@@ -62,6 +61,10 @@
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     boolean enableDefaultPreLoader = true;
+
+    // Constants used to create full custom layout name
+    String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
+    String CUSTOM_LAYOUT_NAME_SEPERATOR = "-";
 
     // Preferences response object pointer keys.
     String PREFERENCE_KEY = "preference";

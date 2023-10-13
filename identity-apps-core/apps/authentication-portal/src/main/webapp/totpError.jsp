@@ -60,7 +60,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isErrorResponse", true);
 %>
@@ -125,31 +124,33 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.totp.not.enabled")%>
                     </p>
                     <div class="ui divider hidden"></div>
+                </div>
+                <div class="ui bottom attached warning message">
+                    <p class="text-left mt-0">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
+                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                        </a>
+                    <%
+                        if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                    %>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                        </p>
+                        <div class="ui divider hidden"></div>
+                        <jsp:include page="extensions/error-tracking-reference.jsp">
+                            <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
+                            <jsp:param name="errorCode" value="<%=actualError%>"/>
+                            <jsp:param name="error" value="<%=actualError%>"/>
+                        </jsp:include>
+                    <%
+                        } else {
+                    %>
+                        </p>
+                    <%
+                        }
+                    %>
                     <div class="ui divider hidden"></div>
                 </div>
-                <%
-                    File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                    if (trackingRefFile.exists()) {
-                %>
-                    <div class="ui bottom attached warning message">
-                        <p class="text-left mt-0">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                        </p>
-                        
-                        
-                            <div class="ui divider hidden"></div>
-                            <jsp:include page="extensions/error-tracking-reference.jsp">
-                                <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
-                                <jsp:param name="errorCode" value="<%=actualError%>"/>
-                                <jsp:param name="error" value="<%=actualError%>"/>
-                            </jsp:include>
-                            <div class="ui divider hidden"></div>
-                        
-                    </div>
-                <% } %>
             </layout:component>
             <layout:component componentName="ProductFooter">
                 <%-- product-footer --%>
@@ -162,6 +163,9 @@
                     <jsp:include page="includes/product-footer.jsp"/>
                 <% } %>
             </layout:component>
+            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+                <jsp:include page="${pathOfDynamicComponent}" />
+            </layout:dynamicComponent>
         </layout:main>
 
         <%-- footer --%>
