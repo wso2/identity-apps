@@ -635,7 +635,12 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                         { from: /^\/$/, to: "/app" },
                         { from: /^\/app$/, to: "/app/index.html" },
                         { from: /^\/o\/.*$/, to: "/app/index.html" },
-                        { from: /^\/t(\/.*)?$/, to: "/app/index.html" }
+                        { from: /^\/t(\/.*)?$/, to: "/app/index.html" },
+                        {
+                            // eslint-disable-next-line max-len
+                            from: /^\/app(\/.*(?<!\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|xml|txt)))?$/,
+                            to: "/app/index.html"
+                        }
                     ]
                 }));
             }
