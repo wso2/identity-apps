@@ -367,7 +367,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     return (
-        <EmphasizedSegment>
+        <EmphasizedSegment padded="very">
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h4">OutBound Provisioning Connectors</Heading>

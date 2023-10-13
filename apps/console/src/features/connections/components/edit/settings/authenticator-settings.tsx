@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,13 +28,16 @@ import {
     PrimaryButton,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import keyBy from "lodash-es/keyBy";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { AuthenticatorAccordion } from "../../../../core/components";
 import {
@@ -46,16 +50,18 @@ import {
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
-    AuthenticatorSettingsFormModes
+    AuthenticatorSettingsFormModes,
+    FederatedAuthenticatorMetaDataInterface
 } from "../../../models/authenticators";
-import { FederatedAuthenticatorMetaDataInterface } from "../../../models/authenticators";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
     ConnectionInterface,
     ConnectionTemplateInterface,
     ConnectionTemplateItemInterface,
+    FederatedAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface,
     FederatedAuthenticatorWithMetaInterface
 } from "../../../models/connection";
 import {
@@ -64,7 +70,6 @@ import {
 import { getConnectorMetadata } from "../../meta/authenticators";
 import { AuthenticatorCreateWizard } from "../../wizards/authenticator-create-wizard";
 import { AuthenticatorFormFactory } from "../forms";
-import { identityProviderConfig } from "../../../../../extensions";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -96,7 +101,7 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
     connectionSettingsMetaData: any;
 }
 
-const OIDC_CLIENT_ID_SECRET_MAX_LENGTH = 100;
+const OIDC_CLIENT_ID_SECRET_MAX_LENGTH: number = 100;
 const URL_MAX_LENGTH: number = 2048;
 const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
 
@@ -120,7 +125,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
 
     const { t } = useTranslation();
@@ -149,7 +154,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
-    const [ isIdPTemplateFetchRequestLoading, setIdPTemplateFetchRequestLoading ] = useState<boolean>(undefined);
+    const [ isIdPTemplateFetchRequestLoading ] = useState<boolean>(undefined);
     const [
         isFederatedAuthenticatorFetchRequestLoading,
         setFederatedAuthenticatorFetchRequestLoading
@@ -159,7 +164,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID || !identityProvider.templateId);
+            (identityProvider.templateId === ConnectionManagementConstants
+                .EXPERT_MODE_TEMPLATE_ID && !identityProvider.templateId);
     }, [ identityProvider, identityProviderConfig  ]);
 
     useEffect(() => {
@@ -179,10 +185,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const getAuthenticators = () => {
         return getFederatedAuthenticatorsList()
-            .then((response): void => {
+            .then((response: FederatedAuthenticatorMetaInterface): void => {
                 setAvailableFederatedAuthenticators(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -216,7 +222,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     })
                 );
             });
-    }
+    };
 
     /**
      * Handles the authenticator config form submit action.
@@ -235,7 +241,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             if (values.authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 // Enable/disable the Google authenticator based on client id and secret
                 const props: CommonPluggableComponentPropertyInterface[] = values.properties;
-                let isEnabled = true;
+                let isEnabled: boolean = true;
 
                 props.forEach((prop: CommonPluggableComponentPropertyInterface) => {
                     if (prop.key === "ClientId" || prop.key === "ClientSecret") {
@@ -276,7 +282,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
                 onUpdate(identityProvider.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("console:develop.features.authenticationProvider" +
@@ -315,10 +321,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
 
         const authenticator: FederatedAuthenticatorWithMetaInterface =
-            availableAuthenticators.find(authenticator => (
+            availableAuthenticators.find((authenticator: FederatedAuthenticatorWithMetaInterface) => (
                 identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
             ));
-        const search = (object): boolean => object.key === AUTHORIZED_REDIRECT_URL;
+        const search = (object: any): boolean => object.key === AUTHORIZED_REDIRECT_URL;
         const index: number = authenticator?.data?.properties.findIndex(search);
 
         if (index >= 0) {
@@ -326,7 +332,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     };
 
-    const handleGetFederatedAuthenticatorAPICallError = (error) => {
+    const handleGetFederatedAuthenticatorAPICallError = (error: AxiosError) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
                 description: t("console:develop.features.authenticationProvider.notifications." +
@@ -355,22 +361,22 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param authenticatorId - ID of the authenticator.
      */
     const fetchAuthenticator = (authenticatorId: string) => {
-        return new Promise(resolve => {
+        return new Promise((resolve: any) => {
             getFederatedAuthenticatorDetails(identityProvider.id, authenticatorId)
-                .then(data => {
+                .then((data: FederatedAuthenticatorMetaInterface) => {
                     getFederatedAuthenticatorMeta(authenticatorId)
-                        .then(meta => {
+                        .then((meta: FederatedAuthenticatorMetaInterface) => {
                             resolve({
                                 data: data,
                                 id: authenticatorId,
                                 meta: meta
                             });
                         })
-                        .catch(error => {
+                        .catch((error: IdentityAppsApiException) => {
                             handleGetFederatedAuthenticatorMetadataAPICallError(error);
                         });
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     handleGetFederatedAuthenticatorAPICallError(error);
                 });
         });
@@ -398,8 +404,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setFederatedAuthenticatorFetchRequestLoading(true);
         setAvailableAuthenticators([]);
         fetchAuthenticators()
-            .then((res) => {
-                const authenticator = res[ 0 ].data;
+            .then((res: any) => {
+                const authenticator: FederatedAuthenticatorInterface = res[ 0 ].data;
 
                 // TODO: Validate if this is necessary to do on the FE side.
                 // Added with:
@@ -413,7 +419,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
                     authenticator.isDefault = true;
 
-                    const isDefaultAuthIdSet = Boolean(
+                    const isDefaultAuthIdSet: boolean = Boolean(
                         identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                     );
 
@@ -433,7 +439,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleDefaultAuthenticatorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string):
         void => {
-        const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+        const authenticator: FederatedAuthenticatorInterface = availableAuthenticators
+            .find((authenticator: FederatedAuthenticatorWithMetaInterface) => (authenticator.id === id)).data;
 
         authenticator.isDefault = data.checked;
         handleAuthenticatorConfigFormSubmit(authenticator);
@@ -447,7 +454,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param id - Id of the authenticator.
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+        const authenticator: FederatedAuthenticatorInterface = availableAuthenticators
+            .find((authenticator: FederatedAuthenticatorWithMetaInterface) => (authenticator.id === id)).data;
 
         // Validation
         if (authenticator.isDefault && !data.checked) {
@@ -471,16 +479,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param id - Id of the authenticator.
      */
     const handleAuthenticatorDelete = (id: string): void => {
-        const authenticatorsList = [];
-        const deletingAuthenticator = availableAuthenticators.find((authenticator) => authenticator.id === id);
+        const authenticatorsList: FederatedAuthenticatorInterface[] = [];
+        const deletingAuthenticator: FederatedAuthenticatorWithMetaInterface = availableAuthenticators
+            .find((authenticator: FederatedAuthenticatorWithMetaInterface) => authenticator.id === id);
 
-        availableAuthenticators.map((authenticator) => {
+        availableAuthenticators.map((authenticator: FederatedAuthenticatorWithMetaInterface) => {
             if (authenticator.id !== deletingAuthenticator.id) {
                 authenticatorsList.push(authenticator.data);
             }
         });
 
-        const data = {
+        const data: { authenticators: FederatedAuthenticatorInterface[], defaultAuthenticatorId: string } = {
             authenticators: authenticatorsList,
             defaultAuthenticatorId: identityProvider.federatedAuthenticators.defaultAuthenticatorId
         };
@@ -499,7 +508,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -552,7 +561,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return;
         }
 
-        const deletingAuthenticator = availableAuthenticators.find((authenticator) => authenticator.id === id);
+        const deletingAuthenticator: FederatedAuthenticatorWithMetaInterface = availableAuthenticators
+            .find((authenticator: FederatedAuthenticatorWithMetaInterface) => authenticator.id === id);
 
         if (!deletingAuthenticator) {
             return;
@@ -569,18 +579,25 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const filterTemplates = (): void => {
 
         // Filter out already added authenticators and templates with federated authenticators.
-        const availableAuthenticatorIDs = availableAuthenticators?.map((a) => {
-            return a.id;
-        });
+        const availableAuthenticatorIDs: string[] = availableAuthenticators?.map(
+            (a: FederatedAuthenticatorWithMetaInterface) => {
+                return a.id;
+            }
+        );
 
-        const filteredTemplates = identityProviderTemplates?.filter((template) =>
-            (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
-                !availableAuthenticatorIDs?.includes(
-                    template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
+        const filteredTemplates: ConnectionTemplateItemInterface[] = identityProviderTemplates?.filter(
+            (template: ConnectionTemplateItemInterface) => 
+                (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
+                    !availableAuthenticatorIDs?.includes(
+                        template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
         );
 
         // sort templateList based on display Order
-        filteredTemplates?.sort((a, b) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
+        filteredTemplates?.sort(
+            (
+                a: ConnectionTemplateItemInterface, 
+                b: ConnectionTemplateItemInterface
+            ) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
 
         const flattenedConnectorMetadata: ({ [ key: string ]: FederatedAuthenticatorMetaDataInterface }) = keyBy(
             getConnectorMetadata(), "authenticatorId"
@@ -589,15 +606,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
         );
 
-        moderatedManualModeOptions = moderatedManualModeOptions?.map((option) => {
-            return {
-                ...option,
-                ...flattenedConnectorMetadata[ option?.authenticatorId ]
-            };
-        });
+        moderatedManualModeOptions = moderatedManualModeOptions?.map(
+            (option: FederatedAuthenticatorMetaDataInterface) => {
+                return {
+                    ...option,
+                    ...flattenedConnectorMetadata[ option?.authenticatorId ]
+                };
+            }
+        );
 
-        moderatedManualModeOptions = moderatedManualModeOptions?.filter(a =>
-            !availableAuthenticatorIDs.includes(a?.authenticatorId));
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter((a: FederatedAuthenticatorMetaDataInterface) =>
+            !availableAuthenticatorIDs.includes(a?.authenticatorId) &&
+            a?.authenticatorId !== ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
@@ -628,7 +648,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const createAccordionActions = (
         authenticator: FederatedAuthenticatorWithMetaInterface
     ): SegmentedAccordionTitleActionInterface[] => {
-        const isDefaultAuthenticator = isDefaultAuthenticatorPredicate(authenticator);
+        const isDefaultAuthenticator: boolean = isDefaultAuthenticatorPredicate(authenticator);
 
         return [
             // Checkbox which triggers the default state of authenticator.
@@ -660,10 +680,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * Removes the element identified by the given key, from the properties array.
      */
     const removeElementFromProps = (properties: CommonPluggableComponentPropertyInterface[], key: string) => {
-        const elementToRemove = properties.find(p => {
-            return p.key === key;
-        });
-        const dataIndex = properties.indexOf(elementToRemove);
+        const elementToRemove: CommonPluggableComponentPropertyInterface = properties.find(
+            (p: CommonPluggableComponentPropertyInterface) => {
+                return p.key === key;
+            }
+        );
+        const dataIndex: number = properties.indexOf(elementToRemove);
 
         if (dataIndex >= 0) {
             properties.splice(dataIndex, 1);
@@ -681,10 +703,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         if (!SegmentedAuthenticatedAccordion) {
             return;
         }
-        const newIndexes = [ ...accordionActiveIndexes ];
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            const removingIndex: number = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -757,60 +779,64 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            availableAuthenticators.map((authenticator, index) => {
-                                return (
-                                    <AuthenticatorAccordion
-                                        key={ index }
-                                        globalActions={ [
-                                            {
-                                                disabled: isDefaultAuthenticatorPredicate(authenticator),
-                                                icon: "trash alternate",
-                                                onClick: handleAuthenticatorDeleteOnClick,
-                                                popoverText: "Remove Authenticator",
-                                                type: "icon"
-                                            }
-                                        ] }
-                                        authenticators={
-                                            [
+                            availableAuthenticators.map(
+                                (authenticator: FederatedAuthenticatorWithMetaInterface, index: number) => {
+                                    return (
+                                        <AuthenticatorAccordion
+                                            key={ index }
+                                            globalActions={ [
                                                 {
-                                                    actions: createAccordionActions(authenticator),
-                                                    content: authenticator && (
-                                                        <AuthenticatorFormFactory
-                                                            connectionSettingsMetaData={ connectionSettingsMetaData }
-                                                            mode={ AuthenticatorSettingsFormModes.CREATE }
-                                                            authenticator={ authenticator }
-                                                            metadata={ authenticator.meta }
-                                                            showCustomProperties={
-                                                                authenticator.id !== ConnectionManagementConstants
-                                                                    .GITHUB_AUTHENTICATOR_ID
-                                                            }
-                                                            initialValues={ authenticator.data }
-                                                            onSubmit={ handleAuthenticatorConfigFormSubmit }
-                                                            type={ undefined }
-                                                            data-testid={
-                                                                `${ testId }-${ authenticator.meta?.name }-content`
-                                                            }
-                                                            isReadOnly={ isReadOnly }
-                                                            isSubmitting={ isSubmitting }
-                                                            templateId={ identityProvider.templateId }
-                                                        />
-                                                    ),
-                                                    hideChevron: isEmpty(authenticator.meta?.properties),
-                                                    icon: {
-                                                        icon: resolveAuthenticatorIcon(authenticator)
-                                                    },
-                                                    id: authenticator?.id,
-                                                    title: resolveAuthenticatorDisplayName(authenticator)
+                                                    disabled: isDefaultAuthenticatorPredicate(authenticator),
+                                                    icon: "trash alternate",
+                                                    onClick: handleAuthenticatorDeleteOnClick,
+                                                    popoverText: "Remove Authenticator",
+                                                    type: "icon"
                                                 }
-                                            ]
-                                        }
-                                        accordionActiveIndexes={ accordionActiveIndexes }
-                                        accordionIndex={ index }
-                                        handleAccordionOnClick={ handleAccordionOnClick }
-                                        data-testid={ `${ testId }-accordion` }
-                                    />
-                                );
-                            })
+                                            ] }
+                                            authenticators={
+                                                [
+                                                    {
+                                                        actions: createAccordionActions(authenticator),
+                                                        content: authenticator && (
+                                                            <AuthenticatorFormFactory
+                                                                connectionSettingsMetaData={ 
+                                                                    connectionSettingsMetaData 
+                                                                }
+                                                                mode={ AuthenticatorSettingsFormModes.CREATE }
+                                                                authenticator={ authenticator }
+                                                                metadata={ authenticator.meta }
+                                                                showCustomProperties={
+                                                                    authenticator.id !== ConnectionManagementConstants
+                                                                        .GITHUB_AUTHENTICATOR_ID
+                                                                }
+                                                                initialValues={ authenticator.data }
+                                                                onSubmit={ handleAuthenticatorConfigFormSubmit }
+                                                                type={ undefined }
+                                                                data-testid={
+                                                                    `${ testId }-${ authenticator.meta?.name }-content`
+                                                                }
+                                                                isReadOnly={ isReadOnly }
+                                                                isSubmitting={ isSubmitting }
+                                                                templateId={ identityProvider.templateId }
+                                                            />
+                                                        ),
+                                                        hideChevron: isEmpty(authenticator.meta?.properties),
+                                                        icon: {
+                                                            icon: resolveAuthenticatorIcon(authenticator)
+                                                        },
+                                                        id: authenticator?.id,
+                                                        title: resolveAuthenticatorDisplayName(authenticator)
+                                                    }
+                                                ]
+                                            }
+                                            accordionActiveIndexes={ accordionActiveIndexes }
+                                            accordionIndex={ index }
+                                            handleAccordionOnClick={ handleAccordionOnClick }
+                                            data-testid={ `${ testId }-accordion` }
+                                        />
+                                    );
+                                }
+                            )
                         }
                     </Grid.Column>
                 </Grid.Row>
@@ -838,7 +864,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             }
 
             const authenticator: FederatedAuthenticatorWithMetaInterface =
-                availableAuthenticators.find(authenticator => (
+                availableAuthenticators.find((authenticator: FederatedAuthenticatorWithMetaInterface) => (
                     identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
                 ));
 
@@ -849,7 +875,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
             if (authenticator.id === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                authenticator.meta.properties.map(prop => {
+                authenticator.meta.properties.map((prop: CommonPluggableComponentMetaPropertyInterface) => {
                     if (prop.key === "ClientId") {
                         prop.displayName = "Client ID";
                         prop.description = "The client identifier value of the identity provider.";
@@ -893,7 +919,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 //Temporarily removed until sub attributes are available
                 removeElementFromProps(authenticator.meta.properties, "IsUserIdInClaims" );
 
-                if (!authenticator.meta.properties?.find(prop => prop.key === "OIDCLogoutEPUrl")) {
+                if (!authenticator.meta.properties?.find(
+                    (prop: CommonPluggableComponentMetaPropertyInterface) => prop.key === "OIDCLogoutEPUrl")) {
 
                     const logoutUrlData: CommonPluggableComponentPropertyInterface = {
                         key: "OIDCLogoutEPUrl"

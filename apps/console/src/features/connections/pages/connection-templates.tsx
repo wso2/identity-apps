@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
@@ -41,22 +40,22 @@ import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
 import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
+import { useGetConnectionTemplates } from "../api/connections";
 import { 
     AuthenticatorCreateWizardFactory 
 } from "../components/create/authenticator-create-wizard-factory";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
     ConnectionTemplateItemInterface
 } from "../models/connection";
-import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
-import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
-import { useGetConnectionTemplates } from "../api/connections";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
-import { useSelector } from "react-redux";
+import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connection template page component.
@@ -108,10 +107,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const { deploymentConfig } = useDeploymentConfig();
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
     
-    const documentationBaseUrl: string = deploymentConfig?.docSiteURL;
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -179,11 +176,12 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                 // Removes hidden connections.
                 if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
-                        return;
-                    }
+                    return;
+                }
 
-                    return template;
-                });
+                return template;
+            }
+        );
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -523,12 +521,12 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                     />
                                                 );
                                             }
-                                        )
-                                    }
-                                </ResourceGrid>
-                            ))
-                    )
-                    : <ContentLoader dimmer/>
+                                            )
+                                        }
+                                    </ResourceGrid>
+                                ))
+                        )
+                        : <ContentLoader dimmer/>
                 }
             </GridLayout>
             {

@@ -40,28 +40,28 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             authenticatorId: ConnectionManagementConstants.TWITTER_AUTHENTICATOR_ID,
             description: "Login users with existing Twitter accounts.",
             displayName: "Twitter",
-            icon: "twitter",
+            icon: getConnectionIcons().twitter,
             name: ConnectionManagementConstants.TWITTER_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
             description: "Login users with existing Facebook accounts.",
             displayName: "Facebook",
-            icon: "facebook",
+            icon: getConnectionIcons().facebook,
             name: ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
             description: "Login users with existing Google accounts.",
             displayName: "Google",
-            icon: "google",
+            icon: getConnectionIcons().google,
             name: ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
             description: "Login users with their Microsoft Live accounts.",
             displayName: "Microsoft Windows Live",
-            icon: "microsoft",
+            icon: getConnectionIcons().microsoft,
             name: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
         },
         {
@@ -101,8 +101,9 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID,
-            description: AuthenticatorMeta.getAuthenticatorDescription("U01TT1RQ"),
+            authenticatorId: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID,
+            description: AuthenticatorMeta
+                .getAuthenticatorDescription(AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
@@ -111,7 +112,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             authenticatorId: ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
             description: "Login users with their Apple IDs.",
             displayName: "Apple",
-            icon: "apple",
+            icon: getConnectionIcons().apple,
             name: ConnectionManagementConstants.APPLE_AUTHENTICATOR_NAME
         }
     ];
