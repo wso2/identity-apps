@@ -566,7 +566,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 }
 
                 // Handle email attribute.
-                if (scimAttribute === RequiredBulkUserImportAttributes.EMAILADDRESS) {
+                if (attribute.attributeName === RequiredBulkUserImportAttributes.EMAILADDRESS) {
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
