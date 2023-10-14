@@ -18,9 +18,16 @@
 
 package org.wso2.identity.apps.common.listner;
 
+import org.apache.commons.lang.StringUtils;
+import org.wso2.carbon.identity.organization.management.service.OrganizationManager;
+import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementServerException;
+import org.wso2.carbon.identity.organization.management.service.util.Utils;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.stratos.common.exception.StratosException;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
+import org.wso2.carbon.user.api.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
+import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 /**
@@ -32,9 +39,13 @@ public class AppPortalTenantMgtListener implements TenantMgtListener {
     public void onTenantCreate(TenantInfoBean tenantInfoBean) throws StratosException {
 
         try {
+            if (isOrganization(tenantInfoBean)) {
+                return;
+            }
             AppPortalUtils.initiatePortals(tenantInfoBean.getTenantDomain(), tenantInfoBean.getTenantId());
         } catch (Exception e) {
-            throw new StratosException("Failed to initialize UI portals", e);
+            throw new StratosException("Failed to initialize UI portals for the tenant:"
+                + tenantInfoBean.getTenantDomain(), e);
         }
     }
 
@@ -82,5 +93,28 @@ public class AppPortalTenantMgtListener implements TenantMgtListener {
     @Override
     public void onPreDelete(int i) throws StratosException {
 
+    }
+
+    /**
+     * Check whether the tenant is an organization.
+     *
+     * @param tenantInfoBean Tenant info bean.
+     * @return True if the tenant is an organization.
+     * @throws UserStoreException
+     * @throws OrganizationManagementServerException
+     */
+    private boolean isOrganization(TenantInfoBean tenantInfoBean) throws UserStoreException,
+        OrganizationManagementServerException {
+
+        RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+        String organizationUUID = realmService.getTenantManager().getTenant(tenantInfoBean.getTenantId())
+            .getAssociatedOrganizationUUID();
+        if (StringUtils.isBlank(organizationUUID)) {
+            return false;
+        }
+
+        OrganizationManager organizationManager = AppsCommonDataHolder.getInstance().getOrganizationManager();
+        int organizationDepth = organizationManager.getOrganizationDepthInHierarchy(organizationUUID);
+        return Utils.isSubOrganization(organizationDepth);
     }
 }

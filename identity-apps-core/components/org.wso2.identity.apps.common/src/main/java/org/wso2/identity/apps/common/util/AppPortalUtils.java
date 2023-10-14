@@ -92,6 +92,7 @@ public class AppPortalUtils {
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
         } else {
+            //TODO : Remove the regex when applications are created in the tenant space.
             if (StringUtils.equals(CONSOLE_APP, applicationName) &&
                     AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
                 callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
@@ -160,10 +161,15 @@ public class AppPortalUtils {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
+        //TODO: Need to remove this when the applications are ready.
         serviceProvider.setSaasApp(true);
         serviceProvider.setManagementApp(true);
         if (StringUtils.isNotEmpty(portalPath)) {
-            serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+            String accessUrl = IdentityUtil.getServerURL(portalPath, true, true);
+            if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                accessUrl = accessUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+            }
+            serviceProvider.setAccessUrl(accessUrl);
         }
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
@@ -267,9 +273,6 @@ public class AppPortalUtils {
                         .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
                 String consumerKey = appPortal.getConsumerKey();
-                if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-                    consumerKey = consumerKey + "_" + tenantDomain;
-                }
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
                             consumerSecret, adminUsername, tenantId, tenantDomain,

@@ -675,9 +675,9 @@
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.25.402</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0]</carbon.identity.framework.imp.pkg.version.range>
-        <identity.organization.management.core.service.version>1.0.0
+        <identity.organization.management.core.service.version>1.0.67
         </identity.organization.management.core.service.version>
-        <identity.org.mgt.core.version.range>[1.0.0, 2.0.0]</identity.org.mgt.core.version.range>
+        <identity.org.mgt.core.version.range>[1.0.67, 2.0.0)</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0]</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.8.41</identity.governance.version>
