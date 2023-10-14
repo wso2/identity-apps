@@ -171,7 +171,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             { Hardcoded solution : Refactor error response by replacing "claim" with "attribute" }
              */
             if (error?.response?.data?.code === "CMT-50031") {
-                const hardCodedResponse: { code: string, description: string, message: string, traceId: string} =
+                const hardCodedResponse: { code: string, description: string, message: string, traceId: string } =
                     {
                         code: error?.response?.data?.code,
                         description: "Unable to remove local attribute while having associations with external claims.",
