@@ -5451,6 +5451,12 @@ export const console: ConsoleNS = {
                                 description: "උපභාෂාව සාර්ථකව යාවත්කාලීන කර ඇත.",
                                 message: "උපභාෂා යාවත්කාලීන කිරීම සාර්ථකයි"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "SCIM සම්පත් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            }
                         }
                     },
                     pageLayout: {
@@ -8453,7 +8459,7 @@ export const console: ConsoleNS = {
                     },
                     bulkImportUserWizard: {
                         title: "සමූහ පරිශීලක ආනයනය​",
-                        subTitle: " ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
+                        subTitle: "ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
                         wizardSummary: {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
@@ -9092,6 +9098,10 @@ export const console: ConsoleNS = {
                             invalidHeaderError: {
                                 description: "පහත ශීර්ෂය(ය) වලංගු නැත: {{headers}}.",
                                 message: "වලංගු නොවන තීරු ශීර්ෂක"
+                            },
+                            emptyDataField: {
+                                description: "'{{dataField}}' දත්ත ක්ෂේත්‍රය හිස් නොවිය යුතුය.",
+                                message: "හිස් දත්ත ක්ෂේත්‍රය"
                             }
                         },
                         submit: {

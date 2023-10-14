@@ -3370,6 +3370,7 @@ export interface ConsoleNS {
                             blockedHeaderError: NotificationItem;
                             duplicateHeaderError: NotificationItem;
                             invalidHeaderError: NotificationItem;
+                            emptyDataField: NotificationItem;
                         },
                         submit: Notification;
                     }
@@ -3612,6 +3613,7 @@ export interface ConsoleNS {
                         deleteDialect: Notification;
                         addDialect: Notification;
                         updateDialect: Notification;
+                        fetchSCIMResource: Notification;
                     };
                     pageLayout: {
                         list: {

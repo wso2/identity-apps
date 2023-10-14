@@ -571,12 +571,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         >
             <Dropdown.Menu >
                 { getAddUserOptions().map((option: {
-                                    "data-componentid": string;
-                                    "data-testid": string;
-                                    key: number;
-                                    text: string;
-                                    value: UserAddOptionTypes;
-                                }) => (
+                        "data-componentid": string;
+                        "data-testid": string;
+                        key: number;
+                        text: string;
+                        value: UserAddOptionTypes;
+                    }) => (
                     <Dropdown.Item
                         key={ option.value }
                         onClick={ ()=> handleDropdownItemChange(option.value) }

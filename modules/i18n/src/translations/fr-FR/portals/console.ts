@@ -5591,6 +5591,12 @@ export const console: ConsoleNS = {
                                 description: "Le dialecte a été mis à jour avec succès",
                                 message: "La mise à jour du dialecte a été effectuée avec succès"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des ressources SCIM.",
+                                message: "Quelque chose s'est mal passé"
+                            }
                         }
                     },
                     pageLayout: {
@@ -9316,6 +9322,10 @@ export const console: ConsoleNS = {
                             invalidHeaderError: {
                                 description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
                                 message: "En-têtes de colonnes invalides"
+                            },
+                            emptyDataField: {
+                                description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
+                                message: "Champ de données vide"
                             }
                         },
                         submit: {

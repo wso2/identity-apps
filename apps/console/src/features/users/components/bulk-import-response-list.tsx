@@ -123,7 +123,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 key: "status",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
-                        <Header as="h6" data-componentid={ `${componentId}--status-item-heading` } >
+                        <Header as="h6" data-componentid={ `${componentId}-status-item-heading` } >
                             <Header.Content>
                                 <Label
                                     data-componentid={ `${componentId}-bulk-label` }
@@ -162,14 +162,17 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     /**
      * Filters the response list based on the search query and the selected status.
      */
-    const filterResponseList = () => {
+    const filterBulkUsersResponseList = () => {
         let filteredList: BulkUserImportOperationResponse[] = responseList;
 
         if (searchQuery && searchQuery !== "") {
             const [ _, condition, value ] = searchQuery.split(" ");
             
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
-                if (selectedStatus !== ALL_STATUS && item.statusCode !== selectedStatus) return false;
+                if (
+                    selectedStatus !== ALL_STATUS
+                    && item.statusCode !== selectedStatus
+                ) return false;
 
                 switch (condition) {
                     case "sw":
@@ -196,7 +199,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     };
 
     useEffect(() => {
-        filterResponseList();
+        filterBulkUsersResponseList();
     }, [ searchQuery, selectedStatus ]);
 
     const handleSearchQueryClear = (): void => {
@@ -265,26 +268,27 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                             "wizardSummary.alerts.importSuccess.description")
                                     }
                                 </Alert>)
-                                :  
-                                (<Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
-                                    <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
-                                        {
-                                            t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                : (
+                                    <Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
+                                        <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
+                                            {
+                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importFailed.message")
-                                        }
-                                    </AlertTitle>
-                                    <Trans
-                                        i18nKey={
-                                            "console:manage.features.user.modals.bulkImportUserWizard." +
+                                            }
+                                        </AlertTitle>
+                                        <Trans
+                                            i18nKey={
+                                                "console:manage.features.user.modals.bulkImportUserWizard." +
                                                 "wizardSummary.alerts.importFailed.description"
-                                        }
-                                        tOptions={ {
-                                            failedCount: bulkResponseSummary.failedCount
-                                        } }
-                                    >
+                                            }
+                                            tOptions={ {
+                                                failedCount: bulkResponseSummary.failedCount
+                                            } }
+                                        >
                                             Issues encountered in <b>count import(s)</b>.
-                                    </Trans>
-                                </Alert>)
+                                        </Trans>
+                                    </Alert>
+                                )
                     }
                 </Grid.Column>
             </Grid.Row>
@@ -350,7 +354,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     >
                         <Typography variant="body2" style={ { textAlign: "right" } }>
                             { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                            "totalCount") } : { totalCount }
+                                "totalCount") } : { totalCount }
                         </Typography>
                         <DataTable<BulkUserImportOperationResponse>
                             className="addon-field-wrapper"
@@ -369,8 +373,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                             loadingStateOptions={ {
                                 count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                                 imageType: "circular"
-                            }
-                            }
+                            } }
                         />
                     </ListLayout>
                 </Grid.Column>

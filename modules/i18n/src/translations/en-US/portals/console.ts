@@ -7162,6 +7162,12 @@ export const console: ConsoleNS = {
                                 description: "The attribute mapping has been successfully updated.",
                                 message: "Attribute Mapping update successful"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "There was an error while fetching the SCIM resources.",
+                                message: "Something went wrong"
+                            }
                         }
                     },
                     pageLayout: {
@@ -10954,6 +10960,10 @@ export const console: ConsoleNS = {
                             invalidHeaderError: {
                                 description: "The following headers are invalid: {{headers}}.",
                                 message: "Invalid Column Headers"
+                            },
+                            emptyDataField: {
+                                description: "The data field '{{dataField}}' must not be empty.",
+                                message: "Empty Data Field"
                             }
                         },
                         submit: {

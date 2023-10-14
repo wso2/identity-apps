@@ -166,7 +166,7 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
  * @param data - SCIM2.0 compliant request body
  * @returns a promise containing the response.
  */
-export const bulkAddUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
+export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {

@@ -35,7 +35,6 @@ import {
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
-import { userConfig } from "apps/console/src/extensions/configs";
 import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,15 +44,17 @@ import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Modal } f
 import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
+import { userConfig } from "../../../../extensions/configs";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { UserStoreDetails, UserStoreProperty, getCertificateIllustrations } from "../../../core";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
-import { bulkAddUsers } from "../../api";
+import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
     BulkUserImportStatus,
     RequiredBulkUserImportAttributes,
-    SpecialMultiValuedComplexAttributes
+    SpecialMultiValuedComplexAttributes,
+    UserManagementConstants
 } from "../../constants";
 import {
     BulkResponseSummary,
@@ -96,15 +97,16 @@ interface Validation {
     error: ValidationError;
 }
 
-const WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
-const SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
-const BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
 const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
     undefined,  // Mimetype.
     userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
     userConfig.bulkUserImportLimit.userCount  // Row Count.
 );
+const DATA_VALIDATION_ERROR: string = "Data validation error";
+const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
+const ADDRESS_ATTRIBUTE: string = "addresses";
+const HOME_ATTRIBUTE: string = "home";
 
 /**
  *  BulkImportUserWizard component.
@@ -210,26 +212,26 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         try {
             setIsLoading(true);
             const scimClaimResponse: ExternalClaim[][] = await Axios.all(scimClaimPromises);
-            const _attributeMapping: CSVAttributeMapping[] = [];
+            const attributeMapping: CSVAttributeMapping[] = [];
 
             scimClaimResponse.forEach((claimList: ExternalClaim[]) => {
                 const claims: CSVAttributeMapping[] = claimList.map(
                     (item: ExternalClaim): CSVAttributeMapping => {
                         return {
-                            attributeName: item.mappedLocalClaimURI
-                                .replace(WSO2_LOCAL_CLAIM_DIALECT+"/", "")
+                            attributeName: item?.mappedLocalClaimURI
+                                .replace(UserManagementConstants.WSO2_LOCAL_CLAIM_DIALECT+"/", "")
                                 .toLowerCase(),
-                            mappedLocalClaimURI: item.mappedLocalClaimURI,
-                            mappedSCIMAttributeURI: item.claimURI,
-                            mappedSCIMClaimDialectURI: item.claimDialectURI
+                            mappedLocalClaimURI: item?.mappedLocalClaimURI,
+                            mappedSCIMAttributeURI: item?.claimURI,
+                            mappedSCIMClaimDialectURI: item?.claimDialectURI
                         };
                     }
                 );
 
-                _attributeMapping.push(...claims);
+                attributeMapping.push(...claims);
             });
 
-            return _attributeMapping;
+            return attributeMapping;
         } catch (error) {
             setHasError(true);
             dispatch(
@@ -269,8 +271,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     if (checkReadWriteUserStore(item)) {    
                         userStoreArray.push({
                             key: index,
-                            text: item.name.toUpperCase(),
-                            value: item.name.toUpperCase()
+                            text: item?.name.toUpperCase(),
+                            value: item?.name.toUpperCase()
                         });
                     }});
 
@@ -312,10 +314,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns If the given userstore is read only or not.
      */
     const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
-        if( userStore.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
+        if( userStore?.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
             return true;
         } else {
-            return  userStore.enabled && userStore.properties.filter((property: UserStoreProperty)=>
+            return  userStore?.enabled && userStore?.properties.filter((property: UserStoreProperty)=>
                 property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
         }
     };
@@ -516,6 +518,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return filteredAttributeList;
     };
 
+    const setEmptyDataFieldError = (attributeName: string) => {
+        setHasError(true);
+        setValidationError({
+            descriptionKey: "emptyDataField.description",
+            descriptionValues: { dataField: attributeName },
+            messageKey: "emptyDataField.message"
+        });
+    };
+
     /**
      * Get SCIM data for each operation.
      *
@@ -529,7 +540,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             filteredAttributeMapping: CSVAttributeMapping[],
             headers: string[]): Record<string, unknown> => {
             const dataObj: Record<string, unknown> = {};
-            const schemasSet: Set<string> = new Set([ SCIM2_USER_SCHEMA ]);
+            const schemasSet: Set<string> = new Set([ UserManagementConstants.SCIM2_USER_SCHEMA ]);
 
             for (const attribute of filteredAttributeMapping) {
                 const scimAttribute: string = attribute.mappedSCIMAttributeURI.replace(
@@ -541,12 +552,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
+                    if (isEmptyAttribute(attributeValue)) {
+                        setEmptyDataFieldError(attribute.attributeName);
+                        throw new Error(DATA_VALIDATION_ERROR);
+                    }
+
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
                     selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
                 
                     continue;
+                }
+
+                // Handle email attribute.
+                if (scimAttribute === RequiredBulkUserImportAttributes.EMAILADDRESS) {
+                    if (isEmptyAttribute(attributeValue)) {
+                        setEmptyDataFieldError(attribute.attributeName);
+                        throw new Error(DATA_VALIDATION_ERROR);
+                    }
                 }
 
                 // Handle askPassword attribute.
@@ -578,12 +602,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 }
 
                 // Handle multi-valued address attribute.
-                if (scimAttribute.includes("addresses#home")) {
-                    dataObj["addresses"] = dataObj["addresses"] || [];
-                    (dataObj["addresses"] as unknown[]).push(
+                if (scimAttribute.includes(ADDRESS_HOME_ATTRIBUTE)) {
+                    dataObj[ADDRESS_ATTRIBUTE] = dataObj[ADDRESS_ATTRIBUTE] || [];
+                    (dataObj[ADDRESS_ATTRIBUTE] as unknown[]).push(
                         {
-                            type: "home",
-                            [scimAttribute.replace("addresses#home.", "")]:
+                            type: HOME_ATTRIBUTE,
+                            [scimAttribute.replace(`${ADDRESS_HOME_ATTRIBUTE}.`, "")]:
                             attributeValue
                         }
                     );
@@ -599,7 +623,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 // Handle simple attributes.
                 if (!cleanedAttribute.includes(".")) {
                     const target: unknown =
-                    attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
+                    attribute.mappedSCIMClaimDialectURI === UserManagementConstants.SCIM2_USER_SCHEMA
                         ? dataObj
                         : dataObj[attribute.mappedSCIMClaimDialectURI] ||
                         (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
@@ -617,7 +641,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 else if (cleanedAttribute.includes(".")) {
                     const [ parentAttr, childAttr ] = cleanedAttribute.split(".");
                     const target: unknown =
-                    attribute.mappedSCIMClaimDialectURI === SCIM2_USER_SCHEMA
+                    attribute.mappedSCIMClaimDialectURI === UserManagementConstants.SCIM2_USER_SCHEMA
                         ? dataObj
                         : dataObj[attribute.mappedSCIMClaimDialectURI] ||
                         (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
@@ -679,12 +703,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
 
         const operations: SCIMBulkOperation[] = rows.map((row: string[]) =>
-            generateOperation(row, filteredAttributeMapping, headers));
+            generateOperation(row, filteredAttributeMapping, headers)
+        );
 
         return {
             Operations: operations,
             failOnErrors: 0,
-            schemas: [ BULK_REQUEST_SCHEMA ]
+            schemas: [ UserManagementConstants.BULK_REQUEST_SCHEMA ]
         };
     };
 
@@ -712,7 +737,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const scimRequestBody: SCIMBulkEndpointInterface = generateSCIMRequestBody(attributeMapping);
             
             setShowResponseView(true);
-            const scimResponse: any = await bulkAddUsers(scimRequestBody);
+            const scimResponse: any = await addBulkUsers(scimRequestBody);
 
             if (scimResponse.status !== 200) {
                 throw new Error("Failed to import users.");
@@ -723,12 +748,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             setResponse(response);
         } catch (error) {
             setHasError(true);
-            setAlert({
-                description: t(
-                    "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
-            });
+            if (error.message !== DATA_VALIDATION_ERROR) {
+                setAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                });
+            }
+
         } finally {
             setIsSubmitting(false);
         }
@@ -740,7 +768,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns - BulkUserImportOperationResponse
      */
     const generateBulkResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
-        const username: string = operation.bulkId.split(":")[1];
+        const username: string = operation?.bulkId.split(":")[1];
         const statusCode: number = operation?.status?.code;
 
         const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
