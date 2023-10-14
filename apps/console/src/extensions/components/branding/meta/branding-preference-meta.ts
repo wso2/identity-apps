@@ -94,26 +94,26 @@ export class BrandingPreferenceMeta {
                 [ PredefinedThemes.LIGHT ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appFaviconPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath ?? "")
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appLogoPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appLogoPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath ?? "")
                         }
                     }
                 },
                 [ PredefinedThemes.DARK ]: {
                     images: {
                         favicon: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appFaviconPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appFaviconPath ?? "")
                         },
                         logo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath ?? "")
                         },
                         myAccountLogo: {
-                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ].getConfig().ui.appWhiteLogoPath)
+                            imgURL: getAbsoluteLogoPath(window[ "AppUtils" ]?.getConfig()?.ui?.appWhiteLogoPath ?? "")
                         }
                     }
                 }
