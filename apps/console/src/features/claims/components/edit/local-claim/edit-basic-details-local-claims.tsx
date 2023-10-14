@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ import {
     Link,
     Message
 } from "@wso2is/react-components";
-import Axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -191,28 +191,46 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         const dialectID: string[] = getDialectID();
 
         if(claim) {
-            const externalClaimRequest: Promise<string>[] = [];
+            const externalClaimRequest: Promise<ExternalClaim[]>[] = [];
 
             dialectID.forEach((dialectId: string) => {
                 externalClaimRequest.push(getExternalClaims(dialectId));
             });
 
-            Axios.all(externalClaimRequest).then((response: string[]) => {
-                const claims: ExternalClaim[] = [].concat(...response);
+            Promise.allSettled(externalClaimRequest).then((
+                results: PromiseSettledResult<ExternalClaim[]>[]
+            ) => {
+                const resolvedResults: PromiseSettledResult<ExternalClaim[]>[] = results.filter(
+                    (result: PromiseSettledResult<ExternalClaim[]>) => {
+                        if (result.status === "fulfilled") {
+                            return true;
+                        } else {
+                            const error: IdentityAppsApiException = result.reason;
+
+                            if (error.code !== 404) {
+                                dispatch(
+                                    addAlert({
+                                        description: error?.response?.data?.description,
+                                        level: AlertLevels.ERROR,
+                                        message: t("console:manage.features.claims.dialects"
+                                            + ".notifications.fetchExternalClaims.genericError.message")
+                                    })
+                                );
+                            }
+
+                            return false;
+                        }
+                    });
+
+                const claims: ExternalClaim[] = resolvedResults.flatMap(
+                    (result: PromiseSettledResult<ExternalClaim[]>) => {
+                        return result.status === "fulfilled" ? result.value : [];
+                    });
 
                 if (claims.find((externalClaim: ExternalClaim) => 
                     externalClaim.mappedLocalClaimURI === claim.claimURI)) {
                     setHasMapping(true);
                 }
-
-            }).catch((error: IdentityAppsApiException) => {
-                dispatch(
-                    addAlert({
-                        description: error.response.description,
-                        level: AlertLevels.ERROR,
-                        message: "Error occurred while trying to get external mappings for the claim."
-                    })
-                );
             }).finally(() => setMappingChecked(true));
         }
     }, [ claim ]);
