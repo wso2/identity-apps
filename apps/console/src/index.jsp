@@ -138,7 +138,9 @@
                 animation-iteration-count: infinite;
             }
         </style>
-        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
+        <script
+            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>startup-config.js"
+        ></script>
         <script>
             function preLoaderResolver() {
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
@@ -219,8 +221,8 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath() + "/"
-                        + "<%= htmlWebpackPlugin.options.basename %>",
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath() 
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
@@ -278,8 +280,9 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-0.3.3.min.js' : '/auth-spa-0.3.3.min.js'%>";
 
-            authSPAJS.setAttribute("src", "/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js");
+            authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
             let head = document.head;

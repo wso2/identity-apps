@@ -139,7 +139,7 @@
                 animation-iteration-count: infinite;
             }
         </style>
-        <script src="/<%= htmlWebpackPlugin.options.basename %>/startup-config.js"></script>
+        <script src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>startup-config.js"></script>
         <script>
             var userAccessedPath = window.location.href;
             var userTenant = userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1] ?  userAccessedPath.split("/" + startupConfig.tenantPrefix + "/")[1].split("/")[0] : null;
@@ -202,7 +202,8 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  + "/<%= htmlWebpackPlugin.options.basename %>",
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
@@ -227,10 +228,11 @@
         }
     </script>
     <script>
-        if(!authorizationCode) {
+        if (!authorizationCode) {
             var authSPAJS = document.createElement("script");
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-0.3.3.min.js' : '/auth-spa-0.3.3.min.js'%>";
 
-            authSPAJS.setAttribute("src", "/<%= htmlWebpackPlugin.options.basename %>/auth-spa-0.3.3.min.js");
+            authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
             let head = document.head;
