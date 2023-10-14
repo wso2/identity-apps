@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4214](https://github.com/wso2/identity-apps/pull/4214) [`d0a7d166f9`](https://github.com/wso2/identity-apps/commit/d0a7d166f955d733f664ddc9d94cedebf460fff1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with handling empty app basename
+
 ## 2.0.12
 
 ### Patch Changes

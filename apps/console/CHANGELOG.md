@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.0.33
+
+### Patch Changes
+
+- [#4215](https://github.com/wso2/identity-apps/pull/4215) [`2b20432222`](https://github.com/wso2/identity-apps/commit/2b20432222d700a0c63efe2cadb2385add3835dc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Include a null check for the code that accesses the branding preview logos
+
+* [#4214](https://github.com/wso2/identity-apps/pull/4214) [`d0a7d166f9`](https://github.com/wso2/identity-apps/commit/d0a7d166f955d733f664ddc9d94cedebf460fff1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with handling empty app basename
+
+- [#4199](https://github.com/wso2/identity-apps/pull/4199) [`f89d8bcba7`](https://github.com/wso2/identity-apps/commit/f89d8bcba72e0bf27f0051e7d2ffc7a561e04cfb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue that causing properties section remains disabled for custom local attributes despite adding a mapped SCIM claim.
+
 ## 2.0.32
 
 ### Patch Changes
