@@ -87,7 +87,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     } = useUsersList(null, null, userSearchValue ? `userName co ${ userSearchValue }` : null, null, null);
 
     /**
-     * set initial selected users options
+     * Set initial selected users options
      */
     useEffect(() => {
         if ( role?.users?.length > 0 ) {
@@ -104,21 +104,21 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ role ]);
 
     /**
-     * set selected users options initially
+     * Set selected users options initially
      */
     useEffect(() => {
         if (!selectedUsersOption && initialSelectedUsersOption) {
             setSelectedUsersOption(initialSelectedUsersOption);
         }
 
-        // set users options when the user is read only
+        // Set users options when the user is read only
         if (isReadOnly && initialSelectedUsersOption) {
             setUsersOptions(initialSelectedUsersOption);
         }
     }, [ isReadOnly, initialSelectedUsersOption ]);
 
     /**
-     * set users options
+     * Set users options
      */
     useEffect(() => {
         if (!isReadOnly) {
@@ -131,7 +131,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ originalUserList ]);
 
     /**
-     * set removed users
+     * Set removed users
      */
     useEffect(() => {
         if (!isReadOnly && initialSelectedUsersOption && selectedUsersOption) {
@@ -143,7 +143,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ initialSelectedUsersOption, selectedUsersOption ]);
     
     /**
-     * call mutateUserListFetchRequest when the user search value changes
+     * Call mutateUserListFetchRequest when the user search value changes
      */
     useEffect(() => {
         if ( userSearchValue ) {
@@ -152,7 +152,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ userSearchValue ]);
     
     /**
-     * show error if user list fetch request failed
+     * Show error if user list fetch request failed
      */ 
     useEffect(() => {
         if ( userListFetchRequestError ) {
@@ -175,7 +175,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const removedUsers: UserBasicInterface[] = [];
 
         removedUsersOptions.forEach((user: UserBasicInterface) => {
-            if (!remainingUsers.find((newUser: UserBasicInterface) => newUser.id === user.id)) {
+            if (!remainingUsers?.find((newUser: UserBasicInterface) => newUser.id === user.id)) {
                 removedUsers.push(user);
             }
         });
@@ -229,7 +229,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     };
 
     /**
-     * The following function handles the search query for the users list.
+     * Handles the search query for the users list.
      */
     const searchUsers: DebouncedFunc<(query: string) => void> = 
         useCallback(debounce((query: string) => {
@@ -238,7 +238,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
     /**
-     * The following function handles the update of the groups list.
+     * Handles the update of the groups list.
      */
     const onUsersUpdate: () => void = () => {
 
@@ -269,7 +269,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         operation.data.Operations.push(...removeOperations);
 
         selectedUsersOption?.map((user: UserBasicInterface) => {
-            if(!initialSelectedUsersOption?.find((selectedUser: UserBasicInterface) => selectedUser.id === user.id)) {
+            if (!initialSelectedUsersOption?.find((selectedUser: UserBasicInterface) => selectedUser.id === user.id)) {
                 addOperations.push({
                     "op": "add",
                     "value": {
@@ -373,7 +373,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                 />
                                             )) }
                                             renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: UserBasicInterface
                                             ) => (
                                                 <AutoCompleteRenderOption
@@ -381,12 +381,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
                                                     userstore={ RoleManagementUtils.getUserStore(option.userName) }
                                                     renderOptionProps={ props }
-                                                    
                                                 />
                                             ) }
                                         />
-                                    )
-                                    : (
+                                    ) : (
                                         <Autocomplete
                                             multiple
                                             disableCloseOnSelect
@@ -441,7 +439,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                 />
                                             )) }
                                             renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: UserBasicInterface, 
                                                 { selected }: { selected: boolean }
                                             ) => (
@@ -517,8 +515,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                 />
                                             ) }
                                         />
-                                    )
-                                    : null
+                                    ) : null
                             } 
 
                             { /* Update Button */ }
@@ -534,8 +531,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                         >
                                             { t("common:update") }
                                         </Button>
-                                    )
-                                    : null
+                                    ) : null
                             }
                         </>
                     )

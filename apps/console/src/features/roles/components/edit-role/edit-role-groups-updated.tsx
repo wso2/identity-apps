@@ -87,7 +87,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     } = useGroupList(null, null, groupSearchValue ? `displayName co ${ groupSearchValue }` : null);
 
     /**
-     * set initial selected groups options
+     * Set initial selected groups options
      */
     useEffect(() => {
         if ( role?.groups?.length > 0 ) {
@@ -104,7 +104,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     }, [ role ]);
 
     /**
-     * set selected groups options initially
+     * Set selected groups options initially
      */
     useEffect(() => {
         if (!selectedGroupsOptions && initialSelectedGroupsOptions) {
@@ -118,7 +118,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     }, [ isReadOnly, initialSelectedGroupsOptions ]);
 
     /**
-     * set groups options
+     * Set groups options
      */
     useEffect(() => {
         if (!isReadOnly) {
@@ -131,7 +131,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     }, [ originalGroupList ]);
 
     /**
-     * set removed groups
+     * Set removed groups
      */
     useEffect(() => {
         if (!isReadOnly && initialSelectedGroupsOptions && selectedGroupsOptions) {
@@ -143,7 +143,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     }, [ initialSelectedGroupsOptions, selectedGroupsOptions ]);
     
     /**
-     * call mutateGroupListFetchRequest when the group search value changes
+     * Call mutateGroupListFetchRequest when the group search value changes
      */
     useEffect(() => {
         if ( groupSearchValue ) {
@@ -154,7 +154,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     }, [ groupSearchValue ]);
     
     /**
-     * show error if group list fetch request failed
+     * Show error if group list fetch request failed
      */ 
     useEffect(() => {
         if ( groupListFetchRequestError ) {
@@ -177,7 +177,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const removedGroups: GroupsInterface[] = [];
 
         removedGroupsOptions.forEach((group: GroupsInterface) => {
-            if (!remainingGroups.find((newGroup: GroupsInterface) => newGroup.id === group.id)) {
+            if (!remainingGroups?.find((newGroup: GroupsInterface) => newGroup.id === group.id)) {
                 removedGroups.push(group);
             }
         });
@@ -231,7 +231,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     };
 
     /**
-     * The following function handles the search query for the groups list.
+     * Handles the search query for the groups list.
      */
     const searchGroups: DebouncedFunc<(query: string) => void> = 
         useCallback(debounce((query: string) => {
@@ -240,7 +240,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
     /**
-     * The following function handles the update of the groups list.
+     * Handles the update of the groups list.
      */
     const onGroupsUpdate: () => void = () => {
 
@@ -271,7 +271,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         operation.data.Operations.push(...removeOperations);
 
         selectedGroupsOptions?.map((group: GroupsInterface) => {
-            if(!initialSelectedGroupsOptions?.find((selectedGroup: GroupsInterface) => selectedGroup.id === group.id)) {
+            if (!initialSelectedGroupsOptions?.find(
+                (selectedGroup: GroupsInterface) => selectedGroup.id === group.id)) {
                 addOperations.push({
                     "op": "add",
                     "value": {
@@ -380,12 +381,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 <AutoCompleteRenderOption
                                                     displayName={ RoleManagementUtils.getGroupDisplayName(option) }
                                                     userstore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    renderOptionProps={ props }           
+                                                    renderOptionProps={ props }
                                                 />
                                             ) }
                                         />
-                                    )
-                                    : (
+                                    ) : (
                                         <Autocomplete
                                             multiple
                                             disableCloseOnSelect
@@ -438,7 +438,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 />
                                             )) }
                                             renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: GroupsInterface, 
                                                 { selected }: { selected: boolean }
                                             ) => (
@@ -512,8 +512,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 />
                                             ) }
                                         />
-                                    )
-                                    : null
+                                    ) : null
                             } 
 
                             { /* Update Button */ }
@@ -529,8 +528,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         >
                                             { t("common:update") }
                                         </Button>
-                                    )
-                                    : null
+                                    ) : null
                             }
                         </>
                     )
