@@ -17,13 +17,13 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { 
-    ContentLoader, 
-    DocumentationLink, 
-    EmptyPlaceholder, 
-    Iframe, 
-    Link, 
-    useDocumentation 
+import {
+    ContentLoader,
+    DocumentationLink,
+    EmptyPlaceholder,
+    Iframe,
+    Link,
+    useDocumentation
 } from "@wso2is/react-components";
 import { commonConfig } from "apps/console/src/extensions/configs";
 import get from "lodash-es/get";
@@ -43,11 +43,11 @@ import { Placeholder } from "semantic-ui-react";
 import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
-import { AppState } from "../../../../../features/core/store";
+import { AppState } from "../../../core/store";
 import { ReactComponent as CustomLayoutSuccessImg } from
-    "../../../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
+    "../../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
-    "../../../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
+    "../../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
@@ -345,7 +345,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                 {
                     !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading
                         ? (
-                            commonConfig.enableDefaultBrandingPreviewSection 
+                            commonConfig.enableDefaultBrandingPreviewSection
                                 && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
                                     <div className="branding-preference-preview-message" >
                                         <EmptyPlaceholder
@@ -391,7 +391,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                                                         supportEmail
                                                                     } }
                                                                 >
-                                                                    Need a fully customized layout for your 
+                                                                    Need a fully customized layout for your
                                                                     organization? Reach us out at <Link
                                                                         data-componentid=
                                                                             { "branding-preference-"

@@ -40,9 +40,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { EventPublisher } from "../../../../features/core";
-import { AppState } from "../../../../features/core/store";
-import { ExtendedFeatureConfigInterface } from "../../../configs/models";
+import { EventPublisher } from "../../core";
+import { AppState } from "../../core/store";
+import { ExtendedFeatureConfigInterface } from "../../../extensions/configs/models";
 import { deleteBrandingPreference, updateBrandingPreference, useBrandingPreference } from "../api";
 import { BrandingPreferenceTabs } from "../components";
 import { BrandingPreferencesConstants } from "../constants";

@@ -158,7 +158,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => 
+                                component: lazy(() =>
                                     import("../../connections/pages/connection-edit")
                                 ),
                                 exact: true,
@@ -387,7 +387,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../../extensions/components/branding/pages/branding")),
+                        component: lazy(() => import("../../../features/branding/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
@@ -1319,7 +1319,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 showOnSidePanel: true
             }
         );
-    }    
+    }
 
     routes.push({
         component: null,

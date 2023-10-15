@@ -27,10 +27,10 @@ import React, {
 } from "react";
 import { useSelector } from "react-redux";
 import { AppState, store } from "../../../../features/core";
-import { useBrandingPreference } from "../../branding/api";
-import { BrandingPreferencesConstants } from "../../branding/constants";
-import { BrandingPreferenceThemeInterface } from "../../branding/models";
-import { BrandingPreferenceUtils } from "../../branding/utils";
+import { useBrandingPreference } from "../../../../features/branding/api";
+import { BrandingPreferencesConstants } from "../../../../features/branding/constants";
+import { BrandingPreferenceThemeInterface } from "../../../../features/branding/models";
+import { BrandingPreferenceUtils } from "../../../../features/branding/utils";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 
