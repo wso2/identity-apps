@@ -484,6 +484,115 @@ export const console: ConsoleNS = {
             }
         }
     },
+    branding: {
+        form: {
+            actions: {
+                save: "සුරකින්න සහ ප්රකාශ කරන්න",
+                resetAll: "පෙරනිමියට නැවත සකසන්න"
+            }
+        },
+        tabs: {
+            text: {
+                label: "පෙළ"
+            },
+            preview: {
+                label: "පෙරදසුන"
+            }
+        },
+        screens: {
+            common: "පොදු",
+            login: "ඇතුල් වන්න",
+            "sms-otp": "smsOtp",
+            "email-otp": "ඊමේල් OTP",
+            "email-template": "විද්යුත් තැපැල් සැකිලි",
+            "sign-up": "ලියාපදිංචි වන්න",
+            "totp": "totp",
+            myaccount: "මගේ ගිණුම"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "ඔබ සනාථ කළ පසු, ඔබගේ පරිශීලකයින් {{productName}} පෙරනිමි සහ එය ආපසු හැරවිය නොහැකි ලෙස දැකගත හැකිය. කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "<1>{{screen}}</1> ආපසු තිරය <3>{{locale}}</3> සඳහා අභිරුචිකරණය කරන්න. "
+        },
+        revertUnsavedConfirmationModal: {
+            content: "ඔබ තිරය මාරු කරන්නේ නම්, ඔබේ සුරකින ලද වෙනස්කම් නැති වී යයි. <1>තහවුරු කිරීමට</1> තහවුරු කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "ඔබගේ සුරකින ලද වෙනස්කම් සුරකින්න"
+        },
+        form: {
+            genericFieldResetTooltip: "පෙරනිමියට නැවත සකසන්න",
+            genericFieldPlaceholder: "ඔබේ පෙළ ඇතුළත් කරන්න",
+            fields: {
+                copyright: {
+                    hint: "පිවිසුම් තිරවල පාදකයේ දිස්වන පෙළ.ඔබට වත්මන් වර්ෂය ස්වයංක්රීයව ප්රදර්ශනය කිරීම සඳහා `{{currentyear}} ස්ථානගත කරන්නා භාවිතා කළ හැකිය."
+                },
+                "site.title": {
+                    hint: "බ්රව්සර් ටැබ්, සෙවුම් යන්ත්ර, සමාජ කොටස් යනාදියෙහි දිස්විය හැකිය. {{productName}} පෙරනිමි භාවිතා කරයි."
+                },
+                "login.button": {
+                    hint: "පිවිසුම් පෙට්ටියේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "login.heading": {
+                    hint: "පිවිසුම් පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sms.otp.heading": {
+                    hint: "SMS OTP කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "email.otp.heading": {
+                    hint: "ඊමේල් ඔට්පෙප් කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "totp.heading": {
+                    hint: "TOPT කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.button": {
+                    hint: "ලියාපදිංචි කොටුවේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.heading": {
+                    hint: "ලියාපදිංචි පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "පෙදෙස",
+            placeholder: "පෙදෙස තෝරන්න"
+        },
+        modes: {
+            text: {
+                label: "පෙළ ක්ෂේත්ර"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "{{screen}} තිහාසික අභිරුචි කළ පෙළ {{locale}} සඳහා ලබා ගත නොහැක.",
+                message: "අභිරුචි පෙළ ලබා ගැනීමට නොහැකි විය"
+            },
+            revertError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා ආපසු හරවා ගත නොහැක.",
+                message: "අභිරුචි පෙළ නැවත ලබා ගත නොහැක"
+            },
+            resetSuccess: {
+                description: "සාර්ථකව ප්රතික්ෂේප කරන ලද {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා.",
+                message: "සාර්ථකව ආපසු යන්න"
+            },
+            updateError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා යාවත්කාලීන කළ නොහැක.",
+                message: "අභිරුචි පා text ය යාවත්කාලීන කළ නොහැක"
+            },
+            updateSuccess: {
+                description: "සාර්ථකව යාවත්කාලීන කිරීම {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}}.",
+                message: "අභිරුචි පෙළ යාවත්කාලීන කිරීම සාර්ථකයි"
+            }
+        },
+        screenSelectDropdown: {
+            label: "තිරය",
+            placeholder: "තිරය තෝරන්න"
+        }
+    },
     develop: {
         componentExtensions: {
             component: {
@@ -1162,9 +1271,9 @@ export const console: ConsoleNS = {
                                                     " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
                                                     " පැතිකඩ අවශ්‍ය වේ."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " + 
+                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " +
                                                 "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
-                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " +
                                                 "පියවරකට එක් කළ නොහැක."
                                         }
                                     }
@@ -8047,7 +8156,7 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "පරිපාලක උපදේශන බැනරය වෙත ආපසු යන්න",
                         pageHeading: "පරිපාලක උපදේශන බැනරය",
@@ -8065,7 +8174,7 @@ export const console: ConsoleNS = {
                         description: "පරිපාලක උපදේශන බැනරය සක්‍රීය කර වින්‍යාස කරන්න.",
                         enabled: "සක්‍රීයයි",
                         heading: "පරිපාලක උපදේශන බැනරය"
-                    },   
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -8123,7 +8232,7 @@ export const console: ConsoleNS = {
                                 message: "බැනරය සාර්ථකව යාවත්කාලීන කරන ලදී"
                             }
                         }
-                    },     
+                    },
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
                 },

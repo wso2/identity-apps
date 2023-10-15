@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,15 @@ import {
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import inRange from "lodash-es/inRange";
-import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
+    useState
+} from "react";
 import { Card, MenuProps, Placeholder, SemanticShorthandItem, Tab, TabPaneProps, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
@@ -49,7 +57,7 @@ export interface ResourceTabPaneInterface {
 /**
  * Resource tabs component Prop types.
  */
-export interface ResourceTabPropsInterface extends TabProps, IdentifiableComponentInterface,
+export interface ResourceTabPropsInterface extends Omit<TabProps, "onTabChange">, IdentifiableComponentInterface,
     TestableComponentInterface {
 
     /**
@@ -88,6 +96,16 @@ export interface ResourceTabPropsInterface extends TabProps, IdentifiableCompone
      * Specifies, to which tab(tabid) it need to redirect.
      */
     tabIdentifier?: string;
+    /**
+     * Called on tab change.
+     *
+     * @param event - React's original SyntheticEvent.
+     * @param data - The proposed new Tab.Pane.
+     */
+    onTabChange?: (event: React.MouseEvent<HTMLDivElement>, data: TabProps, activeTabMetadata?: {
+        "data-tabid": string;
+        index: number | string;
+    }) => void
 }
 
 /**
@@ -145,7 +163,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
 
         const tabIndex: number | string = panes.indexOf(panes.find(element => element["data-tabid"] === tabIdentifier));
 
-        if (inRange(tabIndex,  0, panes.length)) {
+        if (inRange(tabIndex as number,  0, panes.length)) {
             if (tabIndex === activeIndex) {
                 return;
             }
@@ -213,8 +231,17 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     return (
         <Tab
             onTabChange={ (e: MouseEvent<HTMLDivElement>, data: TabProps) => {
+                const activeTab: {
+                    pane?: SemanticShorthandItem<TabPaneProps>
+                    menuItem?: any
+                    render?: () => ReactNode
+                  } = panes[data.activeIndex];
+
                 handleTabChange(e, data.activeIndex);
-                onTabChange && typeof onTabChange === "function" && onTabChange(e, data);
+                onTabChange && typeof onTabChange === "function" && onTabChange(e, data, {
+                    "data-tabid": activeTab["data-tabid"],
+                    index: data.activeIndex
+                });
             } }
             className={ classes }
             menu={ {

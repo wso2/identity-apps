@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -92,7 +92,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
 
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
-    const [ copyrightText, setCopyrightText ] = useState<string>(initialValues.organizationDetails.copyrightText);
     const [ supportEmail, setSupportEmail ] = useState<string>(initialValues.organizationDetails.supportEmail);
 
     /**
@@ -104,11 +103,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
             ...initialValues,
             organizationDetails: {
                 ...initialValues.organizationDetails,
-                copyrightText,
                 supportEmail
             }
         });
-    }, [ copyrightText, supportEmail ]);
+    }, [ supportEmail ]);
 
     if (isLoading) {
         return (
@@ -137,45 +135,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
             onSubmit={ onSubmit }
             initialValues={ initialValues }
         >
-            <Field.Input
-                ariaLabel="Site title input field"
-                inputType="default"
-                name="organizationDetails.siteTitle"
-                label={ t("extensions:develop.branding.forms.general.fields.siteTitle.label") }
-                placeholder={ t("extensions:develop.branding.forms.general.fields.siteTitle.placeholder") }
-                hint={
-                    t("extensions:develop.branding.forms.general.fields.siteTitle.hint", { productName })
-                }
-                required={ false }
-                readOnly={ readOnly }
-                value={ initialValues.organizationDetails.siteTitle }
-                maxLength={ BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.SITE_TITLE_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.SITE_TITLE_MIN_LENGTH }
-                width={ 16 }
-                data-componentid={ `${componentId}-site-title` }
-            />
-            <Field.Input
-                ariaLabel="Copyright text input field"
-                inputType="default"
-                name="organizationDetails.copyrightText"
-                label={ t("extensions:develop.branding.forms.general.fields.copyrightText.label") }
-                placeholder={ t("extensions:develop.branding.forms.general.fields.copyrightText.placeholder") }
-                hint={
-                    t("extensions:develop.branding.forms.general.fields.copyrightText.hint", { productName })
-                }
-                required={ false }
-                readOnly={ readOnly }
-                value={ initialValues.organizationDetails.copyrightText }
-                maxLength={
-                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.COPYRIGHT_TEXT_MAX_LENGTH
-                }
-                minLength={
-                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.COPYRIGHT_TEXT_MIN_LENGTH
-                }
-                width={ 16 }
-                listen={ (value: string) => setCopyrightText(value) }
-                data-componentid={ `${componentId}-copyright-text` }
-            />
             <Field.Input
                 ariaLabel="Contact email input field"
                 inputType="email"

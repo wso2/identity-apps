@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,15 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { DepricatedCheckboxAdapter } from "./adapters";
+import { __DEPRECATED__CheckboxAdapter } from "./adapters/__DEPRECATED__adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FormFieldMessage } from "../models";
 
 /**
  * Interface for the Checkbox field component.
+ * @deprecated Use the interface from `Field.OxygenCheckbox` instead.
  */
-export interface DepricatedFieldCheckboxPropsInterface extends FormFieldPropsInterface, TestableComponentInterface {
+export interface __DEPRECATED__FieldCheckboxPropsInterface extends FormFieldPropsInterface, TestableComponentInterface {
 
     /**
      * Hint of the form field.
@@ -50,8 +51,8 @@ export interface DepricatedFieldCheckboxPropsInterface extends FormFieldPropsInt
  *
  * @returns
  */
-export const DepricatedFieldCheckbox: FunctionComponent<DepricatedFieldCheckboxPropsInterface> = (
-    props: DepricatedFieldCheckboxPropsInterface
+export const __DEPRECATED__FieldCheckbox: FunctionComponent<__DEPRECATED__FieldCheckboxPropsInterface> = (
+    props: __DEPRECATED__FieldCheckboxPropsInterface
 ): ReactElement => {
 
     const {
@@ -94,7 +95,7 @@ export const DepricatedFieldCheckbox: FunctionComponent<DepricatedFieldCheckboxP
                 key={ testId }
                 type="checkbox"
                 name={ props.name }
-                component={ DepricatedCheckboxAdapter }
+                component={ __DEPRECATED__CheckboxAdapter }
                 data-testid={ testId }
                 { ...rest }
             />
@@ -117,6 +118,6 @@ export const DepricatedFieldCheckbox: FunctionComponent<DepricatedFieldCheckboxP
 /**
  * Default props for the component.
  */
-DepricatedFieldCheckbox.defaultProps = {
+__DEPRECATED__FieldCheckbox.defaultProps = {
     "data-testid": "checkbox-field"
 };

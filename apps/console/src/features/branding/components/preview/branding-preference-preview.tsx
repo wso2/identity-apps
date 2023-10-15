@@ -25,7 +25,6 @@ import {
     Link,
     useDocumentation
 } from "@wso2is/react-components";
-import { commonConfig } from "apps/console/src/extensions/configs";
 import get from "lodash-es/get";
 import Mustache from "mustache";
 import React, {
@@ -43,11 +42,12 @@ import { Placeholder } from "semantic-ui-react";
 import { EmailTemplateScreenSkeleton } from "./email-template-screen-skeleton";
 import { LoginScreenSkeleton } from "./login-screen-skeleton";
 import { MyAccountScreenSkeleton } from "./my-account-screen-skeleton";
-import { AppState } from "../../../core/store";
+import { commonConfig } from "../../../../extensions/configs";
 import { ReactComponent as CustomLayoutSuccessImg } from
     "../../../../themes/wso2is/assets/images/branding/custom-layout-success.svg";
 import { ReactComponent as CustomLayoutWarningImg } from
     "../../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
+import { AppState } from "../../../core/store";
 import { useLayout, useLayoutStyle } from "../../api";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
 import { BrandingPreferenceMeta, LAYOUT_DATA, PredefinedLayouts } from "../../meta";
@@ -253,8 +253,17 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         layoutStyleLoading
     ]);
 
+    const loginScreenCategory: PreviewScreenType[] = [
+        PreviewScreenType.LOGIN,
+        PreviewScreenType.SIGN_UP,
+        PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_OTP,
+        PreviewScreenType.SMS_OTP,
+        PreviewScreenType.TOTP
+    ];
+
     const resolvePreviewScreen = (): ReactElement => {
-        if (screenType === PreviewScreenType.LOGIN) {
+        if (loginScreenCategory.includes(screenType)) {
             return (
                 <LoginScreenSkeleton
                     brandingPreference={ brandingPreference }
@@ -284,7 +293,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             );
         }
 
-        throw new Error("Invalid screen type.");
+        return <ContentLoader data-componentid={ `${ componentId }-loader` } />;
     };
 
     const resolveIframeStyles = (): string => {
@@ -292,7 +301,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             return "/*no-styles*/";
         }
 
-        if (screenType !== PreviewScreenType.LOGIN) {
+        if (!loginScreenCategory.includes(screenType)) {
             if (screenType === PreviewScreenType.EMAIL_TEMPLATE) {
                 return previewScreenSkeletonStyles;
             }

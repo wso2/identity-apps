@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { BoltIcon, EnvelopeCogwheelIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
+import { BoltIcon, EnvelopeGearIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
@@ -420,7 +420,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: {
-                            icon: <EnvelopeCogwheelIcon fill="black" className="icon" />
+                            icon: <EnvelopeGearIcon fill="black" className="icon" />
                         },
                         id: "emailProviders",
                         name: "extensions:develop.sidePanel.emailProvider",

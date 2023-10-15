@@ -295,6 +295,115 @@ export interface ConsoleNS {
             privacy: string;
         };
     };
+    branding: {
+        form: {
+            actions: {
+                save: string;
+                resetAll: string;
+            }
+        };
+        tabs: {
+            text: {
+                label: string;
+            };
+            preview: {
+                label: string;
+            }
+        };
+        screens: {
+            common: string;
+            login: string;
+            "sms-otp": string;
+            "email-otp": string;
+            "email-template": string;
+            "sign-up": string;
+            "totp": string;
+            myaccount: string;
+        }
+    };
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        revertUnsavedConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        form: {
+            genericFieldResetTooltip: string;
+            genericFieldPlaceholder: string;
+            fields: {
+                copyright: {
+                    hint: string;
+                };
+                "site.title": {
+                    hint: string;
+                };
+                "login.button": {
+                    hint: string;
+                };
+                "login.heading": {
+                    hint: string;
+                };
+                "sms.otp.heading": {
+                    hint: string;
+                };
+                "email.otp.heading": {
+                    hint: string;
+                };
+                "totp.heading": {
+                    hint: string;
+                };
+                "sign.up.button": {
+                    hint: string;
+                };
+                "sign.up.heading": {
+                    hint: string;
+                };
+            }
+        };
+        localeSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+        modes: {
+            text: {
+                label: string;
+            };
+            json: {
+                label: string;
+            }
+        };
+        notifications: {
+            getPreferenceError: {
+                description: string;
+                message: string;
+            };
+            revertError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            updateError: {
+                description: string;
+                message: string;
+            };
+            updateSuccess: {
+                description: string;
+                message: string;
+            };
+        };
+        screenSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+    };
     featureGate: {
         enabledFeatures: {
             tags: {
@@ -5043,7 +5152,7 @@ export interface ConsoleNS {
                 };
             };
             serverConfigs: {
-                adminAdvisory: {    
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: string;
                         pageHeading: string;
@@ -5055,7 +5164,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                         };
-                    };      
+                    };
                     configurationSection: {
                         disabled: string;
                         description: string;

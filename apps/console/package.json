@@ -19,6 +19,7 @@
         "compile:i18n": "pnpm tsc -p src/extensions/i18n",
         "clean:i18n:dist": "rimraf src/extensions/i18n/dist",
         "copy:themes:src": "node scripts/copy-themes-to-source.js",
+        "copy:branding:i18n:defaults": "node scripts/populate-branding-i18n-defaults.js",
         "lint": "pnpm run lint:all",
         "lint:all": "pnpm run lint:targeted -- .",
         "lint:autofix": "pnpm run lint:all -- --fix",

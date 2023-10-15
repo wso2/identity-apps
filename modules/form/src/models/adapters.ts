@@ -33,8 +33,9 @@ export interface RadioAdapterPropsInterface extends CheckboxProps {
 
 /**
  * Checkbox adapter props interface.
+ * @deprecated Use interface from `Field.OxygenCheckbox` instead.
  */
-export interface CheckboxAdapterPropsInterface extends CheckboxProps {
+export interface __DEPRECATED__CheckboxAdapterPropsInterface extends CheckboxProps {
 
     /**
      * Props for the child.

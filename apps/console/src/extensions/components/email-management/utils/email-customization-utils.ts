@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,10 @@ import {
     PredefinedThemes,
     ThemeConfigInterface
 } from "../../../../features/branding/models";
+import { CustomTextInterface } from "../../../../features/branding/models/custom-text-preference";
 import { BrandingPreferenceUtils } from "../../../../features/branding/utils";
+import processCustomTextTemplateLiterals
+    from "../../../../features/branding/utils/process-custom-text-template-literals";
 
 export class EmailCustomizationUtils {
 
@@ -59,6 +62,7 @@ export class EmailCustomizationUtils {
     public static getTemplateBody(
         organizationName: string,
         brandingConfigs: BrandingPreferenceInterface,
+        customText: CustomTextInterface,
         templateBody: string,
         predefinedThemes: BrandingPreferenceThemeInterface
     ): string {
@@ -114,7 +118,11 @@ export class EmailCustomizationUtils {
             .replace(/{{organization-name}}/g, organizationName)
             .replace(/{{organization.logo.img}}/g, currentTheme.images.logo.imgURL || defaultOrgLogo)
             .replace(/{{organization.logo.altText}}/g, currentTheme.images.logo.altText)
-            .replace(/{{organization.copyright.text}}/g, copyrightText)
+            .replace(/{{organization.copyright.text}}/g,
+                (
+                    customText && processCustomTextTemplateLiterals(customText["copyright"])
+                ) ?? copyrightText
+            )
             .replace(/{{organization.support.mail}}/g, supportEmail);
     }
 }
