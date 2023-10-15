@@ -91,16 +91,6 @@ public class AppPortalUtils {
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
-        } else {
-            //TODO : Remove the regex when applications are created in the tenant space.
-            if (StringUtils.equals(CONSOLE_APP, applicationName) &&
-                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
-                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
-                        portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
-            } else {
-                callbackUrl = "regexp=(" + callbackUrl + "|" +
-                        callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
-            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
@@ -161,8 +151,6 @@ public class AppPortalUtils {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
-        //TODO: Need to remove this when the applications are ready.
-        serviceProvider.setSaasApp(true);
         serviceProvider.setManagementApp(true);
         if (StringUtils.isNotEmpty(portalPath)) {
             String accessUrl = IdentityUtil.getServerURL(portalPath, true, true);
