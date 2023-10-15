@@ -4993,9 +4993,30 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        emptyPlaceholder: Placeholder;
+                        placeholders: {
+                            emptyPlaceholder: Placeholder;
+                            errorPlaceholder: Placeholder;
+                        };
+                        notifications: {
+                            error: NotificationItem;
+                            success: NotificationItem;
+                            genericError: NotificationItem;
+                            fetchError: NotificationItem;
+                        };
                         heading: string;
                         subHeading: string;
+                        actions: {
+                            search: {
+                                placeholder: string;
+                            },
+                            assign: {
+                                placeholder: string;
+                            },
+                            remove: {
+                                label: string;
+                                placeholder: string;
+                            }
+                        };
                     };
                     menuItems: {
                         basic: string;
@@ -5005,10 +5026,34 @@ export interface ConsoleNS {
                         roles: string;
                     };
                     users: {
+                        heading: string;
+                        subHeading: string;
+                        placeholders: {
+                            emptyPlaceholder: Placeholder;
+                            errorPlaceholder: Placeholder;
+                        };
+                        notifications: {
+                            error: NotificationItem;
+                            success: NotificationItem;
+                            genericError: NotificationItem;
+                            fetchError: NotificationItem;
+                        };
                         list: {
                             emptyPlaceholder: Placeholder;
                             user: string;
                             organization: string;
+                        };
+                        actions: {
+                            search: {
+                                placeholder: string;
+                            },
+                            assign: {
+                                placeholder: string;
+                            },
+                            remove: {
+                                label: string;
+                                placeholder: string;
+                            }
                         };
                     };
                 };

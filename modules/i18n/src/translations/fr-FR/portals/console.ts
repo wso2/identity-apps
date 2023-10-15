@@ -8080,14 +8080,56 @@ export const console: ConsoleNS = {
                             subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants " +
                                 "affectés au rôle."
                         },
-                        emptyPlaceholder: {
-                            action: "Attribuer un groupe",
-                            subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",
-                            title: "Aucun groupe attribué"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Attribuer des groupes",
+                                subtitles: {
+                                    0: "Il n'y a aucun groupe disponible pour le moment."
+                                },
+                                title: "Aucun groupe affecté à ce rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les groupes affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de la mise à jour des groupes attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les groupes attribués à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les groupes attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les groupes attribués à ce rôle."
+                            }
                         },
                         heading: "Groupes attribués",
                         subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
-                            + "affectera l'exécution de certaines tâches."
+                            + "affectera l'exécution de certaines tâches.",
+                        actions: {
+                            search: {
+                                placeholder: "Groupes de recherche"
+                            },
+                            assign: {
+                                placeholder: "Attribuer des groupes"
+                            },
+                            remove: {
+                                label: "Élimination des groupes",
+                                placeholder: "Restaurer les groupes"
+                            }
+                        }
                     },
                     menuItems: {
                         basic: "Fondamentaux",
@@ -8097,6 +8139,43 @@ export const console: ConsoleNS = {
                         users: "Utilisateurs"
                     },
                     users: {
+                        heading: "Utilisateurs affectés",
+                        subHeading: "Ajouter ou supprimer les utilisateurs affectés à ce rôle.Notez que cela affectera l'exécution de certaines tâches.",
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Affecter les utilisateurs",
+                                subtitles: {
+                                    0: "Aucun utilisateur n'est attribué à ce rôle pour le moment."
+                                },
+                                title: "Aucun utilisateur affecté au rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les utilisateurs affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "L'erreur s'est produite lors de la mise à jour des utilisateurs attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les utilisateurs affectés à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les utilisateurs attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les utilisateurs attribués à ce rôle."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "Affecter un utilisateur",
@@ -8105,6 +8184,18 @@ export const console: ConsoleNS = {
                             },
                             user: "Utilisateur",
                             organization: "Dirigé par"
+                        },
+                        actions: {
+                            search: {
+                                placeholder: "Rechercher les utilisateurs"
+                            },
+                            assign: {
+                                placeholder: "Affecter les utilisateurs"
+                            },
+                            remove: {
+                                label: "Suppression des utilisateurs",
+                                placeholder: "Restaurer les utilisateurs"
+                            }
                         }
                     }
                 },
