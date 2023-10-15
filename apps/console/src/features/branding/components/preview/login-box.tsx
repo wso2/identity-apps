@@ -14,7 +14,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { AppConstants } from "../../../../../features/core/constants";
+import { AppConstants } from "../../../core/constants";
 import { BrandingPreferenceInterface } from "../../models";
 
 /**

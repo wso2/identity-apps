@@ -24,7 +24,7 @@ import React, {
     ReactElement
 } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../../../features/core/store";
+import { AppState } from "../../../core/store";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingPreferenceMeta } from "../../meta";
 import { BrandingPreferenceInterface } from "../../models";

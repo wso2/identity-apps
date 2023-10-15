@@ -21,8 +21,8 @@ import {
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "../../branding/models";
-import { BrandingPreferenceUtils } from "../../branding/utils";
+} from "../../../../features/branding/models";
+import { BrandingPreferenceUtils } from "../../../../features/branding/utils";
 
 export class EmailCustomizationUtils {
 

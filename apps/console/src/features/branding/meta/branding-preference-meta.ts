@@ -21,7 +21,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { LAYOUTS } from "./layouts";
 import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
-import { Config } from "../../../../features/core/configs";
+import { Config } from "../../core/configs";
 import { ThemeSwatchUIConfigsInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 import {

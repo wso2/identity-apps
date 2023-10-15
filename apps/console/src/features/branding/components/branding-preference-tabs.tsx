@@ -34,8 +34,8 @@ import {
 } from "./general";
 import { BrandingPreferencePreview } from "./preview";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { AppState } from "../../../../features/core/store";
-import { commonConfig } from "../../../configs";
+import { AppState } from "../../core/store";
+import { commonConfig } from "../../../extensions/configs";
 import { BrandingPreferencesConstants } from "../constants";
 import { BrandingPreferenceMeta } from "../meta";
 import {

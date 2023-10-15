@@ -23,7 +23,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardR
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
-import { AppState } from "../../../../../features/core";
+import { AppState } from "../../../core";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingPreferenceInterface } from "../../models";
 
