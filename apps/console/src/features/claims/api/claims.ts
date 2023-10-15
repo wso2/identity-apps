@@ -27,7 +27,7 @@ import {
     ExternalClaim,
     HttpMethods
 } from "@wso2is/core/models";
-import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
@@ -36,7 +36,8 @@ import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient: AxiosInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add a local claim.
