@@ -35,6 +35,7 @@ import {
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import Axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -569,6 +570,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 if (attribute.attributeName === RequiredBulkUserImportAttributes.EMAILADDRESS) {
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
+                        throw new Error(DATA_VALIDATION_ERROR);
+                    } else if (!FormValidation.email(attributeValue)) {
+                        setAlert({
+                            description:  t(
+                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                    "validations.invalid"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                "tableMessages.invalidDataMessage")
+                        });
                         throw new Error(DATA_VALIDATION_ERROR);
                     }
                 }
