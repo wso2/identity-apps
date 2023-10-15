@@ -114,7 +114,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "තෝරාගත් විද්‍යුත් තැපෑල Gravatar හි ලියාපදිංචි වී නැති බවක් පෙනේ. " +
-                                    "Gravatar නිල වෙබ් අඩවියට පිවිසීමෙන් Gravatar ගිණුමක් සඳහා ලියාපදිංචි වන්න හෝ " +
+                                    "<1>Gravatar නිල වෙබ් අඩවියට</1> පිවිසීමෙන් Gravatar ගිණුමක් සඳහා ලියාපදිංචි වන්න හෝ " +
                                     "පහත සඳහන් එකක් භාවිතා කරන්න.",
                                 header: "ගැලපෙන Gravatar රූපයක් හමු නොවීය!"
                             }
@@ -5324,18 +5324,35 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "පරිශීලක ගුණාංග සඳහා Attribute Exchange Schema (axschema) ප්‍රොටොකෝලය "
+                            + "නිරූපණය.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "අභිරුචි ගුණාංග"
+                    },
+                    eidas: {
+                        description: "පරිශීලක ගුණාංග සඳහා eIDAS ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "OpenID Connect API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා " +
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

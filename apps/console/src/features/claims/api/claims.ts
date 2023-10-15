@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -36,13 +36,13 @@ import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
  * Get an axios instance.
  *
  */
-
 const httpClient: AxiosInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add a local claim.
  *
  * @param data - Adds this data.
+ *
  * @returns response.
  */
 export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
@@ -80,6 +80,7 @@ export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
  * Gets the local claim with the given ID.
  *
  * @param id - The id of the local claim.
+ *
  * @returns response.
  */
 export const getAClaim = (id: string): Promise<any> => {
@@ -111,6 +112,7 @@ export const getAClaim = (id: string): Promise<any> => {
  *
  * @param id - Local Claim ID.
  * @param data - Updates with this data.
+ *
  * @returns response.
  */
 export const updateAClaim = (id: string, data: Claim): Promise<any> => {
@@ -142,6 +144,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
  * Deletes the local claim with the given ID.
  *
  * @param id - Local Claim ID.
+ *
  * @returns response.
  */
 export const deleteAClaim = (id: string): Promise<any> => {
@@ -173,7 +176,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             { Hardcoded solution : Refactor error response by replacing "claim" with "attribute" }
              */
             if (error?.response?.data?.code === "CMT-50031") {
-                const hardCodedResponse: any =
+                const hardCodedResponse: { code: string, description: string, message: string, traceId: string } =
                     {
                         code: error?.response?.data?.code,
                         description: "Unable to remove local attribute while having associations with external claims.",
@@ -232,6 +235,7 @@ export const addDialect = (dialectURI: string): Promise<AxiosResponse> => {
  * Get the Claim Dialect with the given ID.
  *
  * @param id - Claim Dialect ID.
+ *
  * @returns response.
  */
 export const getADialect = (id: string): Promise<any> => {
@@ -392,9 +396,10 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 /**
  * Gets the external claims with the given ID of the dialect.
  *
- * @param dialectID - Claim Dialect ID. *
+ * @param dialectID - Claim Dialect ID.
  * 
  * @returns response.
+ * @throws IdentityAppsApiException.
  */
 export const getExternalClaims = (dialectID: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
@@ -409,22 +414,34 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.response.status,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
 /**
  * Update an external claim.
  *
- * @param  dialectID - Dialect ID.
- * @param  claimID - External Claim ID.
- * @param  data - Updates with this data.
+ * @param dialectID - Dialect ID.
+ * @param claimID - External Claim ID.
+ * @param data - Updates with this data.
  *
  * @returns response.
  */
@@ -456,8 +473,8 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
 /**
  * Delete an external claim.
  *
- * @param  dialectID - Dialect ID.
- * @param  claimID - Claim ID.
+ * @param dialectID - Dialect ID.
+ * @param claimID - Claim ID.
  *
  * @returns response.
  */
@@ -520,9 +537,9 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
  * Fetch all local claims.
  *
  * @param params - limit, offset, sort, attributes, filter.
- * 
+ 
  * @returns response.
- * @throws IdentityAppsApiException.
+ * @throws IdentityAppsApiException
  */
 export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => {
 
@@ -565,7 +582,6 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
  * Get all the claim dialects.
  *
  * @param params - sort, filter, offset, attributes, limit.
- * 
  * @returns response.
  * @throws IdentityAppsApiException
  */
@@ -611,6 +627,7 @@ export const getDialects = (params: ClaimDialectsGetParams): Promise<ClaimDialec
  *
  * @param dialectID - Claim Dialect ID.
  * @param params - limit, offset, filter, attributes, sort.
+ *
  * @returns response.
  * @throws IdentityAppsApiException
  */

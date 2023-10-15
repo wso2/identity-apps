@@ -90,8 +90,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src="https://recaptcha.net/recaptcha/api.js" async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -146,7 +147,7 @@
                 <%
                     if ("true".equals(authenticationFailed)) {
                 %>
-                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+                <div class="ui negative message" id="failed-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage))%>
                 </div>
                 <div class="ui divider hidden"></div>
                 <% } %>
@@ -285,6 +286,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

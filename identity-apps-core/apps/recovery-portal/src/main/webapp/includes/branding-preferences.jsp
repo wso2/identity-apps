@@ -52,7 +52,6 @@
     String passwordRecoveryOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
-    String styleFilePath = "includes/layouts/" + layout + "/styles.css";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";

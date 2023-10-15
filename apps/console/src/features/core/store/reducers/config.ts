@@ -129,6 +129,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             selfSignUp: "",
             serverConfigurations: "",
             serverSupportedSchemas: "",
+            tenantAssociationApi: "",
+            tenantManagementApi: "",
             updateSecret: "",
             updateSecretType: "",
             userSessions: "",

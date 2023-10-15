@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, 
 import { ButtonProps, Icon } from "semantic-ui-react";
 import { LinkButton } from "../../button";
 import { InfoCard, InfoCardPropsInterface } from "../../card";
+import { GenericIcon } from "../../icon";
 
 /**
  * Interface for the Resource Grid Card component.
@@ -110,6 +111,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         disabled,
         editButtonLabel,
         onClick,
+        onDelete,
         onEdit,
         isResourceComingSoon,
         resourceCategory,
@@ -119,6 +121,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         resourceName,
         showActions,
         showResourceAction,
+        showResourceDelete,
         showSetupGuideButton,
         showResourceEdit,
         showTooltips,
@@ -147,21 +150,40 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
             action={
                 showActions && (
                     <div className="actions">
-                        {
-                            showResourceEdit && onEdit && (
-                                <LinkButton
-                                    disabled={ isResourceComingSoon || disabled }
-                                    hoverType="underline"
-                                    className="info-card-inner-action"
-                                    onClick={ onEdit }
-                                    data-componentid={ `${ componentId }-item-edit-button` }
-                                    data-testid={ `${ testId }-item-edit-button` }
-                                >
-                                    { editButtonLabel }
-                                    <Icon name="chevron right"/>
-                                </LinkButton>
-                            )
-                        }
+                        <div className="left">
+                            {
+                                showResourceEdit && onEdit && (
+                                    <LinkButton
+                                        disabled={ isResourceComingSoon || disabled }
+                                        hoverType="underline"
+                                        className="info-card-inner-action"
+                                        onClick={ onEdit }
+                                        data-componentid={ `${ componentId }-item-edit-button` }
+                                        data-testid={ `${ testId }-item-edit-button` }
+                                    >
+                                        { editButtonLabel }
+                                        <Icon name="chevron right"/>
+                                    </LinkButton>
+                                )
+                            }
+                        </div>
+                        <div className="right">
+                            {
+                                showResourceDelete && onDelete && !(isResourceComingSoon || disabled) && (
+                                    <GenericIcon
+                                        square
+                                        hoverable
+                                        transparent
+                                        floated="right"
+                                        className="info-card-inner-action delete-button"
+                                        icon={ <Icon name="trash alternate"/> }
+                                        data-componentid={ `${ componentId }-item-delete-button` }
+                                        data-testid={ `${ testId }-item-delete-button` }
+                                        onClick={ onDelete }
+                                    />
+                                )
+                            }
+                        </div>
                     </div>
                 )
             }

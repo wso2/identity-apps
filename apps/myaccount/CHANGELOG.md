@@ -1,5 +1,42 @@
 # @wso2is/myaccount
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4214](https://github.com/wso2/identity-apps/pull/4214) [`d0a7d166f9`](https://github.com/wso2/identity-apps/commit/d0a7d166f955d733f664ddc9d94cedebf460fff1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with handling empty app basename
+
+## 2.0.12
+
+### Patch Changes
+
+- [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
+## 2.0.11
+
+### Patch Changes
+
+- [#4179](https://github.com/wso2/identity-apps/pull/4179) [`b2bfe06334`](https://github.com/wso2/identity-apps/commit/b2bfe06334e5f860239cca76dcf1d456f9ecd62d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change theme storing variable names in localstorage
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring Chinese and Japanese language support
+
+* [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve i18n support for My Account app
+
+* Updated dependencies [[`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96), [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96)]:
+  - @wso2is/theme@2.0.8
+  - @wso2is/i18n@2.0.6
+  - @wso2is/react-components@2.0.5
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4166](https://github.com/wso2/identity-apps/pull/4166) [`337db8ebb6`](https://github.com/wso2/identity-apps/commit/337db8ebb6edc052f57f8678da622f322496886d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update missing dependency in dynamic-forms module
+
 ## 2.0.8
 
 ### Patch Changes

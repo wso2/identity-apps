@@ -84,11 +84,6 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
-%>
-
 <html lang="en-US">
     <head>
         <%-- header --%>
@@ -116,15 +111,7 @@
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                     if (productTitleFile.exists()) {
                 %>
-                    <%
-                        if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
-                    %>
-                        <div class="product-title">
-                            <jsp:include page="extensions/product-title.jsp"/>
-                        </div>
-                    <% } else { %>
-                        <jsp:include page="extensions/product-title.jsp"/>
-                    <% } %>
+                    <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
                     <jsp:include page="includes/product-title.jsp"/>
                 <% } %>

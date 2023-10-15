@@ -170,5 +170,23 @@
             <i class="de flag"></i>
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.german")%>
         </div>
+
+        <div class="item"
+             data-value="zh_CN"
+             style="background-color: var(--language-selector-background-color) !important;
+             color: var(--language-selector-text-color) !important;"
+        >
+            <i class="cn flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.chinese")%>
+        </div>
+        
+        <div class="item"
+             data-value="ja_JP"
+             style="background-color: var(--language-selector-background-color) !important;
+             color: var(--language-selector-text-color) !important;"
+        >
+            <i class="jp flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.japanese")%>
+        </div>
     </div>
 </div>

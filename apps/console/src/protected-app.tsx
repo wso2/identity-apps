@@ -74,7 +74,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -168,8 +168,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -628,12 +628,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
                             ]
                     : window["AppUtils"].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [
-                                ...AppUtils.getHiddenRoutes(), 
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                            ]
+                        ? [
+                            ...AppUtils.getHiddenRoutes(), 
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                        ]
                         : [ 
                             ...AppUtils.getHiddenRoutes(), 
                             ...AppConstants.ORGANIZATION_ROUTES 
@@ -647,7 +645,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(),
+            getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,

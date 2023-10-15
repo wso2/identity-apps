@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -132,7 +132,7 @@ export class ServerConfigurationsConstants {
 	/**
 	 * UUID of the identity governance password expiry connector.
 	 */
-	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnlWMg";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
@@ -324,4 +324,9 @@ export class ServerConfigurationsConstants {
 	 * Extensions Constants.
 	 */
 	public  static  readonly ALL: string = "all";
+	
+	/**
+	 * Multi Attribute Login Constants.
+	 */
+	public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
 }

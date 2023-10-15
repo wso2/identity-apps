@@ -115,7 +115,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou " +
+                                    "Ouvrez un compte Gravatar en vous rendant sur le <1>site officiel de Gravatar</1> ou " +
                                     "utilisez l'un des choix suivants.",
                                 header: "Aucune image Gravatar correspondante trouvée !"
                             }
@@ -5460,20 +5460,37 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "Représentation du schéma d'échange d'attributs (axschema) "
+                            + "pour les attributs utilisateur.",
+                        heading: "Schéma d'échange d'attributs"
+                    },
                     custom: {
                         description: "Représentation de protocole personnalisé pour les " +
                             "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
                         heading: "Attributs personnalisés"
+                    },
+                    eidas: {
+                        description: "La représentation du protocole eIDAS pour les attributs utilisateur.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "Représentation du protocole OpenID Connect pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "La représentation du protocole OpenID pour les attributs utilisateur.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "Représentation du protocole XML SOAP pour les attributs utilisateur.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

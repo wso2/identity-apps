@@ -1,5 +1,35 @@
 # @wso2is/theme
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4183](https://github.com/wso2/identity-apps/pull/4183) [`64d9eee077`](https://github.com/wso2/identity-apps/commit/64d9eee077973152af4c9e0e6481d53383489477) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in branding preview section
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4180](https://github.com/wso2/identity-apps/pull/4180) [`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the branding preview logo issue
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve multi attribute login feature
+
+## 2.0.7
+
+### Patch Changes
+
+- [#4168](https://github.com/wso2/identity-apps/pull/4168) [`979e817dbf`](https://github.com/wso2/identity-apps/commit/979e817dbf6600b6f9cc387b2ab772a89cae0221) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Enable expert mode in Identity Server Console
+
 ## 2.0.6
 
 ### Patch Changes

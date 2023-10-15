@@ -1,5 +1,47 @@
 # @wso2is/identity-apps-core
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4204](https://github.com/wso2/identity-apps/pull/4204) [`9fcb8cf8c4`](https://github.com/wso2/identity-apps/commit/9fcb8cf8c45a9315df5f903ef11267e0cea8a28b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add unverified msft account error code handling logic
+
+## 2.0.11
+
+### Patch Changes
+
+- [#4205](https://github.com/wso2/identity-apps/pull/4205) [`ff9bf62485`](https://github.com/wso2/identity-apps/commit/ff9bf624859edf783b0ff7883c7509daabb7c4ea) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve pages to support layout and branding customization
+
+- Updated dependencies [[`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58)]:
+  - @wso2is/theme@2.0.9
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4198](https://github.com/wso2/identity-apps/pull/4198) [`c6f2e06efd`](https://github.com/wso2/identity-apps/commit/c6f2e06efd7a6856db6491d0bc9c24a54a34decf) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve theme bundling script
+
+* [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
+- [#4198](https://github.com/wso2/identity-apps/pull/4198) [`c58635c51e`](https://github.com/wso2/identity-apps/commit/c58635c51e01b8db984b53e6749a2c8f6d82404a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bug fixes in recovery portal
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4186](https://github.com/wso2/identity-apps/pull/4186) [`c3a534895d`](https://github.com/wso2/identity-apps/commit/c3a534895d6dd2f920e6904ed7e1533a84213db2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n mapping for invalid code error message in device grant flow
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve multi attribute login feature
+
+* [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring Chinese and Japanese language support
+
+* Updated dependencies [[`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96)]:
+  - @wso2is/theme@2.0.8
+
 ## 2.0.7
 
 ### Patch Changes

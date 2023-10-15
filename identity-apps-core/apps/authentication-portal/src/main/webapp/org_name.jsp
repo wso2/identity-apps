@@ -150,6 +150,9 @@
                     }
                 %>
             </layout:component>
+            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+                <jsp:include page="${pathOfDynamicComponent}" />
+            </layout:dynamicComponent>
         </layout:main>
 
         <%-- footer --%>

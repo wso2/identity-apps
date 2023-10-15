@@ -1192,8 +1192,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             gravatar: {
                                 errors: {
                                     noAssociation: {
-                                        content: t("myAccount:modals.editAvatarModal.content.gravatar.errors" +
-                                            ".noAssociation.content"),
+                                        content: (
+                                            <Trans
+                                                i18nKey={
+                                                    "myAccount:modals.editAvatarModal.content.gravatar.errors." + 
+                                                    "noAssociation.content"
+                                                }
+                                            >
+                                                It seems like the selected email is not registered on Gravatar.
+                                                Sign up for a Gravatar account by visiting 
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                or use one of the following.
+                                            </Trans>
+                                        ),
                                         header: t("myAccount:modals.editAvatarModal.content.gravatar.errors" +
                                             ".noAssociation.header")
                                     }

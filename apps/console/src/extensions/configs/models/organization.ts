@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,8 @@
  * under the License.
  */
 
-import { ReactElement } from "react";
-import { BreadcrumbItem } from "../../../features/organizations/models";
-
 export interface OrganizationConfigs {
     allowNavigationInDropdown: boolean;
-    canCreateOrganization: () => boolean;
-    showOrganizationDropdown: boolean;
     showSwitcherInTenants: boolean;
-    superOrganizationBreadcrumb: (
-        breadcrumbItem: BreadcrumbItem,
-        onClick: (breadcrumbItem: BreadcrumbItem) => void
-    ) => ReactElement;
-    tenantSwitcher: (dropdownTrigger?: ReactElement, disable?: boolean) => ReactElement;
+    showOrganizationDropdown: boolean;
 }

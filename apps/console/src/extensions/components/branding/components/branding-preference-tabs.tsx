@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,7 @@ import {
 import { BrandingPreferencePreview } from "./preview";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import { AppState } from "../../../../features/core/store";
+import { commonConfig } from "../../../configs";
 import { BrandingPreferencesConstants } from "../constants";
 import { BrandingPreferenceMeta } from "../meta";
 import {
@@ -277,7 +278,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     data-componentid="branding-preference-advanced-form"
                 />
                 <Divider hidden/>
-                { !isLoading && (
+                { !commonConfig.enableDefaultBrandingPreviewSection && !isLoading && (
                     <Message info className={ "mb-5 connector-info" }>
                         <Heading as="h3">
                             { t("extensions:develop.branding.tabs.general.customRequest.heading") }

@@ -72,15 +72,7 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-                <%
-                    if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
-                %>
-                    <div class="product-title">
-                        <jsp:include page="extensions/product-title.jsp"/>
-                    </div>
-                <% } else { %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } %>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
@@ -167,6 +159,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

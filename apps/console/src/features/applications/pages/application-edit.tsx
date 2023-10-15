@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, StorageIdentityAppsSettingsInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -68,7 +68,7 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
 /**
  * Proptypes for the applications edit page component.
  */
-interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps {
+interface ApplicationEditPageInterface extends IdentifiableComponentInterface, RouteComponentProps {
 }
 
 /**
@@ -84,7 +84,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const {
         location,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
@@ -541,7 +541,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             } }
             isLoading={ isApplicationRequestLoading }
             backButton={ {
-                "data-testid": `${testId}-page-back-button`,
+                "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back", 
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
@@ -549,13 +549,16 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             titleTextAlign="left"
             bottomMargin={ false }
             pageHeaderMaxWidth={ true }
-            data-testid={ `${ testId }-page-layout` }
+            data-componentid={ `${ componentId }-page-layout` }
             truncateContent={ true }
             action={ (
                 <>
                     {
-                        applicationConfig.editApplication.getActions(inboundProtocolConfigs?.oidc?.clientId,
-                            tenantDomain, testId)
+                        applicationConfig.editApplication.getActions(
+                            inboundProtocolConfigs?.oidc?.clientId,
+                            tenantDomain,
+                            componentId
+                        )
                     }
                 </>
             ) }
@@ -568,7 +571,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 onDelete={ handleApplicationDelete }
                 onUpdate={ handleApplicationUpdate }
                 template={ applicationTemplate }
-                data-testid={ testId }
+                data-componentid={ componentId }
                 urlSearchParams={ urlSearchParams }
                 getConfiguredInboundProtocolsList={ (list: string[]) => {
                     setInboundProtocolList(list);
@@ -586,7 +589,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
  * Default proptypes for the application edit page component.
  */
 ApplicationEditPage.defaultProps = {
-    "data-testid": "application-edit"
+    "data-componentid": "application-edit"
 };
 
 /**

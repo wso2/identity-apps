@@ -120,7 +120,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore, setUserStore ] = useState("primary");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -312,11 +312,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getUserStores = () => {
         const storeOptions: UserStoreItem[] = [
             {
-                key: -2,
-                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
-                value: "all"
-            },
-            {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
@@ -484,11 +479,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === "all") {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data.value as string);
     };
 
     const onUserDelete = (): void => {
@@ -709,11 +700,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                             <RootOnlyComponent>
                                 <Dropdown
+                                    value={ userStore }
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="all"
                                 />
                             </RootOnlyComponent>
                         </>

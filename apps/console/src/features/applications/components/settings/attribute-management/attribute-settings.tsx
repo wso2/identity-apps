@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,8 @@ import {
     ClaimDialect,
     ClaimsGetParams,
     ExternalClaim,
-    SBACInterface,
-    TestableComponentInterface
+    IdentifiableComponentInterface,
+    SBACInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
@@ -93,7 +93,8 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * Id of the application.
      */
@@ -181,7 +182,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         onlyOIDCConfigured,
         onUpdate,
         readOnly,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -1149,8 +1150,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 isUserAttributesLoading={ isUserAttributesLoading }
                                                 setUserAttributesLoading={ setUserAttributesLoading }
                                                 onlyOIDCConfigured={ onlyOIDCConfigured }
-                                                data-testid={ `${ testId }-attribute-selection-oidc` }
-                                                data-componentid={ `${ testId }-attribute-selection-oidc` }
+                                                data-testid={ `${ componentId }-attribute-selection-oidc` }
+                                                data-componentid={ `${ componentId }-attribute-selection-oidc` }
                                             />
                                         )
                                         : (
@@ -1188,8 +1189,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 isUserAttributesLoading={ isUserAttributesLoading }
                                                 setUserAttributesLoading={ setUserAttributesLoading }
                                                 onlyOIDCConfigured={ onlyOIDCConfigured }
-                                                data-testid={ `${ testId }-attribute-selection` }
                                                 duplicatedMappingValues={ duplicatedMappingValues }
+                                                data-testid={ `${ componentId }-attribute-selection` }
                                             />
                                         )
                                 }
@@ -1220,7 +1221,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         technology={ technology }
                                         applicationTemplateId={ applicationTemplateId }
                                         onlyOIDCConfigured={ onlyOIDCConfigured }
-                                        data-testid={ `${ testId }-advanced-attribute-settings-form` }
+                                        data-testid={ `${ componentId }-advanced-attribute-settings-form` }
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -1268,7 +1269,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                             featureConfig?.applications?.scopes?.update,
                                             allowedScopes)
                                     }
-                                    data-testid={ `${ testId }-role-mapping` }
+                                    data-testid={ `${ componentId }-role-mapping` }
                                 />
                             ) }
                             {
@@ -1283,7 +1284,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                     primary
                                                     size="small"
                                                     onClick={ updateValues }
-                                                    data-testid={ `${ testId }-submit-button` }
+                                                    data-testid={ `${ componentId }-submit-button` }
                                                 >
                                                     { t("common:update") }
                                                 </Button>
@@ -1296,8 +1297,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     ) : null
                     }
                 </EmphasizedSegment>
-            ) :
-            (
+            ) : (
                 <EmphasizedSegment padded="very">
                     <ContentLoader inline="centered" active/>
                 </EmphasizedSegment>
@@ -1309,7 +1309,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
  * Default props for the application attribute settings component.
  */
 AttributeSettings.defaultProps = {
-    "data-testid": "application-attribute-settings"
+    "data-componentid": "application-attribute-settings"
 };
 
 export default AttributeSettings;

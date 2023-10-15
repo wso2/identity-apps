@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,7 @@ import {
     SegmentedAccordion,
     Text
 } from "@wso2is/react-components";
+import { commonConfig } from "apps/console/src/extensions/configs";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -2861,7 +2862,10 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                                         }
                                     }
                                     data-componentid={ `${componentId}-${layoutName}-layout-swatch` }
-                                    premium={ layoutName === PredefinedLayouts.CUSTOM }
+                                    premium={ 
+                                        !commonConfig.enableDefaultBrandingPreviewSection 
+                                            && (layoutName === PredefinedLayouts.CUSTOM) 
+                                    }
                                     listen={ () => {
                                         setLayout({
                                             ...layout,

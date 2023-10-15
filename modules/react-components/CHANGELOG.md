@@ -1,5 +1,23 @@
 # @wso2is/react-components
 
+## 2.0.6
+
+### Patch Changes
+
+- [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
+- Updated dependencies [[`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466)]:
+  - @wso2is/theme@2.0.11
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4160](https://github.com/wso2/identity-apps/pull/4160) [`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve message wordings
+
+- Updated dependencies [[`011b6fcab1`](https://github.com/wso2/identity-apps/commit/011b6fcab11329116957ca9bc00265dcb6bc9e96)]:
+  - @wso2is/theme@2.0.8
+
 ## 2.0.4
 
 ### Patch Changes
