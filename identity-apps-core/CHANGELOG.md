@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4227](https://github.com/wso2/identity-apps/pull/4227) [`d3538bf6c0`](https://github.com/wso2/identity-apps/commit/d3538bf6c0876486240785fb9d4035d5ce69c597) Thanks [@brionmario](https://github.com/brionmario)! - Fix sign up button updating issue
+
+* [#4223](https://github.com/wso2/identity-apps/pull/4223) [`4595a8096f`](https://github.com/wso2/identity-apps/commit/4595a8096f6bd51906ac88cd435b24be6784d0be) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add i18n support for SASS product tagline
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/theme@2.0.12
+
 ## 2.0.12
 
 ### Patch Changes
