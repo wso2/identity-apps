@@ -7,19 +7,19 @@
  * You may not alter or remove any copyright or other notice from copies of this content."
  */
 
-import { Config } from "../../../../../features/core/configs";
+import { Config } from "../../../core/configs";
 
 /**
  * Data set required to generate layout html code.
  */
 export const addCommonDataForTheLayout = (
-    data: Record<string, string>, 
+    data: Record<string, string>,
     tenantDomain: string
 ): Record<string, string> => {
     data["BASE_URL"] = Config.getDeploymentConfig().extensions?.layoutStoreURL
         ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)
             .replace("${tenantDomain}", tenantDomain)
         : "";
-        
+
     return data;
 };

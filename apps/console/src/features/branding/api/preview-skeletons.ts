@@ -18,12 +18,12 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
-import { AppConstants } from "../../../../features/core/constants";
+import { AppConstants } from "../../core/constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../features/core/hooks/use-request";
+} from "../../core/hooks/use-request";
 import { PreviewScreenType } from "../models/branding-preferences";
 
 /**

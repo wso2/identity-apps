@@ -22,7 +22,7 @@ import parse from "html-react-parser";
 import Mustache from "mustache";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../../../features/core/store";
+import { AppState } from "../../../core/store";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { BrandingPreferenceInterface } from "../../models";
 

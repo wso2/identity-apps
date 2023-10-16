@@ -20,13 +20,13 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { I18nConstants } from "../../../../features/core/constants";
+import { I18nConstants } from "../../core/constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../features/core/hooks/use-request";
-import { store } from "../../../../features/core/store";
+} from "../../core/hooks/use-request";
+import { store } from "../../core/store";
 import { BrandingPreferencesConstants } from "../constants";
 import {
     BrandingPreferenceAPIResponseInterface,

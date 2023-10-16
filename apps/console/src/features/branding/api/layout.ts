@@ -17,13 +17,13 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { Config } from "../../../../features/core/configs";
-import { AppConstants } from "../../../../features/core/constants";
+import { Config } from "../../core/configs";
+import { AppConstants } from "../../core/constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../features/core/hooks/use-request";
+} from "../../core/hooks/use-request";
 import { PredefinedLayouts } from "../meta";
 
 /**

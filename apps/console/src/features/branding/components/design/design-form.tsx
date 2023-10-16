@@ -50,8 +50,8 @@ import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
-import { AppConstants } from "../../../../../features/core/constants";
-import { AppState } from "../../../../../features/core/store";
+import { AppConstants } from "../../../core/constants";
+import { AppState } from "../../../core/store";
 import { useLayout } from "../../api";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
@@ -2862,9 +2862,9 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                                         }
                                     }
                                     data-componentid={ `${componentId}-${layoutName}-layout-swatch` }
-                                    premium={ 
-                                        !commonConfig.enableDefaultBrandingPreviewSection 
-                                            && (layoutName === PredefinedLayouts.CUSTOM) 
+                                    premium={
+                                        !commonConfig.enableDefaultBrandingPreviewSection
+                                            && (layoutName === PredefinedLayouts.CUSTOM)
                                     }
                                     listen={ () => {
                                         setLayout({
