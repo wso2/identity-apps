@@ -143,7 +143,7 @@
                             <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui fluid button"
-                                    value="Provide email address">
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
                             </div>
                         <% } %>
                     </form>
