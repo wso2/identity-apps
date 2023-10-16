@@ -20,6 +20,7 @@ import {
     AlertLevels,
     ClaimDialect,
     ExternalClaim,
+    RolesInterface,
     SCIMResource,
     SCIMSchemaExtension,
     TestableComponentInterface
@@ -46,6 +47,9 @@ import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
+import { getGroupList } from "../../../../features/groups/api";
+import { GroupsInterface } from "../../../../features/groups/models";
+import { getRolesList } from "../../../../features/roles/api";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import { UserStoreDetails, UserStoreProperty, getCertificateIllustrations } from "../../../core";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
@@ -66,6 +70,7 @@ import {
     SCIMBulkResponseOperation
 } from "../../models";
 import { BulkImportResponseList } from "../bulk-import-response-list";
+
 
 /**
  * Prototypes for the BulkImportUserWizardComponent.
@@ -98,6 +103,23 @@ interface Validation {
     error: ValidationError;
 }
 
+interface User {
+    value: string;
+    display: string;
+}
+
+interface RoleUserAssociation {
+    id: string;
+    displayName: string;
+    users: User[];
+}
+
+interface GroupMemberAssociation {
+    id: string;
+    displayName: string;
+    members: User[];
+}
+
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
 const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
     undefined,  // Mimetype.
@@ -108,6 +130,7 @@ const DATA_VALIDATION_ERROR: string = "Data validation error";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
 const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
+const BULK_ID: string = "bulkId";
 
 /**
  *  BulkImportUserWizard component.
@@ -135,11 +158,58 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+
     
+    /**
+     * Set the user store list.
+     */
     useEffect(() => {
         setSelectedUserStore(userstore);
         getUserStoreList();
     }, [ userstore ]);
+    
+    /**
+     * Fetch the user roles list.
+     */
+    const getRoleUserAssociation = async (): Promise<Record<string, RoleUserAssociation>> => {
+        try {
+            const response: any = await getRolesList(null);
+            const newRoles: Record<string, RoleUserAssociation> = {};
+    
+            response.data.Resources.map((role: RolesInterface) => {
+                newRoles[role.displayName.toLowerCase()] = {
+                    displayName: role.displayName,
+                    id: role.id,
+                    users: []
+                };
+            });
+    
+            return newRoles;
+        } catch (error) {
+            setHasError(true);
+            throw error;
+        }
+    };
+
+    const getGroupMemberAssociation = async (): Promise<Record<string, GroupMemberAssociation>> => {
+        try {
+            const response: any = await getGroupList(null);
+            const newGroups: Record<string, GroupMemberAssociation> = {};
+
+            response.data.Resources.map((group: GroupsInterface) => {
+                newGroups[group.displayName.toLowerCase()] = {
+                    displayName: group.displayName,
+                    id: group.id,
+                    members: []
+                };
+            });
+
+            return newGroups;
+        } catch (error) {
+            setHasError(true);
+            throw error;
+        }
+    };
 
     /**
      * Fetches SCIM dialects.
@@ -536,10 +606,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param headers - csv headers.
      * @returns
      */
-    const generateData =
+    const generateUserOperationData =
         (   row: string[],
             filteredAttributeMapping: CSVAttributeMapping[],
-            headers: string[]): Record<string, unknown> => {
+            headers: string[]
+        ): Record<string, unknown> => {
             const dataObj: Record<string, unknown> = {};
             const schemasSet: Set<string> = new Set([ UserManagementConstants.SCIM2_USER_SCHEMA ]);
 
@@ -550,6 +621,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 );
                 const attributeValue: string = row[headers.indexOf(attribute.attributeName.toLowerCase())];
                 const isMultiValued: boolean = scimAttribute.includes("#");
+
+                if (attribute.attributeName === UserManagementConstants.ROLES ||
+                    attribute.attributeName === UserManagementConstants.GROUPS) {
+                    continue;
+                }
 
                 // Handle username attribute.
                 if (scimAttribute === RequiredBulkUserImportAttributes.USERNAME) {
@@ -681,26 +757,207 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         };
 
     /**
-     * Generate SCIM Operation.
+     * Generate SCIM User Operation.
      *
      * @param row - user data row.
      * @param filteredAttributeMapping - filtered attribute mapping.
      * @param headers - csv headers.
      * @returns SCIM Operation
      */
-    const generateOperation = (
+    const generateUserOperation = (
         row: string[],
         filteredAttributeMapping: CSVAttributeMapping[],
-        headers: string[]
-    ): SCIMBulkOperation => {
+        headers: string[],
+        roleUserAssociations: Record<string, RoleUserAssociation>,
+        groupMemberAssociations: Record<string, GroupMemberAssociation>
+    ): {
+        newGroupMemberAssociations: Record<string, GroupMemberAssociation>;
+        newRoleUserAssociations: Record<string, RoleUserAssociation>;
+        userOperation: SCIMBulkOperation;
+    } => {
         const asyncOperationID: string = uuidv4();
+        const bulkId: string =
+            `${BULK_ID}:${row[headers.indexOf(
+                RequiredBulkUserImportAttributes.USERNAME.toLowerCase())]}:${asyncOperationID}`;
+        const username: string = row[headers.indexOf(RequiredBulkUserImportAttributes.USERNAME.toLowerCase())];
 
-        return {
-            bulkId: `bulkId:${row[headers.indexOf("username")]}:${asyncOperationID}`,
-            data: generateData(row, filteredAttributeMapping, headers),
+        let newRoleUserAssociations: Record<string, RoleUserAssociation> = { ...roleUserAssociations };
+        let newGroupMemberAssociations: Record<string, GroupMemberAssociation> = { ...groupMemberAssociations };
+
+        // Check if roles are included in the headers.
+        if (headers.includes(UserManagementConstants.ROLES)) {
+            const csvRoles: string[] = row[headers.indexOf(UserManagementConstants.ROLES)].split("|");
+            const uniqueCSVRoles: string[] = [ ...new Set(csvRoles) ];
+
+            uniqueCSVRoles.forEach((role: string) => {
+                if (role.toLowerCase() in roleUserAssociations) {
+                    newRoleUserAssociations = addUserToRole(role, {
+                        display: username,
+                        value: `bulkId:${bulkId}`
+                    }, newRoleUserAssociations);
+                } else {
+                    setValidationError({
+                        descriptionKey: "invalidRole.description",
+                        descriptionValues: { role },
+                        messageKey: "invalidRole.message"
+                    });
+                    throw new Error(DATA_VALIDATION_ERROR);
+                }
+            });
+        }
+
+        // Check if groups are included in the headers.
+        if (headers.includes(UserManagementConstants.GROUPS)) {
+            const csvGroups: string[] = row[headers.indexOf(UserManagementConstants.GROUPS)].split("|");
+            const uniqueCSVGroups: string[] = [ ...new Set(csvGroups) ];
+
+            uniqueCSVGroups.forEach((group: string) => {
+                if (group.toLowerCase() in groupMemberAssociations) {
+                    newGroupMemberAssociations = addMemberToGroup(group, {
+                        display: username,
+                        value: `bulkId:${bulkId}`
+                    }, newGroupMemberAssociations);
+                } else {
+                    setValidationError({
+                        descriptionKey: "invalidRole.description",
+                        descriptionValues: { group },
+                        messageKey: "invalidRole.message"
+                    });
+                    throw new Error(DATA_VALIDATION_ERROR);
+                }
+            });
+        }
+
+        const userOperation: SCIMBulkOperation = {
+            bulkId,
+            data: generateUserOperationData(row, filteredAttributeMapping, headers),
             method: "POST",
             path: "/Users"
         };
+            
+        return {
+            newGroupMemberAssociations,
+            newRoleUserAssociations,
+            userOperation
+        };
+    }; 
+    
+    /**
+     * Add member to role.
+     * @param roleName - role name.
+     * @param userBulkId - user bulk id.
+     */
+    const addUserToRole = (
+        roleName: string, 
+        user: User,
+        roleUserAssociations: Record<string, RoleUserAssociation>
+    ): Record<string, RoleUserAssociation> => {
+        // Copying existing roleUserAssociations to avoid direct mutation of parameters.
+        const updatedRoleUserAssociations: Record<string, RoleUserAssociation>  = { ...roleUserAssociations }; 
+    
+        const existingRole: RoleUserAssociation = updatedRoleUserAssociations[roleName.toLowerCase()];
+
+        updatedRoleUserAssociations[roleName.toLowerCase()] = {
+            ...existingRole,
+            users: [ ...new Set([ ...existingRole.users, user ]) ]
+        };
+        
+        return updatedRoleUserAssociations;
+    };
+    
+    
+    /**
+     * Add member to group.
+     * @param groupName - group name.
+     * @param userBulkId  - user bulk id.
+     */
+    const addMemberToGroup = (
+        groupName: string, 
+        member: User,
+        groupMemberAssociations: Record<string, GroupMemberAssociation>
+    ): Record<string, GroupMemberAssociation> => {
+        // Copying existing groupMemberAssociations to avoid direct mutation
+        const updatedGroupMemberAssociations: Record<string, GroupMemberAssociation> = { ...groupMemberAssociations }; 
+    
+        const existingGroup: GroupMemberAssociation = updatedGroupMemberAssociations[groupName.toLowerCase()];
+
+        updatedGroupMemberAssociations[groupName.toLowerCase()] = {
+            ...existingGroup,
+            members: Array.from(new Set([ ...existingGroup.members, member ]))
+        };
+            
+        return updatedGroupMemberAssociations;
+    };
+    
+
+    /**
+     * Generate SCIM Role Operations.
+     *
+     * @returns SCIM Role Operations.
+     */
+    const generateRoleOperation = (roleUserAssociations: Record<string, RoleUserAssociation>): SCIMBulkOperation[] => {
+        const asyncOperationID: string = uuidv4();
+
+        return Object.values(roleUserAssociations)
+            .filter((roleUserAssociation: RoleUserAssociation) => roleUserAssociation.users.length > 0)
+            .map((roleUserAssociation: RoleUserAssociation) => {
+                const bulkId: string = `${BULK_ID}:${roleUserAssociation.displayName}:${asyncOperationID}`;
+                
+                return {
+                    bulkId,
+                    data: {
+                        Operations: [
+                            {
+                                op: "add",
+                                value: {
+                                    users: roleUserAssociation.users.map((user: User) => ({
+                                        display: user.display,
+                                        value: user.value
+                                    }))
+                                }
+                            }
+                        ]
+                    },
+                    method: "PATCH",
+                    path: `/Roles/${roleUserAssociation.id}`
+                };
+            });
+    };
+
+    /**
+     * Generate SCIM Role Operations.
+     *
+     * @returns SCIM Role Operations.
+     */
+    const generateGroupOperations = (
+        groupMemberAssociations: Record<string, GroupMemberAssociation>
+    ): SCIMBulkOperation[] => {
+        const asyncOperationID: string = uuidv4();
+
+        return Object.values(groupMemberAssociations)
+            .filter((groupMemberAssociation: GroupMemberAssociation) => groupMemberAssociation.members.length > 0)
+            .map((groupMemberAssociation: GroupMemberAssociation) => {
+                const bulkId: string = `${BULK_ID}:${groupMemberAssociation.displayName}:${asyncOperationID}`;
+            
+                return {
+                    bulkId,
+                    data: {
+                        Operations: [
+                            {
+                                op: "add",
+                                value: {
+                                    members: groupMemberAssociation.members.map((user: User) => ({
+                                        display: user.display,
+                                        value: user.value
+                                    }))
+                                }
+                            }
+                        ]
+                    },
+                    method: "PATCH",
+                    path: `/Groups/${groupMemberAssociation.id}`
+                };
+            });
     };
 
     /**
@@ -709,15 +966,49 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param attributeMapping - attribute mapping.
      * @returns SCIMBulkRequestBody
      */
-    const generateSCIMRequestBody = (attributeMapping: CSVAttributeMapping[]): SCIMBulkEndpointInterface => {
+    const generateSCIMRequestBody = async (attributeMapping: CSVAttributeMapping[]):
+        Promise<SCIMBulkEndpointInterface> => {
         const headers: string[] = userData.headers.map((header: string) => header.toLowerCase());
         const rows: string[][] = userData.items;
 
-        const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
 
-        const operations: SCIMBulkOperation[] = rows.map((row: string[]) =>
-            generateOperation(row, filteredAttributeMapping, headers)
-        );
+        const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
+        let roleUserAssociations: Record<string, RoleUserAssociation> = await getRoleUserAssociation();
+        let groupMemberAssociations: Record<string, GroupMemberAssociation> = await getGroupMemberAssociation();
+
+        const userOperations: SCIMBulkOperation[] = [];
+        let roleOperations: SCIMBulkOperation[] = [];
+        let groupOperations: SCIMBulkOperation[] = [];
+
+        // Utilizing a for-loop for enhanced control over variable updating.
+        for (let i: number = 0; i < rows.length; i++) {
+            const row: string[] = rows[i];
+
+            const userOperationData: any = generateUserOperation(
+                row,
+                filteredAttributeMapping,
+                headers,
+                roleUserAssociations,
+                groupMemberAssociations
+            );
+            
+            // Append the user operation to the collection.
+            userOperations.push(userOperationData.userOperation);
+
+            // Updating the association states.
+            roleUserAssociations = userOperationData.newRoleUserAssociations;
+            groupMemberAssociations = userOperationData.newGroupMemberAssociations;
+        }
+
+        if (headers.includes(UserManagementConstants.ROLES)) {
+            roleOperations = generateRoleOperation(roleUserAssociations);
+        }
+
+        if (headers.includes(UserManagementConstants.GROUPS)) {
+            groupOperations = generateGroupOperations(groupMemberAssociations);
+        }
+        
+        const operations: SCIMBulkOperation[] = userOperations.concat(roleOperations).concat(groupOperations);
 
         return {
             Operations: operations,
@@ -747,7 +1038,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 return;
             }
 
-            const scimRequestBody: SCIMBulkEndpointInterface = generateSCIMRequestBody(attributeMapping);
+            const scimRequestBody: SCIMBulkEndpointInterface = await generateSCIMRequestBody(attributeMapping);
             
             setShowResponseView(true);
             const scimResponse: any = await addBulkUsers(scimRequestBody);
@@ -771,6 +1062,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
 
         } finally {
+            setIsLoading(false);
             setIsSubmitting(false);
         }
     };
