@@ -128,7 +128,7 @@ export class BrandingPreferenceUtils {
             );
         }
 
-        if (migratedThemePreference.configs.removeAsgardeoBranding) {
+        if ("removeAsgardeoBranding" in migratedThemePreference.configs) {
             migratedThemePreference.configs.removeDefaultBranding = 
                 migratedThemePreference.configs.removeAsgardeoBranding;
             delete migratedThemePreference.configs.removeAsgardeoBranding;

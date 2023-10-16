@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                         <a className="item no-hover" id="copyright">
                             <span>{ brandingPreference.organizationDetails.copyrightText }</span>
                             {
-                                (brandingPreference.configs?.removeAsgardeoBranding === false) && (
+                                (brandingPreference.configs?.removeDefaultBranding === false) && (
                                     <Fragment>
                                         <div className="powered-by-logo-divider">|</div>
                                             Powered by <div className="powered-by-logo">
