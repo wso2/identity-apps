@@ -51,10 +51,10 @@ import {
 import { useGroupList } from "../../../groups/api/groups";
 import { UserBasicInterface } from "../../../users/models";
 import { RoleConstants } from "../../constants";
-import { AssignedInterface } from "../../models/roles";
+import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
 
-type RoleGroupsPropsInterface = IdentifiableComponentInterface & AssignedInterface;
+type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
 export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     props: RoleGroupsPropsInterface
@@ -63,7 +63,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const {
         role,
         onRoleUpdate,
-        isReadOnly
+        isReadOnly,
+        tabIndex
     } = props;
 
     const { t } = useTranslation();
@@ -298,7 +299,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         message: t("console:manage.features.roles.edit.groups.notifications.success.message")
                     })
                 );
-                onRoleUpdate();
+                onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
                 if (error.response && error.response.data.detail) {

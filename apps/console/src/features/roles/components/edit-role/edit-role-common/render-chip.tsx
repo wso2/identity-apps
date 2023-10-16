@@ -72,7 +72,7 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      * @param event - Mouse event
      * @param option - Group or user object
      */
-    const handleChipMouseEnter = (event: SyntheticEvent, option: GroupsInterface | UserBasicInterface) => {
+    const handleChipMouseEnter = (event: SyntheticEvent) => {
         setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
@@ -87,6 +87,12 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
 
     return (
         <>
+            <Chip
+                { ...props }
+                key={ key }
+                label={ primaryText }
+                onMouseEnter={ handleChipMouseEnter }
+            />
             {
                 activeOption?.id === option.id
                     ? (
@@ -99,12 +105,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
                     )
                     : null
             }
-            <Chip
-                { ...props }
-                key={ key }
-                label={ primaryText }
-                onMouseEnter={ (event: SyntheticEvent) => handleChipMouseEnter(event, option) }
-            />
         </>
     );
 };
