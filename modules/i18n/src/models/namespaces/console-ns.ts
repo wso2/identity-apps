@@ -3341,6 +3341,10 @@ export interface ConsoleNS {
                     assignUserRoleBtn: string;
                     metaColumnBtn: string;
                 };
+                addUserDropDown: {
+                    addNewUser: string;
+                    bulkImport: string;
+                }
                 forms: {
                     validation: {
                         formatError: string;
@@ -3357,6 +3361,19 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: NotificationItem;
+                            columnMismatchError: NotificationItem;
+                            emptyHeaderError: NotificationItem;
+                            missingRequiredHeaderError: NotificationItem;
+                            blockedHeaderError: NotificationItem;
+                            duplicateHeaderError: NotificationItem;
+                            invalidHeaderError: NotificationItem;
+                            emptyDataField: NotificationItem;
+                        },
+                        submit: Notification;
+                    }
                     deleteUser: Notification;
                     fetchUsers: Notification;
                     getAdminRole: Notification;
@@ -3612,6 +3629,7 @@ export interface ConsoleNS {
                         deleteDialect: Notification;
                         addDialect: Notification;
                         updateDialect: Notification;
+                        fetchSCIMResource: Notification;
                     };
                     pageLayout: {
                         list: {
@@ -5361,6 +5379,42 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                    };
+                    bulkImportUserWizard: {
+                        title: string;
+                        subTitle: string;
+                        wizardSummary: {
+                            successCount: string;
+                            failedCount: string;
+                            totalCount: string;
+                            tableHeaders: {
+                                username: string;
+                                status: string;
+                                message: string;
+                            }
+                            tableMessages: {
+                                userCreatedMessage: string;
+                                invalidDataMessage: string;
+                                userAlreadyExistsMessage: string;
+                                userCreationAcceptedMessage: string;
+                                internalErrorMessage: string;
+                            };
+                            tableStatus: {
+                                success: string;
+                                warning: string;
+                                failed: string;
+                            };
+                            alerts: {
+                                importSuccess: NotificationItem;
+                                importFailed: NotificationItem;
+                            };
+                            advanceSearch: {
+                                placeholder: string;
+                            }
+                        };
+                        buttons: {
+                            import: string;
+                        }
                     };
                     changePasswordModal: {
                         header: string;

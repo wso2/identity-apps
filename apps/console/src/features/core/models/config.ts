@@ -163,6 +163,10 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkUserImport?: FeatureAccessConfigInterface;
 }
 
 /**

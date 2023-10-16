@@ -19,7 +19,14 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim, ClaimDialect, ClaimsGetParams, ExternalClaim, HttpMethods } from "@wso2is/core/models";
+import {
+    Claim,
+    ClaimDialect,
+    ClaimDialectsGetParams,
+    ClaimsGetParams,
+    ExternalClaim,
+    HttpMethods
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ClaimManagementConstants } from "../constants";
@@ -29,15 +36,15 @@ import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
-    AsgardeoSPAClient.getInstance()
-);
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add a local claim.
  *
  * @param data - Adds this data.
- * @returns response
+ *
+ * @returns response.
  */
 export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
@@ -105,7 +112,6 @@ export const getAClaim = (id: string): Promise<any> => {
  * Update a Local Claim ID with the given data.
  *
  * @param id - Local Claim ID.
- *
  * @param data - Updates with this data.
  *
  * @returns response.
@@ -391,7 +397,8 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 /**
  * Gets the external claims with the given ID of the dialect.
  *
- * @param dialectID - Claim Dialect ID. *
+ * @param dialectID - Claim Dialect ID.
+ * 
  * @returns response.
  * @throws IdentityAppsApiException.
  */
@@ -501,7 +508,8 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
  * per the given schema id.
  * 
  * @param id - Selected schema id
- * @returns - list of 
+ * 
+ * @returns response.
  */
 export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSupportedClaimsInterface> => {
     const requestConfig: AxiosRequestConfig = {
@@ -530,6 +538,7 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
  * Fetch all local claims.
  *
  * @param params - limit, offset, sort, attributes, filter.
+ 
  * @returns response.
  * @throws IdentityAppsApiException
  */
@@ -577,7 +586,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
  * @returns response.
  * @throws IdentityAppsApiException
  */
-export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> => {
+export const getDialects = (params: ClaimDialectsGetParams): Promise<ClaimDialect[]> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -619,6 +628,7 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
  *
  * @param dialectID - Claim Dialect ID.
  * @param params - limit, offset, filter, attributes, sort.
+ *
  * @returns response.
  * @throws IdentityAppsApiException
  */
@@ -660,5 +670,46 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             }
 
             return Promise.resolve([]);
+        });
+};
+
+/**
+ * Get all SCIM resource types.
+ * 
+ * @returns response.
+ */
+export const getSCIMResourceTypes = (): Promise<any> => {
+    
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.resourceTypes}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ClaimConstants.ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ClaimConstants.ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

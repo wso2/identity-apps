@@ -5608,6 +5608,12 @@ export const console: ConsoleNS = {
                                 description: "Le dialecte a été mis à jour avec succès",
                                 message: "La mise à jour du dialecte a été effectuée avec succès"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des ressources SCIM.",
+                                message: "Quelque chose s'est mal passé"
+                            }
                         }
                     },
                     pageLayout: {
@@ -8753,6 +8759,48 @@ export const console: ConsoleNS = {
                             username: "Nom d'utilisateur"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "Importer des utilisateurs en masse",
+                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        wizardSummary: {
+                            successCount: "Nombre de réussites",
+                            failedCount: "Nombre d'échecs",
+                            totalCount: "Le compte total",
+                            tableHeaders: {
+                                username: "Nom d'utilisateur",
+                                status: "Statut",
+                                message: "Message"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "Utilisateur importé avec succès",
+                                invalidDataMessage: "Données non valides fournies",
+                                userAlreadyExistsMessage: "L'utilisateur existe déjà",
+                                userCreationAcceptedMessage: "Création d'utilisateur acceptée",
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            tableStatus: {
+                                success: "Succès",
+                                warning: "Avertissement",
+                                failed: "Échoué"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "Les utilisateurs ont été importés avec succès.",
+                                    message: "Importation réussie"
+                                },
+                                importFailed: {
+                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    message: "Révision requise."
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "Rechercher par nom d'utilisateur"
+                            }
+                        },
+                        buttons: {
+                            import: "Importer"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
@@ -8859,6 +8907,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -9251,6 +9300,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assigner un rôle",
                     metaColumnBtn: "Champs"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Ajouter un utilisateur",
+                    bulkImport: "Importation en masse"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Veuillez confirmer votre action.",
@@ -9343,6 +9396,59 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'utilisateur a été ajouté avec succès.",
                             message: "Ajout d'utilisateur réussi"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "Le fichier sélectionné ne contient aucune donnée.",
+                                message: "Fichier vide"
+                            },
+                            columnMismatchError: {
+                                description: "Certaines lignes de données du fichier déposer ne correspondent " +
+                                    "pas au nombre de colonnes requis. Veuillez examiner et corriger les données.",
+                                message: "Incompatibilité du nombre de colonnes"
+                            },
+                            emptyHeaderError: {
+                                description: "Assurez-vous que la première ligne contient les en-têtes de " +
+                                "chaque colonne.",
+                                message: "En-têtes de colonnes manquants"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "Le ou les en-têtes suivants sont requis mais sont manquants dans" +
+                                "le fichier CSV: {{ headers }}.",
+                                message: "En-têtes de colonnes obligatoires manquants"
+                            },
+                            blockedHeaderError: {
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                message: "En-têtes de colonnes bloqués"
+                            },
+                            duplicateHeaderError: {
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                message: "En-têtes de colonnes en double"
+                            },
+                            invalidHeaderError: {
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                message: "En-têtes de colonnes invalides"
+                            },
+                            emptyDataField: {
+                                description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
+                                message: "Champ de données vide"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            genericError: {
+                                description: "Impossible d'importer les utilisateurs.",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            success: {
+                                description: "Les utilisateurs ont été importés avec succès.",
+                                message: "Utilisateurs importés avec succès"
+                            }
                         }
                     },
                     deleteUser: {

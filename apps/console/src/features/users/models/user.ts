@@ -22,6 +22,7 @@ import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
 import { GroupsMemberInterface } from "../../groups";
+import { BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -341,6 +342,29 @@ export interface PayloadInterface {
         };
       }[];
       schemas: string[];
+}
+
+/**
+ * Type of the bulk user import operation status.
+ */
+export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
+
+/**
+ * Interface for the bulk user import operation response.
+ */
+export interface BulkUserImportOperationResponse {
+    username: string;
+    status: BulkUserImportOperationStatus;
+    message: string;
+    statusCode: BulkUserImportStatus;
+}
+
+/**
+ * Interface for the bulk user import operation summary.
+ */
+export interface BulkResponseSummary {
+    successCount: number;
+    failedCount: number;
 }
 
 export interface PatchBulkUserDataInterface {

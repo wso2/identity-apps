@@ -29,7 +29,7 @@ import { store } from "../../core/store";
 import { PatchGroupDataInterface } from "../../groups";
 import { PatchRoleDataInterface } from "../../roles/models";
 import { UserManagementConstants } from "../constants";
-import { UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
+import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -149,6 +149,32 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.users
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Bulk add users.
+ * 
+ * @param data - SCIM2.0 compliant request body
+ * @returns a promise containing the response.
+ */
+export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.bulk
     };
 
     return httpClient(requestConfig)

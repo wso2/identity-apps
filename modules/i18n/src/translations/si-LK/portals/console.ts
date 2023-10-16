@@ -5468,6 +5468,12 @@ export const console: ConsoleNS = {
                                 description: "උපභාෂාව සාර්ථකව යාවත්කාලීන කර ඇත.",
                                 message: "උපභාෂා යාවත්කාලීන කිරීම සාර්ථකයි"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "SCIM සම්පත් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            }
                         }
                     },
                     pageLayout: {
@@ -8554,6 +8560,48 @@ export const console: ConsoleNS = {
                             username: "පරිශීලක නාමය"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "සමූහ පරිශීලක ආනයනය​",
+                        subTitle: "ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
+                        wizardSummary: {
+                            successCount: "සාර්ථකත්ව ගණන",
+                            failedCount: "අසාර්ථක වූ ගණන",
+                            totalCount: "මුළු ගණන",
+                            tableHeaders: {
+                                username: "පරිශීලක නාමය",
+                                status: "තත්ත්වය",
+                                message: "පණිවුඩය"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "පරිශීලකයා සාර්ථකව ආනයනය කරන ලදී",
+                                invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
+                                userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
+                                userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
+                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            tableStatus: {
+                                success: "සාර්ථකයි",
+                                warning: "අවවාදයයි",
+                                failed: "අසාර්ථකයි"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                    message: "ආනයනය සාර්ථකයි"
+                                },
+                                importFailed: {
+                                    description: "<1>{{failedCount}}</1> ආනයන තුළ ගැටළු ඇති වී ඇත​.",
+                                    message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "පරිශීලක නාමයෙන් සොයන්න"
+                            }
+                        },
+                        buttons: {
+                            import: "ආනයනය කරන්න"
+                        }
+                    },
                     changePasswordModal: {
                         button: "මුරපදය නැවත සකසන්න",
                         header: "පරිශීලක මුරපදය යළි පිහිටුවන්න",
@@ -9026,6 +9074,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "භූමිකාවන් පවරන්න",
                     metaColumnBtn: "තීරු"
                 },
+                addUserDropDown: {
+                    addNewUser:  "පරිශීලක එකතු කරන්න",
+                    bulkImport: "සමූහ​ ආනයනය"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
@@ -9117,6 +9169,57 @@ export const console: ConsoleNS = {
                         success: {
                             description: "නව පරිශීලකයා සාර්ථකව එකතු කරන ලදි.",
                             message: "පරිශීලකයා සාර්ථකව එකතු කරන ලදි"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "තෝරාගත් ගොනුවේ දත්ත නොමැත.",
+                                message: "හිස් ගොනුව"
+                            },
+                            columnMismatchError: {
+                                description: "ගොනුවේ සමහර දත්ත පේළි අවශ්‍ය තීරු ගණනට නොගැලපේ. කරුණාකර දත්ත සමාලෝචනය " +
+                                    "කර නිවැරදි කරන්න.",
+                                message: "තීරු ගණන් නොගැලපීම"
+                            },
+                            emptyHeaderError: {
+                                description: "පළමු පේළියේ එක් එක් තීරුව සඳහා ශීර්ෂ ඇති බව සහතික කර ගන්න.",
+                                message: "තීරු ශීර්ෂ අස්ථානගත වී ඇත"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අවශ්‍ය නමුත් CSV ගොනුවේ අස්ථානගත වී ඇත: {{headers}}.",
+                                message: "අවශ්‍ය තීරු ශීර්ෂ අස්ථානගත වී ඇත"
+                            },
+                            blockedHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අවසර නැත: {{headers}}.",
+                                message: "අවහිර කළ තීරු ශීර්ෂ"
+                            },
+                            duplicateHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අනුපිටපත් කර ඇත: {{headers}}.",
+                                message: "අනුපිටපත් තීරු ශීර්ෂ"
+                            },
+                            invalidHeaderError: {
+                                description: "පහත ශීර්ෂය(ය) වලංගු නැත: {{headers}}.",
+                                message: "වලංගු නොවන තීරු ශීර්ෂක"
+                            },
+                            emptyDataField: {
+                                description: "'{{dataField}}' දත්ත ක්ෂේත්‍රය හිස් නොවිය යුතුය.",
+                                message: "හිස් දත්ත ක්ෂේත්‍රය"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            genericError: {
+                                description: "පරිශීලකයින් ආනයනය කළ නොහැක.",
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            success: {
+                                description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                message: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී"
+                            }
                         }
                     },
                     deleteUser: {

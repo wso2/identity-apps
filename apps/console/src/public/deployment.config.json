@@ -285,6 +285,16 @@
                     ]
                 }
             },
+            "bulkUserImport": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "eventPublishing": {
                 "disabledFeatures": [],
                 "enabled": true,

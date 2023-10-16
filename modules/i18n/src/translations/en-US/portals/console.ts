@@ -7179,6 +7179,12 @@ export const console: ConsoleNS = {
                                 description: "The attribute mapping has been successfully updated.",
                                 message: "Attribute Mapping update successful"
                             }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "There was an error while fetching the SCIM resources.",
+                                message: "Something went wrong"
+                            }
                         }
                     },
                     pageLayout: {
@@ -10426,6 +10432,48 @@ export const console: ConsoleNS = {
                             username: "Username"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "Bulk Import Users",
+                        subTitle: "Import multiple users using a CSV file.",
+                        wizardSummary: {
+                            successCount: "Successful Imports",
+                            failedCount: "Failed Imports",
+                            totalCount: "Total Count",
+                            tableHeaders: {
+                                username: "Username",
+                                status: "Status",
+                                message: "Message"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "User imported successfully",
+                                invalidDataMessage: "Invalid data provided",
+                                userAlreadyExistsMessage: "User already exists",
+                                userCreationAcceptedMessage: "User creation accepted",
+                                internalErrorMessage: "Error occured while importing users"
+                            },
+                            tableStatus: {
+                                success: "Success",
+                                warning: "Warning",
+                                failed: "Failed"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "The user accounts were imported successfully.",
+                                    message: "Import Successful"
+                                },
+                                importFailed: {
+                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    message: "Review Required"
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "Search by Username"
+                            }
+                        },
+                        buttons: {
+                            import: "Import"
+                        }
+                    },
                     changePasswordModal: {
                         button: "Reset Password",
                         header: "Reset User Password",
@@ -10894,6 +10942,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assign roles",
                     metaColumnBtn: "Columns"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Add User",
+                    bulkImport: "Bulk Import"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Please confirm your action.",
@@ -10984,6 +11036,58 @@ export const console: ConsoleNS = {
                         success: {
                             description: "The new user was added successfully.",
                             message: "User added successfully"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "Selected file contains no data.",
+                                message: "Empty File"
+                            },
+                            columnMismatchError: {
+                                description: "Some data rows of the file does not match the required column count. " +
+                                    "Please review and correct the data.",
+                                message: "Column Count Mismatch"
+                            },
+                            emptyHeaderError: {
+                                description: "Ensure that the first row contains the headers for each column.",
+                                message: "Missing Column Headers"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "The following header(s) are required but are missing in the CSV file: " +
+                                "{{ headers }}.",
+                                message: "Missing Required Column Headers"
+                            },
+                            blockedHeaderError: {
+                                description: "The following header(s) are not allowed: {{headers}}.",
+                                message: "Blocked Column Headers"
+                            },
+                            duplicateHeaderError: {
+                                description: "The following headers are duplicated: {{headers}}.",
+                                message: "Duplicate Column Headers"
+                            },
+                            invalidHeaderError: {
+                                description: "The following headers are invalid: {{headers}}.",
+                                message: "Invalid Column Headers"
+                            },
+                            emptyDataField: {
+                                description: "The data field '{{dataField}}' must not be empty.",
+                                message: "Empty Data Field"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occured while importing users"
+                            },
+                            genericError: {
+                                description: "Unable to import users",
+                                message: "Error occured while importing users"
+                            },
+                            success: {
+                                description: "The users were imported successfully.",
+                                message: "Users Imported Successfully"
+                            }
                         }
                     },
                     deleteUser: {

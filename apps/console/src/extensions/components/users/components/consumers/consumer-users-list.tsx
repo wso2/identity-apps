@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -31,7 +30,6 @@ import {
     EmptyPlaceholder,
     LinkButton,
     Popup,
-    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
@@ -40,7 +38,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../../../features/access-control/constants/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -146,7 +143,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
-        onEmptyListPlaceholderActionClick,
         searchQuery,
         selection,
         showListItemActions,
@@ -470,20 +466,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
-                    action={ (
-                        <Show
-                            when={ AccessControlConstants.USER_WRITE }
-                        >
-                            <PrimaryButton
-                                data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
-                                onClick={ onEmptyListPlaceholderActionClick }
-                            >
-                                <Icon name="add"/>
-                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton",
-                                    { type: "User" }) }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.placeholders.emptyList.title") }

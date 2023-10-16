@@ -120,6 +120,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             permission: "",
             publicCertificates: "",
             requestPathAuthenticators: "",
+            resourceTypes: "",
             roles: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
