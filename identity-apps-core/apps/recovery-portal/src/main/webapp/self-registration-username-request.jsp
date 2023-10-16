@@ -1151,8 +1151,7 @@
                             </div>
                         <div class="buttons mt-4">
                             <button id="registrationSubmit" class="ui primary button large fluid" type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Register")%>
+                                <%= i18n(recoveryResourceBundle, customText, "sign.up.button") %>
                             </button>
                         </div>
                         <div class="ui divider hidden"></div>
