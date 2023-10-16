@@ -1792,6 +1792,13 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
+                        displayName: {
+                            hint:
+                                "Nom de l'organisation qui apparaît aux utilisateurs. S'il n'est pas défini, " +
+                                "les valeurs par défaut de {{ productName }} seront utilisées.",
+                            label: "Nom d’affichage de l’organisation",
+                            placeholder: "Entrer un nom d'affichage"
+                        },
                         supportEmail: {
                             hint:
                                 "TEmail qui apparaît sur les pages d'erreur et dans les endroits où une " +

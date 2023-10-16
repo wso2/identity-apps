@@ -112,8 +112,12 @@ export class BrandingPreferencesConstants {
      */
     public static readonly GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS: {
         SUPPORT_EMAIL_MAX_LENGTH: number,
-        SUPPORT_EMAIL_MIN_LENGTH: number
+        SUPPORT_EMAIL_MIN_LENGTH: number,
+        DISPLAY_NAME_MAX_LENGTH: number,
+        DISPLAY_NAME_MIN_LENGTH: number
     } = {
+        DISPLAY_NAME_MAX_LENGTH: 100,
+        DISPLAY_NAME_MIN_LENGTH: 3,
         SUPPORT_EMAIL_MAX_LENGTH: 100,
         SUPPORT_EMAIL_MIN_LENGTH: 3
     };
@@ -216,6 +220,7 @@ export class BrandingPreferencesConstants {
             }
         },
         organizationDetails: {
+            displayName: "",
             supportEmail: ""
         },
         theme: {

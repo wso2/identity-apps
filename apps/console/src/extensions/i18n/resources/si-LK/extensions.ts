@@ -1752,6 +1752,13 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
+                        displayName: {
+                            hint:
+                                "පරිශීලකයින්ට දිස්වන සංවිධානයේ නම." +
+                                "සකසා නොමැති නම්, {{ productName }} පෙරනිමිය භාවිතා වේ.",
+                            label: "සංවිධානයේ සංදර්ශක නම",
+                            placeholder: "සංදර්ශක නාමයක් ඇතුළත් කරන්න"
+                        },
                         supportEmail: {
                             hint:
                                 "දෝෂ පිටු සහ පාරිභෝගිකයින් සඳහා සහය අවශ්‍ය වන ස්ථානවල දිස්වන විද්‍යුත් තැපෑල." +

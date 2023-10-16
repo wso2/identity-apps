@@ -101,6 +101,10 @@ export interface BrandingPreferenceOrganizationDetailsInterface {
      * Support email to be shown for Org members.
      */
     supportEmail: string;
+    /**
+     * Display name to be shown for Org members.
+     */
+    displayName: string;
 }
 
 /**

@@ -142,7 +142,8 @@ export const EmailTemplateScreenSkeleton: FunctionComponent<EmailTemplateScreenS
                             }
                         }
                     },
-                    "organization-name": tenantDomain,
+                    "organization-name": brandingPreference.organizationDetails.displayName
+                        ? brandingPreference.organizationDetails.displayName : tenantDomain,
                     "user-name": userDisplayName
                 })
             ) }
