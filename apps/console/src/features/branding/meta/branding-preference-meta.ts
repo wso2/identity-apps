@@ -21,7 +21,6 @@ import { StringUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { LAYOUTS } from "./layouts";
 import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
-import { Config } from "../../core/configs";
 import { ThemeSwatchUIConfigsInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 import {
@@ -83,13 +82,7 @@ export class BrandingPreferenceMeta {
         };
 
         return {
-            organizationDetails: {
-                copyrightText: Config.getDeploymentConfig().extensions?.defaultBrandedLoginScreenCopyright
-                    ? (Config.getDeploymentConfig().extensions.defaultBrandedLoginScreenCopyright as string)
-                        .replace("${copyright}", "\u00A9")
-                        .replace("${year}", String(new Date().getFullYear()))
-                    : ""
-            },
+            organizationDetails: {},
             theme: {
                 [ PredefinedThemes.LIGHT ]: {
                     images: {

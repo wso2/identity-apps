@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, MutableRefObject, PropsWithChildren, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { ButtonProps, Segment } from "semantic-ui-react";
 
 /**
@@ -60,15 +61,18 @@ interface StickyTabPaneActionPanelButtonInterface extends IdentifiableComponentI
 *
 * @returns Sticky tab pane action panel component.
 */
-export const StickyTabPaneActionPanel: FunctionComponent<StickyTabPaneActionPanelInterface> = (
-    props: StickyTabPaneActionPanelInterface
+export const StickyTabPaneActionPanel: FunctionComponent<PropsWithChildren<StickyTabPaneActionPanelInterface>> = (
+    props: PropsWithChildren<StickyTabPaneActionPanelInterface>
 ): ReactElement => {
 
     const {
         ["data-componentid"]: componentId,
         formRef,
-        saveButton
+        saveButton,
+        children
     } = props;
+
+    const { t } = useTranslation();
 
     const {
         ["data-componentid"]: saveButtonComponentId,
@@ -100,8 +104,9 @@ export const StickyTabPaneActionPanel: FunctionComponent<StickyTabPaneActionPane
                 ariaLabel="Branding preference form save button"
                 data-componentid={ saveButtonComponentId }
             >
-                Save & Publish
+                { t("console:branding.form.actions.save") }
             </PrimaryButton>
+            { children }
         </Segment>
     );
 };

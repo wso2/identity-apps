@@ -16,34 +16,51 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
-import { Heading, Link, ResourceTab } from "@wso2is/react-components";
+import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Dropdown, DropdownProps, Message, Segment, TabProps } from "semantic-ui-react";
+import { Divider, Menu, Message, Segment, TabProps } from "semantic-ui-react";
 import { AdvanceForm, AdvanceFormValuesInterface } from "./advanced";
+import CustomText from "./custom-text/custom-text";
+import CustomTextRevertConfirmationModal from "./custom-text/custom-text-revert-all-confirmation-modal";
 import { DesignForm, DesignFormValuesInterface } from "./design";
 import {
     GeneralDetailsForm,
     GeneralDetailsFormValuesInterface
 } from "./general";
 import { BrandingPreferencePreview } from "./preview";
+import ScreenDropdown from "./screen-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { AppState } from "../../core/store";
 import { commonConfig } from "../../../extensions/configs";
+import { AppState } from "../../core/store";
 import { BrandingPreferencesConstants } from "../constants";
+import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
+import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
+    BrandingSubFeatures,
     PredefinedThemes,
     PreviewScreenType
 } from "../models";
+import { CustomTextConfigurationModes } from "../models/custom-text-preference";
 
 /**
  * Proptypes for the Branding preference tabs component.
@@ -75,10 +92,11 @@ interface BrandingPreferenceTabsInterface extends IdentifiableComponentInterface
      */
     isUpdating: boolean;
     /**
-     *
+     * On submit callback.
      * @param values - Form Values.
+     * @param shouldShowNotifications - Should show success/error notifications on UI.
      */
-    onSubmit: (values: Partial<BrandingPreferenceInterface>) => void;
+    onSubmit: (values: Partial<BrandingPreferenceInterface>, shouldShowNotifications?: boolean) => void;
 }
 
 /**
@@ -107,6 +125,20 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
+    const {
+        activeCustomTextConfigurationMode,
+        resetAllCustomTextPreference,
+        selectedLocale,
+        selectedScreen,
+        getScreens,
+        onSelectedPreviewScreenChange,
+        activeTab,
+        updateActiveTab,
+        isCustomTextConfigured,
+        updateCustomTextPreference,
+        customTextFormSubscription
+    } = useBrandingPreference();
+
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
@@ -116,7 +148,10 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         brandingPreferenceForPreview,
         setBrandingPreferenceForPreview
     ] = useState<BrandingPreferenceInterface>(brandingPreference);
-    const [ previewScreenType, setPreviewScreenType ] = useState<PreviewScreenType>(PreviewScreenType.LOGIN);
+    const [
+        showCustomTextRevertAllConfirmationModal,
+        setShowCustomTextRevertAllConfirmationModal
+    ] = useState<boolean>(false);
 
     /**
      * Sets the branding preference preview config.
@@ -155,8 +190,6 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     onSubmit={ onSubmit }
                     initialValues={ {
                         organizationDetails: {
-                            copyrightText: brandingPreference.organizationDetails?.copyrightText,
-                            siteTitle: brandingPreference.organizationDetails?.siteTitle,
                             supportEmail: brandingPreference.organizationDetails?.supportEmail
                         }
                     } }
@@ -165,13 +198,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             ...moderateValuesForPreview({
                                 ...brandingPreference,
                                 organizationDetails: {
-                                    copyrightText: !isEmpty(values.organizationDetails.copyrightText)
-                                        ? values.organizationDetails.copyrightText
-                                        : BrandingPreferenceMeta
-                                            .getBrandingPreferenceInternalFallbacks(
-                                                systemTheme
-                                            ).organizationDetails.copyrightText,
-                                    siteTitle: values.organizationDetails.siteTitle,
+                                    ...brandingPreference.organizationDetails,
                                     supportEmail: values.organizationDetails.supportEmail
                                 }
                             })
@@ -318,11 +345,58 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const PreviewPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="preview-tab" attached="bottom" data-componentid="branding-preference-preview-tab">
             <BrandingPreferencePreview
-                screenType={ previewScreenType }
+                screenType={ selectedScreen }
                 isLoading={ isLoading }
                 brandingPreference={ brandingPreferenceForPreview }
                 data-componentid="branding-preference-preview"
             />
+        </ResourceTab.Pane>
+    );
+
+    const TextPreferenceTabPane = (): ReactElement => (
+        <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
+            <CustomText />
+            <StickyTabPaneActionPanel
+                formRef={ formRef }
+                saveButton={ {
+                    "data-componentid": "branding-preference-custom-text-form-submit-button",
+                    isDisabled: isSubmitting || isLoading,
+                    isLoading: isSubmitting,
+                    onClick: () => {
+                        if (activeCustomTextConfigurationMode === CustomTextConfigurationModes.TEXT_FIELDS) {
+                            document.getElementById(CustomTextPreferenceConstants.FORM_ID)
+                                .dispatchEvent(new Event("submit", { bubbles:true, cancelable: true }));
+                        } else {
+                            updateCustomTextPreference(customTextFormSubscription?.values);
+                        }
+
+                        if (!brandingPreference.configs.isBrandingEnabled) {
+                            onSubmit({}, false);
+                        }
+                    },
+                    readOnly: readOnly
+                } }
+                data-componentid="sticky-tab-action-panel"
+            >
+                <Button
+                    disabled={ !isCustomTextConfigured }
+                    onClick={ () =>  {
+                        setShowCustomTextRevertAllConfirmationModal(true);
+                    } }
+                >
+                    { t("console:branding.form.actions.resetAll") }
+                </Button>
+            </StickyTabPaneActionPanel>
+            { showCustomTextRevertAllConfirmationModal && (
+                <CustomTextRevertConfirmationModal
+                    open={ showCustomTextRevertAllConfirmationModal }
+                    onClose={ () => setShowCustomTextRevertAllConfirmationModal(false) }
+                    onPrimaryActionClick={ () => {
+                        resetAllCustomTextPreference(selectedScreen, selectedLocale);
+                        setShowCustomTextRevertAllConfirmationModal(false);
+                    } }
+                />
+            ) }
         </ResourceTab.Pane>
     );
 
@@ -333,21 +407,40 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
      */
     const resolveTabPanes = (): TabProps [ "panes" ] => {
 
-        const panes: TabProps [ "panes" ] = [];
+        const panes: ResourceTabPaneInterface[] = [];
 
         panes.push({
+            "data-tabid": BrandingPreferencesConstants.TABS.GENERAL_TAB_ID,
             menuItem: t("extensions:develop.branding.tabs.general.label"),
             render: GeneralPreferenceTabPane
         });
 
         panes.push({
+            "data-tabid": BrandingPreferencesConstants.TABS.DESIGN_TAB_ID,
             menuItem: t("extensions:develop.branding.tabs.design.label"),
             render: DesignPreferenceTabPane
         });
 
         panes.push({
+            "data-tabid": BrandingPreferencesConstants.TABS.ADVANCED_TAB_ID,
             menuItem: t("extensions:develop.branding.tabs.advance.label"),
             render: AdvancePreferenceTabPane
+        });
+
+        panes.push({
+            "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
+            menuItem: (
+                <Menu.Item key="text">
+                    { t("console:branding.tabs.text.label") }
+                    <Chip
+                        size="small"
+                        sx={ { marginLeft: 1 } }
+                        label={ t("common:beta").toUpperCase() }
+                        className="oxygen-chip-beta"
+                    />
+                </Menu.Item>
+            ),
+            render: TextPreferenceTabPane
         });
 
         if (!isSplitView) {
@@ -384,14 +477,6 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             }
         }
 
-        if (isEmpty(preferenceForPreview.organizationDetails?.copyrightText)) {
-            set(preferenceForPreview,
-                "organizationDetails.copyrightText",
-                BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(
-                    systemTheme
-                ).organizationDetails.copyrightText);
-        }
-
         return preferenceForPreview;
     };
 
@@ -402,7 +487,17 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     attached="top"
                     secondary={ false }
                     pointing={ false }
-                    onTabChange={ () => setBrandingPreferenceForPreview(moderateValuesForPreview(brandingPreference)) }
+                    onTabChange={ (
+                        event: MouseEvent<HTMLDivElement>,
+                        data: TabProps,
+                        activeTabMetadata?: {
+                            "data-tabid": string;
+                            index: number | string;
+                        }
+                    ) => {
+                        activeTabMetadata && updateActiveTab(activeTabMetadata["data-tabid"]);
+                        setBrandingPreferenceForPreview(moderateValuesForPreview(brandingPreference));
+                    } }
                     panes={ resolveTabPanes() }
                     data-componentid={ `${componentId}-forms` }
                 />
@@ -417,39 +512,18 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             {
                                 menuItem: (
                                     <div className="preview-title-bar">
-                                        <div>Preview</div>
-                                        <div className="preview-screen-selection">
-                                            <label>Screen</label>
-                                            <Dropdown
-                                                placeholder="Select a screen"
-                                                fluid
-                                                selection
-                                                defaultValue={ PreviewScreenType.LOGIN }
-                                                options={ [
-                                                    {
-                                                        key: "login",
-                                                        text: "Login",
-                                                        value: PreviewScreenType.LOGIN
-                                                    },
-                                                    {
-                                                        key: "myaccount",
-                                                        text: "My Account",
-                                                        value: PreviewScreenType.MY_ACCOUNT
-                                                    },
-                                                    {
-                                                        key: "email-template",
-                                                        text: "Email Template",
-                                                        value: PreviewScreenType.EMAIL_TEMPLATE
-                                                    }
-                                                ] }
-                                                onChange={ (
-                                                    _: React.SyntheticEvent<HTMLElement, Event>,
-                                                    { value }: DropdownProps
-                                                ) => {
-                                                    setPreviewScreenType(value as PreviewScreenType);
-                                                } }
-                                            />
-                                        </div>
+                                        <div>{ t("console:branding.tabs.preview.label") }</div>
+                                        { activeTab !== BrandingPreferencesConstants.TABS.TEXT_TAB_ID && (
+                                            <div className="preview-screen-selection">
+                                                <ScreenDropdown
+                                                    defaultScreen={ PreviewScreenType.LOGIN }
+                                                    screens={ getScreens(BrandingSubFeatures.DESIGN) }
+                                                    onChange={ (screen: PreviewScreenType) => {
+                                                        onSelectedPreviewScreenChange(screen);
+                                                    } }
+                                                />
+                                            </div>
+                                        ) }
                                     </div>
                                 ),
                                 render: PreviewPreferenceTabPane

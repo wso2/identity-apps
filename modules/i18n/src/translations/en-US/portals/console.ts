@@ -478,6 +478,115 @@ export const console: ConsoleNS = {
             }
         }
     },
+    branding: {
+        form: {
+            actions: {
+                save: "Save & Publish",
+                resetAll: "Reset to Default"
+            }
+        },
+        tabs: {
+            text: {
+                label: "Text"
+            },
+            preview: {
+                label: "Preview"
+            }
+        },
+        screens: {
+            common: "Common",
+            login: "Login",
+            "sms-otp": "SMS OTP",
+            "email-otp": "Email OTP",
+            "email-template": "Email Templates",
+            "sign-up": "Sign Up",
+            "totp": "TOTP",
+            myaccount: "My Account"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "Once you confirm, your users will start to see the {{productName}} defaults and it will not be reversible. Please proceed with caution.",
+            heading: "Are you sure?",
+            message: "Reverting <1>{{screen}}</1> screen's customized text for the <3>{{locale}}</3> locale."
+        },
+        revertUnsavedConfirmationModal: {
+            content: "If you switch the screen, your unsaved changes will be lost. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "Save your unsaved changes"
+        },
+        form: {
+            genericFieldResetTooltip: "Reset to default",
+            genericFieldPlaceholder: "Enter your text",
+            fields: {
+                copyright: {
+                    hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
+                },
+                "site.title": {
+                    hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
+                },
+                "login.button": {
+                    hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."
+                },
+                "login.heading": {
+                    hint: "The heading of the login box. If not set, {{productName}} defaults are used."
+                },
+                "sms.otp.heading": {
+                    hint: "The heading of the SMS OTP box. If not set, {{productName}} defaults are used."
+                },
+                "email.otp.heading": {
+                    hint: "The heading of the Email OTP box. If not set, {{productName}} defaults are used."
+                },
+                "totp.heading": {
+                    hint: "The heading of the TOTP box. If not set, {{productName}} defaults are used."
+                },
+                "sign.up.button": {
+                    hint: "The text that appears on the main action button of the sign up box. If not set, {{productName}} defaults are used."
+                },
+                "sign.up.heading": {
+                    hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "Locale",
+            placeholder: "Select locale"
+        },
+        modes: {
+            text: {
+                label: "Text Fields"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "Couldn't get {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't get the custom text"
+            },
+            revertError: {
+                description: "Couldn't revert {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't revert the custom text"
+            },
+            resetSuccess: {
+                description: "Successfully reverted {{screen}} screen's customized text for {{locale}}.",
+                message: "Revert successful"
+            },
+            updateError: {
+                description: "Couldn't update {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't update the custom text"
+            },
+            updateSuccess: {
+                description: "Successfully updated {{screen}} screen's customized text for {{locale}}.",
+                message: "Update Successful"
+            }
+        },
+        screenSelectDropdown: {
+            label: "Screen",
+            placeholder: "Select screen"
+        }
+    },
     featureGate: {
         enabledFeatures: {
             tags: {
@@ -1166,9 +1275,9 @@ export const console: ConsoleNS = {
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " + 
+                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " +
                                             "having a basic authenticator in a prior step.",
-                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " +
                                             "added to a multi option step."
                                         }
                                     }
@@ -10012,7 +10121,7 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "Go back to Admin Advisory Banner",
                         pageHeading: "Admin Advisory Banner",
@@ -10030,7 +10139,7 @@ export const console: ConsoleNS = {
                         description: "Enable and configure the admin advisory banner.",
                         enabled: "Enabled",
                         heading: "Admin Advisory Banner"
-                    },   
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -10088,7 +10197,7 @@ export const console: ConsoleNS = {
                                 message: "Banner updated successfully"
                             }
                         }
-                    },     
+                    },
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },

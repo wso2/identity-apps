@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import parse, { Element } from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
-import { LoginBox } from "./login-box";
 import { ProductFooter } from "./product-footer";
 import { ProductHeader } from "./product-header";
+import SignInBox from "./sign-in-box/sign-in-box";
 import { BrandingPreferenceInterface } from "../../models";
 
 
@@ -42,9 +42,8 @@ interface LoginScreenSkeletonInterface extends IdentifiableComponentInterface {
 /**
  * Branding Preference Preview.
  *
- * @param {BrandingPreferencePreviewInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Branding preference preview component.
  */
 export const LoginScreenSkeleton: FunctionComponent<LoginScreenSkeletonInterface> = (
     props: LoginScreenSkeletonInterface
@@ -65,14 +64,14 @@ export const LoginScreenSkeleton: FunctionComponent<LoginScreenSkeletonInterface
                             if (domNode.attribs.id === "productHeader") {
                                 return (
                                     <ProductHeader
-                                        brandingPreference={ brandingPreference } 
+                                        brandingPreference={ brandingPreference }
                                         data-componentid={ `${ componentId }-product-header` }
                                     />
                                 );
                             }
                             if (domNode.attribs.id === "mainSection") {
                                 return (
-                                    <LoginBox
+                                    <SignInBox
                                         brandingPreference={ brandingPreference }
                                         data-componentid={ `${ componentId }-login-box` }
                                     />

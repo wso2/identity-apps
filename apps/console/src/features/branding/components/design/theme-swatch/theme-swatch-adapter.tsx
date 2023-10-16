@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { RadioAdapterPropsInterface } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { ThemeSwatch } from "./theme-swatch";
 
@@ -29,9 +29,8 @@ type ThemeSwatchAdapterInterface = RadioAdapterPropsInterface;
 /**
  * Semantic UI Radio Adapter.
  *
- * @param {ThemeSwatchAdapterInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Theme Swatch Radio Adapter.
  */
 export const ThemeSwatchAdapter: FunctionComponent<ThemeSwatchAdapterInterface> = (
     props: RadioAdapterPropsInterface
@@ -60,7 +59,7 @@ export const ThemeSwatchAdapter: FunctionComponent<ThemeSwatchAdapterInterface> 
         ...filteredRest
     } = rest;
 
-    const toggleRadioState = (checked = isChecked) => {
+    const toggleRadioState = (checked: boolean = isChecked): void => {
 
         if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
             childFieldProps.listen(checked);
@@ -88,7 +87,7 @@ export const ThemeSwatchAdapter: FunctionComponent<ThemeSwatchAdapterInterface> 
                 { ...filteredRest }
                 label={ childFieldProps?.label }
                 name={ childFieldProps?.name }
-                onChange={ (_, { checked }:  { checked: boolean }) => {
+                onChange={ (_: FormEvent<HTMLInputElement>, { checked }:  { checked: boolean }) => {
                     toggleRadioState(checked);
                 } }
             />

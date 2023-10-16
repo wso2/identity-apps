@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,20 +42,27 @@ import {
     Select,
     TextAreaProps
 } from "semantic-ui-react";
-import { QueryParameters, Scopes } from "../addons";
+import { QueryParameters, Scopes } from "../../addons";
 import {
-    CheckboxAdapterPropsInterface,
     ColorPickerAdapterPropsInterface,
+    __DEPRECATED__CheckboxAdapterPropsInterface,
     FieldButtonTypes,
     RadioAdapterPropsInterface
-} from "../models";
+} from "../../models";
 
 /**
  * The enter key.
  */
 const ENTER_KEY: string = "Enter";
 
-export const TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
+/**
+ * Deprecated Semantic UI Text Field adapter.
+ * @deprecated Use `TextFieldAdapter` instead.
+ *
+ * @param props - Props injected to the component.
+ * @returns Text Field Adapter.
+ */
+export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): ReactElement => {
 
     const { childFieldProps, input, meta, parentFormProps } = props;
 
@@ -314,14 +321,14 @@ export const ToggleAdapter = (props: FieldRenderProps<any>): ReactElement => {
 /**
  * Semantic Checkbox adapter.
  * @deprecated Use `CheckboxAdapter` instead.
- * 
+ *
  * @see {@link https://codesandbox.io/s/react-final-form-simple-example-3we74?fontsize=14&file=/index.js}
  *
  * @param props - Props injected to the component.
  *
  * @returns
  */
-export const DepricatedCheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+export const __DEPRECATED__CheckboxAdapter = (props: __DEPRECATED__CheckboxAdapterPropsInterface): ReactElement => {
 
     const {
         childFieldProps,
@@ -374,7 +381,7 @@ export const DepricatedCheckboxAdapter = (props: CheckboxAdapterPropsInterface):
  *
  * @returns
  */
-export const CheckboxAdapter = (props: CheckboxAdapterPropsInterface): ReactElement => {
+export const CheckboxAdapter = (props: __DEPRECATED__CheckboxAdapterPropsInterface): ReactElement => {
 
     const {
         childFieldProps,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,8 @@ import Mustache from "mustache";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../../core/store";
+import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
+import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { BrandingPreferenceInterface } from "../../models";
 
@@ -48,6 +50,8 @@ export const MyAccountScreenSkeleton: FunctionComponent<MyAccountScreenSkeletonI
 ): ReactElement => {
     const { brandingPreference, content, ["data-componentid"]: componentId } = props;
 
+    const { i18n }= useBrandingPreference();
+
     const systemTheme: string = useSelector((state: AppState) => state.config?.ui?.theme?.name);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile?.profileInfo);
 
@@ -58,7 +62,11 @@ export const MyAccountScreenSkeleton: FunctionComponent<MyAccountScreenSkeletonI
             { parse(
                 Mustache.render(content, {
                     avatarInitial: userDisplayName.charAt(0).toLocaleUpperCase(),
-                    copyright: brandingPreference.organizationDetails.copyrightText,
+                    copyright: {
+                        text: i18n(
+                            CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, ""
+                        ) ?? brandingPreference.organizationDetails.copyrightText
+                    },
                     logoImage:
                         brandingPreference.theme[brandingPreference.theme.activeTheme].images?.myAccountLogo?.imgURL ??
                         BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(systemTheme).theme[

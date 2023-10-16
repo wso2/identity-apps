@@ -885,9 +885,9 @@ export const extensions: Extensions = {
                                             "Veuillez procéder avec prudence."
                                     },
                                     unsubscribeChoreoAPIResource: {
-                                        content: "Le désabonnement de cette ressource API ne sera pas reflété à la" + 
-                                        " fin de Choreo, mais aura un impact / affectera l'autorisation" + 
-                                        " de l'utilisateur car les lunettes autorisées ne seront plus accessibles." + 
+                                        content: "Le désabonnement de cette ressource API ne sera pas reflété à la" +
+                                        " fin de Choreo, mais aura un impact / affectera l'autorisation" +
+                                        " de l'utilisateur car les lunettes autorisées ne seront plus accessibles." +
                                         "<1> procéder à la prudence. </1>"
                                     }
                                 },
@@ -1792,21 +1792,6 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint:
-                                "Texte qui apparaît en pied de page des écrans de connexion. S'il n'est pas " +
-                                "défini, les valeurs par défaut de {{ productName }} seront utilisées.",
-                            label: "Texte du droit d'auteur",
-                            placeholder: "Saisissez un texte de copyright"
-                        },
-                        siteTitle: {
-                            hint:
-                                "Le titre du site peut apparaître dans les onglets du navigateur, " +
-                                "les résultats des moteurs de recherche, les partages sociaux, etc. " +
-                                "S'il n'est pas défini, les valeurs par défaut {{ productName }} seront utilisées.",
-                            label: "Titre du site",
-                            placeholder: "Entrez un titre de site"
-                        },
                         supportEmail: {
                             hint:
                                 "TEmail qui apparaît sur les pages d'erreur et dans les endroits où une " +
@@ -2895,31 +2880,31 @@ export const extensions: Extensions = {
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
-                description: "Configurez des identifiants de connexion alternatifs et autorisez les utilisateurs à" + 
-                    " utiliser un nom d'utilisateur ou un identifiant de connexion configurédans les flux de" + 
+                description: "Configurez des identifiants de connexion alternatifs et autorisez les utilisateurs à" +
+                    " utiliser un nom d'utilisateur ou un identifiant de connexion configurédans les flux de" +
                     " connexion et de récupération.",
                 loginIdentifierTypes: "Sélectionnez l'identifiant de connexion",
-                loginIdentifierTypesHint: "Autoriser les utilisateurs à utiliser un nom d'utilisateur ou un" + 
+                loginIdentifierTypesHint: "Autoriser les utilisateurs à utiliser un nom d'utilisateur ou un" +
                     " identifiant de connexion configuré dans le flux de connexion.",
-                warning: "Les utilisateurs professionnels peuvent utiliser n'importe lequel des identifiants de" + 
-                    " connexion sélectionnés comme alternative au nom d'utilisateur dans les flux de connexion," + 
+                warning: "Les utilisateurs professionnels peuvent utiliser n'importe lequel des identifiants de" +
+                    " connexion sélectionnés comme alternative au nom d'utilisateur dans les flux de connexion," +
                     " les flux de récupération, etc.",
                 info: "Vous avez sélectionné l'e-mail comme type de nom d'utilisateur, ce qui en fait l'identifiant de connexion principal.",
                 notification: {
                     error: {
-                        description:"Erreur lors de la mise à jour de la configuration alternative de" + 
+                        description:"Erreur lors de la mise à jour de la configuration alternative de" +
                             " l'identifiant de connexion.",
                         message: "Erreur lors de la mise à jour de la configuration"
                     },
                     success: {
-                        description: "Mise à jour réussie de la configuration alternative de l'identifiant" + 
+                        description: "Mise à jour réussie de la configuration alternative de l'identifiant" +
                             " de connexion.",
                         message: "Mise à jour réussie"
                     }
                 },
                 claimUpdateNotification: {
                     error: {
-                        description: "Erreur lors de la mise à jour de l'attribut en tant qu'attribut unique." + 
+                        description: "Erreur lors de la mise à jour de l'attribut en tant qu'attribut unique." +
                             " Veuillez réessayer.",
                         message: "Erreur lors de la mise à jour de la revendication"
                     }

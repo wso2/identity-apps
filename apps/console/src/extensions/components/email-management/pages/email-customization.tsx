@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
+import BrandingPreferenceProvider from "../../../../features/branding/providers/branding-preference-provider";
 import { AppState, I18nConstants } from "../../../../features/core";
 import {
     createNewEmailTemplate,
@@ -339,72 +340,74 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     };
 
     return (
-        <PageLayout
-            title={ t("extensions:develop.emailTemplates.page.header") }
-            pageTitle="Email Templates"
-            description={ (
-                <>
-                    { t("extensions:develop.emailTemplates.page.description") }
-                    <DocumentationLink
-                        link={ getLink("develop.emailCustomization.learnMore") }
-                    >
-                        { t("extensions:common.learnMore") }
-                    </DocumentationLink>
-                </> )
-            }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-componentid={ componentId }
-        >
-            <EmailCustomizationHeader
-                selectedEmailTemplateId={ selectedEmailTemplateId }
-                selectedEmailTemplateDescription={ selectedEmailTemplateDescription }
-                selectedLocale={ selectedLocale }
-                emailTemplatesList={ availableEmailTemplatesList }
-                onTemplateSelected={ handleTemplateIdChange }
-                onLocaleChanged={ handleLocaleChange }
-            />
-
-            <ResourceTab
-                attached="top"
-                secondary={ false }
-                pointing={ false }
-                panes={ resolveTabPanes() }
-                onTabChange={ () => {
-                    setCurrentEmailTemplate(selectedEmailTemplate);
-                } }
-                data-componentid={ `${ componentId }-forms` }
-            />
-
-            <EmailCustomizationFooter
-                isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
-                onSaveButtonClick={ handleSubmit }
-            />
-
-            <ConfirmationModal
-                type="info"
-                open={ showReplicatePreviousTemplateModal }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ (): void => cancelReplicationOfPreviousTemplate() }
-                onPrimaryActionClick={ (): void => replicatePreviousTemplate() }
-                data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal` }
-                closeOnDimmerClick={ false }
+        <BrandingPreferenceProvider>
+            <PageLayout
+                title={ t("extensions:develop.emailTemplates.page.header") }
+                pageTitle="Email Templates"
+                description={ (
+                    <>
+                        { t("extensions:develop.emailTemplates.page.description") }
+                        <DocumentationLink
+                            link={ getLink("develop.emailCustomization.learnMore") }
+                        >
+                            { t("extensions:common.learnMore") }
+                        </DocumentationLink>
+                    </>
+                ) }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-componentid={ componentId }
             >
-                <ConfirmationModal.Header
-                    data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-header` }
+                <EmailCustomizationHeader
+                    selectedEmailTemplateId={ selectedEmailTemplateId }
+                    selectedEmailTemplateDescription={ selectedEmailTemplateDescription }
+                    selectedLocale={ selectedLocale }
+                    emailTemplatesList={ availableEmailTemplatesList }
+                    onTemplateSelected={ handleTemplateIdChange }
+                    onLocaleChanged={ handleLocaleChange }
+                />
+
+                <ResourceTab
+                    attached="top"
+                    secondary={ false }
+                    pointing={ false }
+                    panes={ resolveTabPanes() }
+                    onTabChange={ () => {
+                        setCurrentEmailTemplate(selectedEmailTemplate);
+                    } }
+                    data-componentid={ `${ componentId }-forms` }
+                />
+
+                <EmailCustomizationFooter
+                    isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
+                    onSaveButtonClick={ handleSubmit }
+                />
+
+                <ConfirmationModal
+                    type="info"
+                    open={ showReplicatePreviousTemplateModal }
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => cancelReplicationOfPreviousTemplate() }
+                    onPrimaryActionClick={ (): void => replicatePreviousTemplate() }
+                    data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal` }
+                    closeOnDimmerClick={ false }
                 >
-                    { t("extensions:develop.emailTemplates.modal.replicateContent.header") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    attached
-                    info
-                    data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-message` }
-                >
-                    { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
-                </ConfirmationModal.Message>
-            </ConfirmationModal>
-        </PageLayout>
+                    <ConfirmationModal.Header
+                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-header` }
+                    >
+                        { t("extensions:develop.emailTemplates.modal.replicateContent.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        info
+                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-message` }
+                    >
+                        { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
+                    </ConfirmationModal.Message>
+                </ConfirmationModal>
+            </PageLayout>
+        </BrandingPreferenceProvider>
     );
 };
 

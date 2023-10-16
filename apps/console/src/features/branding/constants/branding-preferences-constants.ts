@@ -92,20 +92,27 @@ export class BrandingPreferencesConstants {
     };
 
     /**
+     * Branding preference tab ids.
+     */
+    public static readonly TABS: {
+        ADVANCED_TAB_ID: string;
+        DESIGN_TAB_ID: string;
+        GENERAL_TAB_ID: string;
+        TEXT_TAB_ID: string;
+    } = {
+        ADVANCED_TAB_ID: "advanced",
+        DESIGN_TAB_ID: "design",
+        GENERAL_TAB_ID: "general",
+        TEXT_TAB_ID: "text"
+    };
+
+    /**
      * General form field constraints for validations.
      */
     public static readonly GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS: {
-        COPYRIGHT_TEXT_MAX_LENGTH: number,
-        COPYRIGHT_TEXT_MIN_LENGTH: number,
-        SITE_TITLE_MAX_LENGTH: number,
-        SITE_TITLE_MIN_LENGTH: number,
         SUPPORT_EMAIL_MAX_LENGTH: number,
         SUPPORT_EMAIL_MIN_LENGTH: number
     } = {
-        COPYRIGHT_TEXT_MAX_LENGTH: 100,
-        COPYRIGHT_TEXT_MIN_LENGTH: 3,
-        SITE_TITLE_MAX_LENGTH: 100,
-        SITE_TITLE_MIN_LENGTH: 3,
         SUPPORT_EMAIL_MAX_LENGTH: 100,
         SUPPORT_EMAIL_MIN_LENGTH: 3
     };
@@ -208,8 +215,6 @@ export class BrandingPreferencesConstants {
             }
         },
         organizationDetails: {
-            copyrightText: "",
-            siteTitle: "",
             supportEmail: ""
         },
         theme: {

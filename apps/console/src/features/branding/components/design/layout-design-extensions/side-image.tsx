@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content."
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { Field } from "@wso2is/form";
@@ -18,7 +27,7 @@ import { BrandingPreferencesConstants } from "../../../constants";
 
 /**
  * Renders the layout design extension form fields for the images section.
- * @returns {React.ReactElement}
+ * @returns Image fields.
  */
 export const renderImageExtensionFields = ({
     initialValues,
@@ -62,12 +71,12 @@ export const renderImageExtensionFields = ({
                         inputType="url"
                         name={ "layout.sideImg.imgURL" }
                         label={ t("extensions:develop.branding.forms.design.layout.images.logo.fields.url.label") }
-                        placeholder={ 
-                            t("extensions:develop.branding.forms.design.layout.images.logo.fields.url.placeholder") 
+                        placeholder={
+                            t("extensions:develop.branding.forms.design.layout.images.logo.fields.url.placeholder")
                         }
                         hint={ (
                             <Trans
-                                i18nKey={ 
+                                i18nKey={
                                     "extensions:develop.branding.forms.design.layout.images.logo.fields.url.hint"
                                 }
                             >
@@ -78,11 +87,11 @@ export const renderImageExtensionFields = ({
                         required={ false }
                         value={ initialValues.layout.sideImg.imgURL }
                         readOnly={ readOnly }
-                        maxLength={ 
-                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.SIDE_IMAGE_URL_MAX_LENGTH 
+                        maxLength={
+                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.SIDE_IMAGE_URL_MAX_LENGTH
                         }
-                        minLength={ 
-                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.SIDE_IMAGE_URL_MIN_LENGTH 
+                        minLength={
+                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.SIDE_IMAGE_URL_MIN_LENGTH
                         }
                         width={ 16 }
                         data-componentid={ `${componentId}-side-image-url` }

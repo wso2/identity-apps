@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,8 @@ import React, {
 import { useSelector } from "react-redux";
 import { AppState } from "../../../core/store";
 import { BrandingPreferencesConstants } from "../../constants";
+import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
+import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta";
 import { BrandingPreferenceInterface } from "../../models";
 
@@ -55,6 +57,8 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
         brandingPreference
     } = props;
 
+    const { i18n } = useBrandingPreference();
+
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
 
     return (
@@ -63,12 +67,18 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                 <div className="ui text menu">
                     <div className="left menu">
                         <a className="item no-hover" id="copyright">
-                            <span>{ brandingPreference.organizationDetails.copyrightText }</span>
+                            { !isEmpty(i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "")) && (
+                                <>
+                                    <span>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "") }</span>
+                                    { (brandingPreference.configs?.removeAsgardeoBranding === false) && (
+                                        <div className="powered-by-logo-divider">|</div>
+                                    ) }
+                                </>
+                            ) }
                             {
                                 (brandingPreference.configs?.removeAsgardeoBranding === false) && (
                                     <Fragment>
-                                        <div className="powered-by-logo-divider">|</div>
-                                            Powered by <div className="powered-by-logo">
+                                        Powered by <div className="powered-by-logo">
                                             <img
                                                 width="80"
                                                 height="20"
@@ -109,7 +119,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                                     rel="noopener noreferrer"
                                     data-testid="login-page-privacy-policy-link"
                                 >
-                                        Privacy Policy
+                                    Privacy Policy
                                 </a>
                             )
                         }
@@ -123,7 +133,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                                     rel="noopener noreferrer"
                                     data-testid="login-page-privacy-policy-link"
                                 >
-                                        Terms of Service
+                                    Terms of Service
                                 </a>
                             )
                         }

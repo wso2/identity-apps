@@ -29,7 +29,6 @@ import {
     SegmentedAccordion,
     Text
 } from "@wso2is/react-components";
-import { commonConfig } from "apps/console/src/extensions/configs";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -50,6 +49,7 @@ import { IllustrationsPreview } from "./illustrations-preview";
 import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
+import { commonConfig } from "../../../../extensions/configs";
 import { AppConstants } from "../../../core/constants";
 import { AppState } from "../../../core/store";
 import { useLayout } from "../../api";

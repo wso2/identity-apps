@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,11 +21,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "../../core/constants";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "../../core/hooks/use-request";
 import { store } from "../../core/store";
 import { BrandingPreferencesConstants } from "../constants";
 import {
@@ -44,11 +39,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Get the branding preference via Branding Preferences API.
  *
- * @param {string} name - Resource Name.
- * @param {BrandingPreferenceTypes} type - Resource Type.
- * @param {string} locale - Resource Locale.
- * @return {Promise<BrandingPreferenceAPIResponseInterface>}
- * @throws {IdentityAppsApiException}
+ * @param name - Resource Name.
+ * @param type - Resource Type.
+ * @param locale - Resource Locale.
+ * @returns Branding Preference.
+ * @throws IdentityAppsApiException.
  */
 export const getBrandingPreference = (
     name: string,
@@ -97,59 +92,15 @@ export const getBrandingPreference = (
 };
 
 /**
- * Hook to get the branding preference via Branding Preferences API.
- *
- * @param {string} name - Resource Name.
- * @param {BrandingPreferenceTypes} type - Resource Type.
- * @param {string} locale - Resource Locale.
- * @returns {RequestResultInterface<Data, Error>}
- */
-export const useBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface, Error = RequestErrorInterface>(
-    name: string,
-    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            locale,
-            name,
-            type
-        },
-        url: store.getState().config.endpoints.brandingPreference
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate
-    } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
-};
-
-/**
  * Update the branding preference via Branding Preferences API.
  *
- * @param {boolean} isBrandingAlreadyConfigured - Is branding already configured for the tenant.
- * @param {string} name - Resource Name.
- * @param {BrandingPreferenceInterface} preference - Preference object.
- * @param {BrandingPreferenceTypes} type - Resource Type.
- * @param {string} locale - Resource Locale.
- * @return {Promise<BrandingPreferenceAPIResponseInterface>}
- * @throws {IdentityAppsApiException}
+ * @param isBrandingAlreadyConfigured - Is branding already configured for the tenant.
+ * @param name - Resource Name.
+ * @param preference - Preference object.
+ * @param type - Resource Type.
+ * @param locale - Resource Locale.
+ * @returns Branding Preference update response.
+ * @throws IdentityAppsApiException.
  */
 export const updateBrandingPreference = (
     isBrandingAlreadyConfigured: boolean,
@@ -202,11 +153,11 @@ export const updateBrandingPreference = (
 /**
  * Delete the branding preference via Branding Preferences API.
  *
- * @param {string} name - Resource Name.
- * @param {BrandingPreferenceTypes} type - Resource Type.
- * @param {string} locale - Resource Locale.
- * @return {Promise<null | IdentityAppsApiException>}
- * @throws {IdentityAppsApiException}
+ * @param name - Resource Name.
+ * @param type - Resource Type.
+ * @param locale - Resource Locale.
+ * @returns Branding Preference delete response.
+ * @throws IdentityAppsApiException.
  */
 export const deleteBrandingPreference = (
     name: string,

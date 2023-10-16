@@ -67,10 +67,10 @@
 <%
     String styleFilePath = "";
     if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
                 + tenantRequestingPreferences)) {
             styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
                 + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences)) {
             styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
         }
@@ -81,12 +81,12 @@
     if (config.getServletContext().getResource(styleFilePath) != null) {
 %>
         <link rel="stylesheet" href="<%= styleFilePath %>">
-<%        
+<%
     }
 %>
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
-<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
+<title><%= i18n(recoveryResourceBundle, customText, "site.title", __DEPRECATED__siteTitle) %></title>
 
 <%-- Downtime banner --%>
 <%

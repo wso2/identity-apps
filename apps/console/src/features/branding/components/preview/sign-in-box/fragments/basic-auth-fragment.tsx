@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content."
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -14,33 +23,27 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { AppConstants } from "../../../core/constants";
-import { BrandingPreferenceInterface } from "../../models";
+import { AppConstants } from "../../../../../core/constants";
+import { CustomTextPreferenceConstants } from "../../../../constants/custom-text-preference-constants";
+import useBrandingPreference from "../../../../hooks/use-branding-preference";
 
 /**
- * Proptypes for the login box component of login screen skeleton.
+ * Proptypes for the basic-auth fragment of login screen skeleton.
  */
-interface LoginBoxInterface extends IdentifiableComponentInterface {
-    /**
-     * Branding preferences object.
-     */
-    brandingPreference: BrandingPreferenceInterface;
-}
+export type BasicAuthFragmentInterface = IdentifiableComponentInterface;
 
 /**
- * Login Box Component.
+ * Basic auth fragment component for the branding preview of Sign In box.
  *
- * @param {LoginBoxInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Basic auth fragment component.
  */
-export const LoginBox: FunctionComponent<LoginBoxInterface> = (
-    props: LoginBoxInterface
+const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
+    props: BasicAuthFragmentInterface
 ): ReactElement => {
+    const { ["data-componentid"]: componentId } = props;
 
-    const {
-        ["data-componentid"]: componentId
-    } = props;
+    const { i18n } = useBrandingPreference();
 
     const [ googleLogoURL, setGoogleLogoURL ] = useState<string>(undefined);
 
@@ -62,21 +65,21 @@ export const LoginBox: FunctionComponent<LoginBoxInterface> = (
     }, [ AppConstants.getClientOrigin(), AppConstants.getAppBasename() ]);
 
     return (
-        <div className="ui segment" data-componentid = { componentId }>
+        <div data-componentid={ componentId }>
             <h3 className="ui header">
-                Sign In
+                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.LOGIN.HEADING, "Sign In") }
             </h3>
 
             <div className="segment-form">
                 <div className="ui large form">
                     <div className="field m-0">
-                        <label>Email</label>
+                        <label>Username</label>
                         <div className="ui fluid left icon input">
                             <input
                                 type="text"
                                 id="usernameUserInput"
                                 name="usernameUserInput"
-                                placeholder="Enter your email"
+                                placeholder="Enter your username"
                                 data-testid="login-page-username-input"
                             />
                             <i aria-hidden="true" className="envelope outline icon"></i>
@@ -107,8 +110,7 @@ export const LoginBox: FunctionComponent<LoginBoxInterface> = (
                             <a
                                 id="passwordRecoverLink"
                             >
-                                    Forgot
-                                    password?
+                                Forgot password?
                             </a>
                         </div>
                     </div>
@@ -138,7 +140,7 @@ export const LoginBox: FunctionComponent<LoginBoxInterface> = (
                                 role="button"
                                 data-testid="login-page-continue-login-button"
                             >
-                                    Sign In
+                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.LOGIN.BUTTON, "Sign In") }
                             </button>
                         </div>
                     </div>
@@ -186,6 +188,8 @@ export const LoginBox: FunctionComponent<LoginBoxInterface> = (
 /**
  * Default props for the component.
  */
-LoginBox.defaultProps = {
-    "data-componentid": "login-screen-skeleton-login-box"
+BasicAuthFragment.defaultProps = {
+    "data-componentid": "branding-preview-basic-auth-fragment"
 };
+
+export default BasicAuthFragment;
