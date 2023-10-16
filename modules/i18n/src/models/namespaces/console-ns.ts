@@ -5177,9 +5177,18 @@ export interface ConsoleNS {
                             content: string;
                         }
                     };
-                    errors: {
-                        genericError: string;
-                    };
+                    notification: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            genericError: {
+                                description: string;
+                                message: string;
+                            };
+                        }
+                    }
                 };
                 realmConfiguration: {
                     actionTitles: {

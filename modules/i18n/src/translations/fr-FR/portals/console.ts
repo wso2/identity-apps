@@ -8405,58 +8405,58 @@ export const console: ConsoleNS = {
                         "sur la page de connexion."
                 },
                 remoteLogPublishing: {
-                    title: "",
-                    pageTitle: "",
-                    description: "",
+                    title: "Publication de journaux à distance",
+                    pageTitle: "Publication de journaux à distance",
+                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
                     fields: {
                         logTypes: {
-                            label: "",
+                            label: "Types de journaux à publier",
                             values: {
-                                carbonLogs: "",
-                                auditLogs: "",
-                                allLogs: ""
+                                carbonLogs: "Bûches de carbone",
+                                auditLogs: "Journaux d'audit",
+                                allLogs: "Tous les journaux"
                             }
                         },
                         remoteURL: {
-                            label: ""
+                            label: "URL de destination"
                         },
                         advanced: {
-                            title: "",
+                            title: "Réglages avancés",
                             connectionTimeout: {
-                                label: ""
+                                label: "Délai d'expiration de la connexion (ms)"
                             },
                             verifyHostname: {
-                                label: ""
+                                label: "Vérifiez le nom d'hôte"
                             },
                             basicAuthConfig: {
-                                title: "",
+                                title: "Configuration de l'authentification de base",
                                 serverUsername: {
-                                    label: ""
+                                    label: "Nom d'utilisateur du serveur distant"
                                 },
                                 serverPassword: {
-                                    label: ""
+                                    label: "Mot de passe du serveur distant"
                                 }
                             },
                             sslConfig: {
-                                title: "",
+                                title: "Configuration SSL",
                                 keystorePath: {
-                                    label: ""
+                                    label: "Emplacement du magasin de clés"
                                 },
                                 keystorePassword: {
-                                    label: ""
+                                    label: "Mot de passe du magasin de clés"
                                 },
                                 truststorePath: {
-                                    label: ""
+                                    label: "Emplacement du magasin de confiance"
                                 },
                                 truststorePassword: {
-                                    label: ""
+                                    label: "Mot de passe du magasin de confiance"
                                 }
                             }
                         }
                     },
                     dangerZone: {
-                        title: "",
-                        header: "",
+                        title: "Restaurer la configuration par défaut",
+                        header: "Restaurer la configuration par défaut",
                         subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
                         confirmation: {
                             hint: "Veuillez confirmer votre action.",
@@ -8466,8 +8466,17 @@ export const console: ConsoleNS = {
                             content: "Cette action restaurera la configuration de publication des journaux par défaut."
                         }
                     },
-                    errors: {
-                        genericError: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance."
+                    notification: {
+                        success: {
+                            description: "La configuration de la publication des journaux à distance a été mise à jour avec succès.",
+                            message: "Mis à jour avec succés."
+                        },
+                        error: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        }
                     }
                 },
                 realmConfiguration: {

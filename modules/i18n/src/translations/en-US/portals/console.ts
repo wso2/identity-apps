@@ -10148,8 +10148,17 @@ export const console: ConsoleNS = {
                             content: "This action will restore the default log publishing configuration."
                         }
                     },
-                    errors: {
-                        genericError: "An error occurred while updating remote log publishing configuration."
+                    notification: {
+                        success: {
+                            description: "Remote log publishing configuration updated successfully.",
+                            message: "Updated successfully."
+                        },
+                        error: {
+                            genericError: {
+                                description: "An error occurred while updating remote log publishing configuration.",
+                                message: "Something went wrong"
+                            }
+                        }
                     }
                 },
                 realmConfiguration: {

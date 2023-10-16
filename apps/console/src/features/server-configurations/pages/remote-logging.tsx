@@ -142,9 +142,10 @@ export default function RemoteLogging (): JSX.Element {
 
         updateRemoteLogPublishingConfiguration(remoteLogPublishingConfiguration).then(() => {
             dispatch(addAlert<AlertInterface>({
-                description: t("Updated successfully."),
+                description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                "notification.success.message"),
                 level: AlertLevels.SUCCESS,
-                message: t("Restored the default remote logging configuration successfully.")
+                message: t("console:manage.features.serverConfigs.remoteLogPublishing.notification.success.description")
             }));
         }).catch((_err: AxiosError) => {
             dispatch(addAlert<AlertInterface>({
