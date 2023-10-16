@@ -163,7 +163,7 @@
                 if (StringUtils.isNotBlank(defaultValue)) {
                     localizedString = Encode.forHtmlContent(defaultValue);
                 } else if (shouldFallbackToResourceBundle) {
-                    localizedString = AuthenticationEndpointUtil.i18n(resourceBundle, key);
+                    localizedString = IdentityManagementEndpointUtil.i18n(resourceBundle, key);
                 } else {
                     localizedString = "";
                 }
