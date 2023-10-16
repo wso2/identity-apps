@@ -10092,6 +10092,81 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                remoteLogPublishing: {
+                    title: "Remote Log Publishing",
+                    pageTitle: "Remote Log Publishing",
+                    description: "Configure remote logging settings for the organization.",
+                    fields: {
+                        logTypes: {
+                            label: "Log types to be published",
+                            values: {
+                                carbonLogs: "Carbon Logs",
+                                auditLogs: "Audit Logs",
+                                allLogs: "All Logs"
+                            }
+                        },
+                        remoteURL: {
+                            label: "Destination URL"
+                        },
+                        advanced: {
+                            title: "Advanced settings",
+                            connectionTimeout: {
+                                label: "Connection Timeout (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Verify the hostname"
+                            },
+                            basicAuthConfig: {
+                                title: "Basic Authentication Configuration",
+                                serverUsername: {
+                                    label: "Remote server username"
+                                },
+                                serverPassword: {
+                                    label: "Remote server password"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL Configuration",
+                                keystorePath: {
+                                    label: "Keystore location"
+                                },
+                                keystorePassword: {
+                                    label: "Keystore password"
+                                },
+                                truststorePath: {
+                                    label: "Truststore location"
+                                },
+                                truststorePassword: {
+                                    label: "Truststore password"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
+                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        confirmation: {
+                            hint: "Please confirm your action.",
+                            header: "Are you sure?",
+                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            "Please proceed with caution.",
+                            content: "This action will restore the default log publishing configuration."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "Remote log publishing configuration updated successfully.",
+                            message: "Updated successfully."
+                        },
+                        error: {
+                            genericError: {
+                                description: "An error occurred while updating remote log publishing configuration.",
+                                message: "Something went wrong"
+                            }
+                        }
+                    }
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "More"

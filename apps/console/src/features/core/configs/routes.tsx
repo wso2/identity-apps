@@ -772,6 +772,22 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        category: "extensions:develop.sidePanel.categories.AccountManagement",
+                        component: lazy(() =>
+                            import("../../server-configurations/pages/remote-logging")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().remoteLogging
+                        },
+                        id: "remoteLogIngest",
+                        name: "Remote Logging",
+                        order: 22,
+                        path: AppConstants.getPaths().get("REMOTE_LOGGING"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../../extensions/components/logs/pages/logs")),
                         exact: true,

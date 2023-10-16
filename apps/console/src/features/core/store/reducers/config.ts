@@ -119,6 +119,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            remoteLogging: "",
             requestPathAuthenticators: "",
             resourceTypes: "",
             roles: "",

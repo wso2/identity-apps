@@ -90,6 +90,9 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import {
+    ReactComponent as RemoteLoggingIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
@@ -253,6 +256,7 @@ export type GetSidePanelIconsInterface = {
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
+    remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
     organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
@@ -302,6 +306,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
+        remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,

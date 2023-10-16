@@ -8410,6 +8410,81 @@ export const console: ConsoleNS = {
                     pageSubheading: "Configurez la bannière d'avis d'administration à afficher " + 
                         "sur la page de connexion."
                 },
+                remoteLogPublishing: {
+                    title: "Publication de journaux à distance",
+                    pageTitle: "Publication de journaux à distance",
+                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    fields: {
+                        logTypes: {
+                            label: "Types de journaux à publier",
+                            values: {
+                                carbonLogs: "Bûches de carbone",
+                                auditLogs: "Journaux d'audit",
+                                allLogs: "Tous les journaux"
+                            }
+                        },
+                        remoteURL: {
+                            label: "URL de destination"
+                        },
+                        advanced: {
+                            title: "Réglages avancés",
+                            connectionTimeout: {
+                                label: "Délai d'expiration de la connexion (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Vérifiez le nom d'hôte"
+                            },
+                            basicAuthConfig: {
+                                title: "Configuration de l'authentification de base",
+                                serverUsername: {
+                                    label: "Nom d'utilisateur du serveur distant"
+                                },
+                                serverPassword: {
+                                    label: "Mot de passe du serveur distant"
+                                }
+                            },
+                            sslConfig: {
+                                title: "Configuration SSL",
+                                keystorePath: {
+                                    label: "Emplacement du magasin de clés"
+                                },
+                                keystorePassword: {
+                                    label: "Mot de passe du magasin de clés"
+                                },
+                                truststorePath: {
+                                    label: "Emplacement du magasin de confiance"
+                                },
+                                truststorePassword: {
+                                    label: "Mot de passe du magasin de confiance"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restaurer la configuration par défaut",
+                        header: "Restaurer la configuration par défaut",
+                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        confirmation: {
+                            hint: "Veuillez confirmer votre action.",
+                            header: "Êtes-vous sûr?",
+                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            "Veuillez procéder avec prudence.",
+                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "La configuration de la publication des journaux à distance a été mise à jour avec succès.",
+                            message: "Mis à jour avec succés."
+                        },
+                        error: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        }
+                    }
+                },
                 realmConfiguration: {
                     actionTitles: {
                         config: "Plus"

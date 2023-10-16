@@ -5134,6 +5134,80 @@ export interface ConsoleNS {
                     pageHeading: string;
                     pageSubheading: string;
                 };
+                remoteLogPublishing: {
+                    title: string;
+                    pageTitle: string;
+                    description: string;
+                    fields: {
+                        logTypes: {
+                            label: string;
+                            values: {
+                                carbonLogs: string;
+                                auditLogs: string;
+                                allLogs: string;
+                            }
+                        },
+                        remoteURL: {
+                            label: string;
+                        },
+                        advanced: {
+                            title: string,
+                            connectionTimeout: {
+                                label: string;
+                            },
+                            verifyHostname: {
+                                label: string;
+                            },
+                            basicAuthConfig: {
+                                title: string;
+                                serverUsername: {
+                                    label: string;
+                                },
+                                serverPassword: {
+                                    label: string;
+                                }
+                            },
+                            sslConfig: {
+                                title: string;
+                                keystorePath: {
+                                    label: string;
+                                },
+                                keystorePassword: {
+                                    label: string;
+                                },
+                                truststorePath: {
+                                    label: string;
+                                },
+                                truststorePassword: {
+                                    label: string;
+                                },
+                            }
+                        }
+                    };
+                    dangerZone: {
+                        title: string;
+                        header: string;
+                        subheader: string;
+                        confirmation: {
+                            hint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        }
+                    };
+                    notification: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            genericError: {
+                                description: string;
+                                message: string;
+                            };
+                        }
+                    }
+                };
                 realmConfiguration: {
                     actionTitles: {
                         config: string;
