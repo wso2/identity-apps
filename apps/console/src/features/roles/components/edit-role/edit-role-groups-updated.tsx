@@ -50,7 +50,7 @@ import {
 } from "../../../groups";
 import { useGroupList } from "../../../groups/api/groups";
 import { UserBasicInterface } from "../../../users/models";
-import { RoleConstants } from "../../constants";
+import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
 
@@ -251,7 +251,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const bulkData: PatchBulkGroupDataInterface = {
             Operations: [],
             failOnErrors: 1,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
+            schemas: [ Schemas.BULK_REQUEST ]
         };
 
         const operation: PatchGroupOpInterface = {

@@ -101,3 +101,13 @@ export interface RoleEditSectionsInterface {
      */
     tabIndex: number;
 }
+
+/**
+ * Interface to store data in the basic role edit interface.
+ */
+export interface RoleBasicInterface {
+    /**
+     * Role name.
+     */
+    roleName: string;
+}

@@ -27,8 +27,13 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api";
-import { RoleConstants } from "../../constants";
-import { PatchRoleDataInterface, RoleEditSectionsInterface, SearchRoleInterface } from "../../models/roles";
+import { RoleConstants, Schemas } from "../../constants";
+import { 
+    PatchRoleDataInterface, 
+    RoleBasicInterface, 
+    RoleEditSectionsInterface, 
+    SearchRoleInterface 
+} from "../../models/roles";
 
 /**
  * Interface to contain props needed for component
@@ -89,9 +94,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param values - Form Values.
      * @returns Form validation.
      */
-    const validateForm = async (values: any): Promise<any> => {
+    const validateForm = async (values: RoleBasicInterface): Promise<RoleBasicInterface> => {
 
-        const errors: any = {
+        const errors: RoleBasicInterface = {
             roleName: undefined
         };
 
@@ -101,9 +106,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
             const searchData: SearchRoleInterface = {
                 filter: "displayName eq " + roleName,
-                schemas: [
-                    "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-                ],
+                schemas: [ Schemas.SEARCH_REQUEST ],
                 startIndex: 1
             };
 
@@ -131,7 +134,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     };
 
     /**
-     * Method to update role name for the selected role.
+     * Update role name for the selected role.
      */
     const updateRoleName = (values: Record<string, string>): void => {
         const newRoleName: string = values?.roleName?.toString().trim();
@@ -142,7 +145,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 "path": "displayName",
                 "value": newRoleName
             } ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            schemas: [ Schemas.PATCH_OP ]
         };
 
         setIsSubmitting(true);

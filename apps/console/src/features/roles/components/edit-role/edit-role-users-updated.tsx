@@ -50,7 +50,7 @@ import {
     PatchUserRemoveOpInterface, 
     UserBasicInterface 
 } from "../../../users/models";
-import { RoleConstants } from "../../constants";
+import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 
@@ -249,7 +249,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const bulkData: PatchBulkUserDataInterface = {
             Operations: [],
             failOnErrors: 1,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
+            schemas: [ Schemas.BULK_REQUEST ]
         };
 
         const operation: PatchUserOpInterface = {
