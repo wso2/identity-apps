@@ -303,7 +303,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 }
           
                 if (convertedKey === "callbackUrl") {
-                    return { ...property, value: deploymentConfig.clientHost + property.value };
+                    return { ...property, value: deploymentConfig.serverOrigin + property.value };
                 }
           
                 return property;
