@@ -220,7 +220,7 @@ export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigur
  */
 export const updateRemoteLogPublishingConfiguration = (
     data: RemoteLogPublishingConfigurationInterface[]
-) : Promise<AxiosResponse> => {
+): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         data,
@@ -252,7 +252,7 @@ export const updateRemoteLogPublishingConfiguration = (
  *
  * @returns a promise containing the response.
  */
-export const restoreRemoteLogPublishingConfiguration = () : Promise<AxiosResponse> => {
+export const restoreRemoteLogPublishingConfiguration = (): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {

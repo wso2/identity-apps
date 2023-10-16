@@ -22,7 +22,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import { AlertInterface, AlertLevels } from "modules/core/src/models/core";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -53,8 +53,8 @@ interface RemoteLoggingConfig {
     truststorePassword: string
 }
 
-export default function RemoteLogging (): JSX.Element {
-    const [ remoteLoggingConfig,setRemoteLoggingConfig ] = useState<RemoteLoggingConfig>();
+export default function RemoteLogging (): ReactElement {
+    const [ remoteLoggingConfig, setRemoteLoggingConfig ] = useState<RemoteLoggingConfig>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     
     const { t } = useTranslation();
@@ -67,7 +67,6 @@ export default function RemoteLogging (): JSX.Element {
 
     useEffect(() => {
         if (!remoteLogPublishingConfigRetrievalError) {
-
             return;
         }
 
@@ -84,11 +83,10 @@ export default function RemoteLogging (): JSX.Element {
                 (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT);
             
             if (remoteLogPublishingConfigs?.length === 2) {
-                existingConfig = { ...existingConfig,logType: LogType.ALL };
+                existingConfig = { ...existingConfig, logType: LogType.ALL };
             }
 
             setRemoteLoggingConfig(existingConfig);
-            
         }
     },[ remoteLogPublishingConfigs ]);
 
@@ -109,7 +107,6 @@ export default function RemoteLogging (): JSX.Element {
     };
     
     const handleRemoteLoggingConfigUpdate = (values: Map<string,string>) => {
-
         const remoteLogPublishingConfiguration: RemoteLogPublishingConfigurationInterface[] = [ ];
 
         const remoteLogPublishConfig: Omit<RemoteLogPublishingConfigurationInterface,"logType"> = {
