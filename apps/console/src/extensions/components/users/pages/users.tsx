@@ -460,7 +460,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     const getAddUserOptions = () => {
-        const options: DropdownItemProps = [
+        const options: DropdownItemProps[] = [
             {
                 "data-componentid": `${ componentId }-add-user-dropdown-item`,
                 "data-testid": `${ testId }-add-user-dropdown-item`,
@@ -490,16 +490,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             trigger={ addUserDropdownTrigger }
         >
             <Dropdown.Menu >
-                { getAddUserOptions().map((option: {
-                    "data-componentid": string;
-                    "data-testid": string;
-                    key: number;
-                    text: string;
-                    value: UserAddOptionTypes;
-                }) => (
+                { getAddUserOptions().map((option: DropdownItemProps) => (
                     <Dropdown.Item
-                        key={ option.value }
-                        onClick={ ()=> handleDropdownItemChange(option.value) }
+                        key={ option.value as string }
+                        onClick={ ()=> handleDropdownItemChange(option.value as string) }
                         { ...option }
                     />
                 )) }
