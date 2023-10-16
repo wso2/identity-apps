@@ -15,10 +15,14 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
 --%>
-
-<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -29,6 +33,25 @@
 
 <%
     String isKeyExist = request.getParameter("keyExist");
+
+    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+
+    if (StringUtils.isBlank(authAPIURL)) {
+        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    } else {
+        // Resolve tenant domain for the authentication API URL.
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
+    }
+    if (!authAPIURL.endsWith("/")) {
+        authAPIURL += "/";
+    }
+    authAPIURL += "context/" + request.getParameter("sessionDataKey");
+    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+    Gson gson = new Gson();
+    Map data = gson.fromJson(contextProperties, Map.class);
+    
+    boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
+
 %>
 
 <%-- Branding Preferences --%>
@@ -127,16 +150,22 @@
                             <div class="sixteen wide column">
                                 <p>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.not.found" )%>
+                                    <% if(!enablePasskeyProgressiveEnrollment){ %>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.option.info" )%>
+                                        <a target="_blank" id="my-account-link">My Account.</a>
+                                    <% } %>
                                 </p>
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
                                     <button class="ui button secondary" type="button" onclick="cancelFlow()">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
                                     </button>
-                                    <button class="ui button primary" type="button" onclick="passkeyEnrollmentFlow()"
-                                        data-testid="login-page-fido-register-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
-                                    </button>
+                                    <% if(enablePasskeyProgressiveEnrollment){ %>
+                                        <button class="ui button primary" type="button" onclick="passkeyEnrollmentFlow()"
+                                            data-testid="login-page-fido-register-button">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                        </button>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>

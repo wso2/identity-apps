@@ -79,7 +79,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             },
             isComingSoon: false,
             isEnabled: true,
-            useAuthenticatorsAPI: true
+            useAuthenticatorsAPI: false
         },
         [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
             content: {

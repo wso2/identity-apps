@@ -36,7 +36,8 @@ import {
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm,
     MicrosoftAuthenticatorForm,
-    SMSOTPAuthenticatorForm
+    SMSOTPAuthenticatorForm,
+    FIDOAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 /**
@@ -186,6 +187,21 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
             return (
                 <SMSOTPAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID:
+            return (
+                <FIDOAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
