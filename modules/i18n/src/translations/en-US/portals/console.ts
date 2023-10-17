@@ -10701,8 +10701,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Import multiple users using a CSV file.",
+                        title: "Invite multiple users",
+                        subTitle: "Invite multiple users to the organization.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
@@ -10738,7 +10738,15 @@ export const console: ConsoleNS = {
                                 placeholder: "Search by Username"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment."
+                                "at the moment.",
+                            manualCreation: {
+                                hint: "Add emails and send invitations to multiple users.",
+                                emailsLabel: "Emails",
+                                emailsPlaceholder: "Enter email addresses"
+                            },
+                            fileBased: {
+                                hint: "Bulk invite multiple users using a CSV file."
+                            }
                         },
                         buttons: {
                             import: "Import"
@@ -11213,8 +11221,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Columns"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Single User",
+                    bulkImport: "Multiple Users"
                 },
                 confirmations: {
                     terminateAllSessions: {

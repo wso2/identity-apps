@@ -5628,6 +5628,14 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                             disabledSecondaryStoreInfo: string;
+                            manualCreation: {
+                                hint: string,
+                                emailsLabel: string,
+                                emailsPlaceholder: string
+                            };
+                            fileBased: {
+                                hint: string;
+                            }
                         };
                         buttons: {
                             import: string;

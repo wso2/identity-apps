@@ -8968,8 +8968,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Importer des utilisateurs en masse",
-                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
@@ -9005,7 +9005,15 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher par nom d'utilisateur"
                             },
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment."
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail"
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            }
                         },
                         buttons: {
                             import: "Importer"

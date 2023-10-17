@@ -168,7 +168,7 @@ export interface EmailsInterface {
  */
 export interface UserDetailsInterface {
     emails: EmailsInterface[];
-    name: NameInterface;
+    name?: NameInterface;
     userName: string;
     password?: string;
     /*
@@ -179,7 +179,7 @@ export interface UserDetailsInterface {
     [key: string]: {
         askPassword: string;
     } | any;
-    profileUrl: string;
+    profileUrl?: string;
 }
 
 /**
@@ -392,3 +392,21 @@ export interface PatchUserAddOpInterface {
         users: { value: string }[]
     }
 }
+
+/**
+ * Enum for the multiple invites modes.
+ *
+ */
+export enum MultipleInvites {
+    MANUAL = "manualConfiguration",
+    META_FILE = "metadataFile"
+}
+
+/**
+ * Multiple Invites mode display name mapping.
+ */
+export const MultipleInvitesDisplayNames: { manualConfiguration: string; metadataFile: string; } = {
+    [ MultipleInvites.MANUAL ]: "Manual",
+    [ MultipleInvites.META_FILE ]: "File Based"
+};
+
