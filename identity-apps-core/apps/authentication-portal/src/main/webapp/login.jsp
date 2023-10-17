@@ -1314,9 +1314,15 @@
                 });
 
                 $(elem).addClass(linkClicked);
-                document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
-                    "<%=multiOptionURIParam%>";
+
+                var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
+                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
+
+                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                    document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
+                } else {
+                    document.location = baseLocation + "<%=multiOptionURIParam%>";
+                }
             }
         }
 
