@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,9 @@
 import { Field } from "@wso2is/form/src";
 import React, { ReactElement } from "react";
 import { TFunction } from "react-i18next";
-import { GovernanceConnectorConstants } from "../../governance-connectors/constants/governance-connector-constants";
+import {
+    GovernanceConnectorConstants
+} from "../../../../features/server-configurations/constants/governance-connector-constants";
 
 export const generatePasswordExpiry = (
     componentId: string,

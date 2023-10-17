@@ -310,6 +310,7 @@ export class AppConstants {
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
+            [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],

@@ -471,7 +471,14 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "පෞද්ගලිකත්වය"
+            privacy: "පෞද්ගලිකත්වය",
+            loginAndRegistration: {
+                label: "පිවිසුම් සහ ලියාපදිංචිය",
+                description: "පිවිසුම් සහ ලියාපදිංචි සැකසුම් වින්යාස කරන්න."
+            },
+            userAttributesAndStores: "පරිශීලක ගුණාංග සහ ගබඩා",
+            userManagement: "පරිශීලක කළමනාකරණය",
+            branding: "වෙළඳ නාමකරණය"
         },
         validations: {
             inSecureURL: {
@@ -1064,7 +1071,7 @@ export const console: ConsoleNS = {
                             tabName: "ප්‍රතිපාදන"
                         },
                         sharedAccess: {
-                            subTitle: "උප-සංවිධාන සමඟ යෙදුම බෙදා ගැනීමට පහත විකල්ප තෝරන්න.",
+                            subTitle: "සංවිධාන සමඟ යෙදුම බෙදා ගැනීමට පහත විකල්ප තෝරන්න.",
                             tabName: "හවුල් ප්රවේශය"
                         },
                         shareApplication: {
@@ -1631,9 +1638,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             isSharingEnabled: {
-                                hint: "සබල කර ඇත්නම්, එය මෙම සංවිධානයට හෝ එහි ඕනෑම උප-සංවිධානයකට ගනුදෙනුකරුවන්/හවුල්කරුවන් " +
+                                hint: "සබල කර ඇත්නම්, එය මෙම සංවිධානයට හෝ එහි ඕනෑම සංවිධානයකට ගනුදෙනුකරුවන්/හවුල්කරුවන් " +
                                     "සත්‍යාපනය කිරීමට මෙම යෙදුමට ඉඩ දෙයි.",
-                                label: "උප සංවිධාන සමඟ බෙදා ගැනීමට ඉඩ දෙන්න"
+                                label: "සංවිධාන සමඟ බෙදා ගැනීමට ඉඩ දෙන්න"
                             },
                             isManagementApp: {
                                 hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
@@ -3157,22 +3164,22 @@ export const console: ConsoleNS = {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අවසර දී ඇති උපරිම උප ආයතන ගණනට ළඟා වී ඇත."
+                            title: "ඔබ අවසර දී ඇති උපරිම සංවිධාන ගණනට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ උප ආයතන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                        heading: "ඔබ සංවිධාන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
                     },
                     subOrgLevelsLimitReachedError: {
                         emptyPlaceholder: {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අනුමත උප ආයතන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
+                            title: "ඔබ අනුමත සංවිධාන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම උප ආයතන මට්ටම් කරා ළඟා වී ඇත."
+                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
                     },
                     duplicateOrgError: {
-                        message: "එම නමින්ම උප සංවිධානයක් දැනටමත් පවතී.",
-                        description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන උප සංවිධානය දැනටමත් පවතී."
+                        message: "එම නමින්ම සංවිධානයක් දැනටමත් පවතී.",
+                        description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන සංවිධානය දැනටමත් පවතී."
                     }
                 }
             },
@@ -6334,6 +6341,7 @@ export const console: ConsoleNS = {
                 copyright: "WSO2 හැඳුනුම් සේවාදායකය © {{year}}"
             },
             governanceConnectors: {
+                goBackLoginAndRegistration: "පුරනය වීම සහ ලියාපදිංචි කිරීම වෙත ආපසු යන්න",
                 categories: "ප්රවර්ග",
                 connectorSubHeading: "{{Name}} සැකසුම් වින්‍යාස කරන්න.",
                 connectorCategories: {
@@ -7457,12 +7465,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "පවතින සියලුම උප ආයතන ලැයිස්තුව බලන්න.",
-                    name: "සියලුම උප ආයතන"
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
                 },
                 list: {
                     actions: {
-                        add: "උප ආයතනය එකතු කරන්න"
+                        add: "සංවිධාන එකතු කරන්න"
                     },
                     columns: {
                         actions: "ක්රියාවන්",
@@ -7471,9 +7479,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "උප ආයතනය එකතු කරන්න",
-                        subtitle1: "{{parent}} තුළ නව උප ආයතනයක් සාදන්න.",
-                        subtitle2: "නව උප ආයතනයක් සාදන්න."
+                        header: "සංවිධාන එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
+                        subtitle2: "නව සංවිධානයක් සාදන්න."
                     }
                 },
                 notifications: {
@@ -7505,7 +7513,7 @@ export const console: ConsoleNS = {
                             message: "ආයතනය සාර්ථකව මකා ඇත"
                         }
                     },
-                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} ආයතනයට උප සංවිධාන එකක් හෝ " +
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} ආයතනයට සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     disableOrganization: {
                         error: {
@@ -7592,7 +7600,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "උප ආයතනය එකතු කරන්න",
+                        action: "සංවිධානය එකතු කරන්න",
                         subtitles: {
                             0: "මේ මොහොතේ ආයතන නොමැත.",
                             1: "ඔබට පහසුවෙන් නව ආයතනයක් එක් කළ හැකිය",
@@ -7603,25 +7611,25 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationSubTitle: "යෙදුම බෙදා ගැනීමට පහත විකල්ප වලින් එකක් තෝරන්න.",
-                shareApplicationRadio: "සියලුම උප ආයතන සමඟ බෙදා ගන්න",
-                shareApplicationInfo: "ඔබගේ වත්මන් ආයතනය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
-                    "ආයතන සහ සියලුම නව උප ආයතන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
-                unshareApplicationRadio: "කිසිදු උප ආයතනයක් සමඟ බෙදා නොගන්න",
-                shareWithSelectedOrgsRadio: "තෝරාගත් උප ආයතන සමඟ පමණක් බෙදා ගන්න",
+                shareApplicationRadio: "සියලුම සංවිධානය සමඟ බෙදා ගන්න",
+                shareApplicationInfo: "ඔබගේ වත්මන් ආයතනය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම " +
+                    "සංවිධාන සහ සියලුම නව සංවිධානය සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
+                unshareApplicationRadio: "කිසිදු සංවිධානයක් සමඟ බෙදා නොගන්න",
+                shareWithSelectedOrgsRadio: "තෝරාගත් සංවිධානය සමඟ පමණක් බෙදා ගන්න",
                 unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම ආයතනය යටතේ නිර්මාණය කරන " +
-                    "දැනට පවතින උප ආයතන හෝ නව උප ආයතන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
+                    "දැනට පවතින සංවිධානය හෝ නව සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
                     "මෙය ඔබට ඉඩ සලසයි.",
-                subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                subTitle: "සංවිධාන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට ආයතනයක් නැත.",
                     search: {
                         placeholder: "නම අනුව සොයන්න"
                     },
                     goBack: "ආපසු යන්න",
-                    subOrganizations: "උප ආයතන",
-                    switchLabel: "ආයතනය"
+                    subOrganizations: "සංවිධාන",
+                    switchLabel: "සංවිධානය"
                 },
-                title: "ආයතන"
+                title: "සංවිධාන"
             },
             overview: {
                 widgets: {
@@ -8485,7 +8493,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන කළමනාකරණය",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
@@ -8505,7 +8513,7 @@ export const console: ConsoleNS = {
                 localDialect: "දේශීය උපභාෂාව",
                 loginAttemptsSecurity: "පුරනය වීමේ උත්සාහයන් ආරක්ෂාව",
                 multiFactorAuthenticators: "බහු සාධක සත්‍යාපනය කරන්නන්",
-                organizations: "උප ආයතන",
+                organizations: "සංවිධාන",
                 otherSettings: "වෙනත් සැකසුම්",
                 overview: "දළ විශ්ලේෂණය",
                 passwordPolicies: "මුරපද ප්රතිපත්ති",
@@ -10079,8 +10087,8 @@ export const console: ConsoleNS = {
                 title: "විෂය පථය සංස්කරණය කරන්න"
             },
             organizations: {
-                subTitle: "උප ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
-                title: "උප ආයතන"
+                subTitle: "සංවිධාන සාදන්න සහ කළමනාකරණය කරන්න.",
+                title: "සංවිධාන"
             },
             overview: {
                 subTitle: "පරිශීලකයින්, භූමිකාවන්, උපභාෂා, සේවාදායක වින්‍යාසයන් වින්‍යාස කිරීම " +

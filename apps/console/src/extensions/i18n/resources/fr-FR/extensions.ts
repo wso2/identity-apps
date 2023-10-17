@@ -1963,6 +1963,7 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "Configurer le fournisseur de messagerie",
             heading: "Fournisseur de messagerie",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres suivants en fonction de votre serveur SMTP.",
@@ -2702,6 +2703,7 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "Ressources de l'API",
             branding: "l'image de marque",
+            stylesAndText: "Styles et texte",
             monitor: "Journaux",
             categories: {
                 apiResources: "Ressources de l'API",
