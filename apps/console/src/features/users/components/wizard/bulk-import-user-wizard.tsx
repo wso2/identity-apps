@@ -1064,6 +1064,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Autocomplete
                                     disabled={ regExLoading }
                                     size="small"
+                                    limitTags={ userConfig.bulkUserImportLimit.inviteEmails }
                                     fullWidth
                                     multiple
                                     id="tags-filled"
@@ -1375,7 +1376,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         </Modal>
     );
 };
-
 
 const initialBulkResponseSummary: BulkResponseSummary = {
     failedCount: 0,
