@@ -3889,6 +3889,73 @@ export const console: ConsoleNS = {
                             commonAuthQueryParams: {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
+                            },
+                            // New additions
+                            isEnableAssertionSigning:  {
+                                ariaLabel: "Enable assertion signing",
+                                hint: "Specify if SAMLAssertion element is signed",
+                                label: "Enable assertion signing",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            includeCert:  {
+                                ariaLabel: "Include public certificate",
+                                hint: "Include public certificate in the request",
+                                label: "Include public certificate of the external IdP",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            includeNameIDPolicy: {
+                                ariaLabel: "Include Name ID Policy",
+                                hint: "Include NameIDPolicy in the request",
+                                label: "Include Name ID Policy",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            isEnableAssertionEncryption: {
+                                ariaLabel: "Enable assertion encryption",
+                                hint: "Specify if SAMLAssertion element is encrypted",
+                                label: "Enable assertion encryption",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            authenticationContextClass: {
+                                ariaLabel: "Authentication context class",
+                                hint: "Authentication context class",
+                                label: "Authentication context class",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            attributeConsumingServiceIndex: {
+                                ariaLabel: "Attribute consuming service index",
+                                hint: "Specify the Attribute Consuming Service Index",
+                                label: "Attribute consuming service index",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            isArtifactBindingEnabled: {
+                                ariaLabel: "Enable artifact binding",
+                                hint: "Enable artifact binding",
+                                label: "Enable artifact binding",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            artifactResolveEndpointUrl: {
+                                ariaLabel: "Artifact resolve endpoint URL",
+                                hint: "Artifact resolve endpoint URL",
+                                label: "Artifact resolve endpoint URL",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            isArtifactResolveReqSigned: {
+                                ariaLabel: "Sign artifact resolve request",
+                                hint: "Sign artifact resolve request",
+                                label: "Sign artifact resolve request",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            isArtifactResponseSigned: {
+                                ariaLabel: "Sign artifact response",
+                                hint: "Sign artifact response",
+                                label: "Sign artifact response",
+                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                            },
+                            authContextComparisonLevel: {
+                                ariaLabel: "Authentication context comparison level",
+                                hint: "Authentication context comparison level",
+                                label: "Authentication context comparison level",
+                                placeholder: ""
                             }
                         }
                     },

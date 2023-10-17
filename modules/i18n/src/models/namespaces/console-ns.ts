@@ -1691,6 +1691,20 @@ export interface ConsoleNS {
                             IncludeProtocolBinding: FormAttributes;
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
+
+                            isEnableAssertionSigning: FormAttributes;
+                            includeCert: FormAttributes;
+                            includeNameIDPolicy: FormAttributes;
+                            isEnableAssertionEncryption: FormAttributes;
+
+                            authenticationContextClass: FormAttributes;
+                            attributeConsumingServiceIndex: FormAttributes;
+
+                            isArtifactBindingEnabled: FormAttributes;
+                            artifactResolveEndpointUrl: FormAttributes;
+                            isArtifactResolveReqSigned: FormAttributes;
+                            isArtifactResponseSigned: FormAttributes;
+                            authContextComparisonLevel: FormAttributes;
                         }
                     },
                     outboundConnectorAccordion: {
