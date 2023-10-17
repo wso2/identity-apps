@@ -1390,4 +1390,3 @@ const initialBulkResponseSummary: BulkResponseSummary = {
     failedCount: 0,
     successCount: 0
 };
-
