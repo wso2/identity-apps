@@ -50,11 +50,11 @@ import {
     PatchUserRemoveOpInterface, 
     UserBasicInterface 
 } from "../../../users/models";
-import { RoleConstants } from "../../constants";
-import { AssignedInterface } from "../../models/roles";
+import { RoleConstants, Schemas } from "../../constants";
+import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 
-type RoleUsersPropsInterface = IdentifiableComponentInterface & AssignedInterface;
+type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
 export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     props: RoleUsersPropsInterface
@@ -63,7 +63,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const {
         role,
         onRoleUpdate,
-        isReadOnly
+        isReadOnly,
+        tabIndex
     } = props;
 
     const { t } = useTranslation();
@@ -248,7 +249,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const bulkData: PatchBulkUserDataInterface = {
             Operations: [],
             failOnErrors: 1,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
+            schemas: [ Schemas.BULK_REQUEST ]
         };
 
         const operation: PatchUserOpInterface = {
@@ -295,7 +296,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         message: t("console:manage.features.roles.edit.users.notifications.success.message")
                     })
                 );
-                onRoleUpdate();
+                onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
                 if (error.response && error.response.data.detail) {

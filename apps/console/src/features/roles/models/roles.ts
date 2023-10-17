@@ -83,7 +83,7 @@ export interface OperationValueInterface {
 /**
  * Interface to store data for assigned sections of the role edit interface.
  */
-export interface AssignedInterface {
+export interface RoleEditSectionsInterface {
     /**
      * User profile
      */
@@ -91,9 +91,23 @@ export interface AssignedInterface {
     /**
      * Handle user update callback.
      */
-    onRoleUpdate: () => void;
+    onRoleUpdate: (tabIndex: number) => void;
     /**
      * Show if the user is read only.
      */
-    isReadOnly?: boolean;
+    isReadOnly: boolean;
+    /**
+     * Tab index
+     */
+    tabIndex: number;
+}
+
+/**
+ * Interface to store data in the basic role edit interface.
+ */
+export interface RoleBasicInterface {
+    /**
+     * Role name.
+     */
+    roleName: string;
 }
