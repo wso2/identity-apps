@@ -5596,10 +5596,6 @@ export const console: ConsoleNS = {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
                         heading: "System for Cross-Domain Identity Management"
-                    },
-                    xmlsoap: {
-                        description: "Représentation du protocole XML SOAP pour les attributs utilisateur.",
-                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

@@ -7168,10 +7168,6 @@ export const console: ConsoleNS = {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
-                    },
-                    xmlsoap: {
-                        description: "The XML SOAP protocol representation for user attributes.",
-                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

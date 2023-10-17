@@ -178,10 +178,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "console:manage.features.claims.attributeMappings.openid.heading"
                     );
-                case ClaimManagementConstants.XMLSOAP:
-                    return t(
-                        "console:manage.features.claims.attributeMappings.xmlsoap.heading"
-                    );
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.heading"
@@ -224,8 +220,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t("console:manage.features.claims.attributeMappings.eidas.description");
                 case ClaimManagementConstants.OPENID:
                     return t("console:manage.features.claims.attributeMappings.openid.description");
-                case ClaimManagementConstants.XMLSOAP:
-                    return t("console:manage.features.claims.attributeMappings.xmlsoap.description");
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.description"
@@ -296,17 +290,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             floated="left"
                         />
                     );
-                case ClaimManagementConstants.XMLSOAP:
-                    return (
-                        <GenericIcon
-                            verticalAlign="middle"
-                            rounded
-                            icon={ getTechnologyLogos().xmlsoap }
-                            spaced="right"
-                            size="tiny"
-                            floated="left"
-                        />
-                    );
                 default:
                     return (
                         <Image floated="left" verticalAlign="middle" rounded centered size="tiny">
@@ -348,7 +331,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             );
                         }
 
-                        return claim.id !== "local";
+                        return claim.id !== "local" && 
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
                     });
 
                     const attributeMappings: ClaimDialect[] = [];
@@ -366,8 +350,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             type === ClaimManagementConstants.EIDAS && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.OPENID_MAPPING === attributeMapping.dialectURI) {
                             type === ClaimManagementConstants.OPENID && attributeMappings.push(attributeMapping);
-                        } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
-                            type === ClaimManagementConstants.XMLSOAP && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {
                             attributeMappings.push(attributeMapping);
                         }
