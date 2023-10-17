@@ -2467,7 +2467,9 @@ export const console: ConsoleNS = {
                                         issuer: "Émetteur",
                                         metadata: "Métadonnées de l'IDP",
                                         slo: "Déconnexion unique",
-                                        sso: "Authentification unique"
+                                        sso: "Authentification unique",
+                                        destinationURL: "URL de destination",
+                                        artifactResolutionUrl: "URL de résolution des artefacts"
                                     }
                                 },
                                 trySample: {
@@ -9985,6 +9987,45 @@ export const console: ConsoleNS = {
             }
         }
     },
+    saml2Config: {
+        title: "Configuration SAML2 Web SSO",
+        description: "Configurer SAML2 Web SSO pour vos applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Réglez la période de validité des métadonnées SAML en quelques minutes.",
+                label: "Période de validité des métadonnées"
+            },
+            destinationUrl: {
+                hint: "L'emplacement pour envoyer la réponse SAML, telle que définie dans l'affirmation SAML.",
+                label: "URL de destination"
+            },
+            enableMetadataSigning: {
+                label: "Activer la signature des métadonnées"
+            },
+            validation: {
+                metadataValidityPeriod: "La période de validité des métadonnées devrait être un entier positif.",
+                destinationURLs: "Les URL de destination doivent être des URL valides et ne doivent pas être vides."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations SAML2.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations SAML2.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations SAML2.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
     sessionManagement: {
         description: "Gérez les paramètres liés à la session de vos utilisateurs.",
         title: "Gestion des sessions",
@@ -10018,6 +10059,34 @@ export const console: ConsoleNS = {
                 },
                 success: {
                     description: "Mise à jour réussie des paramètres de gestion de session.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
+
+    wsFederationConfig: {
+        title: "Configuration WS-Federation",
+        description: "Configurer le protocole WS-Federation pour vos applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Activer la signature des demandes d'authentification"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations WS-Federation.",
                     message: "Mise à jour réussie"
                 }
             }

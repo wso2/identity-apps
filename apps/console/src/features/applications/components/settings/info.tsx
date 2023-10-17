@@ -87,8 +87,6 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.samlConfigurations);
-    const wsFedConfigurations: any = useSelector(
-        (state: AppState) => state.application.wsFedConfigurations);
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
@@ -195,7 +193,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                                 </DocumentationLink>
                                             </Heading>
                                             <Divider hidden/>
-                                            <WSFederationConfigurations wsFedConfigurations={ wsFedConfigurations }/>
+                                            <WSFederationConfigurations/>
                                         </>
                                     )
                                 }

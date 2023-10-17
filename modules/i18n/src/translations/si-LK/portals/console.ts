@@ -2403,7 +2403,9 @@ export const console: ConsoleNS = {
                                         issuer: "නිකුත් කරන්නා",
                                         metadata: "IDP පාර-දත්ත",
                                         slo: "තනි ලොග්අවුට්",
-                                        sso: "තනි පුරනය වීම"
+                                        sso: "තනි පුරනය වීම",
+                                        destinationURL: "ගමනාන්ත URL",
+                                        artifactResolutionUrl: "පුරාවස්තු විභේදන URL"
                                     }
                                 },
                                 trySample: {
@@ -9761,6 +9763,45 @@ export const console: ConsoleNS = {
             }
         }
     },
+    saml2Config: {
+        title: "SAML2 වෙබ් SSO වින්යාසය",
+        description: "ඔබගේ යෙදුම් සඳහා SAML2 වෙබ් SSO වින්යාස කරන්න.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "සමල් පාර-දත්ත වලංගු කාලය මිනිත්තු කිහිපයකින් සකසන්න.",
+                label: "පාර-දත්ත වලංගු කාලය"
+            },
+            destinationUrl: {
+                hint: "සාම්ලයේ ප්රතිචාරය, සාම්ල් ප්රකාශයේ අර්ථ දක්වා ඇති පරිදි.",
+                label: "ගමනාන්ත URL"
+            },
+            enableMetadataSigning: {
+                label: "පාර-දත්ත අත්සන් කිරීම සක්රීය කරන්න"
+            },
+            validation: {
+                metadataValidityPeriod: "පාර-දත්ත වලංගු කාලය ධනාත්මක පූර්ණ සංඛ්යාවක් විය යුතුය.",
+                destinationURLs: "ගමනාන්ත URL වලංගු URL විය යුතු අතර හිස් නොවිය යුතුය."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "SAML2 වින්යාසයන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "SAML2 වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "SAML2 වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        }
+    },
     sessionManagement: {
         description: "ඔබගේ පරිශීලකයින්ගේ සැසියට අදාළ සැකසුම් කළමනාකරණය කරන්න.",
         title: "සැසි කළමනාකරණය",
@@ -9794,6 +9835,34 @@ export const console: ConsoleNS = {
                 },
                 success: {
                     description: "සැසි කළමනාකරණ සැකසීම් සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        }
+    },
+
+    wsFederationConfig: {
+        title: "WS-සම්මේලනයේ වින්යාසය",
+        description: "ඔබගේ අයදුම්පත් සඳහා WS-සම්මේලනයේ ප්රොටෝකෝලය වින්යාස කරන්න.",
+        form: {
+            enableRequestSigning: {
+                label: "සත්යාපනය ඉල්ලීම් අත්සන් කරන්න"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "WS-සම්මේලන වින්යාසයන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "WS-සම්මේලන වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "WS-සම්මේලන වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
                     message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                 }
             }

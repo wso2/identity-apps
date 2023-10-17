@@ -17,17 +17,16 @@
  */
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
+import { WSFederationApplicationConfigurationInterface } from "../../models";
 
 /**
  * Proptypes for the WS Federation application configurations component.
  */
-interface WSFederationConfigurationsPropsInterface extends IdentifiableComponentInterface {
-    wsFedConfigurations: any;
-}
+type WSFederationConfigurationsPropsInterface = IdentifiableComponentInterface
 
 /**
  * WS Federation application configurations Component.
@@ -42,9 +41,11 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
 
     const { t } = useTranslation();
     const {
-        wsFedConfigurations,
         [ "data-componentid" ]: componentId
     } = props;
+
+    const [ wsFedConfigurations, setWSFedConfigurations ] =
+        useState<WSFederationApplicationConfigurationInterface>(undefined);
 
     return (
         <Form>
@@ -63,7 +64,7 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
                         />
                         <label data-componentid={ `${ componentId }-issuer-label` }>
                             { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                "wsFedConfigurations.labels.passiveStsUrl") }
+                                "wsFedConfigurations.labels.passiveSTSUrl") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>

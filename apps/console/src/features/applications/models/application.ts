@@ -634,11 +634,20 @@ export interface OIDCApplicationConfigurationInterface {
  * SAML configurations for the application.
  */
 export interface SAMLApplicationConfigurationInterface {
+    destinationURLs?: string[];
+    artifactResolutionUrl?: string;
     issuer: string;
     ssoUrl: string;
     sloUrl: string;
     certificate: string;
     metadata: string;
+}
+
+/**
+ * WS Federation configurations for the application.
+ */
+export interface WSFederationApplicationConfigurationInterface {
+    passiveStsUrl?: string;
 }
 
 /**

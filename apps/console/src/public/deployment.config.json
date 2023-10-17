@@ -544,7 +544,7 @@
                 "scopes": {}
             },
             "identityVerificationProviders": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_idvp_create"

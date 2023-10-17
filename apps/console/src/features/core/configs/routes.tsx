@@ -817,6 +817,34 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        category: "extensions:manage.sidePanel.categories.saml2configuration",
+                        component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().userStore
+                        },
+                        id: "saml2Configuration",
+                        name: "SAML2 Web SSO Configuration",
+                        order: 22,
+                        path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.wsFedconfiguration",
+                        component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().userStore
+                        },
+                        id: "wsFedconfiguration",
+                        name: "WS-Federation Configuration",
+                        order: 22,
+                        path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../org-insights/pages/org-insights")),
                         exact: true,

@@ -357,7 +357,8 @@ export class AppConstants {
             ],
             [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/session-management` ],
-            [ "SESSION_MANAGEMENT_EDIT",`${AppConstants.getAdminViewBasePath()}/edit-session-management` ]
+            [ "SAML2_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/saml2-configuration` ],
+            [ "WSFED_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/wsfed-configuration` ]
         ]);
 
         return paths;
