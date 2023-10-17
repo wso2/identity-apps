@@ -149,8 +149,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
                 required={ false }
                 readOnly={ readOnly }
                 value={ initialValues.organizationDetails.displayName }
-                maxLength={ BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MIN_LENGTH }
+                maxLength={
+                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MAX_LENGTH
+                }
+                minLength={
+                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MIN_LENGTH
+                }
                 width={ 16 }
                 listen={ (value: string) => setDisplayName(value) }
                 data-componentid={ `${componentId}-organization-display-name` }
