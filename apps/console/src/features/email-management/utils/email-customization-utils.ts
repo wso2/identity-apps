@@ -115,7 +115,7 @@ export class EmailCustomizationUtils {
             .replace(/{{organization.font}}/g, currentTheme.typography.font.fontFamily)
             .replace(/{{organization.font.color}}/g, currentTheme.colors.text.primary)
             .replace(/{{organization.button.font.color}}/g, currentTheme.buttons.primary.base.font.color)
-            .replace(/{{organization-name}}/g, displayName ? displayName : organizationName)
+            .replace(/{{organization-name}}/g, displayName ?? organizationName)
             .replace(/{{organization.logo.img}}/g, currentTheme.images.logo.imgURL || defaultOrgLogo)
             .replace(/{{organization.logo.altText}}/g, currentTheme.images.logo.altText)
             .replace(/{{organization.copyright.text}}/g,
