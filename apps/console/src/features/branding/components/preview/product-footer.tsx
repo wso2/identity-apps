@@ -76,7 +76,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                                 </>
                             ) }
                             {
-                                (brandingPreference.configs?.removeAsgardeoBranding === false) && (
+                                (brandingPreference.configs?.removeDefaultBranding === false) && (
                                     <Fragment>
                                         Powered by <div className="powered-by-logo">
                                             <img

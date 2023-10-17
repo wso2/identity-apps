@@ -211,6 +211,7 @@
     String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
     String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
     String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
+    String SHOULD_REMOVE_ASGARDEO_BRANDING_KEY = "removeAsgardeoBranding";
     String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
     String TEXT_KEY = "text";
 
@@ -413,6 +414,11 @@
 
                     if (brandingPreference.getJSONObject(CONFIGS_KEY).has(IS_PASSWORD_RECOVERY_ENABLED_KEY)) {
                         isPasswordRecoveryEnabledInTenantPreferences = brandingPreference.getJSONObject(CONFIGS_KEY).getBoolean(IS_PASSWORD_RECOVERY_ENABLED_KEY);
+                    }
+
+                    // @deprecated Renamed to `removeDefaultBranding` key. Kept here for backward compatibility.
+                    if (brandingPreference.getJSONObject(CONFIGS_KEY).has(SHOULD_REMOVE_ASGARDEO_BRANDING_KEY)) {
+                        shouldRemoveDefaultBranding = brandingPreference.getJSONObject(CONFIGS_KEY).getBoolean(SHOULD_REMOVE_ASGARDEO_BRANDING_KEY);
                     }
 
                     if (brandingPreference.getJSONObject(CONFIGS_KEY).has(SHOULD_REMOVE_DEFAULT_BRANDING_KEY)) {

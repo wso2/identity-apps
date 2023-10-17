@@ -17,6 +17,7 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { commonConfig } from "apps/console/src/extensions";
 import { PredefinedLayouts } from "../meta/layouts";
 import { BrandingPreferenceInterface, PredefinedThemes, ThemeConfigInterface } from "../models";
 
@@ -204,7 +205,7 @@ export class BrandingPreferencesConstants {
             // This should be decided based on the subscription tier.
             // TODO: Properly resolve once subscription API is integrated in to the console.
             // Tracked Here: https://github.com/wso2-enterprise/asgardeo-product/issues/8625
-            removeAsgardeoBranding: true
+            removeDefaultBranding: commonConfig.enableDefaultBrandingPreviewSection
         },
         layout: {
             activeLayout: PredefinedLayouts.CENTERED,
