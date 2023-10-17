@@ -400,9 +400,8 @@ export class RouteUtils {
                 id: "logs"            
             },
             {
-                category: manage,       
-                id: "remoteLogIngest",
-                parent: organizationalSettings
+                category: settings,       
+                id: "remoteLogIngest"
             },
             {
                 category: settings,
