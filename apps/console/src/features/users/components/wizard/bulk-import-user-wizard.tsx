@@ -18,11 +18,9 @@
 import {
     Autocomplete,
     AutocompleteRenderGetTagProps,
-    AutocompleteRenderInputParams,
-    Chip,
-    TextField
+    AutocompleteRenderInputParams
 } from "@mui/material";
-import Alert from "@oxygen-ui/react/Alert";
+import { Chip, TextField } from "@oxygen-ui/react";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
