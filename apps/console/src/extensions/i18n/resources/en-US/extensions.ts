@@ -1925,6 +1925,7 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "Configure Email Provider",
             heading: "Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
             description: "Configure the following settings according to your SMTP server.",
@@ -2624,6 +2625,7 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "API Resources",
             branding: "Branding",
+            stylesAndText: "Styles & Text",
             monitor: "Logs",
             categories: {
                 apiResources: "API Resources",

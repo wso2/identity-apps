@@ -372,7 +372,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                             onClick={ goToEmailProvider }
                             data-componentId="email-provider-configure-button"
                         >
-                            { "Configure " + t("extensions:develop.sidePanel.emailProvider") }
+                            { t("extensions:develop.emailProviders.configureEmailProvider") }
                         </SecondaryButton>
                     )
                 }

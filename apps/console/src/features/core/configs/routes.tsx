@@ -427,7 +427,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
                         },
                         id: "branding",
-                        name: "Styles & Text",
+                        name: "extensions:develop.sidePanel.stylesAndText",
                         order: 13,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/branding`,
                         protected: true,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { 
     ArrowLoopRightUserIcon, 
     CircleUserIcon,
+    GearIcon,
     HexagonTwoIcon, 
     PadlockAsteriskIcon, 
     ShieldCheckIcon,
@@ -83,8 +84,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const [ connectorCategories, setConnectorCategories ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
-
-    // const [ categoryId, setCategoryId ] = useState<string>("");
     const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(true);
 
     useEffect(() => {
@@ -144,7 +143,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 response?.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
-
                 });
 
                 setConnectors((connectors: GovernanceConnectorWithRef[]) => [
@@ -270,7 +268,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     <ShieldCheckIcon className="icon" />
                 );
             default:
-                return null;
+                return <GearIcon className="icon" />;
         }
     };
 
