@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.35
+
+### Patch Changes
+
+- [#4222](https://github.com/wso2/identity-apps/pull/4222) [`5c06f4fed3`](https://github.com/wso2/identity-apps/commit/5c06f4fed357f6ca27726b65c9dfd50b732fd7f9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add migrate for remove default branding
+
 ## 2.0.34
 
 ### Patch Changes
