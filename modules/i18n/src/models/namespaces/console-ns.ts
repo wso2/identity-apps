@@ -5629,9 +5629,10 @@ export interface ConsoleNS {
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
-                                hint: string,
-                                emailsLabel: string,
-                                emailsPlaceholder: string
+                                hint: string;
+                                emailsLabel: string;
+                                emailsPlaceholder: string;
+                                disabledHint: string;
                             };
                             fileBased: {
                                 hint: string;

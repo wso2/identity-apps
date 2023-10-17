@@ -176,9 +176,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true" ? true : false;
+    const optionsArray: string[] = [];
 
     /**
-     * Fetch the list of available user stores.
+     * Get the userstore.
+     */
+    useEffect(() => {
+        getUserStoreRegex();
+    }, [ userStoreRegex ]);
+
+    /**
+     * Set the default multiple invites option.
      */
     useEffect(() => {
         setConfigureMode(
@@ -188,12 +196,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         );
     }, [ isAlphanumericUsername ]);
 
-    useEffect(() => {
-        getUserStoreRegex();
-    }, [ userstore, userStoreRegex ]);
-
     /**
-     * The following function gets the user store regex that validates user name.
+     * Get the user store regex that validates username.
      */
     const getUserStoreRegex = async () => {
         setRegExLoading(true);
@@ -204,8 +208,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 setRegExLoading(false);
             });
     };
-
-    const optionsArray: string[] = [ ];
 
     /**
      * Fetches SCIM dialects.
@@ -773,7 +775,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const headers: string[] = userData.headers.map((header: string) => header.toLowerCase());
         const rows: string[][] = userData.items;
 
-        const filteredAttributeMapping : CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
+        const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
 
         const operations: SCIMBulkOperation[] = rows.map((row: string[]) =>
             generateOperation(row, filteredAttributeMapping, headers)
@@ -793,13 +795,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns SCIMBulkRequestBody
      */
     const generateMultipleUsersSCIMRequestBody = (): SCIMBulkEndpointInterface => {
-
         // Create the data operations
         const operations: SCIMBulkOperation[] = [];
 
         // Create the user record
         emailData.map((email: string) => {
-
             const userDetails: UserDetailsInterface = {
                 emails: [
                     {
@@ -811,7 +811,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:core:2.0:User",
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
-                
                 userName: 
                     userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${userstore}/${email}`
@@ -830,13 +829,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 data: userDetails,
                 method: "POST",
                 path: "/Users"
-            
             };
 
             operations.push(SCIMBulkOperation);
-
-        }
-        );
+        });
 
         return {
             Operations: operations,
@@ -846,7 +842,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Handle bulk user import.
+     * Handle multiple user invite.
      */
     const manualInviteMultipleUsers = async () => {
         const scimRequestBody1: SCIMBulkEndpointInterface = generateMultipleUsersSCIMRequestBody();
@@ -861,7 +857,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
 
             const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
-           
+
             setResponse(response);
         } catch (error) {
             setHasError(true);
@@ -874,7 +870,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         } finally {
             setIsSubmitting(false);
         }
-
     };
 
     /**
@@ -1014,9 +1009,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     <>
                                         <Popup
                                             trigger={ (
-                                                <div
-                                                    className={ "inline-button" }
-                                                >
+                                                <div className={ "inline-button" } >
                                                     <Button
                                                         disabled={ 
                                                             isAlphanumericUsername
@@ -1038,8 +1031,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     />
                                                 </div>
                                             ) }
-                                            content={ "The manual option is disabled due to the usage of " +
-                                                "alphanumeric usernames in your organization." }
+                                            content={ 
+                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                ".wizardSummary.manualCreation.disabledHint" )
+                                            }
                                             size="mini"
                                             wide
                                             disabled={ 
@@ -1092,8 +1087,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 label={ option }
                                                 { ...getTagProps({ index }) } 
                                             />
-                                        )
-                                        )
+                                        ))
                                     }
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                         <>
@@ -1151,7 +1145,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     responseList={ response }
                                     bulkResponseSummary={ bulkResponseSummary }
                                 />
-                            </Grid.Row>) }
+                            </Grid.Row>
+                        )
+                    }
                 </>
                         
             );

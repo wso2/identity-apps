@@ -10742,7 +10742,8 @@ export const console: ConsoleNS = {
                             manualCreation: {
                                 hint: "Add emails and send invitations to multiple users.",
                                 emailsLabel: "Emails",
-                                emailsPlaceholder: "Enter email addresses"
+                                emailsPlaceholder: "Enter email addresses",
+                                disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."

@@ -8810,7 +8810,8 @@ export const console: ConsoleNS = {
                             manualCreation: {
                                 hint: "ඊමේල් එකතු කරන්න සහ බහු පරිශීලකයින්ට ආරාධනා යවන්න.",
                                 emailsLabel: "ඊමේල්",
-                                emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න"
+                                emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",
+                                disabledHint: "ඔබගේ සංවිධානයේ අක්ෂරාංක පරිශීලක නාම භාවිතය හේතුවෙන් අතින් විකල්පය අබල කර ඇත."
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
