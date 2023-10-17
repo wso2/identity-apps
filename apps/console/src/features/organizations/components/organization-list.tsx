@@ -426,8 +426,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
                     return !isFeatureEnabled(
                         featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")) ||
-                        !isAuthorized || !isActive;
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE"))
+                        || !isAuthorized
+                        || !isActive;
                 },
                 icon: (): SemanticICONS => "exchange",
                 onClick: (event: SyntheticEvent, organization: OrganizationInterface) => {
