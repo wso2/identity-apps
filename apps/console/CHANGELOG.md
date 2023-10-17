@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.0.37
+
+### Patch Changes
+
+- [#4232](https://github.com/wso2/identity-apps/pull/4232) [`77551ac52a`](https://github.com/wso2/identity-apps/commit/77551ac52a36b8a807c078e951aa32cfac0614e0) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Hide organization switch button when the organization is disabled.
+
 ## 2.0.36
 
 ### Patch Changes
