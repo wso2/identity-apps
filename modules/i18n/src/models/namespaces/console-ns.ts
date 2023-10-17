@@ -5637,6 +5637,7 @@ export interface ConsoleNS {
                                     buttonText: string;
                                     description: string;
                                 };
+                                primaryButton: string;
                             };
                             fileBased: {
                                 hint: string;

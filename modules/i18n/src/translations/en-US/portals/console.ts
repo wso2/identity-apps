@@ -10747,7 +10747,8 @@ export const console: ConsoleNS = {
                                 upload: {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
-                                }
+                                },
+                                primaryButton: "Invite"
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."

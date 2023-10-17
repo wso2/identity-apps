@@ -81,7 +81,7 @@ import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
     BulkUserImportOperationStatus,
-    MultipleInvites,
+    MultipleInviteMode,
     SCIMBulkEndpointInterface,
     SCIMBulkOperation,
     SCIMBulkResponseOperation,
@@ -181,7 +181,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Get the userstore.
      */
     useEffect(() => {
-        getUserStoreRegex();
+        (async () => {
+            setRegExLoading(true);
+            await SharedUserStoreUtils.getUserStoreRegEx(userstore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
+                .then((response: string) => {
+                    setUserStoreRegex(response);
+                    setRegExLoading(false);
+                });
+        })();
     }, [ userStoreRegex ]);
 
     /**
@@ -190,23 +198,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     useEffect(() => {
         setConfigureMode(
             isAlphanumericUsername
-                ? MultipleInvites.META_FILE
-                : MultipleInvites.MANUAL
+                ? MultipleInviteMode.META_FILE
+                : MultipleInviteMode.MANUAL
         );
     }, [ isAlphanumericUsername ]);
-
-    /**
-     * Get the user store regex that validates username.
-     */
-    const getUserStoreRegex = async () => {
-        setRegExLoading(true);
-        await SharedUserStoreUtils.getUserStoreRegEx(userstore,
-            SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
-            .then((response: string) => {
-                setUserStoreRegex(response);
-                setRegExLoading(false);
-            });
-    };
 
     /**
      * Fetches SCIM dialects.
@@ -1003,7 +998,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         basic
                     >
                         {
-                            Object.values(MultipleInvites).map((mode: string, index: number) => {
+                            Object.values(MultipleInviteMode).map((mode: string, index: number) => {
                                 return(
                                     <>
                                         <Popup
@@ -1012,14 +1007,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     <Button
                                                         disabled={ 
                                                             isAlphanumericUsername
-                                                            && mode === MultipleInvites.MANUAL
+                                                            && mode === MultipleInviteMode.MANUAL
                                                         }
                                                         key={ index }
                                                         active={ configureMode === mode }
                                                         className="multiple-users-config-mode-wizard-tab"
                                                         content={
                                                             UserManagementUtils.resolveMultipleInvitesDisplayName(
-                                                            mode as MultipleInvites
+                                                            mode as MultipleInviteMode
                                                             )
                                                         }
                                                         onClick={ (
@@ -1037,7 +1032,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             size="mini"
                                             wide
                                             disabled={ 
-                                                mode === MultipleInvites.META_FILE
+                                                mode === MultipleInviteMode.META_FILE
                                                 || !isAlphanumericUsername
                                             }
                                         />
@@ -1056,7 +1051,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      */
     const resolveMultipleUsersConfiguration = (): ReactElement => {
 
-        if (configureMode == MultipleInvites.MANUAL) {
+        if (configureMode == MultipleInviteMode.MANUAL) {
             return (
                 <>
                     {
@@ -1150,7 +1145,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 </>
                         
             );
-        } else if (configureMode === MultipleInvites.META_FILE) {
+        } else if (configureMode === MultipleInviteMode.META_FILE) {
             return (
                 !showResponseView ?
                     (
@@ -1312,7 +1307,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             <Modal.Actions>
                 <Grid>
                     {
-                        configureMode == MultipleInvites.MANUAL
+                        configureMode == MultipleInviteMode.MANUAL
                             ? (
                                 <Grid.Row column={ 1 }>
                                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -1337,7 +1332,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 loading={ isSubmitting }
                                                 disabled={ isLoading || isSubmitting || hasError }
                                             >
-                                                Invite
+                                                { t("console:manage.features.user.modals." +
+                                                "bulkImportUserWizard.manualCreation.primaryButton") }
                                             </PrimaryButton>
                                         </Grid.Column>
                                     ) : null }

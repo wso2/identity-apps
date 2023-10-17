@@ -25,7 +25,7 @@ import {
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "../../validation/models";
-import { MultipleInvites, MultipleInvitesDisplayNames } from "../models";
+import { MultipleInviteMode, MultipleInvitesDisplayNames } from "../models";
 
 /**
  * Utility class for user management operations.
@@ -64,8 +64,7 @@ export class UserManagementUtils {
      * @param mode - Config mode.
      * @returns Display name of Multiple Users mode.
      */
-    public static resolveMultipleInvitesDisplayName(mode: MultipleInvites): string {
-
+    public static resolveMultipleInvitesDisplayName(mode: MultipleInviteMode): string {
         return MultipleInvitesDisplayNames[mode];
     }
 }

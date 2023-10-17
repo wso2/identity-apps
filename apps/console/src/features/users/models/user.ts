@@ -397,7 +397,7 @@ export interface PatchUserAddOpInterface {
  * Enum for the multiple invites modes.
  *
  */
-export enum MultipleInvites {
+export enum MultipleInviteMode {
     MANUAL = "manualConfiguration",
     META_FILE = "metadataFile"
 }
@@ -406,7 +406,7 @@ export enum MultipleInvites {
  * Multiple Invites mode display name mapping.
  */
 export const MultipleInvitesDisplayNames: { manualConfiguration: string; metadataFile: string; } = {
-    [ MultipleInvites.MANUAL ]: "Manual",
-    [ MultipleInvites.META_FILE ]: "File Based"
+    [ MultipleInviteMode.MANUAL ]: "Manual",
+    [ MultipleInviteMode.META_FILE ]: "File Based"
 };
 

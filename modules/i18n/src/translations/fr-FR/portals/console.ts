@@ -9014,7 +9014,8 @@ export const console: ConsoleNS = {
                                 upload: {
                                     buttonText: "Télécharger le fichier CSV",
                                     description: "Faites glisser et déposez un fichier CSV ici."
-                                }
+                                },
+                                primaryButton: "Inviter"
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."

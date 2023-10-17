@@ -8815,7 +8815,8 @@ export const console: ConsoleNS = {
                                 upload: {
                                     buttonText: "CSV ගොනුව උඩුගත කරන්න",
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
-                                }
+                                },
+                                primaryButton: "ආරාධනා කරන්න"
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
