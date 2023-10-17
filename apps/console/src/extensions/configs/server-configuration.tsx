@@ -59,7 +59,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorToggleName: {},
     connectorsToHide: [
         "analytics-engine",
-        "elastic-analytics-engine"
+        "elastic-analytics-engine",
+        "pii-controller"
     ],
     connectorsToShow: [ "all" ],
     dynamicConnectors: true,
