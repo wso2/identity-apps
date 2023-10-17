@@ -1332,7 +1332,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 disabled={ isLoading || isSubmitting || hasError }
                                             >
                                                 { t("console:manage.features.user.modals." +
-                                                "bulkImportUserWizard.manualCreation.primaryButton") }
+                                                "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
                                             </PrimaryButton>
                                         </Grid.Column>
                                     ) : null }
