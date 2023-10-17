@@ -238,8 +238,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         open={ showRoleDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
                         assertionType="checkbox"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleOnDelete() }
                         data-componentid={ `${ componentid }-role-confirmation-modal` }
