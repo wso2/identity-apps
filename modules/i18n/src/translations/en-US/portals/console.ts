@@ -478,6 +478,115 @@ export const console: ConsoleNS = {
             }
         }
     },
+    branding: {
+        form: {
+            actions: {
+                save: "Save & Publish",
+                resetAll: "Reset to Default"
+            }
+        },
+        tabs: {
+            text: {
+                label: "Text"
+            },
+            preview: {
+                label: "Preview"
+            }
+        },
+        screens: {
+            common: "Common",
+            login: "Login",
+            "sms-otp": "SMS OTP",
+            "email-otp": "Email OTP",
+            "email-template": "Email Templates",
+            "sign-up": "Sign Up",
+            "totp": "TOTP",
+            myaccount: "My Account"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "Once you confirm, your users will start to see the {{productName}} defaults and it will not be reversible. Please proceed with caution.",
+            heading: "Are you sure?",
+            message: "Reverting <1>{{screen}}</1> screen's customized text for the <3>{{locale}}</3> locale."
+        },
+        revertUnsavedConfirmationModal: {
+            content: "If you switch the screen, your unsaved changes will be lost. Click <1>Confirm</1> to proceed.",
+            heading: "Are you sure?",
+            message: "Save your unsaved changes"
+        },
+        form: {
+            genericFieldResetTooltip: "Reset to default",
+            genericFieldPlaceholder: "Enter your text",
+            fields: {
+                copyright: {
+                    hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
+                },
+                "site.title": {
+                    hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
+                },
+                "login.button": {
+                    hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."
+                },
+                "login.heading": {
+                    hint: "The heading of the login box. If not set, {{productName}} defaults are used."
+                },
+                "sms.otp.heading": {
+                    hint: "The heading of the SMS OTP box. If not set, {{productName}} defaults are used."
+                },
+                "email.otp.heading": {
+                    hint: "The heading of the Email OTP box. If not set, {{productName}} defaults are used."
+                },
+                "totp.heading": {
+                    hint: "The heading of the TOTP box. If not set, {{productName}} defaults are used."
+                },
+                "sign.up.button": {
+                    hint: "The text that appears on the main action button of the sign up box. If not set, {{productName}} defaults are used."
+                },
+                "sign.up.heading": {
+                    hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "Locale",
+            placeholder: "Select locale"
+        },
+        modes: {
+            text: {
+                label: "Text Fields"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "Couldn't get {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't get the custom text"
+            },
+            revertError: {
+                description: "Couldn't revert {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't revert the custom text"
+            },
+            resetSuccess: {
+                description: "Successfully reverted {{screen}} screen's customized text for {{locale}}.",
+                message: "Revert successful"
+            },
+            updateError: {
+                description: "Couldn't update {{screen}} screen's customized text for {{locale}}.",
+                message: "Couldn't update the custom text"
+            },
+            updateSuccess: {
+                description: "Successfully updated {{screen}} screen's customized text for {{locale}}.",
+                message: "Update Successful"
+            }
+        },
+        screenSelectDropdown: {
+            label: "Screen",
+            placeholder: "Select screen"
+        }
+    },
     featureGate: {
         enabledFeatures: {
             tags: {
@@ -1169,9 +1278,9 @@ export const console: ConsoleNS = {
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " + 
+                                            sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " +
                                             "having a basic authenticator in a prior step.",
-                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " +
                                             "added to a multi option step."
                                         }
                                     }
@@ -7047,20 +7156,37 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "The Attribute Exchange Schema (axschema) representation "
+                            + "for user attributes.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "The custom protocol representation for user "
                             + "attributes.",
                         heading: "Custom Attributes"
+                    },
+                    eidas: {
+                        description: "The eIDAS protocol representation for user attributes.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "The OpenID Connect (OIDC) protocol representation for user "
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "The OpenID protocol representation for user attributes.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
+                    },
+                    xmlsoap: {
+                        description: "The XML SOAP protocol representation for user attributes.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -7176,6 +7302,12 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "The attribute mapping has been successfully updated.",
                                 message: "Attribute Mapping update successful"
+                            }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "There was an error while fetching the SCIM resources.",
+                                message: "Something went wrong"
                             }
                         }
                     },
@@ -9774,14 +9906,57 @@ export const console: ConsoleNS = {
                             heading: "Update Role Groups",
                             subHeading: "Add new groups or remove existing groups assigned to the role."
                         },
-                        emptyPlaceholder: {
-                            action: "Assign Group",
-                            subtitles: "There are no groups assigned to this role at the moment.",
-                            title: "No Groups Assigned"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Assign Groups",
+                                subtitles: {
+                                    0: "There are no groups assigned to this role at the moment."
+                                },
+                                title: "No groups assigned to the role."
+                            },
+                            errorPlaceholder: {
+                                action: "Refresh",
+                                subtitles: {
+                                    0: "An error occurred while fetching groups assigned to this role.",
+                                    1: "Please try again."
+                                },
+                                title: "Something went wrong"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the groups assigned to the role."
+                            },
+                            success: {
+                                message: "Role updated successfully",
+                                description: "The groups assigned to the role have been successfully updated."
+                            },
+                            genericError: {
+                                message: "Something went wrong",
+                                description: "We were unable to update the groups assigned to the role."
+                            },
+                            fetchError: {
+                                message: "Something went wrong",
+                                description: "We were unable to fetch the groups assigned to the role."
+                            }
                         },
                         heading: "Assigned Groups",
                         subHeading: "Add or remove the groups assigned to this role. Note that this "
-                            + "will affect performing certain tasks."
+                            + "will affect performing certain tasks.",
+                        actions: {
+                            search: {
+                                placeholder: "Search groups"
+                            },
+                            assign: {
+                                placeholder: "Assign groups"
+                            },
+                            remove: {
+                                label: "Removing groups",
+                                placeholder: "Restore groups"
+                            }
+                        }
+                        
                     },
                     menuItems: {
                         basic: "Basics",
@@ -9791,6 +9966,55 @@ export const console: ConsoleNS = {
                         users: "Users"
                     },
                     users: {
+                        heading: "Assigned Users",
+                        subHeading: "Add or remove the users assigned to this role. Note that this will affect performing certain tasks.",
+                        actions: {
+                            search: {
+                                placeholder: "Search users"
+                            },
+                            assign: {
+                                placeholder: "Assign users"
+                            },
+                            remove: {
+                                label: "Removing users",
+                                placeholder: "Restore users"
+                            }
+                        },
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Assign Users",
+                                subtitles: {
+                                    0: "There are no users assigned to this role at the moment."
+                                },
+                                title: "No users assigned to the role."
+                            },
+                            errorPlaceholder: {
+                                action: "Refresh",
+                                subtitles: {
+                                    0: "An error occurred while fetching users assigned to this role.",
+                                    1: "Please try again."
+                                },
+                                title: "Something went wrong"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the users assigned to the role."
+                            },
+                            success: {
+                                message: "Role updated successfully",
+                                description: "The users assigned to the role have been successfully updated."
+                            },
+                            genericError: {
+                                message: "Something went wrong",
+                                description: "We were unable to update the users assigned to the role."
+                            },
+                            fetchError: {
+                                message: "Something went wrong",
+                                description: "We were unable to fetch the users assigned to the role."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "Assign User",
@@ -9912,7 +10136,7 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "Go back to Admin Advisory Banner",
                         pageHeading: "Admin Advisory Banner",
@@ -9930,7 +10154,7 @@ export const console: ConsoleNS = {
                         description: "Enable and configure the admin advisory banner.",
                         enabled: "Enabled",
                         heading: "Admin Advisory Banner"
-                    },   
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -9988,9 +10212,84 @@ export const console: ConsoleNS = {
                                 message: "Banner updated successfully"
                             }
                         }
-                    },     
+                    },
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
+                },
+                remoteLogPublishing: {
+                    title: "Remote Log Publishing",
+                    pageTitle: "Remote Log Publishing",
+                    description: "Configure remote logging settings for the organization.",
+                    fields: {
+                        logTypes: {
+                            label: "Log types to be published",
+                            values: {
+                                carbonLogs: "Carbon Logs",
+                                auditLogs: "Audit Logs",
+                                allLogs: "All Logs"
+                            }
+                        },
+                        remoteURL: {
+                            label: "Destination URL"
+                        },
+                        advanced: {
+                            title: "Advanced settings",
+                            connectionTimeout: {
+                                label: "Connection Timeout (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Verify the hostname"
+                            },
+                            basicAuthConfig: {
+                                title: "Basic Authentication Configuration",
+                                serverUsername: {
+                                    label: "Remote server username"
+                                },
+                                serverPassword: {
+                                    label: "Remote server password"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL Configuration",
+                                keystorePath: {
+                                    label: "Keystore location"
+                                },
+                                keystorePassword: {
+                                    label: "Keystore password"
+                                },
+                                truststorePath: {
+                                    label: "Truststore location"
+                                },
+                                truststorePassword: {
+                                    label: "Truststore password"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
+                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        confirmation: {
+                            hint: "Please confirm your action.",
+                            header: "Are you sure?",
+                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            "Please proceed with caution.",
+                            content: "This action will restore the default log publishing configuration."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "Remote log publishing configuration updated successfully.",
+                            message: "Updated successfully."
+                        },
+                        error: {
+                            genericError: {
+                                description: "An error occurred while updating remote log publishing configuration.",
+                                message: "Something went wrong"
+                            }
+                        }
+                    }
                 },
                 realmConfiguration: {
                     actionTitles: {
@@ -10330,6 +10629,48 @@ export const console: ConsoleNS = {
                             },
                             roles: "Role(s)",
                             username: "Username"
+                        }
+                    },
+                    bulkImportUserWizard: {
+                        title: "Bulk Import Users",
+                        subTitle: "Import multiple users using a CSV file.",
+                        wizardSummary: {
+                            successCount: "Successful Imports",
+                            failedCount: "Failed Imports",
+                            totalCount: "Total Count",
+                            tableHeaders: {
+                                username: "Username",
+                                status: "Status",
+                                message: "Message"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "User imported successfully",
+                                invalidDataMessage: "Invalid data provided",
+                                userAlreadyExistsMessage: "User already exists",
+                                userCreationAcceptedMessage: "User creation accepted",
+                                internalErrorMessage: "Error occured while importing users"
+                            },
+                            tableStatus: {
+                                success: "Success",
+                                warning: "Warning",
+                                failed: "Failed"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "The user accounts were imported successfully.",
+                                    message: "Import Successful"
+                                },
+                                importFailed: {
+                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    message: "Review Required"
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "Search by Username"
+                            }
+                        },
+                        buttons: {
+                            import: "Import"
                         }
                     },
                     changePasswordModal: {
@@ -10800,6 +11141,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assign roles",
                     metaColumnBtn: "Columns"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Add User",
+                    bulkImport: "Bulk Import"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Please confirm your action.",
@@ -10890,6 +11235,58 @@ export const console: ConsoleNS = {
                         success: {
                             description: "The new user was added successfully.",
                             message: "User added successfully"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "Selected file contains no data.",
+                                message: "Empty File"
+                            },
+                            columnMismatchError: {
+                                description: "Some data rows of the file does not match the required column count. " +
+                                    "Please review and correct the data.",
+                                message: "Column Count Mismatch"
+                            },
+                            emptyHeaderError: {
+                                description: "Ensure that the first row contains the headers for each column.",
+                                message: "Missing Column Headers"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "The following header(s) are required but are missing in the CSV file: " +
+                                "{{ headers }}.",
+                                message: "Missing Required Column Headers"
+                            },
+                            blockedHeaderError: {
+                                description: "The following header(s) are not allowed: {{headers}}.",
+                                message: "Blocked Column Headers"
+                            },
+                            duplicateHeaderError: {
+                                description: "The following headers are duplicated: {{headers}}.",
+                                message: "Duplicate Column Headers"
+                            },
+                            invalidHeaderError: {
+                                description: "The following headers are invalid: {{headers}}.",
+                                message: "Invalid Column Headers"
+                            },
+                            emptyDataField: {
+                                description: "The data field '{{dataField}}' must not be empty.",
+                                message: "Empty Data Field"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occured while importing users"
+                            },
+                            genericError: {
+                                description: "Unable to import users",
+                                message: "Error occured while importing users"
+                            },
+                            success: {
+                                description: "The users were imported successfully.",
+                                message: "Users Imported Successfully"
+                            }
                         }
                     },
                     deleteUser: {

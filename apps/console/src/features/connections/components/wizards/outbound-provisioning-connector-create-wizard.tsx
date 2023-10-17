@@ -18,19 +18,22 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { FormValue } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { OutboundProvisioningSettings } from "./steps/shared-steps/outbound-provisioning-settings";
-import { WizardSummary } from "./steps/shared-steps/wizard-summary";
 import {
     OutboundProvisioningConnectors
 } from "./steps/outbound-provisioning-connectors";
+import { OutboundProvisioningSettings } from "./steps/shared-steps/outbound-provisioning-settings";
+import { WizardSummary } from "./steps/shared-steps/wizard-summary";
 import {
     getOutboundProvisioningConnectorMetadata,
     getOutboundProvisioningConnectorsList,
@@ -69,7 +72,6 @@ interface WizardStateInterface {
 /**
  * Enum for wizard steps types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     CONNECTOR_SELECTION = "ConnectorSelection",
@@ -91,7 +93,7 @@ export const OutboundProvisioningConnectorCreateWizard:
         } = props;
 
         const { t } = useTranslation();
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
 
         const [ submitConnectorSelection, setSubmitConnectorSelection ] = useTrigger();
         const [ submitConnectorSettings, setSubmitConnectorSettings ] = useTrigger();
@@ -102,7 +104,10 @@ export const OutboundProvisioningConnectorCreateWizard:
         const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
         const [ connectorList, setConnectorList ] = useState<OutboundProvisioningConnectorListItemInterface[]>([]);
-        const [ connectorMetaData, setConnectorMetaData ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
+        const [ 
+            connectorMetaData, 
+            setConnectorMetaData 
+        ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
         const [ newConnector, setNewConnector ] = useState(undefined);
         const [ isConnectorMetadataRequestLoading, setIsConnectorMetadataRequestLoading ] = useState<boolean>(false);
         const [ defaultConnector, setDefaultConnector ] =
@@ -169,7 +174,7 @@ export const OutboundProvisioningConnectorCreateWizard:
 
                     onUpdate(identityProvider.id);
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     handleUpdateOutboundProvisioningConnectorError(error);
                 });
         }, [ newConnector ]);
@@ -179,10 +184,10 @@ export const OutboundProvisioningConnectorCreateWizard:
      */
         useEffect(() => {
             getOutboundProvisioningConnectorsList()
-                .then(response => {
+                .then((response: OutboundProvisioningConnectorListItemInterface[]) => {
                     setConnectorList(response);
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
                             description: t("console:develop.features.authenticationProvider.notifications." +
@@ -219,7 +224,8 @@ export const OutboundProvisioningConnectorCreateWizard:
 
             const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
             let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            connectorList.find(connector => connector.connectorId === selectedId);
+            connectorList.find((connector: OutboundProvisioningConnectorListItemInterface) => 
+                connector.connectorId === selectedId);
 
             initialConnector = {
                 ...initialConnector,
@@ -229,10 +235,10 @@ export const OutboundProvisioningConnectorCreateWizard:
             setDefaultConnector(initialConnector);
 
             getOutboundProvisioningConnectorMetadata(selectedId)
-                .then(response => {
+                .then((response: OutboundProvisioningConnectorMetaInterface) => {
                     setConnectorMetaData(response);
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     handleGetOutboundProvisioningConnectorMetadataError(error);
                 })
                 .finally(() => {
@@ -247,7 +253,8 @@ export const OutboundProvisioningConnectorCreateWizard:
 
             const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
             let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            connectorList.find(connector => connector.connectorId === selectedId);
+            connectorList.find((connector: OutboundProvisioningConnectorListItemInterface) => 
+                connector.connectorId === selectedId);
 
             initialConnector = {
                 ...initialConnector,
@@ -277,28 +284,27 @@ export const OutboundProvisioningConnectorCreateWizard:
         };
 
         /**
-     * Handles wizard step submit.
-     *
-     * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
-     */
+         * Handles wizard step submit.
+         *
+         * @param values - Forms values to be stored in state.
+         * @param WizardStepsFormTypes - Type of the form.
+         */
         const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
             setCurrentWizardStep(currentWizardStep + 1);
             setWizardState({ ...wizardState, [ formType ]: values });
         };
 
         /**
-     * Generates a summary of the wizard.
-     *
-     * @return {any}
-     */
+         * Generates a summary of the wizard.
+         *
+         */
         const generateWizardSummary = () => {
             if (!wizardState) {
                 return;
             }
 
             const wizardData: WizardStateInterface = { ...wizardState };
-            let summary = {};
+            let summary: WizardStateInterface = {};
 
             for (const value of Object.values(wizardData)) {
                 summary = {
@@ -314,8 +320,9 @@ export const OutboundProvisioningConnectorCreateWizard:
      * Handles the final wizard submission.
      */
         const handleWizardFormFinish = (): void => {
-            getOutboundProvisioningConnectorMetadata(wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId)
-                .then((response) => {
+            getOutboundProvisioningConnectorMetadata(wizardState[ 
+                WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId)
+                .then((response: OutboundProvisioningConnectorMetaInterface) => {
                     setNewConnector(response);
                 })
                 .finally(() => {
@@ -324,7 +331,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 });
         };
 
-        const STEPS = [
+        const STEPS: { content: ReactElement, icon: any, title: string }[] = [
             {
                 content: (
                     <OutboundProvisioningConnectors
@@ -332,7 +339,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                             wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId
                         }
                         triggerSubmit={ submitConnectorSelection }
-                        onSubmit={ (values): void => {
+                        onSubmit={ (values: Map<string, FormValue>): void => {
                             handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_SELECTION);
                         } }
                         connectorList={ connectorList }
@@ -350,7 +357,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                         isLoading={ isConnectorMetadataRequestLoading }
                         initialValues={
                             (wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ]) ?? identityProvider }
-                        onSubmit={ (values): void => handleWizardFormSubmit(
+                        onSubmit={ (values: ConnectionInterface): void => handleWizardFormSubmit(
                             values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
                         triggerSubmit={ submitConnectorSettings }
                         defaultConnector={ defaultConnector }
@@ -383,7 +390,6 @@ export const OutboundProvisioningConnectorCreateWizard:
                 open={ true }
                 className="wizard application-create-wizard"
                 dimmer="blurring"
-                size="small"
                 onClose={ closeWizard }
                 closeOnDimmerClick={ false }
                 closeOnEscape
@@ -392,7 +398,10 @@ export const OutboundProvisioningConnectorCreateWizard:
                 <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
                     { t("console:develop.features.authenticationProvider.modals.addProvisioningConnector.title") }
                     <Heading as="h6">
-                        { t("console:develop.features.authenticationProvider.modals.addProvisioningConnector.subTitle") }
+                        { 
+                            t("console:develop.features.authenticationProvider" +
+                            ".modals.addProvisioningConnector.subTitle") 
+                        }
                     </Heading>
                 </Modal.Header>
                 <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
@@ -401,13 +410,22 @@ export const OutboundProvisioningConnectorCreateWizard:
                         "addProvisioningConnector.header") }
                         current={ currentWizardStep }
                     >
-                        { STEPS.map((step, index) => (
-                            <Steps.Step
-                                key={ index }
-                                icon={ step.icon }
-                                title={ step.title }
-                            />
-                        )) }
+                        { 
+                            STEPS.map(
+                                (step: { 
+                                    content: ReactElement;
+                                    icon: any;
+                                    title: string;
+                                }, 
+                                index: number) => (
+                                    <Steps.Step
+                                        key={ index }
+                                        icon={ step.icon }
+                                        title={ step.title }
+                                    />
+                                )
+                            ) 
+                        }
                     </Steps.Group>
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
@@ -455,7 +473,10 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         onClick={ navigateToPrevious }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                        { 
+                                            t("console:develop.features.authenticationProvider"
+                                                + ".wizards.buttons.previous") 
+                                        }
                                     </LinkButton>
                                 ) }
                             </Grid.Column>

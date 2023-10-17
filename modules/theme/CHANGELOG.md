@@ -1,5 +1,33 @@
 # @wso2is/theme
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+- [#4113](https://github.com/wso2/identity-apps/pull/4113) [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce remote log publishing configuration UI to Console
+
+## 2.0.11
+
+### Patch Changes
+
+- [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4183](https://github.com/wso2/identity-apps/pull/4183) [`64d9eee077`](https://github.com/wso2/identity-apps/commit/64d9eee077973152af4c9e0e6481d53383489477) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in branding preview section
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4180](https://github.com/wso2/identity-apps/pull/4180) [`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the branding preview logo issue
+
 ## 2.0.8
 
 ### Patch Changes

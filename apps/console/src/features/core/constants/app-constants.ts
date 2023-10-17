@@ -356,6 +356,7 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
             [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ],
             [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/session-management` ],
             [ "SAML2_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/saml2-configuration` ],
             [ "WSFED_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/wsfed-configuration` ]
@@ -448,7 +449,8 @@ export class AppConstants {
      * Route ids that are enabled in only for super admins.
      */
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
-        "adminAdvisoryBanner"
+        "adminAdvisoryBanner",
+        "remoteLogging"
     ] 
 
     /**

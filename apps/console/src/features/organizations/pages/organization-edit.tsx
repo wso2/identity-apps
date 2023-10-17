@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,14 +25,13 @@ import React, { FunctionComponent, ReactElement, useCallback, useEffect, useStat
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
-import { organizationConfigs } from "../../../extensions";
+import { Dispatch } from "redux";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization, useAuthorizedOrganizationsList } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationResponseInterface } from "../models";
-
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
@@ -47,7 +47,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
     const [ isReadOnly, setIsReadOnly ] = useState(true);
@@ -91,11 +91,11 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         setIsAuthorizedOrganization(authorizedOrganizationList.organizations?.length === 1);
     }, [ authorizedOrganizationList ]);
 
-    const handleGetAuthoriziedListCallError = (error) => {
+    const handleGetAuthoriziedListCallError = (error: any) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({
-                    description: error.description,
+                    description: error?.response?.data?.description,
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.organizations.notifications." +
@@ -119,15 +119,16 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                 )
             })
         );
+
         return;
     };
 
-    const getOrganizationData = useCallback((organizationId: string) => {
+    const getOrganizationData: (organizationId: string) => void = useCallback((organizationId: string): void => {
         getOrganization(organizationId)
-            .then((organization) => {
+            .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
                 setFilterQuery("name eq " + organization?.name);
-            }).catch((error) => {
+            }).catch((error: any) => {
                 if (error?.description) {
                     dispatch(addAlert({
                         description: error.description,
@@ -150,13 +151,13 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     }, [ dispatch, t ]);
 
     useEffect(() => {
-        const path = location.pathname.split("/");
-        const id = path[path.length - 1];
+        const path: string[] = location.pathname.split("/");
+        const id: string = path[path.length - 1];
 
         getOrganizationData(id);
     }, [ location, getOrganizationData ]);
 
-    const goBackToOrganizationList = useCallback(() =>
+    const goBackToOrganizationList: () => void = useCallback(() =>
         history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]
     );
 
@@ -176,7 +177,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     icon={ OrganizationIcon }
                 />
             ) }
-            backButton={ organizationConfigs.canCreateOrganization() && {
+            backButton={ {
                 "data-testid": "org-mgt-edit-org-back-button",
                 onClick: goBackToOrganizationList,
                 text: t("console:manage.features.organizations.edit.back")

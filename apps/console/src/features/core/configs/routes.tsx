@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { BoltIcon, EnvelopeCogwheelIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
+import { BoltIcon, EnvelopeGearIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
@@ -159,7 +159,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => 
+                                component: lazy(() =>
                                     import("../../connections/pages/connection-edit")
                                 ),
                                 exact: true,
@@ -388,7 +388,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../../extensions/components/branding/pages/branding")),
+                        component: lazy(() => import("../../../features/branding/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
@@ -421,7 +421,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: {
-                            icon: <EnvelopeCogwheelIcon fill="black" className="icon" />
+                            icon: <EnvelopeGearIcon fill="black" className="icon" />
                         },
                         id: "emailProviders",
                         name: "extensions:develop.sidePanel.emailProvider",
@@ -769,6 +769,22 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "console:manage.features.serverConfigs.adminAdvisory.pageHeading",
                         order: 22,
                         path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:develop.sidePanel.categories.AccountManagement",
+                        component: lazy(() =>
+                            import("../../server-configurations/pages/remote-logging")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().remoteLogging
+                        },
+                        id: "remoteLogIngest",
+                        name: "Remote Logging",
+                        order: 22,
+                        path: AppConstants.getPaths().get("REMOTE_LOGGING"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -1389,7 +1405,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 showOnSidePanel: true
             }
         );
-    }    
+    }
 
     routes.push({
         component: null,

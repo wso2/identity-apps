@@ -372,7 +372,7 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteGroup: {
                         message: "This action is irreversible.",
-                        content: "This action will permanently delete the {{groupName}} identity provider group. " +  
+                        content: "This action will permanently delete the {{groupName}} identity provider group. " +
                             "Please proceed with caution"
                     }
                 },
@@ -728,7 +728,7 @@ export const extensions: Extensions = {
                                 fields: {
                                     authorize: {
                                         label: "Requires authorization",
-                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"                                    
+                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"
                                     }
                                 }
                             }
@@ -884,9 +884,9 @@ export const extensions: Extensions = {
                                             "Please proceed with caution."
                                     },
                                     unsubscribeChoreoAPIResource: {
-                                        content: "Unsubscribing this API resource will not be reflected on the " + 
-                                            "Choreo end, but will impact/affect the user authorization as the " + 
-                                            "authorized scopes will no longer be accessible. " + 
+                                        content: "Unsubscribing this API resource will not be reflected on the " +
+                                            "Choreo end, but will impact/affect the user authorization as the " +
+                                            "authorized scopes will no longer be accessible. " +
                                             "<1>Proceed with caution.</1>"
                                     }
                                 },
@@ -1777,20 +1777,6 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint:
-                                "Text that appears at the footer of the login screens. If not set, " +
-                                "{{ productName }} defaults are used.",
-                            label: "Copyright Text",
-                            placeholder: "Enter a copyright text"
-                        },
-                        siteTitle: {
-                            hint:
-                                "The site title may appear in browser tabs, search engine results, social shares, " +
-                                "etc. If not set, {{ productName }} defaults are used.",
-                            label: "Site Title",
-                            placeholder: "Enter a site title"
-                        },
                         supportEmail: {
                             hint: "The email address that appears on error pages and other pages where " +
                                 "users would require support. If not set, {{ productName }} defaults are used.",
@@ -1916,9 +1902,21 @@ export const extensions: Extensions = {
                                 title: "Resource Not Found"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Need a fully customized layout for your organization? "
+                                description: "Need a fully customized layout for your organization? "
                                     + "Reach us out at <1>{{ supportEmail }}</1>",
+                                subTitle: "You have not yet deployed a custom layout.",
                                 title: "Custom Layout Not Found"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "You can now incorporate a custom layout for login, "
+                                    + "registration, and recovery pages. Refer to our "
+                                    + "documentation for detailed instructions.",
+                                subTitle: "The custom layout has been successfully enabled.",
+                                title: "Custom Layout"
                             }
                         }
                     },
@@ -2804,12 +2802,12 @@ export const extensions: Extensions = {
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
-                description: "Configure alternative login identifiers and allow users to use username or configured" + 
+                description: "Configure alternative login identifiers and allow users to use username or configured" +
                     " login identifier in login and recovery flows.",
                 loginIdentifierTypes: "Select login identifier",
                 loginIdentifierTypesHint: "Allow users to use username or configured login identifier in" +
                     " the login flow.",
-                warning: "Ensure that each user in your organization has a unique value assigned for the selected" + 
+                warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
                     " login identifiers.",
                 info: "You have selected email as the username type which makes it the primary login identifier.",
                 notification: {

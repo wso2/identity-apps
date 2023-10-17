@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,10 @@ interface WizardAlert {
     level: AlertLevels;
 }
 
+interface WizardAlertProps {
+    ["data-componentid"]?: string;
+}
+
 /**
  * The type of the array returned by the `useWizardAlert` hook.
  */
@@ -47,7 +51,9 @@ type UseWizardAlertHookReturnType = [ WizardAlert, React.Dispatch<React.SetState
  *
  * @returns An array containing the state, setState function and the alert React element.
  */
-export const useWizardAlert = (): UseWizardAlertHookReturnType => {
+export const useWizardAlert = (props?: WizardAlertProps): UseWizardAlertHookReturnType => {
+
+    const { ["data-componentid"]: componentId } = props || { "data-componentid": "wizard-alert" };
     const [ alert, setAlert ] = useState<WizardAlert>(null);
 
     const renderAlert = (): ReactElement => {
@@ -66,7 +72,7 @@ export const useWizardAlert = (): UseWizardAlertHookReturnType => {
                                         : null
                     }
                 >
-                    <Message.Header>{ alert.message }</Message.Header>
+                    <Message.Header data-componentid={ `${componentId}-message` }>{ alert.message }</Message.Header>
                     <p>{ alert.description }</p>
                 </Message>
             )

@@ -90,6 +90,9 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import {
+    ReactComponent as RemoteLoggingIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
@@ -136,10 +139,14 @@ import {
 import {
     ReactComponent as PageNotFoundIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
+import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
+import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
+import OpenidLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
+import XMLSOAPLogo from "../../../themes/default/assets/images/protocols/xmlsoap.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -167,9 +174,11 @@ interface GetTechnologyLogosInterface {
     android: FunctionComponent | ReactNode,
     angular: FunctionComponent | ReactNode,
     apple: FunctionComponent | ReactNode,
+    axschema: string,
     cSharp: FunctionComponent | ReactNode,
     cordova: FunctionComponent | ReactNode,
     dotNet: FunctionComponent | ReactNode,
+    eidas: string,
     html: FunctionComponent | ReactNode,
     ios: FunctionComponent | ReactNode,
     java: FunctionComponent | ReactNode,
@@ -178,12 +187,14 @@ interface GetTechnologyLogosInterface {
     nodejs: FunctionComponent | ReactNode,
     oidc: string,
     openidconnect: string,
+    openid: string,
     python: FunctionComponent | ReactNode,
     react: FunctionComponent | ReactNode,
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode
+    windows: FunctionComponent | ReactNode,
+    xmlsoap: string
 }
 
 /**
@@ -197,9 +208,11 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         android: AndroidLogo,
         angular: AngularLogo,
         apple: AppleLogo,
+        axschema: AxschemaLogo,
         cSharp: CSharpLogo,
         cordova: CordovaLogo,
         dotNet: DotNetLogo,
+        eidas: EidasLogo,
         html: HTMLLogo,
         ios: IOSLogo,
         java: JavaLogo,
@@ -207,13 +220,15 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         macos: MacOSLogo,
         nodejs: NodeJSLogo,
         oidc: OIDCLogo,
+        openid: OpenidLogo,
         openidconnect: OIDCFullLogo,
         python: PythonLogo,
         react: ReactLogo,
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo
+        windows: WindowsLogo,
+        xmlsoap: XMLSOAPLogo
     };
 };
 
@@ -242,6 +257,7 @@ export type GetSidePanelIconsInterface = {
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
+    remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
     organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
@@ -292,6 +308,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
+        remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,

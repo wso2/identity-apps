@@ -38,6 +38,13 @@
     private static final String SERVER_AUTH_URL = "/api/identity/auth/v1.1/";
     private static final String DATA_AUTH_ERROR_URL = "data/AuthenticationError/";
     private static final String REQUEST_PARAM_ERROR_KEY = "errorKey";
+
+    /*
+     * This error code should be defined in a public repo along with related logic
+     * to handle the error.
+     * Tracked with https://github.com/wso2/product-is/issues/16932
+     */
+    private static final String UNVERIFIED_EMAIL_IN_MSFT_ERROR_CODE = "17101";
 %>
 <%
     String stat = request.getParameter(Constants.STATUS);
@@ -106,7 +113,6 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     layoutData.put("isErrorResponse", true);
 %>
@@ -138,108 +144,29 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-            %>
-                <div class="ui orange attached segment mt-3">
-                    <%
-                        if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
-                                StringUtils.isBlank(remainingAttempts)) {
-                    %>
-                        <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
-                        </h3>
-
-                        <p class="portal-tagline-description">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.account.is.locked.write.us.to.know.more.at")%>
-                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
-                        </p>
-                    <%
-                        } else if (IdentityCoreConstants.USER_ACCOUNT_DISABLED_ERROR_CODE.equals(errorCode)) {
-                    %>
-                        <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
-                        </h3>
-
-                        <p class="portal-tagline-description">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.account.is.disabled.write.us.to.know.more.at")%>
-                            <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                                <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                            </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
-                        </p>
-                    <% } else { %>
-                        <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                            <%=stat%>
-                        </h3>
-
-                        <p class="portal-tagline-description">
-                            <%=statusMessage%>
-                        </p>
-
-                        <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
-                            <button class="ui primary basic button"
-                                onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
-                            </button>
-                        <% } %>
-                    <% } %>
-                    <div class="ui divider hidden"></div>
-                    <div class="ui divider hidden"></div>
-                </div>
-                
-                <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
-                <div class="ui bottom attached message support-message-container">
-                    <p class="text-left mt-0">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%> <br />
-                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                        </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                    </p>
-                    <div class="ui divider hidden"></div>
-
-                    
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                        <div class="ui divider hidden"></div>
-                    
-                    
-                </div>
-                <% } %>
-            <% } else { %>
+            <div class="ui orange attached segment mt-3">
                 <%
                     if (StringUtils.equals(errorCode, IdentityCoreConstants.USER_ACCOUNT_LOCKED_ERROR_CODE) &&
                             StringUtils.isBlank(remainingAttempts)) {
                 %>
-                    <h2 class="ui header portal-logo-tagline slogan-message">
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
-                    </h2>
+                    </h3>
 
-                    <p class="portal-tagline-description mt-1 mb-5">
+                    <p class="portal-tagline-description">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.account.is.locked.write.us.to.know.more.at")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "for.assistance")%>
                     </p>
-                    
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
-                    <% } %>
-
                 <%
                     } else if (IdentityCoreConstants.USER_ACCOUNT_DISABLED_ERROR_CODE.equals(errorCode)) {
                 %>
-                    <h2 class="ui header portal-logo-tagline slogan-message">
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unable.to.proceed")%>
-                    </h2>
+                    </h3>
 
-                    <p class="portal-tagline-description mt-1 mb-5">
+                    <p class="portal-tagline-description">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.account.is.disabled.write.us.to.know.more.at")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
@@ -250,34 +177,65 @@
                         File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                         if (trackingRefFile.exists()) {
                     %>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
-                    <% } %>
-
-
-                <% } else { %>
-                    <h2 class="ui header portal-logo-tagline slogan-message">
-                        <%=stat%>
-                    </h2>
-
-                    <p class="portal-tagline-description mt-1 mb-5">
-                        <%=statusMessage%>
-                    </p>
-
-                    <%
-                        File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
-                        if (trackingRefFile.exists()) {
-                    %>
                         <jsp:include page="extensions/error-tracking-reference.jsp"/>
                     <% } %>
 
+
+                    <% } else if (UNVERIFIED_EMAIL_IN_MSFT_ERROR_CODE.equals(errorCode)) { %>
+                        <h2 class="ui header portal-logo-tagline slogan-message">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.not.verified")%>
+                        </h2>
+                        <p class="portal-tagline-description mt-1 mb-5">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "your.microsoft.account.email.is.not.verified.verify.and.try.again")%>
+                        </p>
+                        <jsp:include page="includes/error-tracking-reference.jsp"/>
+                        </br>
+                        <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
+                            <a class="clickable-link"
+                               href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "back.to.sign.in")%>
+                            </a>
+                        <% } %>
+                <% } else { %>
+                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
+                        <%=stat%>
+                    </h3>
+
+                    <p class="portal-tagline-description">
+                        <%=statusMessage%>
+                    </p>
+
                     <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
-                    <button class="ui primary basic button mt-5"
-                        onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
-                    </button>
+                        <button class="ui primary basic button"
+                            onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
+                            <%= i18n(resourceBundle, customText, "login.button") %>
+                        </button>
                     <% } %>
                 <% } %>
-            <% } %>
+                <div class="ui divider hidden"></div>
+            </div>
+            <div class="ui bottom attached warning message">
+                <p class="text-left mt-0">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%> <br />
+                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
+                        <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
+                    </a>
+                <%
+                    if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                %>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
+                    </p>
+                    <div class="ui divider hidden"></div>
+                    <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                <%
+                    } else {
+                %>
+                    </p>
+                <%
+                    }
+                %>
+                <div class="ui divider hidden"></div>
+            </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
@@ -290,6 +248,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

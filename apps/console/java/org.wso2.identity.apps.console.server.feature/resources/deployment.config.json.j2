@@ -181,6 +181,8 @@
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
+        "appWhiteLogoPath": "{{ console.ui.app_white_logo_path }}",
+        "appFaviconPath": "{{ console.ui.app_favicon_path }}",
         "googleOneTapEnabledTenants": [
             {% if console.ui.google_one_tap_enabled_tenants is defined %}
                 {% for value in console.ui.google_one_tap_enabled_tenants %}
@@ -1246,6 +1248,13 @@
         "hiddenAuthenticators": [
             {% if console.ui.hiddenAuthenticators is defined %}
                 {% for value in console.ui.hiddenAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        "hiddenConnectionTemplates": [
+            {% if console.ui.hiddenConnectionTemplates is defined %}
+                {% for value in console.ui.hiddenConnectionTemplates %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}

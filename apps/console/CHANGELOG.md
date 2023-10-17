@@ -1,5 +1,85 @@
 # @wso2is/console
 
+## 2.0.35
+
+### Patch Changes
+
+- [#4222](https://github.com/wso2/identity-apps/pull/4222) [`5c06f4fed3`](https://github.com/wso2/identity-apps/commit/5c06f4fed357f6ca27726b65c9dfd50b732fd7f9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add migrate for remove default branding
+
+## 2.0.34
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
+- [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* [#4113](https://github.com/wso2/identity-apps/pull/4113) [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce remote log publishing configuration UI to Console
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/dynamic-forms@2.0.5
+  - @wso2is/theme@2.0.12
+  - @wso2is/form@2.0.3
+  - @wso2is/i18n@2.0.7
+  - @wso2is/core@2.0.4
+
+## 2.0.33
+
+### Patch Changes
+
+- [#4215](https://github.com/wso2/identity-apps/pull/4215) [`2b20432222`](https://github.com/wso2/identity-apps/commit/2b20432222d700a0c63efe2cadb2385add3835dc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Include a null check for the code that accesses the branding preview logos
+
+* [#4214](https://github.com/wso2/identity-apps/pull/4214) [`d0a7d166f9`](https://github.com/wso2/identity-apps/commit/d0a7d166f955d733f664ddc9d94cedebf460fff1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with handling empty app basename
+
+- [#4199](https://github.com/wso2/identity-apps/pull/4199) [`f89d8bcba7`](https://github.com/wso2/identity-apps/commit/f89d8bcba72e0bf27f0051e7d2ffc7a561e04cfb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue that causing properties section remains disabled for custom local attributes despite adding a mapped SCIM claim.
+
+## 2.0.32
+
+### Patch Changes
+
+- [#4134](https://github.com/wso2/identity-apps/pull/4134) [`47fc4adc34`](https://github.com/wso2/identity-apps/commit/47fc4adc342601ac88b5c0fbe4136831e2644e4e) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Unify tenant dropdown in IS and Asgardeo Consoles
+
+## 2.0.31
+
+### Patch Changes
+
+- [#4203](https://github.com/wso2/identity-apps/pull/4203) [`030f4fb522`](https://github.com/wso2/identity-apps/commit/030f4fb522c381f8e7eff0a5b02cf0e7c16dd815) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix console access url in administrator list page
+
+* [#4208](https://github.com/wso2/identity-apps/pull/4208) [`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add improvements to the connections and application sections
+
+- [#4191](https://github.com/wso2/identity-apps/pull/4191) [`98cfb2cc8e`](https://github.com/wso2/identity-apps/commit/98cfb2cc8e9d676b632e0472627b8741db2aa4de) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove fetch users from all userstores option in users page
+
+- Updated dependencies [[`31e702271a`](https://github.com/wso2/identity-apps/commit/31e702271af22cb9350057d7044cc08b7df96466)]:
+  - @wso2is/react-components@2.0.6
+  - @wso2is/theme@2.0.11
+
+## 2.0.30
+
+### Patch Changes
+
+- [#4183](https://github.com/wso2/identity-apps/pull/4183) [`64d9eee077`](https://github.com/wso2/identity-apps/commit/64d9eee077973152af4c9e0e6481d53383489477) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in branding preview section
+
+- Updated dependencies [[`64d9eee077`](https://github.com/wso2/identity-apps/commit/64d9eee077973152af4c9e0e6481d53383489477)]:
+  - @wso2is/theme@2.0.10
+
+## 2.0.29
+
+### Patch Changes
+
+- [#4180](https://github.com/wso2/identity-apps/pull/4180) [`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the branding preview logo issue
+
+- Updated dependencies [[`8eb0389722`](https://github.com/wso2/identity-apps/commit/8eb0389722f47e75e2dbb9477f4747cbfd4f4b58)]:
+  - @wso2is/theme@2.0.9
+
+## 2.0.28
+
+### Patch Changes
+
+- [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
 ## 2.0.27
 
 ### Patch Changes

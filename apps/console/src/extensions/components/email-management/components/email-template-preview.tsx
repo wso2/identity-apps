@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,11 +26,12 @@ import React, {
     useState
 } from "react";
 import { useSelector } from "react-redux";
+import useGetBrandingPreference from "../../../../features/branding/api/use-get-branding-preference";
+import { BrandingPreferencesConstants } from "../../../../features/branding/constants";
+import useBrandingPreference from "../../../../features/branding/hooks/use-branding-preference";
+import { BrandingPreferenceThemeInterface } from "../../../../features/branding/models";
+import { BrandingPreferenceUtils } from "../../../../features/branding/utils";
 import { AppState, store } from "../../../../features/core";
-import { useBrandingPreference } from "../../branding/api";
-import { BrandingPreferencesConstants } from "../../branding/constants";
-import { BrandingPreferenceThemeInterface } from "../../branding/models";
-import { BrandingPreferenceUtils } from "../../branding/utils";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 
@@ -57,6 +58,8 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
         ["data-componentid"]: testId
     } = props;
 
+    const { customText } = useBrandingPreference();
+
     const [ , setIsIframeReady ] = useState(false);
     const [
         predefinedThemes,
@@ -66,17 +69,17 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
     const organizationName: string = store.getState().auth.tenantDomain;
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
 
-
     const {
         data: brandingPreference,
         isLoading: isBrandingPreferenceLoading
-    } = useBrandingPreference(organizationName);
+    } = useGetBrandingPreference(organizationName);
 
     const emailTemplateBody: string = useMemo(() => {
         if (emailTemplate?.body) {
             return EmailCustomizationUtils.getTemplateBody(
                 organizationName,
                 brandingPreference?.preference,
+                customText,
                 emailTemplate?.body,
                 predefinedThemes
             );

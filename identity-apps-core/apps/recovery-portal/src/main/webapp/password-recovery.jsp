@@ -142,10 +142,6 @@
         return;
     }
 
-    <!-- String enterUsernameHereText = "password.reset.with.username";
-    if (isMultiAttributeLoginEnabledInTenant) {
-        enterUsernameHereText = "password.reset.with.identifier";
-    } -->
     String usernameLabel = "Username";
     if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
@@ -408,6 +404,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

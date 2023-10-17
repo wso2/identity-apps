@@ -57,11 +57,7 @@
 <%
     if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
 %>
-        <jsp:include page="extensions/cookie-consent-banner.jsp"/>
-<%
-    } else if (config.getServletContext().getResource("includes/cookie-consent-banner.jsp") != null) {
-%>
-        <jsp:include page="includes/cookie-consent-banner.jsp"/>
+        <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
 <%
     }
 %>
@@ -73,22 +69,22 @@
             <div class="left menu">
                 <a class="item no-hover" id="copyright">
                     <%
-                        if (!StringUtils.isBlank(copyrightText)) {
+                        String copyright = i18n(resourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
+                        if (StringUtils.isNotBlank(copyright)) {
                     %>
-                        <span><%= StringEscapeUtils.escapeHtml4(copyrightText) %></span>
+                        <span class="copyright-text"><%= copyright %></span>
+                    <% } %>
                     <%
-                        } else {
-                    %>    
-                        &copy; <script>document.write(new Date().getFullYear());</script> WSO2 LLC.
-                    <%
-                        }
+                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
                     %>
+                        <div class="powered-by-logo-divider">|</div>
+                    <% } %>
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
                         <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(logoURL)) {%>
                             <div class="powered-by-logo-divider">|</div>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "powered.by")%> 
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "powered.by")%>
                             <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
                                 <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                             </div>

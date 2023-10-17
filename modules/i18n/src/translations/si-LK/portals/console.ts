@@ -484,6 +484,115 @@ export const console: ConsoleNS = {
             }
         }
     },
+    branding: {
+        form: {
+            actions: {
+                save: "සුරකින්න සහ ප්රකාශ කරන්න",
+                resetAll: "පෙරනිමියට නැවත සකසන්න"
+            }
+        },
+        tabs: {
+            text: {
+                label: "පෙළ"
+            },
+            preview: {
+                label: "පෙරදසුන"
+            }
+        },
+        screens: {
+            common: "පොදු",
+            login: "ඇතුල් වන්න",
+            "sms-otp": "smsOtp",
+            "email-otp": "ඊමේල් OTP",
+            "email-template": "විද්යුත් තැපැල් සැකිලි",
+            "sign-up": "ලියාපදිංචි වන්න",
+            "totp": "totp",
+            myaccount: "මගේ ගිණුම"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "ඔබ සනාථ කළ පසු, ඔබගේ පරිශීලකයින් {{productName}} පෙරනිමි සහ එය ආපසු හැරවිය නොහැකි ලෙස දැකගත හැකිය. කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "<1>{{screen}}</1> ආපසු තිරය <3>{{locale}}</3> සඳහා අභිරුචිකරණය කරන්න. "
+        },
+        revertUnsavedConfirmationModal: {
+            content: "ඔබ තිරය මාරු කරන්නේ නම්, ඔබේ සුරකින ලද වෙනස්කම් නැති වී යයි. <1>තහවුරු කිරීමට</1> තහවුරු කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "ඔබගේ සුරකින ලද වෙනස්කම් සුරකින්න"
+        },
+        form: {
+            genericFieldResetTooltip: "පෙරනිමියට නැවත සකසන්න",
+            genericFieldPlaceholder: "ඔබේ පෙළ ඇතුළත් කරන්න",
+            fields: {
+                copyright: {
+                    hint: "පිවිසුම් තිරවල පාදකයේ දිස්වන පෙළ.ඔබට වත්මන් වර්ෂය ස්වයංක්රීයව ප්රදර්ශනය කිරීම සඳහා `{{currentyear}} ස්ථානගත කරන්නා භාවිතා කළ හැකිය."
+                },
+                "site.title": {
+                    hint: "බ්රව්සර් ටැබ්, සෙවුම් යන්ත්ර, සමාජ කොටස් යනාදියෙහි දිස්විය හැකිය. {{productName}} පෙරනිමි භාවිතා කරයි."
+                },
+                "login.button": {
+                    hint: "පිවිසුම් පෙට්ටියේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "login.heading": {
+                    hint: "පිවිසුම් පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sms.otp.heading": {
+                    hint: "SMS OTP කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "email.otp.heading": {
+                    hint: "ඊමේල් ඔට්පෙප් කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "totp.heading": {
+                    hint: "TOPT කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.button": {
+                    hint: "ලියාපදිංචි කොටුවේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.heading": {
+                    hint: "ලියාපදිංචි පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "පෙදෙස",
+            placeholder: "පෙදෙස තෝරන්න"
+        },
+        modes: {
+            text: {
+                label: "පෙළ ක්ෂේත්ර"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "{{screen}} තිහාසික අභිරුචි කළ පෙළ {{locale}} සඳහා ලබා ගත නොහැක.",
+                message: "අභිරුචි පෙළ ලබා ගැනීමට නොහැකි විය"
+            },
+            revertError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා ආපසු හරවා ගත නොහැක.",
+                message: "අභිරුචි පෙළ නැවත ලබා ගත නොහැක"
+            },
+            resetSuccess: {
+                description: "සාර්ථකව ප්රතික්ෂේප කරන ලද {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා.",
+                message: "සාර්ථකව ආපසු යන්න"
+            },
+            updateError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා යාවත්කාලීන කළ නොහැක.",
+                message: "අභිරුචි පා text ය යාවත්කාලීන කළ නොහැක"
+            },
+            updateSuccess: {
+                description: "සාර්ථකව යාවත්කාලීන කිරීම {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}}.",
+                message: "අභිරුචි පෙළ යාවත්කාලීන කිරීම සාර්ථකයි"
+            }
+        },
+        screenSelectDropdown: {
+            label: "තිරය",
+            placeholder: "තිරය තෝරන්න"
+        }
+    },
     develop: {
         componentExtensions: {
             component: {
@@ -1165,9 +1274,9 @@ export const console: ConsoleNS = {
                                                     " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
                                                     " පැතිකඩ අවශ්‍ය වේ."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " + 
+                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " +
                                                 "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
-                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " +
                                                 "පියවරකට එක් කළ නොහැක."
                                         }
                                     }
@@ -5339,18 +5448,35 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "පරිශීලක ගුණාංග සඳහා Attribute Exchange Schema (axschema) ප්‍රොටොකෝලය "
+                            + "නිරූපණය.",
+                        heading: "Attribute Exchange Schema"
+                    },
                     custom: {
                         description: "අභිරුචි API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා අභිරුචි ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "අභිරුචි ගුණාංග"
+                    },
+                    eidas: {
+                        description: "පරිශීලක ගුණාංග සඳහා eIDAS ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "OpenID Connect API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා " +
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -5465,6 +5591,12 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "උපභාෂාව සාර්ථකව යාවත්කාලීන කර ඇත.",
                                 message: "උපභාෂා යාවත්කාලීන කිරීම සාර්ථකයි"
+                            }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "SCIM සම්පත් ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
                             }
                         }
                     },
@@ -7907,14 +8039,56 @@ export const console: ConsoleNS = {
                             subHeading: "නව කණ්ඩායම් එකතු කරන්න හෝ භූමිකාවට පවරා ඇති පවතින"
                                 + " කණ්ඩායම් ඉවත් කරන්න."
                         },
-                        emptyPlaceholder: {
-                            action: "කණ්ඩායම පවරන්න",
-                            subtitles: "මේ වන විට මෙම භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත.",
-                            title: "කණ්ඩායම් පවරා නොමැත"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "කණ්ඩායම් පවරන්න",
+                                subtitles: {
+                                    0: "මේ වන විට මෙම භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත."
+                                },
+                                title: "භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත."
+                            },
+                            errorPlaceholder: {
+                                action: "නැවත පූරණය කරන්න",
+                                subtitles: {
+                                    0: "මෙම භූමිකාවට කණ්ඩායම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                                    1: "කරුණාකර නැවත උත්සාහ කරන්න."
+                                },
+                                title: "කුමක් හෝ වරදක් සිදුවී ඇත"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "භූමිකාවට පවරා ඇති කණ්ඩායම් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය."
+                            },
+                            success: {
+                                message: "භූමිකාව සාර්ථකව යාවත්කාලීන කරන ලදි",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් සාර්ථකව යාවත්කාලීන කර ඇත."
+                            },
+                            genericError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් යාවත්කාලීන කිරීමට අපට නොහැකි විය."
+                            },
+                            fetchError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් ලබා ගැනීමට අපට නොහැකි විය."
+                            }
                         },
                         heading: "පවරා ඇති කණ්ඩායම්",
                         subHeading: "මෙම භූමිකාවට පවරා ඇති කණ්ඩායම් එකතු කරන්න හෝ ඉවත් කරන්න. "
-                            + "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                            + "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න.",
+                        actions: {
+                            search: {
+                                placeholder: "සෙවුම් කණ්ඩායම්"
+                            },
+                            assign: {
+                                placeholder: "කණ්ඩායම් පවරන්න"
+                            },
+                            remove: {
+                                label: "ඉවත් කරන කණ්ඩායම්",
+                                placeholder: "කණ්ඩායම් ප්රතිස්ථාපනය කරන්න"
+                            }
+                        }
                     },
                     menuItems: {
                         basic: "මූලික කරුණු",
@@ -7924,6 +8098,38 @@ export const console: ConsoleNS = {
                         users: "පරිශීලකයින්"
                     },
                     users: {
+                        heading: "පවරා ඇති පරිශීලකයින්",
+                        subHeading: "මෙම භූමිකාවට පවරා ඇති පරිශීලකයින් එකතු කිරීම හෝ ඉවත් කිරීම. මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න.",
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "පරිශීලකයින් යොදවන්න",
+                                subtitles: [ "මේ වන විට මෙම භූමිකාවට පවරා ඇති පරිශීලකයින් නොමැත." ],
+                                title: "මෙම කාර්යභාරයට කිසිදු පරිශීලකයෙකු පවරා නොමැත."
+                            },
+                            errorPlaceholder: {
+                                action: "නැවත පූරණය කරන්න",
+                                subtitles: [ "මෙම භූමිකාවට යොදවා ඇති පරිශීලකයින් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.", "කරුණාකර නැවත උත්සාහ කරන්න." ],
+                                title: "කුමක් හෝ වරදක් සිදුවී ඇත"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "භූමිකාවට පවරා ඇති පරිශීලකයින් යාවත්කාලීන කිරීම යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය."
+                            },
+                            success: {
+                                message: "භූමිකාව සාර්ථකව යාවත්කාලීන කරන ලදි",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් සාර්ථකව යාවත්කාලීන කර ඇත."
+                            },
+                            genericError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් යාවත්කාලීන කිරීමට අපට නොහැකි විය."
+                            },
+                            fetchError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් අපොහොසත් කිරීමට අපට නොහැකි විය."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "පරිශීලකයා පවරන්න",
@@ -7932,6 +8138,18 @@ export const console: ConsoleNS = {
                             },
                             user: "පරිශීලකයා",
                             organization: "ආයතනය"
+                        },
+                        actions: {
+                            search: {
+                                placeholder: "පරිශීලකයින් සොයන්න"
+                            },
+                            assign: {
+                                placeholder: "පරිශීලකයින් යොදවන්න"
+                            },
+                            remove: {
+                                label: "ඉවත් කරන පරිශීලකයින්",
+                                placeholder: "පරිශීලකයින් ප්රතිස්ථාපනය කරන්න"
+                            }
                         }
                     }
                 },
@@ -8045,7 +8263,7 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "පරිපාලක උපදේශන බැනරය වෙත ආපසු යන්න",
                         pageHeading: "පරිපාලක උපදේශන බැනරය",
@@ -8063,7 +8281,7 @@ export const console: ConsoleNS = {
                         description: "පරිපාලක උපදේශන බැනරය සක්‍රීය කර වින්‍යාස කරන්න.",
                         enabled: "සක්‍රීයයි",
                         heading: "පරිපාලක උපදේශන බැනරය"
-                    },   
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -8121,9 +8339,84 @@ export const console: ConsoleNS = {
                                 message: "බැනරය සාර්ථකව යාවත්කාලීන කරන ලදී"
                             }
                         }
-                    },     
+                    },
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
+                },
+                remoteLogPublishing: {
+                    title: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    description: "සංවිධානය සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
+                    fields: {
+                        logTypes: {
+                            label: "පළ කළ යුතු ලොග් වර්ග",
+                            values: {
+                                carbonLogs: "කාබන් ලොග්",
+                                auditLogs: "විගණන ලොග්",
+                                allLogs: "සියලුම ලොග්"
+                            }
+                        },
+                        remoteURL: {
+                            label: "ගමනාන්ත URL"
+                        },
+                        advanced: {
+                            title: "උසස් සැකසුම්",
+                            connectionTimeout: {
+                                label: "සම්බන්ධතා කාලය අවසන් වීම (මිලි)"
+                            },
+                            verifyHostname: {
+                                label: "සත්කාරක නාමය තහවුරු කරන්න"
+                            },
+                            basicAuthConfig: {
+                                title: "මූලික සත්‍යාපන වින්‍යාසය",
+                                serverUsername: {
+                                    label: "දුරස්ථ සේවාදායක පරිශීලක නාමය"
+                                },
+                                serverPassword: {
+                                    label: "දුරස්ථ සේවාදායක මුරපදය"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL වින්‍යාසය",
+                                keystorePath: {
+                                    label: "යතුරු ගබඩා ස්ථානය"
+                                },
+                                keystorePassword: {
+                                    label: "යතුරු ගබඩා මුරපදය"
+                                },
+                                truststorePath: {
+                                    label: "විශ්වාස ගබඩා ස්ථානය"
+                                },
+                                truststorePassword: {
+                                    label: "විශ්වාස ගබඩා මුරපදය"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        header: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        subheader: "මෙම ක්‍රියාව පවතින වින්‍යාසය මකනු ඇත. ඔබ ඉදිරියට යාමට පෙර කරුණාකර සහතික වන්න.",
+                        confirmation: {
+                            hint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                            header: "ඔයාට විශ්වාස ද?",
+                            message: "ඔබ පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්නේ නම්, දුරස්ථ ලොග් ප්‍රකාශනය නිසි ලෙස ක්‍රියා නොකරනු ඇත. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                            content: "මෙම ක්‍රියාව පෙරනිමි ලොග් ප්‍රකාශන වින්‍යාසය ප්‍රතිසාධනය කරනු ඇත."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "සාර්ථකව යාවත්කාලීන කරන ලදී."
+                        },
+                        error: {
+                            genericError: {
+                                description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            }
+                        }
+                    }
                 },
                 realmConfiguration: {
                     actionTitles: {
@@ -8464,6 +8757,48 @@ export const console: ConsoleNS = {
                             },
                             roles: "කාර්යභාරය (ය)",
                             username: "පරිශීලක නාමය"
+                        }
+                    },
+                    bulkImportUserWizard: {
+                        title: "සමූහ පරිශීලක ආනයනය​",
+                        subTitle: "ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
+                        wizardSummary: {
+                            successCount: "සාර්ථකත්ව ගණන",
+                            failedCount: "අසාර්ථක වූ ගණන",
+                            totalCount: "මුළු ගණන",
+                            tableHeaders: {
+                                username: "පරිශීලක නාමය",
+                                status: "තත්ත්වය",
+                                message: "පණිවුඩය"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "පරිශීලකයා සාර්ථකව ආනයනය කරන ලදී",
+                                invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
+                                userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
+                                userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
+                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            tableStatus: {
+                                success: "සාර්ථකයි",
+                                warning: "අවවාදයයි",
+                                failed: "අසාර්ථකයි"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                    message: "ආනයනය සාර්ථකයි"
+                                },
+                                importFailed: {
+                                    description: "<1>{{failedCount}}</1> ආනයන තුළ ගැටළු ඇති වී ඇත​.",
+                                    message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "පරිශීලක නාමයෙන් සොයන්න"
+                            }
+                        },
+                        buttons: {
+                            import: "ආනයනය කරන්න"
                         }
                     },
                     changePasswordModal: {
@@ -8938,6 +9273,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "භූමිකාවන් පවරන්න",
                     metaColumnBtn: "තීරු"
                 },
+                addUserDropDown: {
+                    addNewUser:  "පරිශීලක එකතු කරන්න",
+                    bulkImport: "සමූහ​ ආනයනය"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න.",
@@ -9029,6 +9368,57 @@ export const console: ConsoleNS = {
                         success: {
                             description: "නව පරිශීලකයා සාර්ථකව එකතු කරන ලදි.",
                             message: "පරිශීලකයා සාර්ථකව එකතු කරන ලදි"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "තෝරාගත් ගොනුවේ දත්ත නොමැත.",
+                                message: "හිස් ගොනුව"
+                            },
+                            columnMismatchError: {
+                                description: "ගොනුවේ සමහර දත්ත පේළි අවශ්‍ය තීරු ගණනට නොගැලපේ. කරුණාකර දත්ත සමාලෝචනය " +
+                                    "කර නිවැරදි කරන්න.",
+                                message: "තීරු ගණන් නොගැලපීම"
+                            },
+                            emptyHeaderError: {
+                                description: "පළමු පේළියේ එක් එක් තීරුව සඳහා ශීර්ෂ ඇති බව සහතික කර ගන්න.",
+                                message: "තීරු ශීර්ෂ අස්ථානගත වී ඇත"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අවශ්‍ය නමුත් CSV ගොනුවේ අස්ථානගත වී ඇත: {{headers}}.",
+                                message: "අවශ්‍ය තීරු ශීර්ෂ අස්ථානගත වී ඇත"
+                            },
+                            blockedHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අවසර නැත: {{headers}}.",
+                                message: "අවහිර කළ තීරු ශීර්ෂ"
+                            },
+                            duplicateHeaderError: {
+                                description: "පහත ශීර්ෂ(ය) අනුපිටපත් කර ඇත: {{headers}}.",
+                                message: "අනුපිටපත් තීරු ශීර්ෂ"
+                            },
+                            invalidHeaderError: {
+                                description: "පහත ශීර්ෂය(ය) වලංගු නැත: {{headers}}.",
+                                message: "වලංගු නොවන තීරු ශීර්ෂක"
+                            },
+                            emptyDataField: {
+                                description: "'{{dataField}}' දත්ත ක්ෂේත්‍රය හිස් නොවිය යුතුය.",
+                                message: "හිස් දත්ත ක්ෂේත්‍රය"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            genericError: {
+                                description: "පරිශීලකයින් ආනයනය කළ නොහැක.",
+                                message: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                            },
+                            success: {
+                                description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
+                                message: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී"
+                            }
                         }
                     },
                     deleteUser: {

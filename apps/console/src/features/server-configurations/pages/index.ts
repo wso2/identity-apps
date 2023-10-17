@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,4 +18,5 @@
 
 export * from "./admin-advisory-banner-page";
 export * from "./admin-session-advisory-banner-edit-page";
+export * from "./remote-logging";
 export * from "./governance-connectors";

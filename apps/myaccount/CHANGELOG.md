@@ -1,5 +1,31 @@
 # @wso2is/myaccount
 
+## 2.0.14
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/theme@2.0.12
+  - @wso2is/i18n@2.0.7
+  - @wso2is/core@2.0.4
+
+## 2.0.13
+
+### Patch Changes
+
+- [#4214](https://github.com/wso2/identity-apps/pull/4214) [`d0a7d166f9`](https://github.com/wso2/identity-apps/commit/d0a7d166f955d733f664ddc9d94cedebf460fff1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with handling empty app basename
+
+## 2.0.12
+
+### Patch Changes
+
+- [#4128](https://github.com/wso2/identity-apps/pull/4128) [`e8f4db20c0`](https://github.com/wso2/identity-apps/commit/e8f4db20c094972249df1fff8d6772225433699e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the pre-loader components to support branding changes
+
 ## 2.0.11
 
 ### Patch Changes

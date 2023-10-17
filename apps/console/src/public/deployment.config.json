@@ -214,6 +214,8 @@
         "appTitle": "WSO2 Identity Server Console",
         "appName": "Console",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
@@ -286,6 +288,16 @@
                     "create": [
                         "internal_application_mgt_update"
                     ]
+                }
+            },
+            "bulkUserImport": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
                 }
             },
             "eventPublishing": {
@@ -854,7 +866,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSignatureValidationCertificateAliasEnabled": false,
-        "listAllAttributeDialects": false,
+        "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

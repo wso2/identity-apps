@@ -1565,16 +1565,6 @@ export interface Extensions {
                 };
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        siteTitle: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
                         supportEmail: {
                             hint: string;
                             label: string;
@@ -1691,11 +1681,21 @@ export interface Extensions {
                                 title: string;
                             };
                             notFoundWithSupport: {
+                                description: string;
                                 subTitle: string;
                                 title: string;
                             };
                         };
                     };
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: string;
+                                subTitle: string;
+                                title: string;
+                            }
+                        }
+                    }
                     label: string;
                 };
             };

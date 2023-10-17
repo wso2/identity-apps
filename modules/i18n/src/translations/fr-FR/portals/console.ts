@@ -476,6 +476,115 @@ export const console: ConsoleNS = {
             }
         }
     },
+    branding: {
+        form: {
+            actions: {
+                save: "Sauver et publier",
+                resetAll: "Réinitialiser à par défaut"
+            }
+        },
+        tabs: {
+            text: {
+                label: "Texte"
+            },
+            preview: {
+                label: "Aperçu"
+            }
+        },
+        screens: {
+            common: "Commune",
+            login: "Se connecter",
+            "sms-otp": "smsOtp",
+            "email-otp": "emailOtp",
+            "email-template": "Modèles de messagerie",
+            "sign-up": "S'inscrire",
+            "totp": "totp",
+            myaccount: "Mon compte"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "Une fois que vous avez confirmé, vos utilisateurs commenceront à voir les défaillances {{productName}} et ce ne sera pas réversible. Veuillez procéder avec prudence.",
+            heading: "Es-tu sûr?",
+            message: "Retour <1>{{screen}}</1> Écran Personnaliser le texte pour le <3>{{locale}}</3> Locale."
+        },
+        revertUnsavedConfirmationModal: {
+            content: "Si vous changez l'écran, vos modifications non sauvées seront perdues. Cliquez sur <1>Confirmer</1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Enregistrez vos modifications non sauvées"
+        },
+        form: {
+            genericFieldResetTooltip: "Réinitialiser à par défaut",
+            genericFieldPlaceholder: "Entrez votre texte",
+            fields: {
+                copyright: {
+                    hint: "Texte qui apparaît au bas de l'écran de connexion. Vous pouvez utiliser le paramètre `{{currentYear}}` pour afficher automatiquement l'année en cours."
+                },
+                "site.title": {
+                    hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "login.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "login.heading": {
+                    hint: "Le titre de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sms.otp.heading": {
+                    hint: "Le titre de la boîte SMS OTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "email.otp.heading": {
+                    hint: "Le titre de la boîte Email OTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "totp.heading": {
+                    hint: "Le titre de la boîte TOTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sign.up.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sign.up.heading": {
+                    hint: "Le titre de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "Lieu",
+            placeholder: "Sélectionner les paramètres régionaux"
+        },
+        modes: {
+            text: {
+                label: "Champs de texte"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "Impossible d'obtenir le texte personnalisé de l'écran {{screen}} pour {{locale}}.",
+                message: "Impossible d'obtenir le texte personnalisé"
+            },
+            revertError: {
+                description: "Je n'ai pas pu revenir {{screen}} texte personnalisé de l'écran pour {{locale}}.",
+                message: "Je n'ai pas pu revenir sur le texte personnalisé"
+            },
+            resetSuccess: {
+                description: "Retour avec succès {{screen}} Texte personnalisé de l'écran pour {{locale}}.",
+                message: "Retournez le succès"
+            },
+            updateError: {
+                description: "Impossible de mettre à jour {{Screen}} Texte personnalisé de l'écran pour {{locale}}.",
+                message: "Impossible de mettre à jour le texte personnalisé"
+            },
+            updateSuccess: {
+                description: "Le texte personnalisé de l'écran a mis à jour avec succès {{screen}} pour {{locale}}.",
+                message: "Mise à jour de texte personnalisée réussie"
+            }
+        },
+        screenSelectDropdown: {
+            label: "Écran",
+            placeholder: "Sélectionner l'écran"
+        }
+    },
     develop: {
         componentExtensions: {
             component: {
@@ -1181,9 +1290,9 @@ export const console: ConsoleNS = {
                                                     " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
                                                     " avec Connexion <5>{{idpName}}</5>."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " + 
+                                            sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " +
                                                 "d'avoir un authentificateur de base dans une étape préalable.",
-                                            sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " +
                                                 "ne peut pas être ajouté à une étape multi-options."
                                         }
                                     }
@@ -5475,20 +5584,37 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "Représentation du schéma d'échange d'attributs (axschema) "
+                            + "pour les attributs utilisateur.",
+                        heading: "Schéma d'échange d'attributs"
+                    },
                     custom: {
                         description: "Représentation de protocole personnalisé pour les " +
                             "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
                         heading: "Attributs personnalisés"
+                    },
+                    eidas: {
+                        description: "La représentation du protocole eIDAS pour les attributs utilisateur.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "Représentation du protocole OpenID Connect pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
+                    openid: {
+                        description: "La représentation du protocole OpenID pour les attributs utilisateur.",
+                        heading: "OpenID"
+                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
                         heading: "System for Cross-Domain Identity Management"
+                    },
+                    xmlsoap: {
+                        description: "Représentation du protocole XML SOAP pour les attributs utilisateur.",
+                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -5605,6 +5731,12 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "Le dialecte a été mis à jour avec succès",
                                 message: "La mise à jour du dialecte a été effectuée avec succès"
+                            }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des ressources SCIM.",
+                                message: "Quelque chose s'est mal passé"
                             }
                         }
                     },
@@ -8078,14 +8210,56 @@ export const console: ConsoleNS = {
                             subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants " +
                                 "affectés au rôle."
                         },
-                        emptyPlaceholder: {
-                            action: "Attribuer un groupe",
-                            subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",
-                            title: "Aucun groupe attribué"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Attribuer des groupes",
+                                subtitles: {
+                                    0: "Il n'y a aucun groupe disponible pour le moment."
+                                },
+                                title: "Aucun groupe affecté à ce rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les groupes affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de la mise à jour des groupes attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les groupes attribués à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les groupes attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les groupes attribués à ce rôle."
+                            }
                         },
                         heading: "Groupes attribués",
                         subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
-                            + "affectera l'exécution de certaines tâches."
+                            + "affectera l'exécution de certaines tâches.",
+                        actions: {
+                            search: {
+                                placeholder: "Groupes de recherche"
+                            },
+                            assign: {
+                                placeholder: "Attribuer des groupes"
+                            },
+                            remove: {
+                                label: "Élimination des groupes",
+                                placeholder: "Restaurer les groupes"
+                            }
+                        }
                     },
                     menuItems: {
                         basic: "Fondamentaux",
@@ -8095,6 +8269,43 @@ export const console: ConsoleNS = {
                         users: "Utilisateurs"
                     },
                     users: {
+                        heading: "Utilisateurs affectés",
+                        subHeading: "Ajouter ou supprimer les utilisateurs affectés à ce rôle.Notez que cela affectera l'exécution de certaines tâches.",
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Affecter les utilisateurs",
+                                subtitles: {
+                                    0: "Aucun utilisateur n'est attribué à ce rôle pour le moment."
+                                },
+                                title: "Aucun utilisateur affecté au rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les utilisateurs affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "L'erreur s'est produite lors de la mise à jour des utilisateurs attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les utilisateurs affectés à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les utilisateurs attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les utilisateurs attribués à ce rôle."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "Affecter un utilisateur",
@@ -8103,6 +8314,18 @@ export const console: ConsoleNS = {
                             },
                             user: "Utilisateur",
                             organization: "Dirigé par"
+                        },
+                        actions: {
+                            search: {
+                                placeholder: "Rechercher les utilisateurs"
+                            },
+                            assign: {
+                                placeholder: "Affecter les utilisateurs"
+                            },
+                            remove: {
+                                label: "Suppression des utilisateurs",
+                                placeholder: "Restaurer les utilisateurs"
+                            }
                         }
                     }
                 },
@@ -8218,17 +8441,17 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "Revenir à la bannière de conseils d'administration",
                         pageHeading: "Bannière de conseil d'administration",
-                        pageSubheading: "Configurez et personnalisez la bannière d'avis d'administration " + 
+                        pageSubheading: "Configurez et personnalisez la bannière d'avis d'administration " +
                             "à afficher sur la page de connexion.",
                         form: {
                             bannerContent: {
                                 label: "Contenu de la bannière",
                                 hint: "C'est le contenu qui sera affiché dans la bannière sur la page de connexion.",
-                                placeholder: "Attention : l'utilisation non autorisée de cet outil " + 
+                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
                                     "est strictement interdite."
                             }
                         }
@@ -8238,7 +8461,7 @@ export const console: ConsoleNS = {
                         description: "Activez et configurez la bannière d'avis d'administration.",
                         enabled: "Activé",
                         heading: "Bannière de conseil d'administration"
-                    },  
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -8247,7 +8470,7 @@ export const console: ConsoleNS = {
                                     "d'information de l'administrateur."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la désactivation de" + 
+                                description: "Une erreur s'est produite lors de la désactivation de" +
                                     "la bannière d'information de l'administrateur.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -8264,7 +8487,7 @@ export const console: ConsoleNS = {
                                     "d'administration."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de l'activation " + 
+                                description: "Une erreur s'est produite lors de l'activation " +
                                     "de la bannière d'information de l'administrateur.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -8276,11 +8499,11 @@ export const console: ConsoleNS = {
                         getConfigurations: {
                             error: {
                                 description: "{{ description }}",
-                                message: "Erreur lors de la récupération des configurations de la " + 
+                                message: "Erreur lors de la récupération des configurations de la " +
                                     "bannière d'avis d'administration."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération des " + 
+                                description: "Une erreur s'est produite lors de la récupération des " +
                                     "configurations des bannières d'avis d'administration.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -8292,7 +8515,7 @@ export const console: ConsoleNS = {
                         updateConfigurations: {
                             error: {
                                 description: "{{ description }}",
-                                message: "Erreur lors de la mise à jour des configurations de la " + 
+                                message: "Erreur lors de la mise à jour des configurations de la " +
                                 "bannière d'avis d'administration."
                             },
                             genericError: {
@@ -8306,10 +8529,85 @@ export const console: ConsoleNS = {
                                 message: "Bannière mise à jour avec succès"
                             }
                         }
-                    },           
+                    },
                     pageHeading: "Bannière de conseil d'administration",
-                    pageSubheading: "Configurez la bannière d'avis d'administration à afficher " + 
+                    pageSubheading: "Configurez la bannière d'avis d'administration à afficher " +
                         "sur la page de connexion."
+                },
+                remoteLogPublishing: {
+                    title: "Publication de journaux à distance",
+                    pageTitle: "Publication de journaux à distance",
+                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    fields: {
+                        logTypes: {
+                            label: "Types de journaux à publier",
+                            values: {
+                                carbonLogs: "Bûches de carbone",
+                                auditLogs: "Journaux d'audit",
+                                allLogs: "Tous les journaux"
+                            }
+                        },
+                        remoteURL: {
+                            label: "URL de destination"
+                        },
+                        advanced: {
+                            title: "Réglages avancés",
+                            connectionTimeout: {
+                                label: "Délai d'expiration de la connexion (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Vérifiez le nom d'hôte"
+                            },
+                            basicAuthConfig: {
+                                title: "Configuration de l'authentification de base",
+                                serverUsername: {
+                                    label: "Nom d'utilisateur du serveur distant"
+                                },
+                                serverPassword: {
+                                    label: "Mot de passe du serveur distant"
+                                }
+                            },
+                            sslConfig: {
+                                title: "Configuration SSL",
+                                keystorePath: {
+                                    label: "Emplacement du magasin de clés"
+                                },
+                                keystorePassword: {
+                                    label: "Mot de passe du magasin de clés"
+                                },
+                                truststorePath: {
+                                    label: "Emplacement du magasin de confiance"
+                                },
+                                truststorePassword: {
+                                    label: "Mot de passe du magasin de confiance"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restaurer la configuration par défaut",
+                        header: "Restaurer la configuration par défaut",
+                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        confirmation: {
+                            hint: "Veuillez confirmer votre action.",
+                            header: "Êtes-vous sûr?",
+                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            "Veuillez procéder avec prudence.",
+                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "La configuration de la publication des journaux à distance a été mise à jour avec succès.",
+                            message: "Mis à jour avec succés."
+                        },
+                        error: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        }
+                    }
                 },
                 realmConfiguration: {
                     actionTitles: {
@@ -8660,6 +8958,48 @@ export const console: ConsoleNS = {
                             username: "Nom d'utilisateur"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "Importer des utilisateurs en masse",
+                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        wizardSummary: {
+                            successCount: "Nombre de réussites",
+                            failedCount: "Nombre d'échecs",
+                            totalCount: "Le compte total",
+                            tableHeaders: {
+                                username: "Nom d'utilisateur",
+                                status: "Statut",
+                                message: "Message"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "Utilisateur importé avec succès",
+                                invalidDataMessage: "Données non valides fournies",
+                                userAlreadyExistsMessage: "L'utilisateur existe déjà",
+                                userCreationAcceptedMessage: "Création d'utilisateur acceptée",
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            tableStatus: {
+                                success: "Succès",
+                                warning: "Avertissement",
+                                failed: "Échoué"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "Les utilisateurs ont été importés avec succès.",
+                                    message: "Importation réussie"
+                                },
+                                importFailed: {
+                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    message: "Révision requise."
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "Rechercher par nom d'utilisateur"
+                            }
+                        },
+                        buttons: {
+                            import: "Importer"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
@@ -8766,6 +9106,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -9158,6 +9499,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assigner un rôle",
                     metaColumnBtn: "Champs"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Ajouter un utilisateur",
+                    bulkImport: "Importation en masse"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Veuillez confirmer votre action.",
@@ -9250,6 +9595,59 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'utilisateur a été ajouté avec succès.",
                             message: "Ajout d'utilisateur réussi"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "Le fichier sélectionné ne contient aucune donnée.",
+                                message: "Fichier vide"
+                            },
+                            columnMismatchError: {
+                                description: "Certaines lignes de données du fichier déposer ne correspondent " +
+                                    "pas au nombre de colonnes requis. Veuillez examiner et corriger les données.",
+                                message: "Incompatibilité du nombre de colonnes"
+                            },
+                            emptyHeaderError: {
+                                description: "Assurez-vous que la première ligne contient les en-têtes de " +
+                                "chaque colonne.",
+                                message: "En-têtes de colonnes manquants"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "Le ou les en-têtes suivants sont requis mais sont manquants dans" +
+                                "le fichier CSV: {{ headers }}.",
+                                message: "En-têtes de colonnes obligatoires manquants"
+                            },
+                            blockedHeaderError: {
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                message: "En-têtes de colonnes bloqués"
+                            },
+                            duplicateHeaderError: {
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                message: "En-têtes de colonnes en double"
+                            },
+                            invalidHeaderError: {
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                message: "En-têtes de colonnes invalides"
+                            },
+                            emptyDataField: {
+                                description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
+                                message: "Champ de données vide"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            genericError: {
+                                description: "Impossible d'importer les utilisateurs.",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            success: {
+                                description: "Les utilisateurs ont été importés avec succès.",
+                                message: "Utilisateurs importés avec succès"
+                            }
                         }
                     },
                     deleteUser: {

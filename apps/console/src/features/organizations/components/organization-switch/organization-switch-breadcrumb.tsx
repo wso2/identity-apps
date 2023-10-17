@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,7 @@ import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
 import { AppConstants, AppState } from "../../../core";
+import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import {
     BreadcrumbItem,
@@ -330,26 +331,13 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         { breadcrumbList[ breadcrumbList?.length - 1 ].name }
                     </span>
                 </Breadcrumb.Section>
-                { organizationConfigs.canCreateOrganization() ? (
-                    <OrganizationSwitchDropdown
-                        triggerName={
-                            breadcrumbList[ breadcrumbList.length - 1 ].name
-                        }
-                        handleOrganizationSwitch={ handleOrganizationSwitch }
-                        isBreadcrumbItem={ true }
-                    />
-                ) : (
-                    <Breadcrumb.Section active>
-                        <span
-                            data-componentid={ `${
-                                componentId
-                            }-breadcrumb-item-${ breadcrumbList[ breadcrumbList.length - 1 ].name }` }
-                            className="un-clickable ellipsis"
-                        >
-                            { breadcrumbList[ breadcrumbList.length - 1 ].name }
-                        </span>
-                    </Breadcrumb.Section>
-                ) }
+                <OrganizationSwitchDropdown
+                    triggerName={
+                        breadcrumbList[ breadcrumbList.length - 1 ].name
+                    }
+                    handleOrganizationSwitch={ handleOrganizationSwitch }
+                    isBreadcrumbItem={ true }
+                />
             </>
         );
     };
@@ -381,19 +369,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     };
 
     return (
-        <>
-            {
-                !organizationConfigs.showSwitcherInTenants
-                    ? (
-                        <OrganizationSwitchDropdown
-                            handleOrganizationSwitch={ handleOrganizationSwitch }
-                            dropdownTrigger={ triggerOrganizationDropdown() }
-                        />
-                    ) : (
-                        organizationConfigs.tenantSwitcher(triggerOrganizationDropdown(), breadcrumbList?.length > 4)
-                    )
-            }
-        </>
+        <TenantDropdown 
+            dropdownTrigger={ triggerOrganizationDropdown() } 
+            disable={ 
+                organizationConfigs.showSwitcherInTenants
+                    ? breadcrumbList?.length > 4
+                    : false
+            } 
+        />
     );
 };
 
