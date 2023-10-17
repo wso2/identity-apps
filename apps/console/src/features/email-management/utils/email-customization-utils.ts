@@ -21,8 +21,10 @@ import {
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "../../../extensions/components/branding/models";
-import { BrandingPreferenceUtils } from "../../../extensions/components/branding/utils";
+} from "../../branding/models";
+import { CustomTextInterface } from "../../branding/models/custom-text-preference";
+import { BrandingPreferenceUtils } from "../../branding/utils";
+import processCustomTextTemplateLiterals from "../../branding/utils/process-custom-text-template-literals";
 
 export class EmailCustomizationUtils {
 
@@ -59,6 +61,7 @@ export class EmailCustomizationUtils {
     public static getTemplateBody(
         organizationName: string,
         brandingConfigs: BrandingPreferenceInterface,
+        customText: CustomTextInterface,
         templateBody: string,
         predefinedThemes: BrandingPreferenceThemeInterface
     ): string {
@@ -114,7 +117,11 @@ export class EmailCustomizationUtils {
             .replace(/{{organization-name}}/g, organizationName)
             .replace(/{{organization.logo.img}}/g, currentTheme.images.logo.imgURL || defaultOrgLogo)
             .replace(/{{organization.logo.altText}}/g, currentTheme.images.logo.altText)
-            .replace(/{{organization.copyright.text}}/g, copyrightText)
+            .replace(/{{organization.copyright.text}}/g,
+                (
+                    customText && processCustomTextTemplateLiterals(customText["copyright"])
+                ) ?? copyrightText
+            )
             .replace(/{{organization.support.mail}}/g, supportEmail);
     }
 }

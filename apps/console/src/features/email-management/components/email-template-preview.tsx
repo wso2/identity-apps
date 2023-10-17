@@ -26,10 +26,11 @@ import React, {
     useState
 } from "react";
 import { useSelector } from "react-redux";
-import { useBrandingPreference } from "../../../extensions/components/branding/api";
-import { BrandingPreferencesConstants } from "../../../extensions/components/branding/constants";
-import { BrandingPreferenceThemeInterface } from "../../../extensions/components/branding/models";
-import { BrandingPreferenceUtils } from "../../../extensions/components/branding/utils";
+import useGetBrandingPreference from "../../branding/api/use-get-branding-preference";
+import { BrandingPreferencesConstants } from "../../branding/constants";
+import useBrandingPreference from "../../branding/hooks/use-branding-preference";
+import { BrandingPreferenceThemeInterface } from "../../branding/models";
+import { BrandingPreferenceUtils } from "../../branding/utils";
 import { AppState, store } from "../../core";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
@@ -57,6 +58,8 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
         ["data-componentid"]: testId
     } = props;
 
+    const { customText } = useBrandingPreference();
+
     const [ , setIsIframeReady ] = useState(false);
     const [
         predefinedThemes,
@@ -66,17 +69,17 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
     const organizationName: string = store.getState().auth.tenantDomain;
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
 
-
     const {
         data: brandingPreference,
         isLoading: isBrandingPreferenceLoading
-    } = useBrandingPreference(organizationName);
+    } = useGetBrandingPreference(organizationName);
 
     const emailTemplateBody: string = useMemo(() => {
         if (emailTemplate?.body) {
             return EmailCustomizationUtils.getTemplateBody(
                 organizationName,
                 brandingPreference?.preference,
+                customText,
                 emailTemplate?.body,
                 predefinedThemes
             );
