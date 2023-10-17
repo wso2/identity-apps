@@ -5862,6 +5862,7 @@ export interface ConsoleNS {
                         description: FormField;
                     };
                     connection: {
+                        updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };

@@ -9887,6 +9887,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Mettre à jour le mot de passe de connexion",
                         connectionErrorMessage: "Veuillez vérifier les informations de connexion "
                             + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
                         testButton: "Tester la connexion"
