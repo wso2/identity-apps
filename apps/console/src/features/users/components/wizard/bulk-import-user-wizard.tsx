@@ -174,7 +174,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { data: validationData } = useValidationConfigData();
 
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
-    const isAlphanumericUsername: boolean = config?.enableValidator === "true" ? true : false;
+    const isAlphanumericUsername: boolean = config?.enableValidator === "true";
     const optionsArray: string[] = [];
 
     /**
