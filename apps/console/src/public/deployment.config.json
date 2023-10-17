@@ -604,6 +604,11 @@
                     "delete": []
                 }
             },
+            "saml2Configuration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
             "secretsManagement": {
                 "enabled": false,
                 "scopes": {
@@ -625,12 +630,7 @@
             "sessionManagement": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "scopes": {
-                    "update": [],
-                    "read": [],
-                    "create": [],
-                    "delete": []
-                }
+                "scopes": {}
             },
             "organizations": {
                 "enabled": true,
@@ -679,6 +679,11 @@
                         "internal_application_mgt_update"
                     ]
                 }
+            },
+            "wsFedconfiguration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
             },
             "userOnboarding": {
                 "disabledFeatures": [],

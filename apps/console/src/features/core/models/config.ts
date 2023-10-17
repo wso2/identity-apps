@@ -145,6 +145,10 @@ export interface FeatureConfigInterface {
      */
     roles?: FeatureAccessConfigInterface;
     /**
+     * Saml2 Configurations feature.
+     */
+    saml2Configuration?: FeatureAccessConfigInterface;
+    /**
      * Session management Configurations feature
      */
     sessionManagement?: FeatureAccessConfigInterface;
@@ -180,6 +184,10 @@ export interface FeatureConfigInterface {
      * Bulk Import Feature
      */
     bulkUserImport?: FeatureAccessConfigInterface;
+    /**
+     * WS Federation Configurations feature
+     */
+    wsFedconfiguration?: FeatureAccessConfigInterface;
 }
 
 /**
