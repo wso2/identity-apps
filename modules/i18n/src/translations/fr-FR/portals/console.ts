@@ -9010,7 +9010,11 @@ export const console: ConsoleNS = {
                                 hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",
-                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation."
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                }
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."

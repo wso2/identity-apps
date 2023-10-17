@@ -5633,6 +5633,10 @@ export interface ConsoleNS {
                                 emailsLabel: string;
                                 emailsPlaceholder: string;
                                 disabledHint: string;
+                                upload: {
+                                    buttonText: string;
+                                    description: string;
+                                };
                             };
                             fileBased: {
                                 hint: string;
