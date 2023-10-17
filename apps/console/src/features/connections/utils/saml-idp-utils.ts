@@ -206,6 +206,8 @@ export const fastSearch = (
     const metadataMap = new Map<string, CommonPluggableComponentMetaPropertyInterface>();
     authenticator.meta?.properties.forEach((meta) => metadataMap.set(meta.key, meta));
 
+    console.log(authenticator.meta?.properties)
+
     return [
         /**
          * When you call it like below:

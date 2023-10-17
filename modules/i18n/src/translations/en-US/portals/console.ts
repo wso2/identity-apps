@@ -3894,62 +3894,55 @@ export const console: ConsoleNS = {
                             isEnableAssertionSigning:  {
                                 ariaLabel: "Enable assertion signing",
                                 hint: "Specify if SAMLAssertion element is signed",
-                                label: "Enable assertion signing",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Enable assertion signing"
                             },
                             includeCert:  {
                                 ariaLabel: "Include public certificate",
                                 hint: "Include public certificate in the request",
-                                label: "Include public certificate of the external IdP",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Include public certificate"
                             },
                             includeNameIDPolicy: {
                                 ariaLabel: "Include Name ID Policy",
                                 hint: "Include NameIDPolicy in the request",
-                                label: "Include Name ID Policy",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Include Name ID Policy"
                             },
                             isEnableAssertionEncryption: {
                                 ariaLabel: "Enable assertion encryption",
                                 hint: "Specify if SAMLAssertion element is encrypted",
-                                label: "Enable assertion encryption",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Enable assertion encryption"
                             },
                             authenticationContextClass: {
                                 ariaLabel: "Authentication context class",
                                 hint: "Authentication context class",
                                 label: "Authentication context class",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                placeholder: "Enter authentication context class"
                             },
                             attributeConsumingServiceIndex: {
                                 ariaLabel: "Attribute consuming service index",
                                 hint: "Specify the Attribute Consuming Service Index",
                                 label: "Attribute consuming service index",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                placeholder: "Enter attribute consuming service index"
                             },
                             isArtifactBindingEnabled: {
                                 ariaLabel: "Enable artifact binding",
                                 hint: "Enable artifact binding",
-                                label: "Enable artifact binding",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Enable artifact binding"
                             },
                             artifactResolveEndpointUrl: {
                                 ariaLabel: "Artifact resolve endpoint URL",
-                                hint: "Artifact resolve endpoint URL",
+                                hint: "Specify the artifact resolve endpoint URL",
                                 label: "Artifact resolve endpoint URL",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                placeholder: "Enter artifact resolve endpoint URL"
                             },
                             isArtifactResolveReqSigned: {
                                 ariaLabel: "Sign artifact resolve request",
                                 hint: "Sign artifact resolve request",
-                                label: "Sign artifact resolve request",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Sign artifact resolve request"
                             },
                             isArtifactResponseSigned: {
                                 ariaLabel: "Sign artifact response",
                                 hint: "Sign artifact response",
-                                label: "Sign artifact response",
-                                placeholder: "https://ENTERPRISE_IDP/samlsso"
+                                label: "Sign artifact response"
                             },
                             authContextComparisonLevel: {
                                 ariaLabel: "Authentication context comparison level",
