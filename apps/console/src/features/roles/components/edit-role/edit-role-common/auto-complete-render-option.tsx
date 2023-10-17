@@ -79,15 +79,14 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="center" xs={ 8 }>
                     <Grid>
-                        { /* if selected is null or undefined the checkbox will not be shown */ }
                         {
-                            selected !== undefined && (
+                            typeof selected === "boolean" && (
                                 <Checkbox checked={ selected } />
                             )
                         }
                     </Grid>
                     <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle ? subTitle : null } />  
+                        <ListItemText primary={ displayName } secondary={ subTitle } />  
                     </Grid>
                     {
                         ( ternaryTitle && ternarySubTitle ) 

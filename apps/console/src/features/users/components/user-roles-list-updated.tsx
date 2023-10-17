@@ -43,13 +43,11 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     props: UserRoleEditPropsInterface
 ): ReactElement => {
 
-    const {
-        user
-    } = props;
+    const { user } = props;
 
     const { t } = useTranslation();
 
-    const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>(undefined);
+    const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
     const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
@@ -58,9 +56,8 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
      */
     useEffect(() => {
         if ( user?.roles?.length > 0 ) {
-            setInitialSelectedRolesOptions(user.roles.map((role: RolesMemberInterface) => role));
+            setInitialSelectedRolesOptions(user.roles);
         } else {
-            setInitialSelectedRolesOptions([]);
             setShowEmptyRolesListPlaceholder(true);
         }
     }, [ user ]);
@@ -68,7 +65,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     /**
      * Get the place holder components.
      * 
-     * @returns - place holder components
+     * @returns place holder components
      */
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
@@ -90,10 +87,10 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { /* TODO: Need to replace this with "View assigned roles for the user." */ }
-                    { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { /* TODO: Need to replace this with "View assigned roles for the user." */ }
+                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             {
                 showEmptyRolesListPlaceholder
@@ -102,8 +99,8 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                         <Autocomplete
                             multiple
                             disableCloseOnSelect
-                            options={ initialSelectedRolesOptions ? initialSelectedRolesOptions : [] }
-                            value={ initialSelectedRolesOptions ? initialSelectedRolesOptions : [] }
+                            options={ initialSelectedRolesOptions }
+                            value={ initialSelectedRolesOptions }
                             getOptionLabel={ (role: RolesMemberInterface) => role.display }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
@@ -123,7 +120,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }
-                                    onDelete= { null }
+                                    onDelete={ null }
                                 />
                             )) }
                             renderOption={ (

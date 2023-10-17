@@ -35,7 +35,7 @@ import { RenderChip } from "../group-common-components/render-chip";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
-     * User profile
+     * Group profile
      */
     group: GroupsInterface;
 }
@@ -44,13 +44,11 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     props: EditGroupRolesPropsInterface
 ): ReactElement => {
 
-    const {
-        group
-    } = props;
+    const { group } = props;
 
     const { t } = useTranslation();
 
-    const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>(undefined);
+    const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
     const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
@@ -59,9 +57,8 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
      */
     useEffect(() => {
         if ( group?.roles?.length > 0 ) {
-            setInitialSelectedRolesOptions(group.roles.map((role: RolesMemberInterface) => role));
+            setInitialSelectedRolesOptions(group.roles);
         } else {
-            setInitialSelectedRolesOptions([]);
             setShowEmptyRolesListPlaceholder(true);
         }
     }, [ group ]);
@@ -69,7 +66,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     /**
      * Get the place holder components.
      * 
-     * @returns - place holder components
+     * @returns place holder components
      */
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
@@ -91,10 +88,10 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { /* TODO: Need to replace this with "View assigned roles for the group." */ }
-                    { t("console:manage.features.groups.edit.roles.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { /* TODO: Need to replace this with "View assigned roles for the group." */ }
+                { t("console:manage.features.groups.edit.roles.subHeading") }
             </Heading>
             {
                 showEmptyRolesListPlaceholder
@@ -103,8 +100,8 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                         <Autocomplete
                             multiple
                             disableCloseOnSelect
-                            options={ initialSelectedRolesOptions ? initialSelectedRolesOptions : [] }
-                            value={ initialSelectedRolesOptions ? initialSelectedRolesOptions : [] }
+                            options={ initialSelectedRolesOptions }
+                            value={ initialSelectedRolesOptions }
                             getOptionLabel={ (role: RolesMemberInterface) => role.display }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
@@ -124,7 +121,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }
-                                    onDelete= { null }
+                                    onDelete={ null }
                                 />
                             )) }
                             renderOption={ (

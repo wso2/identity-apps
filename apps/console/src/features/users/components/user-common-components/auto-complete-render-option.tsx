@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -27,10 +26,6 @@ import React, {
 } from "react";
 
 interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
-    /**
-     * Is the option selected.
-     */
-    selected?: boolean;
     /**
      * The display name of the option.
      */
@@ -58,7 +53,6 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
 ): ReactElement => {
 
     const {
-        selected,
         displayName,
         subTitle,
         ternaryTitle,
@@ -69,28 +63,18 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
     return (
         <li { ...renderOptionProps }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
-                <Grid container alignItems="center" xs={ 8 }>
-                    <Grid>
-                        { /* if selected is null or undefined the checkbox will not be shown */ }
-                        {
-                            selected !== undefined && (
-                                <Checkbox checked={ selected } />
-                            )
-                        }
-                    </Grid>
-                    <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle ? subTitle : null } />  
-                    </Grid>
-                    {
-                        ( ternaryTitle && ternarySubTitle ) 
-                            ? (
-                                <Grid>
-                                    <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
-                                </Grid>
-                            )
-                            : null
-                    }
+                <Grid xs={ 5 }>
+                    <ListItemText primary={ displayName } secondary={ subTitle ? subTitle : null } />  
                 </Grid>
+                {
+                    ( ternaryTitle && ternarySubTitle ) 
+                        ? (
+                            <Grid>
+                                <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
+                            </Grid>
+                        )
+                        : null
+                }
             </Grid>
         </li>
     );

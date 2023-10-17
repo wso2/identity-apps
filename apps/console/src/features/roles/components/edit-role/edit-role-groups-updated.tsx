@@ -332,9 +332,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.groups.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.groups.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("console:manage.features.roles.edit.groups.subHeading") }
             </Heading>
             {
                 groupListFetchRequestError || showEmptyRolesListPlaceholder
