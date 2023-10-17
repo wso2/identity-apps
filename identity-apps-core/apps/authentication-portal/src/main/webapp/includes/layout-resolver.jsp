@@ -16,6 +16,23 @@
   ~ under the License.
 --%>
 
+<%!
+    /**
+    * Convert the application name by replacing spaces with underscores.
+    *
+    * This serves as a temporary solution for implementing a custom layout for applications with
+    * names containing spaces. It is recommended to remove this workaround and implement a more 
+    * robust solution in the future.
+    * Tracked by - https://github.com/wso2-enterprise/asgardeo-product/issues/19824
+    *
+    * @param applicationName Name of the application (Service Provider Name).
+    * @return Converted application name.
+    */
+    public String convertApplicationName(String applicationName) {
+        return StringUtils.replace(applicationName, " ", "_");
+    }
+%>
+
 <%-- Layout Resolver --%>
 <%
 
@@ -69,9 +86,9 @@
 
                             // App-wise and tenant-wise custom layout resolving logic.
                             if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences;
-                                tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/body.ser";
-                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences;
+                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
+                                tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
+                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences);
                             }
 
                             if (config.getServletContext().getResource(tempLayoutFileRelativePath) == null || StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
