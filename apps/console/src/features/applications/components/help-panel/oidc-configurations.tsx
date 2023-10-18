@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, Grid, Icon } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs/ui";
@@ -295,7 +295,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
-                            icon={ <Icon className={ "mr-0" } name="power off" /> }
+                            icon={ getHelpPanelIcons().endpoints.logout }
                             size="micro"
                             square
                             transparent
@@ -322,31 +322,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                                     <GenericIcon
-                                        icon={ <Icon className={ "mr-0" } name="power off" /> }
-                                        size="micro"
-                                        square
-                                        transparent
-                                        inline
-                                        className="left-icon"
-                                        verticalAlign="middle"
-                                        spaced="right"
-                                    />
-                                    <label data-testid={ `${ testId }-openid-server-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "oidcConfigurations.labels.openIdServer") }
-                                    </label>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <CopyInputField
-                                        value={ oidcConfigurations?.openIdServerEndpoint  }
-                                        data-testid={ `${ testId }-openid-server-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                                    <GenericIcon
-                                        icon={ <Icon className={ "mr-0" } name="power off" /> }
+                                        icon={ getHelpPanelIcons().endpoints.par }
                                         size="micro"
                                         square
                                         transparent
@@ -370,7 +346,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                                     <GenericIcon
-                                        icon={ <Icon className={ "mr-0" } name="power off" /> }
+                                        icon={ getHelpPanelIcons().endpoints.sessionIframe }
                                         size="micro"
                                         square
                                         transparent
@@ -394,7 +370,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                                     <GenericIcon
-                                        icon={ <Icon className={ "mr-0" } name="power off" /> }
+                                        icon={ getHelpPanelIcons().endpoints.webFinger }
                                         size="micro"
                                         square
                                         transparent
@@ -418,7 +394,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                                     <GenericIcon
-                                        icon={ <Icon className={ "mr-0" } name="power off" /> }
+                                        icon={ getHelpPanelIcons().endpoints.userInfo }
                                         size="micro"
                                         square
                                         transparent

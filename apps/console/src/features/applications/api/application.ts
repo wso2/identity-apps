@@ -939,13 +939,12 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
-                openIdServerEndpoint: "to be implemented",
                 pushedAuthorizationRequestEndpoint: response.data.pushed_authorization_request_endpoint,
                 sessionIframeEndpoint: response.data.check_session_iframe,
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
-                webFingerEndpoint: "to be implemented",
+                webFingerEndpoint: "",
                 wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 
