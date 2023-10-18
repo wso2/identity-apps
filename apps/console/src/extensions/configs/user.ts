@@ -28,10 +28,6 @@ export const userConfig: User = {
         userCount: 100
     },
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {
-        if (user.userName?.split("/")[0] === CONSUMER_USERSTORE) {
-            return deleteUser(user.id);
-        } else {
-            return deleteGuestUser(user.id);
-        }
+        return deleteUser(user.id);
     }
 };
