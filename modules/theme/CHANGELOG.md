@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4234](https://github.com/wso2/identity-apps/pull/4234) [`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the http://schemas.xmlsoap.org/ws/2005/05/identity dialect from the new console
+
 ## 2.0.12
 
 ### Patch Changes

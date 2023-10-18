@@ -536,13 +536,13 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.7
+        specifier: ^2.0.8
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.8
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.12
+        specifier: ^2.0.13
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -861,13 +861,13 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.7
+        specifier: ^2.0.8
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.7
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.12
+        specifier: ^2.0.13
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -1072,7 +1072,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.12
+        specifier: ^2.0.13
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2
@@ -13123,7 +13123,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.22.15
       '@types/aria-query': 4.2.2
       aria-query: 5.0.2
       chalk: 4.1.2
@@ -14755,7 +14755,7 @@ packages:
       call-bind: 1.0.2
       define-properties: 1.1.4
       es-abstract: 1.20.1
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.2.1
       is-string: 1.0.7
 
   /array-union@1.0.2:
@@ -19992,13 +19992,6 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 
-  /get-intrinsic@1.1.2:
-    resolution: {integrity: sha512-Jfm3OyCxHh9DJyc28qGk+JmfkpO41A4XkneDSujN9MDXrm4oDKdHvndhZ2dN94+ERNfkYJWDclW6k2L/ZGHjXA==}
-    dependencies:
-      function-bind: 1.1.1
-      has: 1.0.3
-      has-symbols: 1.0.3
-
   /get-intrinsic@1.2.1:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
     dependencies:
@@ -21174,7 +21167,7 @@ packages:
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
-      rxjs: 7.5.6
+      rxjs: 7.8.1
       string-width: 4.2.3
       strip-ansi: 6.0.1
       through: 2.3.8
@@ -29075,12 +29068,6 @@ packages:
       tslib: 1.14.1
     dev: true
 
-  /rxjs@7.5.6:
-    resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
-    dependencies:
-      tslib: 2.4.0
-    dev: true
-
   /rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
@@ -30026,7 +30013,7 @@ packages:
       call-bind: 1.0.2
       define-properties: 1.1.4
       es-abstract: 1.20.1
-      get-intrinsic: 1.1.2
+      get-intrinsic: 1.2.1
       has-symbols: 1.0.3
       internal-slot: 1.0.3
       regexp.prototype.flags: 1.4.3

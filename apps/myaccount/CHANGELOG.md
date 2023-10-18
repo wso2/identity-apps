@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.1.0
+
+### Minor Changes
+
+- [#4226](https://github.com/wso2/identity-apps/pull/4226) [`2d6fbb97cd`](https://github.com/wso2/identity-apps/commit/2d6fbb97cd3bbfaeeee82d39a5d9e8ba65e011a9) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Add organization display name in branding
+
+### Patch Changes
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+  - @wso2is/i18n@2.0.8
+
 ## 2.0.14
 
 ### Patch Changes
