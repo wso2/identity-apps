@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.1.1
+
+### Patch Changes
+
+- [#4249](https://github.com/wso2/identity-apps/pull/4249) [`2e7d5bee3a`](https://github.com/wso2/identity-apps/commit/2e7d5bee3a9d4d890a43a4bce137468608729147) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix some issues with remove default branding migrate.
+
 ## 2.1.0
 
 ### Minor Changes
