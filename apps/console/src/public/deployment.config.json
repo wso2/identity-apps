@@ -213,9 +213,9 @@
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appTitle": "WSO2 Identity Server Console",
         "appName": "Console",
-        "appLogoPath": "/assets/images/branding/logo.svg",
-        "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
-        "appFaviconPath": "/assets/images/branding/favicon.ico",
+        "appLogoPath": "/assets/images/branding/is-logo.svg",
+        "appWhiteLogoPath": "/assets/images/branding/is-logo-white.svg",
+        "appFaviconPath": "/assets/images/branding/is-favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
