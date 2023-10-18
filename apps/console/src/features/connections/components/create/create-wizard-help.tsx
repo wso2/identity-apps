@@ -96,7 +96,7 @@ CreateConnectionWizardHelpPropsInterface> = (
             case "domain_name":
                 return value.replace(value, new URL(deploymentConfig?.serverOrigin)?.hostname);
             case "site_url":
-                return value.replace(value, deploymentConfig.serverOrigin);
+                return value.replace(value, deploymentConfig.customServerHost);
             case "redirect_uri":
                 return value.replace(value, deploymentConfig.customServerHost + "/commonauth");
             default:

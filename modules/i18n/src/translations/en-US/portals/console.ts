@@ -4040,11 +4040,11 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addAuthenticator: {
-                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                        subTitle: "Add new authenticator to the connection",
                         title: "Add New Authenticator"
                     },
                     addCertificate: {
-                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                        subTitle: "Add new certificate to the connection",
                         title: "Configure Certificates"
                     },
                     addProvisioningConnector: {
