@@ -29,11 +29,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { ApplicationManagementUtils } from "../../applications/utils/application-management-utils";
-import { AppState, FeatureConfigInterface } from "../../core";
-import { useSaml2Config } from "../api/saml2-configuration";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { updateSaml2Configurations, useSaml2Config } from "../api/saml2-configuration";
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
 import {
+    Saml2ConfigAPIResponseInterface,
     Saml2ConfigFormErrorValidationsInterface,
     Saml2ConfigFormValuesInterface
 } from "../models/saml2-configuration";
@@ -96,10 +96,12 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
         }        
 
         setSaml2Config({
-            destinationURLs: originalSaml2Config.destinationURLs ?? [],
             enableMetadataSigning: originalSaml2Config.enableMetadataSigning ?? false,
             metadataValidityPeriod: originalSaml2Config.metadataValidityPeriod ?? 0
         });
+        setDestinationUrls(originalSaml2Config.destinationURLs.length > 0
+            ? originalSaml2Config.destinationURLs.toString()
+            : "");        
     }, [ originalSaml2Config ]);
 
     /**
@@ -180,18 +182,27 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     /**
      * Handle saml2 configuration form submit.
      */
-    const handleSubmit = (values: Saml2ConfigFormValuesInterface) => {
-        // setIsSubmitting(true);
-        const data: Saml2ConfigFormValuesInterface = {
+    const handleSubmit = (values: Saml2ConfigFormValuesInterface) => {        
+        setIsSubmitting(true);
+
+        const data: Saml2ConfigAPIResponseInterface = {
             destinationURLs: destinationUrls?.split(","),
             enableMetadataSigning: values.enableMetadataSigning,
             metadataValidityPeriod: values.metadataValidityPeriod
         };
         
-        // handle update
-        console.log("data", data);
-        
-        
+        updateSaml2Configurations(data).then(() => {
+            handleUpdateSuccess();
+        }).catch(() => {
+            handleUpdateError();
+        }).finally(() => {
+            setIsSubmitting(false);
+            mutateSaml2Config();
+        });
+    };
+
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     /**
@@ -235,6 +246,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
             title={ t("console:saml2Config.title") }
             pageTitle={ t("console:saml2Config.title") }
             description={ t("console:saml2Config.description") }
+            backButton={ {
+                onClick: () => onBackButtonClick(),
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
             bottomMargin={ false }
             contentTopMargin={ false }
             pageHeaderMaxWidth={ true }
@@ -256,14 +271,12 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                 initialValues={ saml2Config }
                                                 enableReinitialize={ true }
                                                 ref={ formRef }
-                                                noValidate={ true }
                                                 validate={ validateForm }
                                                 autoComplete="new-password"
-
                                             >
                                                 <Grid>
                                                     <Grid.Row columns={ 1 } key={ 3 }>
-                                                        <Grid.Column width={ 10 } key="enableMetadataSigning">
+                                                        <Grid.Column width={ 10 }>
                                                             <Field.Checkbox
                                                                 ariaLabel="Enable metadata signing checkbox"
                                                                 name="enableMetadataSigning"
@@ -277,7 +290,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 } key={ 1 }>
-                                                        <Grid.Column width={ 10 } key="metadataValidityPeriod">
+                                                        <Grid.Column width={ 10 }>
                                                             <Field.Input
                                                                 min={ Saml2ConfigurationConstants
                                                                     .SAML2_CONFIG_FIELD_MIN_LENGTH }
@@ -305,20 +318,16 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                             <URLInput
                                                                 urlState={ destinationUrls }
                                                                 setURLState={ (url: string) => {
-                                                                    setDestinationUrls(url);
+                                                                    const processedUrl: string = url.split(",")
+                                                                        .filter((item: string) => item).toString();
+                                                                        
+                                                                    setDestinationUrls(processedUrl);
                                                                 } }
                                                                 labelName={ t("console:saml2Config.form." +
                                                                     "destinationUrl.label") }
                                                                 hint={ t("console:saml2Config.form." +
                                                                     "destinationUrl.hint") }
                                                                 required={ true }
-                                                                value={
-                                                                    saml2Config?.destinationURLs?.toString()
-                                                                        ? ApplicationManagementUtils.
-                                                                            buildCallBackURLWithSeparator(
-                                                                                saml2Config?.destinationURLs.toString())
-                                                                        : ""
-                                                                }
                                                                 showError={ showURLError }
                                                                 setShowError={ setShowURLError }
                                                                 validationErrorMsg={ t("console:saml2Config.form." +

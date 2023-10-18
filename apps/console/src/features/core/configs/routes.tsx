@@ -79,9 +79,38 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        children: [
+                            {
+                                component: lazy(() => import("../../session-management/pages/session-management")),
+                                exact: true,
+                                id: "sessionManagement",
+                                name: "console:sessionManagement.title",
+                                path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
+                                exact: true,
+                                id: "saml2Configuration",
+                                name: "console:saml2Config.title",
+                                path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
+                                exact: true,
+                                id: "wsFedconfiguration",
+                                name: "console:wsFederationConfig.title",
+                                path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -550,7 +579,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -626,7 +655,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
+                                        "../../../features/server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -651,7 +680,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" +  "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -701,7 +730,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
+                                        "../../../features/server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -851,48 +880,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.sessionManagement",
-                        component: lazy(() => import("../../session-management/pages/session-management")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().userStore
-                        },
-                        id: "sessionManagement",
-                        name: "Session Management",
-                        order: 22,
-                        path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.saml2configuration",
-                        component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().userStore
-                        },
-                        id: "saml2Configuration",
-                        name: "SAML2 Web SSO Configuration",
-                        order: 22,
-                        path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.wsFedconfiguration",
-                        component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().userStore
-                        },
-                        id: "wsFedconfiguration",
-                        name: "WS-Federation Configuration",
-                        order: 22,
-                        path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../org-insights/pages/org-insights")),
                         exact: true,
@@ -913,8 +900,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         category: "extensions:manage.sidePanel.categories.monitor",
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" +
-                                "pages/connector-edit-page"
+                                "../../../features/server-configurations/pages/connector-edit-page"
                             )
                         ),
                         exact: true,

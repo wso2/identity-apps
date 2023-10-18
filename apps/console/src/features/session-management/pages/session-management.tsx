@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../features/core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../features/core";
 import { updateSessionManagmentConfigurations, useSessionManagementConfig } from "../api/session-management";
 import { SessionManagementConstants } from "../constants/session-management";
 import {
@@ -208,6 +208,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             });
     };
 
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     /**
      * This function returns loading placeholder.
      */
@@ -249,6 +253,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             title={ t("console:sessionManagement.title") }
             pageTitle={ t("console:sessionManagement.title") }
             description={ t("console:sessionManagement.description") }
+            backButton={ {
+                onClick: () => onBackButtonClick(),
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
             bottomMargin={ false }
             contentTopMargin={ false }
             pageHeaderMaxWidth={ true }

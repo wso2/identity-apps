@@ -23,7 +23,7 @@
 export interface Saml2ConfigFormValuesInterface {
     metadataValidityPeriod?: number;
     enableMetadataSigning?: boolean;
-    destinationURLs?: string[];
+    destinationURLs?: string;
 }
 
 /**

@@ -358,9 +358,11 @@ export class AppConstants {
             ],
             [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ],
-            [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/session-management` ],
-            [ "SAML2_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/saml2-configuration` ],
-            [ "WSFED_CONFIGURATION", `${AppConstants.getAdminViewBasePath()}/wsfed-configuration` ]
+            [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
+            [ "SAML2_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
+            [ "WSFED_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ]
         ]);
 
         return paths;

@@ -27,7 +27,7 @@ import useRequest, {
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
-import { Saml2ConfigAPIResponseInterface, Saml2ConfigFormValuesInterface } from "../models/saml2-configuration";
+import { Saml2ConfigAPIResponseInterface } from "../models/saml2-configuration";
 
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
@@ -48,7 +48,7 @@ export const useSaml2Config = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().serverConfigurations
+        url: Config.getServiceResourceEndpoints().saml2Configurations
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -68,7 +68,7 @@ export const useSaml2Config = <
  * @param data - the updated saml2 configurations.
  * @returns a promise to update the saml2 configurations.
  */
-export const updateSaml2Configurations = (data: Saml2ConfigFormValuesInterface): 
+export const updateSaml2Configurations = (data: Saml2ConfigAPIResponseInterface): 
     Promise<Saml2ConfigAPIResponseInterface> => {
     
     const requestConfig: AxiosRequestConfig = {
@@ -78,7 +78,7 @@ export const updateSaml2Configurations = (data: Saml2ConfigFormValuesInterface):
             "Content-Type": "application/json"
         },
         method:  HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().serverConfigurations
+        url: Config.getServiceResourceEndpoints().saml2Configurations
     };
 
     return httpClient(requestConfig)

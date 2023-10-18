@@ -69,6 +69,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "pii-controller"
     ],
     connectorsToShow: [ "all" ],
+    customConnectors: [
+        ServerConfigurationsConstants.SAML2_SSO_CONNECTOR,
+        ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR,
+        ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR
+    ],
     dynamicConnectors: true,
     intendSettings: false,
     passwordExpiryComponent: (

@@ -349,7 +349,14 @@ export class ServerConfigurationsConstants {
 	 * Extensions Constants.
 	 */
 	public static readonly ALL: string = "all";
-	
+
+	/**
+	 * Custom connector IDs.
+	 */
+	public static readonly SAML2_SSO_CONNECTOR: string = "saml2-sso"
+	public static readonly SESSION_MANAGEMENT_CONNECTOR: string = "session-management"
+	public static readonly WS_FEDERATION_CONNECTOR: string = "ws-fed"
+
 	/**
 	 * Multi Attribute Login Constants.
 	 */

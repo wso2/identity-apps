@@ -27,9 +27,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../core";
-import { useWSFederationConfig } from "../api/wsfed-configuration";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { updateWSFederationConfigurations, useWSFederationConfig } from "../api/wsfed-configuration";
 import {
+    WSFederationConfigAPIResponseInterface,
     WSFederationConfigFormValuesInterface
 } from "../models/wsfed-configuration";
 
@@ -141,10 +142,23 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
      * Handle WSFederation form submit.
      */
     const handleSubmit = (values: WSFederationConfigFormValuesInterface) => {
-        // setIsSubmitting(true);
-        console.log("values", values);
+        setIsSubmitting(true);
+        const data: WSFederationConfigAPIResponseInterface = {
+            enableRequestSigning: values.enableRequestSigning
+        };
         
-        
+        updateWSFederationConfigurations(data).then(() => {
+            handleUpdateSuccess();
+        }).catch(() => {
+            handleUpdateError();
+        }).finally(() => {
+            setIsSubmitting(false);
+            mutateWSFederationConfig();
+        });  
+    };
+
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     /**
@@ -188,6 +202,10 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
             title={ t("console:wsFederationConfig.title") }
             pageTitle={ t("console:wsFederationConfig.title") }
             description={ t("console:wsFederationConfig.description") }
+            backButton={ {
+                onClick: () => onBackButtonClick(),
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
             bottomMargin={ false }
             contentTopMargin={ false }
             pageHeaderMaxWidth={ true }
@@ -220,7 +238,6 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                                                 name="enableRequestSigning"
                                                                 label={ t("console:wsFederationConfig.form." +
                                                                     "enableRequestSigning.label") }
-                                                                value={ wsFederationConfig?.enableRequestSigning }
                                                                 readOnly={ isReadOnly }
                                                                 width={ 16 }
                                                                 data-componentid={ 

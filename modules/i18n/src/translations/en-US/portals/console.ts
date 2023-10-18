@@ -12042,7 +12042,7 @@ export const console: ConsoleNS = {
             },
             validation: {
                 metadataValidityPeriod: "Metadata validity period should be a positive integer.",
-                destinationURLs: "Destination URLs should be valid URLs and should not be empty."
+                destinationURLs: "Destination URL should be a valid URL."
             }
         },
         notifications: {

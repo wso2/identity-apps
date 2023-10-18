@@ -31,6 +31,7 @@ export interface ServerConfigurationConfig {
     connectorsToShow: string[];
     connectorStatusViewDisabledConnectorIDs: string[];
     connectorsToHide: string[];
+    customConnectors: string[];
     dynamicConnectors: boolean,
     intendSettings: boolean;
     renderConnector: (

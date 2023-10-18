@@ -25,12 +25,15 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
 import {
+    AnalyticsAPIRequestInterface,
+    AnalyticsFormValuesInterface
+} from "../../../extensions/components/governance-connectors/models/analytics";
+import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants
-} from "../../../../features/server-configurations";
+} from "../../../features/server-configurations";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
-import { AnalyticsAPIRequestInterface, AnalyticsFormValuesInterface } from "../models/analytics";
 
 /**
  * Interface for Password Recovery Configuration Form props.

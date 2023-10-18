@@ -49,7 +49,7 @@ export const useWSFederationConfig = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().serverConfigurations
+        url: Config.getServiceResourceEndpoints().passiveStsConfigurations
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -69,7 +69,7 @@ export const useWSFederationConfig = <
  * @param data - the updated WSFederation configurations.
  * @returns a promise to update the WSFederation configurations.
  */
-export const updateSessionManagmentConfigurations = (data: any[]): 
+export const updateWSFederationConfigurations = (data: WSFederationConfigAPIResponseInterface): 
     Promise<WSFederationConfigAPIResponseInterface> => {
     
     const requestConfig: AxiosRequestConfig = {
@@ -79,7 +79,7 @@ export const updateSessionManagmentConfigurations = (data: any[]):
             "Content-Type": "application/json"
         },
         method:  HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().serverConfigurations
+        url: Config.getServiceResourceEndpoints().passiveStsConfigurations
     };
 
     return httpClient(requestConfig)
