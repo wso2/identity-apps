@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.17
+
+### Patch Changes
+
+- [#4200](https://github.com/wso2/identity-apps/pull/4200) [`6957fe72b0`](https://github.com/wso2/identity-apps/commit/6957fe72b0ae8e942c028f5cd75569b27120bf4c) Thanks [@Rashmini](https://github.com/Rashmini)! - Update recovery portal for recovery v2 API
+
 ## 2.0.16
 
 ### Patch Changes
