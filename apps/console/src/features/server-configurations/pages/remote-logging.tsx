@@ -18,7 +18,7 @@
 
 import { Divider,  Grid, Typography } from "@oxygen-ui/react";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import { AlertInterface, AlertLevels } from "modules/core/src/models/core";
@@ -118,7 +118,7 @@ export default function RemoteLogging (): ReactElement {
             truststoreLocation: values.get("truststoreLocation"),
             truststorePassword: values.get("truststorePassword"),
             username: values.get("username"),
-            verifyHostname: values.get("verifyHostname") === "true"
+            verifyHostname: remoteLoggingConfig.verifyHostname
         };
 
         if (values.get("logType") === "ALL") {
@@ -153,9 +153,7 @@ export default function RemoteLogging (): ReactElement {
         });
     };
 
-    const handleVerifyHostnameToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-        event.preventDefault();
-
+    const handleVerifyHostnameToggleChange = (_event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         setRemoteLoggingConfig({
             ...remoteLoggingConfig,
             verifyHostname: data.checked
@@ -212,15 +210,6 @@ export default function RemoteLogging (): ReactElement {
                             }
                             name={ "logType" }
                             type="dropdown"
-                            listen={ (data: Map<string, FormValue>) => {
-                                const logType: string = data.get("logType")?.toString();
-
-                                setRemoteLoggingConfig({
-                                    ...remoteLoggingConfig,
-                                    logType: logType as LogType
-                                });
-                                
-                            } }
                             value={ remoteLoggingConfig?.logType }
                             data-componentid="remote-logging-logtype-dropdown"
                         />
@@ -320,6 +309,8 @@ export default function RemoteLogging (): ReactElement {
                                     "basicAuthConfig.serverPassword.label")
                             }
                             name={ "password" }
+                            hidePassword={ t("common:hidePassword") }
+                            showPassword={ t("common:showPassword") }
                             type="password"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -355,6 +346,8 @@ export default function RemoteLogging (): ReactElement {
                                     "sslConfig.keystorePassword.label")
                             }
                             name={ "keystorePassword" }
+                            hidePassword={ t("common:hidePassword") }
+                            showPassword={ t("common:showPassword") }
                             type="password"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
@@ -385,6 +378,8 @@ export default function RemoteLogging (): ReactElement {
                                     "sslConfig.truststorePassword.label")
                             }
                             name={ "truststorePassword" }
+                            hidePassword={ t("common:hidePassword") }
+                            showPassword={ t("common:showPassword") }
                             type="password"
                             validation={ (value: string, _validation: Validation) => {
                                 // TODO: perform the validation
