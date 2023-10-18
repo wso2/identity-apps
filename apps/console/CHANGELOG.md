@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.1.1
+
+### Patch Changes
+
+- [#4247](https://github.com/wso2/identity-apps/pull/4247) [`f6cbb7c58d`](https://github.com/wso2/identity-apps/commit/f6cbb7c58da199ba3512be282fb2086c2d606999) Thanks [@savindi7](https://github.com/savindi7)! - Update feature grouping in the Navbar
+
+* [#4236](https://github.com/wso2/identity-apps/pull/4236) [`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the colors of logos for the new dialects
+
+- [#4248](https://github.com/wso2/identity-apps/pull/4248) [`e1b9a2d501`](https://github.com/wso2/identity-apps/commit/e1b9a2d5018513ddf69f5b5a1f5306690af4f9b5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in user delete feature
+
+- Updated dependencies [[`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3)]:
+  - @wso2is/theme@2.0.14
+
 ## 2.1.0
 
 ### Minor Changes
