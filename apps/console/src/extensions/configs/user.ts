@@ -19,8 +19,6 @@
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
 import { deleteUser } from "../../features/users/api/users";
-import { deleteGuestUser } from "../components/users/api";
-import { CONSUMER_USERSTORE } from "../components/users/constants";
 
 export const userConfig: User = {
     bulkUserImportLimit: {
@@ -28,10 +26,6 @@ export const userConfig: User = {
         userCount: 100
     },
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {
-        if (user.userName?.split("/")[0] === CONSUMER_USERSTORE) {
-            return deleteUser(user.id);
-        } else {
-            return deleteGuestUser(user.id);
-        }
+        return deleteUser(user.id);
     }
 };
