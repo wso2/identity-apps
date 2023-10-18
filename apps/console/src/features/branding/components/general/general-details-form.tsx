@@ -92,6 +92,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
 
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
+    const [ displayName, setDisplayName ] = useState<string>(initialValues.organizationDetails.displayName);
     const [ supportEmail, setSupportEmail ] = useState<string>(initialValues.organizationDetails.supportEmail);
 
     /**
@@ -103,10 +104,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
             ...initialValues,
             organizationDetails: {
                 ...initialValues.organizationDetails,
+                displayName,
                 supportEmail
             }
         });
-    }, [ supportEmail ]);
+    }, [ supportEmail, displayName ]);
 
     if (isLoading) {
         return (
@@ -135,6 +137,28 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
             onSubmit={ onSubmit }
             initialValues={ initialValues }
         >
+            <Field.Input
+                ariaLabel="Display name input field"
+                inputType="default"
+                name="organizationDetails.displayName"
+                label={ t("extensions:develop.branding.forms.general.fields.displayName.label") }
+                placeholder={ t("extensions:develop.branding.forms.general.fields.displayName.placeholder") }
+                hint={
+                    t("extensions:develop.branding.forms.general.fields.displayName.hint", { productName })
+                }
+                required={ false }
+                readOnly={ readOnly }
+                value={ initialValues.organizationDetails.displayName }
+                maxLength={
+                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MAX_LENGTH
+                }
+                minLength={
+                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MIN_LENGTH
+                }
+                width={ 16 }
+                listen={ (value: string) => setDisplayName(value) }
+                data-componentid={ `${componentId}-organization-display-name` }
+            />
             <Field.Input
                 ariaLabel="Contact email input field"
                 inputType="email"

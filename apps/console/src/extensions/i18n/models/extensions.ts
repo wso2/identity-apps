@@ -1570,6 +1570,11 @@ export interface Extensions {
                             label: string;
                             placeholder: string;
                         };
+                        displayName: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
                     };
                 };
             };

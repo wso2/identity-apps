@@ -190,6 +190,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     onSubmit={ onSubmit }
                     initialValues={ {
                         organizationDetails: {
+                            displayName: brandingPreference.organizationDetails?.displayName,
                             supportEmail: brandingPreference.organizationDetails?.supportEmail
                         }
                     } }
@@ -199,6 +200,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                 ...brandingPreference,
                                 organizationDetails: {
                                     ...brandingPreference.organizationDetails,
+                                    displayName: values.organizationDetails.displayName,
                                     supportEmail: values.organizationDetails.supportEmail
                                 }
                             })
