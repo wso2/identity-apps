@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { BoltIcon, EnvelopeGearIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
+import { 
+    ArrowRightToBracketPencilIcon,
+    BoltIcon,
+    EnvelopeGearIcon,
+    HierarchyIcon, 
+    UserGroupIcon
+} from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
@@ -71,6 +77,34 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: `${ AppConstants.getMainViewBasePath() }/getting-started`,
                         protected: true,
                         showOnSidePanel: true
+                    },
+                    {
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                            )
+                        ),
+                        exact: false,
+                        icon: { 
+                            icon: <ArrowRightToBracketPencilIcon /> 
+                        },
+                        id: "loginAndRegistration",
+                        name: "console:common.sidePanel.loginAndRegistration.label",
+                        order: 0,
+                        path: AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
+                        exact: true,
+                        icon: null,
+                        id: "governanceConnectors",
+                        name: "console:manage.features.sidePanel.governanceConnectors",
+                        order: 11,
+                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
+                        protected: true,
+                        showOnSidePanel: false
                     },
                     {
                         category: "console:develop.features.sidePanel.categories.application",
@@ -394,7 +428,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
                         },
                         id: "branding",
-                        name: "extensions:develop.sidePanel.branding",
+                        name: "extensions:develop.sidePanel.stylesAndText",
                         order: 13,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/branding`,
                         protected: true,
@@ -403,12 +437,12 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../extensions/components/email-management/" + "pages/email-customization")
+                            import("../../../features/email-management/" + "pages/email-customization")
                         ),
                         exact: true,
                         icon: { icon: getSidePanelIcons().emailTemplates },
                         id: "communication-management",
-                        name: "extensions:develop.sidePanel.emailTemplates",
+                        name: "Email",
                         order: 14,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/email-management`,
                         protected: true,
@@ -417,7 +451,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../extensions/components/email-providers" + "/pages/email-providers")
+                            import("../../../features/email-providers" + "/pages/email-providers")
                         ),
                         exact: true,
                         icon: {
@@ -428,7 +462,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 15,
                         path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -458,7 +492,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 16,
                         path: AppConstants.getPaths().get("MY_ACCOUNT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -496,7 +530,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -516,7 +550,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" + "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -532,7 +566,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -584,7 +618,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 19,
                         path: AppConstants.getPaths().get("ACCOUNT_LOGIN"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -592,8 +626,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -618,7 +651,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" +  "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -634,7 +667,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -642,7 +675,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -668,8 +701,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -722,7 +754,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/" + "governance-connectors/pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -738,7 +770,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",

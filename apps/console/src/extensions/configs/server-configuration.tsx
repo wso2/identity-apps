@@ -18,6 +18,7 @@
 
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
+import { Card, Divider, Grid, Header } from "semantic-ui-react";
 import {
     PasswordExpiryInterface,
     PasswordHistoryCountInterface,
@@ -32,7 +33,6 @@ import {
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
-import { ExtendedDynamicConnector } from "../components/governance-connectors";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties
@@ -58,21 +58,18 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
         ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
     ],
-    connectorPropertiesToShow: [
-        "Recovery.ReCaptcha.Password.Enable",
-        "Recovery.NotifySuccess",
-        "Recovery.ExpiryTime"
-    ],
+    connectorPropertiesToShow: [ "all" ],
     connectorStatusViewDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
-    connectorToggleName: {
-        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
-    },
+    connectorToggleName: {},
+    connectorsToHide: [
+        "analytics-engine",
+        "elastic-analytics-engine",
+        "pii-controller"
+    ],
     connectorsToShow: [ "all" ],
+    dynamicConnectors: true,
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
@@ -259,26 +256,48 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     renderConnector: (
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
-        connectorIllustration: string,
         connectorTitle: ReactNode,
         connectorSubHeading: ReactNode,
-        _message: ReactNode
+        message: ReactNode,
+        connectorIllustration?: string
     ): ReactElement => {
         return (
-            <ExtendedDynamicConnector
-                connector={ connector }
-                connectorForm={ connectorForm }
-                connectorIllustration={ connectorIllustration }
-                connectorSubHeading={ connectorSubHeading }
-                connectorToggleName={ serverConfigurationConfig.connectorToggleName[ connector.name ] }
-                data-testid="governance-connector-password-recovery"
-            />
+            <Card fluid>
+                <Card.Content className="connector-section-content">
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column>
+                            <Grid padded>
+                                <Grid.Row>
+                                    <Grid.Column width={ 16 }>
+                                        <div
+                                            className={ connectorIllustration ? "connector-section-with-image-bg" : "" }
+                                            style={ {
+                                                background: `url(${ connectorIllustration })`
+                                            } }
+                                        >
+                                            <Header>
+                                                { connectorTitle }
+                                                <Header.Subheader>
+                                                    { connectorSubHeading }
+                                                </Header.Subheader>
+                                            </Header>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            { message }
+                            <Divider />
+                            { connectorForm }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Card.Content>
+            </Card>
         );
     },
     renderConnectorWithinEmphasizedSegment: false,
     showConnectorsOnTheSidePanel: true,
     showGovernanceConnectorCategories: false,
-    showPageHeading: false,
+    showPageHeading: true,
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };

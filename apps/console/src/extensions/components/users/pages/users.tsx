@@ -534,7 +534,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListFetchRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { featureConfig.bulkUserImport.enabled
+                        { featureConfig?.bulkUserImport?.enabled
                             ? (
                                 addUserDropDown 
                             ) : (

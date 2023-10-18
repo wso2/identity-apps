@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.0.37
+
+### Patch Changes
+
+- [#4232](https://github.com/wso2/identity-apps/pull/4232) [`77551ac52a`](https://github.com/wso2/identity-apps/commit/77551ac52a36b8a807c078e951aa32cfac0614e0) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Hide organization switch button when the organization is disabled.
+
+## 2.0.36
+
+### Patch Changes
+
+- [#4235](https://github.com/wso2/identity-apps/pull/4235) [`b9a7863056`](https://github.com/wso2/identity-apps/commit/b9a7863056d59289eb64ea85b1a514586d3807fd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import config
+
+* [#4224](https://github.com/wso2/identity-apps/pull/4224) [`1a0050ad7f`](https://github.com/wso2/identity-apps/commit/1a0050ad7f288ae8ca53488250e5e03a64e4dc17) Thanks [@Achintha444](https://github.com/Achintha444)! - edit role basic UI updated
+
 ## 2.0.35
 
 ### Patch Changes

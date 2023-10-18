@@ -30,6 +30,8 @@ export interface ServerConfigurationConfig {
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];
     connectorStatusViewDisabledConnectorIDs: string[];
+    connectorsToHide: string[];
+    dynamicConnectors: boolean,
     intendSettings: boolean;
     renderConnector: (
         connector: GovernanceConnectorInterface,

@@ -463,7 +463,14 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "Confidentialité"
+            privacy: "Confidentialité",
+            loginAndRegistration: {
+                label: "Connexion et inscription",
+                description: "Configurer les paramètres de connexion et d'enregistrement."
+            },
+            userAttributesAndStores: "Attributs utilisateur et magasins",
+            userManagement: "Gestion des utilisateurs",
+            branding: "l'image de marque"
         },
         validations: {
             inSecureURL: {
@@ -1072,7 +1079,7 @@ export const console: ConsoleNS = {
                         },
                         sharedAccess: {
                             subTitle: "Sélectionnez les options suivantes pour partager l'application avec " +
-                                "les sous-organisations.",
+                                "les organisations.",
                             tabName: "Accès partagé"
                         },
                         shareApplication: {
@@ -1671,8 +1678,8 @@ export const console: ConsoleNS = {
                             },
                             isSharingEnabled: {
                                 hint: "Si elle est activée, elle permettra à cette application d'authentifier les " +
-                                    "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
-                                label: "Autoriser le partage avec des sous-organisations"
+                                    "clients/partenaires dans cette organisation ou l'une de ses organisations.",
+                                label: "Autoriser le partage avec des organisations"
                             },
                             isManagementApp: {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
@@ -3258,22 +3265,22 @@ export const console: ConsoleNS = {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de sous-organisations autorisées."
+                            title: "Vous avez atteint le nombre maximal de organisations autorisées."
                         },
-                        heading: "Vous avez atteint la limite maximale pour les sous-organisations"
+                        heading: "Vous avez atteint la limite maximale pour les organisations"
                     },
                     subOrgLevelsLimitReachedError: {
                         emptyPlaceholder: {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de niveaux de sous-organisation autorisés."
+                            title: "Vous avez atteint le nombre maximal de niveaux de organisation autorisés."
                         },
-                        heading: "Vous avez atteint les niveaux de sous-organisation maximum autorisés pour l'organisation."
+                        heading: "Vous avez atteint les niveaux de organisation maximum autorisés pour l'organisation."
                     },
                     duplicateOrgError: {
-                        message: "Une sous-organisation portant le même nom existe déjà.",
-                        description: "La sous-organisation que vous essayez de créer existe déjà."
+                        message: "Une organisation portant le même nom existe déjà.",
+                        description: "La organisation que vous essayez de créer existe déjà."
                     }
                 }
             },
@@ -6503,6 +6510,7 @@ export const console: ConsoleNS = {
                 copyright: "WSO2 Identity Server © {{year}}"
             },
             governanceConnectors: {
+                goBackLoginAndRegistration: "Revenez à la connexion et à l'enregistrement",
                 categories: "Catégories",
                 connectorSubHeading: "Configurer les paramètre {{ name }}.",
                 connectorCategories: {
@@ -7631,12 +7639,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "Consultez la liste de toutes les sous-organisations disponibles.",
-                    name: "Toutes les sous-organisations"
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
                 },
                 list: {
                     actions: {
-                        add: "Ajouter une sous-organisation"
+                        add: "Ajouter une organisation"
                     },
                     columns: {
                         actions: "Actions",
@@ -7645,9 +7653,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Ajouter une Sous-organisation",
-                        subtitle1: "Créez une nouvelle sous-organisation dans {{parent}}.",
-                        subtitle2: "Créer une nouvelle sous-organisation."
+                        header: "Ajouter une Organisation",
+                        subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
+                        subtitle2: "Créer une nouvelle organisation."
                     }
                 },
                 notifications: {
@@ -7680,7 +7688,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
-                        " être supprimée car elle possède une ou plusieurs sous-organisations.",
+                        " être supprimée car elle possède une ou plusieurs organisations.",
                     disableOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7696,7 +7704,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     disableOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
-                        " être désactivée car elle possède une ou plusieurs sous-organisations.",
+                        " être désactivée car elle possède une ou plusieurs organisations.",
                     enableOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7767,7 +7775,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Ajouter une Sous-organisation",
+                        action: "Ajouter une Organisation",
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",
@@ -7778,14 +7786,14 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationSubTitle: "Sélectionnez l'une des options suivantes pour partager l'application.",
-                shareApplicationRadio: "Partager avec toutes les sous-organisations",
+                shareApplicationRadio: "Partager avec toutes les organisations",
                 shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
-                    "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
+                    "les organisations existantes et toutes les nouvelles organisations que vous " +
                     "créez sous votre organisation actuelle.",
-                unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
-                shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
+                unshareApplicationRadio: "Ne partagez avec aucune organisation",
+                shareWithSelectedOrgsRadio: "Partager uniquement avec les organisations sélectionnées",
                 unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " +
-                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " +
+                    "avec l'une des organisations existantes ou les nouvelles organisations que vous " +
                     "créerez sous cette organisation à l'avenir.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
@@ -7794,7 +7802,7 @@ export const console: ConsoleNS = {
                         placeholder: "Rechercher par nom"
                     },
                     goBack: "Retourner",
-                    subOrganizations: "Sous-organisations",
+                    subOrganizations: "Organisations",
                     switchLabel: "Organisation"
                 },
                 title: "Organisations"
@@ -8713,7 +8721,7 @@ export const console: ConsoleNS = {
                 localDialect: "Dialecte local",
                 loginAttemptsSecurity: "Sécurité des tentatives de connexion",
                 multiFactorAuthenticators: "Authentificateurs multi-facteurs",
-                organizations: "Sous-organisations",
+                organizations: "Organisations",
                 otherSettings: "Autres réglages",
                 overview: "Vue d'ensemble",
                 passwordPolicies: "Politiques de mot de passe",
@@ -10326,8 +10334,8 @@ export const console: ConsoleNS = {
                 title: "Modifier le scope : {{ name }}"
             },
             organizations: {
-                subTitle: "Créer et gérer des Sous-organisations.",
-                title: "Sous-organisations"
+                subTitle: "Créer et gérer des Organisations.",
+                title: "Organisations"
             },
             overview: {
                 subTitle: "Configurer et gérer les utilisateurs, les rôles, les claims " +

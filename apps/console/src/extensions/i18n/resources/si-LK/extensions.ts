@@ -1901,6 +1901,7 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "පණිවුඩකරණ සැපයුම්කරු වින්යාස කරන්න",
             heading: "ඊමේල් සපයන්නා",
             subHeading: "ඔබගේම ඊමේල් ලිපිනය සමඟ තැපැල් යැවීමට අභිරුචි SMTP සේවාදායකයන් වින්‍යාස කරන්න.",
             description: "ඔබගේ SMTP සේවාදායකයට අනුව පහත සැකසුම් වින්‍යාස කරන්න.",
@@ -2599,6 +2600,7 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "API සම්පත්",
             branding: "වෙළඳ නාමකරණය",
+            stylesAndText: "මෝස්තර සහ පෙළ",
             monitor: "සටහන්",
             categories: {
                 apiResources: "API සම්පත්",
