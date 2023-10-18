@@ -3712,10 +3712,6 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    xmlsoap: {
-                        heading: string;
-                        description: string;
-                    },
                 };
                 dialects: {
                     advancedSearch: {

@@ -76,7 +76,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ openidAttributeMappings, setOpenidAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ xmlsoapAttributeMappings, setXmlsoapAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -115,7 +114,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         );
                     }
 
-                    return claim.id !== "local";
+                    // Filter xml soap dialect and local attribute dialect.
+                    return claim.id !== "local" && 
+                        claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
                 });
 
                 const oidc: ClaimDialect[] = [];
@@ -123,7 +124,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 const axschema: ClaimDialect[] = [];
                 const eidas: ClaimDialect[] = [];
                 const openid: ClaimDialect[] =[];
-                const xmlsoap: ClaimDialect[] = [];
                 const others: ClaimDialect[] = [];
 
                 filteredDialect.forEach((attributeMapping: ClaimDialect) => {
@@ -139,8 +139,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         eidas.push(attributeMapping);
                     } else if (ClaimManagementConstants.OPENID_MAPPING === attributeMapping.dialectURI) {
                         openid.push(attributeMapping);
-                    } else if (ClaimManagementConstants.XMLSOAP_MAPPING === attributeMapping.dialectURI) {
-                        xmlsoap.push(attributeMapping);
                     } else {
                         if (attributeConfig.showCustomDialectInSCIM) {
                             if (attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI) {
@@ -157,7 +155,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 setAxschemaAttributeMappings(axschema);
                 setEidasAttributeMappings(eidas);
                 setOpenidAttributeMappings(openid);
-                setXmlsoapAttributeMappings(xmlsoap);
                 setOtherAttributeMappings(others);
             })
             .catch((error: IdentityAppsApiException) => {
@@ -748,92 +745,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     "console:manage.features." + 
                                                                     "claims.attributeMappings." +
                                                                     "openid.description"
-                                                                ) }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                        <Grid.Column
-                                                            width={ 4 }
-                                                            verticalAlign="middle"
-                                                            textAlign="right"
-                                                        >
-                                                            <Popup
-                                                                content={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.
-                                                                            attributeDialects?.scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                        t("common:edit") :
-                                                                        t("common:view")
-                                                                }
-                                                                trigger={
-                                                                    hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.
-                                                                            attributeDialects?.scopes?.create,
-                                                                        allowedScopes
-                                                                    ) ?
-                                                                        <Icon color="grey" name="pencil" /> :
-                                                                        <Icon color="grey" name="eye" />
-                                                                }
-                                                                inverted
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Item>
-                                        </List>
-                                    </EmphasizedSegment>
-                                )
-                            )
-                    }
-                    {
-                        isLoading 
-                            ? (
-                                renderSegmentPlaceholder()
-                            ) : (
-                                xmlsoapAttributeMappings?.length > 0 && (
-                                    <EmphasizedSegment
-                                        className="clickable"
-                                        data-testid={ `${ testId }-xmlsoap-dialect-container` }
-                                    >
-                                        <List>
-                                            <List.Item
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.XMLSOAP)
-                                                    );
-                                                } }
-                                            >
-                                                <Grid>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 12 }>
-                                                            <GenericIcon
-                                                                transparent
-                                                                verticalAlign="middle"
-                                                                rounded
-                                                                icon={ getTechnologyLogos().xmlsoap }
-                                                                spaced="right"
-                                                                size="mini"
-                                                                floated="left"
-                                                            />
-                                                            <List.Header>
-                                                                { t(
-                                                                    "console:manage.features." + 
-                                                                    "claims.attributeMappings." +
-                                                                    "xmlsoap.heading"
-                                                                ) }
-                                                            </List.Header>
-                                                            <List.Description
-                                                                data-testid={ `${ testId }-local-dialect` }
-                                                            >
-                                                                { t(
-                                                                    "console:manage.features." + 
-                                                                    "claims.attributeMappings." +
-                                                                    "xmlsoap.description"
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
