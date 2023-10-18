@@ -39,6 +39,8 @@ import {
 } from "../../applications/models/application";
 import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "../../applications/utils/sign-in-method-utils";
+import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
+import { AuthenticatorCategories } from "../../connections/models/authenticators";
 import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
 import { AppState } from "../../core/store";
 import {
@@ -54,8 +56,6 @@ import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
-import { AuthenticatorCategories } from "../../connections/models/authenticators";
-import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 
 /**
  * Props interface for the Authentication flow provider.

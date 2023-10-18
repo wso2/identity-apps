@@ -65,7 +65,6 @@ import { ConnectionsManagementUtils } from "../../../../../connections/utils/con
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
-import { getIdPIcons } from "../../../../../identity-providers/configs/ui";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
