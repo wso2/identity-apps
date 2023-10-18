@@ -1653,7 +1653,8 @@ export const console: ConsoleNS = {
                                     empty: "Une URL d'accès valide doit être fournie pour" +
                                         " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                ariaLabel: "URL d'accès à l'application"
                             },
                             description: {
                                 label: "Description",
@@ -1893,6 +1894,18 @@ export const console: ConsoleNS = {
                                             " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
+                                    },
+                                    audience: {
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'accès</1> est " +
+                                            "destiné. Par défaut, l'ID client de cette application est " +
+                                            "ajouté en tant qu'audience.",
+                                        label: "Audience",
+                                        placeholder: "Saisir l'audience",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez ajouter une audience valide."
+                                        }
                                     }
                                 },
                                 heading: "Jeton d'accès",

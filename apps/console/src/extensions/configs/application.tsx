@@ -82,6 +82,8 @@ const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementAp
 const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
 
+const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
+
 /**
  * Check whether claims is  identity claims or not.
  *
@@ -134,6 +136,10 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
             ApplicationManagementConstants.SAML2_BEARER,
             ApplicationManagementConstants.JWT_BEARER
+        ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -646,6 +652,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,
         saml: false,

@@ -31,6 +31,7 @@ import { ApplicationCertificatesListComponent } from "./application-certificate-
 import { commonConfig } from "../../../../../extensions";
 import {
     ApplicationInterface,
+    ApplicationTemplateIdTypes,
     CertificateInterface,
     CertificateTypeInterface,
     SupportedAuthProtocolTypes
@@ -117,6 +118,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
     const [ showInvalidOperationModal, setShowInvalidOperationModal ] = useState<boolean>(false);
     const [ showCertificateRemovalWarning, setShowCertificateRemovalWarning ] = useState<boolean>(false);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     /**
      * Set the certificate type
@@ -169,6 +171,17 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setPEMValue("");
         }
     }, [ selectedCertType ]);
+
+    /**
+     * Set Is M2M Application
+     */
+    useEffect(()=> {
+
+        if (application?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION){
+            setM2MApplication(true);
+        }
+
+    }, [ application ]);
 
     /**
      * The following function handle the certificate type change.
@@ -474,7 +487,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     />
                                 )
                             }
-                            { protocol && <Hint>{ resolveHintContent(protocol) }</Hint> }
+                            { protocol && !isM2MApplication && <Hint>{ resolveHintContent(protocol) }</Hint> }
                         </Grid.Column>
                     </Grid.Row>
                     { showInvalidOperationModal && renderInvalidOperationModal() }

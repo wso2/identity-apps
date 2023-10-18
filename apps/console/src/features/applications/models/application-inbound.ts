@@ -134,7 +134,8 @@ export enum SupportedAuthProtocolTypes {
     OAUTH2_OIDC = "oauth2-oidc",
     WS_FEDERATION = "passive-sts",
     WS_TRUST = "ws-trust",
-    CUSTOM= "custom"
+    CUSTOM= "custom",
+    OAUTH2= "oauth2"
 }
 
 /**

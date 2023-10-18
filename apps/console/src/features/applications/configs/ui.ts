@@ -88,6 +88,9 @@ import {
     ReactComponent as globalIllustration
 } from "../../../themes/default/assets/images/illustrations/global.svg";
 import {
+    ReactComponent as M2MTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/m2m-app-illustration.svg";
+import {
     ReactComponent as OIDCMobileTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
 import {
@@ -125,6 +128,7 @@ import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.p
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trust.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/third-party/apple-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
@@ -132,6 +136,7 @@ import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oauth2: string;
     oidc: string;
     openid: string;
     "passive-sts": string;
@@ -144,6 +149,7 @@ export const getInboundProtocolLogos = (): {
 
     return {
         general: ProtocolIllustration,
+        oauth2: OAuth2Logo,
         oidc: OpenIDLogo,
         openid: OpenIDLogo,
         "passive-sts": WSFedLogo,
@@ -158,6 +164,7 @@ export const getInboundProtocolLogos = (): {
 export const getApplicationTemplateIllustrations = (): {
     box: FunctionComponent<SVGProps<SVGSVGElement>>;
     customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    m2m: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     passiveSTS: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -173,6 +180,7 @@ export const getApplicationTemplateIllustrations = (): {
     return {
         box: BoxTemplateIllustration,
         customApp: CustomApplicationTemplateIllustration,
+        m2m: M2MTemplateIllustration,
         oidcMobile: OIDCMobileTemplateIllustration,
         oidcWebApp: OIDCWebAppTemplateIllustration,
         passiveSTS: PassiveSTSTemplateIllustration,
