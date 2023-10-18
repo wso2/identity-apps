@@ -116,7 +116,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                     // Filter xml soap dialect and local attribute dialect.
                     return claim.id !== "local" && 
-                        claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
+                        claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
                 });
 
                 const oidc: ClaimDialect[] = [];

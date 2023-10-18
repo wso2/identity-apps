@@ -332,7 +332,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         }
 
                         return claim.id !== "local" && 
-                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
+                            claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP");
                     });
 
                     const attributeMappings: ClaimDialect[] = [];
