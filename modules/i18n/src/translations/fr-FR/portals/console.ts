@@ -8983,7 +8983,9 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "Rechercher par nom d'utilisateur"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
+                                "externes n’est pas disponible pour le moment."
                         },
                         buttons: {
                             import: "Importer"
