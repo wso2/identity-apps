@@ -1,5 +1,68 @@
 # @wso2is/console
 
+## 2.1.0
+
+### Minor Changes
+
+- [#4226](https://github.com/wso2/identity-apps/pull/4226) [`2d6fbb97cd`](https://github.com/wso2/identity-apps/commit/2d6fbb97cd3bbfaeeee82d39a5d9e8ba65e011a9) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Add organization display name in branding
+
+### Patch Changes
+
+- [#4234](https://github.com/wso2/identity-apps/pull/4234) [`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the http://schemas.xmlsoap.org/ws/2005/05/identity dialect from the new console
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+  - @wso2is/i18n@2.0.8
+
+## 2.0.38
+
+### Patch Changes
+
+- [#4243](https://github.com/wso2/identity-apps/pull/4243) [`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add comma support in bulk import csv
+
+- Updated dependencies [[`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493)]:
+  - @wso2is/react-components@2.0.8
+
+## 2.0.37
+
+### Patch Changes
+
+- [#4232](https://github.com/wso2/identity-apps/pull/4232) [`77551ac52a`](https://github.com/wso2/identity-apps/commit/77551ac52a36b8a807c078e951aa32cfac0614e0) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Hide organization switch button when the organization is disabled.
+
+## 2.0.36
+
+### Patch Changes
+
+- [#4235](https://github.com/wso2/identity-apps/pull/4235) [`b9a7863056`](https://github.com/wso2/identity-apps/commit/b9a7863056d59289eb64ea85b1a514586d3807fd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import config
+
+* [#4224](https://github.com/wso2/identity-apps/pull/4224) [`1a0050ad7f`](https://github.com/wso2/identity-apps/commit/1a0050ad7f288ae8ca53488250e5e03a64e4dc17) Thanks [@Achintha444](https://github.com/Achintha444)! - edit role basic UI updated
+
+## 2.0.35
+
+### Patch Changes
+
+- [#4222](https://github.com/wso2/identity-apps/pull/4222) [`5c06f4fed3`](https://github.com/wso2/identity-apps/commit/5c06f4fed357f6ca27726b65c9dfd50b732fd7f9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add migrate for remove default branding
+
+## 2.0.34
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
+- [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* [#4113](https://github.com/wso2/identity-apps/pull/4113) [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce remote log publishing configuration UI to Console
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/dynamic-forms@2.0.5
+  - @wso2is/theme@2.0.12
+  - @wso2is/form@2.0.3
+  - @wso2is/i18n@2.0.7
+  - @wso2is/core@2.0.4
+
 ## 2.0.33
 
 ### Patch Changes

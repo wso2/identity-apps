@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,7 +39,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
-import { ServerConfigurationsConstants } from "../../server-configurations";
 import { updateJWTConfig, useTokenReuseConfigData } from "../api";
 
 /**
@@ -73,14 +72,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
      * Handles back button click event
      */
     const handleBackButtonClick = () => {
-        history.push(
-            AppConstants.getPaths()
-                .get("GOVERNANCE_CONNECTOR")
-                .replace(
-                    ":id",
-                    ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                )
-        );
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     const resolveConnectorUpdateErrorMessage = (error: AxiosError): string => {
@@ -191,9 +183,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             backButton={ {
                 "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t(
-                    "console:manage.features.jwtPrivateKeyConfiguration.goBackToAccountSecurityConfig"
-                )
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

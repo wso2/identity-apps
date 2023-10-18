@@ -471,7 +471,14 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "පෞද්ගලිකත්වය"
+            privacy: "පෞද්ගලිකත්වය",
+            loginAndRegistration: {
+                label: "පිවිසුම් සහ ලියාපදිංචිය",
+                description: "පිවිසුම් සහ ලියාපදිංචි සැකසුම් වින්යාස කරන්න."
+            },
+            userAttributesAndStores: "පරිශීලක ගුණාංග සහ ගබඩා",
+            userManagement: "පරිශීලක කළමනාකරණය",
+            branding: "වෙළඳ නාමකරණය"
         },
         validations: {
             inSecureURL: {
@@ -482,6 +489,115 @@ export const console: ConsoleNS = {
                 description: "ඇතුළත් කළ URL එක HTTP හෝ HTTPS නොවේ. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                 heading: "හඳුනා නොගත් URL ලින්කුවකි"
             }
+        }
+    },
+    branding: {
+        form: {
+            actions: {
+                save: "සුරකින්න සහ ප්රකාශ කරන්න",
+                resetAll: "පෙරනිමියට නැවත සකසන්න"
+            }
+        },
+        tabs: {
+            text: {
+                label: "පෙළ"
+            },
+            preview: {
+                label: "පෙරදසුන"
+            }
+        },
+        screens: {
+            common: "පොදු",
+            login: "ඇතුල් වන්න",
+            "sms-otp": "smsOtp",
+            "email-otp": "ඊමේල් OTP",
+            "email-template": "විද්යුත් තැපැල් සැකිලි",
+            "sign-up": "ලියාපදිංචි වන්න",
+            "totp": "totp",
+            myaccount: "මගේ ගිණුම"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "ඔබ සනාථ කළ පසු, ඔබගේ පරිශීලකයින් {{productName}} පෙරනිමි සහ එය ආපසු හැරවිය නොහැකි ලෙස දැකගත හැකිය. කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "<1>{{screen}}</1> ආපසු තිරය <3>{{locale}}</3> සඳහා අභිරුචිකරණය කරන්න. "
+        },
+        revertUnsavedConfirmationModal: {
+            content: "ඔබ තිරය මාරු කරන්නේ නම්, ඔබේ සුරකින ලද වෙනස්කම් නැති වී යයි. <1>තහවුරු කිරීමට</1> තහවුරු කරන්න.",
+            heading: "ඔයාට විශ්වාස ද?",
+            message: "ඔබගේ සුරකින ලද වෙනස්කම් සුරකින්න"
+        },
+        form: {
+            genericFieldResetTooltip: "පෙරනිමියට නැවත සකසන්න",
+            genericFieldPlaceholder: "ඔබේ පෙළ ඇතුළත් කරන්න",
+            fields: {
+                copyright: {
+                    hint: "පිවිසුම් තිරවල පාදකයේ දිස්වන පෙළ.ඔබට වත්මන් වර්ෂය ස්වයංක්රීයව ප්රදර්ශනය කිරීම සඳහා `{{currentyear}} ස්ථානගත කරන්නා භාවිතා කළ හැකිය."
+                },
+                "site.title": {
+                    hint: "බ්රව්සර් ටැබ්, සෙවුම් යන්ත්ර, සමාජ කොටස් යනාදියෙහි දිස්විය හැකිය. {{productName}} පෙරනිමි භාවිතා කරයි."
+                },
+                "login.button": {
+                    hint: "පිවිසුම් පෙට්ටියේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "login.heading": {
+                    hint: "පිවිසුම් පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sms.otp.heading": {
+                    hint: "SMS OTP කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "email.otp.heading": {
+                    hint: "ඊමේල් ඔට්පෙප් කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "totp.heading": {
+                    hint: "TOPT කොටුවේ ශීර්ෂය.සකසා නොමැති නම්, {{productname}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.button": {
+                    hint: "ලියාපදිංචි කොටුවේ ප්රධාන ක්රියාකාරී බොත්තමෙහි දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
+                "sign.up.heading": {
+                    hint: "ලියාපදිංචි පෙට්ටියේ ශීර්ෂය.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "පෙදෙස",
+            placeholder: "පෙදෙස තෝරන්න"
+        },
+        modes: {
+            text: {
+                label: "පෙළ ක්ෂේත්ර"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "{{screen}} තිහාසික අභිරුචි කළ පෙළ {{locale}} සඳහා ලබා ගත නොහැක.",
+                message: "අභිරුචි පෙළ ලබා ගැනීමට නොහැකි විය"
+            },
+            revertError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා ආපසු හරවා ගත නොහැක.",
+                message: "අභිරුචි පෙළ නැවත ලබා ගත නොහැක"
+            },
+            resetSuccess: {
+                description: "සාර්ථකව ප්රතික්ෂේප කරන ලද {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා.",
+                message: "සාර්ථකව ආපසු යන්න"
+            },
+            updateError: {
+                description: "{{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}} සඳහා යාවත්කාලීන කළ නොහැක.",
+                message: "අභිරුචි පා text ය යාවත්කාලීන කළ නොහැක"
+            },
+            updateSuccess: {
+                description: "සාර්ථකව යාවත්කාලීන කිරීම {{screen}} තිරයේ අභිරුචි කළ පෙළ {{locale}}.",
+                message: "අභිරුචි පෙළ යාවත්කාලීන කිරීම සාර්ථකයි"
+            }
+        },
+        screenSelectDropdown: {
+            label: "තිරය",
+            placeholder: "තිරය තෝරන්න"
         }
     },
     develop: {
@@ -955,7 +1071,7 @@ export const console: ConsoleNS = {
                             tabName: "ප්‍රතිපාදන"
                         },
                         sharedAccess: {
-                            subTitle: "උප-සංවිධාන සමඟ යෙදුම බෙදා ගැනීමට පහත විකල්ප තෝරන්න.",
+                            subTitle: "සංවිධාන සමඟ යෙදුම බෙදා ගැනීමට පහත විකල්ප තෝරන්න.",
                             tabName: "හවුල් ප්රවේශය"
                         },
                         shareApplication: {
@@ -1162,9 +1278,9 @@ export const console: ConsoleNS = {
                                                     " වින්‍යාස කිරීමට Asgardeo හට <1>ජංගම දුරකථන අංකය</1> අඩංගු පරිශීලක" +
                                                     " පැතිකඩ අවශ්‍ය වේ."
                                             },
-                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " + 
+                                            sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " +
                                                 "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
-                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " + 
+                                            sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " +
                                                 "පියවරකට එක් කළ නොහැක."
                                         }
                                     }
@@ -1522,9 +1638,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             isSharingEnabled: {
-                                hint: "සබල කර ඇත්නම්, එය මෙම සංවිධානයට හෝ එහි ඕනෑම උප-සංවිධානයකට ගනුදෙනුකරුවන්/හවුල්කරුවන් " +
+                                hint: "සබල කර ඇත්නම්, එය මෙම සංවිධානයට හෝ එහි ඕනෑම සංවිධානයකට ගනුදෙනුකරුවන්/හවුල්කරුවන් " +
                                     "සත්‍යාපනය කිරීමට මෙම යෙදුමට ඉඩ දෙයි.",
-                                label: "උප සංවිධාන සමඟ බෙදා ගැනීමට ඉඩ දෙන්න"
+                                label: "සංවිධාන සමඟ බෙදා ගැනීමට ඉඩ දෙන්න"
                             },
                             isManagementApp: {
                                 hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
@@ -3048,22 +3164,22 @@ export const console: ConsoleNS = {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අවසර දී ඇති උපරිම උප ආයතන ගණනට ළඟා වී ඇත."
+                            title: "ඔබ අවසර දී ඇති උපරිම සංවිධාන ගණනට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ උප ආයතන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
+                        heading: "ඔබ සංවිධාන සඳහා උපරිම සීමාවට ළඟා වී ඇත"
                     },
                     subOrgLevelsLimitReachedError: {
                         emptyPlaceholder: {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අනුමත උප ආයතන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
+                            title: "ඔබ අනුමත සංවිධාන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම උප ආයතන මට්ටම් කරා ළඟා වී ඇත."
+                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
                     },
                     duplicateOrgError: {
-                        message: "එම නමින්ම උප සංවිධානයක් දැනටමත් පවතී.",
-                        description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන උප සංවිධානය දැනටමත් පවතී."
+                        message: "එම නමින්ම සංවිධානයක් දැනටමත් පවතී.",
+                        description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන සංවිධානය දැනටමත් පවතී."
                     }
                 }
             },
@@ -5349,10 +5465,6 @@ export const console: ConsoleNS = {
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
-                    },
-                    xmlsoap: {
-                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
-                        heading: "XML SOAP"
                     }
                 },
                 dialects: {
@@ -6225,6 +6337,7 @@ export const console: ConsoleNS = {
                 copyright: "WSO2 හැඳුනුම් සේවාදායකය © {{year}}"
             },
             governanceConnectors: {
+                goBackLoginAndRegistration: "පුරනය වීම සහ ලියාපදිංචි කිරීම වෙත ආපසු යන්න",
                 categories: "ප්රවර්ග",
                 connectorSubHeading: "{{Name}} සැකසුම් වින්‍යාස කරන්න.",
                 connectorCategories: {
@@ -7348,12 +7461,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "පවතින සියලුම උප ආයතන ලැයිස්තුව බලන්න.",
-                    name: "සියලුම උප ආයතන"
+                    description: "පවතින සියලුම සංවිධාන ලැයිස්තුව බලන්න.",
+                    name: "සියලුම සංවිධාන"
                 },
                 list: {
                     actions: {
-                        add: "උප ආයතනය එකතු කරන්න"
+                        add: "සංවිධාන එකතු කරන්න"
                     },
                     columns: {
                         actions: "ක්රියාවන්",
@@ -7362,9 +7475,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "උප ආයතනය එකතු කරන්න",
-                        subtitle1: "{{parent}} තුළ නව උප ආයතනයක් සාදන්න.",
-                        subtitle2: "නව උප ආයතනයක් සාදන්න."
+                        header: "සංවිධාන එකතු කරන්න",
+                        subtitle1: "{{parent}} තුළ නව සංවිධානයක් සාදන්න.",
+                        subtitle2: "නව සංවිධානයක් සාදන්න."
                     }
                 },
                 notifications: {
@@ -7396,7 +7509,7 @@ export const console: ConsoleNS = {
                             message: "ආයතනය සාර්ථකව මකා ඇත"
                         }
                     },
-                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} ආයතනයට උප සංවිධාන එකක් හෝ " +
+                    deleteOrganizationWithSubOrganizationError: "{{ organizationName }} ආයතනයට සංවිධාන එකක් හෝ " +
                         "කිහිපයක් ඇති බැවින් එය මකා දැමිය නොහැක.",
                     disableOrganization: {
                         error: {
@@ -7483,7 +7596,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "උප ආයතනය එකතු කරන්න",
+                        action: "සංවිධානය එකතු කරන්න",
                         subtitles: {
                             0: "මේ මොහොතේ ආයතන නොමැත.",
                             1: "ඔබට පහසුවෙන් නව ආයතනයක් එක් කළ හැකිය",
@@ -7494,25 +7607,25 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationSubTitle: "යෙදුම බෙදා ගැනීමට පහත විකල්ප වලින් එකක් තෝරන්න.",
-                shareApplicationRadio: "සියලුම උප ආයතන සමඟ බෙදා ගන්න",
-                shareApplicationInfo: "ඔබගේ වත්මන් ආයතනය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම උප " +
-                    "ආයතන සහ සියලුම නව උප ආයතන සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
-                unshareApplicationRadio: "කිසිදු උප ආයතනයක් සමඟ බෙදා නොගන්න",
-                shareWithSelectedOrgsRadio: "තෝරාගත් උප ආයතන සමඟ පමණක් බෙදා ගන්න",
+                shareApplicationRadio: "සියලුම සංවිධානය සමඟ බෙදා ගන්න",
+                shareApplicationInfo: "ඔබගේ වත්මන් ආයතනය යටතේ ඔබ නිර්මාණය කරන දැනට පවතින සියලුම " +
+                    "සංවිධාන සහ සියලුම නව සංවිධානය සමඟ යෙදුම බෙදා ගැනීමට මෙය තෝරන්න.",
+                unshareApplicationRadio: "කිසිදු සංවිධානයක් සමඟ බෙදා නොගන්න",
+                shareWithSelectedOrgsRadio: "තෝරාගත් සංවිධානය සමඟ පමණක් බෙදා ගන්න",
                 unshareApplicationInfo: "අනාගතයේ දී ඔබ මෙම ආයතනය යටතේ නිර්මාණය කරන " +
-                    "දැනට පවතින උප ආයතන හෝ නව උප ආයතන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
+                    "දැනට පවතින සංවිධානය හෝ නව සංවිධාන කිසිවක් සමඟ මෙම යෙදුම බෙදා ගැනීම වැළැක්වීමට " +
                     "මෙය ඔබට ඉඩ සලසයි.",
-                subTitle: "ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
+                subTitle: "සංවිධාන සාදන්න සහ කළමනාකරණය කරන්න.",
                 switching: {
                     emptyList: "පෙන්වීමට ආයතනයක් නැත.",
                     search: {
                         placeholder: "නම අනුව සොයන්න"
                     },
                     goBack: "ආපසු යන්න",
-                    subOrganizations: "උප ආයතන",
-                    switchLabel: "ආයතනය"
+                    subOrganizations: "සංවිධාන",
+                    switchLabel: "සංවිධානය"
                 },
-                title: "ආයතන"
+                title: "සංවිධාන"
             },
             overview: {
                 widgets: {
@@ -7915,14 +8028,56 @@ export const console: ConsoleNS = {
                             subHeading: "නව කණ්ඩායම් එකතු කරන්න හෝ භූමිකාවට පවරා ඇති පවතින"
                                 + " කණ්ඩායම් ඉවත් කරන්න."
                         },
-                        emptyPlaceholder: {
-                            action: "කණ්ඩායම පවරන්න",
-                            subtitles: "මේ වන විට මෙම භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත.",
-                            title: "කණ්ඩායම් පවරා නොමැත"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "කණ්ඩායම් පවරන්න",
+                                subtitles: {
+                                    0: "මේ වන විට මෙම භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත."
+                                },
+                                title: "භූමිකාවට කිසිදු කණ්ඩායමක් පවරා නොමැත."
+                            },
+                            errorPlaceholder: {
+                                action: "නැවත පූරණය කරන්න",
+                                subtitles: {
+                                    0: "මෙම භූමිකාවට කණ්ඩායම් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                                    1: "කරුණාකර නැවත උත්සාහ කරන්න."
+                                },
+                                title: "කුමක් හෝ වරදක් සිදුවී ඇත"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "භූමිකාවට පවරා ඇති කණ්ඩායම් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය."
+                            },
+                            success: {
+                                message: "භූමිකාව සාර්ථකව යාවත්කාලීන කරන ලදි",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් සාර්ථකව යාවත්කාලීන කර ඇත."
+                            },
+                            genericError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් යාවත්කාලීන කිරීමට අපට නොහැකි විය."
+                            },
+                            fetchError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති කණ්ඩායම් ලබා ගැනීමට අපට නොහැකි විය."
+                            }
                         },
                         heading: "පවරා ඇති කණ්ඩායම්",
                         subHeading: "මෙම භූමිකාවට පවරා ඇති කණ්ඩායම් එකතු කරන්න හෝ ඉවත් කරන්න. "
-                            + "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                            + "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න.",
+                        actions: {
+                            search: {
+                                placeholder: "සෙවුම් කණ්ඩායම්"
+                            },
+                            assign: {
+                                placeholder: "කණ්ඩායම් පවරන්න"
+                            },
+                            remove: {
+                                label: "ඉවත් කරන කණ්ඩායම්",
+                                placeholder: "කණ්ඩායම් ප්රතිස්ථාපනය කරන්න"
+                            }
+                        }
                     },
                     menuItems: {
                         basic: "මූලික කරුණු",
@@ -7932,6 +8087,38 @@ export const console: ConsoleNS = {
                         users: "පරිශීලකයින්"
                     },
                     users: {
+                        heading: "පවරා ඇති පරිශීලකයින්",
+                        subHeading: "මෙම භූමිකාවට පවරා ඇති පරිශීලකයින් එකතු කිරීම හෝ ඉවත් කිරීම. මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න.",
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "පරිශීලකයින් යොදවන්න",
+                                subtitles: [ "මේ වන විට මෙම භූමිකාවට පවරා ඇති පරිශීලකයින් නොමැත." ],
+                                title: "මෙම කාර්යභාරයට කිසිදු පරිශීලකයෙකු පවරා නොමැත."
+                            },
+                            errorPlaceholder: {
+                                action: "නැවත පූරණය කරන්න",
+                                subtitles: [ "මෙම භූමිකාවට යොදවා ඇති පරිශීලකයින් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.", "කරුණාකර නැවත උත්සාහ කරන්න." ],
+                                title: "කුමක් හෝ වරදක් සිදුවී ඇත"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "භූමිකාවට පවරා ඇති පරිශීලකයින් යාවත්කාලීන කිරීම යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය."
+                            },
+                            success: {
+                                message: "භූමිකාව සාර්ථකව යාවත්කාලීන කරන ලදි",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් සාර්ථකව යාවත්කාලීන කර ඇත."
+                            },
+                            genericError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් යාවත්කාලීන කිරීමට අපට නොහැකි විය."
+                            },
+                            fetchError: {
+                                message: "කුමක් හෝ වරදක් සිදුවී ඇත",
+                                description: "භූමිකාවට පවරා ඇති පරිශීලකයින් අපොහොසත් කිරීමට අපට නොහැකි විය."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "පරිශීලකයා පවරන්න",
@@ -7940,6 +8127,18 @@ export const console: ConsoleNS = {
                             },
                             user: "පරිශීලකයා",
                             organization: "ආයතනය"
+                        },
+                        actions: {
+                            search: {
+                                placeholder: "පරිශීලකයින් සොයන්න"
+                            },
+                            assign: {
+                                placeholder: "පරිශීලකයින් යොදවන්න"
+                            },
+                            remove: {
+                                label: "ඉවත් කරන පරිශීලකයින්",
+                                placeholder: "පරිශීලකයින් ප්රතිස්ථාපනය කරන්න"
+                            }
                         }
                     }
                 },
@@ -8053,7 +8252,7 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "පරිපාලක උපදේශන බැනරය වෙත ආපසු යන්න",
                         pageHeading: "පරිපාලක උපදේශන බැනරය",
@@ -8071,7 +8270,7 @@ export const console: ConsoleNS = {
                         description: "පරිපාලක උපදේශන බැනරය සක්‍රීය කර වින්‍යාස කරන්න.",
                         enabled: "සක්‍රීයයි",
                         heading: "පරිපාලක උපදේශන බැනරය"
-                    },   
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -8129,9 +8328,84 @@ export const console: ConsoleNS = {
                                 message: "බැනරය සාර්ථකව යාවත්කාලීන කරන ලදී"
                             }
                         }
-                    },     
+                    },
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
+                },
+                remoteLogPublishing: {
+                    title: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
+                    description: "සංවිධානය සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
+                    fields: {
+                        logTypes: {
+                            label: "පළ කළ යුතු ලොග් වර්ග",
+                            values: {
+                                carbonLogs: "කාබන් ලොග්",
+                                auditLogs: "විගණන ලොග්",
+                                allLogs: "සියලුම ලොග්"
+                            }
+                        },
+                        remoteURL: {
+                            label: "ගමනාන්ත URL"
+                        },
+                        advanced: {
+                            title: "උසස් සැකසුම්",
+                            connectionTimeout: {
+                                label: "සම්බන්ධතා කාලය අවසන් වීම (මිලි)"
+                            },
+                            verifyHostname: {
+                                label: "සත්කාරක නාමය තහවුරු කරන්න"
+                            },
+                            basicAuthConfig: {
+                                title: "මූලික සත්‍යාපන වින්‍යාසය",
+                                serverUsername: {
+                                    label: "දුරස්ථ සේවාදායක පරිශීලක නාමය"
+                                },
+                                serverPassword: {
+                                    label: "දුරස්ථ සේවාදායක මුරපදය"
+                                }
+                            },
+                            sslConfig: {
+                                title: "SSL වින්‍යාසය",
+                                keystorePath: {
+                                    label: "යතුරු ගබඩා ස්ථානය"
+                                },
+                                keystorePassword: {
+                                    label: "යතුරු ගබඩා මුරපදය"
+                                },
+                                truststorePath: {
+                                    label: "විශ්වාස ගබඩා ස්ථානය"
+                                },
+                                truststorePassword: {
+                                    label: "විශ්වාස ගබඩා මුරපදය"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        header: "පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
+                        subheader: "මෙම ක්‍රියාව පවතින වින්‍යාසය මකනු ඇත. ඔබ ඉදිරියට යාමට පෙර කරුණාකර සහතික වන්න.",
+                        confirmation: {
+                            hint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                            header: "ඔයාට විශ්වාස ද?",
+                            message: "ඔබ පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්නේ නම්, දුරස්ථ ලොග් ප්‍රකාශනය නිසි ලෙස ක්‍රියා නොකරනු ඇත. " +
+                            "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                            content: "මෙම ක්‍රියාව පෙරනිමි ලොග් ප්‍රකාශන වින්‍යාසය ප්‍රතිසාධනය කරනු ඇත."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "සාර්ථකව යාවත්කාලීන කරන ලදී."
+                        },
+                        error: {
+                            genericError: {
+                                description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                                message: "යම් දෝෂයක් ඇති වී ඇත"
+                            }
+                        }
+                    }
                 },
                 realmConfiguration: {
                     actionTitles: {
@@ -8215,7 +8489,7 @@ export const console: ConsoleNS = {
                     certificates: "සහතික",
                     configurations: "වින්‍යාස කිරීම්",
                     general: "ජනරාල්",
-                    organizations: "ආයතන කළමනාකරණය",
+                    organizations: "සංවිධාන කළමනාකරණය",
                     users: "පරිශීලකයින්",
                     userstores: "පරිශීලක වෙළඳසැල්"
                 },
@@ -8235,7 +8509,7 @@ export const console: ConsoleNS = {
                 localDialect: "දේශීය උපභාෂාව",
                 loginAttemptsSecurity: "පුරනය වීමේ උත්සාහයන් ආරක්ෂාව",
                 multiFactorAuthenticators: "බහු සාධක සත්‍යාපනය කරන්නන්",
-                organizations: "උප ආයතන",
+                organizations: "සංවිධාන",
                 otherSettings: "වෙනත් සැකසුම්",
                 overview: "දළ විශ්ලේෂණය",
                 passwordPolicies: "මුරපද ප්රතිපත්ති",
@@ -8510,7 +8784,8 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "පරිශීලක නාමයෙන් සොයන්න"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත තොග ආනයනය මේ මොහොතේ ලබා ගත නොහැක."
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"
@@ -9809,8 +10084,8 @@ export const console: ConsoleNS = {
                 title: "විෂය පථය සංස්කරණය කරන්න"
             },
             organizations: {
-                subTitle: "උප ආයතන සාදන්න සහ කළමනාකරණය කරන්න.",
-                title: "උප ආයතන"
+                subTitle: "සංවිධාන සාදන්න සහ කළමනාකරණය කරන්න.",
+                title: "සංවිධාන"
             },
             overview: {
                 subTitle: "පරිශීලකයින්, භූමිකාවන්, උපභාෂා, සේවාදායක වින්‍යාසයන් වින්‍යාස කිරීම " +

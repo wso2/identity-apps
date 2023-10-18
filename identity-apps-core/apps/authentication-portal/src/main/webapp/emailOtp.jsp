@@ -141,7 +141,9 @@
         <layout:component componentName="MainSection">
             <div class="ui segment">
                 <%-- page content --%>
-                <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
+                <h2>
+                    <%= i18n(resourceBundle, customText, "email.otp.heading") %>
+                </h2>
                 </h2>
                 <div class="ui divider hidden"></div>
                 <%
@@ -180,11 +182,11 @@
                             <%-- Input Description for Screen Readers --%>
                             <span id="OTPDescription" style="display: none;">Enter your OTP</span>
                             <div class="ui fluid icon input addon-wrapper">
-                                <input 
-                                    type="password" 
-                                    id='OTPCode' 
-                                    name="OTPCode" 
-                                    c size='30' 
+                                <input
+                                    type="password"
+                                    id='OTPCode'
+                                    name="OTPCode"
+                                    c size='30'
                                     aria-describedby="OTPDescription"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                             </div>
@@ -193,11 +195,11 @@
                                 <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
-                                    <input 
-                                        type="password" 
-                                        id='OTPCode' 
-                                        name="OTPCode" 
-                                        size='30' 
+                                    <input
+                                        type="password"
+                                        id='OTPCode'
+                                        name="OTPCode"
+                                        size='30'
                                         aria-describedby="OTPDescription"/>
                                     <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                                 </div>

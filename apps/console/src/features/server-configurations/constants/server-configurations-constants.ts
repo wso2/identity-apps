@@ -163,6 +163,11 @@ export class ServerConfigurationsConstants {
 	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
 
 	/**
+	 * UUID of the ELK Analaytics connector.
+	 */
+	public static readonly ELK_ANALYTICS_CONNECTOR_ID: string = "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l";
+
+	/**
 	 * UUID of the Login Attempt Security governance connector category.
 	 */
 	public static readonly LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID: string = "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk";

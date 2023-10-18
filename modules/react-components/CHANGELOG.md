@@ -1,5 +1,23 @@
 # @wso2is/react-components
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4243](https://github.com/wso2/identity-apps/pull/4243) [`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add comma support in bulk import csv
+
+## 2.0.7
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/theme@2.0.12
+  - @wso2is/core@2.0.4
+
 ## 2.0.6
 
 ### Patch Changes

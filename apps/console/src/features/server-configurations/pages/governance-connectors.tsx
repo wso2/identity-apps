@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,13 +21,15 @@ import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } 
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
@@ -56,8 +58,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 ): ReactElement => {
     const { [ "data-testid" ]: testId } = props;
 
-    const dispatch = useDispatch();
-    const pageContextRef = useRef(null);
+    const dispatch: Dispatch = useDispatch();
+    const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
 
     const { t } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes({
@@ -73,7 +75,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
 
-    const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
+    const ScrollTopPosition: number = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
 
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
@@ -129,7 +131,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                 setConnectors(response?.connectors as GovernanceConnectorWithRef[]);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -164,6 +166,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             });
     };
 
+    const onBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     return (
         <PageLayout
             title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
@@ -182,40 +188,49 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     })
                 )
             }
+            backButton={ {
+                onClick: () => onBackButtonClick(),
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
             data-testid={ `${testId}-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 12 }>
-                            {
-                                (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
-                                        if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
-                                            || serverConfigurationConfig.connectorsToShow.includes(
-                                                ServerConfigurationsConstants.ALL) ) {
-                                            const connectorElement = (
-                                                <div ref={ connector.ref }>
-                                                    <DynamicGovernanceConnector
-                                                        connector={ connector }
-                                                        data-testid={ `${testId}-` + connector?.id }
-                                                        onUpdate={ () => loadCategoryConnectors() }
-                                                    />
-                                                </div>
-                                            );
+                        <Grid.Column width={ serverConfigurationConfig.showGovernanceConnectorCategories ? 12 : 16 }>
+                            <Grid>
+                                {
+                                    (connectors && Array.isArray(connectors) && connectors.length > 0)
+                                        ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
+                                            if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
+                                                || serverConfigurationConfig.connectorsToShow.includes(
+                                                    ServerConfigurationsConstants.ALL) && 
+                                                    !serverConfigurationConfig.connectorsToHide.includes(
+                                                        connector.name
+                                                    ) ) {
+                                                const connectorElement: ReactElement = (
+                                                    <Grid.Row ref={ connector.ref }>
+                                                        <DynamicGovernanceConnector
+                                                            connector={ connector }
+                                                            data-testid={ `${testId}-` + connector?.id }
+                                                            onUpdate={ () => loadCategoryConnectors() }
+                                                        />
+                                                    </Grid.Row>
+                                                );
 
-                                            return (
-                                                serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
-                                                    ?
-                                                    (<EmphasizedSegment key={ index } padded="very">
-                                                        { connectorElement }
-                                                    </EmphasizedSegment>)
-                                                    : connectorElement
-                                            );
-                                        }
-                                    })
-                                    : null
-                            }
+                                                return (
+                                                    serverConfigurationConfig.renderConnectorWithinEmphasizedSegment
+                                                        ?
+                                                        (<EmphasizedSegment key={ index } padded="very">
+                                                            { connectorElement }
+                                                        </EmphasizedSegment>)
+                                                        : connectorElement
+                                                );
+                                            }
+                                        })
+                                        : null
+                                }
+                            </Grid>
                             { serverConfigurationConfig.showGovernanceConnectorCategories &&
                             (<Rail
                                 className="non-emphasized"

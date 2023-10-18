@@ -239,7 +239,7 @@
     Boolean isAdminBannerAllowedInSP = CONSOLE.equals(Encode.forJava(request.getParameter("sp")));
     Boolean isAdminAdvisoryBannerEnabledInTenant = false;
     String adminAdvisoryBannerContentOfTenant = "";
-    
+
     try {
         if (isAdminBannerAllowedInSP) {
             AdminAdvisoryDataRetrievalClient adminBannerPreferenceRetrievalClient =
@@ -659,7 +659,7 @@
                 <%= reCaptchaEnabled ? "disabled" : "" %>
                 onclick="handleClickSignIn()"
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                <%= i18n(resourceBundle, customText, "login.button") %>
             </button>
         </div>
     </div>
@@ -688,11 +688,11 @@
     <% if (isIdentifierFirstLogin(inputType) && !StringUtils.equals("true", promptAccountLinking)) { %>
         <div class="field external-link-container text-small mt-4">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>
-            <a 
-                id="backLink" 
-                class="clickable-link" 
-                tabindex="0" 
-                onclick="goBack()" 
+            <a
+                id="backLink"
+                class="clickable-link"
+                tabindex="0"
+                onclick="goBack()"
                 onkeypress="javascript: if (window.event.keyCode === 13) goBack()"
                 data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>

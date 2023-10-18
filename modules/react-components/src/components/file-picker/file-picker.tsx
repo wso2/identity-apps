@@ -994,14 +994,42 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
             }
 
             const processCSV = (csvContent: string) => {
-                // Split by lines and filter out empty lines.
-                const lines = csvContent.split("\n").filter(line => line.trim() !== "");
-                // Split each line by comma to get items.
-                const items = lines.map(line => line.split(",").map(item => item.trim()));
-                // First line is the header.
-                const headers = items.shift();
+                const delimiter: string = ",";
+                const lines: string[] = csvContent.split(/\r?\n/).filter(line => line.trim() !== "");
+                
+                const data: string[][] = lines.map(line => {
+                    const cells = [];
+                    let cell: string = "";
+                    let insideQuotes: boolean = false;
+                    
+                    for (const c of line) {
+                        if (c === delimiter && !insideQuotes) {
+                            cells.push(cell.trim());
+                            cell = "";
+                        } else if (c === "\"") {
+                            insideQuotes = !insideQuotes;
+                            cell += c;
+                        } else {
+                            cell += c;
+                        }
+                    }
+            
+                    // Add the last cell.
+                    cells.push(cell.trim());
+                    
+                    // Remove quotes and handle double quotes inside quoted fields.
+                    return cells.map(cell => {
+                        if (cell.startsWith("\"") && cell.endsWith("\"")) {
+                            return cell.slice(1, -1).replace(/""/g, "\"");
+                        }
 
-                resolve({ headers, items  });
+                        return cell;
+                    });
+                });
+            
+                const headers = data.shift();
+                
+                resolve({ headers, items: data });
             };
 
             if (data instanceof File) {

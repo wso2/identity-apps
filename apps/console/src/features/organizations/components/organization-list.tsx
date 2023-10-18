@@ -416,6 +416,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 hidden: (organization: OrganizationInterface): boolean => {
 
                     let isAuthorized: boolean = false;
+                    const isActive: boolean = organization.status === "ACTIVE";
 
                     authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
@@ -425,7 +426,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
                     return !isFeatureEnabled(
                         featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")) || !isAuthorized;
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE"))
+                        || !isAuthorized
+                        || !isActive;
                 },
                 icon: (): SemanticICONS => "exchange",
                 onClick: (event: SyntheticEvent, organization: OrganizationInterface) => {
@@ -487,7 +490,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 hidden: (organization: OrganizationInterface): boolean => {
 
                     let isAuthorized: boolean = false;
-                    
+
                     authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
