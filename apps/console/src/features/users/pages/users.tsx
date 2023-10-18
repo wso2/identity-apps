@@ -589,7 +589,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const handleBulkImportWizardClose = (): void => {
         setShowBulkImportWizard(false);
-        getList(listItemLimit, listOffset, null, null, null);
+        getList(listItemLimit, listOffset, null, null, userStore);
     };
 
     return (
@@ -598,8 +598,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { featureConfig.bulkUserImport.enabled ?
-                            (
+                        { featureConfig?.bulkUserImport?.enabled
+                            ? (
                                 addUserDropDown 
                             ) : (
                                 <PrimaryButton
