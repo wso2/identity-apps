@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import { identityProviderConfig } from "apps/console/src/extensions";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
@@ -146,7 +146,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ isEnableAssetionEncription, setIsEnableAssetionEncription ] = useState<boolean>(false);
     const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
 
-    const getIncludeAuthenticationContextOptions = () => {
+    const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
         return [
             { key: 1, text: "Yes", value: "yes" },
             { key: 2, text: "No", value: "no" },
@@ -154,7 +154,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         ];
     };
 
-    const getForceAuthenticationOptions = () => {
+    const getForceAuthenticationOptions = (): DropdownChild[] => {
         return [
             { key: 1, text: "Yes", value: "yes" },
             { key: 2, text: "No", value: "no" },
@@ -162,7 +162,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         ];
     };
 
-    const getAvailableAuthContextComparisonLevelOptions = () => {
+    const getAvailableAuthContextComparisonLevelOptions = (): DropdownChild[] => {
         return [
             { key: 1, text: "Exact", value: "Exact" },
             { key: 2, text: "Minimum", value: "Minimum" },
@@ -171,7 +171,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         ];
     };
 
-    const getResponseAuthnContextClassRefOptions = () => {
+    const getResponseAuthnContextClassRefOptions = (): DropdownChild[] => {
         return [
 
             { key: 1, text: "Default", value: "default" },
@@ -751,7 +751,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <SectionRow>
                             { /* IncludeAuthnContext */ }
                             <p>Include authentication context</p>
-                            { getIncludeAuthenticationContextOptions().map((option,index: number) => (
+                            { getIncludeAuthenticationContextOptions().map((option: DropdownChild,index: number) => (
                                 <Field.Radio
                                     key={ index }
                                     ariaLabel={ `${option.value} layout swatch` }
@@ -771,7 +771,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <SectionRow>
                             { /* ForceAuthentication */ }
                             <p>Force authentication</p>
-                            { getForceAuthenticationOptions().map((option,index: number) => (
+                            { getForceAuthenticationOptions().map((option: DropdownChild,index: number) => (
                                 <Field.Radio
                                     key={ index }
                                     ariaLabel={ `${option.value} layout swatch` }
@@ -788,7 +788,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <SectionRow>
                             <p>Response Authentication Context Class</p>
                             { /* ResponseAuthnContextClassRef */ }
-                            { getResponseAuthnContextClassRefOptions().map((option,index: number) => (
+                            { getResponseAuthnContextClassRefOptions().map((option: DropdownChild, index: number) => (
                                 <Field.Radio
                                     key={ index }
                                     ariaLabel={ `${option.value} layout swatch` }
@@ -829,7 +829,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     { identityProviderConfig.extendedSamlConfig.saml2WebSSOUserIdLocationEnabled && (
                         <SectionRow>
                             <p>SAML 2 Web SSO User ID location</p>
-                            { getSaml2WebSSOUserIdLocationOptions().map((option,index: number) => (
+                            { getSaml2WebSSOUserIdLocationOptions().map((option: {
+                                text: string;
+                                value: number;
+                            },index: number) => (
                                 <Field.Radio
                                     key={ index }
                                     ariaLabel={ `${option.value} layout swatch` }
