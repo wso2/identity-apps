@@ -994,13 +994,13 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
             }
 
             const processCSV = (csvContent: string) => {
-                const delimiter = ",";
-                const lines = csvContent.split(/\r?\n/).filter(line => line.trim() !== "");
+                const delimiter: string = ",";
+                const lines: string[] = csvContent.split(/\r?\n/).filter(line => line.trim() !== "");
                 
                 const data: string[][] = lines.map(line => {
                     const cells = [];
-                    let cell = "";
-                    let insideQuotes = false;
+                    let cell: string = "";
+                    let insideQuotes: boolean = false;
                     
                     for (const c of line) {
                         if (c === delimiter && !insideQuotes) {
