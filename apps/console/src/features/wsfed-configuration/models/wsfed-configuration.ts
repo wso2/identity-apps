@@ -36,4 +36,5 @@ export interface WSFederationConfigFormErrorValidationsInterface {
  */
 export interface WSFederationConfigAPIResponseInterface {
     enableRequestSigning?: boolean;
+    passiveSTSUrl?: string;
 }
