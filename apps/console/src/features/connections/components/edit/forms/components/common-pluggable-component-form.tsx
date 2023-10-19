@@ -26,7 +26,6 @@ import { AuthenticatorSettingsFormModes } from "../../../../models/authenticator
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
-    CommonPluggableComponentMetaInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
