@@ -695,7 +695,7 @@
                     ]
                 }
             },
-            "wsFedconfiguration": {
+            "wsFedConfiguration": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {

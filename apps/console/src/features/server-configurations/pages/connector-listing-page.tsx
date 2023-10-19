@@ -121,7 +121,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 }
 
                 // Add WS Federation category to the connector categories.
-                if (featureConfig?.wsFedconfiguration?.enabled) {
+                if (featureConfig?.wsFedConfiguration?.enabled) {
                     connectorCategoryArray.push({
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR,
                         name: t("console:wsFederationConfig.title"),

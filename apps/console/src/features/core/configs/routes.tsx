@@ -101,7 +101,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
                                 exact: true,
-                                id: "wsFedconfiguration",
+                                id: "wsFedConfiguration",
                                 name: "console:wsFederationConfig.title",
                                 path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                                 protected: true,

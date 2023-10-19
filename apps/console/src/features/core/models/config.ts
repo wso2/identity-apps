@@ -187,7 +187,7 @@ export interface FeatureConfigInterface {
     /**
      * WS Federation Configurations feature
      */
-    wsFedconfiguration?: FeatureAccessConfigInterface;
+    wsFedConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**
