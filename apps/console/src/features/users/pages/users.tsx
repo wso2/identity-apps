@@ -183,7 +183,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         if (!isListUpdated) {
             return;
         }
-        const attributes: string = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
+        const attributes: string = generateAttributesString(userListMetaContent?.values());
 
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
