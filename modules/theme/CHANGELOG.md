@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
 ## 2.0.14
 
 ### Patch Changes

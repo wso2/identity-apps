@@ -542,7 +542,7 @@ importers:
         specifier: ^2.0.8
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.14
+        specifier: ^2.0.15
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -867,7 +867,7 @@ importers:
         specifier: ^2.0.7
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.13
+        specifier: ^2.0.15
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -1072,7 +1072,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.13
+        specifier: ^2.0.15
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2
@@ -13122,7 +13122,7 @@ packages:
     resolution: {integrity: sha512-KnH2MnJUzmFNPW6RIKfd+zf2Wue8mEKX0M3cpX6aKl5ZXrJM1/c/Pc8c2xDNYQCnJO48Sm5ITbMXgqTr3h4jxQ==}
     engines: {node: '>=12'}
     dependencies:
-      '@babel/code-frame': 7.18.6
+      '@babel/code-frame': 7.22.13
       '@babel/runtime': 7.22.15
       '@types/aria-query': 4.2.2
       aria-query: 5.0.2
