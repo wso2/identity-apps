@@ -3700,10 +3700,6 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    openid: {
-                        heading: string;
-                        description: string;
-                    },
                     scim: {
                         heading: string;
                         description: string;

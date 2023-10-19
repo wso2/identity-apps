@@ -112,7 +112,6 @@ export class ClaimManagementConstants {
     public static readonly SCIM: string = "scim";
     public static readonly AXSCHEMA: string = "axschema";
     public static readonly EIDAS: string = "eidas";
-    public static readonly OPENID: string = "openid";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {

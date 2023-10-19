@@ -7167,10 +7167,6 @@ export const console: ConsoleNS = {
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "The OpenID protocol representation for user attributes.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",

@@ -143,7 +143,6 @@ import AxschemaLogo from "../../../themes/default/assets/images/protocols/axsche
 import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
-import OpenidLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
@@ -186,7 +185,6 @@ interface GetTechnologyLogosInterface {
     nodejs: FunctionComponent | ReactNode,
     oidc: string,
     openidconnect: string,
-    openid: string,
     python: FunctionComponent | ReactNode,
     react: FunctionComponent | ReactNode,
     saml: string,
@@ -218,7 +216,6 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         macos: MacOSLogo,
         nodejs: NodeJSLogo,
         oidc: OIDCLogo,
-        openid: OpenidLogo,
         openidconnect: OIDCFullLogo,
         python: PythonLogo,
         react: ReactLogo,
