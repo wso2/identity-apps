@@ -26,6 +26,7 @@ import { AuthenticatorSettingsFormModes } from "../../../../models/authenticator
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
+    CommonPluggableComponentMetaInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
@@ -89,7 +90,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             : customProperties;
 
         values?.forEach((value: FormValue, key: string) => {
-            const propertyMetadata: any = getPropertyMetadata(key, metadata?.properties);
+            const propertyMetadata: CommonPluggableComponentMetaPropertyInterface = getPropertyMetadata(
+                key, metadata?.properties);
 
             if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
                 properties.push({
@@ -272,7 +274,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             }
         });
 
-        return bucket.sort((a: any, b: any) => Number(a.key) - Number(b.key));
+        return bucket.sort((field1: ReactElement, field2: ReactElement) => Number(field1.key) - Number(field2.key));
     };
 
     const triggerAlgorithmSelectionDropdowns = (key: string, values: Map<string, FormValue>) => {

@@ -237,7 +237,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            if (templateId === "microsoft-idp"){
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT){
                 return(
                     <MicrosoftAuthenticatorForm
                         mode={ mode }
@@ -270,7 +270,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             }
 
         case ConnectionManagementConstants.SIWE_AUTHENTICATOR_ID:
-            if (templateId === "swe-idp") {
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SWE) {
                 return (
                     <SIWEAuthenticatorForm
                         data-componentid={ testId }
@@ -289,7 +289,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             break;
 
         case ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID:
-            if (templateId === "hypr-idp") {
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.HYPR) {
                 return (
                     <CommonAuthenticatorForm
                         mode={ mode }
