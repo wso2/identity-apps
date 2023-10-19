@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
 ## 2.0.17
 
 ### Patch Changes

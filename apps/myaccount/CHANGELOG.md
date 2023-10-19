@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.1.2
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve application name text to show full text
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
 ## 2.1.1
 
 ### Patch Changes
