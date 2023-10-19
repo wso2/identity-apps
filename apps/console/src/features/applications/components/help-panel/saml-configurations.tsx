@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ArrowRightToBracketIcon, CirclesOverlapIcon, DocumentIcon } from "@oxygen-ui/react-icons";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
@@ -94,7 +95,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.samlSSO }
+                            icon={ <ArrowRightToBracketIcon className="icon" /> }
                             size="micro"
                             square
                             transparent
@@ -118,7 +119,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.samlSLO }
+                            icon={ getHelpPanelIcons().endpoints.logout }
                             size="micro"
                             square
                             transparent
@@ -144,7 +145,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                                 <GenericIcon
-                                    icon={ getHelpPanelIcons().endpoints.samlSLO }
+                                    icon={ getHelpPanelIcons().endpoints.destination }
                                     size="micro"
                                     square
                                     transparent
@@ -172,7 +173,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                                 <GenericIcon
-                                    icon={ getHelpPanelIcons().endpoints.samlSLO }
+                                    icon={ <CirclesOverlapIcon className="icon" /> }
                                     size="micro"
                                     square
                                     transparent
@@ -231,7 +232,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.metadata }
+                            icon={ <DocumentIcon className="icon" /> }
                             size="micro"
                             square
                             transparent

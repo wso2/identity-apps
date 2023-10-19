@@ -29,6 +29,7 @@ import { ReactComponent as ClockColoredIcon } from "../../../themes/default/asse
 import { ReactComponent as CodeIcon } from "../../../themes/default/assets/images/icons/code-icon.svg";
 import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
+import { ReactComponent as DestinationIcon } from "../../../themes/default/assets/images/icons/destination-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
@@ -266,6 +267,7 @@ export const getHelpPanelIcons = (): {
     endpoints: {
         authorize: FunctionComponent<SVGProps<SVGSVGElement>>;
         certificate: FunctionComponent<SVGProps<SVGSVGElement>>;
+        destination: FunctionComponent<SVGProps<SVGSVGElement>>;
         introspect: FunctionComponent<SVGProps<SVGSVGElement>>;
         issuer: FunctionComponent<SVGProps<SVGSVGElement>>;
         jwks: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -294,6 +296,7 @@ export const getHelpPanelIcons = (): {
         endpoints: {
             authorize: AuthorizeIcon,
             certificate: IDPCertificateIcon,
+            destination: DestinationIcon,
             introspect: IntrospectIcon,
             issuer: IssuerIcon,
             jwks: JWKSIcon,

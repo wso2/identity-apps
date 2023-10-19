@@ -23,6 +23,7 @@ import {
     HexagonTwoIcon, 
     PadlockAsteriskIcon, 
     ShieldCheckIcon,
+    UserDatabaseIcon,
     UserPlusIcon,
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
@@ -300,6 +301,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             case ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID:
                 return (
                     <ShieldCheckIcon className="icon" />
+                );
+            case ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR:
+                return (
+                    <UserDatabaseIcon className="icon" />
                 );
             default:
                 return <GearIcon className="icon" />;
