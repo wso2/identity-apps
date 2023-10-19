@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -60,10 +61,10 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
-import { getIdPIcons } from "../../../../../identity-providers/configs/ui";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
@@ -172,6 +173,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -555,8 +559,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }
                                                     resourceDescription={ template.description }
                                                     resourceImage={
-                                                        IdentityProviderManagementUtils
-                                                            .resolveTemplateImage(template.image, getIdPIcons())
+                                                        ConnectionsManagementUtils.resolveConnectionResourcePath(
+                                                            connectionResourcesUrl, template.image)
                                                     }
                                                     tags={ template.tags }
                                                     onClick={ () => {
