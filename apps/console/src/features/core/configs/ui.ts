@@ -90,6 +90,9 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import {
+    ReactComponent as RemoteLoggingIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
@@ -143,7 +146,6 @@ import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-con
 import OpenidLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
-import XMLSOAPLogo from "../../../themes/default/assets/images/protocols/xmlsoap.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -190,8 +192,7 @@ interface GetTechnologyLogosInterface {
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode,
-    xmlsoap: string
+    windows: FunctionComponent | ReactNode
 }
 
 /**
@@ -224,8 +225,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo,
-        xmlsoap: XMLSOAPLogo
+        windows: WindowsLogo
     };
 };
 
@@ -253,6 +253,7 @@ export type GetSidePanelIconsInterface = {
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
+    remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
     organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
@@ -302,6 +303,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
+        remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,

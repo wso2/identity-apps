@@ -1565,17 +1565,12 @@ export interface Extensions {
                 };
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        siteTitle: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
                         supportEmail: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        displayName: {
                             hint: string;
                             label: string;
                             placeholder: string;
@@ -1711,6 +1706,7 @@ export interface Extensions {
             };
         };
         emailProviders: {
+            configureEmailProvider: string;
             heading: string;
             subHeading: string;
             description: string;
@@ -2342,6 +2338,7 @@ export interface Extensions {
         sidePanel: {
             apiResources: string;
             branding: string;
+            stylesAndText: string;
             monitor: string;
             categories: {
                 apiResources: string;

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -23,6 +24,8 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
+import { AuthenticatorManagementConstants } from "../../../../../connections";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
@@ -104,6 +107,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
@@ -384,7 +390,15 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                image={ authenticator.image }
+                                image={ 
+                                    authenticator.idp === AuthenticatorCategories.LOCAL || 
+                                    authenticator
+                                        .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
+                                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                        ? authenticator.image 
+                                        : ConnectionsManagementUtils
+                                            .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+                                }
                                 tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
                                 onClick={ () => {
                                     isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);

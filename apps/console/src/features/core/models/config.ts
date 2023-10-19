@@ -28,6 +28,7 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
@@ -163,6 +164,10 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkUserImport?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -372,7 +377,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface {
+    JWTAuthenticationServiceEndpointsInterface,
+    BrandingPreferenceResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

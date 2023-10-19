@@ -1,5 +1,46 @@
 # @wso2is/myaccount
 
+## 2.1.2
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve application name text to show full text
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
+## 2.1.1
+
+### Patch Changes
+
+- [#4249](https://github.com/wso2/identity-apps/pull/4249) [`2e7d5bee3a`](https://github.com/wso2/identity-apps/commit/2e7d5bee3a9d4d890a43a4bce137468608729147) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix some issues with remove default branding migrate.
+
+## 2.1.0
+
+### Minor Changes
+
+- [#4226](https://github.com/wso2/identity-apps/pull/4226) [`2d6fbb97cd`](https://github.com/wso2/identity-apps/commit/2d6fbb97cd3bbfaeeee82d39a5d9e8ba65e011a9) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Add organization display name in branding
+
+### Patch Changes
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+  - @wso2is/i18n@2.0.8
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/theme@2.0.12
+  - @wso2is/i18n@2.0.7
+  - @wso2is/core@2.0.4
+
 ## 2.0.13
 
 ### Patch Changes

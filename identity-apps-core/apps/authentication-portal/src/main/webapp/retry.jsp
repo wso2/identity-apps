@@ -177,7 +177,7 @@
                         File trackingRefFile = new File(getServletContext().getRealPath("extensions/error-tracking-reference.jsp"));
                         if (trackingRefFile.exists()) {
                     %>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>                
+                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
                     <% } %>
 
 
@@ -208,7 +208,7 @@
                     <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) { %>
                         <button class="ui primary basic button"
                             onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding) %>';">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                            <%= i18n(resourceBundle, customText, "login.button") %>
                         </button>
                     <% } %>
                 <% } %>

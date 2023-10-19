@@ -413,7 +413,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header" data-testid="self-registration-username-request-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
+                    <%=i18n(recoveryResourceBundle, customText, "sign.up.heading")%>
                 </h3>
 
                 <% if (error) { %>
@@ -477,8 +477,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(name))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(type))%>')"
                             >
-                            <img 
-                                class="ui image" 
+                            <img
+                                class="ui image"
                                 src="libs/themes/wso2is/assets/images/identity-providers/google-idp-illustration.svg"
                                 alt="Google sign-up logo"
                                 role="presentation">
@@ -499,8 +499,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(name))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(type))%>')"
                             >
-                            <img 
-                                class="ui image" 
+                            <img
+                                class="ui image"
                                 src="libs/themes/wso2is/assets/images/identity-providers/github-idp-illustration.svg"
                                 alt="Github sign-up logo"
                                 role="presentation">
@@ -1151,8 +1151,7 @@
                             </div>
                         <div class="buttons mt-4">
                             <button id="registrationSubmit" class="ui primary button large fluid" type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Register")%>
+                                <%= i18n(recoveryResourceBundle, customText, "sign.up.button") %>
                             </button>
                         </div>
                         <div class="ui divider hidden"></div>
@@ -1597,7 +1596,7 @@
                 var elements = document.getElementsByTagName("input");
                 var error_msg = $("#error-msg");
                 var server_error_msg = $("#server-error-msg");
-                
+
                 // Username validation.
                 if (isAlphanumericUsernameEnabled()) {
                     if (showAlphanumericUsernameValidationStatus()) {
@@ -1678,7 +1677,7 @@
                         grecaptcha.enterprise.reset();
                     } else {
                         grecaptcha.reset();
-                    }                   
+                    }
                 }
             }
         }
@@ -1812,7 +1811,7 @@
             } else {
                 if (alphanumericUsernameUserInput.value.trim().length < usernameConfig.minLength
                 || alphanumericUsernameUserInput.value.trim().length > usernameConfig.maxLength) {
-                    alphanumeric_username_error_msg_text.text( 
+                    alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.length.should.be")%>"
                         + " " + usernameConfig.minLength + " "
                         + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>"

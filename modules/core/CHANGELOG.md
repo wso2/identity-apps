@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
 ## 2.0.3
 
 ### Patch Changes

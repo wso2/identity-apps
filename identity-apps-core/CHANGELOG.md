@@ -1,5 +1,56 @@
 # @wso2is/identity-apps-core
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4200](https://github.com/wso2/identity-apps/pull/4200) [`6957fe72b0`](https://github.com/wso2/identity-apps/commit/6957fe72b0ae8e942c028f5cd75569b27120bf4c) Thanks [@Rashmini](https://github.com/Rashmini)! - Update recovery portal for recovery v2 API
+
+## 2.0.16
+
+### Patch Changes
+
+- [#4242](https://github.com/wso2/identity-apps/pull/4242) [`3f2548119d`](https://github.com/wso2/identity-apps/commit/3f2548119d459bd054d9484b447ad26329ece3e2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace spaces in application names with underscores for application-specific custom layouts and stop creating empty extensions dir.
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+
+## 2.0.15
+
+### Patch Changes
+
+- [#4240](https://github.com/wso2/identity-apps/pull/4240) [`2b3be11fbf`](https://github.com/wso2/identity-apps/commit/2b3be11fbf2f3dd49cede4967e5d5e72101f01b0) Thanks [@brionmario](https://github.com/brionmario)! - Update site title
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4222](https://github.com/wso2/identity-apps/pull/4222) [`5c06f4fed3`](https://github.com/wso2/identity-apps/commit/5c06f4fed357f6ca27726b65c9dfd50b732fd7f9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add migrate for remove default branding
+
+## 2.0.13
+
+### Patch Changes
+
+- [#4227](https://github.com/wso2/identity-apps/pull/4227) [`d3538bf6c0`](https://github.com/wso2/identity-apps/commit/d3538bf6c0876486240785fb9d4035d5ce69c597) Thanks [@brionmario](https://github.com/brionmario)! - Fix sign up button updating issue
+
+* [#4223](https://github.com/wso2/identity-apps/pull/4223) [`4595a8096f`](https://github.com/wso2/identity-apps/commit/4595a8096f6bd51906ac88cd435b24be6784d0be) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add i18n support for SASS product tagline
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+* [#4212](https://github.com/wso2/identity-apps/pull/4212) [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c) Thanks [@Achintha444](https://github.com/Achintha444)! - Updated the UIs of the assign groups and assign roles interfaces.
+
+* Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`0790c25dce`](https://github.com/wso2/identity-apps/commit/0790c25dce7f70a8e222dbc9919c9e595074fe4c), [`35c5f3bb9c`](https://github.com/wso2/identity-apps/commit/35c5f3bb9c160940cd8db6ceca95540bf4b6d8dd)]:
+  - @wso2is/theme@2.0.12
+
 ## 2.0.12
 
 ### Patch Changes

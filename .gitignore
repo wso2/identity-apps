@@ -108,6 +108,7 @@ apps/myaccount/src/themes/
 apps/console/src/themes/
 apps/console/src/login-portal-layouts
 apps/console/src/extensions/i18n/dist
+apps/console/src/public/resources/branding/i18n
 apps/*/java/webapp/src/main/
 java/apps/*/src/main/webapp/libs/themes
 java/apps/*/src/main/webapp/extensions/layouts
