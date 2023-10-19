@@ -92,7 +92,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
                             Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
-                            login</strong> to configure a basic passkey flow.
+                            Login</strong> to configure a basic passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -100,7 +100,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add Passkey login</strong>
+                    Select <strong>Add Passkey Login</strong>
                 </Trans>
             )
         },

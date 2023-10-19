@@ -132,7 +132,6 @@
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="identifierForm" >
 
                     <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
-
                     <div class="field">
                         <div class="ui fluid left icon input">
                             <input
@@ -147,8 +146,8 @@
                             <i aria-hidden="true" class="user icon"></i>
                         </div>
                     </div>
-                    <div class="mt-0">
-                        <div class="column buttons">
+                    <div class="mt-4">
+                        <div class="buttons">
                             <button
                                 class="ui primary fluid large button"
                                 type="submit"
@@ -156,10 +155,11 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.continue")%>
                             </button>
                         </div>
-                        <div class="ui divider hidden"></div>
-
                         <% if(enablePasskeyProgressiveEnrollment){ %>
-                            <div class="column buttons">
+                            <div class="ui horizontal divider">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                            </div>
+                            <div class="buttons">
                                 <button
                                     onclick="initiatePasskeyCreationFlow()"
                                     class="ui secondary fluid large button"
@@ -210,4 +210,3 @@
     </script>
 </body>
 </html>
-

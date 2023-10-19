@@ -1272,10 +1272,10 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Enable users to log in using a passkey, security key or "
                                                     + "biometrics.",
-                                                heading: "Add Passkey login",
-                                                info: "On-the-fly passkey registration is available exclusively for new " +
-                                                "FIDO keys and further users wishing to register multiple passkeys " +
-                                                "must do so via MyAccount."
+                                                heading: "Add Passkey Login",
+                                                info: " On-the-fly passkey enrollment is available exclusively " +
+                                                "for FIDO2 supported passkey and further users wishing to register " +
+                                                "multiple passkey, they must do so via MyAccount."
                                             },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",

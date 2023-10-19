@@ -100,10 +100,10 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <div class="ui segment left aligned">
+            <div class="ui segment">
                 <div id="loader-bar" class="loader-bar"></div>
 
-                <h3 class="ui header">
+                <h3 class="ui header center aligned">
                     <span id="fido-header" data-testid="login-page-fido-heading">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification" )%>
                     </span>
@@ -125,7 +125,7 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
                                 </p>
                                 <div class="ui divider hidden"></div>
-                                <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()"
+                                <button class="ui primary fluid large button" id="initiateFlow" type="button" onclick="talkToDevice()"
                                 data-testid="login-page-fido-proceed-button">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
                                 </button>
@@ -153,17 +153,21 @@
                                     <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>
                                 <% } %>
                             </p>
-                            
-                            <div class="ui divider hidden"></div>
-                            <div class="align-right buttons">
-                                <button class="ui button secondary" type="button" onclick="cancelFlow()"
+                            <div class="mt-4">
+                                <div class="buttons">
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
+                                    data-testid="login-page-fido-retry-button">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="buttons">
+                                    <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
                                     data-testid="login-page-fido-cancel-button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                </button>
-                                <button class="ui button primary" type="button" onclick="retry()"
-                                data-testid="login-page-fido-retry-button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
-                                </button>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

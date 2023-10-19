@@ -2462,16 +2462,16 @@ export const extensions: Extensions = {
                 quickStart: {
                     addLoginModal: {
                         heading: "Add Passkey Login",
-                        subHeading: "Select an application to set up Passkey login."
+                        subHeading: "Select an application to set up passkey login."
                     },
                     heading: "Passkey Set Up Guide",
                     passkeys: {
-                        docLinkText: "FIDO2 Passkey",
+                        docLinkText: "FIDO2 passkey",
                         content:
-                            "Passkeys provide simple and secure passwordless login for your applications that " +
+                            "Passkey provide simple and secure passwordless login for your applications that " +
                             "survives device loss and works across platforms. You can try out passkey " +
                             "authentication on Asgardeo with \"Passkey\".",
-                        heading: "FIDO2 authentication with passkeys"
+                        heading: "FIDO2 authentication with passkey"
                     },
                     steps: {
                         customizeFlow: {
@@ -2484,9 +2484,9 @@ export const extensions: Extensions = {
                         },
                         selectFIDO: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add passkey login</3> to configure " +
+                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
-                            heading: "Select <1>Add Passkey login</1>"
+                            heading: "Select <1>Add Passkey Login</1>"
                         }
                     },
                     subHeading: "Follow the instructions given below to set up passkey login in your login flow."

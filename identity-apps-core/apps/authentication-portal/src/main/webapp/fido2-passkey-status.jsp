@@ -108,9 +108,9 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <div class="ui segment left aligned">
+            <div class="ui segment">
 
-                <h3 class="ui header" style="text-align:left;">
+                <h3 class="ui header">
                     <%
                     if ("true".equals(isKeyExist)) {
                     %>
@@ -133,15 +133,19 @@
                                 <p>
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.exist" )%>
                                 </p>
-
-                                <div class="ui divider hidden"></div>
-                                <div class="align-right buttons">
-                                    <button class="ui button secondary" type="button" onclick="cancelFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                    </button>
-                                    <button class="ui button primary" type="button" onclick="authenticationFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.login" )%>
-                                    </button>
+                                <div class="mt-4">
+                                    <div class="buttons">
+                                        <button class="ui primary fluid large button" type="button" onclick="authenticationFlow()">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.login" )%>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="buttons">
+                                        <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -155,17 +159,22 @@
                                         <a target="_blank" id="my-account-link">My Account.</a>
                                     <% } %>
                                 </p>
-                                <div class="ui divider hidden"></div>
-                                <div class="align-right buttons">
-                                    <button class="ui button secondary" type="button" onclick="cancelFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                    </button>
-                                    <% if(enablePasskeyProgressiveEnrollment){ %>
-                                        <button class="ui button primary" type="button" onclick="passkeyEnrollmentFlow()"
-                                            data-testid="login-page-fido-register-button">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                <% if(enablePasskeyProgressiveEnrollment){ %>
+                                    <div class="mt-4">
+                                        <div class="buttons">
+                                            <button class="ui primary fluid large button" type="button" onclick="passkeyEnrollmentFlow()"
+                                                data-testid="login-page-fido-register-button">
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                            </button>
+                                        </div>
+                                    </div>
+                                <% } %>
+                                <div class="mt-3">
+                                    <div class="column buttons">
+                                        <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
                                         </button>
-                                    <% } %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
