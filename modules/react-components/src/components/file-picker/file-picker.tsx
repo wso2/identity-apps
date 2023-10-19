@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -475,7 +475,11 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                             <p className="description">{ dropzoneText }</p>
                             <p className="description">– or –</p>
                         </div>
-                        <Button basic primary onClick={ handleOnUploadButtonClick }>
+                        <Button
+                            basic
+                            primary
+                            onClick={ handleOnUploadButtonClick }
+                            data-componentid={ `${componentId}-upload-button` } >
                             { uploadButtonText }
                         </Button>
                     </Segment>
@@ -570,7 +574,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     )
             }
             {
-                <Message
+                hasError &&
+                (<Message
                     error
                     visible={ hasError }
                     data-testid={ "file-picker-error-message" }
@@ -578,7 +583,8 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                 >
                     <Icon name="file"/>
                     { errorMessage }
-                </Message>
+                </Message>)
+                
             }
         </React.Fragment>
     );
@@ -950,5 +956,171 @@ export class CertFileStrategy implements PickerStrategy<CertificateDecodeResult>
             });
         });
     }
+}
 
+export interface CSVResult {
+    headers: string[];
+    items: string[][];
+}
+
+export class CSVFileStrategy implements PickerStrategy<CSVResult> {
+
+    static readonly ENCODING: string = "UTF-8";
+    static readonly DEFAULT_MIMES: string[] = [
+        "text/csv",
+        "application/csv"
+    ];
+
+    static readonly KILOBYTE: number = 1e+3;
+    static readonly DEFAULT_MAX_FILE_SIZE: number = 250 * CSVFileStrategy.KILOBYTE;
+    static readonly DEFAULT_MAX_ROW_COUNT: number = Infinity;
+
+    mimeTypes: string[];
+    maxSize: number;
+    maxRowCount: number;
+
+    constructor(mimeTypes?: string[], maxSize?: number, maxRowCount?: number) {
+        this.mimeTypes = mimeTypes && mimeTypes.length > 0 ? mimeTypes : CSVFileStrategy.DEFAULT_MIMES;
+        this.maxSize = maxSize || CSVFileStrategy.DEFAULT_MAX_FILE_SIZE;
+        this.maxRowCount = maxRowCount || CSVFileStrategy.DEFAULT_MAX_ROW_COUNT;
+    }
+
+    async serialize(data: File | string): Promise<CSVResult> {
+        return new Promise<CSVResult>((resolve, reject) => {
+            if (!data) {
+                reject({ valid: false });
+                
+                return;
+            }
+
+            const processCSV = (csvContent: string) => {
+                const delimiter: string = ",";
+                const lines: string[] = csvContent.split(/\r?\n/).filter(line => line.trim() !== "");
+                
+                const data: string[][] = lines.map(line => {
+                    const cells = [];
+                    let cell: string = "";
+                    let insideQuotes: boolean = false;
+                    
+                    for (const c of line) {
+                        if (c === delimiter && !insideQuotes) {
+                            cells.push(cell.trim());
+                            cell = "";
+                        } else if (c === "\"") {
+                            insideQuotes = !insideQuotes;
+                            cell += c;
+                        } else {
+                            cell += c;
+                        }
+                    }
+            
+                    // Add the last cell.
+                    cells.push(cell.trim());
+                    
+                    // Remove quotes and handle double quotes inside quoted fields.
+                    return cells.map(cell => {
+                        if (cell.startsWith("\"") && cell.endsWith("\"")) {
+                            return cell.slice(1, -1).replace(/""/g, "\"");
+                        }
+
+                        return cell;
+                    });
+                });
+            
+                const headers = data.shift();
+                
+                resolve({ headers, items: data });
+            };
+
+            if (data instanceof File) {
+                const reader = new FileReader();
+
+                reader.readAsText(data, CSVFileStrategy.ENCODING);
+                reader.onload = () => {
+                    processCSV(reader.result as string);
+                };
+            } else {
+                processCSV(data);
+            }
+        });
+    }
+
+    async validate(data: File | string): Promise<ValidationResult> {
+        return new Promise<ValidationResult>((resolve, reject) => {
+            if (data instanceof File) {
+                // Check MIME type.
+                if (!this.mimeTypes.includes(data.type)) {
+                    reject({
+                        errorMessage: "Invalid file type. Only CSV files are allowed.",
+                        valid: false
+                    });
+
+                    return;
+                }
+    
+                // Check file size.
+                if (data.size > this.maxSize) {
+                    reject({
+                        errorMessage: `File exceeds max size of ${this.maxSize / CSVFileStrategy.KILOBYTE} KB.`,
+                        valid: false
+                    });
+
+                    return;
+                }
+    
+                const reader = new FileReader();
+
+                reader.readAsText(data, CSVFileStrategy.ENCODING);
+                reader.onload = () => {
+                    try {
+                        const { lines, rowCount } = (reader.result as string).split("\n").reduce((acc, line) => {
+                            const trimmedLine = line.trim();
+
+                            if (trimmedLine.length > 0) {
+                                acc.lines.push(trimmedLine);
+                                acc.rowCount++;
+                            }
+
+                            return acc;
+                        }, { lines: [], rowCount: 0 });
+                        const actualRowCount: number = rowCount - 1; 
+
+                        if (actualRowCount > this.maxRowCount) {
+                            reject({
+                                errorMessage: `Row count exceeds max limit of ${this.maxRowCount}.`,
+                                valid: false
+                            });
+                            throw `Row count exceeds max limit of ${this.maxRowCount}.`;
+                        }
+
+                        if (lines.length > 0 && lines[0] !== "" && lines[0].split(",").length > 0) {
+                            resolve({ valid: true });
+                        } else {
+                            throw "CSV file is empty or invalid.";
+                        }
+                    } catch (error) {
+                        reject({
+                            errorMessage: error ?? "CSV file has errors.",
+                            valid: false
+                        });
+                    }
+                };
+            } else {
+                try {
+                    const lines = data.split("\n");
+
+                    if (lines.length > 0 && lines[0].split(",").length > 0) {
+                        resolve({ valid: true });
+                    } else {
+                        throw "CSV string is empty or invalid";
+                    }
+                } catch (error) {
+                    reject({
+                        errorMessage: error ?? "CSV string has errors",
+                        valid: false
+                    });
+                }
+            }
+        });
+    } 
 }

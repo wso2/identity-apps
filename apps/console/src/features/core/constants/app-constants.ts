@@ -310,6 +310,7 @@ export class AppConstants {
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
+            [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -349,11 +350,14 @@ export class AppConstants {
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
+            [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT", 
+                `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ 
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ]
+            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ]
         ]);
 
         return paths;
@@ -417,6 +421,7 @@ export class AppConstants {
         "organizations",
         "groups",
         "roles",
+        "userRoles",
         "applications",
         "emailTemplates",
         "governanceConnectors"
@@ -442,7 +447,8 @@ export class AppConstants {
      * Route ids that are enabled in only for super admins.
      */
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
-        "adminAdvisoryBanner"
+        "adminAdvisoryBanner",
+        "remoteLogging"
     ] 
 
     /**

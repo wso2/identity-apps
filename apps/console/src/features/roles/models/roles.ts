@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { RolesInterface } from "@wso2is/core/models";
 import { CreateGroupMemberInterface } from "../../groups/models";
 import { SchemaAttributeValueInterface } from "../../users/models";
 
@@ -77,4 +78,36 @@ export interface OperationValueInterface {
         { [x: string]: { [x: string]: string | boolean | string[]; }; } |
         { formatted: string | string[]; type: string; }[] |
         { type: string; value: string | boolean | string[]; }[]
+}
+
+/**
+ * Interface to store data for assigned sections of the role edit interface.
+ */
+export interface RoleEditSectionsInterface {
+    /**
+     * User profile
+     */
+    role: RolesInterface;
+    /**
+     * Handle user update callback.
+     */
+    onRoleUpdate: (tabIndex: number) => void;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly: boolean;
+    /**
+     * Tab index
+     */
+    tabIndex: number;
+}
+
+/**
+ * Interface to store data in the basic role edit interface.
+ */
+export interface RoleBasicInterface {
+    /**
+     * Role name.
+     */
+    roleName: string;
 }

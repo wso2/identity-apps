@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,8 @@ import {
     AlertInterface, 
     AlertLevels, 
     MultiValueAttributeInterface, 
-    TestableComponentInterface } from "@wso2is/core/models";
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -38,7 +39,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps,Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -63,13 +64,14 @@ import {
     getServerConfigs
 } from "../../server-configurations";
 import { getUserStoreList } from "../../userstores/api";
-import { CONSUMER_USERSTORE } from "../../userstores/constants/user-store-constants";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList } from "../api";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
-import { UserManagementConstants } from "../constants";
+import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
+import { UserAddOptionTypes, UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 interface UserStoreItem {
@@ -112,12 +114,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore, setUserStore ] = useState("primary");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -131,7 +134,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
-
+    
     /**
      * Fetch the list of available userstores.
      */
@@ -309,11 +312,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getUserStores = () => {
         const storeOptions: UserStoreItem[] = [
             {
-                key: -2,
-                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
-                value: "all"
-            },
-            {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
@@ -481,11 +479,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === "all") {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data.value as string);
     };
 
     const onUserDelete = (): void => {
@@ -525,21 +519,104 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
     };
 
+    const addUserDropdownTrigger: ReactElement = (
+        <PrimaryButton
+            data-componentid={ `${ testId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("extensions:manage.users.buttons.addUserBtn") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
+    );
+
+    const getAddUserOptions = () => {
+        const options: DropdownItemProps[] = [
+            {
+                "data-componentid": `${ testId }-add-user-dropdown-item`,
+                "data-testid": `${ testId }-add-user-dropdown-item`,
+                key: 1,
+                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                value: UserAddOptionTypes.MANUAL_INPUT
+            },
+            {
+                "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
+                "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
+                key: 2,
+                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                value: UserAddOptionTypes.BULK_IMPORT
+            }
+        ];
+    
+        return options;
+    };
+
+    const addUserDropDown: ReactElement = (
+        <Dropdown
+            data-testid={ `${ testId }-add-user-dropdown` }
+            data-componentid={ `${ testId }-add-user-dropdown` }
+            direction="left"
+            floating
+            icon={ null }
+            trigger={ addUserDropdownTrigger }
+        >
+            <Dropdown.Menu >
+                { getAddUserOptions().map((option: DropdownItemProps) => (
+                    <Dropdown.Item
+                        key={ option.value as string }
+                        onClick={ ()=> handleDropdownItemChange(option.value as string) }
+                        { ...option }
+                    />
+                )) }
+            </Dropdown.Menu>
+        </Dropdown>
+    );
+
+    /**
+     * Handle Add user dropdown item change.
+     * @param value - Dropdown item value.
+     */
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAddOptionTypes.MANUAL_INPUT) {
+            handleAddNewUserWizardClick();
+        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            setShowBulkImportWizard(true);
+        }
+    };
+
+    /**
+     * Handles the `onClose` callback action from the bulk import wizard.
+     */
+    const handleBulkImportWizardClose = (): void => {
+        setShowBulkImportWizard(false);
+        getList(listItemLimit, listOffset, null, null, userStore);
+    };
+
     return (
         <PageLayout
             action={
-                (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
+                !isUserListRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        <PrimaryButton
-                            data-testid="user-mgt-user-list-add-user-button"
-                            onClick={ () => handleAddNewUserWizardClick()  }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.users.buttons.addNewUserBtn") }
-                        </PrimaryButton>
+                        { featureConfig?.bulkUserImport?.enabled
+                            ? (
+                                addUserDropDown 
+                            ) : (
+                                <PrimaryButton
+                                    data-componentid={ `${ testId }-add-user-button` }
+                                    data-testid={ `${ testId }-add-user-button` }
+                                    onClick={ () => {
+                                        setShowWizard(true);
+                                    } }
+                                >
+                                    <Icon name="add"/>
+                                    { t("extensions:manage.users.buttons.addUserBtn") }
+                                </PrimaryButton>
+                            ) } 
+                        
                     </Show>
                 )
+                
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }
@@ -617,11 +694,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                             <RootOnlyComponent>
                                 <Dropdown
+                                    value={ userStore }
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="all"
                                 />
                             </RootOnlyComponent>
                         </>
@@ -688,7 +765,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
                         realmConfigs={ realmConfigs }
-                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid="user-mgt-user-list"
@@ -709,6 +785,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             updateList={ () => setListUpdated(true) }
                             rolesList={ rolesList }
                             emailVerificationEnabled={ emailVerificationEnabled }
+                        />
+                    )
+                }
+                {
+                    showBulkImportWizard && (
+                        <BulkImportUserWizard
+                            data-componentid="user-mgt-bulk-import-user-wizard-modal"
+                            closeWizard={ handleBulkImportWizardClose }
+                            userstore={ PRIMARY_USERSTORE }
                         />
                     )
                 }

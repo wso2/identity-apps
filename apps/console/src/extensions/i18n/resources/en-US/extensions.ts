@@ -372,7 +372,7 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteGroup: {
                         message: "This action is irreversible.",
-                        content: "This action will permanently delete the {{groupName}} identity provider group. " +  
+                        content: "This action will permanently delete the {{groupName}} identity provider group. " +
                             "Please proceed with caution"
                     }
                 },
@@ -728,7 +728,7 @@ export const extensions: Extensions = {
                                 fields: {
                                     authorize: {
                                         label: "Requires authorization",
-                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"                                    
+                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"
                                     }
                                 }
                             }
@@ -884,9 +884,9 @@ export const extensions: Extensions = {
                                             "Please proceed with caution."
                                     },
                                     unsubscribeChoreoAPIResource: {
-                                        content: "Unsubscribing this API resource will not be reflected on the " + 
-                                            "Choreo end, but will impact/affect the user authorization as the " + 
-                                            "authorized scopes will no longer be accessible. " + 
+                                        content: "Unsubscribing this API resource will not be reflected on the " +
+                                            "Choreo end, but will impact/affect the user authorization as the " +
+                                            "authorized scopes will no longer be accessible. " +
                                             "<1>Proceed with caution.</1>"
                                     }
                                 },
@@ -1777,19 +1777,11 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint:
-                                "Text that appears at the footer of the login screens. If not set, " +
-                                "{{ productName }} defaults are used.",
-                            label: "Copyright Text",
-                            placeholder: "Enter a copyright text"
-                        },
-                        siteTitle: {
-                            hint:
-                                "The site title may appear in browser tabs, search engine results, social shares, " +
-                                "etc. If not set, {{ productName }} defaults are used.",
-                            label: "Site Title",
-                            placeholder: "Enter a site title"
+                        displayName: {
+                            hint: "Organization name that appears to users. If not set, {{ productName }} defaults " +
+                                "are used.",
+                            label: "Organization Display Name",
+                            placeholder: "Enter a display name"
                         },
                         supportEmail: {
                             hint: "The email address that appears on error pages and other pages where " +
@@ -1916,9 +1908,21 @@ export const extensions: Extensions = {
                                 title: "Resource Not Found"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Need a fully customized layout for your organization? "
+                                description: "Need a fully customized layout for your organization? "
                                     + "Reach us out at <1>{{ supportEmail }}</1>",
+                                subTitle: "You have not yet deployed a custom layout.",
                                 title: "Custom Layout Not Found"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "You can now incorporate a custom layout for login, "
+                                    + "registration, and recovery pages. Refer to our "
+                                    + "documentation for detailed instructions.",
+                                subTitle: "The custom layout has been successfully enabled.",
+                                title: "Custom Layout"
                             }
                         }
                     },
@@ -1927,6 +1931,7 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "Configure Email Provider",
             heading: "Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
             description: "Configure the following settings according to your SMTP server.",
@@ -2626,6 +2631,7 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "API Resources",
             branding: "Branding",
+            stylesAndText: "Styles & Text",
             monitor: "Logs",
             categories: {
                 apiResources: "API Resources",
@@ -2801,6 +2807,33 @@ export const extensions: Extensions = {
                 usernameLength: "Set username length",
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max"
+            },
+            alternativeLoginIdentifierPage: {
+                pageTitle: "Alternative Login Identifiers",
+                description: "Configure alternative login identifiers and allow users to use username or configured" +
+                    " login identifier in login and recovery flows.",
+                loginIdentifierTypes: "Select login identifier",
+                loginIdentifierTypesHint: "Allow users to use username or configured login identifier in" +
+                    " the login flow.",
+                warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
+                    " login identifiers.",
+                info: "You have selected email as the username type which makes it the primary login identifier.",
+                notification: {
+                    error: {
+                        description: "Error updating the alternative login identifier configuration.",
+                        message: "Error updating configuration"
+                    },
+                    success: {
+                        description: "Successfully updated the alternative login identifier configuration.",
+                        message: "Update successful"
+                    }
+                },
+                claimUpdateNotification: {
+                    error: {
+                        description: "Error updating the attribute as an unique attribute. Please try again.",
+                        message: "Error updating claim"
+                    }
+                }
             },
             pageTitle: "Account Login",
             description: "Customize account login configurations of the users in your organization.",
@@ -3666,7 +3699,7 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided" +
+                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password."
                     }
                 }
@@ -3782,7 +3815,7 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "However, the user's account is not permanently deleted from Asgardeo and " +
+                        "However, the user's account is not permanently deleted from the system and " +
                         "they will still be able to access other organizations they are associated with.",
                     message:
                         "This action is irreversible and will remove the user's association with " +

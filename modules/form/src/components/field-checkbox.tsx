@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint, Message } from "@wso2is/react-components";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { CheckboxAdapter } from "./adapters";
+import { CheckboxAdapter } from "./adapters/__DEPRECATED__adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FormFieldMessage } from "../models";
 

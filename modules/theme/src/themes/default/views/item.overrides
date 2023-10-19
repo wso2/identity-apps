@@ -24,6 +24,7 @@
         border: @defaultBorderWidth solid @defaultBorderColor;
         border-radius: @defaultBorderRadius;
         overflow: hidden;
+        height: 100%;
 
         &:hover {
             cursor: pointer;
@@ -73,9 +74,12 @@
                 color: @applicationListItemHeaderColor;
                 float: left;
                 max-width: @applicationListItemHeaderMaxWidth;
-                white-space: nowrap;
+                white-space: normal;
                 text-overflow: ellipsis;
                 overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
             }
             .item-description {
                 color: @applicationListItemDescColor;

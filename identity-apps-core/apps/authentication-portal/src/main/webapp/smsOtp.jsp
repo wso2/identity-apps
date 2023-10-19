@@ -34,7 +34,7 @@
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
-    
+
     // TODO: Use this once "org.wso2.identity.local.auth.smsotp.util.AuthenticatorUtils" is available to IS
     // int otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
     int otpLength = 6;
@@ -112,7 +112,8 @@
             <layout:component componentName="MainSection">
               <div class="ui segment">
                       <%-- page content --%>
-                      <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
+                      <h2>
+                        <%= i18n(resourceBundle, customText, "sms.otp.heading") %>
                       </h2>
                       <div class="ui divider hidden"></div>
                       <%
@@ -251,6 +252,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
                 <% } %>
             </layout:component>
+            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+                <jsp:include page="${pathOfDynamicComponent}" />
+            </layout:dynamicComponent>
         </layout:main>
 
         <%-- footer --%>

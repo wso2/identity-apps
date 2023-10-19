@@ -22,6 +22,7 @@ import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
 import { GroupsMemberInterface } from "../../groups";
+import { BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -56,15 +57,15 @@ export interface UserBasicInterface {
     /**
      * Name of the user.
      */
-    name: NameInterface;
+    name?: NameInterface;
     /**
      * Meta information of the user.
      */
-    meta: UserMetaInterface;
+    meta?: UserMetaInterface;
     /**
      * Profile URL of the user.
      */
-    profileUrl: string;
+    profileUrl?: string;
     /**
      * Groups of the user.
      */
@@ -341,4 +342,53 @@ export interface PayloadInterface {
         };
       }[];
       schemas: string[];
+}
+
+/**
+ * Type of the bulk user import operation status.
+ */
+export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
+
+/**
+ * Interface for the bulk user import operation response.
+ */
+export interface BulkUserImportOperationResponse {
+    username: string;
+    status: BulkUserImportOperationStatus;
+    message: string;
+    statusCode: BulkUserImportStatus;
+}
+
+/**
+ * Interface for the bulk user import operation summary.
+ */
+export interface BulkResponseSummary {
+    successCount: number;
+    failedCount: number;
+}
+
+export interface PatchBulkUserDataInterface {
+    schemas: string[];
+    Operations: PatchUserOpInterface[];
+    failOnErrors?: number;
+}
+
+export interface PatchUserOpInterface {
+    data: {
+        Operations: (PatchUserRemoveOpInterface | PatchUserAddOpInterface)[];
+    };
+    method: string;
+    path: string;
+}
+
+export interface PatchUserRemoveOpInterface {
+    op: string;
+    path: string;
+}
+
+export interface PatchUserAddOpInterface {
+    op: string;
+    value: {
+        users: { value: string }[]
+    }
 }

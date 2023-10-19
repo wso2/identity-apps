@@ -288,7 +288,7 @@
         .tracking-reference-input {
         width: 70%;
         }
-        
+
         @media screen and (max-width: 720px) {
             .tracking-reference-input {
                 width: 100%;
@@ -559,12 +559,17 @@
                     }
                 }
             }
-            
+
+            .copyright-text {
+                white-space: pre-line;
+                text-align: center;
+            }
+
             .powered-by-logo-divider {
                 margin-left: 5px;
                 margin-right: 5px;
             }
-            
+
             .powered-by-logo {
                 cursor: pointer;
 

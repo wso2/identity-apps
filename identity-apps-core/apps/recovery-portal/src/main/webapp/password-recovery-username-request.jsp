@@ -37,6 +37,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Username Label Resolver --%>
+<jsp:directive.include file="includes/username-label-resolver.jsp"/>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -47,9 +50,11 @@
     }
 
     Boolean isMultiAttributeLoginEnabledInTenant;
+    String allowedAttributes = null;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
@@ -62,8 +67,10 @@
     String usernameLabel = "Username";
     String enterUsernameHereText = "Enter.your.username.here";
     if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = "User.identifier";
-        enterUsernameHereText = "Enter.your.user.identifier.here";
+        if (allowedAttributes != null) {
+            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes);
+            enterUsernameHereText = "Enter.your.identifier";
+        }
     }
 %>
 
@@ -123,9 +130,13 @@
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
                             </p>
                             <div class="field">
-                                <label>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
-                                </label>
+                                <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                                    <label><%=usernameLabel %></label>
+                                <% } else { %>
+                                    <label>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
+                                    </label>
+                                <% } %>
                                 <input id="username" name="username" type="text" tabindex="0" required>
                                 <%
                                     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
@@ -177,6 +188,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
                 <% } %>
             </layout:component>
+            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+                <jsp:include page="${pathOfDynamicComponent}" />
+            </layout:dynamicComponent>
         </layout:main>
 
         <%-- footer --%>

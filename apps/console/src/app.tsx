@@ -48,7 +48,7 @@ import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-rout
 import { Dispatch } from "redux";
 import { commonConfig } from "./extensions";
 import { useGetAllFeatures } from "./extensions/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "./extensions/components/feature-gate/configs/feature-gate";
+import { featureGateConfig } from "./extensions/configs/feature-gate";
 import { AccessControlUtils } from "./features/access-control/configs/access-control";
 import { EventPublisher, PreLoader } from "./features/core";
 import { ProtectedRoute } from "./features/core/components";

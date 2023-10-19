@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
-import { DepricatedFieldCheckbox } from "./deprecated-field-checkbox";
+import { __DEPRECATED__FieldCheckbox } from "./__DEPRECATED__field-checkbox";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldCheckboxLegacy } from "./field-checkbox-legacy";
@@ -54,7 +54,7 @@ type FieldType = FC<FormFieldPropsInterface> & {
     Button: typeof FieldButton;
     CheckboxLegacy: typeof FieldCheckboxLegacy;
     Textarea: typeof FieldTextarea;
-    Checkbox: typeof DepricatedFieldCheckbox;
+    Checkbox: typeof __DEPRECATED__FieldCheckbox;
     OxygenCheckbox: typeof FieldCheckbox;
     Dropdown: typeof FieldDropdown;
     QueryParams: typeof FieldQueryParams;
@@ -80,7 +80,7 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
         className
     );
 
-    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>>
         | React.ReactFragment | React.ReactPortal)[] = React.Children.toArray(children);
 
     return (
@@ -106,7 +106,7 @@ Field.Input = FieldInput;
 Field.Button = FieldButton;
 Field.Textarea = FieldTextarea;
 Field.CheckboxLegacy = FieldCheckboxLegacy;
-Field.Checkbox = DepricatedFieldCheckbox;
+Field.Checkbox = __DEPRECATED__FieldCheckbox;
 Field.OxygenCheckbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -414,8 +414,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             {
                 "data-componentid": `${ componentId }-item-switch-button`,
                 hidden: (organization: OrganizationInterface): boolean => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+                    const isActive: boolean = organization.status === "ACTIVE";
+
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -423,7 +426,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
                     return !isFeatureEnabled(
                         featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")) || !isAuthorized;
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE"))
+                        || !isAuthorized
+                        || !isActive;
                 },
                 icon: (): SemanticICONS => "exchange",
                 onClick: (event: SyntheticEvent, organization: OrganizationInterface) => {
@@ -441,8 +446,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
                     ),
                 icon: (organization: OrganizationInterface): SemanticICONS => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -459,8 +466,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
                     handleOrganizationEdit(organization.id),
                 popupText: (organization: OrganizationInterface ): string => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -479,8 +488,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
                 hidden: (organization: OrganizationInterface): boolean => {
+
                     let isAuthorized: boolean = false;
-                    authorizedList?.organizations?.map((org) => {
+
+                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
                         if (org.id === organization.id) {
                             isAuthorized = true;
                         }
@@ -539,7 +550,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        (onEmptyListPlaceholderActionClick && organizationConfigs.canCreateOrganization()) && (
+                        onEmptyListPlaceholderActionClick && (
                             <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -89,16 +89,22 @@ export interface BrandingPreferenceInterface {
 export interface BrandingPreferenceOrganizationDetailsInterface {
     /**
      * Site title appearing on the browser tab.
+     * @deprecated Moved to the `/branding-preference/text` API.
      */
-    siteTitle: string;
+    siteTitle?: string;
     /**
      * Copyright for the footer.
+     * @deprecated Moved to the `/branding-preference/text` API.
      */
-    copyrightText: string;
+    copyrightText?: string;
     /**
      * Support email to be shown for Org members.
      */
     supportEmail: string;
+    /**
+     * Display name to be shown for Org members.
+     */
+    displayName: string;
 }
 
 /**
@@ -197,7 +203,7 @@ export interface ThemeConfigInterface {
     loginPage?: BrandingPreferencePageInterface;
     /**
      * Page Preferences.
-     * @deprecated Renamed to `loginPage` to keep it specific for login page. 
+     * @deprecated Renamed to `loginPage` to keep it specific for login page.
      */
     page?: BrandingPreferencePageInterface;
     /**
@@ -521,8 +527,13 @@ export interface BrandingPreferenceConfigInterface {
     isBrandingEnabled: boolean;
     /**
      * Should remove default branding.
+     * @deprecated Renamed to `removeDefaultBranding` to keep it common.
      */
-    removeAsgardeoBranding: boolean;
+    removeAsgardeoBranding?: boolean;
+    /**
+     * Should remove default branding.
+     */
+    removeDefaultBranding?: boolean;
 }
 
 /**

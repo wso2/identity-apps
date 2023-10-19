@@ -95,11 +95,6 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
-%>
-
 <html lang="en-US">
     <head>
         <%-- header --%>
@@ -178,15 +173,7 @@
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                     if (productTitleFile.exists()) {
                 %>
-                    <%
-                        if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
-                    %>
-                        <div class="product-title">
-                            <jsp:include page="extensions/product-title.jsp"/>
-                        </div>
-                    <% } else { %>
-                        <jsp:include page="extensions/product-title.jsp"/>
-                    <% } %>
+                    <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
                     <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
@@ -195,7 +182,7 @@
                 <div class="ui segment">
                     <%-- page content --%>
                     <h3 class="ui header text-center">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.heading")%>
+                        <%= i18n(resourceBundle, customText, "totp.heading") %>
                     </h3>
 
                     <%
@@ -217,7 +204,7 @@
 
                             <div class="equal width fields">
                                     <div class="field mt-5">
-                                        <input 
+                                        <input
                                             class="text-center p-3"
                                             id="pincode-1"
                                             name="pincode-1"
@@ -229,57 +216,57 @@
                                             autofocus>
                                     </div>
                                     <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-2" 
+                                        <input
+                                            class="text-center p-3"
+                                            id="pincode-2"
                                             name="pincode-2"
-                                            tabindex="2" 
-                                            placeholder="·" 
-                                            maxlength="1" 
+                                            tabindex="2"
+                                            placeholder="·"
+                                            maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
                                             autocomplete="off">
                                     </div>
                                     <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-3" 
+                                        <input
+                                            class="text-center p-3"
+                                            id="pincode-3"
                                             name="pincode-3"
-                                            tabindex="3" 
-                                            placeholder="·" 
-                                            maxlength="1" 
+                                            tabindex="3"
+                                            placeholder="·"
+                                            maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
                                             autocomplete="off">
                                     </div>
                                     <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-4" 
-                                            name="pincode-4" 
+                                        <input
+                                            class="text-center p-3"
+                                            id="pincode-4"
+                                            name="pincode-4"
                                             tabindex="4"
-                                            placeholder="·" 
-                                            maxlength="1" 
+                                            placeholder="·"
+                                            maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
                                             autocomplete="off">
                                     </div>
                                     <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-5" 
-                                            name="pincode-5" 
+                                        <input
+                                            class="text-center p-3"
+                                            id="pincode-5"
+                                            name="pincode-5"
                                             tabindex="5"
-                                            placeholder="·" 
-                                            maxlength="1" 
+                                            placeholder="·"
+                                            maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
                                             autocomplete="off">
                                     </div>
                                     <div class="field mt-5">
-                                        <input 
-                                            class="text-center p-3" 
-                                            id="pincode-6" 
-                                            name="pincode-6" 
+                                        <input
+                                            class="text-center p-3"
+                                            id="pincode-6"
+                                            name="pincode-6"
                                             tabindex="6"
-                                            placeholder="·" 
-                                            maxlength="1" 
+                                            placeholder="·"
+                                            maxlength="1"
                                             onkeyup="movetoNext(this, null, 'pincode-5')"
                                             autocomplete="off">
                                     </div>
@@ -327,7 +314,7 @@
                                 <% } else {
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null &&
-                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) && 
+                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
                                         isMultiAuthAvailable(multiOptionURI)) {
                                 %>
                                     <a class="ui fluid large button secondary mt-2" id="goBackLink"

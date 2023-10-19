@@ -48,6 +48,8 @@ import {
     FeatureConfigInterface, UIConstants, UserStoreDetails, UserStoreProperty, getEmptyPlaceholderIllustrations, history
 } from "../../../../features/core";
 import { deleteUser, useUsersList } from "../../../../features/users/api/users";
+import { BulkImportUserWizard } from "../../../../features/users/components/wizard/bulk-import-user-wizard";
+import { UserAddOptionTypes } from "../../../../features/users/constants";
 import { UserBasicInterface, UserListInterface } from "../../../../features/users/models/user";
 import { CONSUMER_USERSTORE } from "../../users/constants";
 import { getUserStores } from "../api";
@@ -96,6 +98,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ userStoreError, setUserStoreError ] = useState(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ rolesList ] = useState([]);
     const [ userListMetaContent ] = useState(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -445,27 +448,111 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         />
     );
 
+    const addUserDropdownTrigger: ReactElement = (
+        <PrimaryButton
+            data-componentid={ `${ componentId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("extensions:manage.users.buttons.addUserBtn") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
+    );
+
+    const getAddUserOptions = () => {
+        const options: DropdownItemProps[] = [
+            {
+                "data-componentid": `${ componentId }-add-user-dropdown-item`,
+                "data-testid": `${ testId }-add-user-dropdown-item`,
+                key: 1,
+                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                value: UserAddOptionTypes.MANUAL_INPUT
+            },
+            {
+                "data-componentid": `${ componentId }-bulk-import-users-dropdown-item`,
+                "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
+                key: 2,
+                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                value: UserAddOptionTypes.BULK_IMPORT
+            }
+        ];
+    
+        return options;
+    };
+
+    const addUserDropDown: ReactElement = (
+        <Dropdown
+            data-testid={ `${ testId }-add-user-dropdown` }
+            data-componentid={ `${ testId }-add-user-dropdown` }
+            direction="left"
+            floating
+            icon={ null }
+            trigger={ addUserDropdownTrigger }
+        >
+            <Dropdown.Menu >
+                { getAddUserOptions().map((option: DropdownItemProps) => (
+                    <Dropdown.Item
+                        key={ option.value as string }
+                        onClick={ ()=> handleDropdownItemChange(option.value as string) }
+                        { ...option }
+                    />
+                )) }
+            </Dropdown.Menu>
+        </Dropdown>
+    );
+
+    /**
+     * Handle Add user dropdown item change.
+     * @param value - Dropdown item value.
+     */
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAddOptionTypes.MANUAL_INPUT) {
+            eventPublisher.publish("manage-users-click-create-new", {
+                type: "user"
+            });
+            setShowWizard(true);
+        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            eventPublisher.publish("manage-users-click-bulk-import", {
+                type: "user"
+            });
+            setShowBulkImportWizard(true);
+        }
+    };
+
+    /**
+     * Handles the `onClose` callback action from the bulk import wizard.
+     */
+    const handleBulkImportWizardClose = (): void => {
+        setShowBulkImportWizard(false);
+        mutateUserListFetchRequest();
+    };
+
     return (
         <PageLayout
             pageTitle="Users"
             action={
                 !isUserListFetchRequestLoading
-                && originalUserList?.totalResults > 0
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        <PrimaryButton
-                            data-componentid={ `${ componentId }-add-user-button` }
-                            data-testid={ `${ testId }-add-user-button` }
-                            onClick={ () => {
-                                eventPublisher.publish("manage-users-click-create-new", {
-                                    type: "user"
-                                });
-                                setShowWizard(true);
-                            } }
-                        >
-                            <Icon name="add"/>
-                            { t("extensions:manage.users.buttons.addUserBtn") }
-                        </PrimaryButton>
+                        { featureConfig?.bulkUserImport?.enabled
+                            ? (
+                                addUserDropDown 
+                            ) : (
+                                <PrimaryButton
+                                    data-componentid={ `${ componentId }-add-user-button` }
+                                    data-testid={ `${ testId }-add-user-button` }
+                                    onClick={ () => {
+                                        eventPublisher.publish("manage-users-click-create-new", {
+                                            type: "user"
+                                        });
+                                        setShowWizard(true);
+                                    } }
+                                >
+                                    <Icon name="add"/>
+                                    { t("extensions:manage.users.buttons.addUserBtn") }
+                                </PrimaryButton>
+                            ) } 
+                        
                     </Show>
                 )
             }
@@ -535,7 +622,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 usersList={ usersList }
                                 handleUserDelete={ handleUserDelete }
                                 userMetaListContent={ userListMetaContent }
-                                onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
                                 data-componentid="user-mgt-user-list"
@@ -563,6 +649,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 .replace(":id", id));
                         } }
                         defaultUserTypeSelection={ selectedAddUserType }
+                    />
+                )
+            }
+            {
+                showBulkImportWizard && (
+                    <BulkImportUserWizard
+                        data-componentid="user-mgt-bulk-import-user-wizard-modal"
+                        closeWizard={ handleBulkImportWizardClose }
+                        userstore={ CONSUMER_USERSTORE }
                     />
                 )
             }

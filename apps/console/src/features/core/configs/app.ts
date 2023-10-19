@@ -22,6 +22,7 @@ import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBa
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
+import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../connections";
@@ -38,6 +39,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-c
 import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
+import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../validation/configs";
@@ -210,6 +212,7 @@ export class Config {
         return {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
@@ -226,8 +229,9 @@ export class Config {
             ...getJWTAuthenticationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getExtendedFeatureResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.getDeploymentConfig()),
+            ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,

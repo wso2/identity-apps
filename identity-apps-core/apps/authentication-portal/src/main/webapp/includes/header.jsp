@@ -16,13 +16,16 @@
   ~ under the License.
   --%>
 
-<%@ include file="localize.jsp" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="init-url.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="branding-preferences.jsp"/>
 
@@ -56,38 +59,40 @@
 <jsp:include page="theme-skeleton.jsp"/>
 
 <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null) { %>
+<% if (overrideStylesheet != null && !StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) { %>
 <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 
 <%-- Layout specific style sheet --%>
 <%
-    String tempStyleFilePath = "";
-    if (StringUtils.startsWith(layout, "custom-")) {
-        if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences)) {
-            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, "custom-" + tenantRequestingPreferences + "-" + applicationRequestingPreferences)) {
-            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
+    String styleFilePath = "";
+    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                + tenantRequestingPreferences)) {
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
         }
     } else {
-        tempStyleFilePath = "includes/layouts/" + layout + "/styles.css";
+        styleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
 
-    if (config.getServletContext().getResource(tempStyleFilePath) != null) {
-        styleFilePath = tempStyleFilePath;
+    if (config.getServletContext().getResource(styleFilePath) != null) {
+%>
+        <link rel="stylesheet" href="<%= styleFilePath %>">
+<%
     }
 %>
-    
-<link rel="stylesheet" href="<%= styleFilePath %>">
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
-<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
+<title><%= i18n(resourceBundle, customText, "site.title", __DEPRECATED__siteTitle) %></title>
 
 <%-- Downtime banner --%>
 <%
     if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
 %>
-        <jsp:include page="extensions/planned-downtime-banner.jsp"/>
+        <jsp:include page="/extensions/planned-downtime-banner.jsp"/>
 <%
     }
 %>

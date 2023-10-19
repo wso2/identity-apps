@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
@@ -24,17 +25,16 @@ import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants, store } from "../../core";
+import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import { 
     ConnectionInterface, 
     ConnectionTabTypes, 
-    ConnectionTemplateInterface, 
     FederatedAuthenticatorListItemInterface, 
     FederatedAuthenticatorListResponseInterface, 
     OutboundProvisioningConnectorInterface, 
-    SupportedServices, 
-    SupportedServicesInterface
+    SupportedServices
 } from "../models/connection";
 import {
     ReactComponent as ConnectionIcon
@@ -51,12 +51,12 @@ export class ConnectionsManagementUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
-    public static updateConnnectorDetails = (connection: ConnectionInterface, templateDescription: string): ConnectionInterface => {
+    public static updateConnnectorDetails = (connection: ConnectionInterface, 
+        templateDescription: string): ConnectionInterface => {
+
         const connector: OutboundProvisioningConnectorInterface =
         connection?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
@@ -88,6 +88,18 @@ export class ConnectionsManagementUtils {
         | MultiFactorAuthenticatorInterface): connector is ConnectionInterface {
 
         return (connector as ConnectionInterface)?.federatedAuthenticators !== undefined;
+    }
+
+    /**
+     * Utility method to check if the connector is Organization SSO.
+     *
+     * @param name - Connector name.
+     *
+     * @returns Whether the connector is Organization SSO.
+     */
+    public static isOrganizationSSOConnection(id: string): boolean {
+
+        return id === AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     }
 
     /**
@@ -163,7 +175,8 @@ export class ConnectionsManagementUtils {
                 return image;
             }
         }
-        const match = Object.keys(icons).find(key => key.toString() === image);
+
+        const match: string = Object.keys(icons).find((key: string) => key.toString() === image);
 
         return match ? icons[ match ] : icons[ "default" ] ?? image;
     }
@@ -193,9 +206,10 @@ export class ConnectionsManagementUtils {
     }
 
     /**
+     * Util to resolve connection resource path.
      * 
-     * @param externalURL External resource location URL
-     * @param path Resource path.
+     * @param externalURL - External resource location URL
+     * @param path - Resource path.
      * @returns 
      */
     public static resolveConnectionResourcePath(externalURL: string, path: string): string {
@@ -216,6 +230,14 @@ export class ConnectionsManagementUtils {
 
             return AppConstants.getClientOrigin() + basename + "/resources/connections/" + path;
         }
+    }
+
+    /**
+     * Util to resolve connection doc links. 
+     */
+    public static resolveConnectionDocLink(id: string): string {        
+
+        return ConnectionManagementConstants.DOC_LINK_DICTIONARY.get(id);
     }
 }
 
@@ -566,7 +588,7 @@ export const handleConnectionUpdateError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the federated authenticator meta data GET request.
  */
-export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: AxiosError): void => {
+export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: IdentityAppsApiException): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -589,8 +611,9 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Axios
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getFederatedAuthenticatorMetadata." +
-                    "genericError.description"
+                "console:develop.features.authenticationProvider.notifications" +
+                    ".getFederatedAuthenticatorMetadata." +
+                        "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
@@ -609,12 +632,14 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getConnectionMetaDetails.error.message",
+                    "console:develop.features.authenticationProvider.notifications" +
+                        ".getConnectionMetaDetails.error.message",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getConnectionMetaDetails.error.message"
+                    "console:develop.features.authenticationProvider" +
+                        ".notifications.getConnectionMetaDetails.error.message"
                 )
             })
         );
@@ -624,11 +649,13 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getConnectionMetaDetails.genericError.description"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.getConnectionMetaDetails.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getConnectionMetaDetails.genericError.message"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.getConnectionMetaDetails.genericError.message"
             )
         })
     );
@@ -644,12 +671,14 @@ export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getAuthenticatorTags.error.message",
+                    "console:develop.features.authenticationProvider" + 
+                        ".notifications.getAuthenticatorTags.error.message",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getAuthenticatorTags.error.message"
+                    "console:develop.features.authenticationProvider" + 
+                        ".notifications.getAuthenticatorTags.error.message"
                 )
             })
         );
@@ -659,15 +688,17 @@ export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getAuthenticatorTags.genericError.description"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.getAuthenticatorTags.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getAuthenticatorTags.genericError.message"
+                "console:develop.features.authenticationProvider" +
+                    ".notifications.getAuthenticatorTags.genericError.message"
             )
         })
     );
-
+    
     return;
 };
 
@@ -676,12 +707,14 @@ export const handleGetRoleListError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.description",
+                    "console:develop.features.authenticationProvider" + 
+                        ".notifications.getRolesList.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.message"
+                    "console:develop.features.authenticationProvider" + 
+                        ".notifications.getRolesList.error.message"
                 )
             })
         );
@@ -692,12 +725,13 @@ export const handleGetRoleListError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError." +
-                    "description"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.getRolesList.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError.message"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.getRolesList.genericError.message"
             )
         })
     );
@@ -714,7 +748,8 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings.error.message"
+                    "console:develop.features.authenticationProvider" + 
+                        ".notifications.updateIDPRoleMappings.error.message"
                 )
             })
         );
@@ -723,13 +758,13 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
-                    "genericError.description"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.updateIDPRoleMappings.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
-                    "genericError.message"
+                "console:develop.features.authenticationProvider" + 
+                    ".notifications.updateIDPRoleMappings.genericError.message"
             )
         })
     );

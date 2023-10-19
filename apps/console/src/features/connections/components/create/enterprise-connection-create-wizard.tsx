@@ -48,6 +48,7 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -65,6 +66,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { EventPublisher } from "../../../core";
 import { createConnection, useGetConnectionTemplate, useGetConnections } from "../../api/connections";
@@ -73,6 +75,7 @@ import { ConnectionManagementConstants } from "../../constants/connection-consta
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthProtocolTypes,
+    ConnectionInterface,
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
     StrictConnectionInterface
@@ -147,11 +150,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>([]);
+    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -161,20 +164,26 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null);
+    } = useGetConnections(null, null, null, null);
 
     const {
         data: connectionTemplate,
-        isLoading: isConnectionTemplateFetchRequestLoading,
-        error: connectionTemplateFetchRequestError
-    } = useGetConnectionTemplate(selectedTemplateId);
+        isLoading: isConnectionTemplateFetchRequestLoading
+    } = useGetConnectionTemplate(selectedTemplateId, selectedTemplateId !== null);
 
     useEffect(() => {
-        if (!isConnectionsFetchRequestLoading && !connectionsFetchRequestError) {
+        if (isConnectionsFetchRequestLoading) {
+
             return;
         }
 
         if (!connections) {
+
+            return;
+        }
+
+        if (idpList) {
+
             return;
         }
 
@@ -182,7 +191,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     }, [ connections ]);
 
     useEffect(() => {
-        handleGetConnectionsError(connectionsFetchRequestError);
+        if (connectionsFetchRequestError) {
+            handleGetConnectionsError(connectionsFetchRequestError);
+        }
     }, [ connectionsFetchRequestError ]);
 
     useEffect(() => {
@@ -195,14 +206,14 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     useEffect(() => {
         setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
 
-        const templateId = selectedProtocol === "saml"
+        const templateId: string = selectedProtocol === "saml"
             ? "enterprise-saml-idp"
             : "enterprise-oidc-idp";
 
         setSelectedTemplateId(templateId);
     }, [ selectedProtocol ]);
 
-    const initialValues = useMemo(() => ({
+    const initialValues: { NameIDType: string, RequestMethod: string, name: string } = useMemo(() => ({
         NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
         RequestMethod: "post",
         name: EMPTY_STRING // This must be filled by the user.
@@ -230,8 +241,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
         if (idpList?.length > 0) {
-            return idpList
-                .reduce((set, { name }) => set.add(name), new Set<string>())
+            return idpList?.reduce((set: Set<string>, { name }: { name: string }) => set.add(name), new Set<string>())
                 .has(userInput);
         }
 
@@ -248,22 +258,22 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     /**
      * Check whether loop back call is allowed or not.
-     * @param value URL to check.
+     * @param value - URL to check.
      */
-    const isLoopBackCall = (value) => {
+    const isLoopBackCall = (value: string) => {
         return (!(URLUtils.isLoopBackCall(value))) ?
             undefined : t("console:develop.features.idp.forms.common." +
                 "internetResolvableErrorMessage");
     };
 
     /**
-     * @param values {object} form values
-     * - @param form {Form} form instance
-     * - @param callback
+     * @param values - form values
+     * @param form - form instance
+     * @param callback - callback to proceed to the next step
      */
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = (values: any) => {
 
-        const FIRST_ENTRY = 0;
+        const FIRST_ENTRY: number = 0;
 
         const { idp: identityProvider } = cloneDeep(connectionTemplate);
 
@@ -339,7 +349,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         setIsSubmitting(true);
 
         createConnection(identityProvider)
-            .then((response) => {
+            .then((response: AxiosResponse<ConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId + "-" + kebabCase(selectedProtocol)
                 });
@@ -353,8 +363,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     onIDPCreate(createdIdpID);
 
@@ -362,7 +372,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 }
                 onIDPCreate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&
@@ -485,8 +495,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 <label className="sub-templates-label">Select protocol</label>
                 <Grid 
                     container 
-                    spacing={ { xs: 2, md: 3 } } 
-                    columns={ { xs: 4, sm: 8, md: 12 } }
+                    spacing={ { md: 3, xs: 2 } } 
+                    columns={ { md: 12, sm: 8, xs: 4 } }
                 >
                     <Grid xs={ 2 } sm={ 4 } md={ 8 }>
                         <SelectionCard
@@ -538,7 +548,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const samlConfigurationPage = () => ( 
         <WizardPage
-            validate={ (values) => {
+            validate={ (values: any) => {
                 const errors: FormErrors = {};
 
                 errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
@@ -566,7 +576,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 placeholder="Enter a Service Provider Entity ID"
                 data-componentid={ `${ componentId }-form-wizard-saml-entity-id` }
             />
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4  } }>
                 <Grid xs={ 2 } sm={ 4 } md={ 6 }>
                     <p><b>Mode of configuration</b></p>
                     <Switcher
@@ -574,7 +584,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         data-componentid={ `${ componentId }-form-wizard-saml-config-switcher` }
                         className={ "mt-1" }
                         selectedValue={ selectedSamlConfigMode }
-                        onChange={ ({ value }) => setSelectedSamlConfigMode(value as any) }
+                        onChange={ ({ value }: any) => setSelectedSamlConfigMode(value as any) }
                         options={ [ {
                             label: "Manual Configuration",
                             value: "manual"
@@ -620,7 +630,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                     file={ selectedMetadataFile }
                     pastedContent={ pastedMetadataContent }
-                    onChange={ (result) => {
+                    onChange={ (result: any) => {
                         setSelectedMetadataFile(result.file);
                         setPastedMetadataContent(result.pastedContent);
                         setXmlBase64String(result.serialized as string);
@@ -640,7 +650,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const oidcConfigurationPage = () => {
         return (
             <WizardPage
-                validate={ (values) => {
+                validate={ (values: any) => {
                     const errors: FormErrors = {};
 
                     errors.clientId = composeValidators(
@@ -725,7 +735,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const certificatesPage = () => (
         <WizardPage
-            validate={ (values) => {
+            validate={ (values: any) => {
                 const errors: FormErrors = {};
 
                 if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
@@ -741,7 +751,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
                 return errors;
             } }>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
                 <Grid xs={ 2 } sm={ 4 } md={ 6 }>
                     <p><b>Mode of certificate configuration</b></p>
                     { (selectedProtocol === "oidc") && (
@@ -751,7 +761,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                             className={ "mt-1" }
                             defaultOptionValue={ "jwks" }
                             selectedValue={ selectedCertInputType }
-                            onChange={ ({ value }) => setSelectedCertInputType(value as any) }
+                            onChange={ ({ value }: any) => setSelectedCertInputType(value as any) }
                             options={ [ {
                                 label: "JWKS endpoint",
                                 value: "jwks"
@@ -793,14 +803,14 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         pastedContent={ pastedPEMContent }
                         fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                         normalizeStateOnRemoveOperations={ true }
-                        onChange={ (result) => {
+                        onChange={ (result: any) => {
                             setPastedPEMContent(result.pastedContent);
                             setSelectedCertificateFile(result.file);
                             setPemString(result.serialized?.pem);
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
-                             * implies => that when the input is optional but the user tries to enter
+                             * implies that when the input is optional but the user tries to enter
                              * invalid content to the picker we can't enable next because it's invalid.
                              */
                             setNextShouldBeDisabled(
@@ -852,12 +862,14 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         // Return null when `showHelpPanel` is false or `samlHelp`
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
-        const subTemplate: ConnectionTemplateInterface = cloneDeep(template.subTemplates.find(({ id }) => {
-            return id === (selectedProtocol === "saml"
-                ? "enterprise-saml-idp"
-                : "enterprise-oidc-idp"
-            );
-        }));
+        const subTemplate: ConnectionTemplateInterface = cloneDeep(template.subTemplates.find(
+            ({ id }: { id: string }) => {
+                return id === (selectedProtocol === "saml"
+                    ? "enterprise-saml-idp"
+                    : "enterprise-oidc-idp"
+                );
+            }
+        ));
 
         if (!subTemplate?.content?.wizardHelp) return null;
 
@@ -888,7 +900,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     /**
      * Resolves the documentation link when a protocol is selected.
-     * @return {React.ReactElement}
+     * @returns Documetation link.
      */
     const resolveDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
@@ -914,6 +926,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     return (
         <ModalWithSidePanel
+            isLoading={ isConnectionTemplateFetchRequestLoading }
             open={ true }
             className="wizard identity-provider-create-wizard"
             dimmer="blurring"
@@ -938,7 +951,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                             { subTitle && (
                                 <Heading as="h6">
                                     { subTitle }
-                                    { /* { resolveDocumentationLink() } */ }
+                                    { resolveDocumentationLink() }
                                 </Heading>
                             ) }
                         </div>
@@ -951,7 +964,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         data-componentid={ `${ componentId }-modal-content-1` }>
                         <Steps.Group
                             current={ currentWizardStep }>
-                            { wizardSteps.map((step, index) => (
+                            { wizardSteps.map((step: any, index: number) => (
                                 <Steps.Step
                                     active
                                     key={ index }
@@ -1072,17 +1085,17 @@ const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
 const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
 
 // General constants
-const EMPTY_STRING = "";
-const CERT_FILE_PROCESSING_STRATEGY = new CertFileStrategy();
-const XML_FILE_PROCESSING_STRATEGY = new XMLFileStrategy();
+const EMPTY_STRING: string = "";
+const CERT_FILE_PROCESSING_STRATEGY: CertFileStrategy = new CertFileStrategy();
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
 // Validation Functions.
 // FIXME: These will be removed in the future when
 //        form module validation gets to a stable state.
 
-const composeValidators = (...validators) => (value) => {
+const composeValidators = ( ...validators: any) => (value: string) => {
     return validators.reduce(
-        (error, validator) => error || validator(value),
+        (error: any, validator: any) => error || validator(value),
         undefined
     );
 };
@@ -1090,14 +1103,13 @@ const composeValidators = (...validators) => (value) => {
 /**
  * Given a {@link FormErrors} object, it will check whether
  * every key has a assigned truthy value. {@link Array.every}
- * will return {@code true} if one of the object member has
+ * will return true if one of the object member has
  * a truthy value. In other words, it will check a field has
  * a error message attached to it or not.
  *
- * @param errors {FormErrors}
  */
 const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[ k ]);
+    return !Object.keys(errors).every((k: any) => !errors[ k ]);
 };
 
 const required = (value: any) => {
@@ -1108,7 +1120,7 @@ const required = (value: any) => {
     return undefined;
 };
 
-const length = (minMax: MinMax) => (value) => {
+const length = (minMax: MinMax) => (value: string) => {
     if (!value && minMax.min > 0) {
         return "You cannot leave this blank";
     }
@@ -1122,6 +1134,6 @@ const length = (minMax: MinMax) => (value) => {
     return undefined;
 };
 
-const isUrl = (value) => {
+const isUrl = (value: string) => {
     return FormValidation.url(value) ? undefined : "This value is invalid.";
 };

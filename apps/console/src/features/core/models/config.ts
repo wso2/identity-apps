@@ -28,6 +28,7 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
@@ -39,6 +40,7 @@ import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jw
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
+import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
@@ -162,6 +164,10 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkUserImport?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -369,8 +375,10 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
+    TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface {
+    JWTAuthenticationServiceEndpointsInterface,
+    BrandingPreferenceResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

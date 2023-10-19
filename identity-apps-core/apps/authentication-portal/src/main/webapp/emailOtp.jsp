@@ -90,8 +90,9 @@
 
     <%
         if (reCaptchaEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src="https://recaptcha.net/recaptcha/api.js" async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -140,13 +141,15 @@
         <layout:component componentName="MainSection">
             <div class="ui segment">
                 <%-- page content --%>
-                <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "otp.verification")%>
+                <h2>
+                    <%= i18n(resourceBundle, customText, "email.otp.heading") %>
+                </h2>
                 </h2>
                 <div class="ui divider hidden"></div>
                 <%
                     if ("true".equals(authenticationFailed)) {
                 %>
-                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+                <div class="ui negative message" id="failed-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage))%>
                 </div>
                 <div class="ui divider hidden"></div>
                 <% } %>
@@ -179,11 +182,11 @@
                             <%-- Input Description for Screen Readers --%>
                             <span id="OTPDescription" style="display: none;">Enter your OTP</span>
                             <div class="ui fluid icon input addon-wrapper">
-                                <input 
-                                    type="password" 
-                                    id='OTPCode' 
-                                    name="OTPCode" 
-                                    c size='30' 
+                                <input
+                                    type="password"
+                                    id='OTPCode'
+                                    name="OTPCode"
+                                    c size='30'
                                     aria-describedby="OTPDescription"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                             </div>
@@ -192,11 +195,11 @@
                                 <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code")%>
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
-                                    <input 
-                                        type="password" 
-                                        id='OTPCode' 
-                                        name="OTPCode" 
-                                        size='30' 
+                                    <input
+                                        type="password"
+                                        id='OTPCode'
+                                        name="OTPCode"
+                                        size='30'
                                         aria-describedby="OTPDescription"/>
                                     <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                                 </div>
@@ -285,6 +288,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

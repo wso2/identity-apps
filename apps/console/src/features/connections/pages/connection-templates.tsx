@@ -22,8 +22,6 @@ import {
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
-import { UIConfigContext } from "@wso2is/common/src/contexts/ui-config-context";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -109,10 +107,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const { deploymentConfig } = useDeploymentConfig();
-    const setConnectionTemplates = useSetConnectionTemplates();
+    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
     
-    const documentationBaseUrl: string = deploymentConfig?.docSiteURL || "https://wso2.com/asgardeo/docs";
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -156,34 +152,36 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return;
         }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map((template) => {
-            if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                return {
-                    ...template,
-                    templateGroup: "enterprise-protocols"
-                };
-            }
+        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map(
+            (template: ConnectionTemplateInterface) => {
+                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
+                    return {
+                        ...template,
+                        templateGroup: "enterprise-protocols"
+                    };
+                }
 
-            if (template.id === "linkedin-idp") {
-                return {
-                    ...template,
-                    comingSoon: true
-                };
-            }
+                if (template.id === "linkedin-idp") {
+                    return {
+                        ...template,
+                        comingSoon: true
+                    };
+                }
 
-            if (template.displayOrder < 0) {
+                if (template.displayOrder < 0) {
                 
-                return;
+                    return;
+                }
+
+                // Removes hidden connections.
+                if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
+
+                    return;
+                }
+
+                return template;
             }
-
-            // Removes hidden connections.
-            if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
-
-                return;
-            }
-
-            return template;
-        });
+        );
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -484,6 +482,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 // then prevent rendering it.
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
+                                                        
                                                     return null;
                                                 }
 
@@ -498,8 +497,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         disabled={ template.disabled }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
+                                                        showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={ 
-                                                            documentationBaseUrl + template.docLink 
+                                                            getLink(ConnectionsManagementUtils
+                                                                .resolveConnectionDocLink(template.id))
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
@@ -519,7 +520,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         data-testid={ `${ componentId }-${ template.name }` }
                                                     />
                                                 );
-                                            })
+                                            }
+                                            )
                                         }
                                     </ResourceGrid>
                                 ))
