@@ -173,7 +173,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, []);
 
     useEffect(() => {
-        const attributes: string = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
+        const attributes: string = userListMetaContent && 
+        userListMetaContent?.values() ? generateAttributesString(userListMetaContent?.values()) : null;
 
         getList(listItemLimit, listOffset, null, attributes, userStore);
     }, [ listItemLimit, listOffset, userStore ]);
@@ -182,7 +183,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         if (!isListUpdated) {
             return;
         }
-        const attributes: string = generateAttributesString(userListMetaContent?.values());
+        const attributes: string = userListMetaContent && 
+        userListMetaContent?.values() ? generateAttributesString(userListMetaContent?.values()) : null;
 
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
