@@ -53,7 +53,17 @@
 %>
 
 <%-- Cookie Consent Banner --%>
-<jsp:include page="cookie-consent-banner.jsp"/>
+<%
+    if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
+%>
+        <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
+<%
+    } else {
+%>
+        <jsp:include page="/includes/cookie-consent-banner.jsp"/>
+<%
+    }
+%>
 
 <%-- footer --%>
 <footer class="footer">
