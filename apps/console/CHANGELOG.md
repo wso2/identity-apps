@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.1.4
+
+### Patch Changes
+
+- [#4256](https://github.com/wso2/identity-apps/pull/4256) [`6c81090340`](https://github.com/wso2/identity-apps/commit/6c81090340f13c40c8114c0e2dbf94ddc364486e) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve connections section in the Console
+
+- Updated dependencies [[`63e9418574`](https://github.com/wso2/identity-apps/commit/63e9418574a49d4d84a2dae6e512667c60674d2f)]:
+  - @wso2is/i18n@2.0.9
+
 ## 2.1.3
 
 ### Patch Changes
