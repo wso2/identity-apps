@@ -286,6 +286,8 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     <Grid.Row columns={ 2 } key={ 1 }>
                                                         <Grid.Column key="idleSessionTimeout">
                                                             <Field.Input
+                                                                min={ SessionManagementConstants
+                                                                    .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                                 ariaLabel="Idle Session Timeout Field"
                                                                 inputType="number"
                                                                 name="idleSessionTimeout"
@@ -298,8 +300,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 required={ true }
                                                                 value={ sessionManagementConfig?.idleSessionTimeout }
                                                                 readOnly={ isReadOnly }
-                                                                maxLength={ SessionManagementConstants
-                                                                    .SESSION_MANAGEMENT_CONFIG_FIELD_MAX_LENGTH }
+                                                                maxLength={ null }
                                                                 minLength={ SessionManagementConstants
                                                                     .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }
@@ -310,6 +311,8 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                         </Grid.Column>
                                                         <Grid.Column key="rememberMePeriod">
                                                             <Field.Input
+                                                                min={ SessionManagementConstants
+                                                                    .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                                 ariaLabel="Remember Me Period Field"
                                                                 inputType="number"
                                                                 name="rememberMePeriod"
@@ -322,8 +325,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 required={ true }
                                                                 value={ sessionManagementConfig?.rememberMePeriod }
                                                                 readOnly={ isReadOnly }
-                                                                maxLength={ SessionManagementConstants
-                                                                    .SESSION_MANAGEMENT_CONFIG_FIELD_MAX_LENGTH }
+                                                                maxLength={ null }
                                                                 minLength={ SessionManagementConstants
                                                                     .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }

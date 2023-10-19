@@ -34,9 +34,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get email provider configurations.
+ * Get session management configurations.
  * 
- * @returns the email provider configurations of the tenant.
+ * @returns the session management configurations of the tenant.
  */
 export const useSessionManagementConfig = <
     Data = SessionManagementConfigAPIResponseInterface, Error = RequestErrorInterface

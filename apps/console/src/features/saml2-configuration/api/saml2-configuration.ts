@@ -34,7 +34,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get email provider configurations.
+ * Get saml2 configurations.
  * 
  * @returns the saml2 configurations of the tenant.
  */

@@ -208,7 +208,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     readOnly={ readOnly }
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-analytics-host-url` }
+                    data-componentid={ `${componentId}-analytics-host-url` }
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -225,7 +225,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     readOnly={ readOnly }
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-analytics-success` }
+                    data-componentid={ `${componentId}-analytics-success` }
                     toggle
                 />
                 <Hint className={ "mb-5" }>
@@ -248,7 +248,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     readOnly={ readOnly }
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-username` }
+                    data-componentid={ `${componentId}-host-username` }
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -271,7 +271,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     readOnly={ readOnly }
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-password` }
+                    data-componentid={ `${componentId}-host-password` }
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -297,7 +297,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     width={ 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-connection-timeout` }
+                    data-componentid={ `${componentId}-host-connection-timeout` }
                 >
                     <input/>
                     <Label
@@ -328,7 +328,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     width={ 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-read-timeout` }
+                    data-componentid={ `${componentId}-host-read-timeout` }
                 >
                     <input/>
                     <Label
@@ -359,7 +359,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     width={ 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-connection-request-timeout` }
+                    data-componentid={ `${componentId}-host-connection-request-timeout` }
                 >
                     <input/>
                     <Label
@@ -386,7 +386,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     readOnly={ readOnly }
                     width={ 12 }
                     disabled={ !isConnectorEnabled }
-                    data-testid={ `${componentId}-host-name-verifier` }
+                    data-componentid={ `${componentId}-host-name-verifier` }
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -400,7 +400,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     buttonType="primary_btn"
                     ariaLabel="Analytics config update button"
                     name="update-button"
-                    data-testid={ `${componentId}-submit-button` }
+                    data-componentid={ `${componentId}-submit-button` }
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }

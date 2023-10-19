@@ -300,7 +300,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         );
     },
     renderConnectorWithinEmphasizedSegment: false,
-    showConnectorsOnTheSidePanel: true,
+    showConnectorsOnTheSidePanel: false,
     showGovernanceConnectorCategories: false,
     showPageHeading: true,
     usePasswordExpiry: useGetPasswordExpiryProperties,

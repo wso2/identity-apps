@@ -232,7 +232,12 @@
             "analytics": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
             },
             "apiResources": {
                 "disabledFeatures": [],
@@ -607,7 +612,12 @@
             "saml2Configuration": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
             },
             "secretsManagement": {
                 "enabled": false,
@@ -630,7 +640,12 @@
             "sessionManagement": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
             },
             "organizations": {
                 "enabled": true,
@@ -683,7 +698,12 @@
             "wsFedconfiguration": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
             },
             "userOnboarding": {
                 "disabledFeatures": [],

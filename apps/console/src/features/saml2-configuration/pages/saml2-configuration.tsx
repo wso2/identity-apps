@@ -303,9 +303,9 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                     "metadataValidityPeriod.hint") }
                                                                 value={ saml2Config?.metadataValidityPeriod }
                                                                 readOnly={ isReadOnly }
-                                                                maxLength={ Saml2ConfigurationConstants
+                                                                minLength={ Saml2ConfigurationConstants
                                                                     .SAML2_CONFIG_FIELD_MIN_LENGTH }
-                                                                minLength={ null }
+                                                                maxLength={ null }
                                                                 data-componentid={ 
                                                                     `${componentId}-metadata-validity-period` }
                                                                 autoComplete="new-password"
@@ -318,8 +318,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                             <URLInput
                                                                 urlState={ destinationUrls }
                                                                 setURLState={ (url: string) => {
-                                                                    const processedUrl: string = url.split(",")
-                                                                        .filter((item: string) => item).toString();
+                                                                    const processedUrl: string = url?.split(",")
+                                                                        ?.filter((item: string) => item)?.toString();
                                                                         
                                                                     setDestinationUrls(processedUrl);
                                                                 } }

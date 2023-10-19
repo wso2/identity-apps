@@ -142,58 +142,56 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 </Grid.Row>
                 {
                     featureConfig?.residentIdp?.enabled && (
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                                <GenericIcon
-                                    icon={ getHelpPanelIcons().endpoints.destination }
-                                    size="micro"
-                                    square
-                                    transparent
-                                    inline
-                                    className="left-icon"
-                                    verticalAlign="middle"
-                                    spaced="right"
-                                />
-                                <label data-testid={ `${ testId }-destination-url-label` }>
-                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                        "samlConfigurations.labels.destinationURL") }
-                                </label>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                                <CopyInputField
-                                    value={ samlConfigurations?.destinationURLs?.toString() }
-                                    data-testid={ `${ testId }-destination-url-readonly-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-                {
-                    featureConfig?.residentIdp?.enabled && (
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
-                                <GenericIcon
-                                    icon={ <CirclesOverlapIcon className="icon" /> }
-                                    size="micro"
-                                    square
-                                    transparent
-                                    inline
-                                    className="left-icon"
-                                    verticalAlign="middle"
-                                    spaced="right"
-                                />
-                                <label data-testid={ `${ testId }-artifact-resolution-url-label` }>
-                                    { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                        "samlConfigurations.labels.artifactResolutionUrl") }
-                                </label>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
-                                <CopyInputField
-                                    value={ samlConfigurations?.artifactResolutionUrl }
-                                    data-testid={ `${ testId }-artifact-resolution-url-readonly-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                        <>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                    <GenericIcon
+                                        icon={ getHelpPanelIcons().endpoints.destination }
+                                        size="micro"
+                                        square
+                                        transparent
+                                        inline
+                                        className="left-icon"
+                                        verticalAlign="middle"
+                                        spaced="right"
+                                    />
+                                    <label data-testid={ `${ testId }-destination-url-label` }>
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                            "samlConfigurations.labels.destinationURL") }
+                                    </label>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                    <CopyInputField
+                                        value={ samlConfigurations?.destinationURLs?.toString() }
+                                        data-testid={ `${ testId }-destination-url-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                    <GenericIcon
+                                        icon={ <CirclesOverlapIcon className="icon" /> }
+                                        size="micro"
+                                        square
+                                        transparent
+                                        inline
+                                        className="left-icon"
+                                        verticalAlign="middle"
+                                        spaced="right"
+                                    />
+                                    <label data-testid={ `${ testId }-artifact-resolution-url-label` }>
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                            "samlConfigurations.labels.artifactResolutionUrl") }
+                                    </label>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                    <CopyInputField
+                                        value={ samlConfigurations?.artifactResolutionUrl }
+                                        data-testid={ `${ testId }-artifact-resolution-url-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
                     )
                 }
                 <Grid.Row columns={ 2 }>
