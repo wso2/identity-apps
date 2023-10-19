@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4243](https://github.com/wso2/identity-apps/pull/4243) [`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add comma support in bulk import csv
+
 ## 2.0.7
 
 ### Patch Changes

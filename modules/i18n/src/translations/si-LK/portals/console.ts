@@ -5480,10 +5480,6 @@ export const console: ConsoleNS = {
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
-                    },
-                    xmlsoap: {
-                        description: "පරිශීලක ගුණාංග සඳහා XML SOAP ප්‍රොටෝකෝල නිරූපණය.",
-                        heading: "XML SOAP"
                     }
                 },
                 dialects: {

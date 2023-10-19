@@ -165,7 +165,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         });
     }, [ connectorCategories ]);
 
-    const loadCategoryConnectors = (categoryId: string) => {
+    const loadCategoryConnectors = (categoryId: string): void => {
         setConnectorCategoryLoading(true);
 
         getConnectorCategory(categoryId)
@@ -268,7 +268,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     /**
      * Handle connector advance setting selection.
      */
-    const handleSelection = () => {
+    const handleSelection = (): void => {
         history.push(AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"));
     };
     

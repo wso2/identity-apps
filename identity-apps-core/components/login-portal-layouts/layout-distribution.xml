@@ -18,6 +18,15 @@
 
 <project name="login-portal-layouts" basedir=".">
 
+    <!-- Common dependent tasks -->
+    <target name="check-custom-layout-existance">
+        <available
+            property="login-portal-layouts.layouts.custom.dir.exists"
+            file="target/layouts/custom"
+            type="dir"
+        />
+    </target>
+
     <!-- Copy layouts to the authentication-portal -->
     <target name="check-authentication-portal-extensions-layouts-dir">
         <available
@@ -29,7 +38,11 @@
 
     <target
         name="create-authentication-portal-extensions-layouts-dir"
-        depends="check-authentication-portal-extensions-layouts-dir"
+        depends="
+        check-authentication-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
         unless="${authentication-portal.extenions.layouts.dir.exists}"
     >
         <mkdir dir="../../apps/authentication-portal/src/main/webapp/extensions/layouts"/>
@@ -37,7 +50,11 @@
 
     <target 
         name="copy-custom-layouts-into-authentication-portal"
-        depends="create-authentication-portal-extensions-layouts-dir"
+        depends="
+        create-authentication-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
     >
         <echo message="--- copying custom layouts to Authentication Portal ---"/>
         <copy todir="../../apps/authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">
@@ -91,7 +108,11 @@
 
     <target
         name="create-recovery-portal-extensions-layouts-dir"
-        depends="check-recovery-portal-extensions-layouts-dir"
+        depends="
+        check-recovery-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
         unless="${recovery-portal.extenions.layouts.dir.exists}"
     >
         <mkdir dir="../../apps/recovery-portal/src/main/webapp/extensions/layouts"/>
@@ -99,7 +120,11 @@
 
     <target 
         name="copy-custom-layouts-into-recovery-portal"
-        depends="create-recovery-portal-extensions-layouts-dir"
+        depends="
+        create-recovery-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
     >
         <echo message="--- copying custom layouts to Recovery Portal ---"/>
         <copy todir="../../apps/recovery-portal/src/main/webapp/extensions/layouts/" overwrite="true">
@@ -153,7 +178,11 @@
 
     <target
         name="create-x509-certificate-authentication-portal-extensions-layouts-dir"
-        depends="check-x509-certificate-authentication-portal-extensions-layouts-dir"
+        depends="
+        check-x509-certificate-authentication-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
         unless="${x509-certificate-authentication-portal.extenions.layouts.dir.exists}"
     >
         <mkdir dir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts"/>
@@ -161,7 +190,11 @@
 
     <target 
         name="copy-custom-layouts-into-x509-certificate-authentication-portal"
-        depends="create-x509-certificate-authentication-portal-extensions-layouts-dir"
+        depends="
+        create-x509-certificate-authentication-portal-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
     >
         <echo message="--- copying custom layouts to X509 Certificate Authentication Portal ---"/>
         <copy todir="../../apps/x509-certificate-authentication-portal/src/main/webapp/extensions/layouts/" overwrite="true">

@@ -1,5 +1,56 @@
 # @wso2is/console
 
+## 2.1.3
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
+## 2.1.2
+
+### Patch Changes
+
+- [#4249](https://github.com/wso2/identity-apps/pull/4249) [`2e7d5bee3a`](https://github.com/wso2/identity-apps/commit/2e7d5bee3a9d4d890a43a4bce137468608729147) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix some issues with remove default branding migrate.
+
+## 2.1.1
+
+### Patch Changes
+
+- [#4247](https://github.com/wso2/identity-apps/pull/4247) [`f6cbb7c58d`](https://github.com/wso2/identity-apps/commit/f6cbb7c58da199ba3512be282fb2086c2d606999) Thanks [@savindi7](https://github.com/savindi7)! - Update feature grouping in the Navbar
+
+* [#4236](https://github.com/wso2/identity-apps/pull/4236) [`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the colors of logos for the new dialects
+
+- [#4248](https://github.com/wso2/identity-apps/pull/4248) [`e1b9a2d501`](https://github.com/wso2/identity-apps/commit/e1b9a2d5018513ddf69f5b5a1f5306690af4f9b5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in user delete feature
+
+- Updated dependencies [[`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3)]:
+  - @wso2is/theme@2.0.14
+
+## 2.1.0
+
+### Minor Changes
+
+- [#4226](https://github.com/wso2/identity-apps/pull/4226) [`2d6fbb97cd`](https://github.com/wso2/identity-apps/commit/2d6fbb97cd3bbfaeeee82d39a5d9e8ba65e011a9) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Add organization display name in branding
+
+### Patch Changes
+
+- [#4234](https://github.com/wso2/identity-apps/pull/4234) [`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the http://schemas.xmlsoap.org/ws/2005/05/identity dialect from the new console
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+  - @wso2is/i18n@2.0.8
+
+## 2.0.38
+
+### Patch Changes
+
+- [#4243](https://github.com/wso2/identity-apps/pull/4243) [`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add comma support in bulk import csv
+
+- Updated dependencies [[`dfc4d53b7d`](https://github.com/wso2/identity-apps/commit/dfc4d53b7d483f0cec984fb5b6d7c0b5eaa8b493)]:
+  - @wso2is/react-components@2.0.8
+
 ## 2.0.37
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4200](https://github.com/wso2/identity-apps/pull/4200) [`6957fe72b0`](https://github.com/wso2/identity-apps/commit/6957fe72b0ae8e942c028f5cd75569b27120bf4c) Thanks [@Rashmini](https://github.com/Rashmini)! - Update recovery portal for recovery v2 API
+
+## 2.0.16
+
+### Patch Changes
+
+- [#4242](https://github.com/wso2/identity-apps/pull/4242) [`3f2548119d`](https://github.com/wso2/identity-apps/commit/3f2548119d459bd054d9484b447ad26329ece3e2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace spaces in application names with underscores for application-specific custom layouts and stop creating empty extensions dir.
+
+- Updated dependencies [[`206d4a8436`](https://github.com/wso2/identity-apps/commit/206d4a8436d93683f59d2cffc818418073eb8825)]:
+  - @wso2is/theme@2.0.13
+
 ## 2.0.15
 
 ### Patch Changes

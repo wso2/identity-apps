@@ -289,6 +289,12 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 eventPublisher.publish("organization-branding-configure-site-title");
             }
 
+            // If a display name is updated, publish an event.
+            if (isEmpty(brandingPreference.organizationDetails.displayName)
+                && !isEmpty(values.organizationDetails?.displayName)) {
+                eventPublisher.publish("organization-branding-configure-display-name");
+            }
+
             // When a theme is selected for the first time or switched, publish an event.
             if (isEmpty(brandingPreference.theme?.activeTheme)) {
                 eventPublisher.publish(`organization-branding-configure-${

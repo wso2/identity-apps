@@ -101,6 +101,10 @@ export interface BrandingPreferenceOrganizationDetailsInterface {
      * Support email to be shown for Org members.
      */
     supportEmail: string;
+    /**
+     * Display name to be shown for Org members.
+     */
+    displayName: string;
 }
 
 /**
@@ -523,8 +527,13 @@ export interface BrandingPreferenceConfigInterface {
     isBrandingEnabled: boolean;
     /**
      * Should remove default branding.
+     * @deprecated Renamed to `removeDefaultBranding` to keep it common.
      */
-    removeAsgardeoBranding: boolean;
+    removeAsgardeoBranding?: boolean;
+    /**
+     * Should remove default branding.
+     */
+    removeDefaultBranding?: boolean;
 }
 
 /**

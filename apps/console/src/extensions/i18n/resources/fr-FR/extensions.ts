@@ -1792,6 +1792,13 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
+                        displayName: {
+                            hint:
+                                "Nom de l'organisation qui apparaît aux utilisateurs. S'il n'est pas défini, " +
+                                "les valeurs par défaut de {{ productName }} seront utilisées.",
+                            label: "Nom d’affichage de l’organisation",
+                            placeholder: "Entrer un nom d'affichage"
+                        },
                         supportEmail: {
                             hint:
                                 "TEmail qui apparaît sur les pages d'erreur et dans les endroits où une " +
@@ -4020,9 +4027,8 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "Cependant, le compte de l'utilisateur n'est pas définitivement " +
-                        "supprimé d'Asgardeo et il pourra toujours accéder aux autres organisations auxquelles " +
-                        "il est associé.",
+                        "Cependant, le compte de l'utilisateur n'est pas définitivement supprimé du système et " +
+                        "ils pourront toujours accéder aux autres organisations auxquelles ils sont associés.",
                     message:
                         "Cette action est irréversible et supprimera l'association de l'utilisateur avec " +
                         "cette organisation."

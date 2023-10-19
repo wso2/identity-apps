@@ -39,8 +39,6 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return "eIDAS";
         case ClaimManagementConstants.OPENID:
             return "OpenID";
-        case ClaimManagementConstants.XMLSOAP:
-            return "XML SOAP";
         default:
             return capitalize ? "Custom" : "custom";
     }

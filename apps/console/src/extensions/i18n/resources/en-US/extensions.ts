@@ -1777,6 +1777,12 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
+                        displayName: {
+                            hint: "Organization name that appears to users. If not set, {{ productName }} defaults " +
+                                "are used.",
+                            label: "Organization Display Name",
+                            placeholder: "Enter a display name"
+                        },
                         supportEmail: {
                             hint: "The email address that appears on error pages and other pages where " +
                                 "users would require support. If not set, {{ productName }} defaults are used.",
@@ -3866,7 +3872,7 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "However, the user's account is not permanently deleted from Asgardeo and " +
+                        "However, the user's account is not permanently deleted from the system and " +
                         "they will still be able to access other organizations they are associated with.",
                     message:
                         "This action is irreversible and will remove the user's association with " +

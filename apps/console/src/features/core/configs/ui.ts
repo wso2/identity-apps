@@ -146,7 +146,6 @@ import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-con
 import OpenidLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
-import XMLSOAPLogo from "../../../themes/default/assets/images/protocols/xmlsoap.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -193,8 +192,7 @@ interface GetTechnologyLogosInterface {
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode,
-    xmlsoap: string
+    windows: FunctionComponent | ReactNode
 }
 
 /**
@@ -227,8 +225,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo,
-        xmlsoap: XMLSOAPLogo
+        windows: WindowsLogo
     };
 };
 
