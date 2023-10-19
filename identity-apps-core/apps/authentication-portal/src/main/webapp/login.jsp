@@ -856,7 +856,7 @@
                                     >
                                         <img 
                                             class="ui image" 
-                                            src="libs/themes/default/assets/images/icons/fingerprint.svg" 
+                                            src="libs/themes/default/assets/images/authenticators/fido-passkey-black.svg" 
                                             alt="Fido Logo" 
                                             role="presentation" />
                                         <span>

@@ -482,7 +482,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         <Grid.Column width={ 1 } className="first-column">
                             <List.Content floated="left">
                                 <GenericIcon
-                                    icon={ getMFAIcons().fingerprint }
+                                    icon={ getMFAIcons().passkey }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }

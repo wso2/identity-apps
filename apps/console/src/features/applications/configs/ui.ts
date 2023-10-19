@@ -21,7 +21,7 @@ import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/i
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
-import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
+import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon
