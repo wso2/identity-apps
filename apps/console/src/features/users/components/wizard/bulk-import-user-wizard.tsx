@@ -281,7 +281,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 if (userstore === PRIMARY_USERSTORE) {
                     userStoreArray.push({
                         key: userStoreArray.length,
-                        text: PRIMARY_USERSTORE.toUpperCase(),
+                        text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                         value: PRIMARY_USERSTORE.toUpperCase()
                     });
                 }
