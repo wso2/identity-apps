@@ -109,7 +109,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                     <Item.Extra>
                                         <Icon name="tag" size="small"/>
                                         {
-                                            app.tags.map((tag, index) => {
+                                            app.tags.map((tag: string, index: number) => {
                                                 if (index === 0) {
                                                     return <span className="tag" key={ index }>{ " " }{ tag }</span>;
                                                 }
