@@ -18,15 +18,6 @@
 
 <script src="libs/themes/default/semantic.min.js"></script>
 
-<%-- App Insights --%>
-<%
-    if (config.getServletContext().getResource("extensions/app-insights.jsp") != null) {
-%>
-        <jsp:include page="/extensions/app-insights.jsp"/>
-<%
-    }
-%>
-
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
     $(document).ready(function () {
@@ -117,14 +108,11 @@
 
         /**
         * Extract the domain from the hostname.
-        * Ex: If dev.accounts.asgardeo.io is parsed, `asgardeo.io` will be set as the domain.
+        * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
         */
         try {
-            var hostnameTokens = window.location.hostname.split('.');
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
-            }
+            var url = new URL(window.location);
+            domain = url.hostname;
         } catch(e) {
             // Couldn't parse the hostname.
         }
