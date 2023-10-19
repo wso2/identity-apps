@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -100,14 +100,9 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                     ) : null
                             }
                         </Item.Header>
-                        {
-                            app.description
-                                ? (
-                                    <Item.Meta className="item-description app-description">
-                                        { app.description }
-                                    </Item.Meta>
-                                ) : null
-                        }
+                        <Item.Meta className="item-description app-description">
+                            { app.description }
+                        </Item.Meta>
                         {
                             (app.tags && app.tags.length && app.tags.length > 0)
                                 ? (
