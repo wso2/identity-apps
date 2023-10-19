@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -229,8 +229,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Allow passkey progressive enrollment"
                 name="FIDO_EnablePasskeyProgressiveEnrollment"
-                label={"Allow passkey progressive enrollment"}
-                hint={ "Please clear this checkbox to disable passkey progressive enrollment."}
+                label={ "Allow passkey progressive enrollment" }
+                hint={ "Please clear this checkbox to disable passkey progressive enrollment." }
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-progressive-enrollment` }
@@ -238,8 +238,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Allow passkey usernameless authentication"
                 name="FIDO_EnableUsernamelessAuthentication"
-                label={"Allow passkey usernameless authentication"}
-                hint={ "Please clear this checkbox to disable usernameless authentication."}
+                label={ "Allow passkey usernameless authentication" }
+                hint={ "Please clear this checkbox to disable usernameless authentication." }
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }

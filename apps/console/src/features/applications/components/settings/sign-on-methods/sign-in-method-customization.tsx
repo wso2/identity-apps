@@ -678,7 +678,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             <Divider hidden />
             {
                 authenticationSequence.steps.some(step => step.options.find((authenticator: AuthenticatorInterface) =>
-                authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
+                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
                 && (
                     <Message
                         type="warning"
