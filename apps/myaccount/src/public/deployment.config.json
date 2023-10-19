@@ -104,7 +104,7 @@
                 }
             }
         },
-        "isCookieConsentBannerEnabled": false,
+        "isCookieConsentBannerEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isHeaderAvatarLabelAllowed": false,
         "i18nConfigs": {

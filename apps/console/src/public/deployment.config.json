@@ -831,7 +831,7 @@
         },
         "connectionResourcesUrl": "",
         "isFeatureGateEnabled": true,
-        "isCookieConsentBannerEnabled": false,
+        "isCookieConsentBannerEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isMarketingConsentBannerEnabled": false,
         "isClientSecretHashEnabled": false,
