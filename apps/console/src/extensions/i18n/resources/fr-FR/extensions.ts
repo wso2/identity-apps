@@ -1299,7 +1299,7 @@ export const extensions: Extensions = {
                                     "d'entre eux. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique relative aux cookies",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://example.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
@@ -1308,7 +1308,7 @@ export const extensions: Extensions = {
                                     "organisation. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique de confidentialité",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://example.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
@@ -1317,7 +1317,7 @@ export const extensions: Extensions = {
                                     "vos clients et visiteurs. S'il n'est pas défini, les valeurs par défaut " +
                                     "de {{ productName }} seront utilisées.",
                                 label: "Conditions d'utilisation",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://example.com/terms-of-service"
                             }
                         },
                         heading: "Liens"
