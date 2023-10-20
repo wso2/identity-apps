@@ -46,6 +46,8 @@ export interface CreateRoleMemberInterface {
 export interface CreateRoleFormData {
     domain?: string;
     roleName: string;
+    assignedApplication?: string;
+    roleAudience?: string;
 }
 
 /**
@@ -110,4 +112,43 @@ export interface RoleBasicInterface {
      * Role name.
      */
     roleName: string;
+}
+
+/**
+ * Enum for the role audiences.
+ */
+export enum RoleAudiences {
+    /**
+     * Application role audience.
+     */
+    APPLICATION = "Application",
+    /**
+     * Organization role audience.
+     */
+    ORG = "Organization"
+}
+
+/**
+ * Enum for steps form types of the create role stepper.
+ * @readonly
+ */
+export enum CreateRoleStepsFormTypes {
+    /**
+     * Basic details step.
+     */
+    BASIC_DETAILS = "BasicDetails",
+    /**
+     * Role permissions step.
+     */
+    PERM_LIST = "PermissionList"
+}
+
+/**
+ * Interface to capture current state of the create role interface.
+ */
+export interface CreateRoleStateInterface {
+    /**
+     * Basic details step form data.
+     */
+    [ CreateRoleStepsFormTypes.BASIC_DETAILS ]: CreateRoleFormData;
 }

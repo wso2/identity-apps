@@ -4924,6 +4924,7 @@ export interface ConsoleNS {
                         };
                     };
                     subHeading: string;
+                    back: string;
                     summary: {
                         labels: {
                             domain: {

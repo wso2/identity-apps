@@ -7993,6 +7993,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
+                    back: "Retourner",
                     summary: {
                         labels: {
                             domain: {

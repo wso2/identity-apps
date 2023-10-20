@@ -7825,6 +7825,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "නිශ්චිත අවසරයන් සහිතව පද්ධතිය තුළ නව {{වර්ගයේ} create සාදන්න",
+                    back: "පෙර පිටුවට යන්න",
                     summary: {
                         labels: {
                             domain: {

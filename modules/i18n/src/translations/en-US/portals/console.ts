@@ -9694,6 +9694,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Create a new {{type}} in the system.",
+                    back: "Go back",
                     summary: {
                         labels: {
                             domain: {
