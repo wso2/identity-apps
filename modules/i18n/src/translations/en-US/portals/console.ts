@@ -10638,10 +10638,10 @@ export const console: ConsoleNS = {
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
                                 internalErrorMessage: "Error occured while importing users",
-                                userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}.",
-                                userAssignmentFailedMessage: "User assignment to {{resource}} failed.",
+                                userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}",
+                                userAssignmentFailedMessage: "User assignment to {{resource}} failed",
                                 userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
-                                    "{{resource}}."
+                                    "{{resource}}"
                             },
                             tableStatus: {
                                 success: "Success",

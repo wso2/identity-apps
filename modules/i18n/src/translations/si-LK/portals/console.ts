@@ -8766,9 +8766,9 @@ export const console: ConsoleNS = {
                                 userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
                                 userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
                                 internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය",
-                                userAssignmentSuccessMessage: "පරිශීලකයන් {{resource}} වෙත සාර්ථකව පවරන ලදී.",
-                                userAssignmentFailedMessage: "{{resource}} වෙත පරිශීලක පැවරුම අසාර්ථක විය.",
-                                userAssignmentInternalErrorMessage: "පරිශීලකයන් {{resource}} වෙත පැවරීමේදී දෝෂයක් ඇති විය."
+                                userAssignmentSuccessMessage: "පරිශීලකයන් {{resource}} වෙත සාර්ථකව පවරන ලදී",
+                                userAssignmentFailedMessage: "{{resource}} වෙත පරිශීලක පැවරුම අසාර්ථක විය",
+                                userAssignmentInternalErrorMessage: "පරිශීලකයන් {{resource}} වෙත පැවරීමේදී දෝෂයක් ඇති විය"
                             },
                             tableStatus: {
                                 success: "සාර්ථකයි",

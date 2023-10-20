@@ -1096,11 +1096,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
             statusMessages = {
                 200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userAssignmentSuccessMessage", { resourceIdentifier }),
+                "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
                 400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userAssignmentFailedMessage", { resourceIdentifier }),
+                "userAssignmentFailedMessage", { resource: resourceIdentifier }),
                 500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userAssignmentInternalErrorMessage", { resourceIdentifier })
+                "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
             };
         }
         

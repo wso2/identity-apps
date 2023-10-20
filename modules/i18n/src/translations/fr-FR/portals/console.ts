@@ -8967,10 +8967,10 @@ export const console: ConsoleNS = {
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
                                     "utilisateurs",
                                 userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
-                                    "{{resource}}.",
-                                userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué.",
+                                    "{{resource}}",
+                                userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué",
                                 userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +
-                                    "l'attribution d'utilisateurs à {{resource}}."
+                                    "l'attribution d'utilisateurs à {{resource}}"
 
                             },
                             tableStatus: {
