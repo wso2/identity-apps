@@ -190,7 +190,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
             enableMetadataSigning: values.enableMetadataSigning,
             metadataValidityPeriod: values.metadataValidityPeriod
         };
-        
+
         updateSaml2Configurations(data).then(() => {
             handleUpdateSuccess();
         }).catch(() => {
@@ -319,8 +319,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                 urlState={ destinationUrls }
                                                                 setURLState={ (url: string) => {
                                                                     const processedUrl: string = url?.split(",")
-                                                                        ?.filter((item: string) => item)?.toString();
-                                                                        
+                                                                        ?.toString();
+                                                                    
                                                                     setDestinationUrls(processedUrl);
                                                                 } }
                                                                 labelName={ t("console:saml2Config.form." +
