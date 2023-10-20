@@ -813,12 +813,12 @@
             },
             "remoteLogIngest": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {}
             },
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {}
             }
         },
