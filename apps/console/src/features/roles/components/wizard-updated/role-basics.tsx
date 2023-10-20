@@ -289,7 +289,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 data-componentid={ `${componentId}-${audience}-audience` }
                                 listen={ () => setRoleAudience(audience) }
                                 hint={ 
-                                    index === Object.keys(RoleAudiences).length- 1 
+                                    index === Object.keys(RoleAudiences).length - 1 
                                         ? (
                                             <Trans 
                                                 i18nKey= { "console:manage.features.roles.addRoleWizard.forms." + 

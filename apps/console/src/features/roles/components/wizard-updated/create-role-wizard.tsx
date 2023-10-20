@@ -46,7 +46,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
 
-    //External trigger to submit the authorization step. 
+    // External trigger to submit the authorization step. 
     let submitRoleBasic: () => void;
 
     /**
@@ -68,7 +68,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     triggerSubmission={ (submitFunctionCb: () => void) => {
                         submitRoleBasic = submitFunctionCb;
                     } }
-                    setIsNextDisabled={ setIsBasicDetailsNextButtonDisabled  }
+                    setIsNextDisabled={ setIsBasicDetailsNextButtonDisabled }
                     initialValues={ stepperState && stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ] }
                     onSubmit={ (values: CreateRoleFormData) => {
                         handleWizardSubmit(values, CreateRoleStepsFormTypes.BASIC_DETAILS);

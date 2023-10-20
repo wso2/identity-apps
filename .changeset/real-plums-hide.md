@@ -6,4 +6,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Create role interface started
+Add create role UI
