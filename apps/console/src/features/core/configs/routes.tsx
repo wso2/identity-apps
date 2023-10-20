@@ -521,7 +521,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 17,
                         path: AppConstants.getPaths().get("MY_ACCOUNT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
