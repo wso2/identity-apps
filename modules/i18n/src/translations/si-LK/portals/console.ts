@@ -8785,7 +8785,8 @@ export const console: ConsoleNS = {
                             advanceSearch: {
                                 placeholder: "පරිශීලක නාමයෙන් සොයන්න"
                             },
-                            disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත තොග ආනයනය මේ මොහොතේ ලබා ගත නොහැක."
+                            disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
+                                "දිය නොහැක."
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"

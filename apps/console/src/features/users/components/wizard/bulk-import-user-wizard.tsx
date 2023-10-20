@@ -874,22 +874,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     && (
                                         <>
                                             <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                            
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
                                                     <Alert severity="info">
                                                         { t("console:manage.features.user.modals." +
-                                                        "bulkImportUserWizard.wizardSummary." +
-                                                    "disabledSecondaryStoreInfo") }
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "disabledSecondaryStoreInfo") }
                                                     </Alert>
-                                                
                                                 </Grid.Column>
                                             </Grid.Row>
                                             <Grid.Row columns={ 1 }>
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                                     <Form.Field required={ true }>
                                                         <label className="pb-2">
-                                                            { t("console:manage.features.user.forms."+
-                                                                            "addUserForm.inputs.domain.placeholder") }
+                                                            { t("console:manage.features.user.forms.addUserForm."+
+                                                                "inputs.domain.placeholder") }
                                                         </label>
                                                         <Dropdown
                                                             className="mt-2"
@@ -910,8 +908,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                             onChange={
                                                                 (e: React.ChangeEvent<HTMLInputElement>,
                                                                     data: DropdownProps) => {
-                                                                    setSelectedUserStore(
-                                                                        data.value.toString());
+                                                                    setSelectedUserStore(data.value.toString());
                                                                 }
                                                             }
                                                             tabIndex={ 1 }
