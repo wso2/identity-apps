@@ -70,7 +70,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                             { !isEmpty(i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "")) && (
                                 <>
                                     <span>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "") }</span>
-                                    { (brandingPreference.configs?.removeAsgardeoBranding === false) && (
+                                    { (brandingPreference.configs?.removeDefaultBranding === false) && (
                                         <div className="powered-by-logo-divider">|</div>
                                     ) }
                                 </>

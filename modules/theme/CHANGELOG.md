@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4236](https://github.com/wso2/identity-apps/pull/4236) [`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the colors of logos for the new dialects
+
 ## 2.0.13
 
 ### Patch Changes

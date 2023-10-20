@@ -55,6 +55,7 @@
             color: @recentApplicationCardDefaultColor;
             width: 100%;
             margin-bottom: 25px;
+            height: 100%;
 
             &:hover {
                 transform: none;
@@ -81,9 +82,12 @@
                         line-height: @recentApplicationCardHeaderFontSize;
                         margin-bottom: 4px;
                         max-width: @recentApplicationCardHeaderMaxWidth;
-                        white-space: nowrap;
+                        white-space: normal;
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
                     }
                     .application-description {
                         color: @recentApplicationCardDescColor;
@@ -556,7 +560,7 @@
 
 .sign-in-method-landing .ui.card.info-card {
     border-color: #d8d8d8;
-    
+
     .header-without-toggle {
         flex-direction: row;
         align-items: center;

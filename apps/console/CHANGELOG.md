@@ -1,5 +1,42 @@
 # @wso2is/console
 
+## 2.1.4
+
+### Patch Changes
+
+- [#4256](https://github.com/wso2/identity-apps/pull/4256) [`6c81090340`](https://github.com/wso2/identity-apps/commit/6c81090340f13c40c8114c0e2dbf94ddc364486e) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve connections section in the Console
+
+- Updated dependencies [[`63e9418574`](https://github.com/wso2/identity-apps/commit/63e9418574a49d4d84a2dae6e512667c60674d2f)]:
+  - @wso2is/i18n@2.0.9
+
+## 2.1.3
+
+### Patch Changes
+
+- [#4257](https://github.com/wso2/identity-apps/pull/4257) [`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update application card styles
+
+- Updated dependencies [[`af417322fe`](https://github.com/wso2/identity-apps/commit/af417322fe54f8aba0e51893ca7bbf509f2d71f2)]:
+  - @wso2is/theme@2.0.15
+
+## 2.1.2
+
+### Patch Changes
+
+- [#4249](https://github.com/wso2/identity-apps/pull/4249) [`2e7d5bee3a`](https://github.com/wso2/identity-apps/commit/2e7d5bee3a9d4d890a43a4bce137468608729147) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix some issues with remove default branding migrate.
+
+## 2.1.1
+
+### Patch Changes
+
+- [#4247](https://github.com/wso2/identity-apps/pull/4247) [`f6cbb7c58d`](https://github.com/wso2/identity-apps/commit/f6cbb7c58da199ba3512be282fb2086c2d606999) Thanks [@savindi7](https://github.com/savindi7)! - Update feature grouping in the Navbar
+
+* [#4236](https://github.com/wso2/identity-apps/pull/4236) [`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the colors of logos for the new dialects
+
+- [#4248](https://github.com/wso2/identity-apps/pull/4248) [`e1b9a2d501`](https://github.com/wso2/identity-apps/commit/e1b9a2d5018513ddf69f5b5a1f5306690af4f9b5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in user delete feature
+
+- Updated dependencies [[`6dfc847048`](https://github.com/wso2/identity-apps/commit/6dfc8470485b87a0366d43d6b93051d452285db3)]:
+  - @wso2is/theme@2.0.14
+
 ## 2.1.0
 
 ### Minor Changes

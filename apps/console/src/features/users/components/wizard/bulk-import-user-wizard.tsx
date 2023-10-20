@@ -1068,28 +1068,46 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns - BulkUserImportOperationResponse
      */
     const generateBulkResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
-        const username: string = operation?.bulkId.split(":")[1];
+        const resourceIdentifier: string = operation?.bulkId.split(":")[1];
         const statusCode: number = operation?.status?.code;
 
         const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
         "tableMessages.internalErrorMessage");
 
-        const statusMessages: Record<number, string> = {
-            201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userCreatedMessage"),
-            202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userCreationAcceptedMessage"),
-            400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "invalidDataMessage"),
-            409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "userAlreadyExistsMessage"),
-            500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
-                "internalErrorMessage")
-        };
+        let statusMessages: Record<number, string> = {};
 
+        if (operation?.method === "POST") {
+            statusMessages = {
+                201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreatedMessage"),
+                202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreationAcceptedMessage"),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidDataMessage"),
+                409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userAlreadyExistsMessage"),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "internalErrorMessage")
+            };
+        } else if (operation?.method === "PATCH") {
+            // Only show response when a patch operation fails.
+            if (statusCode === 200) {
+                return;
+            }
+            // TODO: Change messages.
+            statusMessages = {
+                200: `Users were successfully assigned to ${resourceIdentifier}`,
+                400: `Users assignment was failed to ${resourceIdentifier}`,
+                404: `Resource ${resourceIdentifier} was not found`,
+                409: `Users were already assigned to ${resourceIdentifier}`,
+                500: `Internal error occurred while assigning users to ${resourceIdentifier}`
+            };
+        }
+        
         // Functional update to update the bulk response summary.
         setBulkResponseSummary((prevSummary: BulkResponseSummary) => {
-            
+
+            if (operation?.method === "PATCH") return prevSummary;
             const successCount: number =
                 (statusCode === 201 || statusCode === 202) ? prevSummary.successCount + 1 : prevSummary.successCount;
             const failedCount: number =
@@ -1104,15 +1122,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         let _statusCode: BulkUserImportStatus = BulkUserImportStatus.FAILED;
         
-        if (statusCode === 201 || statusCode === 202) {
+        if (statusCode === 201 || statusCode === 202 || statusCode === 200) {
             _statusCode = BulkUserImportStatus.SUCCESS;
         }
 
         return {
             message: statusMessages[statusCode] || defaultMsg,
+            resourceIdentifier,
             status: getStatusFromCode(statusCode),
-            statusCode: _statusCode,
-            username
+            statusCode: _statusCode
         };
     };
 

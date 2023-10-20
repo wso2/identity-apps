@@ -3970,9 +3970,8 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "Cependant, le compte de l'utilisateur n'est pas définitivement " +
-                        "supprimé d'Asgardeo et il pourra toujours accéder aux autres organisations auxquelles " +
-                        "il est associé.",
+                        "Cependant, le compte de l'utilisateur n'est pas définitivement supprimé du système et " +
+                        "ils pourront toujours accéder aux autres organisations auxquelles ils sont associés.",
                     message:
                         "Cette action est irréversible et supprimera l'association de l'utilisateur avec " +
                         "cette organisation."

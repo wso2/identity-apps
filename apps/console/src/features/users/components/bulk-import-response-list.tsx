@@ -100,15 +100,15 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         const defaultColumns: TableColumnInterface[] = [
             {
                 allowToggleVisibility: false,
-                dataIndex: "username",
-                id: "username",
-                key: "username",
+                dataIndex: "resourceIdentifier",
+                id: "resourceIdentifier",
+                key: "resourceIdentifier",
                 render: (response: BulkUserImportOperationResponse): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-username-item-heading` }>
                             <Header.Content>
                                 {
-                                    response.username
+                                    response.resourceIdentifier
                                 }
                             </Header.Content>
                         </Header>
@@ -176,13 +176,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
                 switch (condition) {
                     case "sw":
-                        return item.username?.startsWith(value);
+                        return item.resourceIdentifier?.startsWith(value);
                     case "ew":
-                        return item.username?.endsWith(value);
+                        return item.resourceIdentifier?.endsWith(value);
                     case "co":
-                        return item.username?.includes(value);
+                        return item.resourceIdentifier?.includes(value);
                     case "eq":
-                        return item.username === value;
+                        return item.resourceIdentifier === value;
                     default:
                         return false;
                 }

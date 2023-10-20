@@ -24,10 +24,10 @@ import { TenantResourceEndpointsInterface } from "../models";
  * @returns tenant resource endpoints.
  */
 export const getTenantResourceEndpoints = (
-    serverHost: string
+    serverOrigin: string
 ): TenantResourceEndpointsInterface => {
     return {
-        tenantAssociationApi: `${serverHost}/api/asgardeo/v1/tenant/me`,
-        tenantManagementApi: `${serverHost}/api/asgardeo/v1/tenant`
+        tenantAssociationApi: `${ serverOrigin }/api/asgardeo/v1/tenant/me`,
+        tenantManagementApi: `${ serverOrigin }/api/asgardeo/v1/tenant`
     };
 };
