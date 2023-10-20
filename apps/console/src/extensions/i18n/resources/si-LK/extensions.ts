@@ -1278,7 +1278,7 @@ export const extensions: Extensions = {
                                     "ඔබගේ යෙදුම් භාවිතා කරන සියලුම කුකීස් අඩංගු ලේඛනයකට හෝ පිටුවකට සම්බන්ධ කරන්න. " +
                                     "සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "කුකී ප්‍රතිපත්තිය",
-                                placeholder: "https://example.com/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
@@ -1286,7 +1286,7 @@ export const extensions: Extensions = {
                                     "පරිශීලකයා එකඟ විය යුතු සහ පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ කරන්න. සකසා " +
                                     "නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "රහස්යතා ප්රතිපත්තිය",
-                                placeholder: "https://example.com/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
@@ -1294,7 +1294,7 @@ export const extensions: Extensions = {
                                     "ආකාරය සඳහන් කරන ප්‍රකාශයකට හෝ නීතිමය ලේඛනයකට සබැඳිය. සකසා නොමැති නම්, " +
                                     "{{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "සේවා කොන්දේසි",
-                                placeholder: "https://example.com/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "සබැඳි"
