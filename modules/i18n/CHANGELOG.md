@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.9
+
+### Patch Changes
+
+- [#4256](https://github.com/wso2/identity-apps/pull/4256) [`63e9418574`](https://github.com/wso2/identity-apps/commit/63e9418574a49d4d84a2dae6e512667c60674d2f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix expert mode wizard description
+
 ## 2.0.8
 
 ### Patch Changes

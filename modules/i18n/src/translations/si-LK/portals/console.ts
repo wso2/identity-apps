@@ -5473,10 +5473,6 @@ export const console: ConsoleNS = {
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
@@ -9674,6 +9670,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "සම්බන්ධතා මුරපදය යාවත්කාලීන කරන්න.",
                         connectionErrorMessage: "කරුණාකර සපයා ඇති සම්බන්ධතා URL, නම, "
                             + "මුරපදය සහ ධාවක නාමය නිවැරදි බව සහතික කරන්න",
                         testButton: "පරීක්ෂණ සම්බන්ධතාවය"

@@ -3904,6 +3904,66 @@ export const console: ConsoleNS = {
                             commonAuthQueryParams: {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
+                            },
+                            // New additions
+                            isEnableAssertionSigning:  {
+                                ariaLabel: "Enable assertion signing",
+                                hint: "Specify if SAMLAssertion element is signed",
+                                label: "Enable assertion signing"
+                            },
+                            includeCert:  {
+                                ariaLabel: "Include public certificate",
+                                hint: "Include public certificate in the request",
+                                label: "Include public certificate"
+                            },
+                            includeNameIDPolicy: {
+                                ariaLabel: "Include Name ID Policy",
+                                hint: "Include NameIDPolicy in the request",
+                                label: "Include Name ID Policy"
+                            },
+                            isEnableAssertionEncryption: {
+                                ariaLabel: "Enable assertion encryption",
+                                hint: "Specify if SAMLAssertion element is encrypted",
+                                label: "Enable assertion encryption"
+                            },
+                            authenticationContextClass: {
+                                ariaLabel: "Authentication context class",
+                                hint: "Authentication context class",
+                                label: "Authentication context class",
+                                placeholder: "Enter authentication context class"
+                            },
+                            attributeConsumingServiceIndex: {
+                                ariaLabel: "Attribute consuming service index",
+                                hint: "Specify the Attribute Consuming Service Index",
+                                label: "Attribute consuming service index",
+                                placeholder: "Enter attribute consuming service index"
+                            },
+                            isArtifactBindingEnabled: {
+                                ariaLabel: "Enable artifact binding",
+                                hint: "Enable artifact binding",
+                                label: "Enable artifact binding"
+                            },
+                            artifactResolveEndpointUrl: {
+                                ariaLabel: "Artifact resolve endpoint URL",
+                                hint: "Specify the artifact resolve endpoint URL",
+                                label: "Artifact resolve endpoint URL",
+                                placeholder: "Enter artifact resolve endpoint URL"
+                            },
+                            isArtifactResolveReqSigned: {
+                                ariaLabel: "Sign artifact resolve request",
+                                hint: "Sign artifact resolve request",
+                                label: "Sign artifact resolve request"
+                            },
+                            isArtifactResponseSigned: {
+                                ariaLabel: "Sign artifact response",
+                                hint: "Sign artifact response",
+                                label: "Sign artifact response"
+                            },
+                            authContextComparisonLevel: {
+                                ariaLabel: "Authentication context comparison level",
+                                hint: "Authentication context comparison level",
+                                label: "Authentication context comparison level",
+                                placeholder: ""
                             }
                         }
                     },
@@ -4062,11 +4122,11 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addAuthenticator: {
-                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                        subTitle: "Add new authenticator to the connection",
                         title: "Add New Authenticator"
                     },
                     addCertificate: {
-                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                        subTitle: "Add new certificate to the connection",
                         title: "Configure Certificates"
                     },
                     addProvisioningConnector: {
@@ -7181,10 +7241,6 @@ export const console: ConsoleNS = {
                         description: "The OpenID Connect (OIDC) protocol representation for user "
                             + "attributes.",
                         heading: "OpenID Connect"
-                    },
-                    openid: {
-                        description: "The OpenID protocol representation for user attributes.",
-                        heading: "OpenID"
                     },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
@@ -11542,6 +11598,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Update connection password",
                         connectionErrorMessage: "Please ensure the provided connection "
                             + "URL, name, password and driver name are correct",
                         testButton: "Test Connection"

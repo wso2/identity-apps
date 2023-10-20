@@ -5610,10 +5610,6 @@ export const console: ConsoleNS = {
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "La représentation du protocole OpenID pour les attributs utilisateur.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
@@ -9906,6 +9902,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Mettre à jour le mot de passe de connexion",
                         connectionErrorMessage: "Veuillez vérifier les informations de connexion "
                             + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
                         testButton: "Tester la connexion"

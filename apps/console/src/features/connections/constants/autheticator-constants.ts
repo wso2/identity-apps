@@ -56,7 +56,7 @@ export class AuthenticatorManagementConstants {
     public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
     public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
-    public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "SSO";
+    public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
 
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";

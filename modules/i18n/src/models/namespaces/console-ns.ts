@@ -1693,6 +1693,20 @@ export interface ConsoleNS {
                             IncludeProtocolBinding: FormAttributes;
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
+
+                            isEnableAssertionSigning: FormAttributes;
+                            includeCert: FormAttributes;
+                            includeNameIDPolicy: FormAttributes;
+                            isEnableAssertionEncryption: FormAttributes;
+
+                            authenticationContextClass: FormAttributes;
+                            attributeConsumingServiceIndex: FormAttributes;
+
+                            isArtifactBindingEnabled: FormAttributes;
+                            artifactResolveEndpointUrl: FormAttributes;
+                            isArtifactResolveReqSigned: FormAttributes;
+                            isArtifactResponseSigned: FormAttributes;
+                            authContextComparisonLevel: FormAttributes;
                         }
                     },
                     outboundConnectorAccordion: {
@@ -3702,10 +3716,6 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    openid: {
-                        heading: string;
-                        description: string;
-                    },
                     scim: {
                         heading: string;
                         description: string;
@@ -5868,6 +5878,7 @@ export interface ConsoleNS {
                         description: FormField;
                     };
                     connection: {
+                        updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
