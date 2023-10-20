@@ -602,41 +602,50 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
         
         const resolveHiddenRoutes = (): string[] => {
-            const commonHiddenRoutes: string[] = [ 
-                ...AppUtils.getHiddenRoutes(), 
-                ...AppConstants.ORGANIZATION_ONLY_ROUTES 
+            function getAdditionalRoutes() {
+                if (!isOrganizationManagementEnabled) {
+                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                }
+
+                const isCurrentOrgRootAndSuperTenant: boolean =
+                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenant;
+
+                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
+                    if (isPrivilegedUser) {
+                        if (loggedUserName === isSuperAdmin) {
+                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                        } else {
+                            return [
+                                ...commonHiddenRoutes,
+                                ...AppConstants.ORGANIZATION_ROUTES,
+                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
+                            ];
+                        }
+                    } else {
+                        if (loggedUserName === isSuperAdmin) {
+                            return commonHiddenRoutes;
+                        } else {
+                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                        }
+                    }
+                } else {
+                    if (window["AppUtils"].getConfig().organizationName) {
+                        return [ 
+                            ...AppUtils.getHiddenRoutes(), 
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES 
+                        ];
+                    } else {
+                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                    }
+                }
+            }
+
+            const commonHiddenRoutes: string[] = [
+                ...AppUtils.getHiddenRoutes(),
+                ...AppConstants.ORGANIZATION_ONLY_ROUTES
             ];
             
-            const additionalRoutes: string[] = isOrganizationManagementEnabled ? (
-                (OrganizationUtils.isCurrentOrganizationRoot() 
-                && AppConstants.getSuperTenant() === tenant) || isFirstLevelOrg
-                    ? isPrivilegedUser
-                        ? loggedUserName === isSuperAdmin
-                            ? [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES 
-                            ]
-                            : [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES, 
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES 
-                            ]
-                        : loggedUserName === isSuperAdmin
-                            ? commonHiddenRoutes
-                            : [
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                            ]
-                    : window["AppUtils"].getConfig().organizationName
-                        ? [
-                            ...AppUtils.getHiddenRoutes(), 
-                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                        ]
-                        : [ 
-                            ...AppUtils.getHiddenRoutes(), 
-                            ...AppConstants.ORGANIZATION_ROUTES 
-                        ]
-            ) : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+            const additionalRoutes: string[] = getAdditionalRoutes();
 
             return [ ...additionalRoutes ];
         };
