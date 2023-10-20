@@ -22,7 +22,6 @@ import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     MutableRefObject,
