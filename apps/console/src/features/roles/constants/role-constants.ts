@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { RoleAudiences } from "../models";
+
 export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 export const PRIMARY_DOMAIN: string = "Primary";
@@ -59,6 +61,19 @@ export class RoleConstants {
      * Minimum length of the role name.
      */
     public static readonly ROLE_NAME_MIN_LENGTH: number = 3;
+
+    /**
+     * Default role audience.
+     */
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudiences.ORG;
+
+    /**
+     * Read only applications client ids.
+     */
+    public static readonly READONLY_APPLICATIONS_CLIENT_IDS: string[] = [
+        "CONSOLE",
+        "MY_ACCOUNT"
+    ];
 }
 
 /**
