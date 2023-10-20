@@ -9662,14 +9662,14 @@ export const console: ConsoleNS = {
                                 hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
                                 label: "Select the role audience",
                                 values: {
-                                    organization: "Organization-scoped role",
-                                    application: "Application-scoped role"
+                                    organization: "Organization",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
-                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
-                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                                orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
+                                appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
+                                cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed."
                             },
                             assignedApplication: {
                                 hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",

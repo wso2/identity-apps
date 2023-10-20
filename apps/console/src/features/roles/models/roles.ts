@@ -119,13 +119,13 @@ export interface RoleBasicInterface {
  */
 export enum RoleAudiences {
     /**
+     * Organization role audience.
+     */
+    ORG = "Organization",
+    /**
      * Application role audience.
      */
     APPLICATION = "Application",
-    /**
-     * Organization role audience.
-     */
-    ORG = "Organization"
 }
 
 /**

@@ -7961,14 +7961,14 @@ export const console: ConsoleNS = {
                                 hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
                                 label: "Sélectionnez le rôle de rôle",
                                 values: {
-                                    organization: "Rôle de l'organisation",
-                                    application: "Rôle appliqué"
+                                    organization: "Organisation",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
-                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
-                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                                orgNote: "Lorsque le rôle d'audience est l'organisation, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'organisation.",
+                                appNote: "Lorsque le rôle d'audience est une application, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'application.",
+                                cannotCreateRole: "Vous ne pouvez pas créer un rôle avec le public de rôle en tant qu'application car il n'y a actuellement aucune application qui prend en charge les rôles d'audience d'application.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles d'audience d'application pour continuer."
                             },
                             assignedApplication: {
                                 hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
