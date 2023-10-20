@@ -16,24 +16,16 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     HTMLAttributes,
     ReactElement
 } from "react";
-import { getSidePanelIcons } from "../../../../core/configs/ui";
 
 interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
-    /**
-     * Is the option selected.
-     */
-    selected?: boolean;
     /**
      * The display name of the option.
      */
@@ -42,10 +34,6 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      * The subtitle of the option.
      */
     subTitle?: string;
-    /**
-     * The user store of the option.
-     */
-    userstore: string;
     /**
      * The ternary title of the option. (This will display in the middle of the option)
      */
@@ -65,53 +53,28 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
 ): ReactElement => {
 
     const {
-        selected,
         displayName,
         subTitle,
         ternaryTitle,
         ternarySubTitle,
-        userstore,
         renderOptionProps
     } = props;
 
     return (
         <li { ...renderOptionProps }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
-                <Grid container alignItems="center" xs={ 8 }>
-                    <Grid>
-                        {
-                            typeof selected === "boolean" && (
-                                <Checkbox checked={ selected } />
-                            )
-                        }
-                    </Grid>
-                    <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle } />  
-                    </Grid>
-                    {
-                        ( ternaryTitle && ternarySubTitle ) 
-                            ? (
-                                <Grid>
-                                    <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
-                                </Grid>
-                            )
-                            : null
-                    }
+                <Grid xs={ 5 }>
+                    <ListItemText primary={ displayName } secondary={ subTitle } />  
                 </Grid>
-                <Grid justifyContent="flex-end">
-                    <Chip 
-                        icon={ ( 
-                            <GenericIcon
-                                inline
-                                size="default"
-                                transparent
-                                icon={ getSidePanelIcons().userStore }
-                                verticalAlign="middle"
-                            /> 
-                        ) }
-                        label={ userstore }
-                    />
-                </Grid>
+                {
+                    ( ternaryTitle && ternarySubTitle ) 
+                        ? (
+                            <Grid>
+                                <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
+                            </Grid>
+                        )
+                        : null
+                }
             </Grid>
         </li>
     );

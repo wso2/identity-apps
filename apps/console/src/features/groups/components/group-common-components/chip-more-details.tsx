@@ -17,13 +17,11 @@
  */
 
 import { CardContent, Paper, Popover } from "@oxygen-ui/react";
-import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { AnimatedAvatar, AppAvatar, GenericIcon } from "@wso2is/react-components";
+import { AnimatedAvatar, AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { getSidePanelIcons } from "../../../../core/configs/ui";
 
 interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
     /**
@@ -42,10 +40,6 @@ interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
      * The secondary text of the popover.
      */
     secondaryText?: string;
-    /**
-     * The user store of the option. This will display in the chip.
-     */
-    userStore: string;
 }
 
 export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
@@ -56,8 +50,7 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
         popoverAnchorEl,
         onPopoverClose,
         primaryText,
-        secondaryText,
-        userStore
+        secondaryText
     } = props;
 
     return (
@@ -97,20 +90,6 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                                     secondary={ secondaryText }
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid justifyContent="flex-end">
-                            <Chip
-                                icon={ (
-                                    <GenericIcon
-                                        inline
-                                        size="default"
-                                        transparent
-                                        icon={ getSidePanelIcons().userStore }
-                                        verticalAlign="middle"
-                                    />
-                                ) }
-                                label={ userStore }
-                            />
                         </Grid>
                     </Grid>
                 </CardContent>
