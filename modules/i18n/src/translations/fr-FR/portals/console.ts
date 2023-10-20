@@ -8964,7 +8964,14 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "Données non valides fournies",
                                 userAlreadyExistsMessage: "L'utilisateur existe déjà",
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
-                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
+                                    "utilisateurs",
+                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
+                                    "{{resource}}.",
+                                userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué.",
+                                userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +
+                                    "l'attribution d'utilisateurs à {{resource}}."
+
                             },
                             tableStatus: {
                                 success: "Succès",
@@ -9624,6 +9631,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
                                 message: "Champ de données vide"
+                            },
+                            invalidRole: {
+                                description: "{{role}} n'existe pas.",
+                                message: "Rôle introuvable"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} n'existe pas.",
+                                message: "Groupe introuvable"
                             }
                         },
                         submit: {

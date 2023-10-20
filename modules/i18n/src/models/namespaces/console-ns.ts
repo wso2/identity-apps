@@ -3487,6 +3487,8 @@ export interface ConsoleNS {
                             duplicateHeaderError: NotificationItem;
                             invalidHeaderError: NotificationItem;
                             emptyDataField: NotificationItem;
+                            invalidRole: NotificationItem;
+                            invalidGroup: NotificationItem;
                         },
                         submit: Notification;
                     }
@@ -5585,6 +5587,9 @@ export interface ConsoleNS {
                                 userAlreadyExistsMessage: string;
                                 userCreationAcceptedMessage: string;
                                 internalErrorMessage: string;
+                                userAssignmentSuccessMessage: string;
+                                userAssignmentFailedMessage: string;
+                                userAssignmentInternalErrorMessage: string;
                             };
                             tableStatus: {
                                 success: string;

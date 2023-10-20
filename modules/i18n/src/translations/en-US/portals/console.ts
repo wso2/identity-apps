@@ -10637,7 +10637,11 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "Invalid data provided",
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
-                                internalErrorMessage: "Error occured while importing users"
+                                internalErrorMessage: "Error occured while importing users",
+                                userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}.",
+                                userAssignmentFailedMessage: "User assignment to {{resource}} failed.",
+                                userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
+                                    "{{resource}}."
                             },
                             tableStatus: {
                                 success: "Success",
@@ -11263,6 +11267,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "The data field '{{dataField}}' must not be empty.",
                                 message: "Empty Data Field"
+                            },
+                            invalidRole: {
+                                description: "{{role}} does not exist.",
+                                message: "Role Not Found"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} does not exist.",
+                                message: "Group Not Found"
                             }
                         },
                         submit: {

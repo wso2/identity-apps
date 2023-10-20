@@ -8765,7 +8765,10 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
                                 userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
                                 userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
-                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය",
+                                userAssignmentSuccessMessage: "පරිශීලකයන් {{resource}} වෙත සාර්ථකව පවරන ලදී.",
+                                userAssignmentFailedMessage: "{{resource}} වෙත පරිශීලක පැවරුම අසාර්ථක විය.",
+                                userAssignmentInternalErrorMessage: "පරිශීලකයන් {{resource}} වෙත පැවරීමේදී දෝෂයක් ඇති විය."
                             },
                             tableStatus: {
                                 success: "සාර්ථකයි",
@@ -9394,6 +9397,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "'{{dataField}}' දත්ත ක්ෂේත්‍රය හිස් නොවිය යුතුය.",
                                 message: "හිස් දත්ත ක්ෂේත්‍රය"
+                            },
+                            invalidRole: {
+                                description: "{{role}} පරිශීලක භූමිකාව නොපවතී.",
+                                message: "පරිශීලක භූමිකාව හමු නොවීය"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} පරිශීලක කණ්ඩායම  නොපවතියි.",
+                                message: "පරිශීලක කණ්ඩායම හමු නොවීය"
                             }
                         },
                         submit: {

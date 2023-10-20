@@ -814,9 +814,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     }, newGroupMemberAssociations);
                 } else {
                     setValidationError({
-                        descriptionKey: "invalidRole.description",
+                        descriptionKey: "invalidGroup.description",
                         descriptionValues: { group },
-                        messageKey: "invalidRole.message"
+                        messageKey: "invalidGroup.message"
                     });
                     throw new Error(DATA_VALIDATION_ERROR);
                 }
@@ -1094,13 +1094,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             if (statusCode === 200) {
                 return;
             }
-            // TODO: Change messages.
             statusMessages = {
-                200: `Users were successfully assigned to ${resourceIdentifier}`,
-                400: `Users assignment was failed to ${resourceIdentifier}`,
-                404: `Resource ${resourceIdentifier} was not found`,
-                409: `Users were already assigned to ${resourceIdentifier}`,
-                500: `Internal error occurred while assigning users to ${resourceIdentifier}`
+                200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentSuccessMessage", { resourceIdentifier }),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentFailedMessage", { resourceIdentifier }),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentInternalErrorMessage", { resourceIdentifier })
             };
         }
         
