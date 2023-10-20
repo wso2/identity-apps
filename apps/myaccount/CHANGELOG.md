@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.1.3
+
+### Patch Changes
+
+- [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
+- Updated dependencies [[`583e0aa16a`](https://github.com/wso2/identity-apps/commit/583e0aa16a3ff394f62baa837e8be395557b7f70), [`ed53722390`](https://github.com/wso2/identity-apps/commit/ed5372239055ab28d75f9bb3630870cf4c0b4905), [`c0ea5f71e6`](https://github.com/wso2/identity-apps/commit/c0ea5f71e62471f207bca1e927eefa56cd3c224a), [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b), [`199144fe70`](https://github.com/wso2/identity-apps/commit/199144fe70a3a6a7167c5e97ecdd9cddec1f3d45)]:
+  - @wso2is/i18n@2.0.10
+  - @wso2is/theme@2.0.16
+
 ## 2.1.2
 
 ### Patch Changes
