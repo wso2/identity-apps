@@ -111,7 +111,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
  * Delete a selected role with a given role ID.
  *
  * @param roleId - Id of the role which needs to be deleted.
- * @returns `Promise<any>` a promise containing the status of the delete.
+ * @returns A promise containing the status of the delete.
  */
 export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
@@ -183,7 +183,7 @@ export const updateRolePermissions = (roleId: string, data: unknown): Promise<an
 /**
  * Retrieve a list of all the permissions from the system.
  *
- * @returns `Promise<any>` a promise containing the permission list
+ * @returns A promise containing the permission list
  */
 export const getPermissionList = (): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
@@ -256,7 +256,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
  * @param domain - User store domain.
- * @returns `Promise<RoleListInterface | any>`
+ * @returns A promise containing the roles list.
  * @throws `IdentityAppsApiException`
  * @deprecated - Use `useRolesList` instead.
  */
@@ -303,7 +303,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
  *
  * @param domain - User store domain.
  * @param filter - Search filter.
- * @returns `RequestResultInterface<Data=RoleListInterface, Error>`
+ * @returns The object containing the roles list.
  */
 export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
     domain: string,
@@ -312,6 +312,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
 
     const requestConfig: RequestConfigInterface = {
         headers: {
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

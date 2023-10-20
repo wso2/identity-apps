@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 import { Alert, ListItemText } from "@oxygen-ui/react";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
@@ -50,7 +49,6 @@ const FORM_ID: string = "add-role-basics-form";
  * Interface to capture role basics props.
  */
 interface RoleBasicProps extends IdentifiableComponentInterface {
-    dummyProp?: string;
     /**
      * Initial values of the form.
      */
@@ -93,7 +91,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationSearchQuery, setApplicationSearchQuery ] = useState<string>(undefined);
     const [ assignedApplicationsSearching, setAssignedApplicationsSearching ] = useState<boolean>(false);
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
-
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const {
@@ -104,11 +101,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     } = useApplicationList("clientId", null, null, applicationSearchQuery);
 
     useEffect(() => {
-
         if (applicationListFetchRequestError) {
             setIsDisplayNoAppScopeApplicatioError(true);
             setIsDisplayApplicationList(false);
-            
+
             return;
         }
 
@@ -146,11 +142,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             }
         });
 
-        if (options.length === 0) {
-            noApplicationsAvailable.current = true;
-        } else {
-            noApplicationsAvailable.current = false;
-        }
+        noApplicationsAvailable.current = (options.length === 0);
 
         setApplicationListOptions(options);
     }, [ applicationList ]);
@@ -183,7 +175,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const searchApplications: DebouncedFunc<(query: string) => void> = 
         useCallback(debounce((query: string) => {
-            query = !isEmpty(query) ? query : null;
             setApplicationSearchQuery(query ? `name co ${query}` : null);
             mutateApplicationListFetchRequest().finally(() => {
                 setAssignedApplicationsSearching(false);
