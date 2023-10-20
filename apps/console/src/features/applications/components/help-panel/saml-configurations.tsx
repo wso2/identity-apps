@@ -162,7 +162,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                 </Grid.Column>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                                     <CopyInputField
-                                        value={ samlConfigurations?.destinationURLs?.toString() }
+                                        value={ samlConfigurations?.destinationURLs?.toString()?.replace(/,/g, ", ") }
                                         data-testid={ `${ testId }-destination-url-readonly-input` }
                                     />
                                 </Grid.Column>
