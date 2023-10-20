@@ -602,6 +602,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
         
         const resolveHiddenRoutes = (): string[] => {
+            const commonHiddenRoutes: string[] = [
+                ...AppUtils.getHiddenRoutes(),
+                ...AppConstants.ORGANIZATION_ONLY_ROUTES
+            ];
+            
             function getAdditionalRoutes() {
                 if (!isOrganizationManagementEnabled) {
                     return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
@@ -639,11 +644,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     }
                 }
             }
-
-            const commonHiddenRoutes: string[] = [
-                ...AppUtils.getHiddenRoutes(),
-                ...AppConstants.ORGANIZATION_ONLY_ROUTES
-            ];
             
             const additionalRoutes: string[] = getAdditionalRoutes();
 
