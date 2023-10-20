@@ -10712,7 +10712,9 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "Search by Username"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
+                                "at the moment."
                         },
                         buttons: {
                             import: "Import"

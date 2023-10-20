@@ -5607,7 +5607,8 @@ export interface ConsoleNS {
                             };
                             advanceSearch: {
                                 placeholder: string;
-                            }
+                            };
+                            disabledSecondaryStoreInfo: string;
                         };
                         buttons: {
                             import: string;

@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import Alert from "@oxygen-ui/react/Alert";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -277,28 +279,22 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         });
                     }});
 
+                if (userstore === PRIMARY_USERSTORE) {
+                    userStoreArray.push({
+                        key: userStoreArray.length,
+                        text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                        value: PRIMARY_USERSTORE.toUpperCase()
+                    });
+                }
                 
                 setReadWriteUserStoresList(userStoreArray);
-            }).catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
-                    }));
-
-                    return;
-                }
-
+            }).catch((_error: IdentityAppsApiException) => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }));
-
                 setHasError(true);
 
                 return;
@@ -330,7 +326,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         //         readWriteUserStoresList[0]?.value === userstore);
         // }
         
-        return true;
+        return false;
     };
 
     const joinWithAnd = (arr: string[]): string => {
@@ -877,38 +873,52 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     ) }
                                 { !isLoading && !hideUserStoreDropdown()
                                     && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                                <Form.Field required={ true }>
-                                                    <label className="pb-2">
-                                                        { t("console:manage.features.user.forms.addUserForm.inputs."+
-                                            "domain.placeholder") }
-                                                    </label>
-                                                    <Dropdown
-                                                        className="mt-2"
-                                                        fluid
-                                                        selection
-                                                        labeled
-                                                        options={ readWriteUserStoresList }
-                                                        loading={ isLoading }
-                                                        data-testid={ `${componentId}-userstore-dropdown` }
-                                                        data-componentid={ `${componentId}-userstore-dropdown` }
-                                                        name="userstore"
-                                                        disabled={ false }
-                                                        value={ selectedUserStore }
-                                                        onChange={
-                                                            (e: React.ChangeEvent<HTMLInputElement>,
-                                                                data: DropdownProps) => {
-                                                                setSelectedUserStore(data.value.toString());
-                                                                setSelectedUserStore(data.value.toString());
+                                        <>
+                                            <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
+                                                    <Alert severity="info">
+                                                        { t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "disabledSecondaryStoreInfo") }
+                                                    </Alert>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                            <Grid.Row columns={ 1 }>
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                                    <Form.Field required={ true }>
+                                                        <label className="pb-2">
+                                                            { t("console:manage.features.user.forms.addUserForm."+
+                                                                "inputs.domain.placeholder") }
+                                                        </label>
+                                                        <Dropdown
+                                                            className="mt-2"
+                                                            fluid
+                                                            selection
+                                                            labeled
+                                                            options={ readWriteUserStoresList }
+                                                            loading={ false }
+                                                            data-testid={
+                                                                `${componentId}-userstore-dropdown`
                                                             }
-                                                        }
-                                                        tabIndex={ 1 }
-                                                        maxLength={ 60 }
-                                                    />
-                                                </Form.Field>
-                                            </Grid.Column>
-                                        </Grid.Row>
+                                                            data-componentid={
+                                                                `${componentId}-userstore-dropdown`
+                                                            }
+                                                            name="userstore"
+                                                            disabled={ true }
+                                                            value={ selectedUserStore }
+                                                            onChange={
+                                                                (e: React.ChangeEvent<HTMLInputElement>,
+                                                                    data: DropdownProps) => {
+                                                                    setSelectedUserStore(data.value.toString());
+                                                                }
+                                                            }
+                                                            tabIndex={ 1 }
+                                                            maxLength={ 60 }
+                                                        />
+                                                    </Form.Field> 
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </>
                                     )
                                 }
                                 <Grid.Row columns={ 1 } className="pt-0">
