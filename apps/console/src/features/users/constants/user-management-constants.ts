@@ -138,8 +138,6 @@ export enum UserAccountTypes {
  */
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
-    ROLES = "roles",
-    GROUPS = "groups",
     ONETIME_PASSWORD = "oneTimePassword",
     X509CERTIFICATES = "x509Certificates",
     GTALK = "gtalk",

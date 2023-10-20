@@ -353,7 +353,7 @@ export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
-    username: string;
+    resourceIdentifier: string;
     status: BulkUserImportOperationStatus;
     message: string;
     statusCode: BulkUserImportStatus;
