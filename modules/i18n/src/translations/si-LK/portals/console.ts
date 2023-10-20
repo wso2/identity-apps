@@ -9655,6 +9655,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "සම්බන්ධතා මුරපදය යාවත්කාලීන කරන්න.",
                         connectionErrorMessage: "කරුණාකර සපයා ඇති සම්බන්ධතා URL, නම, "
                             + "මුරපදය සහ ධාවක නාමය නිවැරදි බව සහතික කරන්න",
                         testButton: "පරීක්ෂණ සම්බන්ධතාවය"

@@ -11583,6 +11583,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Update connection password",
                         connectionErrorMessage: "Please ensure the provided connection "
                             + "URL, name, password and driver name are correct",
                         testButton: "Test Connection"
