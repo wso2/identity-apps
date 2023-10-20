@@ -10269,8 +10269,8 @@ export const console: ConsoleNS = {
                         logTypes: {
                             label: "Log types to be published",
                             values: {
-                                carbonLogs: "Carbon Logs",
-                                auditLogs: "Audit Logs",
+                                carbonLogs: "Carbon logs",
+                                auditLogs: "Audit logs",
                                 allLogs: "All Logs"
                             }
                         },
@@ -10312,15 +10312,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration",
-                        header: "Restore Default Configuration",
-                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        title: "Restore Default Configuration for {{logType}} Logs",
+                        header: "Restore Default Configuration for {{logType}} Logs",
+                        subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
                             header: "Are you sure?",
-                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            message: "If you restore the default configuration, remote log publishing for {{logType}} logs may not work properly. " +
                             "Please proceed with caution.",
-                            content: "This action will restore the default log publishing configuration."
+                            content: "This action will restore the default log publishing configuration for {{logType}} logs."
                         }
                     },
                     notification: {

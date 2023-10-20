@@ -8570,15 +8570,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restaurer la configuration par défaut",
-                        header: "Restaurer la configuration par défaut",
-                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
                         confirmation: {
                             hint: "Veuillez confirmer votre action.",
                             header: "Êtes-vous sûr?",
-                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            message: "Si vous restaurez la configuration par défaut, la publication de journaux à distance pour les journaux {{logType}} risque de ne pas fonctionner correctement. " +
                             "Veuillez procéder avec prudence.",
-                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                            content: "Cette action restaurera la configuration de publication de journaux par défaut pour les journaux {{logType}}."
                         }
                     },
                     notification: {
